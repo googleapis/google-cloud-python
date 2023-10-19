@@ -27,6 +27,9 @@ from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_gr
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
+from google.analytics.admin_v1alpha.types import (
+    subproperty_event_filter as gaa_subproperty_event_filter,
+)
 from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
@@ -316,8 +319,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
 
         If the accounts are not restored before the expiration
         time, the account and all child resources (eg:
-        Properties, GoogleAdsLinks, Streams, UserLinks) will be
-        permanently purged.
+        Properties, GoogleAdsLinks, Streams, AccessBindings)
+        will be permanently purged.
         https://support.google.com/analytics/answer/6154772
 
         Returns an error if the target is not found.
@@ -531,8 +534,8 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
 
         If the properties are not restored before the expiration
         time, the Property and all child resources (eg:
-        GoogleAdsLinks, Streams, UserLinks) will be permanently
-        purged.
+        GoogleAdsLinks, Streams, AccessBindings) will be
+        permanently purged.
         https://support.google.com/analytics/answer/6154772
 
         Returns an error if the target is not found, or is not a
@@ -583,309 +586,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=resources.Property.deserialize,
             )
         return self._stubs["update_property"]
-
-    @property
-    def get_user_link(
-        self,
-    ) -> Callable[[analytics_admin.GetUserLinkRequest], Awaitable[resources.UserLink]]:
-        r"""Return a callable for the get user link method over gRPC.
-
-        Gets information about a user's link to an account or
-        property.
-
-        Returns:
-            Callable[[~.GetUserLinkRequest],
-                    Awaitable[~.UserLink]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_user_link" not in self._stubs:
-            self._stubs["get_user_link"] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetUserLink",
-                request_serializer=analytics_admin.GetUserLinkRequest.serialize,
-                response_deserializer=resources.UserLink.deserialize,
-            )
-        return self._stubs["get_user_link"]
-
-    @property
-    def batch_get_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchGetUserLinksRequest],
-        Awaitable[analytics_admin.BatchGetUserLinksResponse],
-    ]:
-        r"""Return a callable for the batch get user links method over gRPC.
-
-        Gets information about multiple users' links to an
-        account or property.
-
-        Returns:
-            Callable[[~.BatchGetUserLinksRequest],
-                    Awaitable[~.BatchGetUserLinksResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "batch_get_user_links" not in self._stubs:
-            self._stubs["batch_get_user_links"] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchGetUserLinks",
-                request_serializer=analytics_admin.BatchGetUserLinksRequest.serialize,
-                response_deserializer=analytics_admin.BatchGetUserLinksResponse.deserialize,
-            )
-        return self._stubs["batch_get_user_links"]
-
-    @property
-    def list_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListUserLinksRequest],
-        Awaitable[analytics_admin.ListUserLinksResponse],
-    ]:
-        r"""Return a callable for the list user links method over gRPC.
-
-        Lists all user links on an account or property.
-
-        Returns:
-            Callable[[~.ListUserLinksRequest],
-                    Awaitable[~.ListUserLinksResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_user_links" not in self._stubs:
-            self._stubs["list_user_links"] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListUserLinks",
-                request_serializer=analytics_admin.ListUserLinksRequest.serialize,
-                response_deserializer=analytics_admin.ListUserLinksResponse.deserialize,
-            )
-        return self._stubs["list_user_links"]
-
-    @property
-    def audit_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.AuditUserLinksRequest],
-        Awaitable[analytics_admin.AuditUserLinksResponse],
-    ]:
-        r"""Return a callable for the audit user links method over gRPC.
-
-        Lists all user links on an account or property,
-        including implicit ones that come from effective
-        permissions granted by groups or organization admin
-        roles.
-
-        If a returned user link does not have direct
-        permissions, they cannot be removed from the account or
-        property directly with the DeleteUserLink command. They
-        have to be removed from the group/etc that gives them
-        permissions, which is currently only usable/discoverable
-        in the GA or GMP UIs.
-
-        Returns:
-            Callable[[~.AuditUserLinksRequest],
-                    Awaitable[~.AuditUserLinksResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "audit_user_links" not in self._stubs:
-            self._stubs["audit_user_links"] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/AuditUserLinks",
-                request_serializer=analytics_admin.AuditUserLinksRequest.serialize,
-                response_deserializer=analytics_admin.AuditUserLinksResponse.deserialize,
-            )
-        return self._stubs["audit_user_links"]
-
-    @property
-    def create_user_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateUserLinkRequest], Awaitable[resources.UserLink]
-    ]:
-        r"""Return a callable for the create user link method over gRPC.
-
-        Creates a user link on an account or property.
-
-        If the user with the specified email already has
-        permissions on the account or property, then the user's
-        existing permissions will be unioned with the
-        permissions specified in the new UserLink.
-
-        Returns:
-            Callable[[~.CreateUserLinkRequest],
-                    Awaitable[~.UserLink]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_user_link" not in self._stubs:
-            self._stubs["create_user_link"] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateUserLink",
-                request_serializer=analytics_admin.CreateUserLinkRequest.serialize,
-                response_deserializer=resources.UserLink.deserialize,
-            )
-        return self._stubs["create_user_link"]
-
-    @property
-    def batch_create_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchCreateUserLinksRequest],
-        Awaitable[analytics_admin.BatchCreateUserLinksResponse],
-    ]:
-        r"""Return a callable for the batch create user links method over gRPC.
-
-        Creates information about multiple users' links to an
-        account or property.
-        This method is transactional. If any UserLink cannot be
-        created, none of the UserLinks will be created.
-
-        Returns:
-            Callable[[~.BatchCreateUserLinksRequest],
-                    Awaitable[~.BatchCreateUserLinksResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "batch_create_user_links" not in self._stubs:
-            self._stubs["batch_create_user_links"] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchCreateUserLinks",
-                request_serializer=analytics_admin.BatchCreateUserLinksRequest.serialize,
-                response_deserializer=analytics_admin.BatchCreateUserLinksResponse.deserialize,
-            )
-        return self._stubs["batch_create_user_links"]
-
-    @property
-    def update_user_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateUserLinkRequest], Awaitable[resources.UserLink]
-    ]:
-        r"""Return a callable for the update user link method over gRPC.
-
-        Updates a user link on an account or property.
-
-        Returns:
-            Callable[[~.UpdateUserLinkRequest],
-                    Awaitable[~.UserLink]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_user_link" not in self._stubs:
-            self._stubs["update_user_link"] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateUserLink",
-                request_serializer=analytics_admin.UpdateUserLinkRequest.serialize,
-                response_deserializer=resources.UserLink.deserialize,
-            )
-        return self._stubs["update_user_link"]
-
-    @property
-    def batch_update_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchUpdateUserLinksRequest],
-        Awaitable[analytics_admin.BatchUpdateUserLinksResponse],
-    ]:
-        r"""Return a callable for the batch update user links method over gRPC.
-
-        Updates information about multiple users' links to an
-        account or property.
-
-        Returns:
-            Callable[[~.BatchUpdateUserLinksRequest],
-                    Awaitable[~.BatchUpdateUserLinksResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "batch_update_user_links" not in self._stubs:
-            self._stubs["batch_update_user_links"] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchUpdateUserLinks",
-                request_serializer=analytics_admin.BatchUpdateUserLinksRequest.serialize,
-                response_deserializer=analytics_admin.BatchUpdateUserLinksResponse.deserialize,
-            )
-        return self._stubs["batch_update_user_links"]
-
-    @property
-    def delete_user_link(
-        self,
-    ) -> Callable[[analytics_admin.DeleteUserLinkRequest], Awaitable[empty_pb2.Empty]]:
-        r"""Return a callable for the delete user link method over gRPC.
-
-        Deletes a user link on an account or property.
-
-        Returns:
-            Callable[[~.DeleteUserLinkRequest],
-                    Awaitable[~.Empty]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_user_link" not in self._stubs:
-            self._stubs["delete_user_link"] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteUserLink",
-                request_serializer=analytics_admin.DeleteUserLinkRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["delete_user_link"]
-
-    @property
-    def batch_delete_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchDeleteUserLinksRequest], Awaitable[empty_pb2.Empty]
-    ]:
-        r"""Return a callable for the batch delete user links method over gRPC.
-
-        Deletes information about multiple users' links to an
-        account or property.
-
-        Returns:
-            Callable[[~.BatchDeleteUserLinksRequest],
-                    Awaitable[~.Empty]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "batch_delete_user_links" not in self._stubs:
-            self._stubs["batch_delete_user_links"] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchDeleteUserLinks",
-                request_serializer=analytics_admin.BatchDeleteUserLinksRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["batch_delete_user_links"]
 
     @property
     def create_firebase_link(
@@ -4116,6 +3816,330 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_event_create_rule"]
+
+    @property
+    def update_data_redaction_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateDataRedactionSettingsRequest],
+        Awaitable[resources.DataRedactionSettings],
+    ]:
+        r"""Return a callable for the update data redaction settings method over gRPC.
+
+        Updates a DataRedactionSettings on a property.
+
+        Returns:
+            Callable[[~.UpdateDataRedactionSettingsRequest],
+                    Awaitable[~.DataRedactionSettings]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_data_redaction_settings" not in self._stubs:
+            self._stubs[
+                "update_data_redaction_settings"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateDataRedactionSettings",
+                request_serializer=analytics_admin.UpdateDataRedactionSettingsRequest.serialize,
+                response_deserializer=resources.DataRedactionSettings.deserialize,
+            )
+        return self._stubs["update_data_redaction_settings"]
+
+    @property
+    def get_data_redaction_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetDataRedactionSettingsRequest],
+        Awaitable[resources.DataRedactionSettings],
+    ]:
+        r"""Return a callable for the get data redaction settings method over gRPC.
+
+        Lookup for a single DataRedactionSettings.
+
+        Returns:
+            Callable[[~.GetDataRedactionSettingsRequest],
+                    Awaitable[~.DataRedactionSettings]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_data_redaction_settings" not in self._stubs:
+            self._stubs["get_data_redaction_settings"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetDataRedactionSettings",
+                request_serializer=analytics_admin.GetDataRedactionSettingsRequest.serialize,
+                response_deserializer=resources.DataRedactionSettings.deserialize,
+            )
+        return self._stubs["get_data_redaction_settings"]
+
+    @property
+    def create_rollup_property(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateRollupPropertyRequest],
+        Awaitable[analytics_admin.CreateRollupPropertyResponse],
+    ]:
+        r"""Return a callable for the create rollup property method over gRPC.
+
+        Create a roll-up property and all roll-up property
+        source links.
+
+        Returns:
+            Callable[[~.CreateRollupPropertyRequest],
+                    Awaitable[~.CreateRollupPropertyResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_rollup_property" not in self._stubs:
+            self._stubs["create_rollup_property"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateRollupProperty",
+                request_serializer=analytics_admin.CreateRollupPropertyRequest.serialize,
+                response_deserializer=analytics_admin.CreateRollupPropertyResponse.deserialize,
+            )
+        return self._stubs["create_rollup_property"]
+
+    @property
+    def get_rollup_property_source_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetRollupPropertySourceLinkRequest],
+        Awaitable[resources.RollupPropertySourceLink],
+    ]:
+        r"""Return a callable for the get rollup property source
+        link method over gRPC.
+
+        Lookup for a single roll-up property source Link.
+        Only roll-up properties can have source links, so this
+        method will throw an error if used on other types of
+        properties.
+
+        Returns:
+            Callable[[~.GetRollupPropertySourceLinkRequest],
+                    Awaitable[~.RollupPropertySourceLink]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_rollup_property_source_link" not in self._stubs:
+            self._stubs[
+                "get_rollup_property_source_link"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetRollupPropertySourceLink",
+                request_serializer=analytics_admin.GetRollupPropertySourceLinkRequest.serialize,
+                response_deserializer=resources.RollupPropertySourceLink.deserialize,
+            )
+        return self._stubs["get_rollup_property_source_link"]
+
+    @property
+    def list_rollup_property_source_links(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListRollupPropertySourceLinksRequest],
+        Awaitable[analytics_admin.ListRollupPropertySourceLinksResponse],
+    ]:
+        r"""Return a callable for the list rollup property source
+        links method over gRPC.
+
+        Lists roll-up property source Links on a property.
+        Only roll-up properties can have source links, so this
+        method will throw an error if used on other types of
+        properties.
+
+        Returns:
+            Callable[[~.ListRollupPropertySourceLinksRequest],
+                    Awaitable[~.ListRollupPropertySourceLinksResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_rollup_property_source_links" not in self._stubs:
+            self._stubs[
+                "list_rollup_property_source_links"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListRollupPropertySourceLinks",
+                request_serializer=analytics_admin.ListRollupPropertySourceLinksRequest.serialize,
+                response_deserializer=analytics_admin.ListRollupPropertySourceLinksResponse.deserialize,
+            )
+        return self._stubs["list_rollup_property_source_links"]
+
+    @property
+    def create_rollup_property_source_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateRollupPropertySourceLinkRequest],
+        Awaitable[resources.RollupPropertySourceLink],
+    ]:
+        r"""Return a callable for the create rollup property source
+        link method over gRPC.
+
+        Creates a roll-up property source link.
+        Only roll-up properties can have source links, so this
+        method will throw an error if used on other types of
+        properties.
+
+        Returns:
+            Callable[[~.CreateRollupPropertySourceLinkRequest],
+                    Awaitable[~.RollupPropertySourceLink]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_rollup_property_source_link" not in self._stubs:
+            self._stubs[
+                "create_rollup_property_source_link"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateRollupPropertySourceLink",
+                request_serializer=analytics_admin.CreateRollupPropertySourceLinkRequest.serialize,
+                response_deserializer=resources.RollupPropertySourceLink.deserialize,
+            )
+        return self._stubs["create_rollup_property_source_link"]
+
+    @property
+    def delete_rollup_property_source_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteRollupPropertySourceLinkRequest],
+        Awaitable[empty_pb2.Empty],
+    ]:
+        r"""Return a callable for the delete rollup property source
+        link method over gRPC.
+
+        Deletes a roll-up property source link.
+        Only roll-up properties can have source links, so this
+        method will throw an error if used on other types of
+        properties.
+
+        Returns:
+            Callable[[~.DeleteRollupPropertySourceLinkRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_rollup_property_source_link" not in self._stubs:
+            self._stubs[
+                "delete_rollup_property_source_link"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteRollupPropertySourceLink",
+                request_serializer=analytics_admin.DeleteRollupPropertySourceLinkRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_rollup_property_source_link"]
+
+    @property
+    def create_subproperty(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateSubpropertyRequest],
+        Awaitable[analytics_admin.CreateSubpropertyResponse],
+    ]:
+        r"""Return a callable for the create subproperty method over gRPC.
+
+        Create a subproperty and a subproperty event filter
+        that applies to the created subproperty.
+
+        Returns:
+            Callable[[~.CreateSubpropertyRequest],
+                    Awaitable[~.CreateSubpropertyResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_subproperty" not in self._stubs:
+            self._stubs["create_subproperty"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateSubproperty",
+                request_serializer=analytics_admin.CreateSubpropertyRequest.serialize,
+                response_deserializer=analytics_admin.CreateSubpropertyResponse.deserialize,
+            )
+        return self._stubs["create_subproperty"]
+
+    @property
+    def delete_subproperty_event_filter(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteSubpropertyEventFilterRequest],
+        Awaitable[empty_pb2.Empty],
+    ]:
+        r"""Return a callable for the delete subproperty event
+        filter method over gRPC.
+
+        Deletes a subproperty event filter.
+
+        Returns:
+            Callable[[~.DeleteSubpropertyEventFilterRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_subproperty_event_filter" not in self._stubs:
+            self._stubs[
+                "delete_subproperty_event_filter"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteSubpropertyEventFilter",
+                request_serializer=analytics_admin.DeleteSubpropertyEventFilterRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_subproperty_event_filter"]
+
+    @property
+    def create_subproperty_event_filter(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateSubpropertyEventFilterRequest],
+        Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter],
+    ]:
+        r"""Return a callable for the create subproperty event
+        filter method over gRPC.
+
+        Creates a subproperty Event Filter.
+
+        Returns:
+            Callable[[~.CreateSubpropertyEventFilterRequest],
+                    Awaitable[~.SubpropertyEventFilter]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_subproperty_event_filter" not in self._stubs:
+            self._stubs[
+                "create_subproperty_event_filter"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateSubpropertyEventFilter",
+                request_serializer=analytics_admin.CreateSubpropertyEventFilterRequest.serialize,
+                response_deserializer=gaa_subproperty_event_filter.SubpropertyEventFilter.deserialize,
+            )
+        return self._stubs["create_subproperty_event_filter"]
 
     def close(self):
         return self.grpc_channel.close()

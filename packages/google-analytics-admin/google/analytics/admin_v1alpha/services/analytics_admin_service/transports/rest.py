@@ -42,6 +42,9 @@ from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_gr
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
+from google.analytics.admin_v1alpha.types import (
+    subproperty_event_filter as gaa_subproperty_event_filter,
+)
 from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
@@ -103,14 +106,6 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_audit_user_links(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_audit_user_links(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_batch_create_access_bindings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -119,19 +114,7 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_batch_create_user_links(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_batch_create_user_links(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_batch_delete_access_bindings(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def pre_batch_delete_user_links(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -143,27 +126,11 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_batch_get_user_links(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_batch_get_user_links(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_batch_update_access_bindings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_batch_update_access_bindings(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_batch_update_user_links(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_batch_update_user_links(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -311,6 +278,22 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_rollup_property(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_rollup_property(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_rollup_property_source_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_rollup_property_source_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_search_ads360_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -327,11 +310,19 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_create_user_link(self, request, metadata):
+            def pre_create_subproperty(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_user_link(self, response):
+            def post_create_subproperty(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_subproperty_event_filter(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_subproperty_event_filter(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -399,6 +390,10 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_rollup_property_source_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_search_ads360_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -407,7 +402,7 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_delete_user_link(self, request, metadata):
+            def pre_delete_subproperty_event_filter(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -507,6 +502,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_data_redaction_settings(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_data_redaction_settings(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_data_retention_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -603,6 +606,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_rollup_property_source_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_rollup_property_source_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_search_ads360_link(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -616,14 +627,6 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_get_sk_ad_network_conversion_value_schema(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_get_user_link(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_get_user_link(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -787,6 +790,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_rollup_property_source_links(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_rollup_property_source_links(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_search_ads360_links(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -800,14 +811,6 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_list_sk_ad_network_conversion_value_schemas(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_list_user_links(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_list_user_links(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -907,6 +910,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_data_redaction_settings(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_data_redaction_settings(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_data_retention_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -1000,14 +1011,6 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_update_sk_ad_network_conversion_value_schema(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_update_user_link(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_update_user_link(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1107,29 +1110,6 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return request, metadata
 
-    def pre_audit_user_links(
-        self,
-        request: analytics_admin.AuditUserLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.AuditUserLinksRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for audit_user_links
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_audit_user_links(
-        self, response: analytics_admin.AuditUserLinksResponse
-    ) -> analytics_admin.AuditUserLinksResponse:
-        """Post-rpc interceptor for audit_user_links
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code.
-        """
-        return response
-
     def pre_batch_create_access_bindings(
         self,
         request: analytics_admin.BatchCreateAccessBindingsRequest,
@@ -1155,29 +1135,6 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
-    def pre_batch_create_user_links(
-        self,
-        request: analytics_admin.BatchCreateUserLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.BatchCreateUserLinksRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for batch_create_user_links
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_batch_create_user_links(
-        self, response: analytics_admin.BatchCreateUserLinksResponse
-    ) -> analytics_admin.BatchCreateUserLinksResponse:
-        """Post-rpc interceptor for batch_create_user_links
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code.
-        """
-        return response
-
     def pre_batch_delete_access_bindings(
         self,
         request: analytics_admin.BatchDeleteAccessBindingsRequest,
@@ -1186,18 +1143,6 @@ class AnalyticsAdminServiceRestInterceptor:
         analytics_admin.BatchDeleteAccessBindingsRequest, Sequence[Tuple[str, str]]
     ]:
         """Pre-rpc interceptor for batch_delete_access_bindings
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def pre_batch_delete_user_links(
-        self,
-        request: analytics_admin.BatchDeleteUserLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.BatchDeleteUserLinksRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for batch_delete_user_links
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the AnalyticsAdminService server.
@@ -1229,29 +1174,6 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
-    def pre_batch_get_user_links(
-        self,
-        request: analytics_admin.BatchGetUserLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.BatchGetUserLinksRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for batch_get_user_links
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_batch_get_user_links(
-        self, response: analytics_admin.BatchGetUserLinksResponse
-    ) -> analytics_admin.BatchGetUserLinksResponse:
-        """Post-rpc interceptor for batch_get_user_links
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code.
-        """
-        return response
-
     def pre_batch_update_access_bindings(
         self,
         request: analytics_admin.BatchUpdateAccessBindingsRequest,
@@ -1270,29 +1192,6 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.BatchUpdateAccessBindingsResponse
     ) -> analytics_admin.BatchUpdateAccessBindingsResponse:
         """Post-rpc interceptor for batch_update_access_bindings
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_batch_update_user_links(
-        self,
-        request: analytics_admin.BatchUpdateUserLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.BatchUpdateUserLinksRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for batch_update_user_links
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_batch_update_user_links(
-        self, response: analytics_admin.BatchUpdateUserLinksResponse
-    ) -> analytics_admin.BatchUpdateUserLinksResponse:
-        """Post-rpc interceptor for batch_update_user_links
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -1726,6 +1625,54 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_create_rollup_property(
+        self,
+        request: analytics_admin.CreateRollupPropertyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.CreateRollupPropertyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_rollup_property
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_rollup_property(
+        self, response: analytics_admin.CreateRollupPropertyResponse
+    ) -> analytics_admin.CreateRollupPropertyResponse:
+        """Post-rpc interceptor for create_rollup_property
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_rollup_property_source_link(
+        self,
+        request: analytics_admin.CreateRollupPropertySourceLinkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.CreateRollupPropertySourceLinkRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_rollup_property_source_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_rollup_property_source_link(
+        self, response: resources.RollupPropertySourceLink
+    ) -> resources.RollupPropertySourceLink:
+        """Post-rpc interceptor for create_rollup_property_source_link
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_search_ads360_link(
         self,
         request: analytics_admin.CreateSearchAds360LinkRequest,
@@ -1777,20 +1724,47 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
-    def pre_create_user_link(
+    def pre_create_subproperty(
         self,
-        request: analytics_admin.CreateUserLinkRequest,
+        request: analytics_admin.CreateSubpropertyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateUserLinkRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for create_user_link
+    ) -> Tuple[analytics_admin.CreateSubpropertyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_subproperty
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the AnalyticsAdminService server.
         """
         return request, metadata
 
-    def post_create_user_link(self, response: resources.UserLink) -> resources.UserLink:
-        """Post-rpc interceptor for create_user_link
+    def post_create_subproperty(
+        self, response: analytics_admin.CreateSubpropertyResponse
+    ) -> analytics_admin.CreateSubpropertyResponse:
+        """Post-rpc interceptor for create_subproperty
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_subproperty_event_filter(
+        self,
+        request: analytics_admin.CreateSubpropertyEventFilterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.CreateSubpropertyEventFilterRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_subproperty_event_filter
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_subproperty_event_filter(
+        self, response: gaa_subproperty_event_filter.SubpropertyEventFilter
+    ) -> gaa_subproperty_event_filter.SubpropertyEventFilter:
+        """Post-rpc interceptor for create_subproperty_event_filter
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -1998,6 +1972,20 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_delete_rollup_property_source_link(
+        self,
+        request: analytics_admin.DeleteRollupPropertySourceLinkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.DeleteRollupPropertySourceLinkRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_rollup_property_source_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
     def pre_delete_search_ads360_link(
         self,
         request: analytics_admin.DeleteSearchAds360LinkRequest,
@@ -2027,12 +2015,14 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return request, metadata
 
-    def pre_delete_user_link(
+    def pre_delete_subproperty_event_filter(
         self,
-        request: analytics_admin.DeleteUserLinkRequest,
+        request: analytics_admin.DeleteSubpropertyEventFilterRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteUserLinkRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for delete_user_link
+    ) -> Tuple[
+        analytics_admin.DeleteSubpropertyEventFilterRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_subproperty_event_filter
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the AnalyticsAdminService server.
@@ -2311,6 +2301,31 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.CustomMetric
     ) -> resources.CustomMetric:
         """Post-rpc interceptor for get_custom_metric
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_data_redaction_settings(
+        self,
+        request: analytics_admin.GetDataRedactionSettingsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.GetDataRedactionSettingsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_data_redaction_settings
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_data_redaction_settings(
+        self, response: resources.DataRedactionSettings
+    ) -> resources.DataRedactionSettings:
+        """Post-rpc interceptor for get_data_redaction_settings
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -2608,6 +2623,31 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_get_rollup_property_source_link(
+        self,
+        request: analytics_admin.GetRollupPropertySourceLinkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.GetRollupPropertySourceLinkRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_rollup_property_source_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_rollup_property_source_link(
+        self, response: resources.RollupPropertySourceLink
+    ) -> resources.RollupPropertySourceLink:
+        """Post-rpc interceptor for get_rollup_property_source_link
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_search_ads360_link(
         self,
         request: analytics_admin.GetSearchAds360LinkRequest,
@@ -2650,27 +2690,6 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.SKAdNetworkConversionValueSchema
     ) -> resources.SKAdNetworkConversionValueSchema:
         """Post-rpc interceptor for get_sk_ad_network_conversion_value_schema
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_get_user_link(
-        self,
-        request: analytics_admin.GetUserLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetUserLinkRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for get_user_link
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_get_user_link(self, response: resources.UserLink) -> resources.UserLink:
-        """Post-rpc interceptor for get_user_link
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -3147,6 +3166,31 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_list_rollup_property_source_links(
+        self,
+        request: analytics_admin.ListRollupPropertySourceLinksRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.ListRollupPropertySourceLinksRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_rollup_property_source_links
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_rollup_property_source_links(
+        self, response: analytics_admin.ListRollupPropertySourceLinksResponse
+    ) -> analytics_admin.ListRollupPropertySourceLinksResponse:
+        """Post-rpc interceptor for list_rollup_property_source_links
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_search_ads360_links(
         self,
         request: analytics_admin.ListSearchAds360LinksRequest,
@@ -3189,29 +3233,6 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.ListSKAdNetworkConversionValueSchemasResponse
     ) -> analytics_admin.ListSKAdNetworkConversionValueSchemasResponse:
         """Post-rpc interceptor for list_sk_ad_network_conversion_value_schemas
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_list_user_links(
-        self,
-        request: analytics_admin.ListUserLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListUserLinksRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for list_user_links
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_list_user_links(
-        self, response: analytics_admin.ListUserLinksResponse
-    ) -> analytics_admin.ListUserLinksResponse:
-        """Post-rpc interceptor for list_user_links
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -3495,6 +3516,31 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.CustomMetric
     ) -> resources.CustomMetric:
         """Post-rpc interceptor for update_custom_metric
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_data_redaction_settings(
+        self,
+        request: analytics_admin.UpdateDataRedactionSettingsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.UpdateDataRedactionSettingsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_data_redaction_settings
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_update_data_redaction_settings(
+        self, response: resources.DataRedactionSettings
+    ) -> resources.DataRedactionSettings:
+        """Post-rpc interceptor for update_data_redaction_settings
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -3787,27 +3833,6 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.SKAdNetworkConversionValueSchema
     ) -> resources.SKAdNetworkConversionValueSchema:
         """Post-rpc interceptor for update_sk_ad_network_conversion_value_schema
-
-        Override in a subclass to manipulate the response
-        after it is returned by the AnalyticsAdminService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_update_user_link(
-        self,
-        request: analytics_admin.UpdateUserLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateUserLinkRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for update_user_link
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AnalyticsAdminService server.
-        """
-        return request, metadata
-
-    def post_update_user_link(self, response: resources.UserLink) -> resources.UserLink:
-        """Post-rpc interceptor for update_user_link
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -4391,111 +4416,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _AuditUserLinks(AnalyticsAdminServiceRestStub):
-        def __hash__(self):
-            return hash("AuditUserLinks")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: analytics_admin.AuditUserLinksRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> analytics_admin.AuditUserLinksResponse:
-            r"""Call the audit user links method over HTTP.
-
-            Args:
-                request (~.analytics_admin.AuditUserLinksRequest):
-                    The request object. Request message for AuditUserLinks
-                RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.analytics_admin.AuditUserLinksResponse:
-                    Response message for AuditUserLinks
-                RPC.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=accounts/*}/userLinks:audit",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/userLinks:audit",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_audit_user_links(
-                request, metadata
-            )
-            pb_request = analytics_admin.AuditUserLinksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = analytics_admin.AuditUserLinksResponse()
-            pb_resp = analytics_admin.AuditUserLinksResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_audit_user_links(resp)
-            return resp
-
     class _BatchCreateAccessBindings(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("BatchCreateAccessBindings")
@@ -4602,111 +4522,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_batch_create_access_bindings(resp)
             return resp
 
-    class _BatchCreateUserLinks(AnalyticsAdminServiceRestStub):
-        def __hash__(self):
-            return hash("BatchCreateUserLinks")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: analytics_admin.BatchCreateUserLinksRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> analytics_admin.BatchCreateUserLinksResponse:
-            r"""Call the batch create user links method over HTTP.
-
-            Args:
-                request (~.analytics_admin.BatchCreateUserLinksRequest):
-                    The request object. Request message for
-                BatchCreateUserLinks RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.analytics_admin.BatchCreateUserLinksResponse:
-                    Response message for
-                BatchCreateUserLinks RPC.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=accounts/*}/userLinks:batchCreate",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/userLinks:batchCreate",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_batch_create_user_links(
-                request, metadata
-            )
-            pb_request = analytics_admin.BatchCreateUserLinksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = analytics_admin.BatchCreateUserLinksResponse()
-            pb_resp = analytics_admin.BatchCreateUserLinksResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_batch_create_user_links(resp)
-            return resp
-
     class _BatchDeleteAccessBindings(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("BatchDeleteAccessBindings")
@@ -4759,97 +4574,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request, metadata
             )
             pb_request = analytics_admin.BatchDeleteAccessBindingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-    class _BatchDeleteUserLinks(AnalyticsAdminServiceRestStub):
-        def __hash__(self):
-            return hash("BatchDeleteUserLinks")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: analytics_admin.BatchDeleteUserLinksRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ):
-            r"""Call the batch delete user links method over HTTP.
-
-            Args:
-                request (~.analytics_admin.BatchDeleteUserLinksRequest):
-                    The request object. Request message for
-                BatchDeleteUserLinks RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=accounts/*}/userLinks:batchDelete",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/userLinks:batchDelete",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_batch_delete_user_links(
-                request, metadata
-            )
-            pb_request = analytics_admin.BatchDeleteUserLinksRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -4987,103 +4711,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_batch_get_access_bindings(resp)
             return resp
 
-    class _BatchGetUserLinks(AnalyticsAdminServiceRestStub):
-        def __hash__(self):
-            return hash("BatchGetUserLinks")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "names": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: analytics_admin.BatchGetUserLinksRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> analytics_admin.BatchGetUserLinksResponse:
-            r"""Call the batch get user links method over HTTP.
-
-            Args:
-                request (~.analytics_admin.BatchGetUserLinksRequest):
-                    The request object. Request message for BatchGetUserLinks
-                RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.analytics_admin.BatchGetUserLinksResponse:
-                    Response message for
-                BatchGetUserLinks RPC.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=accounts/*}/userLinks:batchGet",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/userLinks:batchGet",
-                },
-            ]
-            request, metadata = self._interceptor.pre_batch_get_user_links(
-                request, metadata
-            )
-            pb_request = analytics_admin.BatchGetUserLinksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = analytics_admin.BatchGetUserLinksResponse()
-            pb_resp = analytics_admin.BatchGetUserLinksResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_batch_get_user_links(resp)
-            return resp
-
     class _BatchUpdateAccessBindings(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("BatchUpdateAccessBindings")
@@ -5188,111 +4815,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_batch_update_access_bindings(resp)
-            return resp
-
-    class _BatchUpdateUserLinks(AnalyticsAdminServiceRestStub):
-        def __hash__(self):
-            return hash("BatchUpdateUserLinks")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: analytics_admin.BatchUpdateUserLinksRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> analytics_admin.BatchUpdateUserLinksResponse:
-            r"""Call the batch update user links method over HTTP.
-
-            Args:
-                request (~.analytics_admin.BatchUpdateUserLinksRequest):
-                    The request object. Request message for
-                BatchUpdateUserLinks RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.analytics_admin.BatchUpdateUserLinksResponse:
-                    Response message for
-                BatchUpdateUserLinks RPC.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=accounts/*}/userLinks:batchUpdate",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/userLinks:batchUpdate",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_batch_update_user_links(
-                request, metadata
-            )
-            pb_request = analytics_admin.BatchUpdateUserLinksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = analytics_admin.BatchUpdateUserLinksResponse()
-            pb_resp = analytics_admin.BatchUpdateUserLinksResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_batch_update_user_links(resp)
             return resp
 
     class _CancelDisplayVideo360AdvertiserLinkProposal(AnalyticsAdminServiceRestStub):
@@ -7158,6 +6680,213 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_property(resp)
             return resp
 
+    class _CreateRollupProperty(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateRollupProperty")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateRollupPropertyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.CreateRollupPropertyResponse:
+            r"""Call the create rollup property method over HTTP.
+
+            Args:
+                request (~.analytics_admin.CreateRollupPropertyRequest):
+                    The request object. Request message for
+                CreateRollupProperty RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.CreateRollupPropertyResponse:
+                    Response message for
+                CreateRollupProperty RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/properties:createRollupProperty",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_rollup_property(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateRollupPropertyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.CreateRollupPropertyResponse()
+            pb_resp = analytics_admin.CreateRollupPropertyResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_rollup_property(resp)
+            return resp
+
+    class _CreateRollupPropertySourceLink(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateRollupPropertySourceLink")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateRollupPropertySourceLinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.RollupPropertySourceLink:
+            r"""Call the create rollup property
+            source link method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.CreateRollupPropertySourceLinkRequest):
+                        The request object. Request message for
+                    CreateRollupPropertySourceLink RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.resources.RollupPropertySourceLink:
+                        A link that references a source
+                    property under the parent rollup
+                    property.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/rollupPropertySourceLinks",
+                    "body": "rollup_property_source_link",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_create_rollup_property_source_link(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateRollupPropertySourceLinkRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.RollupPropertySourceLink()
+            pb_resp = resources.RollupPropertySourceLink.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_rollup_property_source_link(resp)
+            return resp
+
     class _CreateSearchAds360Link(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("CreateSearchAds360Link")
@@ -7369,9 +7098,9 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _CreateUserLink(AnalyticsAdminServiceRestStub):
+    class _CreateSubproperty(AnalyticsAdminServiceRestStub):
         def __hash__(self):
-            return hash("CreateUserLink")
+            return hash("CreateSubproperty")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -7385,28 +7114,18 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         def __call__(
             self,
-            request: analytics_admin.CreateUserLinkRequest,
+            request: analytics_admin.CreateSubpropertyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> resources.UserLink:
-            r"""Call the create user link method over HTTP.
+        ) -> analytics_admin.CreateSubpropertyResponse:
+            r"""Call the create subproperty method over HTTP.
 
             Args:
-                request (~.analytics_admin.CreateUserLinkRequest):
-                    The request object. Request message for CreateUserLink
+                request (~.analytics_admin.CreateSubpropertyRequest):
+                    The request object. Request message for CreateSubproperty
                 RPC.
-                Users can have multiple email addresses
-                associated with their Google account,
-                and one of these email addresses is the
-                "primary" email address. Any of the
-                email addresses associated with a Google
-                account may be used for a new UserLink,
-                but the returned UserLink will always
-                contain the "primary" email address. As
-                a result, the input and output email
-                address for this request may differ.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -7414,29 +7133,23 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.resources.UserLink:
-                    A resource message representing a
-                user's permissions on an Account or
-                Property resource.
+                ~.analytics_admin.CreateSubpropertyResponse:
+                    Response message for
+                CreateSubproperty RPC.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1alpha/{parent=accounts/*}/userLinks",
-                    "body": "user_link",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/userLinks",
-                    "body": "user_link",
+                    "uri": "/v1alpha/properties:createSubproperty",
+                    "body": "*",
                 },
             ]
-            request, metadata = self._interceptor.pre_create_user_link(
+            request, metadata = self._interceptor.pre_create_subproperty(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateUserLinkRequest.pb(request)
+            pb_request = analytics_admin.CreateSubpropertyRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -7478,11 +7191,112 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = resources.UserLink()
-            pb_resp = resources.UserLink.pb(resp)
+            resp = analytics_admin.CreateSubpropertyResponse()
+            pb_resp = analytics_admin.CreateSubpropertyResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_create_user_link(resp)
+            resp = self._interceptor.post_create_subproperty(resp)
+            return resp
+
+    class _CreateSubpropertyEventFilter(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateSubpropertyEventFilter")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateSubpropertyEventFilterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gaa_subproperty_event_filter.SubpropertyEventFilter:
+            r"""Call the create subproperty event
+            filter method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.CreateSubpropertyEventFilterRequest):
+                        The request object. Request message for
+                    CreateSubpropertyEventFilter RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.gaa_subproperty_event_filter.SubpropertyEventFilter:
+                        A resource message representing a GA4
+                    Subproperty event filter.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/subpropertyEventFilters",
+                    "body": "subproperty_event_filter",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_subproperty_event_filter(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateSubpropertyEventFilterRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gaa_subproperty_event_filter.SubpropertyEventFilter()
+            pb_resp = gaa_subproperty_event_filter.SubpropertyEventFilter.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_subproperty_event_filter(resp)
             return resp
 
     class _DeleteAccessBinding(AnalyticsAdminServiceRestStub):
@@ -8673,6 +8487,89 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_delete_property(resp)
             return resp
 
+    class _DeleteRollupPropertySourceLink(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteRollupPropertySourceLink")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.DeleteRollupPropertySourceLinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete rollup property
+            source link method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.DeleteRollupPropertySourceLinkRequest):
+                        The request object. Request message for
+                    DeleteRollupPropertySourceLink RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=properties/*/rollupPropertySourceLinks/*}",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_delete_rollup_property_source_link(
+                request, metadata
+            )
+            pb_request = analytics_admin.DeleteRollupPropertySourceLinkRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteSearchAds360Link(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("DeleteSearchAds360Link")
@@ -8836,9 +8733,9 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteUserLink(AnalyticsAdminServiceRestStub):
+    class _DeleteSubpropertyEventFilter(AnalyticsAdminServiceRestStub):
         def __hash__(self):
-            return hash("DeleteUserLink")
+            return hash("DeleteSubpropertyEventFilter")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -8852,39 +8749,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         def __call__(
             self,
-            request: analytics_admin.DeleteUserLinkRequest,
+            request: analytics_admin.DeleteSubpropertyEventFilterRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
-            r"""Call the delete user link method over HTTP.
+            r"""Call the delete subproperty event
+            filter method over HTTP.
 
-            Args:
-                request (~.analytics_admin.DeleteUserLinkRequest):
-                    The request object. Request message for DeleteUserLink
-                RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                Args:
+                    request (~.analytics_admin.DeleteSubpropertyEventFilterRequest):
+                        The request object. Request message for
+                    DeleteSubpropertyEventFilter RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/v1alpha/{name=accounts/*/userLinks/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/userLinks/*}",
+                    "uri": "/v1alpha/{name=properties/*/subpropertyEventFilters/*}",
                 },
             ]
-            request, metadata = self._interceptor.pre_delete_user_link(
+            request, metadata = self._interceptor.pre_delete_subproperty_event_filter(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteUserLinkRequest.pb(request)
+            pb_request = analytics_admin.DeleteSubpropertyEventFilterRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -10028,6 +9922,99 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_custom_metric(resp)
             return resp
 
+    class _GetDataRedactionSettings(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetDataRedactionSettings")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetDataRedactionSettingsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.DataRedactionSettings:
+            r"""Call the get data redaction
+            settings method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.GetDataRedactionSettingsRequest):
+                        The request object. Request message for
+                    GetDataRedactionSettings RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.resources.DataRedactionSettings:
+                        Settings for client-side data
+                    redaction. Singleton resource under a
+                    Web Stream.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/dataRedactionSettings}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_data_redaction_settings(
+                request, metadata
+            )
+            pb_request = analytics_admin.GetDataRedactionSettingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.DataRedactionSettings()
+            pb_resp = resources.DataRedactionSettings.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_data_redaction_settings(resp)
+            return resp
+
     class _GetDataRetentionSettings(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("GetDataRetentionSettings")
@@ -11163,6 +11150,99 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_property(resp)
             return resp
 
+    class _GetRollupPropertySourceLink(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetRollupPropertySourceLink")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetRollupPropertySourceLinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.RollupPropertySourceLink:
+            r"""Call the get rollup property
+            source link method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.GetRollupPropertySourceLinkRequest):
+                        The request object. Request message for
+                    GetRollupPropertySourceLink RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.resources.RollupPropertySourceLink:
+                        A link that references a source
+                    property under the parent rollup
+                    property.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/rollupPropertySourceLinks/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_rollup_property_source_link(
+                request, metadata
+            )
+            pb_request = analytics_admin.GetRollupPropertySourceLinkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.RollupPropertySourceLink()
+            pb_resp = resources.RollupPropertySourceLink.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_rollup_property_source_link(resp)
+            return resp
+
     class _GetSearchAds360Link(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("GetSearchAds360Link")
@@ -11351,99 +11431,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_sk_ad_network_conversion_value_schema(
                 resp
             )
-            return resp
-
-    class _GetUserLink(AnalyticsAdminServiceRestStub):
-        def __hash__(self):
-            return hash("GetUserLink")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: analytics_admin.GetUserLinkRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> resources.UserLink:
-            r"""Call the get user link method over HTTP.
-
-            Args:
-                request (~.analytics_admin.GetUserLinkRequest):
-                    The request object. Request message for GetUserLink RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.resources.UserLink:
-                    A resource message representing a
-                user's permissions on an Account or
-                Property resource.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=accounts/*/userLinks/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/userLinks/*}",
-                },
-            ]
-            request, metadata = self._interceptor.pre_get_user_link(request, metadata)
-            pb_request = analytics_admin.GetUserLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = resources.UserLink()
-            pb_resp = resources.UserLink.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_user_link(resp)
             return resp
 
     class _ListAccessBindings(AnalyticsAdminServiceRestStub):
@@ -13268,6 +13255,100 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_properties(resp)
             return resp
 
+    class _ListRollupPropertySourceLinks(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("ListRollupPropertySourceLinks")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.ListRollupPropertySourceLinksRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.ListRollupPropertySourceLinksResponse:
+            r"""Call the list rollup property
+            source links method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.ListRollupPropertySourceLinksRequest):
+                        The request object. Request message for
+                    ListRollupPropertySourceLinks RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.analytics_admin.ListRollupPropertySourceLinksResponse:
+                        Response message for
+                    ListRollupPropertySourceLinks RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=properties/*}/rollupPropertySourceLinks",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_rollup_property_source_links(
+                request, metadata
+            )
+            pb_request = analytics_admin.ListRollupPropertySourceLinksRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListRollupPropertySourceLinksResponse()
+            pb_resp = analytics_admin.ListRollupPropertySourceLinksResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_rollup_property_source_links(resp)
+            return resp
+
     class _ListSearchAds360Links(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("ListSearchAds360Links")
@@ -13460,99 +13541,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_sk_ad_network_conversion_value_schemas(
                 resp
             )
-            return resp
-
-    class _ListUserLinks(AnalyticsAdminServiceRestStub):
-        def __hash__(self):
-            return hash("ListUserLinks")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: analytics_admin.ListUserLinksRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> analytics_admin.ListUserLinksResponse:
-            r"""Call the list user links method over HTTP.
-
-            Args:
-                request (~.analytics_admin.ListUserLinksRequest):
-                    The request object. Request message for ListUserLinks
-                RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.analytics_admin.ListUserLinksResponse:
-                    Response message for ListUserLinks
-                RPC.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=accounts/*}/userLinks",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/userLinks",
-                },
-            ]
-            request, metadata = self._interceptor.pre_list_user_links(request, metadata)
-            pb_request = analytics_admin.ListUserLinksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = analytics_admin.ListUserLinksResponse()
-            pb_resp = analytics_admin.ListUserLinksResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_list_user_links(resp)
             return resp
 
     class _ProvisionAccountTicket(AnalyticsAdminServiceRestStub):
@@ -14760,6 +14748,110 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_custom_metric(resp)
+            return resp
+
+    class _UpdateDataRedactionSettings(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateDataRedactionSettings")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.UpdateDataRedactionSettingsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.DataRedactionSettings:
+            r"""Call the update data redaction
+            settings method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.UpdateDataRedactionSettingsRequest):
+                        The request object. Request message for
+                    UpdateDataRedactionSettings RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.resources.DataRedactionSettings:
+                        Settings for client-side data
+                    redaction. Singleton resource under a
+                    Web Stream.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{data_redaction_settings.name=properties/*/dataStreams/*/dataRedactionSettings}",
+                    "body": "data_redaction_settings",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_data_redaction_settings(
+                request, metadata
+            )
+            pb_request = analytics_admin.UpdateDataRedactionSettingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.DataRedactionSettings()
+            pb_resp = resources.DataRedactionSettings.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_data_redaction_settings(resp)
             return resp
 
     class _UpdateDataRetentionSettings(AnalyticsAdminServiceRestStub):
@@ -16029,112 +16121,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _UpdateUserLink(AnalyticsAdminServiceRestStub):
-        def __hash__(self):
-            return hash("UpdateUserLink")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: analytics_admin.UpdateUserLinkRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> resources.UserLink:
-            r"""Call the update user link method over HTTP.
-
-            Args:
-                request (~.analytics_admin.UpdateUserLinkRequest):
-                    The request object. Request message for UpdateUserLink
-                RPC.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.resources.UserLink:
-                    A resource message representing a
-                user's permissions on an Account or
-                Property resource.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{user_link.name=accounts/*/userLinks/*}",
-                    "body": "user_link",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{user_link.name=properties/*/userLinks/*}",
-                    "body": "user_link",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_user_link(
-                request, metadata
-            )
-            pb_request = analytics_admin.UpdateUserLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = resources.UserLink()
-            pb_resp = resources.UserLink.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_update_user_link(resp)
-            return resp
-
     @property
     def acknowledge_user_data_collection(
         self,
@@ -16182,16 +16168,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._ArchiveCustomMetric(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def audit_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.AuditUserLinksRequest], analytics_admin.AuditUserLinksResponse
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._AuditUserLinks(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def batch_create_access_bindings(
         self,
     ) -> Callable[
@@ -16203,31 +16179,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._BatchCreateAccessBindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_create_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchCreateUserLinksRequest],
-        analytics_admin.BatchCreateUserLinksResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._BatchCreateUserLinks(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def batch_delete_access_bindings(
         self,
     ) -> Callable[[analytics_admin.BatchDeleteAccessBindingsRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeleteAccessBindings(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def batch_delete_user_links(
-        self,
-    ) -> Callable[[analytics_admin.BatchDeleteUserLinksRequest], empty_pb2.Empty]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._BatchDeleteUserLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def batch_get_access_bindings(
@@ -16241,17 +16198,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._BatchGetAccessBindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_get_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchGetUserLinksRequest],
-        analytics_admin.BatchGetUserLinksResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._BatchGetUserLinks(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def batch_update_access_bindings(
         self,
     ) -> Callable[
@@ -16261,17 +16207,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdateAccessBindings(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def batch_update_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchUpdateUserLinksRequest],
-        analytics_admin.BatchUpdateUserLinksResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._BatchUpdateUserLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def cancel_display_video360_advertiser_link_proposal(
@@ -16449,6 +16384,28 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._CreateProperty(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_rollup_property(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateRollupPropertyRequest],
+        analytics_admin.CreateRollupPropertyResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateRollupProperty(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_rollup_property_source_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateRollupPropertySourceLinkRequest],
+        resources.RollupPropertySourceLink,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateRollupPropertySourceLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_search_ads360_link(
         self,
     ) -> Callable[
@@ -16470,12 +16427,26 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._CreateSKAdNetworkConversionValueSchema(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_user_link(
+    def create_subproperty(
         self,
-    ) -> Callable[[analytics_admin.CreateUserLinkRequest], resources.UserLink]:
+    ) -> Callable[
+        [analytics_admin.CreateSubpropertyRequest],
+        analytics_admin.CreateSubpropertyResponse,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateUserLink(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateSubproperty(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_subproperty_event_filter(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateSubpropertyEventFilterRequest],
+        gaa_subproperty_event_filter.SubpropertyEventFilter,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateSubpropertyEventFilter(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_access_binding(
@@ -16605,6 +16576,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._DeleteProperty(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_rollup_property_source_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteRollupPropertySourceLinkRequest], empty_pb2.Empty
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteRollupPropertySourceLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_search_ads360_link(
         self,
     ) -> Callable[[analytics_admin.DeleteSearchAds360LinkRequest], empty_pb2.Empty]:
@@ -16623,12 +16604,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._DeleteSKAdNetworkConversionValueSchema(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_user_link(
+    def delete_subproperty_event_filter(
         self,
-    ) -> Callable[[analytics_admin.DeleteUserLinkRequest], empty_pb2.Empty]:
+    ) -> Callable[
+        [analytics_admin.DeleteSubpropertyEventFilterRequest], empty_pb2.Empty
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteUserLink(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteSubpropertyEventFilter(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def fetch_automated_ga4_configuration_opt_out(
@@ -16737,6 +16720,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCustomMetric(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_data_redaction_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetDataRedactionSettingsRequest],
+        resources.DataRedactionSettings,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetDataRedactionSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_data_retention_settings(
@@ -16860,6 +16854,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._GetProperty(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_rollup_property_source_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetRollupPropertySourceLinkRequest],
+        resources.RollupPropertySourceLink,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetRollupPropertySourceLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_search_ads360_link(
         self,
     ) -> Callable[
@@ -16879,14 +16884,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSKAdNetworkConversionValueSchema(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def get_user_link(
-        self,
-    ) -> Callable[[analytics_admin.GetUserLinkRequest], resources.UserLink]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetUserLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_access_bindings(
@@ -17106,6 +17103,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._ListProperties(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_rollup_property_source_links(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListRollupPropertySourceLinksRequest],
+        analytics_admin.ListRollupPropertySourceLinksResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListRollupPropertySourceLinks(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_search_ads360_links(
         self,
     ) -> Callable[
@@ -17126,16 +17134,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSKAdNetworkConversionValueSchemas(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def list_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListUserLinksRequest], analytics_admin.ListUserLinksResponse
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ListUserLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def provision_account_ticket(
@@ -17255,6 +17253,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCustomMetric(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_data_redaction_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateDataRedactionSettingsRequest],
+        resources.DataRedactionSettings,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateDataRedactionSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_data_retention_settings(
@@ -17379,14 +17388,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSKAdNetworkConversionValueSchema(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def update_user_link(
-        self,
-    ) -> Callable[[analytics_admin.UpdateUserLinkRequest], resources.UserLink]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._UpdateUserLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

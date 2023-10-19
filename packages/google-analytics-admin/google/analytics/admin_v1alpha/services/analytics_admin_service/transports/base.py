@@ -30,6 +30,9 @@ from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_gr
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
+from google.analytics.admin_v1alpha.types import (
+    subproperty_event_filter as gaa_subproperty_event_filter,
+)
 from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
@@ -190,56 +193,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.update_property: gapic_v1.method.wrap_method(
                 self.update_property,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_user_link: gapic_v1.method.wrap_method(
-                self.get_user_link,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.batch_get_user_links: gapic_v1.method.wrap_method(
-                self.batch_get_user_links,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_user_links: gapic_v1.method.wrap_method(
-                self.list_user_links,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.audit_user_links: gapic_v1.method.wrap_method(
-                self.audit_user_links,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.create_user_link: gapic_v1.method.wrap_method(
-                self.create_user_link,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.batch_create_user_links: gapic_v1.method.wrap_method(
-                self.batch_create_user_links,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_user_link: gapic_v1.method.wrap_method(
-                self.update_user_link,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.batch_update_user_links: gapic_v1.method.wrap_method(
-                self.batch_update_user_links,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.delete_user_link: gapic_v1.method.wrap_method(
-                self.delete_user_link,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.batch_delete_user_links: gapic_v1.method.wrap_method(
-                self.batch_delete_user_links,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -778,6 +731,56 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_data_redaction_settings: gapic_v1.method.wrap_method(
+                self.update_data_redaction_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_data_redaction_settings: gapic_v1.method.wrap_method(
+                self.get_data_redaction_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_rollup_property: gapic_v1.method.wrap_method(
+                self.create_rollup_property,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_rollup_property_source_link: gapic_v1.method.wrap_method(
+                self.get_rollup_property_source_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_rollup_property_source_links: gapic_v1.method.wrap_method(
+                self.list_rollup_property_source_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_rollup_property_source_link: gapic_v1.method.wrap_method(
+                self.create_rollup_property_source_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_rollup_property_source_link: gapic_v1.method.wrap_method(
+                self.delete_rollup_property_source_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_subproperty: gapic_v1.method.wrap_method(
+                self.create_subproperty,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_subproperty_event_filter: gapic_v1.method.wrap_method(
+                self.delete_subproperty_event_filter,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_subproperty_event_filter: gapic_v1.method.wrap_method(
+                self.create_subproperty_event_filter,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -897,111 +900,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [analytics_admin.UpdatePropertyRequest],
         Union[resources.Property, Awaitable[resources.Property]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_user_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetUserLinkRequest],
-        Union[resources.UserLink, Awaitable[resources.UserLink]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def batch_get_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchGetUserLinksRequest],
-        Union[
-            analytics_admin.BatchGetUserLinksResponse,
-            Awaitable[analytics_admin.BatchGetUserLinksResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.ListUserLinksRequest],
-        Union[
-            analytics_admin.ListUserLinksResponse,
-            Awaitable[analytics_admin.ListUserLinksResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def audit_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.AuditUserLinksRequest],
-        Union[
-            analytics_admin.AuditUserLinksResponse,
-            Awaitable[analytics_admin.AuditUserLinksResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def create_user_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.CreateUserLinkRequest],
-        Union[resources.UserLink, Awaitable[resources.UserLink]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def batch_create_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchCreateUserLinksRequest],
-        Union[
-            analytics_admin.BatchCreateUserLinksResponse,
-            Awaitable[analytics_admin.BatchCreateUserLinksResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_user_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateUserLinkRequest],
-        Union[resources.UserLink, Awaitable[resources.UserLink]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def batch_update_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchUpdateUserLinksRequest],
-        Union[
-            analytics_admin.BatchUpdateUserLinksResponse,
-            Awaitable[analytics_admin.BatchUpdateUserLinksResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_user_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteUserLinkRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def batch_delete_user_links(
-        self,
-    ) -> Callable[
-        [analytics_admin.BatchDeleteUserLinksRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 
@@ -2131,6 +2029,118 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [analytics_admin.DeleteEventCreateRuleRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_data_redaction_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateDataRedactionSettingsRequest],
+        Union[
+            resources.DataRedactionSettings, Awaitable[resources.DataRedactionSettings]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_data_redaction_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetDataRedactionSettingsRequest],
+        Union[
+            resources.DataRedactionSettings, Awaitable[resources.DataRedactionSettings]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_rollup_property(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateRollupPropertyRequest],
+        Union[
+            analytics_admin.CreateRollupPropertyResponse,
+            Awaitable[analytics_admin.CreateRollupPropertyResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_rollup_property_source_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetRollupPropertySourceLinkRequest],
+        Union[
+            resources.RollupPropertySourceLink,
+            Awaitable[resources.RollupPropertySourceLink],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_rollup_property_source_links(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListRollupPropertySourceLinksRequest],
+        Union[
+            analytics_admin.ListRollupPropertySourceLinksResponse,
+            Awaitable[analytics_admin.ListRollupPropertySourceLinksResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_rollup_property_source_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateRollupPropertySourceLinkRequest],
+        Union[
+            resources.RollupPropertySourceLink,
+            Awaitable[resources.RollupPropertySourceLink],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_rollup_property_source_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteRollupPropertySourceLinkRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_subproperty(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateSubpropertyRequest],
+        Union[
+            analytics_admin.CreateSubpropertyResponse,
+            Awaitable[analytics_admin.CreateSubpropertyResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_subproperty_event_filter(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteSubpropertyEventFilterRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_subproperty_event_filter(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateSubpropertyEventFilterRequest],
+        Union[
+            gaa_subproperty_event_filter.SubpropertyEventFilter,
+            Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter],
+        ],
     ]:
         raise NotImplementedError()
 

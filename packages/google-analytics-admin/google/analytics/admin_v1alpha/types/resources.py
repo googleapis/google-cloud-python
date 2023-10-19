@@ -45,8 +45,6 @@ __protobuf__ = proto.module(
         "Account",
         "Property",
         "DataStream",
-        "UserLink",
-        "AuditUserLink",
         "FirebaseLink",
         "GlobalSiteTag",
         "GoogleAdsLink",
@@ -74,7 +72,9 @@ __protobuf__ = proto.module(
         "BigQueryLink",
         "EnhancedMeasurementSettings",
         "ConnectedSiteTag",
+        "DataRedactionSettings",
         "AdSenseLink",
+        "RollupPropertySourceLink",
     },
 )
 
@@ -269,6 +269,8 @@ class ChangeHistoryResourceType(proto.Enum):
             ChannelGroup resource
         ENHANCED_MEASUREMENT_SETTINGS (24):
             EnhancedMeasurementSettings resource
+        DATA_REDACTION_SETTINGS (25):
+            DataRedactionSettings resource
         SKADNETWORK_CONVERSION_VALUE_SCHEMA (26):
             SKAdNetworkConversionValueSchema resource
         ADSENSE_LINK (27):
@@ -297,6 +299,7 @@ class ChangeHistoryResourceType(proto.Enum):
     EXPANDED_DATA_SET = 21
     CHANNEL_GROUP = 22
     ENHANCED_MEASUREMENT_SETTINGS = 24
+    DATA_REDACTION_SETTINGS = 25
     SKADNETWORK_CONVERSION_VALUE_SCHEMA = 26
     ADSENSE_LINK = 27
     AUDIENCE = 28
@@ -509,8 +512,7 @@ class Property(proto.Message):
             Immutable. The property type for this Property resource.
             When creating a property, if the type is
             "PROPERTY_TYPE_UNSPECIFIED", then "ORDINARY_PROPERTY" will
-            be implied. "SUBPROPERTY" and "ROLLUP_PROPERTY" types cannot
-            yet be created with the Google Analytics Admin API.
+            be implied.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the entity was
             originally created.
@@ -808,89 +810,6 @@ class DataStream(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
-    )
-
-
-class UserLink(proto.Message):
-    r"""A resource message representing a user's permissions on an
-    Account or Property resource.
-
-    Attributes:
-        name (str):
-            Output only. Example format:
-            properties/1234/userLinks/5678
-        email_address (str):
-            Immutable. Email address of the user to link
-        direct_roles (MutableSequence[str]):
-            Roles directly assigned to this user for this account or
-            property.
-
-            Valid values: predefinedRoles/viewer predefinedRoles/analyst
-            predefinedRoles/editor predefinedRoles/admin
-            predefinedRoles/no-cost-data predefinedRoles/no-revenue-data
-
-            Excludes roles that are inherited from a higher-level
-            entity, group, or organization admin role.
-
-            A UserLink that is updated to have an empty list of
-            direct_roles will be deleted.
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    email_address: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    direct_roles: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=3,
-    )
-
-
-class AuditUserLink(proto.Message):
-    r"""Read-only resource used to summarize a principal's effective
-    roles.
-
-    Attributes:
-        name (str):
-            Example format:
-            properties/1234/userLinks/5678
-        email_address (str):
-            Email address of the linked user
-        direct_roles (MutableSequence[str]):
-            Roles directly assigned to this user for this
-            entity.
-            Format: predefinedRoles/viewer
-
-            Excludes roles that are inherited from an
-            account (if this is for a property), group, or
-            organization admin role.
-        effective_roles (MutableSequence[str]):
-            Union of all permissions a user has at this
-            account or property (includes direct
-            permissions, group-inherited permissions, etc.).
-
-            Format: predefinedRoles/viewer
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    email_address: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    direct_roles: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=3,
-    )
-    effective_roles: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=4,
     )
 
 
@@ -1624,6 +1543,11 @@ class ChangeHistoryChange(proto.Message):
                 resource in change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            data_redaction_settings (google.analytics.admin_v1alpha.types.DataRedactionSettings):
+                A snapshot of DataRedactionSettings resource
+                in change history.
+
+                This field is a member of `oneof`_ ``resource``.
             skadnetwork_conversion_value_schema (google.analytics.admin_v1alpha.types.SKAdNetworkConversionValueSchema):
                 A snapshot of
                 SKAdNetworkConversionValueSchema resource in
@@ -1762,6 +1686,12 @@ class ChangeHistoryChange(proto.Message):
             number=24,
             oneof="resource",
             message="EnhancedMeasurementSettings",
+        )
+        data_redaction_settings: "DataRedactionSettings" = proto.Field(
+            proto.MESSAGE,
+            number=25,
+            oneof="resource",
+            message="DataRedactionSettings",
         )
         skadnetwork_conversion_value_schema: "SKAdNetworkConversionValueSchema" = (
             proto.Field(
@@ -2933,6 +2863,57 @@ class ConnectedSiteTag(proto.Message):
     )
 
 
+class DataRedactionSettings(proto.Message):
+    r"""Settings for client-side data redaction. Singleton resource
+    under a Web Stream.
+
+    Attributes:
+        name (str):
+            Output only. Name of this Data Redaction Settings resource.
+            Format:
+            properties/{property_id}/dataStreams/{data_stream}/dataRedactionSettings
+            Example:
+            "properties/1000/dataStreams/2000/dataRedactionSettings".
+        email_redaction_enabled (bool):
+            If enabled, any event parameter or user
+            property values that look like an email will be
+            redacted.
+        query_parameter_redaction_enabled (bool):
+            Query Parameter redaction removes the key and value portions
+            of a query parameter if it is in the configured set of query
+            parameters.
+
+            If enabled, URL query replacement logic will be run for the
+            Stream. Any query parameters defined in query_parameter_keys
+            will be redacted.
+        query_parameter_keys (MutableSequence[str]):
+            The query parameter keys to apply redaction logic to if
+            present in the URL. Query parameter matching is
+            case-insensitive.
+
+            Must contain at least one element if
+            query_parameter_replacement_enabled is true. Keys cannot
+            contain commas.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    email_redaction_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    query_parameter_redaction_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    query_parameter_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+
+
 class AdSenseLink(proto.Message):
     r"""A link between a GA4 Property and an AdSense for Content ad
     client.
@@ -2954,6 +2935,31 @@ class AdSenseLink(proto.Message):
         number=1,
     )
     ad_client_code: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class RollupPropertySourceLink(proto.Message):
+    r"""A link that references a source property under the parent
+    rollup property.
+
+    Attributes:
+        name (str):
+            Output only. Resource name of this RollupPropertySourceLink.
+            Format:
+            'properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link}'
+            Format: 'properties/123/rollupPropertySourceLinks/456'
+        source_property (str):
+            Immutable. Resource name of the source property. Format:
+            properties/{property_id} Example: "properties/789".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source_property: str = proto.Field(
         proto.STRING,
         number=2,
     )

@@ -25,6 +25,9 @@ from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_gr
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
+from google.analytics.admin_v1alpha.types import (
+    subproperty_event_filter as gaa_subproperty_event_filter,
+)
 from google.analytics.admin_v1alpha.types import access_report
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import event_create_and_edit
@@ -48,21 +51,6 @@ __protobuf__ = proto.module(
         "UpdatePropertyRequest",
         "CreatePropertyRequest",
         "DeletePropertyRequest",
-        "GetUserLinkRequest",
-        "BatchGetUserLinksRequest",
-        "BatchGetUserLinksResponse",
-        "ListUserLinksRequest",
-        "ListUserLinksResponse",
-        "AuditUserLinksRequest",
-        "AuditUserLinksResponse",
-        "CreateUserLinkRequest",
-        "BatchCreateUserLinksRequest",
-        "BatchCreateUserLinksResponse",
-        "UpdateUserLinkRequest",
-        "BatchUpdateUserLinksRequest",
-        "BatchUpdateUserLinksResponse",
-        "DeleteUserLinkRequest",
-        "BatchDeleteUserLinksRequest",
         "CreateFirebaseLinkRequest",
         "DeleteFirebaseLinkRequest",
         "ListFirebaseLinksRequest",
@@ -182,6 +170,8 @@ __protobuf__ = proto.module(
         "ListBigQueryLinksResponse",
         "GetEnhancedMeasurementSettingsRequest",
         "UpdateEnhancedMeasurementSettingsRequest",
+        "GetDataRedactionSettingsRequest",
+        "UpdateDataRedactionSettingsRequest",
         "CreateConnectedSiteTagRequest",
         "CreateConnectedSiteTagResponse",
         "DeleteConnectedSiteTagRequest",
@@ -200,6 +190,21 @@ __protobuf__ = proto.module(
         "GetEventCreateRuleRequest",
         "ListEventCreateRulesRequest",
         "ListEventCreateRulesResponse",
+        "CreateRollupPropertyRequest",
+        "CreateRollupPropertyResponse",
+        "GetRollupPropertySourceLinkRequest",
+        "ListRollupPropertySourceLinksRequest",
+        "ListRollupPropertySourceLinksResponse",
+        "CreateRollupPropertySourceLinkRequest",
+        "DeleteRollupPropertySourceLinkRequest",
+        "CreateSubpropertyRequest",
+        "CreateSubpropertyResponse",
+        "CreateSubpropertyEventFilterRequest",
+        "GetSubpropertyEventFilterRequest",
+        "ListSubpropertyEventFiltersRequest",
+        "ListSubpropertyEventFiltersResponse",
+        "UpdateSubpropertyEventFilterRequest",
+        "DeleteSubpropertyEventFilterRequest",
     },
 )
 
@@ -290,6 +295,20 @@ class RunAccessReportRequest(proto.Message):
             Analytics Property's quota. Quota is returned in
             `AccessQuota <#AccessQuota>`__. For account-level requests,
             this field must be false.
+        include_all_users (bool):
+            Optional. Determines whether to include users
+            who have never made an API call in the response.
+            If true, all users with access to the specified
+            property or account are included in the
+            response, regardless of whether they have made
+            an API call or not. If false, only the users who
+            have made an API call will be included.
+        expand_groups (bool):
+            Optional. Decides whether to return the users within user
+            groups. This field works only when include_all_users is set
+            to true. If true, it will return all users with access to
+            the specified property or account. If false, only the users
+            with direct access will be returned.
     """
 
     entity: str = proto.Field(
@@ -341,6 +360,14 @@ class RunAccessReportRequest(proto.Message):
     return_entity_quota: bool = proto.Field(
         proto.BOOL,
         number=11,
+    )
+    include_all_users: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    expand_groups: bool = proto.Field(
+        proto.BOOL,
+        number=13,
     )
 
 
@@ -727,375 +754,6 @@ class DeletePropertyRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
-    )
-
-
-class GetUserLinkRequest(proto.Message):
-    r"""Request message for GetUserLink RPC.
-
-    Attributes:
-        name (str):
-            Required. Example format:
-            accounts/1234/userLinks/5678
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class BatchGetUserLinksRequest(proto.Message):
-    r"""Request message for BatchGetUserLinks RPC.
-
-    Attributes:
-        parent (str):
-            Required. The account or property that all
-            user links in the request are for. The parent of
-            all provided values for the 'names' field must
-            match this field.
-            Example format: accounts/1234
-        names (MutableSequence[str]):
-            Required. The names of the user links to
-            retrieve. A maximum of 1000 user links can be
-            retrieved in a batch. Format:
-            accounts/{accountId}/userLinks/{userLinkId}
-    """
-
-    parent: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    names: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=2,
-    )
-
-
-class BatchGetUserLinksResponse(proto.Message):
-    r"""Response message for BatchGetUserLinks RPC.
-
-    Attributes:
-        user_links (MutableSequence[google.analytics.admin_v1alpha.types.UserLink]):
-            The requested user links.
-    """
-
-    user_links: MutableSequence[resources.UserLink] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.UserLink,
-    )
-
-
-class ListUserLinksRequest(proto.Message):
-    r"""Request message for ListUserLinks RPC.
-
-    Attributes:
-        parent (str):
-            Required. Example format: accounts/1234
-        page_size (int):
-            The maximum number of user links to return.
-            The service may return fewer than this value. If
-            unspecified, at most 200 user links will be
-            returned. The maximum value is 500; values above
-            500 will be coerced to 500.
-        page_token (str):
-            A page token, received from a previous ``ListUserLinks``
-            call. Provide this to retrieve the subsequent page. When
-            paginating, all other parameters provided to
-            ``ListUserLinks`` must match the call that provided the page
-            token.
-    """
-
-    parent: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    page_size: int = proto.Field(
-        proto.INT32,
-        number=2,
-    )
-    page_token: str = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-
-
-class ListUserLinksResponse(proto.Message):
-    r"""Response message for ListUserLinks RPC.
-
-    Attributes:
-        user_links (MutableSequence[google.analytics.admin_v1alpha.types.UserLink]):
-            List of UserLinks. These will be ordered
-            stably, but in an arbitrary order.
-        next_page_token (str):
-            A token, which can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
-    """
-
-    @property
-    def raw_page(self):
-        return self
-
-    user_links: MutableSequence[resources.UserLink] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.UserLink,
-    )
-    next_page_token: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-
-
-class AuditUserLinksRequest(proto.Message):
-    r"""Request message for AuditUserLinks RPC.
-
-    Attributes:
-        parent (str):
-            Required. Example format: accounts/1234
-        page_size (int):
-            The maximum number of user links to return.
-            The service may return fewer than this value. If
-            unspecified, at most 1000 user links will be
-            returned. The maximum value is 5000; values
-            above 5000 will be coerced to 5000.
-        page_token (str):
-            A page token, received from a previous ``AuditUserLinks``
-            call. Provide this to retrieve the subsequent page. When
-            paginating, all other parameters provided to
-            ``AuditUserLinks`` must match the call that provided the
-            page token.
-    """
-
-    parent: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    page_size: int = proto.Field(
-        proto.INT32,
-        number=2,
-    )
-    page_token: str = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-
-
-class AuditUserLinksResponse(proto.Message):
-    r"""Response message for AuditUserLinks RPC.
-
-    Attributes:
-        user_links (MutableSequence[google.analytics.admin_v1alpha.types.AuditUserLink]):
-            List of AuditUserLinks. These will be ordered
-            stably, but in an arbitrary order.
-        next_page_token (str):
-            A token, which can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
-    """
-
-    @property
-    def raw_page(self):
-        return self
-
-    user_links: MutableSequence[resources.AuditUserLink] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.AuditUserLink,
-    )
-    next_page_token: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-
-
-class CreateUserLinkRequest(proto.Message):
-    r"""Request message for CreateUserLink RPC.
-
-    Users can have multiple email addresses associated with their
-    Google account, and one of these email addresses is the
-    "primary" email address. Any of the email addresses associated
-    with a Google account may be used for a new UserLink, but the
-    returned UserLink will always contain the "primary" email
-    address. As a result, the input and output email address for
-    this request may differ.
-
-    Attributes:
-        parent (str):
-            Required. Example format: accounts/1234
-        notify_new_user (bool):
-            Optional. If set, then email the new user
-            notifying them that they've been granted
-            permissions to the resource.
-        user_link (google.analytics.admin_v1alpha.types.UserLink):
-            Required. The user link to create.
-    """
-
-    parent: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    notify_new_user: bool = proto.Field(
-        proto.BOOL,
-        number=2,
-    )
-    user_link: resources.UserLink = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=resources.UserLink,
-    )
-
-
-class BatchCreateUserLinksRequest(proto.Message):
-    r"""Request message for BatchCreateUserLinks RPC.
-
-    Attributes:
-        parent (str):
-            Required. The account or property that all
-            user links in the request are for. This field is
-            required. The parent field in the
-            CreateUserLinkRequest messages must either be
-            empty or match this field. Example format:
-            accounts/1234
-        notify_new_users (bool):
-            Optional. If set, then email the new users notifying them
-            that they've been granted permissions to the resource.
-            Regardless of whether this is set or not, notify_new_user
-            field inside each individual request is ignored.
-        requests (MutableSequence[google.analytics.admin_v1alpha.types.CreateUserLinkRequest]):
-            Required. The requests specifying the user
-            links to create. A maximum of 1000 user links
-            can be created in a batch.
-    """
-
-    parent: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    notify_new_users: bool = proto.Field(
-        proto.BOOL,
-        number=2,
-    )
-    requests: MutableSequence["CreateUserLinkRequest"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="CreateUserLinkRequest",
-    )
-
-
-class BatchCreateUserLinksResponse(proto.Message):
-    r"""Response message for BatchCreateUserLinks RPC.
-
-    Attributes:
-        user_links (MutableSequence[google.analytics.admin_v1alpha.types.UserLink]):
-            The user links created.
-    """
-
-    user_links: MutableSequence[resources.UserLink] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.UserLink,
-    )
-
-
-class UpdateUserLinkRequest(proto.Message):
-    r"""Request message for UpdateUserLink RPC.
-
-    Attributes:
-        user_link (google.analytics.admin_v1alpha.types.UserLink):
-            Required. The user link to update.
-    """
-
-    user_link: resources.UserLink = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message=resources.UserLink,
-    )
-
-
-class BatchUpdateUserLinksRequest(proto.Message):
-    r"""Request message for BatchUpdateUserLinks RPC.
-
-    Attributes:
-        parent (str):
-            Required. The account or property that all
-            user links in the request are for. The parent
-            field in the UpdateUserLinkRequest messages must
-            either be empty or match this field.
-            Example format: accounts/1234
-        requests (MutableSequence[google.analytics.admin_v1alpha.types.UpdateUserLinkRequest]):
-            Required. The requests specifying the user
-            links to update. A maximum of 1000 user links
-            can be updated in a batch.
-    """
-
-    parent: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    requests: MutableSequence["UpdateUserLinkRequest"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="UpdateUserLinkRequest",
-    )
-
-
-class BatchUpdateUserLinksResponse(proto.Message):
-    r"""Response message for BatchUpdateUserLinks RPC.
-
-    Attributes:
-        user_links (MutableSequence[google.analytics.admin_v1alpha.types.UserLink]):
-            The user links updated.
-    """
-
-    user_links: MutableSequence[resources.UserLink] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.UserLink,
-    )
-
-
-class DeleteUserLinkRequest(proto.Message):
-    r"""Request message for DeleteUserLink RPC.
-
-    Attributes:
-        name (str):
-            Required. Example format:
-            accounts/1234/userLinks/5678
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class BatchDeleteUserLinksRequest(proto.Message):
-    r"""Request message for BatchDeleteUserLinks RPC.
-
-    Attributes:
-        parent (str):
-            Required. The account or property that all
-            user links in the request are for. The parent of
-            all values for user link names to delete must
-            match this field.
-            Example format: accounts/1234
-        requests (MutableSequence[google.analytics.admin_v1alpha.types.DeleteUserLinkRequest]):
-            Required. The requests specifying the user
-            links to update. A maximum of 1000 user links
-            can be updated in a batch.
-    """
-
-    parent: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    requests: MutableSequence["DeleteUserLinkRequest"] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="DeleteUserLinkRequest",
     )
 
 
@@ -1807,10 +1465,9 @@ class ListSKAdNetworkConversionValueSchemasRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Format:
-            properties/{property_id}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema
-            Example:
-            properties/1234/dataStreams/5678/sKAdNetworkConversionValueSchema
+            Required. The DataStream resource to list schemas for.
+            Format: properties/{property_id}/dataStreams/{dataStream}
+            Example: properties/1234/dataStreams/5678
         page_size (int):
             The maximum number of resources to return.
             The service may return fewer than this value,
@@ -3959,6 +3616,49 @@ class UpdateEnhancedMeasurementSettingsRequest(proto.Message):
     )
 
 
+class GetDataRedactionSettingsRequest(proto.Message):
+    r"""Request message for GetDataRedactionSettings RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the settings to lookup. Format:
+            properties/{property}/dataStreams/{data_stream}/dataRedactionSettings
+            Example:
+            "properties/1000/dataStreams/2000/dataRedactionSettings".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateDataRedactionSettingsRequest(proto.Message):
+    r"""Request message for UpdateDataRedactionSettings RPC.
+
+    Attributes:
+        data_redaction_settings (google.analytics.admin_v1alpha.types.DataRedactionSettings):
+            Required. The settings to update. The ``name`` field is used
+            to identify the settings to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    data_redaction_settings: resources.DataRedactionSettings = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.DataRedactionSettings,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
 class CreateConnectedSiteTagRequest(proto.Message):
     r"""Request message for CreateConnectedSiteTag RPC.
 
@@ -4351,6 +4051,385 @@ class ListEventCreateRulesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class CreateRollupPropertyRequest(proto.Message):
+    r"""Request message for CreateRollupProperty RPC.
+
+    Attributes:
+        rollup_property (google.analytics.admin_v1alpha.types.Property):
+            Required. The roll-up property to create.
+        source_properties (MutableSequence[str]):
+            Optional. The resource names of properties
+            that will be sources to the created roll-up
+            property.
+    """
+
+    rollup_property: resources.Property = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Property,
+    )
+    source_properties: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateRollupPropertyResponse(proto.Message):
+    r"""Response message for CreateRollupProperty RPC.
+
+    Attributes:
+        rollup_property (google.analytics.admin_v1alpha.types.Property):
+            The created roll-up property.
+        rollup_property_source_links (MutableSequence[google.analytics.admin_v1alpha.types.RollupPropertySourceLink]):
+            The created roll-up property source links.
+    """
+
+    rollup_property: resources.Property = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Property,
+    )
+    rollup_property_source_links: MutableSequence[
+        resources.RollupPropertySourceLink
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=resources.RollupPropertySourceLink,
+    )
+
+
+class GetRollupPropertySourceLinkRequest(proto.Message):
+    r"""Request message for GetRollupPropertySourceLink RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the roll-up property source link to
+            lookup. Format:
+            properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link_id}
+            Example: properties/123/rollupPropertySourceLinks/456
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListRollupPropertySourceLinksRequest(proto.Message):
+    r"""Request message for ListRollupPropertySourceLinks RPC.
+
+    Attributes:
+        parent (str):
+            Required. The name of the roll-up property to list roll-up
+            property source links under. Format:
+            properties/{property_id} Example: properties/1234
+        page_size (int):
+            Optional. The maximum number of resources to
+            return. The service may return fewer than this
+            value, even if there are additional pages. If
+            unspecified, at most 50 resources will be
+            returned. The maximum value is 200; (higher
+            values will be coerced to the maximum)
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListRollupPropertySourceLinks`` call. Provide this to
+            retrieve the subsequent page. When paginating, all other
+            parameters provided to ``ListRollupPropertySourceLinks``
+            must match the call that provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListRollupPropertySourceLinksResponse(proto.Message):
+    r"""Response message for ListRollupPropertySourceLinks RPC.
+
+    Attributes:
+        rollup_property_source_links (MutableSequence[google.analytics.admin_v1alpha.types.RollupPropertySourceLink]):
+            List of RollupPropertySourceLinks.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    rollup_property_source_links: MutableSequence[
+        resources.RollupPropertySourceLink
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.RollupPropertySourceLink,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateRollupPropertySourceLinkRequest(proto.Message):
+    r"""Request message for CreateRollupPropertySourceLink RPC.
+
+    Attributes:
+        parent (str):
+            Required. Format: properties/{property_id} Example:
+            properties/1234
+        rollup_property_source_link (google.analytics.admin_v1alpha.types.RollupPropertySourceLink):
+            Required. The roll-up property source link to
+            create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rollup_property_source_link: resources.RollupPropertySourceLink = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.RollupPropertySourceLink,
+    )
+
+
+class DeleteRollupPropertySourceLinkRequest(proto.Message):
+    r"""Request message for DeleteRollupPropertySourceLink RPC.
+
+    Attributes:
+        name (str):
+            Required. Format:
+            properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link_id}
+            Example: properties/1234/rollupPropertySourceLinks/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateSubpropertyRequest(proto.Message):
+    r"""Request message for CreateSubproperty RPC.
+
+    Attributes:
+        parent (str):
+            Required. The ordinary property for which to create a
+            subproperty. Format: properties/property_id Example:
+            properties/123
+        subproperty (google.analytics.admin_v1alpha.types.Property):
+            Required. The subproperty to create.
+        subproperty_event_filter (google.analytics.admin_v1alpha.types.SubpropertyEventFilter):
+            Optional. The subproperty event filter to
+            create on an ordinary property.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subproperty: resources.Property = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Property,
+    )
+    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=gaa_subproperty_event_filter.SubpropertyEventFilter,
+        )
+    )
+
+
+class CreateSubpropertyResponse(proto.Message):
+    r"""Response message for CreateSubproperty RPC.
+
+    Attributes:
+        subproperty (google.analytics.admin_v1alpha.types.Property):
+            The created subproperty.
+        subproperty_event_filter (google.analytics.admin_v1alpha.types.SubpropertyEventFilter):
+            The created subproperty event filter.
+    """
+
+    subproperty: resources.Property = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Property,
+    )
+    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=gaa_subproperty_event_filter.SubpropertyEventFilter,
+        )
+    )
+
+
+class CreateSubpropertyEventFilterRequest(proto.Message):
+    r"""Request message for CreateSubpropertyEventFilter RPC.
+
+    Attributes:
+        parent (str):
+            Required. The ordinary property for which to create a
+            subproperty event filter. Format: properties/property_id
+            Example: properties/123
+        subproperty_event_filter (google.analytics.admin_v1alpha.types.SubpropertyEventFilter):
+            Required. The subproperty event filter to
+            create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=gaa_subproperty_event_filter.SubpropertyEventFilter,
+        )
+    )
+
+
+class GetSubpropertyEventFilterRequest(proto.Message):
+    r"""Request message for GetSubpropertyEventFilter RPC.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the subproperty event filter to
+            lookup. Format:
+            properties/property_id/subpropertyEventFilters/subproperty_event_filter
+            Example: properties/123/subpropertyEventFilters/456
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListSubpropertyEventFiltersRequest(proto.Message):
+    r"""Request message for ListSubpropertyEventFilters RPC.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the ordinary property. Format:
+            properties/property_id Example: properties/123
+        page_size (int):
+            Optional. The maximum number of resources to
+            return. The service may return fewer than this
+            value, even if there are additional pages. If
+            unspecified, at most 50 resources will be
+            returned. The maximum value is 200; (higher
+            values will be coerced to the maximum)
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListSubpropertyEventFilters`` call. Provide this to
+            retrieve the subsequent page. When paginating, all other
+            parameters provided to ``ListSubpropertyEventFilters`` must
+            match the call that provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListSubpropertyEventFiltersResponse(proto.Message):
+    r"""Response message for ListSubpropertyEventFilter RPC.
+
+    Attributes:
+        subproperty_event_filters (MutableSequence[google.analytics.admin_v1alpha.types.SubpropertyEventFilter]):
+            List of subproperty event filters.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    subproperty_event_filters: MutableSequence[
+        gaa_subproperty_event_filter.SubpropertyEventFilter
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gaa_subproperty_event_filter.SubpropertyEventFilter,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateSubpropertyEventFilterRequest(proto.Message):
+    r"""Request message for UpdateSubpropertyEventFilter RPC.
+
+    Attributes:
+        subproperty_event_filter (google.analytics.admin_v1alpha.types.SubpropertyEventFilter):
+            Required. The subproperty event filter to
+            update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to update. Field names must be
+            in snake case (for example, "field_to_update"). Omitted
+            fields will not be updated. To replace the entire entity,
+            use one path with the string "*" to match all fields.
+    """
+
+    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = (
+        proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=gaa_subproperty_event_filter.SubpropertyEventFilter,
+        )
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteSubpropertyEventFilterRequest(proto.Message):
+    r"""Request message for DeleteSubpropertyEventFilter RPC.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the subproperty event filter to
+            delete. Format:
+            properties/property_id/subpropertyEventFilters/subproperty_event_filter
+            Example: properties/123/subpropertyEventFilters/456
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

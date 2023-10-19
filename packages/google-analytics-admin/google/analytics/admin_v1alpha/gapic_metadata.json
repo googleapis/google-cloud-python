@@ -35,19 +35,9 @@
                 "archive_custom_metric"
               ]
             },
-            "AuditUserLinks": {
-              "methods": [
-                "audit_user_links"
-              ]
-            },
             "BatchCreateAccessBindings": {
               "methods": [
                 "batch_create_access_bindings"
-              ]
-            },
-            "BatchCreateUserLinks": {
-              "methods": [
-                "batch_create_user_links"
               ]
             },
             "BatchDeleteAccessBindings": {
@@ -55,29 +45,14 @@
                 "batch_delete_access_bindings"
               ]
             },
-            "BatchDeleteUserLinks": {
-              "methods": [
-                "batch_delete_user_links"
-              ]
-            },
             "BatchGetAccessBindings": {
               "methods": [
                 "batch_get_access_bindings"
               ]
             },
-            "BatchGetUserLinks": {
-              "methods": [
-                "batch_get_user_links"
-              ]
-            },
             "BatchUpdateAccessBindings": {
               "methods": [
                 "batch_update_access_bindings"
-              ]
-            },
-            "BatchUpdateUserLinks": {
-              "methods": [
-                "batch_update_user_links"
               ]
             },
             "CancelDisplayVideo360AdvertiserLinkProposal": {
@@ -170,6 +145,16 @@
                 "create_property"
               ]
             },
+            "CreateRollupProperty": {
+              "methods": [
+                "create_rollup_property"
+              ]
+            },
+            "CreateRollupPropertySourceLink": {
+              "methods": [
+                "create_rollup_property_source_link"
+              ]
+            },
             "CreateSKAdNetworkConversionValueSchema": {
               "methods": [
                 "create_sk_ad_network_conversion_value_schema"
@@ -180,9 +165,14 @@
                 "create_search_ads360_link"
               ]
             },
-            "CreateUserLink": {
+            "CreateSubproperty": {
               "methods": [
-                "create_user_link"
+                "create_subproperty"
+              ]
+            },
+            "CreateSubpropertyEventFilter": {
+              "methods": [
+                "create_subproperty_event_filter"
               ]
             },
             "DeleteAccessBinding": {
@@ -260,6 +250,11 @@
                 "delete_property"
               ]
             },
+            "DeleteRollupPropertySourceLink": {
+              "methods": [
+                "delete_rollup_property_source_link"
+              ]
+            },
             "DeleteSKAdNetworkConversionValueSchema": {
               "methods": [
                 "delete_sk_ad_network_conversion_value_schema"
@@ -270,9 +265,9 @@
                 "delete_search_ads360_link"
               ]
             },
-            "DeleteUserLink": {
+            "DeleteSubpropertyEventFilter": {
               "methods": [
-                "delete_user_link"
+                "delete_subproperty_event_filter"
               ]
             },
             "FetchAutomatedGa4ConfigurationOptOut": {
@@ -335,6 +330,11 @@
                 "get_custom_metric"
               ]
             },
+            "GetDataRedactionSettings": {
+              "methods": [
+                "get_data_redaction_settings"
+              ]
+            },
             "GetDataRetentionSettings": {
               "methods": [
                 "get_data_retention_settings"
@@ -395,6 +395,11 @@
                 "get_property"
               ]
             },
+            "GetRollupPropertySourceLink": {
+              "methods": [
+                "get_rollup_property_source_link"
+              ]
+            },
             "GetSKAdNetworkConversionValueSchema": {
               "methods": [
                 "get_sk_ad_network_conversion_value_schema"
@@ -403,11 +408,6 @@
             "GetSearchAds360Link": {
               "methods": [
                 "get_search_ads360_link"
-              ]
-            },
-            "GetUserLink": {
-              "methods": [
-                "get_user_link"
               ]
             },
             "ListAccessBindings": {
@@ -510,6 +510,11 @@
                 "list_properties"
               ]
             },
+            "ListRollupPropertySourceLinks": {
+              "methods": [
+                "list_rollup_property_source_links"
+              ]
+            },
             "ListSKAdNetworkConversionValueSchemas": {
               "methods": [
                 "list_sk_ad_network_conversion_value_schemas"
@@ -518,11 +523,6 @@
             "ListSearchAds360Links": {
               "methods": [
                 "list_search_ads360_links"
-              ]
-            },
-            "ListUserLinks": {
-              "methods": [
-                "list_user_links"
               ]
             },
             "ProvisionAccountTicket": {
@@ -585,6 +585,11 @@
                 "update_custom_metric"
               ]
             },
+            "UpdateDataRedactionSettings": {
+              "methods": [
+                "update_data_redaction_settings"
+              ]
+            },
             "UpdateDataRetentionSettings": {
               "methods": [
                 "update_data_retention_settings"
@@ -643,11 +648,6 @@
             "UpdateSearchAds360Link": {
               "methods": [
                 "update_search_ads360_link"
-              ]
-            },
-            "UpdateUserLink": {
-              "methods": [
-                "update_user_link"
               ]
             }
           }
@@ -680,19 +680,9 @@
                 "archive_custom_metric"
               ]
             },
-            "AuditUserLinks": {
-              "methods": [
-                "audit_user_links"
-              ]
-            },
             "BatchCreateAccessBindings": {
               "methods": [
                 "batch_create_access_bindings"
-              ]
-            },
-            "BatchCreateUserLinks": {
-              "methods": [
-                "batch_create_user_links"
               ]
             },
             "BatchDeleteAccessBindings": {
@@ -700,29 +690,14 @@
                 "batch_delete_access_bindings"
               ]
             },
-            "BatchDeleteUserLinks": {
-              "methods": [
-                "batch_delete_user_links"
-              ]
-            },
             "BatchGetAccessBindings": {
               "methods": [
                 "batch_get_access_bindings"
               ]
             },
-            "BatchGetUserLinks": {
-              "methods": [
-                "batch_get_user_links"
-              ]
-            },
             "BatchUpdateAccessBindings": {
               "methods": [
                 "batch_update_access_bindings"
-              ]
-            },
-            "BatchUpdateUserLinks": {
-              "methods": [
-                "batch_update_user_links"
               ]
             },
             "CancelDisplayVideo360AdvertiserLinkProposal": {
@@ -815,6 +790,16 @@
                 "create_property"
               ]
             },
+            "CreateRollupProperty": {
+              "methods": [
+                "create_rollup_property"
+              ]
+            },
+            "CreateRollupPropertySourceLink": {
+              "methods": [
+                "create_rollup_property_source_link"
+              ]
+            },
             "CreateSKAdNetworkConversionValueSchema": {
               "methods": [
                 "create_sk_ad_network_conversion_value_schema"
@@ -825,9 +810,14 @@
                 "create_search_ads360_link"
               ]
             },
-            "CreateUserLink": {
+            "CreateSubproperty": {
               "methods": [
-                "create_user_link"
+                "create_subproperty"
+              ]
+            },
+            "CreateSubpropertyEventFilter": {
+              "methods": [
+                "create_subproperty_event_filter"
               ]
             },
             "DeleteAccessBinding": {
@@ -905,6 +895,11 @@
                 "delete_property"
               ]
             },
+            "DeleteRollupPropertySourceLink": {
+              "methods": [
+                "delete_rollup_property_source_link"
+              ]
+            },
             "DeleteSKAdNetworkConversionValueSchema": {
               "methods": [
                 "delete_sk_ad_network_conversion_value_schema"
@@ -915,9 +910,9 @@
                 "delete_search_ads360_link"
               ]
             },
-            "DeleteUserLink": {
+            "DeleteSubpropertyEventFilter": {
               "methods": [
-                "delete_user_link"
+                "delete_subproperty_event_filter"
               ]
             },
             "FetchAutomatedGa4ConfigurationOptOut": {
@@ -980,6 +975,11 @@
                 "get_custom_metric"
               ]
             },
+            "GetDataRedactionSettings": {
+              "methods": [
+                "get_data_redaction_settings"
+              ]
+            },
             "GetDataRetentionSettings": {
               "methods": [
                 "get_data_retention_settings"
@@ -1040,6 +1040,11 @@
                 "get_property"
               ]
             },
+            "GetRollupPropertySourceLink": {
+              "methods": [
+                "get_rollup_property_source_link"
+              ]
+            },
             "GetSKAdNetworkConversionValueSchema": {
               "methods": [
                 "get_sk_ad_network_conversion_value_schema"
@@ -1048,11 +1053,6 @@
             "GetSearchAds360Link": {
               "methods": [
                 "get_search_ads360_link"
-              ]
-            },
-            "GetUserLink": {
-              "methods": [
-                "get_user_link"
               ]
             },
             "ListAccessBindings": {
@@ -1155,6 +1155,11 @@
                 "list_properties"
               ]
             },
+            "ListRollupPropertySourceLinks": {
+              "methods": [
+                "list_rollup_property_source_links"
+              ]
+            },
             "ListSKAdNetworkConversionValueSchemas": {
               "methods": [
                 "list_sk_ad_network_conversion_value_schemas"
@@ -1163,11 +1168,6 @@
             "ListSearchAds360Links": {
               "methods": [
                 "list_search_ads360_links"
-              ]
-            },
-            "ListUserLinks": {
-              "methods": [
-                "list_user_links"
               ]
             },
             "ProvisionAccountTicket": {
@@ -1230,6 +1230,11 @@
                 "update_custom_metric"
               ]
             },
+            "UpdateDataRedactionSettings": {
+              "methods": [
+                "update_data_redaction_settings"
+              ]
+            },
             "UpdateDataRetentionSettings": {
               "methods": [
                 "update_data_retention_settings"
@@ -1288,11 +1293,6 @@
             "UpdateSearchAds360Link": {
               "methods": [
                 "update_search_ads360_link"
-              ]
-            },
-            "UpdateUserLink": {
-              "methods": [
-                "update_user_link"
               ]
             }
           }
@@ -1325,19 +1325,9 @@
                 "archive_custom_metric"
               ]
             },
-            "AuditUserLinks": {
-              "methods": [
-                "audit_user_links"
-              ]
-            },
             "BatchCreateAccessBindings": {
               "methods": [
                 "batch_create_access_bindings"
-              ]
-            },
-            "BatchCreateUserLinks": {
-              "methods": [
-                "batch_create_user_links"
               ]
             },
             "BatchDeleteAccessBindings": {
@@ -1345,29 +1335,14 @@
                 "batch_delete_access_bindings"
               ]
             },
-            "BatchDeleteUserLinks": {
-              "methods": [
-                "batch_delete_user_links"
-              ]
-            },
             "BatchGetAccessBindings": {
               "methods": [
                 "batch_get_access_bindings"
               ]
             },
-            "BatchGetUserLinks": {
-              "methods": [
-                "batch_get_user_links"
-              ]
-            },
             "BatchUpdateAccessBindings": {
               "methods": [
                 "batch_update_access_bindings"
-              ]
-            },
-            "BatchUpdateUserLinks": {
-              "methods": [
-                "batch_update_user_links"
               ]
             },
             "CancelDisplayVideo360AdvertiserLinkProposal": {
@@ -1460,6 +1435,16 @@
                 "create_property"
               ]
             },
+            "CreateRollupProperty": {
+              "methods": [
+                "create_rollup_property"
+              ]
+            },
+            "CreateRollupPropertySourceLink": {
+              "methods": [
+                "create_rollup_property_source_link"
+              ]
+            },
             "CreateSKAdNetworkConversionValueSchema": {
               "methods": [
                 "create_sk_ad_network_conversion_value_schema"
@@ -1470,9 +1455,14 @@
                 "create_search_ads360_link"
               ]
             },
-            "CreateUserLink": {
+            "CreateSubproperty": {
               "methods": [
-                "create_user_link"
+                "create_subproperty"
+              ]
+            },
+            "CreateSubpropertyEventFilter": {
+              "methods": [
+                "create_subproperty_event_filter"
               ]
             },
             "DeleteAccessBinding": {
@@ -1550,6 +1540,11 @@
                 "delete_property"
               ]
             },
+            "DeleteRollupPropertySourceLink": {
+              "methods": [
+                "delete_rollup_property_source_link"
+              ]
+            },
             "DeleteSKAdNetworkConversionValueSchema": {
               "methods": [
                 "delete_sk_ad_network_conversion_value_schema"
@@ -1560,9 +1555,9 @@
                 "delete_search_ads360_link"
               ]
             },
-            "DeleteUserLink": {
+            "DeleteSubpropertyEventFilter": {
               "methods": [
-                "delete_user_link"
+                "delete_subproperty_event_filter"
               ]
             },
             "FetchAutomatedGa4ConfigurationOptOut": {
@@ -1625,6 +1620,11 @@
                 "get_custom_metric"
               ]
             },
+            "GetDataRedactionSettings": {
+              "methods": [
+                "get_data_redaction_settings"
+              ]
+            },
             "GetDataRetentionSettings": {
               "methods": [
                 "get_data_retention_settings"
@@ -1685,6 +1685,11 @@
                 "get_property"
               ]
             },
+            "GetRollupPropertySourceLink": {
+              "methods": [
+                "get_rollup_property_source_link"
+              ]
+            },
             "GetSKAdNetworkConversionValueSchema": {
               "methods": [
                 "get_sk_ad_network_conversion_value_schema"
@@ -1693,11 +1698,6 @@
             "GetSearchAds360Link": {
               "methods": [
                 "get_search_ads360_link"
-              ]
-            },
-            "GetUserLink": {
-              "methods": [
-                "get_user_link"
               ]
             },
             "ListAccessBindings": {
@@ -1800,6 +1800,11 @@
                 "list_properties"
               ]
             },
+            "ListRollupPropertySourceLinks": {
+              "methods": [
+                "list_rollup_property_source_links"
+              ]
+            },
             "ListSKAdNetworkConversionValueSchemas": {
               "methods": [
                 "list_sk_ad_network_conversion_value_schemas"
@@ -1808,11 +1813,6 @@
             "ListSearchAds360Links": {
               "methods": [
                 "list_search_ads360_links"
-              ]
-            },
-            "ListUserLinks": {
-              "methods": [
-                "list_user_links"
               ]
             },
             "ProvisionAccountTicket": {
@@ -1875,6 +1875,11 @@
                 "update_custom_metric"
               ]
             },
+            "UpdateDataRedactionSettings": {
+              "methods": [
+                "update_data_redaction_settings"
+              ]
+            },
             "UpdateDataRetentionSettings": {
               "methods": [
                 "update_data_retention_settings"
@@ -1933,11 +1938,6 @@
             "UpdateSearchAds360Link": {
               "methods": [
                 "update_search_ads360_link"
-              ]
-            },
-            "UpdateUserLink": {
-              "methods": [
-                "update_user_link"
               ]
             }
           }

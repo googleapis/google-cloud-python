@@ -56,6 +56,9 @@ from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_gr
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
+from google.analytics.admin_v1alpha.types import (
+    subproperty_event_filter as gaa_subproperty_event_filter,
+)
 from google.analytics.admin_v1alpha.types import access_report, analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
@@ -63,6 +66,7 @@ from google.analytics.admin_v1alpha.types import channel_group
 from google.analytics.admin_v1alpha.types import event_create_and_edit
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
+from google.analytics.admin_v1alpha.types import subproperty_event_filter
 
 
 def client_cert_source_callback():
@@ -3405,2322 +3409,6 @@ async def test_update_property_flattened_error_async():
             property=resources.Property(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.GetUserLinkRequest,
-        dict,
-    ],
-)
-def test_get_user_link(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.UserLink(
-            name="name_value",
-            email_address="email_address_value",
-            direct_roles=["direct_roles_value"],
-        )
-        response = client.get_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetUserLinkRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.UserLink)
-    assert response.name == "name_value"
-    assert response.email_address == "email_address_value"
-    assert response.direct_roles == ["direct_roles_value"]
-
-
-def test_get_user_link_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_user_link), "__call__") as call:
-        client.get_user_link()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetUserLinkRequest()
-
-
-@pytest.mark.asyncio
-async def test_get_user_link_async(
-    transport: str = "grpc_asyncio", request_type=analytics_admin.GetUserLinkRequest
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.UserLink(
-                name="name_value",
-                email_address="email_address_value",
-                direct_roles=["direct_roles_value"],
-            )
-        )
-        response = await client.get_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.GetUserLinkRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.UserLink)
-    assert response.name == "name_value"
-    assert response.email_address == "email_address_value"
-    assert response.direct_roles == ["direct_roles_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_user_link_async_from_dict():
-    await test_get_user_link_async(request_type=dict)
-
-
-def test_get_user_link_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.GetUserLinkRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_user_link), "__call__") as call:
-        call.return_value = resources.UserLink()
-        client.get_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_user_link_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.GetUserLinkRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_user_link), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.UserLink())
-        await client.get_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_user_link_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.UserLink()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_user_link(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_user_link_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_user_link(
-            analytics_admin.GetUserLinkRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_user_link_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.UserLink()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.UserLink())
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_user_link(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_user_link_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_user_link(
-            analytics_admin.GetUserLinkRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.BatchGetUserLinksRequest,
-        dict,
-    ],
-)
-def test_batch_get_user_links(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_get_user_links), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.BatchGetUserLinksResponse()
-        response = client.batch_get_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchGetUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analytics_admin.BatchGetUserLinksResponse)
-
-
-def test_batch_get_user_links_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_get_user_links), "__call__"
-    ) as call:
-        client.batch_get_user_links()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchGetUserLinksRequest()
-
-
-@pytest.mark.asyncio
-async def test_batch_get_user_links_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.BatchGetUserLinksRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_get_user_links), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.BatchGetUserLinksResponse()
-        )
-        response = await client.batch_get_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchGetUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analytics_admin.BatchGetUserLinksResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_get_user_links_async_from_dict():
-    await test_batch_get_user_links_async(request_type=dict)
-
-
-def test_batch_get_user_links_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.BatchGetUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_get_user_links), "__call__"
-    ) as call:
-        call.return_value = analytics_admin.BatchGetUserLinksResponse()
-        client.batch_get_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_batch_get_user_links_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.BatchGetUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_get_user_links), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.BatchGetUserLinksResponse()
-        )
-        await client.batch_get_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.ListUserLinksRequest,
-        dict,
-    ],
-)
-def test_list_user_links(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_user_links), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListUserLinksResponse(
-            next_page_token="next_page_token_value",
-        )
-        response = client.list_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListUserLinksPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_user_links_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_user_links), "__call__") as call:
-        client.list_user_links()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListUserLinksRequest()
-
-
-@pytest.mark.asyncio
-async def test_list_user_links_async(
-    transport: str = "grpc_asyncio", request_type=analytics_admin.ListUserLinksRequest
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_user_links), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListUserLinksResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.ListUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListUserLinksAsyncPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_user_links_async_from_dict():
-    await test_list_user_links_async(request_type=dict)
-
-
-def test_list_user_links_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.ListUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_user_links), "__call__") as call:
-        call.return_value = analytics_admin.ListUserLinksResponse()
-        client.list_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_user_links_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.ListUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_user_links), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListUserLinksResponse()
-        )
-        await client.list_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_list_user_links_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_user_links), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListUserLinksResponse()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_user_links(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-def test_list_user_links_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_user_links(
-            analytics_admin.ListUserLinksRequest(),
-            parent="parent_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_user_links_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_user_links), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListUserLinksResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListUserLinksResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.list_user_links(
-            parent="parent_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_list_user_links_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.list_user_links(
-            analytics_admin.ListUserLinksRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_user_links_pager(transport_name: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_user_links), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                    resources.UserLink(),
-                    resources.UserLink(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[],
-                next_page_token="def",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                ],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                    resources.UserLink(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_user_links(request={})
-
-        assert pager._metadata == metadata
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, resources.UserLink) for i in results)
-
-
-def test_list_user_links_pages(transport_name: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_user_links), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                    resources.UserLink(),
-                    resources.UserLink(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[],
-                next_page_token="def",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                ],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                    resources.UserLink(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.list_user_links(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_list_user_links_async_pager():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_user_links), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                    resources.UserLink(),
-                    resources.UserLink(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[],
-                next_page_token="def",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                ],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                    resources.UserLink(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.list_user_links(
-            request={},
-        )
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:  # pragma: no branch
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, resources.UserLink) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_list_user_links_async_pages():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_user_links), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                    resources.UserLink(),
-                    resources.UserLink(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[],
-                next_page_token="def",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                ],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                    resources.UserLink(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_user_links(request={})
-        ).pages:
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.AuditUserLinksRequest,
-        dict,
-    ],
-)
-def test_audit_user_links(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.audit_user_links), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.AuditUserLinksResponse(
-            next_page_token="next_page_token_value",
-        )
-        response = client.audit_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.AuditUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.AuditUserLinksPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_audit_user_links_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.audit_user_links), "__call__") as call:
-        client.audit_user_links()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.AuditUserLinksRequest()
-
-
-@pytest.mark.asyncio
-async def test_audit_user_links_async(
-    transport: str = "grpc_asyncio", request_type=analytics_admin.AuditUserLinksRequest
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.audit_user_links), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.AuditUserLinksResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.audit_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.AuditUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.AuditUserLinksAsyncPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_audit_user_links_async_from_dict():
-    await test_audit_user_links_async(request_type=dict)
-
-
-def test_audit_user_links_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.AuditUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.audit_user_links), "__call__") as call:
-        call.return_value = analytics_admin.AuditUserLinksResponse()
-        client.audit_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_audit_user_links_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.AuditUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.audit_user_links), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.AuditUserLinksResponse()
-        )
-        await client.audit_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_audit_user_links_pager(transport_name: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.audit_user_links), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[],
-                next_page_token="def",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                ],
-                next_page_token="ghi",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.audit_user_links(request={})
-
-        assert pager._metadata == metadata
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, resources.AuditUserLink) for i in results)
-
-
-def test_audit_user_links_pages(transport_name: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.audit_user_links), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[],
-                next_page_token="def",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                ],
-                next_page_token="ghi",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.audit_user_links(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_audit_user_links_async_pager():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.audit_user_links), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[],
-                next_page_token="def",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                ],
-                next_page_token="ghi",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.audit_user_links(
-            request={},
-        )
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:  # pragma: no branch
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, resources.AuditUserLink) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_audit_user_links_async_pages():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.audit_user_links), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[],
-                next_page_token="def",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                ],
-                next_page_token="ghi",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.audit_user_links(request={})
-        ).pages:
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.CreateUserLinkRequest,
-        dict,
-    ],
-)
-def test_create_user_link(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.UserLink(
-            name="name_value",
-            email_address="email_address_value",
-            direct_roles=["direct_roles_value"],
-        )
-        response = client.create_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.CreateUserLinkRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.UserLink)
-    assert response.name == "name_value"
-    assert response.email_address == "email_address_value"
-    assert response.direct_roles == ["direct_roles_value"]
-
-
-def test_create_user_link_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_user_link), "__call__") as call:
-        client.create_user_link()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.CreateUserLinkRequest()
-
-
-@pytest.mark.asyncio
-async def test_create_user_link_async(
-    transport: str = "grpc_asyncio", request_type=analytics_admin.CreateUserLinkRequest
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.UserLink(
-                name="name_value",
-                email_address="email_address_value",
-                direct_roles=["direct_roles_value"],
-            )
-        )
-        response = await client.create_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.CreateUserLinkRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.UserLink)
-    assert response.name == "name_value"
-    assert response.email_address == "email_address_value"
-    assert response.direct_roles == ["direct_roles_value"]
-
-
-@pytest.mark.asyncio
-async def test_create_user_link_async_from_dict():
-    await test_create_user_link_async(request_type=dict)
-
-
-def test_create_user_link_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.CreateUserLinkRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_user_link), "__call__") as call:
-        call.return_value = resources.UserLink()
-        client.create_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_create_user_link_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.CreateUserLinkRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_user_link), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.UserLink())
-        await client.create_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-def test_create_user_link_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.UserLink()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.create_user_link(
-            parent="parent_value",
-            user_link=resources.UserLink(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].user_link
-        mock_val = resources.UserLink(name="name_value")
-        assert arg == mock_val
-
-
-def test_create_user_link_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_user_link(
-            analytics_admin.CreateUserLinkRequest(),
-            parent="parent_value",
-            user_link=resources.UserLink(name="name_value"),
-        )
-
-
-@pytest.mark.asyncio
-async def test_create_user_link_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.UserLink()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.UserLink())
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.create_user_link(
-            parent="parent_value",
-            user_link=resources.UserLink(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].parent
-        mock_val = "parent_value"
-        assert arg == mock_val
-        arg = args[0].user_link
-        mock_val = resources.UserLink(name="name_value")
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_create_user_link_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.create_user_link(
-            analytics_admin.CreateUserLinkRequest(),
-            parent="parent_value",
-            user_link=resources.UserLink(name="name_value"),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.BatchCreateUserLinksRequest,
-        dict,
-    ],
-)
-def test_batch_create_user_links(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_user_links), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.BatchCreateUserLinksResponse()
-        response = client.batch_create_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchCreateUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analytics_admin.BatchCreateUserLinksResponse)
-
-
-def test_batch_create_user_links_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_user_links), "__call__"
-    ) as call:
-        client.batch_create_user_links()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchCreateUserLinksRequest()
-
-
-@pytest.mark.asyncio
-async def test_batch_create_user_links_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.BatchCreateUserLinksRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_user_links), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.BatchCreateUserLinksResponse()
-        )
-        response = await client.batch_create_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchCreateUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analytics_admin.BatchCreateUserLinksResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_create_user_links_async_from_dict():
-    await test_batch_create_user_links_async(request_type=dict)
-
-
-def test_batch_create_user_links_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.BatchCreateUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_user_links), "__call__"
-    ) as call:
-        call.return_value = analytics_admin.BatchCreateUserLinksResponse()
-        client.batch_create_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_batch_create_user_links_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.BatchCreateUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_user_links), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.BatchCreateUserLinksResponse()
-        )
-        await client.batch_create_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.UpdateUserLinkRequest,
-        dict,
-    ],
-)
-def test_update_user_link(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.UserLink(
-            name="name_value",
-            email_address="email_address_value",
-            direct_roles=["direct_roles_value"],
-        )
-        response = client.update_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateUserLinkRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.UserLink)
-    assert response.name == "name_value"
-    assert response.email_address == "email_address_value"
-    assert response.direct_roles == ["direct_roles_value"]
-
-
-def test_update_user_link_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_user_link), "__call__") as call:
-        client.update_user_link()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateUserLinkRequest()
-
-
-@pytest.mark.asyncio
-async def test_update_user_link_async(
-    transport: str = "grpc_asyncio", request_type=analytics_admin.UpdateUserLinkRequest
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.UserLink(
-                name="name_value",
-                email_address="email_address_value",
-                direct_roles=["direct_roles_value"],
-            )
-        )
-        response = await client.update_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.UpdateUserLinkRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.UserLink)
-    assert response.name == "name_value"
-    assert response.email_address == "email_address_value"
-    assert response.direct_roles == ["direct_roles_value"]
-
-
-@pytest.mark.asyncio
-async def test_update_user_link_async_from_dict():
-    await test_update_user_link_async(request_type=dict)
-
-
-def test_update_user_link_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.UpdateUserLinkRequest()
-
-    request.user_link.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_user_link), "__call__") as call:
-        call.return_value = resources.UserLink()
-        client.update_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "user_link.name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_update_user_link_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.UpdateUserLinkRequest()
-
-    request.user_link.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_user_link), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.UserLink())
-        await client.update_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "user_link.name=name_value",
-    ) in kw["metadata"]
-
-
-def test_update_user_link_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.UserLink()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.update_user_link(
-            user_link=resources.UserLink(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].user_link
-        mock_val = resources.UserLink(name="name_value")
-        assert arg == mock_val
-
-
-def test_update_user_link_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_user_link(
-            analytics_admin.UpdateUserLinkRequest(),
-            user_link=resources.UserLink(name="name_value"),
-        )
-
-
-@pytest.mark.asyncio
-async def test_update_user_link_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = resources.UserLink()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.UserLink())
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.update_user_link(
-            user_link=resources.UserLink(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].user_link
-        mock_val = resources.UserLink(name="name_value")
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_update_user_link_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.update_user_link(
-            analytics_admin.UpdateUserLinkRequest(),
-            user_link=resources.UserLink(name="name_value"),
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.BatchUpdateUserLinksRequest,
-        dict,
-    ],
-)
-def test_batch_update_user_links(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_user_links), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.BatchUpdateUserLinksResponse()
-        response = client.batch_update_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchUpdateUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analytics_admin.BatchUpdateUserLinksResponse)
-
-
-def test_batch_update_user_links_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_user_links), "__call__"
-    ) as call:
-        client.batch_update_user_links()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchUpdateUserLinksRequest()
-
-
-@pytest.mark.asyncio
-async def test_batch_update_user_links_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.BatchUpdateUserLinksRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_user_links), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.BatchUpdateUserLinksResponse()
-        )
-        response = await client.batch_update_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchUpdateUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analytics_admin.BatchUpdateUserLinksResponse)
-
-
-@pytest.mark.asyncio
-async def test_batch_update_user_links_async_from_dict():
-    await test_batch_update_user_links_async(request_type=dict)
-
-
-def test_batch_update_user_links_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.BatchUpdateUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_user_links), "__call__"
-    ) as call:
-        call.return_value = analytics_admin.BatchUpdateUserLinksResponse()
-        client.batch_update_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_batch_update_user_links_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.BatchUpdateUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_user_links), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.BatchUpdateUserLinksResponse()
-        )
-        await client.batch_update_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.DeleteUserLinkRequest,
-        dict,
-    ],
-)
-def test_delete_user_link(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.delete_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteUserLinkRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_user_link_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_user_link), "__call__") as call:
-        client.delete_user_link()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteUserLinkRequest()
-
-
-@pytest.mark.asyncio
-async def test_delete_user_link_async(
-    transport: str = "grpc_asyncio", request_type=analytics_admin.DeleteUserLinkRequest
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteUserLinkRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_user_link_async_from_dict():
-    await test_delete_user_link_async(request_type=dict)
-
-
-def test_delete_user_link_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.DeleteUserLinkRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_user_link), "__call__") as call:
-        call.return_value = None
-        client.delete_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_user_link_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.DeleteUserLinkRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_user_link), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_user_link(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_delete_user_link_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete_user_link(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_delete_user_link_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_user_link(
-            analytics_admin.DeleteUserLinkRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_delete_user_link_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_user_link), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.delete_user_link(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_delete_user_link_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.delete_user_link(
-            analytics_admin.DeleteUserLinkRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.BatchDeleteUserLinksRequest,
-        dict,
-    ],
-)
-def test_batch_delete_user_links(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_user_links), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.batch_delete_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchDeleteUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_batch_delete_user_links_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_user_links), "__call__"
-    ) as call:
-        client.batch_delete_user_links()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchDeleteUserLinksRequest()
-
-
-@pytest.mark.asyncio
-async def test_batch_delete_user_links_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.BatchDeleteUserLinksRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_user_links), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.batch_delete_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.BatchDeleteUserLinksRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.asyncio
-async def test_batch_delete_user_links_async_from_dict():
-    await test_batch_delete_user_links_async(request_type=dict)
-
-
-def test_batch_delete_user_links_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.BatchDeleteUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_user_links), "__call__"
-    ) as call:
-        call.return_value = None
-        client.batch_delete_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_batch_delete_user_links_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.BatchDeleteUserLinksRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_user_links), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.batch_delete_user_links(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
@@ -35306,6 +32994,2422 @@ async def test_delete_event_create_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        analytics_admin.UpdateDataRedactionSettingsRequest,
+        dict,
+    ],
+)
+def test_update_data_redaction_settings(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_redaction_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.DataRedactionSettings(
+            name="name_value",
+            email_redaction_enabled=True,
+            query_parameter_redaction_enabled=True,
+            query_parameter_keys=["query_parameter_keys_value"],
+        )
+        response = client.update_data_redaction_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateDataRedactionSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataRedactionSettings)
+    assert response.name == "name_value"
+    assert response.email_redaction_enabled is True
+    assert response.query_parameter_redaction_enabled is True
+    assert response.query_parameter_keys == ["query_parameter_keys_value"]
+
+
+def test_update_data_redaction_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_redaction_settings), "__call__"
+    ) as call:
+        client.update_data_redaction_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateDataRedactionSettingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_data_redaction_settings_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.UpdateDataRedactionSettingsRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_redaction_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.DataRedactionSettings(
+                name="name_value",
+                email_redaction_enabled=True,
+                query_parameter_redaction_enabled=True,
+                query_parameter_keys=["query_parameter_keys_value"],
+            )
+        )
+        response = await client.update_data_redaction_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateDataRedactionSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataRedactionSettings)
+    assert response.name == "name_value"
+    assert response.email_redaction_enabled is True
+    assert response.query_parameter_redaction_enabled is True
+    assert response.query_parameter_keys == ["query_parameter_keys_value"]
+
+
+@pytest.mark.asyncio
+async def test_update_data_redaction_settings_async_from_dict():
+    await test_update_data_redaction_settings_async(request_type=dict)
+
+
+def test_update_data_redaction_settings_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.UpdateDataRedactionSettingsRequest()
+
+    request.data_redaction_settings.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_redaction_settings), "__call__"
+    ) as call:
+        call.return_value = resources.DataRedactionSettings()
+        client.update_data_redaction_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "data_redaction_settings.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_data_redaction_settings_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.UpdateDataRedactionSettingsRequest()
+
+    request.data_redaction_settings.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_redaction_settings), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.DataRedactionSettings()
+        )
+        await client.update_data_redaction_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "data_redaction_settings.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_data_redaction_settings_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_redaction_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.DataRedactionSettings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_data_redaction_settings(
+            data_redaction_settings=resources.DataRedactionSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].data_redaction_settings
+        mock_val = resources.DataRedactionSettings(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_data_redaction_settings_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_data_redaction_settings(
+            analytics_admin.UpdateDataRedactionSettingsRequest(),
+            data_redaction_settings=resources.DataRedactionSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_data_redaction_settings_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_redaction_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.DataRedactionSettings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.DataRedactionSettings()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_data_redaction_settings(
+            data_redaction_settings=resources.DataRedactionSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].data_redaction_settings
+        mock_val = resources.DataRedactionSettings(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_data_redaction_settings_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_data_redaction_settings(
+            analytics_admin.UpdateDataRedactionSettingsRequest(),
+            data_redaction_settings=resources.DataRedactionSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetDataRedactionSettingsRequest,
+        dict,
+    ],
+)
+def test_get_data_redaction_settings(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_redaction_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.DataRedactionSettings(
+            name="name_value",
+            email_redaction_enabled=True,
+            query_parameter_redaction_enabled=True,
+            query_parameter_keys=["query_parameter_keys_value"],
+        )
+        response = client.get_data_redaction_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetDataRedactionSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataRedactionSettings)
+    assert response.name == "name_value"
+    assert response.email_redaction_enabled is True
+    assert response.query_parameter_redaction_enabled is True
+    assert response.query_parameter_keys == ["query_parameter_keys_value"]
+
+
+def test_get_data_redaction_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_redaction_settings), "__call__"
+    ) as call:
+        client.get_data_redaction_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetDataRedactionSettingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_data_redaction_settings_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.GetDataRedactionSettingsRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_redaction_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.DataRedactionSettings(
+                name="name_value",
+                email_redaction_enabled=True,
+                query_parameter_redaction_enabled=True,
+                query_parameter_keys=["query_parameter_keys_value"],
+            )
+        )
+        response = await client.get_data_redaction_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetDataRedactionSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataRedactionSettings)
+    assert response.name == "name_value"
+    assert response.email_redaction_enabled is True
+    assert response.query_parameter_redaction_enabled is True
+    assert response.query_parameter_keys == ["query_parameter_keys_value"]
+
+
+@pytest.mark.asyncio
+async def test_get_data_redaction_settings_async_from_dict():
+    await test_get_data_redaction_settings_async(request_type=dict)
+
+
+def test_get_data_redaction_settings_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetDataRedactionSettingsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_redaction_settings), "__call__"
+    ) as call:
+        call.return_value = resources.DataRedactionSettings()
+        client.get_data_redaction_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_data_redaction_settings_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetDataRedactionSettingsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_redaction_settings), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.DataRedactionSettings()
+        )
+        await client.get_data_redaction_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_data_redaction_settings_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_redaction_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.DataRedactionSettings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_data_redaction_settings(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_data_redaction_settings_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_data_redaction_settings(
+            analytics_admin.GetDataRedactionSettingsRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_data_redaction_settings_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_redaction_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.DataRedactionSettings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.DataRedactionSettings()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_data_redaction_settings(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_data_redaction_settings_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_data_redaction_settings(
+            analytics_admin.GetDataRedactionSettingsRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateRollupPropertyRequest,
+        dict,
+    ],
+)
+def test_create_rollup_property(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rollup_property), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.CreateRollupPropertyResponse()
+        response = client.create_rollup_property(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateRollupPropertyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.CreateRollupPropertyResponse)
+
+
+def test_create_rollup_property_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rollup_property), "__call__"
+    ) as call:
+        client.create_rollup_property()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateRollupPropertyRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_rollup_property_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.CreateRollupPropertyRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rollup_property), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.CreateRollupPropertyResponse()
+        )
+        response = await client.create_rollup_property(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateRollupPropertyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.CreateRollupPropertyResponse)
+
+
+@pytest.mark.asyncio
+async def test_create_rollup_property_async_from_dict():
+    await test_create_rollup_property_async(request_type=dict)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetRollupPropertySourceLinkRequest,
+        dict,
+    ],
+)
+def test_get_rollup_property_source_link(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.RollupPropertySourceLink(
+            name="name_value",
+            source_property="source_property_value",
+        )
+        response = client.get_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetRollupPropertySourceLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.RollupPropertySourceLink)
+    assert response.name == "name_value"
+    assert response.source_property == "source_property_value"
+
+
+def test_get_rollup_property_source_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_rollup_property_source_link), "__call__"
+    ) as call:
+        client.get_rollup_property_source_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetRollupPropertySourceLinkRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_rollup_property_source_link_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.GetRollupPropertySourceLinkRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.RollupPropertySourceLink(
+                name="name_value",
+                source_property="source_property_value",
+            )
+        )
+        response = await client.get_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetRollupPropertySourceLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.RollupPropertySourceLink)
+    assert response.name == "name_value"
+    assert response.source_property == "source_property_value"
+
+
+@pytest.mark.asyncio
+async def test_get_rollup_property_source_link_async_from_dict():
+    await test_get_rollup_property_source_link_async(request_type=dict)
+
+
+def test_get_rollup_property_source_link_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetRollupPropertySourceLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_rollup_property_source_link), "__call__"
+    ) as call:
+        call.return_value = resources.RollupPropertySourceLink()
+        client.get_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_rollup_property_source_link_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetRollupPropertySourceLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_rollup_property_source_link), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.RollupPropertySourceLink()
+        )
+        await client.get_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_rollup_property_source_link_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.RollupPropertySourceLink()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_rollup_property_source_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_rollup_property_source_link_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_rollup_property_source_link(
+            analytics_admin.GetRollupPropertySourceLinkRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_rollup_property_source_link_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.RollupPropertySourceLink()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.RollupPropertySourceLink()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_rollup_property_source_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_rollup_property_source_link_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_rollup_property_source_link(
+            analytics_admin.GetRollupPropertySourceLinkRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListRollupPropertySourceLinksRequest,
+        dict,
+    ],
+)
+def test_list_rollup_property_source_links(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rollup_property_source_links), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListRollupPropertySourceLinksResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_rollup_property_source_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListRollupPropertySourceLinksRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRollupPropertySourceLinksPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_rollup_property_source_links_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rollup_property_source_links), "__call__"
+    ) as call:
+        client.list_rollup_property_source_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListRollupPropertySourceLinksRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_rollup_property_source_links_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.ListRollupPropertySourceLinksRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rollup_property_source_links), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_rollup_property_source_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListRollupPropertySourceLinksRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRollupPropertySourceLinksAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_rollup_property_source_links_async_from_dict():
+    await test_list_rollup_property_source_links_async(request_type=dict)
+
+
+def test_list_rollup_property_source_links_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListRollupPropertySourceLinksRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rollup_property_source_links), "__call__"
+    ) as call:
+        call.return_value = analytics_admin.ListRollupPropertySourceLinksResponse()
+        client.list_rollup_property_source_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_rollup_property_source_links_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListRollupPropertySourceLinksRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rollup_property_source_links), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListRollupPropertySourceLinksResponse()
+        )
+        await client.list_rollup_property_source_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_rollup_property_source_links_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rollup_property_source_links), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListRollupPropertySourceLinksResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_rollup_property_source_links(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_rollup_property_source_links_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_rollup_property_source_links(
+            analytics_admin.ListRollupPropertySourceLinksRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_rollup_property_source_links_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rollup_property_source_links), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListRollupPropertySourceLinksResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListRollupPropertySourceLinksResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_rollup_property_source_links(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_rollup_property_source_links_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_rollup_property_source_links(
+            analytics_admin.ListRollupPropertySourceLinksRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_rollup_property_source_links_pager(transport_name: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rollup_property_source_links), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_rollup_property_source_links(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.RollupPropertySourceLink) for i in results)
+
+
+def test_list_rollup_property_source_links_pages(transport_name: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rollup_property_source_links), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_rollup_property_source_links(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_rollup_property_source_links_async_pager():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rollup_property_source_links),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_rollup_property_source_links(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.RollupPropertySourceLink) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_rollup_property_source_links_async_pages():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rollup_property_source_links),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_rollup_property_source_links(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateRollupPropertySourceLinkRequest,
+        dict,
+    ],
+)
+def test_create_rollup_property_source_link(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.RollupPropertySourceLink(
+            name="name_value",
+            source_property="source_property_value",
+        )
+        response = client.create_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateRollupPropertySourceLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.RollupPropertySourceLink)
+    assert response.name == "name_value"
+    assert response.source_property == "source_property_value"
+
+
+def test_create_rollup_property_source_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rollup_property_source_link), "__call__"
+    ) as call:
+        client.create_rollup_property_source_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateRollupPropertySourceLinkRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_rollup_property_source_link_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.CreateRollupPropertySourceLinkRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.RollupPropertySourceLink(
+                name="name_value",
+                source_property="source_property_value",
+            )
+        )
+        response = await client.create_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateRollupPropertySourceLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.RollupPropertySourceLink)
+    assert response.name == "name_value"
+    assert response.source_property == "source_property_value"
+
+
+@pytest.mark.asyncio
+async def test_create_rollup_property_source_link_async_from_dict():
+    await test_create_rollup_property_source_link_async(request_type=dict)
+
+
+def test_create_rollup_property_source_link_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateRollupPropertySourceLinkRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rollup_property_source_link), "__call__"
+    ) as call:
+        call.return_value = resources.RollupPropertySourceLink()
+        client.create_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_rollup_property_source_link_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateRollupPropertySourceLinkRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rollup_property_source_link), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.RollupPropertySourceLink()
+        )
+        await client.create_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_rollup_property_source_link_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.RollupPropertySourceLink()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_rollup_property_source_link(
+            parent="parent_value",
+            rollup_property_source_link=resources.RollupPropertySourceLink(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].rollup_property_source_link
+        mock_val = resources.RollupPropertySourceLink(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_rollup_property_source_link_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_rollup_property_source_link(
+            analytics_admin.CreateRollupPropertySourceLinkRequest(),
+            parent="parent_value",
+            rollup_property_source_link=resources.RollupPropertySourceLink(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_rollup_property_source_link_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.RollupPropertySourceLink()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.RollupPropertySourceLink()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_rollup_property_source_link(
+            parent="parent_value",
+            rollup_property_source_link=resources.RollupPropertySourceLink(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].rollup_property_source_link
+        mock_val = resources.RollupPropertySourceLink(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_rollup_property_source_link_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_rollup_property_source_link(
+            analytics_admin.CreateRollupPropertySourceLinkRequest(),
+            parent="parent_value",
+            rollup_property_source_link=resources.RollupPropertySourceLink(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteRollupPropertySourceLinkRequest,
+        dict,
+    ],
+)
+def test_delete_rollup_property_source_link(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteRollupPropertySourceLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_rollup_property_source_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_rollup_property_source_link), "__call__"
+    ) as call:
+        client.delete_rollup_property_source_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteRollupPropertySourceLinkRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_rollup_property_source_link_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.DeleteRollupPropertySourceLinkRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteRollupPropertySourceLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_rollup_property_source_link_async_from_dict():
+    await test_delete_rollup_property_source_link_async(request_type=dict)
+
+
+def test_delete_rollup_property_source_link_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteRollupPropertySourceLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_rollup_property_source_link), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_rollup_property_source_link_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteRollupPropertySourceLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_rollup_property_source_link), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_rollup_property_source_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_rollup_property_source_link_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_rollup_property_source_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_rollup_property_source_link_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_rollup_property_source_link(
+            analytics_admin.DeleteRollupPropertySourceLinkRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_rollup_property_source_link_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_rollup_property_source_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_rollup_property_source_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_rollup_property_source_link_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_rollup_property_source_link(
+            analytics_admin.DeleteRollupPropertySourceLinkRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateSubpropertyRequest,
+        dict,
+    ],
+)
+def test_create_subproperty(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subproperty), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.CreateSubpropertyResponse()
+        response = client.create_subproperty(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateSubpropertyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.CreateSubpropertyResponse)
+
+
+def test_create_subproperty_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subproperty), "__call__"
+    ) as call:
+        client.create_subproperty()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateSubpropertyRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_subproperty_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.CreateSubpropertyRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subproperty), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.CreateSubpropertyResponse()
+        )
+        response = await client.create_subproperty(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateSubpropertyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.CreateSubpropertyResponse)
+
+
+@pytest.mark.asyncio
+async def test_create_subproperty_async_from_dict():
+    await test_create_subproperty_async(request_type=dict)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteSubpropertyEventFilterRequest,
+        dict,
+    ],
+)
+def test_delete_subproperty_event_filter(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteSubpropertyEventFilterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_subproperty_event_filter_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        client.delete_subproperty_event_filter()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteSubpropertyEventFilterRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_subproperty_event_filter_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.DeleteSubpropertyEventFilterRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteSubpropertyEventFilterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_subproperty_event_filter_async_from_dict():
+    await test_delete_subproperty_event_filter_async(request_type=dict)
+
+
+def test_delete_subproperty_event_filter_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteSubpropertyEventFilterRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_subproperty_event_filter_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteSubpropertyEventFilterRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_subproperty_event_filter_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_subproperty_event_filter(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_subproperty_event_filter_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_subproperty_event_filter(
+            analytics_admin.DeleteSubpropertyEventFilterRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_subproperty_event_filter_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_subproperty_event_filter(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_subproperty_event_filter_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_subproperty_event_filter(
+            analytics_admin.DeleteSubpropertyEventFilterRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateSubpropertyEventFilterRequest,
+        dict,
+    ],
+)
+def test_create_subproperty_event_filter(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_subproperty_event_filter.SubpropertyEventFilter(
+            name="name_value",
+            apply_to_property="apply_to_property_value",
+        )
+        response = client.create_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateSubpropertyEventFilterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_subproperty_event_filter.SubpropertyEventFilter)
+    assert response.name == "name_value"
+    assert response.apply_to_property == "apply_to_property_value"
+
+
+def test_create_subproperty_event_filter_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subproperty_event_filter), "__call__"
+    ) as call:
+        client.create_subproperty_event_filter()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateSubpropertyEventFilterRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_subproperty_event_filter_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.CreateSubpropertyEventFilterRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value",
+                apply_to_property="apply_to_property_value",
+            )
+        )
+        response = await client.create_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateSubpropertyEventFilterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_subproperty_event_filter.SubpropertyEventFilter)
+    assert response.name == "name_value"
+    assert response.apply_to_property == "apply_to_property_value"
+
+
+@pytest.mark.asyncio
+async def test_create_subproperty_event_filter_async_from_dict():
+    await test_create_subproperty_event_filter_async(request_type=dict)
+
+
+def test_create_subproperty_event_filter_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateSubpropertyEventFilterRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subproperty_event_filter), "__call__"
+    ) as call:
+        call.return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+        client.create_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_subproperty_event_filter_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateSubpropertyEventFilterRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subproperty_event_filter), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_subproperty_event_filter.SubpropertyEventFilter()
+        )
+        await client.create_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_subproperty_event_filter_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_subproperty_event_filter(
+            parent="parent_value",
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].subproperty_event_filter
+        mock_val = gaa_subproperty_event_filter.SubpropertyEventFilter(
+            name="name_value"
+        )
+        assert arg == mock_val
+
+
+def test_create_subproperty_event_filter_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_subproperty_event_filter(
+            analytics_admin.CreateSubpropertyEventFilterRequest(),
+            parent="parent_value",
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_subproperty_event_filter_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_subproperty_event_filter.SubpropertyEventFilter()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_subproperty_event_filter(
+            parent="parent_value",
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].subproperty_event_filter
+        mock_val = gaa_subproperty_event_filter.SubpropertyEventFilter(
+            name="name_value"
+        )
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_subproperty_event_filter_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_subproperty_event_filter(
+            analytics_admin.CreateSubpropertyEventFilterRequest(),
+            parent="parent_value",
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         analytics_admin.GetAccountRequest,
         dict,
     ],
@@ -38276,2723 +38380,6 @@ def test_update_property_rest_flattened_error(transport: str = "rest"):
 
 
 def test_update_property_rest_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.GetUserLinkRequest,
-        dict,
-    ],
-)
-def test_get_user_link_rest(request_type):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "accounts/sample1/userLinks/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.UserLink(
-            name="name_value",
-            email_address="email_address_value",
-            direct_roles=["direct_roles_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.UserLink.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_user_link(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.UserLink)
-    assert response.name == "name_value"
-    assert response.email_address == "email_address_value"
-    assert response.direct_roles == ["direct_roles_value"]
-
-
-def test_get_user_link_rest_required_fields(
-    request_type=analytics_admin.GetUserLinkRequest,
-):
-    transport_class = transports.AnalyticsAdminServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_user_link._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_user_link._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = resources.UserLink()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = resources.UserLink.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.get_user_link(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_get_user_link_rest_unset_required_fields():
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_user_link._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_user_link_rest_interceptors(null_interceptor):
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AnalyticsAdminServiceRestInterceptor(),
-    )
-    client = AnalyticsAdminServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_get_user_link"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_user_link"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = analytics_admin.GetUserLinkRequest.pb(
-            analytics_admin.GetUserLinkRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.UserLink.to_json(resources.UserLink())
-
-        request = analytics_admin.GetUserLinkRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.UserLink()
-
-        client.get_user_link(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_user_link_rest_bad_request(
-    transport: str = "rest", request_type=analytics_admin.GetUserLinkRequest
-):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "accounts/sample1/userLinks/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_user_link(request)
-
-
-def test_get_user_link_rest_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.UserLink()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "accounts/sample1/userLinks/sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.UserLink.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.get_user_link(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{name=accounts/*/userLinks/*}" % client.transport._host, args[1]
-        )
-
-
-def test_get_user_link_rest_flattened_error(transport: str = "rest"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_user_link(
-            analytics_admin.GetUserLinkRequest(),
-            name="name_value",
-        )
-
-
-def test_get_user_link_rest_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.BatchGetUserLinksRequest,
-        dict,
-    ],
-)
-def test_batch_get_user_links_rest(request_type):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analytics_admin.BatchGetUserLinksResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = analytics_admin.BatchGetUserLinksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_get_user_links(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analytics_admin.BatchGetUserLinksResponse)
-
-
-def test_batch_get_user_links_rest_required_fields(
-    request_type=analytics_admin.BatchGetUserLinksRequest,
-):
-    transport_class = transports.AnalyticsAdminServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request_init["names"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-    assert "names" not in jsonified_request
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_get_user_links._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-    assert "names" in jsonified_request
-    assert jsonified_request["names"] == request_init["names"]
-
-    jsonified_request["parent"] = "parent_value"
-    jsonified_request["names"] = "names_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_get_user_links._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("names",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-    assert "names" in jsonified_request
-    assert jsonified_request["names"] == "names_value"
-
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = analytics_admin.BatchGetUserLinksResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = analytics_admin.BatchGetUserLinksResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.batch_get_user_links(request)
-
-            expected_params = [
-                (
-                    "names",
-                    "",
-                ),
-                ("$alt", "json;enum-encoding=int"),
-            ]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_batch_get_user_links_rest_unset_required_fields():
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.batch_get_user_links._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("names",))
-        & set(
-            (
-                "parent",
-                "names",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_get_user_links_rest_interceptors(null_interceptor):
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AnalyticsAdminServiceRestInterceptor(),
-    )
-    client = AnalyticsAdminServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_batch_get_user_links"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_batch_get_user_links"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = analytics_admin.BatchGetUserLinksRequest.pb(
-            analytics_admin.BatchGetUserLinksRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = analytics_admin.BatchGetUserLinksResponse.to_json(
-            analytics_admin.BatchGetUserLinksResponse()
-        )
-
-        request = analytics_admin.BatchGetUserLinksRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = analytics_admin.BatchGetUserLinksResponse()
-
-        client.batch_get_user_links(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_get_user_links_rest_bad_request(
-    transport: str = "rest", request_type=analytics_admin.BatchGetUserLinksRequest
-):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_get_user_links(request)
-
-
-def test_batch_get_user_links_rest_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.ListUserLinksRequest,
-        dict,
-    ],
-)
-def test_list_user_links_rest(request_type):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analytics_admin.ListUserLinksResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = analytics_admin.ListUserLinksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_user_links(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListUserLinksPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_user_links_rest_required_fields(
-    request_type=analytics_admin.ListUserLinksRequest,
-):
-    transport_class = transports.AnalyticsAdminServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_user_links._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_user_links._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = analytics_admin.ListUserLinksResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = analytics_admin.ListUserLinksResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_user_links(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_user_links_rest_unset_required_fields():
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_user_links._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_user_links_rest_interceptors(null_interceptor):
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AnalyticsAdminServiceRestInterceptor(),
-    )
-    client = AnalyticsAdminServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_list_user_links"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_user_links"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = analytics_admin.ListUserLinksRequest.pb(
-            analytics_admin.ListUserLinksRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = analytics_admin.ListUserLinksResponse.to_json(
-            analytics_admin.ListUserLinksResponse()
-        )
-
-        request = analytics_admin.ListUserLinksRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = analytics_admin.ListUserLinksResponse()
-
-        client.list_user_links(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_user_links_rest_bad_request(
-    transport: str = "rest", request_type=analytics_admin.ListUserLinksRequest
-):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_user_links(request)
-
-
-def test_list_user_links_rest_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analytics_admin.ListUserLinksResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "accounts/sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = analytics_admin.ListUserLinksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_user_links(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{parent=accounts/*}/userLinks" % client.transport._host, args[1]
-        )
-
-
-def test_list_user_links_rest_flattened_error(transport: str = "rest"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_user_links(
-            analytics_admin.ListUserLinksRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_user_links_rest_pager(transport: str = "rest"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                    resources.UserLink(),
-                    resources.UserLink(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[],
-                next_page_token="def",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                ],
-                next_page_token="ghi",
-            ),
-            analytics_admin.ListUserLinksResponse(
-                user_links=[
-                    resources.UserLink(),
-                    resources.UserLink(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(
-            analytics_admin.ListUserLinksResponse.to_json(x) for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {"parent": "accounts/sample1"}
-
-        pager = client.list_user_links(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, resources.UserLink) for i in results)
-
-        pages = list(client.list_user_links(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.AuditUserLinksRequest,
-        dict,
-    ],
-)
-def test_audit_user_links_rest(request_type):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analytics_admin.AuditUserLinksResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = analytics_admin.AuditUserLinksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.audit_user_links(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.AuditUserLinksPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_audit_user_links_rest_required_fields(
-    request_type=analytics_admin.AuditUserLinksRequest,
-):
-    transport_class = transports.AnalyticsAdminServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).audit_user_links._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).audit_user_links._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = analytics_admin.AuditUserLinksResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = analytics_admin.AuditUserLinksResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.audit_user_links(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_audit_user_links_rest_unset_required_fields():
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.audit_user_links._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_audit_user_links_rest_interceptors(null_interceptor):
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AnalyticsAdminServiceRestInterceptor(),
-    )
-    client = AnalyticsAdminServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_audit_user_links"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_audit_user_links"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = analytics_admin.AuditUserLinksRequest.pb(
-            analytics_admin.AuditUserLinksRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = analytics_admin.AuditUserLinksResponse.to_json(
-            analytics_admin.AuditUserLinksResponse()
-        )
-
-        request = analytics_admin.AuditUserLinksRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = analytics_admin.AuditUserLinksResponse()
-
-        client.audit_user_links(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_audit_user_links_rest_bad_request(
-    transport: str = "rest", request_type=analytics_admin.AuditUserLinksRequest
-):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.audit_user_links(request)
-
-
-def test_audit_user_links_rest_pager(transport: str = "rest"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[],
-                next_page_token="def",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                ],
-                next_page_token="ghi",
-            ),
-            analytics_admin.AuditUserLinksResponse(
-                user_links=[
-                    resources.AuditUserLink(),
-                    resources.AuditUserLink(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(
-            analytics_admin.AuditUserLinksResponse.to_json(x) for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {"parent": "accounts/sample1"}
-
-        pager = client.audit_user_links(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, resources.AuditUserLink) for i in results)
-
-        pages = list(client.audit_user_links(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.CreateUserLinkRequest,
-        dict,
-    ],
-)
-def test_create_user_link_rest(request_type):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request_init["user_link"] = {
-        "name": "name_value",
-        "email_address": "email_address_value",
-        "direct_roles": ["direct_roles_value1", "direct_roles_value2"],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = analytics_admin.CreateUserLinkRequest.meta.fields["user_link"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["user_link"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["user_link"][field])):
-                    del request_init["user_link"][field][i][subfield]
-            else:
-                del request_init["user_link"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.UserLink(
-            name="name_value",
-            email_address="email_address_value",
-            direct_roles=["direct_roles_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.UserLink.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_user_link(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.UserLink)
-    assert response.name == "name_value"
-    assert response.email_address == "email_address_value"
-    assert response.direct_roles == ["direct_roles_value"]
-
-
-def test_create_user_link_rest_required_fields(
-    request_type=analytics_admin.CreateUserLinkRequest,
-):
-    transport_class = transports.AnalyticsAdminServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_user_link._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_user_link._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("notify_new_user",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = resources.UserLink()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = resources.UserLink.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.create_user_link(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_create_user_link_rest_unset_required_fields():
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_user_link._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("notifyNewUser",))
-        & set(
-            (
-                "parent",
-                "userLink",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_user_link_rest_interceptors(null_interceptor):
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AnalyticsAdminServiceRestInterceptor(),
-    )
-    client = AnalyticsAdminServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_create_user_link"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_user_link"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = analytics_admin.CreateUserLinkRequest.pb(
-            analytics_admin.CreateUserLinkRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.UserLink.to_json(resources.UserLink())
-
-        request = analytics_admin.CreateUserLinkRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.UserLink()
-
-        client.create_user_link(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_user_link_rest_bad_request(
-    transport: str = "rest", request_type=analytics_admin.CreateUserLinkRequest
-):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_user_link(request)
-
-
-def test_create_user_link_rest_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.UserLink()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "accounts/sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-            user_link=resources.UserLink(name="name_value"),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.UserLink.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.create_user_link(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{parent=accounts/*}/userLinks" % client.transport._host, args[1]
-        )
-
-
-def test_create_user_link_rest_flattened_error(transport: str = "rest"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_user_link(
-            analytics_admin.CreateUserLinkRequest(),
-            parent="parent_value",
-            user_link=resources.UserLink(name="name_value"),
-        )
-
-
-def test_create_user_link_rest_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.BatchCreateUserLinksRequest,
-        dict,
-    ],
-)
-def test_batch_create_user_links_rest(request_type):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analytics_admin.BatchCreateUserLinksResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = analytics_admin.BatchCreateUserLinksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_create_user_links(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analytics_admin.BatchCreateUserLinksResponse)
-
-
-def test_batch_create_user_links_rest_required_fields(
-    request_type=analytics_admin.BatchCreateUserLinksRequest,
-):
-    transport_class = transports.AnalyticsAdminServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_create_user_links._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_create_user_links._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = analytics_admin.BatchCreateUserLinksResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = analytics_admin.BatchCreateUserLinksResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.batch_create_user_links(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_batch_create_user_links_rest_unset_required_fields():
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.batch_create_user_links._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "requests",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_create_user_links_rest_interceptors(null_interceptor):
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AnalyticsAdminServiceRestInterceptor(),
-    )
-    client = AnalyticsAdminServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_batch_create_user_links"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_batch_create_user_links"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = analytics_admin.BatchCreateUserLinksRequest.pb(
-            analytics_admin.BatchCreateUserLinksRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            analytics_admin.BatchCreateUserLinksResponse.to_json(
-                analytics_admin.BatchCreateUserLinksResponse()
-            )
-        )
-
-        request = analytics_admin.BatchCreateUserLinksRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = analytics_admin.BatchCreateUserLinksResponse()
-
-        client.batch_create_user_links(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_create_user_links_rest_bad_request(
-    transport: str = "rest", request_type=analytics_admin.BatchCreateUserLinksRequest
-):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_create_user_links(request)
-
-
-def test_batch_create_user_links_rest_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.UpdateUserLinkRequest,
-        dict,
-    ],
-)
-def test_update_user_link_rest(request_type):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"user_link": {"name": "accounts/sample1/userLinks/sample2"}}
-    request_init["user_link"] = {
-        "name": "accounts/sample1/userLinks/sample2",
-        "email_address": "email_address_value",
-        "direct_roles": ["direct_roles_value1", "direct_roles_value2"],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = analytics_admin.UpdateUserLinkRequest.meta.fields["user_link"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["user_link"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["user_link"][field])):
-                    del request_init["user_link"][field][i][subfield]
-            else:
-                del request_init["user_link"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.UserLink(
-            name="name_value",
-            email_address="email_address_value",
-            direct_roles=["direct_roles_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.UserLink.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_user_link(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.UserLink)
-    assert response.name == "name_value"
-    assert response.email_address == "email_address_value"
-    assert response.direct_roles == ["direct_roles_value"]
-
-
-def test_update_user_link_rest_required_fields(
-    request_type=analytics_admin.UpdateUserLinkRequest,
-):
-    transport_class = transports.AnalyticsAdminServiceRestTransport
-
-    request_init = {}
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_user_link._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_user_link._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = resources.UserLink()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "patch",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = resources.UserLink.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.update_user_link(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_update_user_link_rest_unset_required_fields():
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_user_link._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("userLink",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_user_link_rest_interceptors(null_interceptor):
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AnalyticsAdminServiceRestInterceptor(),
-    )
-    client = AnalyticsAdminServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_update_user_link"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_user_link"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = analytics_admin.UpdateUserLinkRequest.pb(
-            analytics_admin.UpdateUserLinkRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.UserLink.to_json(resources.UserLink())
-
-        request = analytics_admin.UpdateUserLinkRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.UserLink()
-
-        client.update_user_link(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_user_link_rest_bad_request(
-    transport: str = "rest", request_type=analytics_admin.UpdateUserLinkRequest
-):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"user_link": {"name": "accounts/sample1/userLinks/sample2"}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_user_link(request)
-
-
-def test_update_user_link_rest_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.UserLink()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"user_link": {"name": "accounts/sample1/userLinks/sample2"}}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            user_link=resources.UserLink(name="name_value"),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.UserLink.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.update_user_link(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{user_link.name=accounts/*/userLinks/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_update_user_link_rest_flattened_error(transport: str = "rest"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_user_link(
-            analytics_admin.UpdateUserLinkRequest(),
-            user_link=resources.UserLink(name="name_value"),
-        )
-
-
-def test_update_user_link_rest_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.BatchUpdateUserLinksRequest,
-        dict,
-    ],
-)
-def test_batch_update_user_links_rest(request_type):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = analytics_admin.BatchUpdateUserLinksResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = analytics_admin.BatchUpdateUserLinksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_update_user_links(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, analytics_admin.BatchUpdateUserLinksResponse)
-
-
-def test_batch_update_user_links_rest_required_fields(
-    request_type=analytics_admin.BatchUpdateUserLinksRequest,
-):
-    transport_class = transports.AnalyticsAdminServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_update_user_links._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_update_user_links._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = analytics_admin.BatchUpdateUserLinksResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = analytics_admin.BatchUpdateUserLinksResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.batch_update_user_links(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_batch_update_user_links_rest_unset_required_fields():
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.batch_update_user_links._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "requests",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_update_user_links_rest_interceptors(null_interceptor):
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AnalyticsAdminServiceRestInterceptor(),
-    )
-    client = AnalyticsAdminServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_batch_update_user_links"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_batch_update_user_links"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = analytics_admin.BatchUpdateUserLinksRequest.pb(
-            analytics_admin.BatchUpdateUserLinksRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            analytics_admin.BatchUpdateUserLinksResponse.to_json(
-                analytics_admin.BatchUpdateUserLinksResponse()
-            )
-        )
-
-        request = analytics_admin.BatchUpdateUserLinksRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = analytics_admin.BatchUpdateUserLinksResponse()
-
-        client.batch_update_user_links(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_update_user_links_rest_bad_request(
-    transport: str = "rest", request_type=analytics_admin.BatchUpdateUserLinksRequest
-):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_update_user_links(request)
-
-
-def test_batch_update_user_links_rest_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.DeleteUserLinkRequest,
-        dict,
-    ],
-)
-def test_delete_user_link_rest(request_type):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "accounts/sample1/userLinks/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_user_link(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_user_link_rest_required_fields(
-    request_type=analytics_admin.DeleteUserLinkRequest,
-):
-    transport_class = transports.AnalyticsAdminServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_user_link._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_user_link._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = None
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "delete",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = ""
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.delete_user_link(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_delete_user_link_rest_unset_required_fields():
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_user_link._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_user_link_rest_interceptors(null_interceptor):
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AnalyticsAdminServiceRestInterceptor(),
-    )
-    client = AnalyticsAdminServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_user_link"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = analytics_admin.DeleteUserLinkRequest.pb(
-            analytics_admin.DeleteUserLinkRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = analytics_admin.DeleteUserLinkRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_user_link(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_user_link_rest_bad_request(
-    transport: str = "rest", request_type=analytics_admin.DeleteUserLinkRequest
-):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "accounts/sample1/userLinks/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_user_link(request)
-
-
-def test_delete_user_link_rest_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "accounts/sample1/userLinks/sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.delete_user_link(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{name=accounts/*/userLinks/*}" % client.transport._host, args[1]
-        )
-
-
-def test_delete_user_link_rest_flattened_error(transport: str = "rest"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_user_link(
-            analytics_admin.DeleteUserLinkRequest(),
-            name="name_value",
-        )
-
-
-def test_delete_user_link_rest_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        analytics_admin.BatchDeleteUserLinksRequest,
-        dict,
-    ],
-)
-def test_batch_delete_user_links_rest(request_type):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_delete_user_links(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_batch_delete_user_links_rest_required_fields(
-    request_type=analytics_admin.BatchDeleteUserLinksRequest,
-):
-    transport_class = transports.AnalyticsAdminServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_delete_user_links._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_delete_user_links._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = None
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = ""
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.batch_delete_user_links(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_batch_delete_user_links_rest_unset_required_fields():
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.batch_delete_user_links._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "requests",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_delete_user_links_rest_interceptors(null_interceptor):
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AnalyticsAdminServiceRestInterceptor(),
-    )
-    client = AnalyticsAdminServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_batch_delete_user_links"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = analytics_admin.BatchDeleteUserLinksRequest.pb(
-            analytics_admin.BatchDeleteUserLinksRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = analytics_admin.BatchDeleteUserLinksRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.batch_delete_user_links(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_batch_delete_user_links_rest_bad_request(
-    transport: str = "rest", request_type=analytics_admin.BatchDeleteUserLinksRequest
-):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_delete_user_links(request)
-
-
-def test_batch_delete_user_links_rest_error():
     client = AnalyticsAdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -74280,6 +71667,3028 @@ def test_delete_event_create_rule_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateDataRedactionSettingsRequest,
+        dict,
+    ],
+)
+def test_update_data_redaction_settings_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "data_redaction_settings": {
+            "name": "properties/sample1/dataStreams/sample2/dataRedactionSettings"
+        }
+    }
+    request_init["data_redaction_settings"] = {
+        "name": "properties/sample1/dataStreams/sample2/dataRedactionSettings",
+        "email_redaction_enabled": True,
+        "query_parameter_redaction_enabled": True,
+        "query_parameter_keys": [
+            "query_parameter_keys_value1",
+            "query_parameter_keys_value2",
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = analytics_admin.UpdateDataRedactionSettingsRequest.meta.fields[
+        "data_redaction_settings"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "data_redaction_settings"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["data_redaction_settings"][field])):
+                    del request_init["data_redaction_settings"][field][i][subfield]
+            else:
+                del request_init["data_redaction_settings"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataRedactionSettings(
+            name="name_value",
+            email_redaction_enabled=True,
+            query_parameter_redaction_enabled=True,
+            query_parameter_keys=["query_parameter_keys_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.DataRedactionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_data_redaction_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataRedactionSettings)
+    assert response.name == "name_value"
+    assert response.email_redaction_enabled is True
+    assert response.query_parameter_redaction_enabled is True
+    assert response.query_parameter_keys == ["query_parameter_keys_value"]
+
+
+def test_update_data_redaction_settings_rest_required_fields(
+    request_type=analytics_admin.UpdateDataRedactionSettingsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_data_redaction_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_data_redaction_settings._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DataRedactionSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.DataRedactionSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_data_redaction_settings(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_data_redaction_settings_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_data_redaction_settings._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "dataRedactionSettings",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_data_redaction_settings_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_data_redaction_settings",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_update_data_redaction_settings",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateDataRedactionSettingsRequest.pb(
+            analytics_admin.UpdateDataRedactionSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.DataRedactionSettings.to_json(
+            resources.DataRedactionSettings()
+        )
+
+        request = analytics_admin.UpdateDataRedactionSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DataRedactionSettings()
+
+        client.update_data_redaction_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_data_redaction_settings_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.UpdateDataRedactionSettingsRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "data_redaction_settings": {
+            "name": "properties/sample1/dataStreams/sample2/dataRedactionSettings"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_data_redaction_settings(request)
+
+
+def test_update_data_redaction_settings_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataRedactionSettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "data_redaction_settings": {
+                "name": "properties/sample1/dataStreams/sample2/dataRedactionSettings"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            data_redaction_settings=resources.DataRedactionSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.DataRedactionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_data_redaction_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{data_redaction_settings.name=properties/*/dataStreams/*/dataRedactionSettings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_data_redaction_settings_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_data_redaction_settings(
+            analytics_admin.UpdateDataRedactionSettingsRequest(),
+            data_redaction_settings=resources.DataRedactionSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_data_redaction_settings_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetDataRedactionSettingsRequest,
+        dict,
+    ],
+)
+def test_get_data_redaction_settings_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/dataRedactionSettings"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataRedactionSettings(
+            name="name_value",
+            email_redaction_enabled=True,
+            query_parameter_redaction_enabled=True,
+            query_parameter_keys=["query_parameter_keys_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.DataRedactionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_data_redaction_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.DataRedactionSettings)
+    assert response.name == "name_value"
+    assert response.email_redaction_enabled is True
+    assert response.query_parameter_redaction_enabled is True
+    assert response.query_parameter_keys == ["query_parameter_keys_value"]
+
+
+def test_get_data_redaction_settings_rest_required_fields(
+    request_type=analytics_admin.GetDataRedactionSettingsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_redaction_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_data_redaction_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.DataRedactionSettings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.DataRedactionSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_data_redaction_settings(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_data_redaction_settings_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_data_redaction_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_data_redaction_settings_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_data_redaction_settings",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_get_data_redaction_settings",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetDataRedactionSettingsRequest.pb(
+            analytics_admin.GetDataRedactionSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.DataRedactionSettings.to_json(
+            resources.DataRedactionSettings()
+        )
+
+        request = analytics_admin.GetDataRedactionSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.DataRedactionSettings()
+
+        client.get_data_redaction_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_data_redaction_settings_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.GetDataRedactionSettingsRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/dataRedactionSettings"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_data_redaction_settings(request)
+
+
+def test_get_data_redaction_settings_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.DataRedactionSettings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/dataStreams/sample2/dataRedactionSettings"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.DataRedactionSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_data_redaction_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/dataStreams/*/dataRedactionSettings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_data_redaction_settings_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_data_redaction_settings(
+            analytics_admin.GetDataRedactionSettingsRequest(),
+            name="name_value",
+        )
+
+
+def test_get_data_redaction_settings_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateRollupPropertyRequest,
+        dict,
+    ],
+)
+def test_create_rollup_property_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.CreateRollupPropertyResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = analytics_admin.CreateRollupPropertyResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_rollup_property(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.CreateRollupPropertyResponse)
+
+
+def test_create_rollup_property_rest_required_fields(
+    request_type=analytics_admin.CreateRollupPropertyRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_rollup_property._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_rollup_property._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.CreateRollupPropertyResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = analytics_admin.CreateRollupPropertyResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_rollup_property(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_rollup_property_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_rollup_property._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("rollupProperty",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_rollup_property_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_rollup_property"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_rollup_property"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateRollupPropertyRequest.pb(
+            analytics_admin.CreateRollupPropertyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.CreateRollupPropertyResponse.to_json(
+                analytics_admin.CreateRollupPropertyResponse()
+            )
+        )
+
+        request = analytics_admin.CreateRollupPropertyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.CreateRollupPropertyResponse()
+
+        client.create_rollup_property(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_rollup_property_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateRollupPropertyRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_rollup_property(request)
+
+
+def test_create_rollup_property_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetRollupPropertySourceLinkRequest,
+        dict,
+    ],
+)
+def test_get_rollup_property_source_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/rollupPropertySourceLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.RollupPropertySourceLink(
+            name="name_value",
+            source_property="source_property_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.RollupPropertySourceLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_rollup_property_source_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.RollupPropertySourceLink)
+    assert response.name == "name_value"
+    assert response.source_property == "source_property_value"
+
+
+def test_get_rollup_property_source_link_rest_required_fields(
+    request_type=analytics_admin.GetRollupPropertySourceLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_rollup_property_source_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_rollup_property_source_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.RollupPropertySourceLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.RollupPropertySourceLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_rollup_property_source_link(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_rollup_property_source_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_rollup_property_source_link._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rollup_property_source_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_rollup_property_source_link",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_get_rollup_property_source_link",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetRollupPropertySourceLinkRequest.pb(
+            analytics_admin.GetRollupPropertySourceLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.RollupPropertySourceLink.to_json(
+            resources.RollupPropertySourceLink()
+        )
+
+        request = analytics_admin.GetRollupPropertySourceLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.RollupPropertySourceLink()
+
+        client.get_rollup_property_source_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_rollup_property_source_link_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.GetRollupPropertySourceLinkRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/rollupPropertySourceLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_rollup_property_source_link(request)
+
+
+def test_get_rollup_property_source_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.RollupPropertySourceLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/rollupPropertySourceLinks/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.RollupPropertySourceLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_rollup_property_source_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/rollupPropertySourceLinks/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_rollup_property_source_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_rollup_property_source_link(
+            analytics_admin.GetRollupPropertySourceLinkRequest(),
+            name="name_value",
+        )
+
+
+def test_get_rollup_property_source_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListRollupPropertySourceLinksRequest,
+        dict,
+    ],
+)
+def test_list_rollup_property_source_links_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListRollupPropertySourceLinksResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = analytics_admin.ListRollupPropertySourceLinksResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_rollup_property_source_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRollupPropertySourceLinksPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_rollup_property_source_links_rest_required_fields(
+    request_type=analytics_admin.ListRollupPropertySourceLinksRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_rollup_property_source_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_rollup_property_source_links._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListRollupPropertySourceLinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = analytics_admin.ListRollupPropertySourceLinksResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_rollup_property_source_links(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_rollup_property_source_links_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_rollup_property_source_links._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_rollup_property_source_links_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_rollup_property_source_links",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_list_rollup_property_source_links",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListRollupPropertySourceLinksRequest.pb(
+            analytics_admin.ListRollupPropertySourceLinksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.ListRollupPropertySourceLinksResponse.to_json(
+                analytics_admin.ListRollupPropertySourceLinksResponse()
+            )
+        )
+
+        request = analytics_admin.ListRollupPropertySourceLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListRollupPropertySourceLinksResponse()
+
+        client.list_rollup_property_source_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_rollup_property_source_links_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.ListRollupPropertySourceLinksRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_rollup_property_source_links(request)
+
+
+def test_list_rollup_property_source_links_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListRollupPropertySourceLinksResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = analytics_admin.ListRollupPropertySourceLinksResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_rollup_property_source_links(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/rollupPropertySourceLinks"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_rollup_property_source_links_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_rollup_property_source_links(
+            analytics_admin.ListRollupPropertySourceLinksRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_rollup_property_source_links_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListRollupPropertySourceLinksResponse(
+                rollup_property_source_links=[
+                    resources.RollupPropertySourceLink(),
+                    resources.RollupPropertySourceLink(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListRollupPropertySourceLinksResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_rollup_property_source_links(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.RollupPropertySourceLink) for i in results)
+
+        pages = list(
+            client.list_rollup_property_source_links(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateRollupPropertySourceLinkRequest,
+        dict,
+    ],
+)
+def test_create_rollup_property_source_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["rollup_property_source_link"] = {
+        "name": "name_value",
+        "source_property": "source_property_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = analytics_admin.CreateRollupPropertySourceLinkRequest.meta.fields[
+        "rollup_property_source_link"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "rollup_property_source_link"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["rollup_property_source_link"][field])
+                ):
+                    del request_init["rollup_property_source_link"][field][i][subfield]
+            else:
+                del request_init["rollup_property_source_link"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.RollupPropertySourceLink(
+            name="name_value",
+            source_property="source_property_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.RollupPropertySourceLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_rollup_property_source_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.RollupPropertySourceLink)
+    assert response.name == "name_value"
+    assert response.source_property == "source_property_value"
+
+
+def test_create_rollup_property_source_link_rest_required_fields(
+    request_type=analytics_admin.CreateRollupPropertySourceLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_rollup_property_source_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_rollup_property_source_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.RollupPropertySourceLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.RollupPropertySourceLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_rollup_property_source_link(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_rollup_property_source_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.create_rollup_property_source_link._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "rollupPropertySourceLink",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_rollup_property_source_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_rollup_property_source_link",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_create_rollup_property_source_link",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateRollupPropertySourceLinkRequest.pb(
+            analytics_admin.CreateRollupPropertySourceLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.RollupPropertySourceLink.to_json(
+            resources.RollupPropertySourceLink()
+        )
+
+        request = analytics_admin.CreateRollupPropertySourceLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.RollupPropertySourceLink()
+
+        client.create_rollup_property_source_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_rollup_property_source_link_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.CreateRollupPropertySourceLinkRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_rollup_property_source_link(request)
+
+
+def test_create_rollup_property_source_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.RollupPropertySourceLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            rollup_property_source_link=resources.RollupPropertySourceLink(
+                name="name_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.RollupPropertySourceLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_rollup_property_source_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/rollupPropertySourceLinks"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_rollup_property_source_link_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_rollup_property_source_link(
+            analytics_admin.CreateRollupPropertySourceLinkRequest(),
+            parent="parent_value",
+            rollup_property_source_link=resources.RollupPropertySourceLink(
+                name="name_value"
+            ),
+        )
+
+
+def test_create_rollup_property_source_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteRollupPropertySourceLinkRequest,
+        dict,
+    ],
+)
+def test_delete_rollup_property_source_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/rollupPropertySourceLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_rollup_property_source_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_rollup_property_source_link_rest_required_fields(
+    request_type=analytics_admin.DeleteRollupPropertySourceLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_rollup_property_source_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_rollup_property_source_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_rollup_property_source_link(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_rollup_property_source_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.delete_rollup_property_source_link._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_rollup_property_source_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_delete_rollup_property_source_link",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteRollupPropertySourceLinkRequest.pb(
+            analytics_admin.DeleteRollupPropertySourceLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteRollupPropertySourceLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_rollup_property_source_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_rollup_property_source_link_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.DeleteRollupPropertySourceLinkRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/rollupPropertySourceLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_rollup_property_source_link(request)
+
+
+def test_delete_rollup_property_source_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/rollupPropertySourceLinks/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_rollup_property_source_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/rollupPropertySourceLinks/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_rollup_property_source_link_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_rollup_property_source_link(
+            analytics_admin.DeleteRollupPropertySourceLinkRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_rollup_property_source_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateSubpropertyRequest,
+        dict,
+    ],
+)
+def test_create_subproperty_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.CreateSubpropertyResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = analytics_admin.CreateSubpropertyResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_subproperty(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.CreateSubpropertyResponse)
+
+
+def test_create_subproperty_rest_required_fields(
+    request_type=analytics_admin.CreateSubpropertyRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_subproperty._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_subproperty._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.CreateSubpropertyResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = analytics_admin.CreateSubpropertyResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_subproperty(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_subproperty_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_subproperty._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "subproperty",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_subproperty_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_subproperty"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_subproperty"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateSubpropertyRequest.pb(
+            analytics_admin.CreateSubpropertyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.CreateSubpropertyResponse.to_json(
+            analytics_admin.CreateSubpropertyResponse()
+        )
+
+        request = analytics_admin.CreateSubpropertyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.CreateSubpropertyResponse()
+
+        client.create_subproperty(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_subproperty_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateSubpropertyRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_subproperty(request)
+
+
+def test_create_subproperty_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteSubpropertyEventFilterRequest,
+        dict,
+    ],
+)
+def test_delete_subproperty_event_filter_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_subproperty_event_filter(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_subproperty_event_filter_rest_required_fields(
+    request_type=analytics_admin.DeleteSubpropertyEventFilterRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_subproperty_event_filter._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_subproperty_event_filter._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_subproperty_event_filter(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_subproperty_event_filter_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_subproperty_event_filter._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_subproperty_event_filter_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_delete_subproperty_event_filter",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteSubpropertyEventFilterRequest.pb(
+            analytics_admin.DeleteSubpropertyEventFilterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteSubpropertyEventFilterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_subproperty_event_filter(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_subproperty_event_filter_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.DeleteSubpropertyEventFilterRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_subproperty_event_filter(request)
+
+
+def test_delete_subproperty_event_filter_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_subproperty_event_filter(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/subpropertyEventFilters/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_subproperty_event_filter_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_subproperty_event_filter(
+            analytics_admin.DeleteSubpropertyEventFilterRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_subproperty_event_filter_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateSubpropertyEventFilterRequest,
+        dict,
+    ],
+)
+def test_create_subproperty_event_filter_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["subproperty_event_filter"] = {
+        "name": "name_value",
+        "apply_to_property": "apply_to_property_value",
+        "filter_clauses": [
+            {
+                "filter_clause_type": 1,
+                "filter_expression": {
+                    "or_group": {"filter_expressions": {}},
+                    "not_expression": {},
+                    "filter_condition": {
+                        "null_filter": True,
+                        "string_filter": {
+                            "match_type": 1,
+                            "value": "value_value",
+                            "case_sensitive": True,
+                        },
+                        "field_name": "field_name_value",
+                    },
+                },
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = analytics_admin.CreateSubpropertyEventFilterRequest.meta.fields[
+        "subproperty_event_filter"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "subproperty_event_filter"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["subproperty_event_filter"][field])):
+                    del request_init["subproperty_event_filter"][field][i][subfield]
+            else:
+                del request_init["subproperty_event_filter"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_subproperty_event_filter.SubpropertyEventFilter(
+            name="name_value",
+            apply_to_property="apply_to_property_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gaa_subproperty_event_filter.SubpropertyEventFilter.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_subproperty_event_filter(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_subproperty_event_filter.SubpropertyEventFilter)
+    assert response.name == "name_value"
+    assert response.apply_to_property == "apply_to_property_value"
+
+
+def test_create_subproperty_event_filter_rest_required_fields(
+    request_type=analytics_admin.CreateSubpropertyEventFilterRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_subproperty_event_filter._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_subproperty_event_filter._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gaa_subproperty_event_filter.SubpropertyEventFilter.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_subproperty_event_filter(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_subproperty_event_filter_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_subproperty_event_filter._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "subpropertyEventFilter",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_subproperty_event_filter_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_subproperty_event_filter",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_create_subproperty_event_filter",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateSubpropertyEventFilterRequest.pb(
+            analytics_admin.CreateSubpropertyEventFilterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            gaa_subproperty_event_filter.SubpropertyEventFilter.to_json(
+                gaa_subproperty_event_filter.SubpropertyEventFilter()
+            )
+        )
+
+        request = analytics_admin.CreateSubpropertyEventFilterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+
+        client.create_subproperty_event_filter(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_subproperty_event_filter_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.CreateSubpropertyEventFilterRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_subproperty_event_filter(request)
+
+
+def test_create_subproperty_event_filter_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gaa_subproperty_event_filter.SubpropertyEventFilter.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_subproperty_event_filter(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/subpropertyEventFilters"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_subproperty_event_filter_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_subproperty_event_filter(
+            analytics_admin.CreateSubpropertyEventFilterRequest(),
+            parent="parent_value",
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+        )
+
+
+def test_create_subproperty_event_filter_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AnalyticsAdminServiceGrpcTransport(
@@ -74430,16 +74839,6 @@ def test_analytics_admin_service_base_transport():
         "create_property",
         "delete_property",
         "update_property",
-        "get_user_link",
-        "batch_get_user_links",
-        "list_user_links",
-        "audit_user_links",
-        "create_user_link",
-        "batch_create_user_links",
-        "update_user_link",
-        "batch_update_user_links",
-        "delete_user_link",
-        "batch_delete_user_links",
         "create_firebase_link",
         "delete_firebase_link",
         "list_firebase_links",
@@ -74547,6 +74946,16 @@ def test_analytics_admin_service_base_transport():
         "create_event_create_rule",
         "update_event_create_rule",
         "delete_event_create_rule",
+        "update_data_redaction_settings",
+        "get_data_redaction_settings",
+        "create_rollup_property",
+        "get_rollup_property_source_link",
+        "list_rollup_property_source_links",
+        "create_rollup_property_source_link",
+        "delete_rollup_property_source_link",
+        "create_subproperty",
+        "delete_subproperty_event_filter",
+        "create_subproperty_event_filter",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -74861,36 +75270,6 @@ def test_analytics_admin_service_client_transport_session_collision(transport_na
     assert session1 != session2
     session1 = client1.transport.update_property._session
     session2 = client2.transport.update_property._session
-    assert session1 != session2
-    session1 = client1.transport.get_user_link._session
-    session2 = client2.transport.get_user_link._session
-    assert session1 != session2
-    session1 = client1.transport.batch_get_user_links._session
-    session2 = client2.transport.batch_get_user_links._session
-    assert session1 != session2
-    session1 = client1.transport.list_user_links._session
-    session2 = client2.transport.list_user_links._session
-    assert session1 != session2
-    session1 = client1.transport.audit_user_links._session
-    session2 = client2.transport.audit_user_links._session
-    assert session1 != session2
-    session1 = client1.transport.create_user_link._session
-    session2 = client2.transport.create_user_link._session
-    assert session1 != session2
-    session1 = client1.transport.batch_create_user_links._session
-    session2 = client2.transport.batch_create_user_links._session
-    assert session1 != session2
-    session1 = client1.transport.update_user_link._session
-    session2 = client2.transport.update_user_link._session
-    assert session1 != session2
-    session1 = client1.transport.batch_update_user_links._session
-    session2 = client2.transport.batch_update_user_links._session
-    assert session1 != session2
-    session1 = client1.transport.delete_user_link._session
-    session2 = client2.transport.delete_user_link._session
-    assert session1 != session2
-    session1 = client1.transport.batch_delete_user_links._session
-    session2 = client2.transport.batch_delete_user_links._session
     assert session1 != session2
     session1 = client1.transport.create_firebase_link._session
     session2 = client2.transport.create_firebase_link._session
@@ -75232,6 +75611,36 @@ def test_analytics_admin_service_client_transport_session_collision(transport_na
     assert session1 != session2
     session1 = client1.transport.delete_event_create_rule._session
     session2 = client2.transport.delete_event_create_rule._session
+    assert session1 != session2
+    session1 = client1.transport.update_data_redaction_settings._session
+    session2 = client2.transport.update_data_redaction_settings._session
+    assert session1 != session2
+    session1 = client1.transport.get_data_redaction_settings._session
+    session2 = client2.transport.get_data_redaction_settings._session
+    assert session1 != session2
+    session1 = client1.transport.create_rollup_property._session
+    session2 = client2.transport.create_rollup_property._session
+    assert session1 != session2
+    session1 = client1.transport.get_rollup_property_source_link._session
+    session2 = client2.transport.get_rollup_property_source_link._session
+    assert session1 != session2
+    session1 = client1.transport.list_rollup_property_source_links._session
+    session2 = client2.transport.list_rollup_property_source_links._session
+    assert session1 != session2
+    session1 = client1.transport.create_rollup_property_source_link._session
+    session2 = client2.transport.create_rollup_property_source_link._session
+    assert session1 != session2
+    session1 = client1.transport.delete_rollup_property_source_link._session
+    session2 = client2.transport.delete_rollup_property_source_link._session
+    assert session1 != session2
+    session1 = client1.transport.create_subproperty._session
+    session2 = client2.transport.create_subproperty._session
+    assert session1 != session2
+    session1 = client1.transport.delete_subproperty_event_filter._session
+    session2 = client2.transport.delete_subproperty_event_filter._session
+    assert session1 != session2
+    session1 = client1.transport.create_subproperty_event_filter._session
+    session2 = client2.transport.create_subproperty_event_filter._session
     assert session1 != session2
 
 
@@ -75609,8 +76018,35 @@ def test_parse_custom_metric_path():
     assert expected == actual
 
 
-def test_data_retention_settings_path():
+def test_data_redaction_settings_path():
     property = "whelk"
+    data_stream = "octopus"
+    expected = (
+        "properties/{property}/dataStreams/{data_stream}/dataRedactionSettings".format(
+            property=property,
+            data_stream=data_stream,
+        )
+    )
+    actual = AnalyticsAdminServiceClient.data_redaction_settings_path(
+        property, data_stream
+    )
+    assert expected == actual
+
+
+def test_parse_data_redaction_settings_path():
+    expected = {
+        "property": "oyster",
+        "data_stream": "nudibranch",
+    }
+    path = AnalyticsAdminServiceClient.data_redaction_settings_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnalyticsAdminServiceClient.parse_data_redaction_settings_path(path)
+    assert expected == actual
+
+
+def test_data_retention_settings_path():
+    property = "cuttlefish"
     expected = "properties/{property}/dataRetentionSettings".format(
         property=property,
     )
@@ -75620,7 +76056,7 @@ def test_data_retention_settings_path():
 
 def test_parse_data_retention_settings_path():
     expected = {
-        "property": "octopus",
+        "property": "mussel",
     }
     path = AnalyticsAdminServiceClient.data_retention_settings_path(**expected)
 
@@ -75630,7 +76066,7 @@ def test_parse_data_retention_settings_path():
 
 
 def test_data_sharing_settings_path():
-    account = "oyster"
+    account = "winkle"
     expected = "accounts/{account}/dataSharingSettings".format(
         account=account,
     )
@@ -75640,7 +76076,7 @@ def test_data_sharing_settings_path():
 
 def test_parse_data_sharing_settings_path():
     expected = {
-        "account": "nudibranch",
+        "account": "nautilus",
     }
     path = AnalyticsAdminServiceClient.data_sharing_settings_path(**expected)
 
@@ -75650,8 +76086,8 @@ def test_parse_data_sharing_settings_path():
 
 
 def test_data_stream_path():
-    property = "cuttlefish"
-    data_stream = "mussel"
+    property = "scallop"
+    data_stream = "abalone"
     expected = "properties/{property}/dataStreams/{data_stream}".format(
         property=property,
         data_stream=data_stream,
@@ -75662,8 +76098,8 @@ def test_data_stream_path():
 
 def test_parse_data_stream_path():
     expected = {
-        "property": "winkle",
-        "data_stream": "nautilus",
+        "property": "squid",
+        "data_stream": "clam",
     }
     path = AnalyticsAdminServiceClient.data_stream_path(**expected)
 
@@ -75673,8 +76109,8 @@ def test_parse_data_stream_path():
 
 
 def test_display_video360_advertiser_link_path():
-    property = "scallop"
-    display_video_360_advertiser_link = "abalone"
+    property = "whelk"
+    display_video_360_advertiser_link = "octopus"
     expected = "properties/{property}/displayVideo360AdvertiserLinks/{display_video_360_advertiser_link}".format(
         property=property,
         display_video_360_advertiser_link=display_video_360_advertiser_link,
@@ -75687,8 +76123,8 @@ def test_display_video360_advertiser_link_path():
 
 def test_parse_display_video360_advertiser_link_path():
     expected = {
-        "property": "squid",
-        "display_video_360_advertiser_link": "clam",
+        "property": "oyster",
+        "display_video_360_advertiser_link": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.display_video360_advertiser_link_path(**expected)
 
@@ -75700,8 +76136,8 @@ def test_parse_display_video360_advertiser_link_path():
 
 
 def test_display_video360_advertiser_link_proposal_path():
-    property = "whelk"
-    display_video_360_advertiser_link_proposal = "octopus"
+    property = "cuttlefish"
+    display_video_360_advertiser_link_proposal = "mussel"
     expected = "properties/{property}/displayVideo360AdvertiserLinkProposals/{display_video_360_advertiser_link_proposal}".format(
         property=property,
         display_video_360_advertiser_link_proposal=display_video_360_advertiser_link_proposal,
@@ -75714,8 +76150,8 @@ def test_display_video360_advertiser_link_proposal_path():
 
 def test_parse_display_video360_advertiser_link_proposal_path():
     expected = {
-        "property": "oyster",
-        "display_video_360_advertiser_link_proposal": "nudibranch",
+        "property": "winkle",
+        "display_video_360_advertiser_link_proposal": "nautilus",
     }
     path = AnalyticsAdminServiceClient.display_video360_advertiser_link_proposal_path(
         **expected
@@ -75729,8 +76165,8 @@ def test_parse_display_video360_advertiser_link_proposal_path():
 
 
 def test_enhanced_measurement_settings_path():
-    property = "cuttlefish"
-    data_stream = "mussel"
+    property = "scallop"
+    data_stream = "abalone"
     expected = "properties/{property}/dataStreams/{data_stream}/enhancedMeasurementSettings".format(
         property=property,
         data_stream=data_stream,
@@ -75743,8 +76179,8 @@ def test_enhanced_measurement_settings_path():
 
 def test_parse_enhanced_measurement_settings_path():
     expected = {
-        "property": "winkle",
-        "data_stream": "nautilus",
+        "property": "squid",
+        "data_stream": "clam",
     }
     path = AnalyticsAdminServiceClient.enhanced_measurement_settings_path(**expected)
 
@@ -75754,9 +76190,9 @@ def test_parse_enhanced_measurement_settings_path():
 
 
 def test_event_create_rule_path():
-    property = "scallop"
-    data_stream = "abalone"
-    event_create_rule = "squid"
+    property = "whelk"
+    data_stream = "octopus"
+    event_create_rule = "oyster"
     expected = "properties/{property}/dataStreams/{data_stream}/eventCreateRules/{event_create_rule}".format(
         property=property,
         data_stream=data_stream,
@@ -75770,9 +76206,9 @@ def test_event_create_rule_path():
 
 def test_parse_event_create_rule_path():
     expected = {
-        "property": "clam",
-        "data_stream": "whelk",
-        "event_create_rule": "octopus",
+        "property": "nudibranch",
+        "data_stream": "cuttlefish",
+        "event_create_rule": "mussel",
     }
     path = AnalyticsAdminServiceClient.event_create_rule_path(**expected)
 
@@ -75782,8 +76218,8 @@ def test_parse_event_create_rule_path():
 
 
 def test_expanded_data_set_path():
-    property = "oyster"
-    expanded_data_set = "nudibranch"
+    property = "winkle"
+    expanded_data_set = "nautilus"
     expected = "properties/{property}/expandedDataSets/{expanded_data_set}".format(
         property=property,
         expanded_data_set=expanded_data_set,
@@ -75796,8 +76232,8 @@ def test_expanded_data_set_path():
 
 def test_parse_expanded_data_set_path():
     expected = {
-        "property": "cuttlefish",
-        "expanded_data_set": "mussel",
+        "property": "scallop",
+        "expanded_data_set": "abalone",
     }
     path = AnalyticsAdminServiceClient.expanded_data_set_path(**expected)
 
@@ -75807,8 +76243,8 @@ def test_parse_expanded_data_set_path():
 
 
 def test_firebase_link_path():
-    property = "winkle"
-    firebase_link = "nautilus"
+    property = "squid"
+    firebase_link = "clam"
     expected = "properties/{property}/firebaseLinks/{firebase_link}".format(
         property=property,
         firebase_link=firebase_link,
@@ -75819,8 +76255,8 @@ def test_firebase_link_path():
 
 def test_parse_firebase_link_path():
     expected = {
-        "property": "scallop",
-        "firebase_link": "abalone",
+        "property": "whelk",
+        "firebase_link": "octopus",
     }
     path = AnalyticsAdminServiceClient.firebase_link_path(**expected)
 
@@ -75830,8 +76266,8 @@ def test_parse_firebase_link_path():
 
 
 def test_global_site_tag_path():
-    property = "squid"
-    data_stream = "clam"
+    property = "oyster"
+    data_stream = "nudibranch"
     expected = "properties/{property}/dataStreams/{data_stream}/globalSiteTag".format(
         property=property,
         data_stream=data_stream,
@@ -75842,8 +76278,8 @@ def test_global_site_tag_path():
 
 def test_parse_global_site_tag_path():
     expected = {
-        "property": "whelk",
-        "data_stream": "octopus",
+        "property": "cuttlefish",
+        "data_stream": "mussel",
     }
     path = AnalyticsAdminServiceClient.global_site_tag_path(**expected)
 
@@ -75853,8 +76289,8 @@ def test_parse_global_site_tag_path():
 
 
 def test_google_ads_link_path():
-    property = "oyster"
-    google_ads_link = "nudibranch"
+    property = "winkle"
+    google_ads_link = "nautilus"
     expected = "properties/{property}/googleAdsLinks/{google_ads_link}".format(
         property=property,
         google_ads_link=google_ads_link,
@@ -75865,8 +76301,8 @@ def test_google_ads_link_path():
 
 def test_parse_google_ads_link_path():
     expected = {
-        "property": "cuttlefish",
-        "google_ads_link": "mussel",
+        "property": "scallop",
+        "google_ads_link": "abalone",
     }
     path = AnalyticsAdminServiceClient.google_ads_link_path(**expected)
 
@@ -75876,7 +76312,7 @@ def test_parse_google_ads_link_path():
 
 
 def test_google_signals_settings_path():
-    property = "winkle"
+    property = "squid"
     expected = "properties/{property}/googleSignalsSettings".format(
         property=property,
     )
@@ -75886,7 +76322,7 @@ def test_google_signals_settings_path():
 
 def test_parse_google_signals_settings_path():
     expected = {
-        "property": "nautilus",
+        "property": "clam",
     }
     path = AnalyticsAdminServiceClient.google_signals_settings_path(**expected)
 
@@ -75896,9 +76332,9 @@ def test_parse_google_signals_settings_path():
 
 
 def test_measurement_protocol_secret_path():
-    property = "scallop"
-    data_stream = "abalone"
-    measurement_protocol_secret = "squid"
+    property = "whelk"
+    data_stream = "octopus"
+    measurement_protocol_secret = "oyster"
     expected = "properties/{property}/dataStreams/{data_stream}/measurementProtocolSecrets/{measurement_protocol_secret}".format(
         property=property,
         data_stream=data_stream,
@@ -75912,9 +76348,9 @@ def test_measurement_protocol_secret_path():
 
 def test_parse_measurement_protocol_secret_path():
     expected = {
-        "property": "clam",
-        "data_stream": "whelk",
-        "measurement_protocol_secret": "octopus",
+        "property": "nudibranch",
+        "data_stream": "cuttlefish",
+        "measurement_protocol_secret": "mussel",
     }
     path = AnalyticsAdminServiceClient.measurement_protocol_secret_path(**expected)
 
@@ -75924,7 +76360,7 @@ def test_parse_measurement_protocol_secret_path():
 
 
 def test_property_path():
-    property = "oyster"
+    property = "winkle"
     expected = "properties/{property}".format(
         property=property,
     )
@@ -75934,7 +76370,7 @@ def test_property_path():
 
 def test_parse_property_path():
     expected = {
-        "property": "nudibranch",
+        "property": "nautilus",
     }
     path = AnalyticsAdminServiceClient.property_path(**expected)
 
@@ -75943,9 +76379,34 @@ def test_parse_property_path():
     assert expected == actual
 
 
+def test_rollup_property_source_link_path():
+    property = "scallop"
+    rollup_property_source_link = "abalone"
+    expected = "properties/{property}/rollupPropertySourceLinks/{rollup_property_source_link}".format(
+        property=property,
+        rollup_property_source_link=rollup_property_source_link,
+    )
+    actual = AnalyticsAdminServiceClient.rollup_property_source_link_path(
+        property, rollup_property_source_link
+    )
+    assert expected == actual
+
+
+def test_parse_rollup_property_source_link_path():
+    expected = {
+        "property": "squid",
+        "rollup_property_source_link": "clam",
+    }
+    path = AnalyticsAdminServiceClient.rollup_property_source_link_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnalyticsAdminServiceClient.parse_rollup_property_source_link_path(path)
+    assert expected == actual
+
+
 def test_search_ads360_link_path():
-    property = "cuttlefish"
-    search_ads_360_link = "mussel"
+    property = "whelk"
+    search_ads_360_link = "octopus"
     expected = "properties/{property}/searchAds360Links/{search_ads_360_link}".format(
         property=property,
         search_ads_360_link=search_ads_360_link,
@@ -75958,8 +76419,8 @@ def test_search_ads360_link_path():
 
 def test_parse_search_ads360_link_path():
     expected = {
-        "property": "winkle",
-        "search_ads_360_link": "nautilus",
+        "property": "oyster",
+        "search_ads_360_link": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.search_ads360_link_path(**expected)
 
@@ -75969,9 +76430,9 @@ def test_parse_search_ads360_link_path():
 
 
 def test_sk_ad_network_conversion_value_schema_path():
-    property = "scallop"
-    data_stream = "abalone"
-    skadnetwork_conversion_value_schema = "squid"
+    property = "cuttlefish"
+    data_stream = "mussel"
+    skadnetwork_conversion_value_schema = "winkle"
     expected = "properties/{property}/dataStreams/{data_stream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}".format(
         property=property,
         data_stream=data_stream,
@@ -75985,9 +76446,9 @@ def test_sk_ad_network_conversion_value_schema_path():
 
 def test_parse_sk_ad_network_conversion_value_schema_path():
     expected = {
-        "property": "clam",
-        "data_stream": "whelk",
-        "skadnetwork_conversion_value_schema": "octopus",
+        "property": "nautilus",
+        "data_stream": "scallop",
+        "skadnetwork_conversion_value_schema": "abalone",
     }
     path = AnalyticsAdminServiceClient.sk_ad_network_conversion_value_schema_path(
         **expected
@@ -76002,31 +76463,33 @@ def test_parse_sk_ad_network_conversion_value_schema_path():
     assert expected == actual
 
 
-def test_user_link_path():
-    account = "oyster"
-    user_link = "nudibranch"
-    expected = "accounts/{account}/userLinks/{user_link}".format(
-        account=account,
-        user_link=user_link,
+def test_subproperty_event_filter_path():
+    property = "squid"
+    sub_property_event_filter = "clam"
+    expected = "properties/{property}/subpropertyEventFilters/{sub_property_event_filter}".format(
+        property=property,
+        sub_property_event_filter=sub_property_event_filter,
     )
-    actual = AnalyticsAdminServiceClient.user_link_path(account, user_link)
+    actual = AnalyticsAdminServiceClient.subproperty_event_filter_path(
+        property, sub_property_event_filter
+    )
     assert expected == actual
 
 
-def test_parse_user_link_path():
+def test_parse_subproperty_event_filter_path():
     expected = {
-        "account": "cuttlefish",
-        "user_link": "mussel",
+        "property": "whelk",
+        "sub_property_event_filter": "octopus",
     }
-    path = AnalyticsAdminServiceClient.user_link_path(**expected)
+    path = AnalyticsAdminServiceClient.subproperty_event_filter_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = AnalyticsAdminServiceClient.parse_user_link_path(path)
+    actual = AnalyticsAdminServiceClient.parse_subproperty_event_filter_path(path)
     assert expected == actual
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -76036,7 +76499,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.common_billing_account_path(**expected)
 
@@ -76046,7 +76509,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -76056,7 +76519,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "mussel",
     }
     path = AnalyticsAdminServiceClient.common_folder_path(**expected)
 
@@ -76066,7 +76529,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -76076,7 +76539,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nautilus",
     }
     path = AnalyticsAdminServiceClient.common_organization_path(**expected)
 
@@ -76086,7 +76549,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -76096,7 +76559,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "abalone",
     }
     path = AnalyticsAdminServiceClient.common_project_path(**expected)
 
@@ -76106,8 +76569,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -76118,8 +76581,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = AnalyticsAdminServiceClient.common_location_path(**expected)
 

@@ -420,262 +420,6 @@ class ListPropertiesAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
-class ListUserLinksPager:
-    """A pager for iterating through ``list_user_links`` requests.
-
-    This class thinly wraps an initial
-    :class:`google.analytics.admin_v1alpha.types.ListUserLinksResponse` object, and
-    provides an ``__iter__`` method to iterate through its
-    ``user_links`` field.
-
-    If there are more pages, the ``__iter__`` method will make additional
-    ``ListUserLinks`` requests and continue to iterate
-    through the ``user_links`` field on the
-    corresponding responses.
-
-    All the usual :class:`google.analytics.admin_v1alpha.types.ListUserLinksResponse`
-    attributes are available on the pager. If multiple requests are made, only
-    the most recent response is retained, and thus used for attribute lookup.
-    """
-
-    def __init__(
-        self,
-        method: Callable[..., analytics_admin.ListUserLinksResponse],
-        request: analytics_admin.ListUserLinksRequest,
-        response: analytics_admin.ListUserLinksResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
-        """Instantiate the pager.
-
-        Args:
-            method (Callable): The method that was originally called, and
-                which instantiated this pager.
-            request (google.analytics.admin_v1alpha.types.ListUserLinksRequest):
-                The initial request object.
-            response (google.analytics.admin_v1alpha.types.ListUserLinksResponse):
-                The initial response object.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        self._method = method
-        self._request = analytics_admin.ListUserLinksRequest(request)
-        self._response = response
-        self._metadata = metadata
-
-    def __getattr__(self, name: str) -> Any:
-        return getattr(self._response, name)
-
-    @property
-    def pages(self) -> Iterator[analytics_admin.ListUserLinksResponse]:
-        yield self._response
-        while self._response.next_page_token:
-            self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
-            yield self._response
-
-    def __iter__(self) -> Iterator[resources.UserLink]:
-        for page in self.pages:
-            yield from page.user_links
-
-    def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
-
-
-class ListUserLinksAsyncPager:
-    """A pager for iterating through ``list_user_links`` requests.
-
-    This class thinly wraps an initial
-    :class:`google.analytics.admin_v1alpha.types.ListUserLinksResponse` object, and
-    provides an ``__aiter__`` method to iterate through its
-    ``user_links`` field.
-
-    If there are more pages, the ``__aiter__`` method will make additional
-    ``ListUserLinks`` requests and continue to iterate
-    through the ``user_links`` field on the
-    corresponding responses.
-
-    All the usual :class:`google.analytics.admin_v1alpha.types.ListUserLinksResponse`
-    attributes are available on the pager. If multiple requests are made, only
-    the most recent response is retained, and thus used for attribute lookup.
-    """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[analytics_admin.ListUserLinksResponse]],
-        request: analytics_admin.ListUserLinksRequest,
-        response: analytics_admin.ListUserLinksResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
-        """Instantiates the pager.
-
-        Args:
-            method (Callable): The method that was originally called, and
-                which instantiated this pager.
-            request (google.analytics.admin_v1alpha.types.ListUserLinksRequest):
-                The initial request object.
-            response (google.analytics.admin_v1alpha.types.ListUserLinksResponse):
-                The initial response object.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        self._method = method
-        self._request = analytics_admin.ListUserLinksRequest(request)
-        self._response = response
-        self._metadata = metadata
-
-    def __getattr__(self, name: str) -> Any:
-        return getattr(self._response, name)
-
-    @property
-    async def pages(self) -> AsyncIterator[analytics_admin.ListUserLinksResponse]:
-        yield self._response
-        while self._response.next_page_token:
-            self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
-            yield self._response
-
-    def __aiter__(self) -> AsyncIterator[resources.UserLink]:
-        async def async_generator():
-            async for page in self.pages:
-                for response in page.user_links:
-                    yield response
-
-        return async_generator()
-
-    def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
-
-
-class AuditUserLinksPager:
-    """A pager for iterating through ``audit_user_links`` requests.
-
-    This class thinly wraps an initial
-    :class:`google.analytics.admin_v1alpha.types.AuditUserLinksResponse` object, and
-    provides an ``__iter__`` method to iterate through its
-    ``user_links`` field.
-
-    If there are more pages, the ``__iter__`` method will make additional
-    ``AuditUserLinks`` requests and continue to iterate
-    through the ``user_links`` field on the
-    corresponding responses.
-
-    All the usual :class:`google.analytics.admin_v1alpha.types.AuditUserLinksResponse`
-    attributes are available on the pager. If multiple requests are made, only
-    the most recent response is retained, and thus used for attribute lookup.
-    """
-
-    def __init__(
-        self,
-        method: Callable[..., analytics_admin.AuditUserLinksResponse],
-        request: analytics_admin.AuditUserLinksRequest,
-        response: analytics_admin.AuditUserLinksResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
-        """Instantiate the pager.
-
-        Args:
-            method (Callable): The method that was originally called, and
-                which instantiated this pager.
-            request (google.analytics.admin_v1alpha.types.AuditUserLinksRequest):
-                The initial request object.
-            response (google.analytics.admin_v1alpha.types.AuditUserLinksResponse):
-                The initial response object.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        self._method = method
-        self._request = analytics_admin.AuditUserLinksRequest(request)
-        self._response = response
-        self._metadata = metadata
-
-    def __getattr__(self, name: str) -> Any:
-        return getattr(self._response, name)
-
-    @property
-    def pages(self) -> Iterator[analytics_admin.AuditUserLinksResponse]:
-        yield self._response
-        while self._response.next_page_token:
-            self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, metadata=self._metadata)
-            yield self._response
-
-    def __iter__(self) -> Iterator[resources.AuditUserLink]:
-        for page in self.pages:
-            yield from page.user_links
-
-    def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
-
-
-class AuditUserLinksAsyncPager:
-    """A pager for iterating through ``audit_user_links`` requests.
-
-    This class thinly wraps an initial
-    :class:`google.analytics.admin_v1alpha.types.AuditUserLinksResponse` object, and
-    provides an ``__aiter__`` method to iterate through its
-    ``user_links`` field.
-
-    If there are more pages, the ``__aiter__`` method will make additional
-    ``AuditUserLinks`` requests and continue to iterate
-    through the ``user_links`` field on the
-    corresponding responses.
-
-    All the usual :class:`google.analytics.admin_v1alpha.types.AuditUserLinksResponse`
-    attributes are available on the pager. If multiple requests are made, only
-    the most recent response is retained, and thus used for attribute lookup.
-    """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[analytics_admin.AuditUserLinksResponse]],
-        request: analytics_admin.AuditUserLinksRequest,
-        response: analytics_admin.AuditUserLinksResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
-        """Instantiates the pager.
-
-        Args:
-            method (Callable): The method that was originally called, and
-                which instantiated this pager.
-            request (google.analytics.admin_v1alpha.types.AuditUserLinksRequest):
-                The initial request object.
-            response (google.analytics.admin_v1alpha.types.AuditUserLinksResponse):
-                The initial response object.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        self._method = method
-        self._request = analytics_admin.AuditUserLinksRequest(request)
-        self._response = response
-        self._metadata = metadata
-
-    def __getattr__(self, name: str) -> Any:
-        return getattr(self._response, name)
-
-    @property
-    async def pages(self) -> AsyncIterator[analytics_admin.AuditUserLinksResponse]:
-        yield self._response
-        while self._response.next_page_token:
-            self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, metadata=self._metadata)
-            yield self._response
-
-    def __aiter__(self) -> AsyncIterator[resources.AuditUserLink]:
-        async def async_generator():
-            async for page in self.pages:
-                for response in page.user_links:
-                    yield response
-
-        return async_generator()
-
-    def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
-
-
 class ListFirebaseLinksPager:
     """A pager for iterating through ``list_firebase_links`` requests.
 
@@ -3162,6 +2906,138 @@ class ListEventCreateRulesAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.event_create_rules:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRollupPropertySourceLinksPager:
+    """A pager for iterating through ``list_rollup_property_source_links`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListRollupPropertySourceLinksResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``rollup_property_source_links`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListRollupPropertySourceLinks`` requests and continue to iterate
+    through the ``rollup_property_source_links`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListRollupPropertySourceLinksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_admin.ListRollupPropertySourceLinksResponse],
+        request: analytics_admin.ListRollupPropertySourceLinksRequest,
+        response: analytics_admin.ListRollupPropertySourceLinksResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListRollupPropertySourceLinksRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListRollupPropertySourceLinksResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListRollupPropertySourceLinksRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[analytics_admin.ListRollupPropertySourceLinksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.RollupPropertySourceLink]:
+        for page in self.pages:
+            yield from page.rollup_property_source_links
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRollupPropertySourceLinksAsyncPager:
+    """A pager for iterating through ``list_rollup_property_source_links`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListRollupPropertySourceLinksResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``rollup_property_source_links`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListRollupPropertySourceLinks`` requests and continue to iterate
+    through the ``rollup_property_source_links`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListRollupPropertySourceLinksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[analytics_admin.ListRollupPropertySourceLinksResponse]
+        ],
+        request: analytics_admin.ListRollupPropertySourceLinksRequest,
+        response: analytics_admin.ListRollupPropertySourceLinksResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListRollupPropertySourceLinksRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListRollupPropertySourceLinksResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListRollupPropertySourceLinksRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[analytics_admin.ListRollupPropertySourceLinksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.RollupPropertySourceLink]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.rollup_property_source_links:
                     yield response
 
         return async_generator()

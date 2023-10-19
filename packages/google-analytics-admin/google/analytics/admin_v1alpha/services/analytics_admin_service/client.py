@@ -55,6 +55,9 @@ from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_gr
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
+from google.analytics.admin_v1alpha.types import (
+    subproperty_event_filter as gaa_subproperty_event_filter,
+)
 from google.analytics.admin_v1alpha.types import access_report, analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
@@ -62,6 +65,7 @@ from google.analytics.admin_v1alpha.types import channel_group
 from google.analytics.admin_v1alpha.types import event_create_and_edit
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
+from google.analytics.admin_v1alpha.types import subproperty_event_filter
 
 from .transports.base import DEFAULT_CLIENT_INFO, AnalyticsAdminServiceTransport
 from .transports.grpc import AnalyticsAdminServiceGrpcTransport
@@ -391,6 +395,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def data_redaction_settings_path(
+        property: str,
+        data_stream: str,
+    ) -> str:
+        """Returns a fully-qualified data_redaction_settings string."""
+        return "properties/{property}/dataStreams/{data_stream}/dataRedactionSettings".format(
+            property=property,
+            data_stream=data_stream,
+        )
+
+    @staticmethod
+    def parse_data_redaction_settings_path(path: str) -> Dict[str, str]:
+        """Parses a data_redaction_settings path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/dataStreams/(?P<data_stream>.+?)/dataRedactionSettings$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def data_retention_settings_path(
         property: str,
     ) -> str:
@@ -655,6 +679,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def rollup_property_source_link_path(
+        property: str,
+        rollup_property_source_link: str,
+    ) -> str:
+        """Returns a fully-qualified rollup_property_source_link string."""
+        return "properties/{property}/rollupPropertySourceLinks/{rollup_property_source_link}".format(
+            property=property,
+            rollup_property_source_link=rollup_property_source_link,
+        )
+
+    @staticmethod
+    def parse_rollup_property_source_link_path(path: str) -> Dict[str, str]:
+        """Parses a rollup_property_source_link path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/rollupPropertySourceLinks/(?P<rollup_property_source_link>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def search_ads360_link_path(
         property: str,
         search_ads_360_link: str,
@@ -697,20 +741,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def user_link_path(
-        account: str,
-        user_link: str,
+    def subproperty_event_filter_path(
+        property: str,
+        sub_property_event_filter: str,
     ) -> str:
-        """Returns a fully-qualified user_link string."""
-        return "accounts/{account}/userLinks/{user_link}".format(
-            account=account,
-            user_link=user_link,
+        """Returns a fully-qualified subproperty_event_filter string."""
+        return "properties/{property}/subpropertyEventFilters/{sub_property_event_filter}".format(
+            property=property,
+            sub_property_event_filter=sub_property_event_filter,
         )
 
     @staticmethod
-    def parse_user_link_path(path: str) -> Dict[str, str]:
-        """Parses a user_link path into its component segments."""
-        m = re.match(r"^accounts/(?P<account>.+?)/userLinks/(?P<user_link>.+?)$", path)
+    def parse_subproperty_event_filter_path(path: str) -> Dict[str, str]:
+        """Parses a subproperty_event_filter path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/subpropertyEventFilters/(?P<sub_property_event_filter>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -968,32 +1015,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.Account:
         r"""Lookup for a single Account.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_account():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetAccountRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_account(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetAccountRequest, dict]):
                 The request object. Request message for GetAccount RPC.
@@ -1074,32 +1095,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         excluded by default. Returns an empty list if no
         relevant accounts are found.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_accounts():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListAccountsRequest(
-                )
-
-                # Make the request
-                page_result = client.list_accounts(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListAccountsRequest, dict]):
                 The request object. Request message for ListAccounts RPC.
@@ -1167,34 +1162,11 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         If the accounts are not restored before the expiration
         time, the account and all child resources (eg:
-        Properties, GoogleAdsLinks, Streams, UserLinks) will be
-        permanently purged.
+        Properties, GoogleAdsLinks, Streams, AccessBindings)
+        will be permanently purged.
         https://support.google.com/analytics/answer/6154772
 
         Returns an error if the target is not found.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_account():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteAccountRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_account(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteAccountRequest, dict]):
@@ -1264,35 +1236,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Account:
         r"""Updates an account.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_account():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                account = admin_v1alpha.Account()
-                account.display_name = "display_name_value"
-
-                request = admin_v1alpha.UpdateAccountRequest(
-                    account=account,
-                )
-
-                # Make the request
-                response = client.update_account(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateAccountRequest, dict]):
@@ -1385,31 +1328,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> analytics_admin.ProvisionAccountTicketResponse:
         r"""Requests a ticket for creating an account.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_provision_account_ticket():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ProvisionAccountTicketRequest(
-                )
-
-                # Make the request
-                response = client.provision_account_ticket(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ProvisionAccountTicketRequest, dict]):
                 The request object. Request message for
@@ -1461,32 +1379,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListAccountSummariesPager:
         r"""Returns summaries of all accounts accessible by the
         caller.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_account_summaries():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListAccountSummariesRequest(
-                )
-
-                # Make the request
-                page_result = client.list_account_summaries(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListAccountSummariesRequest, dict]):
@@ -1549,32 +1441,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Property:
         r"""Lookup for a single "GA4" Property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_property():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetPropertyRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_property(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetPropertyRequest, dict]):
@@ -1656,33 +1522,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         excluded by default. Returns an empty list if no
         relevant properties are found.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_properties():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListPropertiesRequest(
-                    filter="filter_value",
-                )
-
-                # Make the request
-                page_result = client.list_properties(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListPropertiesRequest, dict]):
                 The request object. Request message for ListProperties
@@ -1745,36 +1584,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.Property:
         r"""Creates an "GA4" property with the specified location
         and attributes.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_property():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                property = admin_v1alpha.Property()
-                property.display_name = "display_name_value"
-                property.time_zone = "time_zone_value"
-
-                request = admin_v1alpha.CreatePropertyRequest(
-                    property=property,
-                )
-
-                # Make the request
-                response = client.create_property(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreatePropertyRequest, dict]):
@@ -1853,38 +1662,12 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         If the properties are not restored before the expiration
         time, the Property and all child resources (eg:
-        GoogleAdsLinks, Streams, UserLinks) will be permanently
-        purged.
+        GoogleAdsLinks, Streams, AccessBindings) will be
+        permanently purged.
         https://support.google.com/analytics/answer/6154772
 
         Returns an error if the target is not found, or is not a
         GA4 Property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_property():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeletePropertyRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.delete_property(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeletePropertyRequest, dict]):
@@ -1963,36 +1746,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Property:
         r"""Updates a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_property():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                property = admin_v1alpha.Property()
-                property.display_name = "display_name_value"
-                property.time_zone = "time_zone_value"
-
-                request = admin_v1alpha.UpdatePropertyRequest(
-                    property=property,
-                )
-
-                # Make the request
-                response = client.update_property(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdatePropertyRequest, dict]):
@@ -2074,979 +1827,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_user_link(
-        self,
-        request: Optional[Union[analytics_admin.GetUserLinkRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.UserLink:
-        r"""Gets information about a user's link to an account or
-        property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_user_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetUserLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_user_link(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetUserLinkRequest, dict]):
-                The request object. Request message for GetUserLink RPC.
-            name (str):
-                Required. Example format:
-                accounts/1234/userLinks/5678
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.UserLink:
-                A resource message representing a
-                user's permissions on an Account or
-                Property resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.GetUserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.GetUserLinkRequest):
-            request = analytics_admin.GetUserLinkRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_user_link]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def batch_get_user_links(
-        self,
-        request: Optional[Union[analytics_admin.BatchGetUserLinksRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_admin.BatchGetUserLinksResponse:
-        r"""Gets information about multiple users' links to an
-        account or property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_get_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.BatchGetUserLinksRequest(
-                    parent="parent_value",
-                    names=['names_value1', 'names_value2'],
-                )
-
-                # Make the request
-                response = client.batch_get_user_links(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.BatchGetUserLinksRequest, dict]):
-                The request object. Request message for BatchGetUserLinks
-                RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.BatchGetUserLinksResponse:
-                Response message for
-                BatchGetUserLinks RPC.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchGetUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.BatchGetUserLinksRequest):
-            request = analytics_admin.BatchGetUserLinksRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_get_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def list_user_links(
-        self,
-        request: Optional[Union[analytics_admin.ListUserLinksRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListUserLinksPager:
-        r"""Lists all user links on an account or property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListUserLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_user_links(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.ListUserLinksRequest, dict]):
-                The request object. Request message for ListUserLinks
-                RPC.
-            parent (str):
-                Required. Example format:
-                accounts/1234
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListUserLinksPager:
-                Response message for ListUserLinks
-                RPC.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.ListUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.ListUserLinksRequest):
-            request = analytics_admin.ListUserLinksRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListUserLinksPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def audit_user_links(
-        self,
-        request: Optional[Union[analytics_admin.AuditUserLinksRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.AuditUserLinksPager:
-        r"""Lists all user links on an account or property,
-        including implicit ones that come from effective
-        permissions granted by groups or organization admin
-        roles.
-
-        If a returned user link does not have direct
-        permissions, they cannot be removed from the account or
-        property directly with the DeleteUserLink command. They
-        have to be removed from the group/etc that gives them
-        permissions, which is currently only usable/discoverable
-        in the GA or GMP UIs.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_audit_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.AuditUserLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.audit_user_links(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.AuditUserLinksRequest, dict]):
-                The request object. Request message for AuditUserLinks
-                RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.AuditUserLinksPager:
-                Response message for AuditUserLinks
-                RPC.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.AuditUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.AuditUserLinksRequest):
-            request = analytics_admin.AuditUserLinksRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.audit_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.AuditUserLinksPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def create_user_link(
-        self,
-        request: Optional[Union[analytics_admin.CreateUserLinkRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        user_link: Optional[resources.UserLink] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.UserLink:
-        r"""Creates a user link on an account or property.
-
-        If the user with the specified email already has
-        permissions on the account or property, then the user's
-        existing permissions will be unioned with the
-        permissions specified in the new UserLink.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_user_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateUserLinkRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_user_link(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.CreateUserLinkRequest, dict]):
-                The request object. Request message for CreateUserLink
-                RPC.
-                Users can have multiple email addresses
-                associated with their Google account,
-                and one of these email addresses is the
-                "primary" email address. Any of the
-                email addresses associated with a Google
-                account may be used for a new UserLink,
-                but the returned UserLink will always
-                contain the "primary" email address. As
-                a result, the input and output email
-                address for this request may differ.
-            parent (str):
-                Required. Example format:
-                accounts/1234
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            user_link (google.analytics.admin_v1alpha.types.UserLink):
-                Required. The user link to create.
-                This corresponds to the ``user_link`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.UserLink:
-                A resource message representing a
-                user's permissions on an Account or
-                Property resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, user_link])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.CreateUserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.CreateUserLinkRequest):
-            request = analytics_admin.CreateUserLinkRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if user_link is not None:
-                request.user_link = user_link
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_user_link]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def batch_create_user_links(
-        self,
-        request: Optional[
-            Union[analytics_admin.BatchCreateUserLinksRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_admin.BatchCreateUserLinksResponse:
-        r"""Creates information about multiple users' links to an
-        account or property.
-        This method is transactional. If any UserLink cannot be
-        created, none of the UserLinks will be created.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_create_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                requests = admin_v1alpha.CreateUserLinkRequest()
-                requests.parent = "parent_value"
-
-                request = admin_v1alpha.BatchCreateUserLinksRequest(
-                    parent="parent_value",
-                    requests=requests,
-                )
-
-                # Make the request
-                response = client.batch_create_user_links(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.BatchCreateUserLinksRequest, dict]):
-                The request object. Request message for
-                BatchCreateUserLinks RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.BatchCreateUserLinksResponse:
-                Response message for
-                BatchCreateUserLinks RPC.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchCreateUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.BatchCreateUserLinksRequest):
-            request = analytics_admin.BatchCreateUserLinksRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_create_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def update_user_link(
-        self,
-        request: Optional[Union[analytics_admin.UpdateUserLinkRequest, dict]] = None,
-        *,
-        user_link: Optional[resources.UserLink] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.UserLink:
-        r"""Updates a user link on an account or property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_user_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateUserLinkRequest(
-                )
-
-                # Make the request
-                response = client.update_user_link(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateUserLinkRequest, dict]):
-                The request object. Request message for UpdateUserLink
-                RPC.
-            user_link (google.analytics.admin_v1alpha.types.UserLink):
-                Required. The user link to update.
-                This corresponds to the ``user_link`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.UserLink:
-                A resource message representing a
-                user's permissions on an Account or
-                Property resource.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([user_link])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateUserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.UpdateUserLinkRequest):
-            request = analytics_admin.UpdateUserLinkRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if user_link is not None:
-                request.user_link = user_link
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_user_link]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("user_link.name", request.user_link.name),)
-            ),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def batch_update_user_links(
-        self,
-        request: Optional[
-            Union[analytics_admin.BatchUpdateUserLinksRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_admin.BatchUpdateUserLinksResponse:
-        r"""Updates information about multiple users' links to an
-        account or property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_update_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.BatchUpdateUserLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.batch_update_user_links(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.BatchUpdateUserLinksRequest, dict]):
-                The request object. Request message for
-                BatchUpdateUserLinks RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.BatchUpdateUserLinksResponse:
-                Response message for
-                BatchUpdateUserLinks RPC.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchUpdateUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.BatchUpdateUserLinksRequest):
-            request = analytics_admin.BatchUpdateUserLinksRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_update_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def delete_user_link(
-        self,
-        request: Optional[Union[analytics_admin.DeleteUserLinkRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a user link on an account or property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_user_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteUserLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_user_link(request=request)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.DeleteUserLinkRequest, dict]):
-                The request object. Request message for DeleteUserLink
-                RPC.
-            name (str):
-                Required. Example format:
-                accounts/1234/userLinks/5678
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.DeleteUserLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.DeleteUserLinkRequest):
-            request = analytics_admin.DeleteUserLinkRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_user_link]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-    def batch_delete_user_links(
-        self,
-        request: Optional[
-            Union[analytics_admin.BatchDeleteUserLinksRequest, dict]
-        ] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes information about multiple users' links to an
-        account or property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_delete_user_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                requests = admin_v1alpha.DeleteUserLinkRequest()
-                requests.name = "name_value"
-
-                request = admin_v1alpha.BatchDeleteUserLinksRequest(
-                    parent="parent_value",
-                    requests=requests,
-                )
-
-                # Make the request
-                client.batch_delete_user_links(request=request)
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.BatchDeleteUserLinksRequest, dict]):
-                The request object. Request message for
-                BatchDeleteUserLinks RPC.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.BatchDeleteUserLinksRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.BatchDeleteUserLinksRequest):
-            request = analytics_admin.BatchDeleteUserLinksRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_delete_user_links]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
     def create_firebase_link(
         self,
         request: Optional[
@@ -3062,32 +1842,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Creates a FirebaseLink.
 
         Properties can have at most one FirebaseLink.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_firebase_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateFirebaseLinkRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_firebase_link(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateFirebaseLinkRequest, dict]):
@@ -3176,29 +1930,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a FirebaseLink on a property
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_firebase_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteFirebaseLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_firebase_link(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteFirebaseLinkRequest, dict]):
                 The request object. Request message for
@@ -3267,33 +1998,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListFirebaseLinksPager:
         r"""Lists FirebaseLinks on a property.
         Properties can have at most one FirebaseLink.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_firebase_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListFirebaseLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_firebase_links(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListFirebaseLinksRequest, dict]):
@@ -3384,32 +2088,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Returns the Site Tag for the specified web stream.
         Site Tags are immutable singletons.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_global_site_tag():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetGlobalSiteTagRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_global_site_tag(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetGlobalSiteTagRequest, dict]):
                 The request object. Request message for GetGlobalSiteTag
@@ -3493,32 +2171,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.GoogleAdsLink:
         r"""Creates a GoogleAdsLink.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_google_ads_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateGoogleAdsLinkRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_google_ads_link(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateGoogleAdsLinkRequest, dict]):
@@ -3607,31 +2259,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.GoogleAdsLink:
         r"""Updates a GoogleAdsLink on a property
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_google_ads_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateGoogleAdsLinkRequest(
-                )
-
-                # Make the request
-                response = client.update_google_ads_link(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateGoogleAdsLinkRequest, dict]):
@@ -3723,29 +2350,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a GoogleAdsLink on a property
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_google_ads_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteGoogleAdsLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_google_ads_link(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteGoogleAdsLinkRequest, dict]):
                 The request object. Request message for
@@ -3814,33 +2418,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGoogleAdsLinksPager:
         r"""Lists GoogleAdsLinks on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_google_ads_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListGoogleAdsLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_google_ads_links(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListGoogleAdsLinksRequest, dict]):
@@ -3933,32 +2510,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Get data sharing settings on an account.
         Data sharing settings are singletons.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_data_sharing_settings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetDataSharingSettingsRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_data_sharing_settings(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetDataSharingSettingsRequest, dict]):
                 The request object. Request message for
@@ -4043,32 +2594,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.MeasurementProtocolSecret:
         r"""Lookup for a single "GA4" MeasurementProtocolSecret.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_measurement_protocol_secret():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetMeasurementProtocolSecretRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_measurement_protocol_secret(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetMeasurementProtocolSecretRequest, dict]):
                 The request object. Request message for
@@ -4151,33 +2676,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListMeasurementProtocolSecretsPager:
         r"""Returns child MeasurementProtocolSecrets under the
         specified parent Property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_measurement_protocol_secrets():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListMeasurementProtocolSecretsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_measurement_protocol_secrets(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListMeasurementProtocolSecretsRequest, dict]):
@@ -4278,36 +2776,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.MeasurementProtocolSecret:
         r"""Creates a measurement protocol secret.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_measurement_protocol_secret():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                measurement_protocol_secret = admin_v1alpha.MeasurementProtocolSecret()
-                measurement_protocol_secret.display_name = "display_name_value"
-
-                request = admin_v1alpha.CreateMeasurementProtocolSecretRequest(
-                    parent="parent_value",
-                    measurement_protocol_secret=measurement_protocol_secret,
-                )
-
-                # Make the request
-                response = client.create_measurement_protocol_secret(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateMeasurementProtocolSecretRequest, dict]):
                 The request object. Request message for
@@ -4400,29 +2868,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes target MeasurementProtocolSecret.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_measurement_protocol_secret():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteMeasurementProtocolSecretRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_measurement_protocol_secret(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteMeasurementProtocolSecretRequest, dict]):
                 The request object. Request message for
@@ -4501,35 +2946,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.MeasurementProtocolSecret:
         r"""Updates a measurement protocol secret.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_measurement_protocol_secret():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                measurement_protocol_secret = admin_v1alpha.MeasurementProtocolSecret()
-                measurement_protocol_secret.display_name = "display_name_value"
-
-                request = admin_v1alpha.UpdateMeasurementProtocolSecretRequest(
-                    measurement_protocol_secret=measurement_protocol_secret,
-                )
-
-                # Make the request
-                response = client.update_measurement_protocol_secret(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateMeasurementProtocolSecretRequest, dict]):
@@ -4633,33 +3049,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Google Analytics UI or through this API) before
         MeasurementProtocolSecret resources may be created.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_acknowledge_user_data_collection():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.AcknowledgeUserDataCollectionRequest(
-                    property="property_value",
-                    acknowledgement="acknowledgement_value",
-                )
-
-                # Make the request
-                response = client.acknowledge_user_data_collection(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.AcknowledgeUserDataCollectionRequest, dict]):
                 The request object. Request message for
@@ -4721,32 +3110,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SKAdNetworkConversionValueSchema:
         r"""Looks up a single SKAdNetworkConversionValueSchema.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_sk_ad_network_conversion_value_schema():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetSKAdNetworkConversionValueSchemaRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_sk_ad_network_conversion_value_schema(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetSKAdNetworkConversionValueSchemaRequest, dict]):
@@ -4835,32 +3198,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SKAdNetworkConversionValueSchema:
         r"""Creates a SKAdNetworkConversionValueSchema.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_sk_ad_network_conversion_value_schema():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateSKAdNetworkConversionValueSchemaRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_sk_ad_network_conversion_value_schema(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateSKAdNetworkConversionValueSchemaRequest, dict]):
@@ -4959,29 +3296,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes target SKAdNetworkConversionValueSchema.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_sk_ad_network_conversion_value_schema():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteSKAdNetworkConversionValueSchemaRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_sk_ad_network_conversion_value_schema(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteSKAdNetworkConversionValueSchemaRequest, dict]):
                 The request object. Request message for
@@ -5061,31 +3375,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SKAdNetworkConversionValueSchema:
         r"""Updates a SKAdNetworkConversionValueSchema.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_sk_ad_network_conversion_value_schema():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateSKAdNetworkConversionValueSchemaRequest(
-                )
-
-                # Make the request
-                response = client.update_sk_ad_network_conversion_value_schema(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateSKAdNetworkConversionValueSchemaRequest, dict]):
@@ -5193,43 +3482,16 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Properties can have at most one
         SKAdNetworkConversionValueSchema.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_sk_ad_network_conversion_value_schemas():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListSKAdNetworkConversionValueSchemasRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_sk_ad_network_conversion_value_schemas(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListSKAdNetworkConversionValueSchemasRequest, dict]):
                 The request object. Request message for
                 ListSKAdNetworkConversionValueSchemas
                 RPC
             parent (str):
-                Required. Format:
-                properties/{property_id}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema
-                Example:
-                properties/1234/dataStreams/5678/sKAdNetworkConversionValueSchema
+                Required. The DataStream resource to list schemas for.
+                Format:
+                properties/{property_id}/dataStreams/{dataStream}
+                Example: properties/1234/dataStreams/5678
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5319,33 +3581,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Searches through all changes to an account or its
         children given the specified set of filters.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_search_change_history_events():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.SearchChangeHistoryEventsRequest(
-                    account="account_value",
-                )
-
-                # Make the request
-                page_result = client.search_change_history_events(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.SearchChangeHistoryEventsRequest, dict]):
                 The request object. Request message for
@@ -5417,32 +3652,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.GoogleSignalsSettings:
         r"""Lookup for Google Signals settings for a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_google_signals_settings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetGoogleSignalsSettingsRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_google_signals_settings(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetGoogleSignalsSettingsRequest, dict]):
@@ -5525,31 +3734,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.GoogleSignalsSettings:
         r"""Updates Google Signals settings for a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_google_signals_settings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateGoogleSignalsSettingsRequest(
-                )
-
-                # Make the request
-                response = client.update_google_signals_settings(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateGoogleSignalsSettingsRequest, dict]):
@@ -5652,32 +3836,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Creates a conversion event with the specified
         attributes.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_conversion_event():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateConversionEventRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_conversion_event(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateConversionEventRequest, dict]):
                 The request object. Request message for
@@ -5768,31 +3926,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.ConversionEvent:
         r"""Updates a conversion event with the specified
         attributes.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_conversion_event():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateConversionEventRequest(
-                )
-
-                # Make the request
-                response = client.update_conversion_event(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateConversionEventRequest, dict]):
@@ -5886,32 +4019,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.ConversionEvent:
         r"""Retrieve a single conversion event.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_conversion_event():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetConversionEventRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_conversion_event(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetConversionEventRequest, dict]):
                 The request object. Request message for
@@ -5992,29 +4099,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a conversion event in a property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_conversion_event():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteConversionEventRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_conversion_event(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteConversionEventRequest, dict]):
                 The request object. Request message for
@@ -6087,33 +4171,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Returns a list of conversion events in the specified
         parent property.
         Returns an empty list if no conversion events are found.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_conversion_events():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListConversionEventsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_conversion_events(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListConversionEventsRequest, dict]):
@@ -6206,32 +4263,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DisplayVideo360AdvertiserLink:
         r"""Look up a single DisplayVideo360AdvertiserLink
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_display_video360_advertiser_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetDisplayVideo360AdvertiserLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_display_video360_advertiser_link(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetDisplayVideo360AdvertiserLinkRequest, dict]):
                 The request object. Request message for
@@ -6316,33 +4347,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListDisplayVideo360AdvertiserLinksPager:
         r"""Lists all DisplayVideo360AdvertiserLinks on a
         property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_display_video360_advertiser_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListDisplayVideo360AdvertiserLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_display_video360_advertiser_links(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksRequest, dict]):
@@ -6446,32 +4450,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         have access to the Display & Video 360 advertiser should
         instead seek to create a DisplayVideo360LinkProposal.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_display_video360_advertiser_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateDisplayVideo360AdvertiserLinkRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_display_video360_advertiser_link(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateDisplayVideo360AdvertiserLinkRequest, dict]):
                 The request object. Request message for
@@ -6568,29 +4546,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Deletes a DisplayVideo360AdvertiserLink on a
         property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_display_video360_advertiser_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteDisplayVideo360AdvertiserLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_display_video360_advertiser_link(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkRequest, dict]):
                 The request object. Request message for
@@ -6671,31 +4626,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DisplayVideo360AdvertiserLink:
         r"""Updates a DisplayVideo360AdvertiserLink on a
         property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_display_video360_advertiser_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateDisplayVideo360AdvertiserLinkRequest(
-                )
-
-                # Make the request
-                response = client.update_display_video360_advertiser_link(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateDisplayVideo360AdvertiserLinkRequest, dict]):
@@ -6802,32 +4732,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Lookup for a single
         DisplayVideo360AdvertiserLinkProposal.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_display_video360_advertiser_link_proposal():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetDisplayVideo360AdvertiserLinkProposalRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_display_video360_advertiser_link_proposal(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
@@ -6925,33 +4829,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListDisplayVideo360AdvertiserLinkProposalsPager:
         r"""Lists DisplayVideo360AdvertiserLinkProposals on a
         property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_display_video360_advertiser_link_proposals():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListDisplayVideo360AdvertiserLinkProposalsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_display_video360_advertiser_link_proposals(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsRequest, dict]):
@@ -7054,32 +4931,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.DisplayVideo360AdvertiserLinkProposal:
         r"""Creates a DisplayVideo360AdvertiserLinkProposal.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_display_video360_advertiser_link_proposal():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateDisplayVideo360AdvertiserLinkProposalRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_display_video360_advertiser_link_proposal(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateDisplayVideo360AdvertiserLinkProposalRequest, dict]):
@@ -7191,29 +5042,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Deletes a DisplayVideo360AdvertiserLinkProposal on a
         property. This can only be used on cancelled proposals.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_display_video360_advertiser_link_proposal():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteDisplayVideo360AdvertiserLinkProposalRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_display_video360_advertiser_link_proposal(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
@@ -7299,32 +5127,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         deleted and a new DisplayVideo360AdvertiserLink will be
         created.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_approve_display_video360_advertiser_link_proposal():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ApproveDisplayVideo360AdvertiserLinkProposalRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.approve_display_video360_advertiser_link_proposal(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ApproveDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
@@ -7401,32 +5203,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
           After being cancelled, a proposal will eventually be
           deleted automatically.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_cancel_display_video360_advertiser_link_proposal():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CancelDisplayVideo360AdvertiserLinkProposalRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.cancel_display_video360_advertiser_link_proposal(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CancelDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
@@ -7502,38 +5278,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.CustomDimension:
         r"""Creates a CustomDimension.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_custom_dimension():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                custom_dimension = admin_v1alpha.CustomDimension()
-                custom_dimension.parameter_name = "parameter_name_value"
-                custom_dimension.display_name = "display_name_value"
-                custom_dimension.scope = "ITEM"
-
-                request = admin_v1alpha.CreateCustomDimensionRequest(
-                    parent="parent_value",
-                    custom_dimension=custom_dimension,
-                )
-
-                # Make the request
-                response = client.create_custom_dimension(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateCustomDimensionRequest, dict]):
@@ -7621,31 +5365,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.CustomDimension:
         r"""Updates a CustomDimension on a property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_custom_dimension():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateCustomDimensionRequest(
-                )
-
-                # Make the request
-                response = client.update_custom_dimension(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateCustomDimensionRequest, dict]):
                 The request object. Request message for
@@ -7732,33 +5451,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCustomDimensionsPager:
         r"""Lists CustomDimensions on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_custom_dimensions():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListCustomDimensionsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_custom_dimensions(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListCustomDimensionsRequest, dict]):
@@ -7850,29 +5542,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Archives a CustomDimension on a property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_archive_custom_dimension():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ArchiveCustomDimensionRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.archive_custom_dimension(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ArchiveCustomDimensionRequest, dict]):
                 The request object. Request message for
@@ -7943,32 +5612,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.CustomDimension:
         r"""Lookup for a single CustomDimension.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_custom_dimension():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetCustomDimensionRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_custom_dimension(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetCustomDimensionRequest, dict]):
@@ -8047,39 +5690,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.CustomMetric:
         r"""Creates a CustomMetric.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_custom_metric():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                custom_metric = admin_v1alpha.CustomMetric()
-                custom_metric.parameter_name = "parameter_name_value"
-                custom_metric.display_name = "display_name_value"
-                custom_metric.measurement_unit = "HOURS"
-                custom_metric.scope = "EVENT"
-
-                request = admin_v1alpha.CreateCustomMetricRequest(
-                    parent="parent_value",
-                    custom_metric=custom_metric,
-                )
-
-                # Make the request
-                response = client.create_custom_metric(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateCustomMetricRequest, dict]):
@@ -8165,31 +5775,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.CustomMetric:
         r"""Updates a CustomMetric on a property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_custom_metric():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateCustomMetricRequest(
-                )
-
-                # Make the request
-                response = client.update_custom_metric(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateCustomMetricRequest, dict]):
                 The request object. Request message for
@@ -8274,33 +5859,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCustomMetricsPager:
         r"""Lists CustomMetrics on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_custom_metrics():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListCustomMetricsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_custom_metrics(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListCustomMetricsRequest, dict]):
@@ -8392,29 +5950,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Archives a CustomMetric on a property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_archive_custom_metric():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ArchiveCustomMetricRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.archive_custom_metric(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ArchiveCustomMetricRequest, dict]):
                 The request object. Request message for
@@ -8482,32 +6017,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.CustomMetric:
         r"""Lookup for a single CustomMetric.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_custom_metric():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetCustomMetricRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_custom_metric(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetCustomMetricRequest, dict]):
@@ -8586,32 +6095,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DataRetentionSettings:
         r"""Returns the singleton data retention settings for
         this property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_data_retention_settings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetDataRetentionSettingsRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_data_retention_settings(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetDataRetentionSettingsRequest, dict]):
@@ -8698,31 +6181,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DataRetentionSettings:
         r"""Updates the singleton data retention settings for
         this property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_data_retention_settings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateDataRetentionSettingsRequest(
-                )
-
-                # Make the request
-                response = client.update_data_retention_settings(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateDataRetentionSettingsRequest, dict]):
@@ -8822,36 +6280,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DataStream:
         r"""Creates a DataStream.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                data_stream = admin_v1alpha.DataStream()
-                data_stream.type_ = "IOS_APP_DATA_STREAM"
-
-                request = admin_v1alpha.CreateDataStreamRequest(
-                    parent="parent_value",
-                    data_stream=data_stream,
-                )
-
-                # Make the request
-                response = client.create_data_stream(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateDataStreamRequest, dict]):
                 The request object. Request message for CreateDataStream
@@ -8935,29 +6363,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a DataStream on a property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteDataStreamRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_data_stream(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDataStreamRequest, dict]):
                 The request object. Request message for DeleteDataStream
@@ -9026,31 +6431,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.DataStream:
         r"""Updates a DataStream on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateDataStreamRequest(
-                )
-
-                # Make the request
-                response = client.update_data_stream(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateDataStreamRequest, dict]):
@@ -9138,33 +6518,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataStreamsPager:
         r"""Lists DataStreams on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_data_streams():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListDataStreamsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_data_streams(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListDataStreamsRequest, dict]):
@@ -9254,32 +6607,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DataStream:
         r"""Lookup for a single DataStream.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_data_stream():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetDataStreamRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_data_stream(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetDataStreamRequest, dict]):
                 The request object. Request message for GetDataStream
@@ -9359,32 +6686,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Audiences created before 2020 may not be supported.
         Default audiences will not show filter definitions.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_audience():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetAudienceRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_audience(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetAudienceRequest, dict]):
                 The request object. Request message for GetAudience RPC.
@@ -9462,33 +6763,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Lists Audiences on a property.
         Audiences created before 2020 may not be supported.
         Default audiences will not show filter definitions.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_audiences():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListAudiencesRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_audiences(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListAudiencesRequest, dict]):
@@ -9579,40 +6853,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> gaa_audience.Audience:
         r"""Creates an Audience.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_audience():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                audience = admin_v1alpha.Audience()
-                audience.display_name = "display_name_value"
-                audience.description = "description_value"
-                audience.membership_duration_days = 2561
-                audience.filter_clauses.simple_filter.scope = "AUDIENCE_FILTER_SCOPE_ACROSS_ALL_SESSIONS"
-                audience.filter_clauses.clause_type = "EXCLUDE"
-
-                request = admin_v1alpha.CreateAudienceRequest(
-                    parent="parent_value",
-                    audience=audience,
-                )
-
-                # Make the request
-                response = client.create_audience(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateAudienceRequest, dict]):
                 The request object. Request message for CreateAudience
@@ -9696,39 +6936,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gaa_audience.Audience:
         r"""Updates an Audience on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_audience():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                audience = admin_v1alpha.Audience()
-                audience.display_name = "display_name_value"
-                audience.description = "description_value"
-                audience.membership_duration_days = 2561
-                audience.filter_clauses.simple_filter.scope = "AUDIENCE_FILTER_SCOPE_ACROSS_ALL_SESSIONS"
-                audience.filter_clauses.clause_type = "EXCLUDE"
-
-                request = admin_v1alpha.UpdateAudienceRequest(
-                    audience=audience,
-                )
-
-                # Make the request
-                response = client.update_audience(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateAudienceRequest, dict]):
@@ -9820,29 +7027,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Archives an Audience on a property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_archive_audience():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ArchiveAudienceRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.archive_audience(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ArchiveAudienceRequest, dict]):
                 The request object. Request message for ArchiveAudience
@@ -9891,32 +7075,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SearchAds360Link:
         r"""Look up a single SearchAds360Link
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_search_ads360_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetSearchAds360LinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_search_ads360_link(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetSearchAds360LinkRequest, dict]):
@@ -9996,33 +7154,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSearchAds360LinksPager:
         r"""Lists all SearchAds360Links on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_search_ads360_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListSearchAds360LinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_search_ads360_links(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListSearchAds360LinksRequest, dict]):
@@ -10115,32 +7246,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.SearchAds360Link:
         r"""Creates a SearchAds360Link.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_search_ads360_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateSearchAds360LinkRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_search_ads360_link(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateSearchAds360LinkRequest, dict]):
                 The request object. Request message for
@@ -10230,29 +7335,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a SearchAds360Link on a property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_search_ads360_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteSearchAds360LinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_search_ads360_link(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteSearchAds360LinkRequest, dict]):
                 The request object. Request message for
@@ -10326,31 +7408,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.SearchAds360Link:
         r"""Updates a SearchAds360Link on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_search_ads360_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.UpdateSearchAds360LinkRequest(
-                )
-
-                # Make the request
-                response = client.update_search_ads360_link(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateSearchAds360LinkRequest, dict]):
@@ -10443,32 +7500,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.AttributionSettings:
         r"""Lookup for a AttributionSettings singleton.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_attribution_settings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetAttributionSettingsRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_attribution_settings(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetAttributionSettingsRequest, dict]):
                 The request object. Request message for
@@ -10549,38 +7580,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.AttributionSettings:
         r"""Updates attribution settings on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_attribution_settings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                attribution_settings = admin_v1alpha.AttributionSettings()
-                attribution_settings.acquisition_conversion_event_lookback_window = "ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS"
-                attribution_settings.other_conversion_event_lookback_window = "OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_90_DAYS"
-                attribution_settings.reporting_attribution_model = "GOOGLE_PAID_CHANNELS_LAST_CLICK"
-                attribution_settings.ads_web_conversion_data_export_scope = "GOOGLE_PAID_CHANNELS"
-
-                request = admin_v1alpha.UpdateAttributionSettingsRequest(
-                    attribution_settings=attribution_settings,
-                )
-
-                # Make the request
-                response = client.update_attribution_settings(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateAttributionSettingsRequest, dict]):
@@ -10689,31 +7688,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         For configuration change history, see
         `searchChangeHistoryEvents <https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents>`__.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_run_access_report():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.RunAccessReportRequest(
-                )
-
-                # Make the request
-                response = client.run_access_report(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.RunAccessReportRequest, dict]):
                 The request object. The request for a Data Access Record
@@ -10772,36 +7746,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.AccessBinding:
         r"""Creates an access binding on an account or property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_access_binding():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                access_binding = admin_v1alpha.AccessBinding()
-                access_binding.user = "user_value"
-
-                request = admin_v1alpha.CreateAccessBindingRequest(
-                    parent="parent_value",
-                    access_binding=access_binding,
-                )
-
-                # Make the request
-                response = client.create_access_binding(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateAccessBindingRequest, dict]):
@@ -10890,32 +7834,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.AccessBinding:
         r"""Gets information about an access binding.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_access_binding():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetAccessBindingRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_access_binding(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetAccessBindingRequest, dict]):
                 The request object. Request message for GetAccessBinding
@@ -10999,35 +7917,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.AccessBinding:
         r"""Updates an access binding on an account or property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_access_binding():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                access_binding = admin_v1alpha.AccessBinding()
-                access_binding.user = "user_value"
-
-                request = admin_v1alpha.UpdateAccessBindingRequest(
-                    access_binding=access_binding,
-                )
-
-                # Make the request
-                response = client.update_access_binding(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateAccessBindingRequest, dict]):
                 The request object. Request message for
@@ -11108,29 +7997,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes an access binding on an account or property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_access_binding():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteAccessBindingRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_access_binding(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteAccessBindingRequest, dict]):
                 The request object. Request message for
@@ -11203,33 +8069,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAccessBindingsPager:
         r"""Lists all access bindings on an account or property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_access_bindings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListAccessBindingsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_access_bindings(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListAccessBindingsRequest, dict]):
@@ -11327,37 +8166,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         cannot be created, none of the AccessBindings will be
         created.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_create_access_bindings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                requests = admin_v1alpha.CreateAccessBindingRequest()
-                requests.parent = "parent_value"
-                requests.access_binding.user = "user_value"
-
-                request = admin_v1alpha.BatchCreateAccessBindingsRequest(
-                    parent="parent_value",
-                    requests=requests,
-                )
-
-                # Make the request
-                response = client.batch_create_access_bindings(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.BatchCreateAccessBindingsRequest, dict]):
                 The request object. Request message for
@@ -11417,33 +8225,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> analytics_admin.BatchGetAccessBindingsResponse:
         r"""Gets information about multiple access bindings to an
         account or property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_get_access_bindings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.BatchGetAccessBindingsRequest(
-                    parent="parent_value",
-                    names=['names_value1', 'names_value2'],
-                )
-
-                # Make the request
-                response = client.batch_get_access_bindings(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.BatchGetAccessBindingsRequest, dict]):
@@ -11505,36 +8286,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Updates information about multiple access bindings to
         an account or property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_update_access_bindings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                requests = admin_v1alpha.UpdateAccessBindingRequest()
-                requests.access_binding.user = "user_value"
-
-                request = admin_v1alpha.BatchUpdateAccessBindingsRequest(
-                    parent="parent_value",
-                    requests=requests,
-                )
-
-                # Make the request
-                response = client.batch_update_access_bindings(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.BatchUpdateAccessBindingsRequest, dict]):
                 The request object. Request message for
@@ -11595,33 +8346,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Deletes information about multiple users' links to an
         account or property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_batch_delete_access_bindings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                requests = admin_v1alpha.DeleteAccessBindingRequest()
-                requests.name = "name_value"
-
-                request = admin_v1alpha.BatchDeleteAccessBindingsRequest(
-                    parent="parent_value",
-                    requests=requests,
-                )
-
-                # Make the request
-                client.batch_delete_access_bindings(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.BatchDeleteAccessBindingsRequest, dict]):
                 The request object. Request message for
@@ -11672,32 +8396,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> expanded_data_set.ExpandedDataSet:
         r"""Lookup for a single ExpandedDataSet.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_expanded_data_set():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetExpandedDataSetRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_expanded_data_set(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetExpandedDataSetRequest, dict]):
@@ -11777,33 +8475,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExpandedDataSetsPager:
         r"""Lists ExpandedDataSets on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_expanded_data_sets():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListExpandedDataSetsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_expanded_data_sets(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListExpandedDataSetsRequest, dict]):
@@ -11896,36 +8567,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> gaa_expanded_data_set.ExpandedDataSet:
         r"""Creates a ExpandedDataSet.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_expanded_data_set():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                expanded_data_set = admin_v1alpha.ExpandedDataSet()
-                expanded_data_set.display_name = "display_name_value"
-
-                request = admin_v1alpha.CreateExpandedDataSetRequest(
-                    parent="parent_value",
-                    expanded_data_set=expanded_data_set,
-                )
-
-                # Make the request
-                response = client.create_expanded_data_set(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateExpandedDataSetRequest, dict]):
                 The request object. Request message for
@@ -12013,35 +8654,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gaa_expanded_data_set.ExpandedDataSet:
         r"""Updates a ExpandedDataSet on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_expanded_data_set():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                expanded_data_set = admin_v1alpha.ExpandedDataSet()
-                expanded_data_set.display_name = "display_name_value"
-
-                request = admin_v1alpha.UpdateExpandedDataSetRequest(
-                    expanded_data_set=expanded_data_set,
-                )
-
-                # Make the request
-                response = client.update_expanded_data_set(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateExpandedDataSetRequest, dict]):
@@ -12136,29 +8748,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a ExpandedDataSet on a property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_expanded_data_set():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteExpandedDataSetRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_expanded_data_set(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteExpandedDataSetRequest, dict]):
                 The request object. Request message for
@@ -12225,32 +8814,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> channel_group.ChannelGroup:
         r"""Lookup for a single ChannelGroup.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_channel_group():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetChannelGroupRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_channel_group(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetChannelGroupRequest, dict]):
@@ -12328,33 +8891,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListChannelGroupsPager:
         r"""Lists ChannelGroups on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_channel_groups():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListChannelGroupsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_channel_groups(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListChannelGroupsRequest, dict]):
@@ -12448,37 +8984,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> gaa_channel_group.ChannelGroup:
         r"""Creates a ChannelGroup.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_channel_group():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                channel_group = admin_v1alpha.ChannelGroup()
-                channel_group.display_name = "display_name_value"
-                channel_group.grouping_rule.display_name = "display_name_value"
-
-                request = admin_v1alpha.CreateChannelGroupRequest(
-                    parent="parent_value",
-                    channel_group=channel_group,
-                )
-
-                # Make the request
-                response = client.create_channel_group(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateChannelGroupRequest, dict]):
                 The request object. Request message for
@@ -12565,36 +9070,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gaa_channel_group.ChannelGroup:
         r"""Updates a ChannelGroup.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_channel_group():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                channel_group = admin_v1alpha.ChannelGroup()
-                channel_group.display_name = "display_name_value"
-                channel_group.grouping_rule.display_name = "display_name_value"
-
-                request = admin_v1alpha.UpdateChannelGroupRequest(
-                    channel_group=channel_group,
-                )
-
-                # Make the request
-                response = client.update_channel_group(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateChannelGroupRequest, dict]):
@@ -12689,29 +9164,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a ChannelGroup on a property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_channel_group():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteChannelGroupRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_channel_group(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteChannelGroupRequest, dict]):
                 The request object. Request message for
@@ -12783,32 +9235,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         process for a UA property.
         Note: this has no effect on GA4 property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_set_automated_ga4_configuration_opt_out():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.SetAutomatedGa4ConfigurationOptOutRequest(
-                    property="property_value",
-                )
-
-                # Make the request
-                response = client.set_automated_ga4_configuration_opt_out(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.SetAutomatedGa4ConfigurationOptOutRequest, dict]):
                 The request object. Request for setting the opt out
@@ -12868,32 +9294,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         setup process for a UA property.
         Note: this has no effect on GA4 property.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_fetch_automated_ga4_configuration_opt_out():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.FetchAutomatedGa4ConfigurationOptOutRequest(
-                    property="property_value",
-                )
-
-                # Make the request
-                response = client.fetch_automated_ga4_configuration_opt_out(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.FetchAutomatedGa4ConfigurationOptOutRequest, dict]):
                 The request object. Request for fetching the opt out
@@ -12951,32 +9351,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.BigQueryLink:
         r"""Lookup for a single BigQuery Link.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_big_query_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetBigQueryLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_big_query_link(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetBigQueryLinkRequest, dict]):
@@ -13055,33 +9429,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBigQueryLinksPager:
         r"""Lists BigQuery Links on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_big_query_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListBigQueryLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_big_query_links(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListBigQueryLinksRequest, dict]):
@@ -13176,32 +9523,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         data stream. Note that the stream must enable enhanced
         measurement for these settings to take effect.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_enhanced_measurement_settings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetEnhancedMeasurementSettingsRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_enhanced_measurement_settings(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetEnhancedMeasurementSettingsRequest, dict]):
                 The request object. Request message for
@@ -13292,35 +9613,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Updates the enhanced measurement settings for this
         data stream. Note that the stream must enable enhanced
         measurement for these settings to take effect.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_enhanced_measurement_settings():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                enhanced_measurement_settings = admin_v1alpha.EnhancedMeasurementSettings()
-                enhanced_measurement_settings.search_query_parameter = "search_query_parameter_value"
-
-                request = admin_v1alpha.UpdateEnhancedMeasurementSettingsRequest(
-                    enhanced_measurement_settings=enhanced_measurement_settings,
-                )
-
-                # Make the request
-                response = client.update_enhanced_measurement_settings(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateEnhancedMeasurementSettingsRequest, dict]):
@@ -13427,36 +9719,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         connected site tags per property. Note: This API cannot
         be used on GA4 properties.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_connected_site_tag():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                connected_site_tag = admin_v1alpha.ConnectedSiteTag()
-                connected_site_tag.display_name = "display_name_value"
-                connected_site_tag.tag_id = "tag_id_value"
-
-                request = admin_v1alpha.CreateConnectedSiteTagRequest(
-                    connected_site_tag=connected_site_tag,
-                )
-
-                # Make the request
-                response = client.create_connected_site_tag(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateConnectedSiteTagRequest, dict]):
                 The request object. Request message for
@@ -13512,28 +9774,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Analytics property. Note: this has no effect on GA4
         properties.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_connected_site_tag():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteConnectedSiteTagRequest(
-                )
-
-                # Make the request
-                client.delete_connected_site_tag(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteConnectedSiteTagRequest, dict]):
                 The request object. Request message for
@@ -13580,31 +9820,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Analytics property. A maximum of 20 connected site tags
         will be returned. Note: this has no effect on GA4
         property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_connected_site_tags():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListConnectedSiteTagsRequest(
-                )
-
-                # Make the request
-                response = client.list_connected_site_tags(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListConnectedSiteTagsRequest, dict]):
@@ -13659,32 +9874,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         property connected to it. Note: this cannot be used with
         GA4 properties.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_fetch_connected_ga4_property():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.FetchConnectedGa4PropertyRequest(
-                    property="property_value",
-                )
-
-                # Make the request
-                response = client.fetch_connected_ga4_property(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.FetchConnectedGa4PropertyRequest, dict]):
                 The request object. Request for looking up GA4 property
@@ -13736,32 +9925,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.AdSenseLink:
         r"""Looks up a single AdSenseLink.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_ad_sense_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetAdSenseLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_ad_sense_link(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetAdSenseLinkRequest, dict]):
@@ -13842,32 +10005,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.AdSenseLink:
         r"""Creates an AdSenseLink.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_ad_sense_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.CreateAdSenseLinkRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.create_ad_sense_link(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateAdSenseLinkRequest, dict]):
@@ -13954,29 +10091,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes an AdSenseLink.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_ad_sense_link():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteAdSenseLinkRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_ad_sense_link(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteAdSenseLinkRequest, dict]):
                 The request object. Request message to be passed to
@@ -14046,33 +10160,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAdSenseLinksPager:
         r"""Lists AdSenseLinks on a property.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_ad_sense_links():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListAdSenseLinksRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_ad_sense_links(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListAdSenseLinksRequest, dict]):
@@ -14166,32 +10253,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> event_create_and_edit.EventCreateRule:
         r"""Lookup for a single EventCreateRule.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_get_event_create_rule():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.GetEventCreateRuleRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = client.get_event_create_rule(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetEventCreateRuleRequest, dict]):
                 The request object. Request message for
@@ -14283,33 +10344,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListEventCreateRulesPager:
         r"""Lists EventCreateRules on a web data stream.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_list_event_create_rules():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.ListEventCreateRulesRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                page_result = client.list_event_create_rules(request=request)
-
-                # Handle the response
-                for response in page_result:
-                    print(response)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListEventCreateRulesRequest, dict]):
                 The request object. Request message for
@@ -14400,39 +10434,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> event_create_and_edit.EventCreateRule:
         r"""Creates an EventCreateRule.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_create_event_create_rule():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                event_create_rule = admin_v1alpha.EventCreateRule()
-                event_create_rule.destination_event = "destination_event_value"
-                event_create_rule.event_conditions.field = "field_value"
-                event_create_rule.event_conditions.comparison_type = "REGULAR_EXPRESSION_CASE_INSENSITIVE"
-                event_create_rule.event_conditions.value = "value_value"
-
-                request = admin_v1alpha.CreateEventCreateRuleRequest(
-                    parent="parent_value",
-                    event_create_rule=event_create_rule,
-                )
-
-                # Make the request
-                response = client.create_event_create_rule(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateEventCreateRuleRequest, dict]):
@@ -14533,38 +10534,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> event_create_and_edit.EventCreateRule:
         r"""Updates an EventCreateRule.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_update_event_create_rule():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                event_create_rule = admin_v1alpha.EventCreateRule()
-                event_create_rule.destination_event = "destination_event_value"
-                event_create_rule.event_conditions.field = "field_value"
-                event_create_rule.event_conditions.comparison_type = "REGULAR_EXPRESSION_CASE_INSENSITIVE"
-                event_create_rule.event_conditions.value = "value_value"
-
-                request = admin_v1alpha.UpdateEventCreateRuleRequest(
-                    event_create_rule=event_create_rule,
-                )
-
-                # Make the request
-                response = client.update_event_create_rule(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateEventCreateRuleRequest, dict]):
@@ -14671,29 +10640,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes an EventCreateRule.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.analytics import admin_v1alpha
-
-            def sample_delete_event_create_rule():
-                # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
-
-                # Initialize request argument(s)
-                request = admin_v1alpha.DeleteEventCreateRuleRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                client.delete_event_create_rule(request=request)
-
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteEventCreateRuleRequest, dict]):
                 The request object. Request message for
@@ -14750,6 +10696,817 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+    def update_data_redaction_settings(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateDataRedactionSettingsRequest, dict]
+        ] = None,
+        *,
+        data_redaction_settings: Optional[resources.DataRedactionSettings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DataRedactionSettings:
+        r"""Updates a DataRedactionSettings on a property.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.UpdateDataRedactionSettingsRequest, dict]):
+                The request object. Request message for
+                UpdateDataRedactionSettings RPC.
+            data_redaction_settings (google.analytics.admin_v1alpha.types.DataRedactionSettings):
+                Required. The settings to update. The ``name`` field is
+                used to identify the settings to be updated.
+
+                This corresponds to the ``data_redaction_settings`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DataRedactionSettings:
+                Settings for client-side data
+                redaction. Singleton resource under a
+                Web Stream.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([data_redaction_settings, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.UpdateDataRedactionSettingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.UpdateDataRedactionSettingsRequest):
+            request = analytics_admin.UpdateDataRedactionSettingsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if data_redaction_settings is not None:
+                request.data_redaction_settings = data_redaction_settings
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_data_redaction_settings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "data_redaction_settings.name",
+                        request.data_redaction_settings.name,
+                    ),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_data_redaction_settings(
+        self,
+        request: Optional[
+            Union[analytics_admin.GetDataRedactionSettingsRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DataRedactionSettings:
+        r"""Lookup for a single DataRedactionSettings.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetDataRedactionSettingsRequest, dict]):
+                The request object. Request message for
+                GetDataRedactionSettings RPC.
+            name (str):
+                Required. The name of the settings to lookup. Format:
+                properties/{property}/dataStreams/{data_stream}/dataRedactionSettings
+                Example:
+                "properties/1000/dataStreams/2000/dataRedactionSettings"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DataRedactionSettings:
+                Settings for client-side data
+                redaction. Singleton resource under a
+                Web Stream.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetDataRedactionSettingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.GetDataRedactionSettingsRequest):
+            request = analytics_admin.GetDataRedactionSettingsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_data_redaction_settings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_rollup_property(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateRollupPropertyRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.CreateRollupPropertyResponse:
+        r"""Create a roll-up property and all roll-up property
+        source links.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateRollupPropertyRequest, dict]):
+                The request object. Request message for
+                CreateRollupProperty RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.CreateRollupPropertyResponse:
+                Response message for
+                CreateRollupProperty RPC.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateRollupPropertyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.CreateRollupPropertyRequest):
+            request = analytics_admin.CreateRollupPropertyRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_rollup_property]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_rollup_property_source_link(
+        self,
+        request: Optional[
+            Union[analytics_admin.GetRollupPropertySourceLinkRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.RollupPropertySourceLink:
+        r"""Lookup for a single roll-up property source Link.
+        Only roll-up properties can have source links, so this
+        method will throw an error if used on other types of
+        properties.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetRollupPropertySourceLinkRequest, dict]):
+                The request object. Request message for
+                GetRollupPropertySourceLink RPC.
+            name (str):
+                Required. The name of the roll-up property source link
+                to lookup. Format:
+                properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link_id}
+                Example: properties/123/rollupPropertySourceLinks/456
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.RollupPropertySourceLink:
+                A link that references a source
+                property under the parent rollup
+                property.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetRollupPropertySourceLinkRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.GetRollupPropertySourceLinkRequest):
+            request = analytics_admin.GetRollupPropertySourceLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_rollup_property_source_link
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_rollup_property_source_links(
+        self,
+        request: Optional[
+            Union[analytics_admin.ListRollupPropertySourceLinksRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListRollupPropertySourceLinksPager:
+        r"""Lists roll-up property source Links on a property.
+        Only roll-up properties can have source links, so this
+        method will throw an error if used on other types of
+        properties.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ListRollupPropertySourceLinksRequest, dict]):
+                The request object. Request message for
+                ListRollupPropertySourceLinks RPC.
+            parent (str):
+                Required. The name of the roll-up property to list
+                roll-up property source links under. Format:
+                properties/{property_id} Example: properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListRollupPropertySourceLinksPager:
+                Response message for
+                ListRollupPropertySourceLinks RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.ListRollupPropertySourceLinksRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.ListRollupPropertySourceLinksRequest
+        ):
+            request = analytics_admin.ListRollupPropertySourceLinksRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_rollup_property_source_links
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListRollupPropertySourceLinksPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_rollup_property_source_link(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateRollupPropertySourceLinkRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        rollup_property_source_link: Optional[
+            resources.RollupPropertySourceLink
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.RollupPropertySourceLink:
+        r"""Creates a roll-up property source link.
+        Only roll-up properties can have source links, so this
+        method will throw an error if used on other types of
+        properties.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateRollupPropertySourceLinkRequest, dict]):
+                The request object. Request message for
+                CreateRollupPropertySourceLink RPC.
+            parent (str):
+                Required. Format: properties/{property_id} Example:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            rollup_property_source_link (google.analytics.admin_v1alpha.types.RollupPropertySourceLink):
+                Required. The roll-up property source
+                link to create.
+
+                This corresponds to the ``rollup_property_source_link`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.RollupPropertySourceLink:
+                A link that references a source
+                property under the parent rollup
+                property.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, rollup_property_source_link])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateRollupPropertySourceLinkRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.CreateRollupPropertySourceLinkRequest
+        ):
+            request = analytics_admin.CreateRollupPropertySourceLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if rollup_property_source_link is not None:
+                request.rollup_property_source_link = rollup_property_source_link
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_rollup_property_source_link
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_rollup_property_source_link(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteRollupPropertySourceLinkRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a roll-up property source link.
+        Only roll-up properties can have source links, so this
+        method will throw an error if used on other types of
+        properties.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.DeleteRollupPropertySourceLinkRequest, dict]):
+                The request object. Request message for
+                DeleteRollupPropertySourceLink RPC.
+            name (str):
+                Required. Format:
+                properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link_id}
+                Example: properties/1234/rollupPropertySourceLinks/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.DeleteRollupPropertySourceLinkRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.DeleteRollupPropertySourceLinkRequest
+        ):
+            request = analytics_admin.DeleteRollupPropertySourceLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_rollup_property_source_link
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def create_subproperty(
+        self,
+        request: Optional[Union[analytics_admin.CreateSubpropertyRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.CreateSubpropertyResponse:
+        r"""Create a subproperty and a subproperty event filter
+        that applies to the created subproperty.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateSubpropertyRequest, dict]):
+                The request object. Request message for CreateSubproperty
+                RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.CreateSubpropertyResponse:
+                Response message for
+                CreateSubproperty RPC.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateSubpropertyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.CreateSubpropertyRequest):
+            request = analytics_admin.CreateSubpropertyRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_subproperty]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_subproperty_event_filter(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteSubpropertyEventFilterRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a subproperty event filter.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.DeleteSubpropertyEventFilterRequest, dict]):
+                The request object. Request message for
+                DeleteSubpropertyEventFilter RPC.
+            name (str):
+                Required. Resource name of the subproperty event filter
+                to delete. Format:
+                properties/property_id/subpropertyEventFilters/subproperty_event_filter
+                Example: properties/123/subpropertyEventFilters/456
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.DeleteSubpropertyEventFilterRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.DeleteSubpropertyEventFilterRequest):
+            request = analytics_admin.DeleteSubpropertyEventFilterRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_subproperty_event_filter
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def create_subproperty_event_filter(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateSubpropertyEventFilterRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        subproperty_event_filter: Optional[
+            gaa_subproperty_event_filter.SubpropertyEventFilter
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gaa_subproperty_event_filter.SubpropertyEventFilter:
+        r"""Creates a subproperty Event Filter.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateSubpropertyEventFilterRequest, dict]):
+                The request object. Request message for
+                CreateSubpropertyEventFilter RPC.
+            parent (str):
+                Required. The ordinary property for which to create a
+                subproperty event filter. Format: properties/property_id
+                Example: properties/123
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            subproperty_event_filter (google.analytics.admin_v1alpha.types.SubpropertyEventFilter):
+                Required. The subproperty event
+                filter to create.
+
+                This corresponds to the ``subproperty_event_filter`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.SubpropertyEventFilter:
+                A resource message representing a GA4
+                Subproperty event filter.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, subproperty_event_filter])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateSubpropertyEventFilterRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.CreateSubpropertyEventFilterRequest):
+            request = analytics_admin.CreateSubpropertyEventFilterRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if subproperty_event_filter is not None:
+                request.subproperty_event_filter = subproperty_event_filter
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_subproperty_event_filter
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def __enter__(self) -> "AnalyticsAdminServiceClient":
         return self
