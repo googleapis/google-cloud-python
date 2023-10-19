@@ -3736,6 +3736,75 @@ def test_create_delivery_vehicle_rest(request_type):
         ],
         "type_": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = delivery_api.CreateDeliveryVehicleRequest.meta.fields[
+        "delivery_vehicle"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["delivery_vehicle"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["delivery_vehicle"][field])):
+                    del request_init["delivery_vehicle"][field][i][subfield]
+            else:
+                del request_init["delivery_vehicle"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3751,8 +3820,9 @@ def test_create_delivery_vehicle_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3847,8 +3917,9 @@ def test_create_delivery_vehicle_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3956,72 +4027,6 @@ def test_create_delivery_vehicle_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "providers/sample1"}
-    request_init["delivery_vehicle"] = {
-        "name": "name_value",
-        "last_location": {
-            "location": {"latitude": 0.86, "longitude": 0.971},
-            "horizontal_accuracy": {"value": 0.541},
-            "latlng_accuracy": {},
-            "heading": {"value": 541},
-            "bearing_accuracy": {},
-            "heading_accuracy": {},
-            "altitude": {},
-            "vertical_accuracy": {},
-            "altitude_accuracy": {},
-            "speed_kmph": {},
-            "speed": {},
-            "speed_accuracy": {},
-            "update_time": {"seconds": 751, "nanos": 543},
-            "server_time": {},
-            "location_sensor": 1,
-            "is_road_snapped": {"value": True},
-            "is_gps_sensor_enabled": {},
-            "time_since_update": {},
-            "num_stale_updates": {},
-            "raw_location": {},
-            "raw_location_time": {},
-            "raw_location_sensor": 1,
-            "raw_location_accuracy": {},
-            "supplemental_location": {},
-            "supplemental_location_time": {},
-            "supplemental_location_sensor": 1,
-            "supplemental_location_accuracy": {},
-            "road_snapped": True,
-        },
-        "navigation_status": 1,
-        "current_route_segment": b"current_route_segment_blob",
-        "current_route_segment_end_point": {},
-        "remaining_distance_meters": {},
-        "remaining_duration": {"seconds": 751, "nanos": 543},
-        "remaining_vehicle_journey_segments": [
-            {
-                "stop": {
-                    "planned_location": {"point": {}},
-                    "tasks": [
-                        {
-                            "task_id": "task_id_value",
-                            "task_duration": {},
-                            "target_time_window": {"start_time": {}, "end_time": {}},
-                        }
-                    ],
-                    "state": 1,
-                },
-                "driving_distance_meters": {},
-                "driving_duration": {},
-                "path": {},
-            }
-        ],
-        "attributes": [
-            {
-                "key": "key_value",
-                "value": "value_value",
-                "string_value": "string_value_value",
-                "bool_value": True,
-                "number_value": 0.1285,
-            }
-        ],
-        "type_": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4061,8 +4066,9 @@ def test_create_delivery_vehicle_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4131,8 +4137,9 @@ def test_get_delivery_vehicle_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4214,8 +4221,9 @@ def test_get_delivery_vehicle_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4340,8 +4348,9 @@ def test_get_delivery_vehicle_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4461,6 +4470,75 @@ def test_update_delivery_vehicle_rest(request_type):
         ],
         "type_": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = delivery_api.UpdateDeliveryVehicleRequest.meta.fields[
+        "delivery_vehicle"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["delivery_vehicle"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["delivery_vehicle"][field])):
+                    del request_init["delivery_vehicle"][field][i][subfield]
+            else:
+                del request_init["delivery_vehicle"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4476,8 +4554,9 @@ def test_update_delivery_vehicle_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4560,8 +4639,9 @@ def test_update_delivery_vehicle_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4664,72 +4744,6 @@ def test_update_delivery_vehicle_rest_bad_request(
     request_init = {
         "delivery_vehicle": {"name": "providers/sample1/deliveryVehicles/sample2"}
     }
-    request_init["delivery_vehicle"] = {
-        "name": "providers/sample1/deliveryVehicles/sample2",
-        "last_location": {
-            "location": {"latitude": 0.86, "longitude": 0.971},
-            "horizontal_accuracy": {"value": 0.541},
-            "latlng_accuracy": {},
-            "heading": {"value": 541},
-            "bearing_accuracy": {},
-            "heading_accuracy": {},
-            "altitude": {},
-            "vertical_accuracy": {},
-            "altitude_accuracy": {},
-            "speed_kmph": {},
-            "speed": {},
-            "speed_accuracy": {},
-            "update_time": {"seconds": 751, "nanos": 543},
-            "server_time": {},
-            "location_sensor": 1,
-            "is_road_snapped": {"value": True},
-            "is_gps_sensor_enabled": {},
-            "time_since_update": {},
-            "num_stale_updates": {},
-            "raw_location": {},
-            "raw_location_time": {},
-            "raw_location_sensor": 1,
-            "raw_location_accuracy": {},
-            "supplemental_location": {},
-            "supplemental_location_time": {},
-            "supplemental_location_sensor": 1,
-            "supplemental_location_accuracy": {},
-            "road_snapped": True,
-        },
-        "navigation_status": 1,
-        "current_route_segment": b"current_route_segment_blob",
-        "current_route_segment_end_point": {},
-        "remaining_distance_meters": {},
-        "remaining_duration": {"seconds": 751, "nanos": 543},
-        "remaining_vehicle_journey_segments": [
-            {
-                "stop": {
-                    "planned_location": {"point": {}},
-                    "tasks": [
-                        {
-                            "task_id": "task_id_value",
-                            "task_duration": {},
-                            "target_time_window": {"start_time": {}, "end_time": {}},
-                        }
-                    ],
-                    "state": 1,
-                },
-                "driving_distance_meters": {},
-                "driving_duration": {},
-                "path": {},
-            }
-        ],
-        "attributes": [
-            {
-                "key": "key_value",
-                "value": "value_value",
-                "string_value": "string_value_value",
-                "bool_value": True,
-                "number_value": 0.1285,
-            }
-        ],
-        "type_": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4770,8 +4784,9 @@ def test_update_delivery_vehicle_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4835,8 +4850,9 @@ def test_batch_create_tasks_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_api.BatchCreateTasksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_api.BatchCreateTasksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4911,8 +4927,9 @@ def test_batch_create_tasks_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = delivery_api.BatchCreateTasksResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = delivery_api.BatchCreateTasksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5130,6 +5147,73 @@ def test_create_task_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = delivery_api.CreateTaskRequest.meta.fields["task"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["task"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["task"][field])):
+                    del request_init["task"][field][i][subfield]
+            else:
+                del request_init["task"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5148,8 +5232,9 @@ def test_create_task_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tasks.Task.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tasks.Task.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5246,8 +5331,9 @@ def test_create_task_rest_required_fields(request_type=delivery_api.CreateTaskRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = tasks.Task.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = tasks.Task.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5351,93 +5437,6 @@ def test_create_task_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "providers/sample1"}
-    request_init["task"] = {
-        "name": "name_value",
-        "type_": 1,
-        "state": 1,
-        "task_outcome": 1,
-        "task_outcome_time": {"seconds": 751, "nanos": 543},
-        "task_outcome_location": {"point": {"latitude": 0.86, "longitude": 0.971}},
-        "task_outcome_location_source": 2,
-        "tracking_id": "tracking_id_value",
-        "delivery_vehicle_id": "delivery_vehicle_id_value",
-        "planned_location": {},
-        "task_duration": {"seconds": 751, "nanos": 543},
-        "target_time_window": {"start_time": {}, "end_time": {}},
-        "journey_sharing_info": {
-            "remaining_vehicle_journey_segments": [
-                {
-                    "stop": {
-                        "planned_location": {},
-                        "tasks": [
-                            {
-                                "task_id": "task_id_value",
-                                "task_duration": {},
-                                "target_time_window": {},
-                            }
-                        ],
-                        "state": 1,
-                    },
-                    "driving_distance_meters": {"value": 541},
-                    "driving_duration": {},
-                    "path": {},
-                }
-            ],
-            "last_location": {
-                "location": {},
-                "horizontal_accuracy": {"value": 0.541},
-                "latlng_accuracy": {},
-                "heading": {},
-                "bearing_accuracy": {},
-                "heading_accuracy": {},
-                "altitude": {},
-                "vertical_accuracy": {},
-                "altitude_accuracy": {},
-                "speed_kmph": {},
-                "speed": {},
-                "speed_accuracy": {},
-                "update_time": {},
-                "server_time": {},
-                "location_sensor": 1,
-                "is_road_snapped": {"value": True},
-                "is_gps_sensor_enabled": {},
-                "time_since_update": {},
-                "num_stale_updates": {},
-                "raw_location": {},
-                "raw_location_time": {},
-                "raw_location_sensor": 1,
-                "raw_location_accuracy": {},
-                "supplemental_location": {},
-                "supplemental_location_time": {},
-                "supplemental_location_sensor": 1,
-                "supplemental_location_accuracy": {},
-                "road_snapped": True,
-            },
-            "last_location_snappable": True,
-        },
-        "task_tracking_view_config": {
-            "route_polyline_points_visibility": {
-                "remaining_stop_count_threshold": 3219,
-                "duration_until_estimated_arrival_time_threshold": {},
-                "remaining_driving_distance_meters_threshold": 4561,
-                "always": True,
-                "never": True,
-            },
-            "estimated_arrival_time_visibility": {},
-            "estimated_task_completion_time_visibility": {},
-            "remaining_driving_distance_visibility": {},
-            "remaining_stop_count_visibility": {},
-            "vehicle_location_visibility": {},
-        },
-        "attributes": [
-            {
-                "key": "key_value",
-                "string_value": "string_value_value",
-                "bool_value": True,
-                "number_value": 0.1285,
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5477,8 +5476,9 @@ def test_create_task_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tasks.Task.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tasks.Task.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5549,8 +5549,9 @@ def test_get_task_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tasks.Task.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tasks.Task.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5634,8 +5635,9 @@ def test_get_task_rest_required_fields(request_type=delivery_api.GetTaskRequest)
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = tasks.Task.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = tasks.Task.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5756,8 +5758,9 @@ def test_get_task_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tasks.Task.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tasks.Task.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5820,8 +5823,9 @@ def test_search_tasks_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_api.SearchTasksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_api.SearchTasksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5912,8 +5916,9 @@ def test_search_tasks_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = delivery_api.SearchTasksResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = delivery_api.SearchTasksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6059,8 +6064,9 @@ def test_search_tasks_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_api.SearchTasksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_api.SearchTasksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6253,6 +6259,73 @@ def test_update_task_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = delivery_api.UpdateTaskRequest.meta.fields["task"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["task"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["task"][field])):
+                    del request_init["task"][field][i][subfield]
+            else:
+                del request_init["task"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6271,8 +6344,9 @@ def test_update_task_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tasks.Task.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tasks.Task.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6357,8 +6431,9 @@ def test_update_task_rest_required_fields(request_type=delivery_api.UpdateTaskRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = tasks.Task.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = tasks.Task.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6455,93 +6530,6 @@ def test_update_task_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"task": {"name": "providers/sample1/tasks/sample2"}}
-    request_init["task"] = {
-        "name": "providers/sample1/tasks/sample2",
-        "type_": 1,
-        "state": 1,
-        "task_outcome": 1,
-        "task_outcome_time": {"seconds": 751, "nanos": 543},
-        "task_outcome_location": {"point": {"latitude": 0.86, "longitude": 0.971}},
-        "task_outcome_location_source": 2,
-        "tracking_id": "tracking_id_value",
-        "delivery_vehicle_id": "delivery_vehicle_id_value",
-        "planned_location": {},
-        "task_duration": {"seconds": 751, "nanos": 543},
-        "target_time_window": {"start_time": {}, "end_time": {}},
-        "journey_sharing_info": {
-            "remaining_vehicle_journey_segments": [
-                {
-                    "stop": {
-                        "planned_location": {},
-                        "tasks": [
-                            {
-                                "task_id": "task_id_value",
-                                "task_duration": {},
-                                "target_time_window": {},
-                            }
-                        ],
-                        "state": 1,
-                    },
-                    "driving_distance_meters": {"value": 541},
-                    "driving_duration": {},
-                    "path": {},
-                }
-            ],
-            "last_location": {
-                "location": {},
-                "horizontal_accuracy": {"value": 0.541},
-                "latlng_accuracy": {},
-                "heading": {},
-                "bearing_accuracy": {},
-                "heading_accuracy": {},
-                "altitude": {},
-                "vertical_accuracy": {},
-                "altitude_accuracy": {},
-                "speed_kmph": {},
-                "speed": {},
-                "speed_accuracy": {},
-                "update_time": {},
-                "server_time": {},
-                "location_sensor": 1,
-                "is_road_snapped": {"value": True},
-                "is_gps_sensor_enabled": {},
-                "time_since_update": {},
-                "num_stale_updates": {},
-                "raw_location": {},
-                "raw_location_time": {},
-                "raw_location_sensor": 1,
-                "raw_location_accuracy": {},
-                "supplemental_location": {},
-                "supplemental_location_time": {},
-                "supplemental_location_sensor": 1,
-                "supplemental_location_accuracy": {},
-                "road_snapped": True,
-            },
-            "last_location_snappable": True,
-        },
-        "task_tracking_view_config": {
-            "route_polyline_points_visibility": {
-                "remaining_stop_count_threshold": 3219,
-                "duration_until_estimated_arrival_time_threshold": {},
-                "remaining_driving_distance_meters_threshold": 4561,
-                "always": True,
-                "never": True,
-            },
-            "estimated_arrival_time_visibility": {},
-            "estimated_task_completion_time_visibility": {},
-            "remaining_driving_distance_visibility": {},
-            "remaining_stop_count_visibility": {},
-            "vehicle_location_visibility": {},
-        },
-        "attributes": [
-            {
-                "key": "key_value",
-                "string_value": "string_value_value",
-                "bool_value": True,
-                "number_value": 0.1285,
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6580,8 +6568,9 @@ def test_update_task_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tasks.Task.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tasks.Task.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6646,8 +6635,9 @@ def test_list_tasks_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_api.ListTasksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_api.ListTasksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6730,8 +6720,9 @@ def test_list_tasks_rest_required_fields(request_type=delivery_api.ListTasksRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = delivery_api.ListTasksResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = delivery_api.ListTasksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6864,8 +6855,9 @@ def test_list_tasks_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_api.ListTasksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_api.ListTasksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6986,8 +6978,9 @@ def test_get_task_tracking_info_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = task_tracking_info.TaskTrackingInfo.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = task_tracking_info.TaskTrackingInfo.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7067,8 +7060,9 @@ def test_get_task_tracking_info_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = task_tracking_info.TaskTrackingInfo.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = task_tracking_info.TaskTrackingInfo.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7193,8 +7187,9 @@ def test_get_task_tracking_info_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = task_tracking_info.TaskTrackingInfo.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = task_tracking_info.TaskTrackingInfo.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7259,8 +7254,9 @@ def test_list_delivery_vehicles_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_api.ListDeliveryVehiclesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_api.ListDeliveryVehiclesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7346,8 +7342,9 @@ def test_list_delivery_vehicles_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = delivery_api.ListDeliveryVehiclesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = delivery_api.ListDeliveryVehiclesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7483,8 +7480,9 @@ def test_list_delivery_vehicles_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = delivery_api.ListDeliveryVehiclesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = delivery_api.ListDeliveryVehiclesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
