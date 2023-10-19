@@ -2135,6 +2135,73 @@ def test_create_budget_rest(request_type):
         },
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = budget_service.CreateBudgetRequest.meta.fields["budget"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["budget"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["budget"][field])):
+                    del request_init["budget"][field][i][subfield]
+            else:
+                del request_init["budget"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2149,8 +2216,9 @@ def test_create_budget_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = budget_model.Budget.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = budget_model.Budget.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2228,8 +2296,9 @@ def test_create_budget_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = budget_model.Budget.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = budget_model.Budget.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2323,47 +2392,6 @@ def test_create_budget_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "billingAccounts/sample1"}
-    request_init["budget"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "budget_filter": {
-            "projects": ["projects_value1", "projects_value2"],
-            "resource_ancestors": [
-                "resource_ancestors_value1",
-                "resource_ancestors_value2",
-            ],
-            "credit_types": ["credit_types_value1", "credit_types_value2"],
-            "credit_types_treatment": 1,
-            "services": ["services_value1", "services_value2"],
-            "subaccounts": ["subaccounts_value1", "subaccounts_value2"],
-            "labels": {},
-            "calendar_period": 1,
-            "custom_period": {
-                "start_date": {"year": 433, "month": 550, "day": 318},
-                "end_date": {},
-            },
-        },
-        "amount": {
-            "specified_amount": {
-                "currency_code": "currency_code_value",
-                "units": 563,
-                "nanos": 543,
-            },
-            "last_period_amount": {},
-        },
-        "threshold_rules": [{"threshold_percent": 0.1821, "spend_basis": 1}],
-        "notifications_rule": {
-            "pubsub_topic": "pubsub_topic_value",
-            "schema_version": "schema_version_value",
-            "monitoring_notification_channels": [
-                "monitoring_notification_channels_value1",
-                "monitoring_notification_channels_value2",
-            ],
-            "disable_default_iam_recipients": True,
-            "enable_project_level_recipients": True,
-        },
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2402,8 +2430,9 @@ def test_create_budget_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = budget_model.Budget.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = budget_model.Budget.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2496,6 +2525,73 @@ def test_update_budget_rest(request_type):
         },
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = budget_service.UpdateBudgetRequest.meta.fields["budget"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["budget"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["budget"][field])):
+                    del request_init["budget"][field][i][subfield]
+            else:
+                del request_init["budget"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2510,8 +2606,9 @@ def test_update_budget_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = budget_model.Budget.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = budget_model.Budget.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2586,8 +2683,9 @@ def test_update_budget_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = budget_model.Budget.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = budget_model.Budget.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2673,47 +2771,6 @@ def test_update_budget_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"budget": {"name": "billingAccounts/sample1/budgets/sample2"}}
-    request_init["budget"] = {
-        "name": "billingAccounts/sample1/budgets/sample2",
-        "display_name": "display_name_value",
-        "budget_filter": {
-            "projects": ["projects_value1", "projects_value2"],
-            "resource_ancestors": [
-                "resource_ancestors_value1",
-                "resource_ancestors_value2",
-            ],
-            "credit_types": ["credit_types_value1", "credit_types_value2"],
-            "credit_types_treatment": 1,
-            "services": ["services_value1", "services_value2"],
-            "subaccounts": ["subaccounts_value1", "subaccounts_value2"],
-            "labels": {},
-            "calendar_period": 1,
-            "custom_period": {
-                "start_date": {"year": 433, "month": 550, "day": 318},
-                "end_date": {},
-            },
-        },
-        "amount": {
-            "specified_amount": {
-                "currency_code": "currency_code_value",
-                "units": 563,
-                "nanos": 543,
-            },
-            "last_period_amount": {},
-        },
-        "threshold_rules": [{"threshold_percent": 0.1821, "spend_basis": 1}],
-        "notifications_rule": {
-            "pubsub_topic": "pubsub_topic_value",
-            "schema_version": "schema_version_value",
-            "monitoring_notification_channels": [
-                "monitoring_notification_channels_value1",
-                "monitoring_notification_channels_value2",
-            ],
-            "disable_default_iam_recipients": True,
-            "enable_project_level_recipients": True,
-        },
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2752,8 +2809,9 @@ def test_update_budget_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = budget_model.Budget.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = budget_model.Budget.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2820,8 +2878,9 @@ def test_get_budget_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = budget_model.Budget.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = budget_model.Budget.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2896,8 +2955,9 @@ def test_get_budget_rest_required_fields(request_type=budget_service.GetBudgetRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = budget_model.Budget.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = budget_model.Budget.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3020,8 +3080,9 @@ def test_get_budget_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = budget_model.Budget.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = budget_model.Budget.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3084,8 +3145,9 @@ def test_list_budgets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = budget_service.ListBudgetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = budget_service.ListBudgetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3168,8 +3230,9 @@ def test_list_budgets_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = budget_service.ListBudgetsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = budget_service.ListBudgetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3303,8 +3366,9 @@ def test_list_budgets_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = budget_service.ListBudgetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = budget_service.ListBudgetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

@@ -2856,10 +2856,11 @@ def test_list_conversation_profiles_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = conversation_profile.ListConversationProfilesResponse.pb(
+        # Convert return value to protobuf type
+        return_value = conversation_profile.ListConversationProfilesResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2941,10 +2942,11 @@ def test_list_conversation_profiles_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = conversation_profile.ListConversationProfilesResponse.pb(
+            # Convert return value to protobuf type
+            return_value = conversation_profile.ListConversationProfilesResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3081,10 +3083,11 @@ def test_list_conversation_profiles_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = conversation_profile.ListConversationProfilesResponse.pb(
+        # Convert return value to protobuf type
+        return_value = conversation_profile.ListConversationProfilesResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3213,8 +3216,9 @@ def test_get_conversation_profile_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = conversation_profile.ConversationProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = conversation_profile.ConversationProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3293,8 +3297,9 @@ def test_get_conversation_profile_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = conversation_profile.ConversationProfile.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = conversation_profile.ConversationProfile.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3420,8 +3425,9 @@ def test_get_conversation_profile_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = conversation_profile.ConversationProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = conversation_profile.ConversationProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3563,6 +3569,77 @@ def test_create_conversation_profile_rest(request_type):
             "voice": {"name": "name_value", "ssml_gender": 1},
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcd_conversation_profile.CreateConversationProfileRequest.meta.fields[
+        "conversation_profile"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "conversation_profile"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["conversation_profile"][field])):
+                    del request_init["conversation_profile"][field][i][subfield]
+            else:
+                del request_init["conversation_profile"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3579,8 +3656,9 @@ def test_create_conversation_profile_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_conversation_profile.ConversationProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_conversation_profile.ConversationProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3660,10 +3738,9 @@ def test_create_conversation_profile_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcd_conversation_profile.ConversationProfile.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcd_conversation_profile.ConversationProfile.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3764,95 +3841,6 @@ def test_create_conversation_profile_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1"}
-    request_init["conversation_profile"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "automated_agent_config": {
-            "agent": "agent_value",
-            "session_ttl": {"seconds": 751, "nanos": 543},
-        },
-        "human_agent_assistant_config": {
-            "notification_config": {"topic": "topic_value", "message_format": 1},
-            "human_agent_suggestion_config": {
-                "feature_configs": [
-                    {
-                        "suggestion_feature": {"type_": 1},
-                        "enable_event_based_suggestion": True,
-                        "disable_agent_query_logging": True,
-                        "suggestion_trigger_settings": {
-                            "no_small_talk": True,
-                            "only_end_user": True,
-                        },
-                        "query_config": {
-                            "knowledge_base_query_source": {
-                                "knowledge_bases": [
-                                    "knowledge_bases_value1",
-                                    "knowledge_bases_value2",
-                                ]
-                            },
-                            "document_query_source": {
-                                "documents": ["documents_value1", "documents_value2"]
-                            },
-                            "dialogflow_query_source": {
-                                "agent": "agent_value",
-                                "human_agent_side_config": {"agent": "agent_value"},
-                            },
-                            "max_results": 1207,
-                            "confidence_threshold": 0.2106,
-                            "context_filter_settings": {
-                                "drop_handoff_messages": True,
-                                "drop_virtual_agent_messages": True,
-                                "drop_ivr_messages": True,
-                            },
-                        },
-                        "conversation_model_config": {
-                            "model": "model_value",
-                            "baseline_model_version": "baseline_model_version_value",
-                        },
-                        "conversation_process_config": {"recent_sentences_count": 2352},
-                    }
-                ],
-                "group_suggestion_responses": True,
-            },
-            "end_user_suggestion_config": {},
-            "message_analysis_config": {
-                "enable_entity_extraction": True,
-                "enable_sentiment_analysis": True,
-            },
-        },
-        "human_agent_handoff_config": {
-            "live_person_config": {"account_number": "account_number_value"},
-            "salesforce_live_agent_config": {
-                "organization_id": "organization_id_value",
-                "deployment_id": "deployment_id_value",
-                "button_id": "button_id_value",
-                "endpoint_domain": "endpoint_domain_value",
-            },
-        },
-        "notification_config": {},
-        "logging_config": {"enable_stackdriver_logging": True},
-        "new_message_event_notification_config": {},
-        "stt_config": {
-            "speech_model_variant": 1,
-            "model": "model_value",
-            "use_timeout_based_endpointing": True,
-        },
-        "language_code": "language_code_value",
-        "time_zone": "time_zone_value",
-        "security_settings": "security_settings_value",
-        "tts_config": {
-            "speaking_rate": 0.1373,
-            "pitch": 0.536,
-            "volume_gain_db": 0.1467,
-            "effects_profile_id": [
-                "effects_profile_id_value1",
-                "effects_profile_id_value2",
-            ],
-            "voice": {"name": "name_value", "ssml_gender": 1},
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3893,8 +3881,9 @@ def test_create_conversation_profile_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_conversation_profile.ConversationProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_conversation_profile.ConversationProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4043,6 +4032,77 @@ def test_update_conversation_profile_rest(request_type):
             "voice": {"name": "name_value", "ssml_gender": 1},
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcd_conversation_profile.UpdateConversationProfileRequest.meta.fields[
+        "conversation_profile"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "conversation_profile"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["conversation_profile"][field])):
+                    del request_init["conversation_profile"][field][i][subfield]
+            else:
+                del request_init["conversation_profile"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4059,8 +4119,9 @@ def test_update_conversation_profile_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_conversation_profile.ConversationProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_conversation_profile.ConversationProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4137,10 +4198,9 @@ def test_update_conversation_profile_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcd_conversation_profile.ConversationProfile.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcd_conversation_profile.ConversationProfile.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4245,95 +4305,6 @@ def test_update_conversation_profile_rest_bad_request(
             "name": "projects/sample1/conversationProfiles/sample2"
         }
     }
-    request_init["conversation_profile"] = {
-        "name": "projects/sample1/conversationProfiles/sample2",
-        "display_name": "display_name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "automated_agent_config": {
-            "agent": "agent_value",
-            "session_ttl": {"seconds": 751, "nanos": 543},
-        },
-        "human_agent_assistant_config": {
-            "notification_config": {"topic": "topic_value", "message_format": 1},
-            "human_agent_suggestion_config": {
-                "feature_configs": [
-                    {
-                        "suggestion_feature": {"type_": 1},
-                        "enable_event_based_suggestion": True,
-                        "disable_agent_query_logging": True,
-                        "suggestion_trigger_settings": {
-                            "no_small_talk": True,
-                            "only_end_user": True,
-                        },
-                        "query_config": {
-                            "knowledge_base_query_source": {
-                                "knowledge_bases": [
-                                    "knowledge_bases_value1",
-                                    "knowledge_bases_value2",
-                                ]
-                            },
-                            "document_query_source": {
-                                "documents": ["documents_value1", "documents_value2"]
-                            },
-                            "dialogflow_query_source": {
-                                "agent": "agent_value",
-                                "human_agent_side_config": {"agent": "agent_value"},
-                            },
-                            "max_results": 1207,
-                            "confidence_threshold": 0.2106,
-                            "context_filter_settings": {
-                                "drop_handoff_messages": True,
-                                "drop_virtual_agent_messages": True,
-                                "drop_ivr_messages": True,
-                            },
-                        },
-                        "conversation_model_config": {
-                            "model": "model_value",
-                            "baseline_model_version": "baseline_model_version_value",
-                        },
-                        "conversation_process_config": {"recent_sentences_count": 2352},
-                    }
-                ],
-                "group_suggestion_responses": True,
-            },
-            "end_user_suggestion_config": {},
-            "message_analysis_config": {
-                "enable_entity_extraction": True,
-                "enable_sentiment_analysis": True,
-            },
-        },
-        "human_agent_handoff_config": {
-            "live_person_config": {"account_number": "account_number_value"},
-            "salesforce_live_agent_config": {
-                "organization_id": "organization_id_value",
-                "deployment_id": "deployment_id_value",
-                "button_id": "button_id_value",
-                "endpoint_domain": "endpoint_domain_value",
-            },
-        },
-        "notification_config": {},
-        "logging_config": {"enable_stackdriver_logging": True},
-        "new_message_event_notification_config": {},
-        "stt_config": {
-            "speech_model_variant": 1,
-            "model": "model_value",
-            "use_timeout_based_endpointing": True,
-        },
-        "language_code": "language_code_value",
-        "time_zone": "time_zone_value",
-        "security_settings": "security_settings_value",
-        "tts_config": {
-            "speaking_rate": 0.1373,
-            "pitch": 0.536,
-            "volume_gain_db": 0.1467,
-            "effects_profile_id": [
-                "effects_profile_id_value1",
-                "effects_profile_id_value2",
-            ],
-            "voice": {"name": "name_value", "ssml_gender": 1},
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4378,8 +4349,9 @@ def test_update_conversation_profile_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_conversation_profile.ConversationProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_conversation_profile.ConversationProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
