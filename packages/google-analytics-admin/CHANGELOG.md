@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.22.0](https://github.com/googleapis/python-analytics-admin/compare/v0.21.0...v0.22.0) (2023-10-19)
+
+
+### Features
+
+* Add `DataRedactionSettings`, `RollupPropertySourceLink`, `SubpropertyEventFilterCondition`, `SubpropertyEventFilterExpression`, `SubpropertyEventFilterExpressionList`, `SubpropertyEventFilterClause`, `SubpropertyEventFilter` types ([49d0449](https://github.com/googleapis/python-analytics-admin/commit/49d0449e05cceca61fc976b35f542b1c344e4c23))
+* Add `include_all_users`, `expand_groups` fields to `RunAccessReportRequest` ([49d0449](https://github.com/googleapis/python-analytics-admin/commit/49d0449e05cceca61fc976b35f542b1c344e4c23))
+* Add `UpdateDataRedactionSettings`, `CreateRollupProperty`, `GetRollupPropertySourceLink`, `ListRollupPropertySourceLinks`, `CreateRollupPropertySourceLink`, `DeleteRollupPropertySourceLink`, `CreateSubproperty`, `CreateSubpropertyEventFilter`, `CreateSubpropertyEventFilter`, `ListSubpropertyEventFilters`, `UpdateSubpropertyEventFilter`, `DeleteSubpropertyEventFilter` methods to the Admin API v1 alpha ([49d0449](https://github.com/googleapis/python-analytics-admin/commit/49d0449e05cceca61fc976b35f542b1c344e4c23))
+* Add the `data_redaction_settings` field to the `ChangeHistoryResource.resource` oneof field ([49d0449](https://github.com/googleapis/python-analytics-admin/commit/49d0449e05cceca61fc976b35f542b1c344e4c23))
+* Add the `DATA_REDACTION_SETTINGS` option to the `ChangeHistoryResourceType` enum ([49d0449](https://github.com/googleapis/python-analytics-admin/commit/49d0449e05cceca61fc976b35f542b1c344e4c23))
+
+
+### Bug Fixes
+
+* Delete BatchDeleteUserLinks, DeleteUserLink, BatchUpdateUserLinks, UpdateUserLink, BatchCreateUserLinks, CreateUserLink, AuditUserLinks, ListUserLinks, BatchGetUserLinks, GetUserLink from the Admin API v1 alpha as per the announcement in https://bit.ly/46yBIDt ([49d0449](https://github.com/googleapis/python-analytics-admin/commit/49d0449e05cceca61fc976b35f542b1c344e4c23))
+
 ## [0.21.0](https://github.com/googleapis/python-analytics-admin/compare/v0.20.0...v0.21.0) (2023-10-10)
 
 
