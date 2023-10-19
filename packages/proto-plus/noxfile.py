@@ -50,11 +50,11 @@ def unit(session, proto="python"):
     if proto == "cpp":  # 4.20 does not have cpp.
         session.install("protobuf==3.19.0")
 
-    # The warnings as errors flag `-W=error` was removed in
+    # TODO(https://github.com/googleapis/proto-plus-python/issues/403): re-enable `-W=error`
+    # The warnings-as-errors flag `-W=error` was removed in
     # https://github.com/googleapis/proto-plus-python/pull/400.
     # It should be re-added once issue
-    # https://github.com/googleapis/proto-plus-python/issues/403 is fixed.
-    # See also https://github.com/protocolbuffers/protobuf/issues/12186.
+    # https://github.com/protocolbuffers/protobuf/issues/12186 is fixed.
     session.run(
         "py.test",
         "--quiet",
