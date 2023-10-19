@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    data_v1beta/services
-    data_v1beta/types
+    data_v1beta/services_
+    data_v1beta/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    data_v1alpha/services
-    data_v1alpha/types
+    data_v1alpha/services_
+    data_v1alpha/types_
 
 
 Changelog
