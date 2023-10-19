@@ -57,7 +57,7 @@ case ${TEST_TYPE} in
         retval=$?
         ;;
     prerelease)
-        nox -s prerelease_deps-3.11
+        nox -s prerelease_deps-3.12
         retval=$?
         ;;
     unit)
