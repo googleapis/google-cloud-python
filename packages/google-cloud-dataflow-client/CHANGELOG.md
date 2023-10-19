@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.5](https://github.com/googleapis/python-dataflow-client/compare/v0.8.4...v0.8.5) (2023-10-09)
+
+
+### Documentation
+
+* Minor formatting ([94b4f73](https://github.com/googleapis/python-dataflow-client/commit/94b4f73d2f698a49fd38d227df5f211509ffcc5c))
+
 ## [0.8.4](https://github.com/googleapis/python-dataflow-client/compare/v0.8.3...v0.8.4) (2023-07-04)
 
 
