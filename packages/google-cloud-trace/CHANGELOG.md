@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.11.3](https://github.com/googleapis/python-trace/compare/v1.11.2...v1.11.3) (2023-10-09)
+
+
+### Documentation
+
+* Minor formatting ([3886cb0](https://github.com/googleapis/python-trace/commit/3886cb098bc6eda1681f06bbcf5fa136983b7569))
+
 ## [1.11.2](https://github.com/googleapis/python-trace/compare/v1.11.1...v1.11.2) (2023-07-04)
 
 
