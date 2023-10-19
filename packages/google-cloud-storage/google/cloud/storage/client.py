@@ -94,6 +94,11 @@ class Client(ClientWithProject):
         (Optional) Whether authentication is required under custom endpoints.
         If false, uses AnonymousCredentials and bypasses authentication.
         Defaults to True. Note this is only used when a custom endpoint is set in conjunction.
+
+    :type extra_headers: dict
+    :param extra_headers:
+        (Optional) Custom headers to be sent with the requests attached to the client.
+        For example, you can add custom audit logging headers.
     """
 
     SCOPE = (
@@ -111,6 +116,7 @@ class Client(ClientWithProject):
         client_info=None,
         client_options=None,
         use_auth_w_custom_endpoint=True,
+        extra_headers={},
     ):
         self._base_connection = None
 
@@ -127,6 +133,7 @@ class Client(ClientWithProject):
         # are passed along, for use in __reduce__ defined elsewhere.
         self._initial_client_info = client_info
         self._initial_client_options = client_options
+        self._extra_headers = extra_headers
 
         kw_args = {"client_info": client_info}
 
@@ -172,7 +179,10 @@ class Client(ClientWithProject):
         if no_project:
             self.project = None
 
-        self._connection = Connection(self, **kw_args)
+        # Pass extra_headers to Connection
+        connection = Connection(self, **kw_args)
+        connection.extra_headers = extra_headers
+        self._connection = connection
         self._batch_stack = _LocalStack()
 
     @classmethod

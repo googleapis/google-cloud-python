@@ -850,6 +850,9 @@ def test_upload_chunks_concurrently_with_metadata_and_encryption():
     custom_metadata = {"key_a": "value_a", "key_b": "value_b"}
     encryption_key = "b23ff11bba187db8c37077e6af3b25b8"
     kms_key_name = "sample_key_name"
+    custom_headers = {
+        "x-goog-custom-audit-foo": "bar",
+    }
 
     METADATA = {
         "cache_control": "private",
@@ -862,7 +865,9 @@ def test_upload_chunks_concurrently_with_metadata_and_encryption():
 
     bucket = mock.Mock()
     bucket.name = "bucket"
-    bucket.client = _PickleableMockClient(identify_as_client=True)
+    bucket.client = _PickleableMockClient(
+        identify_as_client=True, extra_headers=custom_headers
+    )
     transport = bucket.client._http
     user_project = "my_project"
     bucket.user_project = user_project
@@ -920,6 +925,7 @@ def test_upload_chunks_concurrently_with_metadata_and_encryption():
             "x-goog-meta-key_b": "value_b",
             "x-goog-user-project": "my_project",
             "x-goog-encryption-kms-key-name": "sample_key_name",
+            **custom_headers,
         }
         container_cls_mock.assert_called_once_with(
             URL, FILENAME, headers=expected_headers
@@ -966,10 +972,11 @@ class _PickleableMockConnection:
 
 
 class _PickleableMockClient:
-    def __init__(self, identify_as_client=False):
+    def __init__(self, identify_as_client=False, extra_headers={}):
         self._http = "my_transport"  # used as an identifier for "called_with"
         self._connection = _PickleableMockConnection()
         self.identify_as_client = identify_as_client
+        self._extra_headers = extra_headers
 
     @property
     def __class__(self):
@@ -1083,11 +1090,17 @@ def test__get_pool_class_and_requirements_error():
 def test__reduce_client():
     fake_cache = {}
     client = mock.Mock()
+    custom_headers = {
+        "x-goog-custom-audit-foo": "bar",
+    }
+    client._extra_headers = custom_headers
 
     with mock.patch(
         "google.cloud.storage.transfer_manager._cached_clients", new=fake_cache
     ), mock.patch("google.cloud.storage.transfer_manager.Client"):
-        transfer_manager._reduce_client(client)
+        replicated_client, kwargs = transfer_manager._reduce_client(client)
+        assert replicated_client is not None
+        assert custom_headers in kwargs
 
 
 def test__call_method_on_maybe_pickled_blob():

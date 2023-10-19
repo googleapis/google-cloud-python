@@ -71,6 +71,55 @@ class TestConnection(unittest.TestCase):
             timeout=_DEFAULT_TIMEOUT,
         )
 
+    def test_metadata_op_has_client_custom_headers(self):
+        import requests
+        import google.auth.credentials
+        from google.cloud import _http as base_http
+        from google.cloud.storage import Client
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
+        custom_headers = {
+            "x-goog-custom-audit-foo": "bar",
+            "x-goog-custom-audit-user": "baz",
+        }
+        http = mock.create_autospec(requests.Session, instance=True)
+        response = requests.Response()
+        response.status_code = 200
+        data = b"brent-spiner"
+        response._content = data
+        http.is_mtls = False
+        http.request.return_value = response
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        client = Client(
+            project="project",
+            credentials=credentials,
+            _http=http,
+            extra_headers=custom_headers,
+        )
+        req_data = "hey-yoooouuuuu-guuuuuyyssss"
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
+            result = client._connection.api_request(
+                "GET", "/rainbow", data=req_data, expect_json=False
+            )
+        self.assertEqual(result, data)
+
+        expected_headers = {
+            **custom_headers,
+            "Accept-Encoding": "gzip",
+            base_http.CLIENT_INFO_HEADER: f"{client._connection.user_agent} {GCCL_INVOCATION_TEST_CONST}",
+            "User-Agent": client._connection.user_agent,
+        }
+        expected_uri = client._connection.build_api_url("/rainbow")
+        http.request.assert_called_once_with(
+            data=req_data,
+            headers=expected_headers,
+            method="GET",
+            url=expected_uri,
+            timeout=_DEFAULT_TIMEOUT,
+        )
+
     def test_build_api_url_no_extra_query_params(self):
         from urllib.parse import parse_qsl
         from urllib.parse import urlsplit

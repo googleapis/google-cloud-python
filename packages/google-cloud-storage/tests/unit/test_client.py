@@ -178,6 +178,18 @@ class TestClient(unittest.TestCase):
             client._connection.API_BASE_URL, "https://www.foo-googleapis.com"
         )
 
+    def test_ctor_w_custom_headers(self):
+        PROJECT = "PROJECT"
+        credentials = _make_credentials()
+        custom_headers = {"x-goog-custom-audit-foo": "bar"}
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, extra_headers=custom_headers
+        )
+        self.assertEqual(
+            client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
+        )
+        self.assertEqual(client._connection.extra_headers, custom_headers)
+
     def test_ctor_wo_project(self):
         PROJECT = "PROJECT"
         credentials = _make_credentials(project=PROJECT)
