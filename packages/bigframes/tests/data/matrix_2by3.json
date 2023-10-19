@@ -1,0 +1,22 @@
+[
+    {
+      "mode": "REQUIRED",
+      "name": "rowindex",
+      "type": "INTEGER"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "a",
+      "type": "INTEGER"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "b",
+      "type": "INTEGER"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "c",
+      "type": "INTEGER"
+    }
+  ]

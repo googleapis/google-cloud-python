@@ -1261,13 +1261,28 @@ class Block:
         *,
         columns: Sequence[str],
         values: Sequence[str],
+        columns_unique_values: typing.Optional[
+            typing.Union[pd.Index, Sequence[object]]
+        ] = None,
         values_in_index: typing.Optional[bool] = None,
     ):
-        # Columns+index should uniquely identify rows
-        # Warning: This is not validated, breaking this constraint will result in silently non-deterministic behavior.
-        # -1 to allow for ordering column in addition to pivot columns
-        max_unique_value = (_BQ_MAX_COLUMNS - 1) // len(values)
-        columns_values = self._get_unique_values(columns, max_unique_value)
+        # We need the unique values from the pivot columns to turn them into
+        # column ids. It can be deteremined by running a SQL query on the
+        # underlying data. However, the caller can save that if they know the
+        # unique values upfront by providing them explicitly.
+        if columns_unique_values is None:
+            # Columns+index should uniquely identify rows
+            # Warning: This is not validated, breaking this constraint will
+            # result in silently non-deterministic behavior.
+            # -1 to allow for ordering column in addition to pivot columns
+            max_unique_value = (_BQ_MAX_COLUMNS - 1) // len(values)
+            columns_values = self._get_unique_values(columns, max_unique_value)
+        else:
+            columns_values = (
+                columns_unique_values
+                if isinstance(columns_unique_values, pd.Index)
+                else pd.Index(columns_unique_values)
+            )
         column_index = columns_values
 
         column_ids: list[str] = []

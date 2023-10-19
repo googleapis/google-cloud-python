@@ -3167,3 +3167,57 @@ def test_df_cached(scalars_df_index):
 
     df_cached_copy = df._cached()
     pandas.testing.assert_frame_equal(df.to_pandas(), df_cached_copy.to_pandas())
+
+
+def test_df_dot_inline(session):
+    df1 = pd.DataFrame([[1, 2, 3], [2, 5, 7]])
+    df2 = pd.DataFrame([[2, 4, 8], [1, 5, 10], [3, 6, 9]])
+
+    bf1 = session.read_pandas(df1)
+    bf2 = session.read_pandas(df2)
+    bf_result = bf1.dot(bf2).to_pandas()
+    pd_result = df1.dot(df2)
+
+    # Patch pandas dtypes for testing parity
+    # Pandas uses int64 instead of Int64 (nullable) dtype.
+    for name in pd_result.columns:
+        pd_result[name] = pd_result[name].astype(pd.Int64Dtype())
+    pd_result.index = pd_result.index.astype(pd.Int64Dtype())
+
+    pd.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+def test_df_dot(
+    matrix_2by3_df, matrix_2by3_pandas_df, matrix_3by4_df, matrix_3by4_pandas_df
+):
+    bf_result = matrix_2by3_df.dot(matrix_3by4_df).to_pandas()
+    pd_result = matrix_2by3_pandas_df.dot(matrix_3by4_pandas_df)
+
+    # Patch pandas dtypes for testing parity
+    # Pandas result is object instead of Int64 (nullable) dtype.
+    for name in pd_result.columns:
+        pd_result[name] = pd_result[name].astype(pd.Int64Dtype())
+
+    pd.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+def test_df_dot_series(
+    matrix_2by3_df, matrix_2by3_pandas_df, matrix_3by4_df, matrix_3by4_pandas_df
+):
+    bf_result = matrix_2by3_df.dot(matrix_3by4_df["x"]).to_pandas()
+    pd_result = matrix_2by3_pandas_df.dot(matrix_3by4_pandas_df["x"])
+
+    # Patch pandas dtypes for testing parity
+    # Pandas result is object instead of Int64 (nullable) dtype.
+    pd_result = pd_result.astype(pd.Int64Dtype())
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )

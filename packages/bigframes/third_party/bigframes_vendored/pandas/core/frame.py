@@ -2117,3 +2117,33 @@ class DataFrame(NDFrame):
     def at(self):
         """Access a single value for a row/column label pair."""
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def dot(self, other):
+        """
+        Compute the matrix multiplication between the DataFrame and other.
+
+        This method computes the matrix product between the DataFrame and the
+        values of an other Series or DataFrame.
+
+        It can also be called using `self @ other`.
+
+        .. note::
+            The dimensions of DataFrame and other must be compatible in order to
+            compute the matrix multiplication. In addition, the column names of
+            DataFrame and the index of other must contain the same values, as they
+            will be aligned prior to the multiplication.
+
+            The dot method for Series computes the inner product, instead of the
+            matrix product here.
+
+        Args:
+            other (Series or DataFrame):
+                The other object to compute the matrix product with.
+
+        Returns:
+            Series or DataFrame
+                If `other` is a Series, return the matrix product between self and
+                other as a Series. If other is a DataFrame, return
+                the matrix product of self and other in a DataFrame.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

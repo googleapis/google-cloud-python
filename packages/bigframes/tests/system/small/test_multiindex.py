@@ -934,3 +934,47 @@ def test_column_multi_index_swaplevel(scalars_df_index, scalars_pandas_df_index)
     pd_result = pd_df.swaplevel(-3, -1, axis=1)
 
     pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_df_multi_index_dot_not_supported():
+    left_matrix = [[1, 2, 3], [2, 5, 7]]
+    right_matrix = [[2, 4, 8], [1, 5, 10], [3, 6, 9]]
+
+    # Left multi-index
+    left_index = pandas.MultiIndex.from_tuples([("a", "aa"), ("a", "ab")])
+    bf1 = bpd.DataFrame(left_matrix, index=left_index)
+    bf2 = bpd.DataFrame(right_matrix)
+    with pytest.raises(NotImplementedError, match="Multi-index input is not supported"):
+        bf1.dot(bf2)
+
+    # right multi-index
+    right_index = pandas.MultiIndex.from_tuples([("a", "aa"), ("a", "ab"), ("b", "bb")])
+    bf1 = bpd.DataFrame(left_matrix)
+    bf2 = bpd.DataFrame(right_matrix, index=right_index)
+    with pytest.raises(NotImplementedError, match="Multi-index input is not supported"):
+        bf1.dot(bf2)
+
+
+def test_column_multi_index_dot_not_supported():
+    left_matrix = [[1, 2, 3], [2, 5, 7]]
+    right_matrix = [[2, 4, 8], [1, 5, 10], [3, 6, 9]]
+
+    multi_level_columns = pandas.MultiIndex.from_arrays(
+        [["col0", "col0", "col1"], ["col00", "col01", "col11"]]
+    )
+
+    # Left multi-columns
+    bf1 = bpd.DataFrame(left_matrix, columns=multi_level_columns)
+    bf2 = bpd.DataFrame(right_matrix)
+    with pytest.raises(
+        NotImplementedError, match="Multi-level column input is not supported"
+    ):
+        bf1.dot(bf2)
+
+    # right multi-columns
+    bf1 = bpd.DataFrame(left_matrix)
+    bf2 = bpd.DataFrame(right_matrix, columns=multi_level_columns)
+    with pytest.raises(
+        NotImplementedError, match="Multi-level column input is not supported"
+    ):
+        bf1.dot(bf2)

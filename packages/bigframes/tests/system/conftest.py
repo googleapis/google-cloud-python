@@ -235,6 +235,8 @@ def load_test_data_tables(
         ("penguins", "penguins_schema.json", "penguins.jsonl"),
         ("time_series", "time_series_schema.json", "time_series.jsonl"),
         ("hockey_players", "hockey_players.json", "hockey_players.jsonl"),
+        ("matrix_2by3", "matrix_2by3.json", "matrix_2by3.jsonl"),
+        ("matrix_3by4", "matrix_3by4.json", "matrix_3by4.jsonl"),
     ]:
         test_data_hash = hashlib.md5()
         _hash_digest_file(test_data_hash, DATA_DIR / schema_filename)
@@ -302,6 +304,16 @@ def penguins_table_id(test_data_tables) -> str:
 @pytest.fixture(scope="session")
 def time_series_table_id(test_data_tables) -> str:
     return test_data_tables["time_series"]
+
+
+@pytest.fixture(scope="session")
+def matrix_2by3_table_id(test_data_tables) -> str:
+    return test_data_tables["matrix_2by3"]
+
+
+@pytest.fixture(scope="session")
+def matrix_3by4_table_id(test_data_tables) -> str:
+    return test_data_tables["matrix_3by4"]
 
 
 @pytest.fixture(scope="session")
@@ -408,6 +420,62 @@ def hockey_pandas_df() -> pd.DataFrame:
         },
     )
     df.index = df.index.astype("Int64")
+    return df
+
+
+@pytest.fixture(scope="session")
+def matrix_2by3_df(
+    matrix_2by3_table_id: str, session: bigframes.Session
+) -> bigframes.dataframe.DataFrame:
+    """DataFrame pointing at a test 2-by-3 matrix data."""
+    df = session.read_gbq(matrix_2by3_table_id)
+    df = df.set_index("rowindex").sort_index()
+    return df
+
+
+@pytest.fixture(scope="session")
+def matrix_2by3_pandas_df() -> pd.DataFrame:
+    """pd.DataFrame pointing at a test 2-by-3 matrix data."""
+    df = pd.read_json(
+        DATA_DIR / "matrix_2by3.jsonl",
+        lines=True,
+        dtype={
+            "rowindex": pd.Int64Dtype(),
+            "a": pd.Int64Dtype(),
+            "b": pd.Int64Dtype(),
+            "c": pd.Int64Dtype(),
+        },
+    )
+    df = df.set_index("rowindex").sort_index()
+    df.index = df.index.astype("Int64")
+    return df
+
+
+@pytest.fixture(scope="session")
+def matrix_3by4_df(
+    matrix_3by4_table_id: str, session: bigframes.Session
+) -> bigframes.dataframe.DataFrame:
+    """DataFrame pointing at a test 3-by-4 matrix data."""
+    df = session.read_gbq(matrix_3by4_table_id)
+    df = df.set_index("rowindex").sort_index()
+    return df
+
+
+@pytest.fixture(scope="session")
+def matrix_3by4_pandas_df() -> pd.DataFrame:
+    """pd.DataFrame pointing at a test 3-by-4 matrix data."""
+    df = pd.read_json(
+        DATA_DIR / "matrix_3by4.jsonl",
+        lines=True,
+        dtype={
+            "rowindex": pd.StringDtype(storage="pyarrow"),
+            "w": pd.Int64Dtype(),
+            "x": pd.Int64Dtype(),
+            "y": pd.Int64Dtype(),
+            "z": pd.Int64Dtype(),
+        },
+    )
+    df = df.set_index("rowindex").sort_index()
     return df
 
 
