@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/googleapis/python-filestore/compare/v1.6.1...v1.6.2) (2023-10-09)
+
+
+### Documentation
+
+* Minor formatting ([#157](https://github.com/googleapis/python-filestore/issues/157)) ([65b3d25](https://github.com/googleapis/python-filestore/commit/65b3d255ed8df0bccdc889c13889b20532b74881))
+
 ## [1.6.1](https://github.com/googleapis/python-filestore/compare/v1.6.0...v1.6.1) (2023-07-04)
 
 
