@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.21.1](https://github.com/googleapis/python-speech/compare/v2.21.0...v2.21.1) (2023-10-09)
+
+
+### Documentation
+
+* Minor formatting ([7342cd5](https://github.com/googleapis/python-speech/commit/7342cd51e12ac8b39c070778ad363c09f0950f41))
+
 ## [2.21.0](https://github.com/googleapis/python-speech/compare/v2.20.1...v2.21.0) (2023-07-05)
 
 
