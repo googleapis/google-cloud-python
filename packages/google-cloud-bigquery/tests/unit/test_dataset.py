@@ -152,6 +152,22 @@ class TestAccessEntry(unittest.TestCase):
         exp_resource = entry.to_api_repr()
         self.assertEqual(resource, exp_resource)
 
+    def test_from_api_repr_wo_role(self):
+        resource = {
+            "view": {
+                "projectId": "my-project",
+                "datasetId": "my_dataset",
+                "tableId": "my_table",
+            }
+        }
+        entry = self._get_target_class().from_api_repr(resource)
+        exp_entry = self._make_one(
+            role=None,
+            entity_type="view",
+            entity_id=resource["view"],
+        )
+        self.assertEqual(entry, exp_entry)
+
     def test_to_api_repr_w_extra_properties(self):
         resource = {
             "role": "READER",
