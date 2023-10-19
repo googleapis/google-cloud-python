@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.4.5](https://github.com/googleapis/python-vision/compare/v3.4.4...v3.4.5) (2023-10-18)
+
+
+### Documentation
+
+* Minor formatting ([#552](https://github.com/googleapis/python-vision/issues/552)) ([747296f](https://github.com/googleapis/python-vision/commit/747296fd25f53bc7bfd64f7b10825431516c0b9f))
+
 ## [3.4.4](https://github.com/googleapis/python-vision/compare/v3.4.3...v3.4.4) (2023-07-04)
 
 
