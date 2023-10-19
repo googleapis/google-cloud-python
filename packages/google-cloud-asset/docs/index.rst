@@ -11,40 +11,40 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    asset_v1/services
-    asset_v1/types
+    asset_v1/services_
+    asset_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    asset_v1p1beta1/services
-    asset_v1p1beta1/types
+    asset_v1p1beta1/services_
+    asset_v1p1beta1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    asset_v1p2beta1/services
-    asset_v1p2beta1/types
+    asset_v1p2beta1/services_
+    asset_v1p2beta1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    asset_v1p4beta1/services
-    asset_v1p4beta1/types
+    asset_v1p4beta1/services_
+    asset_v1p4beta1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    asset_v1p5beta1/services
-    asset_v1p5beta1/types
+    asset_v1p5beta1/services_
+    asset_v1p5beta1/types_
 
 
 Migration Guide
