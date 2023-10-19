@@ -63,26 +63,6 @@ export PYTHONUNBUFFERED=1
 # Install dependencies, as the following steps depend on it
 python3.10 -m pip install -e .[all]
 
-# Generate third party notices and include it in the licenses in setup.cfg
-# TODO(shobs): Don't include it in the package once vertex colab can pick it
-# from elsewhere
-THIRD_PARTY_NOTICES_FILE=THIRD_PARTY_NOTICES
-python3.10 -m pip install pip-licenses
-python3.10 scripts/generate_third_party_notices.py --output-file ${THIRD_PARTY_NOTICES_FILE}
-if ! [ -s ${THIRD_PARTY_NOTICES_FILE} ]; then
-    echo "${THIRD_PARTY_NOTICES_FILE} was generated with zero size"
-    exit -1
-fi
-SETUP_CFG_BKP=`mktemp`
-cp -f setup.cfg ${SETUP_CFG_BKP}
-cat >> setup.cfg << EOF
-
-[metadata]
-license_files =
-    LICENSE
-    ${THIRD_PARTY_NOTICES_FILE}
-EOF
-
 # Update version string to include git hash and date
 CURRENT_DATE=$(date '+%Y%m%d')
 GIT_HASH=$(git rev-parse --short HEAD)
@@ -101,33 +81,13 @@ if [ $num_wheel_files -ne 1 ] ; then
     exit -1
 fi
 
-# Make sure the wheel file has the third party notices included
-# TODO(shobs): An utimate validation would be to create a virtual environment
-# and install the wheel file, then verify that
-# site-packages/bigframes-*.dist-info/ includes third party notices
-python3.10 -c "
-from zipfile import ZipFile
-with ZipFile('$VERSION_WHEEL') as myzip:
-    third_party_licenses_info = [
-        info
-        for info in myzip.infolist()
-        if info.filename.endswith('.dist-info/${THIRD_PARTY_NOTICES_FILE}')
-    ]
-    assert (
-        len(third_party_licenses_info) == 1
-    ), f'Found {len(third_party_licenses_info)} third party licenses'
-    assert (
-        third_party_licenses_info[0].file_size > 0
-    ), 'Package contains third party license of size 0'
-"
-
 # Create a copy of the wheel with a well known, version agnostic name
 LATEST_WHEEL=dist/bigframes-latest-py2.py3-none-any.whl
 cp $VERSION_WHEEL $LATEST_WHEEL
 cp dist/bigframes-*.tar.gz dist/bigframes-latest.tar.gz
 
 if ! [ ${DRY_RUN} ]; then
-    for gcs_path in gs://vertex_sdk_private_releases/bigframe/ \
+for gcs_path in gs://vertex_sdk_private_releases/bigframe/ \
                     gs://dl-platform-colab/bigframes/ \
                     gs://bigframes-wheels/;
     do
@@ -155,8 +115,6 @@ fi
 # the changes were made but before this cleanup, because the script would
 # terminate with the failure itself. See if we can ensure the cleanup.
 sed -i -e "s/$RELEASE_VERSION/$BIGFRAMES_VERSION/g" bigframes/version.py
-mv -f ${SETUP_CFG_BKP} setup.cfg
-rm -f ${THIRD_PARTY_NOTICES_FILE}
 
 if ! [ ${DRY_RUN} ]; then
     # Copy docs and wheels to Google Drive
