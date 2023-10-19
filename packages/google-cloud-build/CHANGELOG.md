@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.20.1](https://github.com/googleapis/python-cloudbuild/compare/v3.20.0...v3.20.1) (2023-10-09)
+
+
+### Documentation
+
+* Minor formatting ([#433](https://github.com/googleapis/python-cloudbuild/issues/433)) ([165c6e7](https://github.com/googleapis/python-cloudbuild/commit/165c6e78c34cc30e7109598b3dc601998b7117b0))
+
 ## [3.20.0](https://github.com/googleapis/python-cloudbuild/compare/v3.19.0...v3.20.0) (2023-08-08)
 
 
