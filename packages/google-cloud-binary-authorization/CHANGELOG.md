@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-binary-authorization/compare/v1.6.2...v1.7.0) (2023-10-09)
+
+
+### Features
+
+* Adds support for check-based platform policy evaluation to Binary Authorization Continuous Validation logs ([#225](https://github.com/googleapis/python-binary-authorization/issues/225)) ([7982787](https://github.com/googleapis/python-binary-authorization/commit/79827873224d889a7facfdcd35730da5b2f134f7))
+
+
+### Documentation
+
+* Minor formatting ([#228](https://github.com/googleapis/python-binary-authorization/issues/228)) ([27ea2c0](https://github.com/googleapis/python-binary-authorization/commit/27ea2c0d50226ca02d0db8efb49e085ae750f60a))
+
 ## [1.6.2](https://github.com/googleapis/python-binary-authorization/compare/v1.6.1...v1.6.2) (2023-07-04)
 
 
