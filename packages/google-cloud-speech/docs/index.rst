@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    speech_v1/services
-    speech_v1/types
+    speech_v1/services_
+    speech_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    speech_v1p1beta1/services
-    speech_v1p1beta1/types
+    speech_v1p1beta1/services_
+    speech_v1p1beta1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    speech_v2/services
-    speech_v2/types
+    speech_v2/services_
+    speech_v2/types_
 
 
 Migration Guide
