@@ -4204,8 +4204,9 @@ def test_get_occurrence_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Occurrence.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Occurrence.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4282,8 +4283,9 @@ def test_get_occurrence_rest_required_fields(request_type=grafeas.GetOccurrenceR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.Occurrence.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.Occurrence.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4402,8 +4404,9 @@ def test_get_occurrence_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Occurrence.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Occurrence.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4466,8 +4469,9 @@ def test_list_occurrences_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.ListOccurrencesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.ListOccurrencesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4550,8 +4554,9 @@ def test_list_occurrences_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.ListOccurrencesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.ListOccurrencesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4682,8 +4687,9 @@ def test_list_occurrences_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.ListOccurrencesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.ListOccurrencesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5345,6 +5351,73 @@ def test_create_occurrence_rest(request_type):
         },
         "envelope": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = grafeas.CreateOccurrenceRequest.meta.fields["occurrence"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["occurrence"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["occurrence"][field])):
+                    del request_init["occurrence"][field][i][subfield]
+            else:
+                del request_init["occurrence"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5361,8 +5434,9 @@ def test_create_occurrence_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Occurrence.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Occurrence.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5442,8 +5516,9 @@ def test_create_occurrence_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.Occurrence.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.Occurrence.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5535,312 +5610,6 @@ def test_create_occurrence_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1"}
-    request_init["occurrence"] = {
-        "name": "name_value",
-        "resource_uri": "resource_uri_value",
-        "note_name": "note_name_value",
-        "kind": 1,
-        "remediation": "remediation_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "vulnerability": {
-            "type_": "type__value",
-            "severity": 1,
-            "cvss_score": 0.1082,
-            "cvssv3": {
-                "base_score": 0.1046,
-                "exploitability_score": 0.21580000000000002,
-                "impact_score": 0.1273,
-                "attack_vector": 1,
-                "attack_complexity": 1,
-                "authentication": 1,
-                "privileges_required": 1,
-                "user_interaction": 1,
-                "scope": 1,
-                "confidentiality_impact": 1,
-                "integrity_impact": 1,
-                "availability_impact": 1,
-            },
-            "package_issue": [
-                {
-                    "affected_cpe_uri": "affected_cpe_uri_value",
-                    "affected_package": "affected_package_value",
-                    "affected_version": {
-                        "epoch": 527,
-                        "name": "name_value",
-                        "revision": "revision_value",
-                        "inclusive": True,
-                        "kind": 1,
-                        "full_name": "full_name_value",
-                    },
-                    "fixed_cpe_uri": "fixed_cpe_uri_value",
-                    "fixed_package": "fixed_package_value",
-                    "fixed_version": {},
-                    "fix_available": True,
-                    "package_type": "package_type_value",
-                    "effective_severity": 1,
-                    "file_location": [{"file_path": "file_path_value"}],
-                }
-            ],
-            "short_description": "short_description_value",
-            "long_description": "long_description_value",
-            "related_urls": [{"url": "url_value", "label": "label_value"}],
-            "effective_severity": 1,
-            "fix_available": True,
-            "cvss_version": 1,
-            "cvss_v2": {},
-            "vex_assessment": {
-                "cve": "cve_value",
-                "related_uris": {},
-                "note_name": "note_name_value",
-                "state": 1,
-                "impacts": ["impacts_value1", "impacts_value2"],
-                "remediations": [
-                    {
-                        "remediation_type": 1,
-                        "details": "details_value",
-                        "remediation_uri": {},
-                    }
-                ],
-                "justification": {"justification_type": 1, "details": "details_value"},
-            },
-        },
-        "build": {
-            "provenance": {
-                "id": "id_value",
-                "project_id": "project_id_value",
-                "commands": [
-                    {
-                        "name": "name_value",
-                        "env": ["env_value1", "env_value2"],
-                        "args": ["args_value1", "args_value2"],
-                        "dir_": "dir__value",
-                        "id": "id_value",
-                        "wait_for": ["wait_for_value1", "wait_for_value2"],
-                    }
-                ],
-                "built_artifacts": [
-                    {
-                        "checksum": "checksum_value",
-                        "id": "id_value",
-                        "names": ["names_value1", "names_value2"],
-                    }
-                ],
-                "create_time": {},
-                "start_time": {},
-                "end_time": {},
-                "creator": "creator_value",
-                "logs_uri": "logs_uri_value",
-                "source_provenance": {
-                    "artifact_storage_source_uri": "artifact_storage_source_uri_value",
-                    "file_hashes": {},
-                    "context": {
-                        "cloud_repo": {
-                            "repo_id": {
-                                "project_repo_id": {
-                                    "project_id": "project_id_value",
-                                    "repo_name": "repo_name_value",
-                                },
-                                "uid": "uid_value",
-                            },
-                            "revision_id": "revision_id_value",
-                            "alias_context": {"kind": 1, "name": "name_value"},
-                        },
-                        "gerrit": {
-                            "host_uri": "host_uri_value",
-                            "gerrit_project": "gerrit_project_value",
-                            "revision_id": "revision_id_value",
-                            "alias_context": {},
-                        },
-                        "git": {"url": "url_value", "revision_id": "revision_id_value"},
-                        "labels": {},
-                    },
-                    "additional_contexts": {},
-                },
-                "trigger_id": "trigger_id_value",
-                "build_options": {},
-                "builder_version": "builder_version_value",
-            },
-            "provenance_bytes": "provenance_bytes_value",
-            "intoto_provenance": {
-                "builder_config": {"id": "id_value"},
-                "recipe": {
-                    "type_": "type__value",
-                    "defined_in_material": 1971,
-                    "entry_point": "entry_point_value",
-                    "arguments": [
-                        {
-                            "type_url": "type.googleapis.com/google.protobuf.Duration",
-                            "value": b"\x08\x0c\x10\xdb\x07",
-                        }
-                    ],
-                    "environment": {},
-                },
-                "metadata": {
-                    "build_invocation_id": "build_invocation_id_value",
-                    "build_started_on": {},
-                    "build_finished_on": {},
-                    "completeness": {
-                        "arguments": True,
-                        "environment": True,
-                        "materials": True,
-                    },
-                    "reproducible": True,
-                },
-                "materials": ["materials_value1", "materials_value2"],
-            },
-            "intoto_statement": {
-                "type_": "type__value",
-                "subject": [{"name": "name_value", "digest": {}}],
-                "predicate_type": "predicate_type_value",
-                "provenance": {},
-                "slsa_provenance": {
-                    "builder": {"id": "id_value"},
-                    "recipe": {
-                        "type_": "type__value",
-                        "defined_in_material": 1971,
-                        "entry_point": "entry_point_value",
-                        "arguments": {},
-                        "environment": {},
-                    },
-                    "metadata": {
-                        "build_invocation_id": "build_invocation_id_value",
-                        "build_started_on": {},
-                        "build_finished_on": {},
-                        "completeness": {
-                            "arguments": True,
-                            "environment": True,
-                            "materials": True,
-                        },
-                        "reproducible": True,
-                    },
-                    "materials": [{"uri": "uri_value", "digest": {}}],
-                },
-                "slsa_provenance_zero_two": {
-                    "builder": {"id": "id_value"},
-                    "build_type": "build_type_value",
-                    "invocation": {
-                        "config_source": {
-                            "uri": "uri_value",
-                            "digest": {},
-                            "entry_point": "entry_point_value",
-                        },
-                        "parameters": {"fields": {}},
-                        "environment": {},
-                    },
-                    "build_config": {},
-                    "metadata": {
-                        "build_invocation_id": "build_invocation_id_value",
-                        "build_started_on": {},
-                        "build_finished_on": {},
-                        "completeness": {
-                            "parameters": True,
-                            "environment": True,
-                            "materials": True,
-                        },
-                        "reproducible": True,
-                    },
-                    "materials": [{"uri": "uri_value", "digest": {}}],
-                },
-            },
-        },
-        "image": {
-            "fingerprint": {
-                "v1_name": "v1_name_value",
-                "v2_blob": ["v2_blob_value1", "v2_blob_value2"],
-                "v2_name": "v2_name_value",
-            },
-            "distance": 843,
-            "layer_info": [
-                {"directive": "directive_value", "arguments": "arguments_value"}
-            ],
-            "base_resource_url": "base_resource_url_value",
-        },
-        "package": {
-            "name": "name_value",
-            "location": [
-                {"cpe_uri": "cpe_uri_value", "version": {}, "path": "path_value"}
-            ],
-            "package_type": "package_type_value",
-            "cpe_uri": "cpe_uri_value",
-            "architecture": 1,
-            "license_": {
-                "expression": "expression_value",
-                "comments": "comments_value",
-            },
-            "version": {},
-        },
-        "deployment": {
-            "user_email": "user_email_value",
-            "deploy_time": {},
-            "undeploy_time": {},
-            "config": "config_value",
-            "address": "address_value",
-            "resource_uri": ["resource_uri_value1", "resource_uri_value2"],
-            "platform": 1,
-        },
-        "discovery": {
-            "continuous_analysis": 1,
-            "analysis_status": 1,
-            "analysis_completed": {
-                "analysis_type": ["analysis_type_value1", "analysis_type_value2"]
-            },
-            "analysis_error": [
-                {"code": 411, "message": "message_value", "details": {}}
-            ],
-            "analysis_status_error": {},
-            "cpe": "cpe_value",
-            "last_scan_time": {},
-            "archive_time": {},
-        },
-        "attestation": {
-            "serialized_payload": b"serialized_payload_blob",
-            "signatures": [
-                {"signature": b"signature_blob", "public_key_id": "public_key_id_value"}
-            ],
-            "jwts": [{"compact_jwt": "compact_jwt_value"}],
-        },
-        "upgrade": {
-            "package": "package_value",
-            "parsed_version": {},
-            "distribution": {
-                "cpe_uri": "cpe_uri_value",
-                "classification": "classification_value",
-                "severity": "severity_value",
-                "cve": ["cve_value1", "cve_value2"],
-            },
-            "windows_update": {
-                "identity": {"update_id": "update_id_value", "revision": 879},
-                "title": "title_value",
-                "description": "description_value",
-                "categories": [
-                    {"category_id": "category_id_value", "name": "name_value"}
-                ],
-                "kb_article_ids": ["kb_article_ids_value1", "kb_article_ids_value2"],
-                "support_url": "support_url_value",
-                "last_published_timestamp": {},
-            },
-        },
-        "compliance": {
-            "non_compliant_files": [
-                {
-                    "path": "path_value",
-                    "display_command": "display_command_value",
-                    "reason": "reason_value",
-                }
-            ],
-            "non_compliance_reason": "non_compliance_reason_value",
-        },
-        "dsse_attestation": {
-            "envelope": {
-                "payload": b"payload_blob",
-                "payload_type": "payload_type_value",
-                "signatures": [{"sig": b"sig_blob", "keyid": "keyid_value"}],
-            },
-            "statement": {},
-        },
-        "envelope": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5879,8 +5648,9 @@ def test_create_occurrence_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Occurrence.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Occurrence.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5942,8 +5712,9 @@ def test_batch_create_occurrences_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.BatchCreateOccurrencesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.BatchCreateOccurrencesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6018,8 +5789,9 @@ def test_batch_create_occurrences_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.BatchCreateOccurrencesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.BatchCreateOccurrencesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6151,8 +5923,9 @@ def test_batch_create_occurrences_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.BatchCreateOccurrencesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.BatchCreateOccurrencesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6512,6 +6285,73 @@ def test_update_occurrence_rest(request_type):
         },
         "envelope": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = grafeas.UpdateOccurrenceRequest.meta.fields["occurrence"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["occurrence"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["occurrence"][field])):
+                    del request_init["occurrence"][field][i][subfield]
+            else:
+                del request_init["occurrence"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6528,8 +6368,9 @@ def test_update_occurrence_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Occurrence.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Occurrence.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6611,8 +6452,9 @@ def test_update_occurrence_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.Occurrence.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.Occurrence.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6704,312 +6546,6 @@ def test_update_occurrence_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/occurrences/sample2"}
-    request_init["occurrence"] = {
-        "name": "name_value",
-        "resource_uri": "resource_uri_value",
-        "note_name": "note_name_value",
-        "kind": 1,
-        "remediation": "remediation_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "vulnerability": {
-            "type_": "type__value",
-            "severity": 1,
-            "cvss_score": 0.1082,
-            "cvssv3": {
-                "base_score": 0.1046,
-                "exploitability_score": 0.21580000000000002,
-                "impact_score": 0.1273,
-                "attack_vector": 1,
-                "attack_complexity": 1,
-                "authentication": 1,
-                "privileges_required": 1,
-                "user_interaction": 1,
-                "scope": 1,
-                "confidentiality_impact": 1,
-                "integrity_impact": 1,
-                "availability_impact": 1,
-            },
-            "package_issue": [
-                {
-                    "affected_cpe_uri": "affected_cpe_uri_value",
-                    "affected_package": "affected_package_value",
-                    "affected_version": {
-                        "epoch": 527,
-                        "name": "name_value",
-                        "revision": "revision_value",
-                        "inclusive": True,
-                        "kind": 1,
-                        "full_name": "full_name_value",
-                    },
-                    "fixed_cpe_uri": "fixed_cpe_uri_value",
-                    "fixed_package": "fixed_package_value",
-                    "fixed_version": {},
-                    "fix_available": True,
-                    "package_type": "package_type_value",
-                    "effective_severity": 1,
-                    "file_location": [{"file_path": "file_path_value"}],
-                }
-            ],
-            "short_description": "short_description_value",
-            "long_description": "long_description_value",
-            "related_urls": [{"url": "url_value", "label": "label_value"}],
-            "effective_severity": 1,
-            "fix_available": True,
-            "cvss_version": 1,
-            "cvss_v2": {},
-            "vex_assessment": {
-                "cve": "cve_value",
-                "related_uris": {},
-                "note_name": "note_name_value",
-                "state": 1,
-                "impacts": ["impacts_value1", "impacts_value2"],
-                "remediations": [
-                    {
-                        "remediation_type": 1,
-                        "details": "details_value",
-                        "remediation_uri": {},
-                    }
-                ],
-                "justification": {"justification_type": 1, "details": "details_value"},
-            },
-        },
-        "build": {
-            "provenance": {
-                "id": "id_value",
-                "project_id": "project_id_value",
-                "commands": [
-                    {
-                        "name": "name_value",
-                        "env": ["env_value1", "env_value2"],
-                        "args": ["args_value1", "args_value2"],
-                        "dir_": "dir__value",
-                        "id": "id_value",
-                        "wait_for": ["wait_for_value1", "wait_for_value2"],
-                    }
-                ],
-                "built_artifacts": [
-                    {
-                        "checksum": "checksum_value",
-                        "id": "id_value",
-                        "names": ["names_value1", "names_value2"],
-                    }
-                ],
-                "create_time": {},
-                "start_time": {},
-                "end_time": {},
-                "creator": "creator_value",
-                "logs_uri": "logs_uri_value",
-                "source_provenance": {
-                    "artifact_storage_source_uri": "artifact_storage_source_uri_value",
-                    "file_hashes": {},
-                    "context": {
-                        "cloud_repo": {
-                            "repo_id": {
-                                "project_repo_id": {
-                                    "project_id": "project_id_value",
-                                    "repo_name": "repo_name_value",
-                                },
-                                "uid": "uid_value",
-                            },
-                            "revision_id": "revision_id_value",
-                            "alias_context": {"kind": 1, "name": "name_value"},
-                        },
-                        "gerrit": {
-                            "host_uri": "host_uri_value",
-                            "gerrit_project": "gerrit_project_value",
-                            "revision_id": "revision_id_value",
-                            "alias_context": {},
-                        },
-                        "git": {"url": "url_value", "revision_id": "revision_id_value"},
-                        "labels": {},
-                    },
-                    "additional_contexts": {},
-                },
-                "trigger_id": "trigger_id_value",
-                "build_options": {},
-                "builder_version": "builder_version_value",
-            },
-            "provenance_bytes": "provenance_bytes_value",
-            "intoto_provenance": {
-                "builder_config": {"id": "id_value"},
-                "recipe": {
-                    "type_": "type__value",
-                    "defined_in_material": 1971,
-                    "entry_point": "entry_point_value",
-                    "arguments": [
-                        {
-                            "type_url": "type.googleapis.com/google.protobuf.Duration",
-                            "value": b"\x08\x0c\x10\xdb\x07",
-                        }
-                    ],
-                    "environment": {},
-                },
-                "metadata": {
-                    "build_invocation_id": "build_invocation_id_value",
-                    "build_started_on": {},
-                    "build_finished_on": {},
-                    "completeness": {
-                        "arguments": True,
-                        "environment": True,
-                        "materials": True,
-                    },
-                    "reproducible": True,
-                },
-                "materials": ["materials_value1", "materials_value2"],
-            },
-            "intoto_statement": {
-                "type_": "type__value",
-                "subject": [{"name": "name_value", "digest": {}}],
-                "predicate_type": "predicate_type_value",
-                "provenance": {},
-                "slsa_provenance": {
-                    "builder": {"id": "id_value"},
-                    "recipe": {
-                        "type_": "type__value",
-                        "defined_in_material": 1971,
-                        "entry_point": "entry_point_value",
-                        "arguments": {},
-                        "environment": {},
-                    },
-                    "metadata": {
-                        "build_invocation_id": "build_invocation_id_value",
-                        "build_started_on": {},
-                        "build_finished_on": {},
-                        "completeness": {
-                            "arguments": True,
-                            "environment": True,
-                            "materials": True,
-                        },
-                        "reproducible": True,
-                    },
-                    "materials": [{"uri": "uri_value", "digest": {}}],
-                },
-                "slsa_provenance_zero_two": {
-                    "builder": {"id": "id_value"},
-                    "build_type": "build_type_value",
-                    "invocation": {
-                        "config_source": {
-                            "uri": "uri_value",
-                            "digest": {},
-                            "entry_point": "entry_point_value",
-                        },
-                        "parameters": {"fields": {}},
-                        "environment": {},
-                    },
-                    "build_config": {},
-                    "metadata": {
-                        "build_invocation_id": "build_invocation_id_value",
-                        "build_started_on": {},
-                        "build_finished_on": {},
-                        "completeness": {
-                            "parameters": True,
-                            "environment": True,
-                            "materials": True,
-                        },
-                        "reproducible": True,
-                    },
-                    "materials": [{"uri": "uri_value", "digest": {}}],
-                },
-            },
-        },
-        "image": {
-            "fingerprint": {
-                "v1_name": "v1_name_value",
-                "v2_blob": ["v2_blob_value1", "v2_blob_value2"],
-                "v2_name": "v2_name_value",
-            },
-            "distance": 843,
-            "layer_info": [
-                {"directive": "directive_value", "arguments": "arguments_value"}
-            ],
-            "base_resource_url": "base_resource_url_value",
-        },
-        "package": {
-            "name": "name_value",
-            "location": [
-                {"cpe_uri": "cpe_uri_value", "version": {}, "path": "path_value"}
-            ],
-            "package_type": "package_type_value",
-            "cpe_uri": "cpe_uri_value",
-            "architecture": 1,
-            "license_": {
-                "expression": "expression_value",
-                "comments": "comments_value",
-            },
-            "version": {},
-        },
-        "deployment": {
-            "user_email": "user_email_value",
-            "deploy_time": {},
-            "undeploy_time": {},
-            "config": "config_value",
-            "address": "address_value",
-            "resource_uri": ["resource_uri_value1", "resource_uri_value2"],
-            "platform": 1,
-        },
-        "discovery": {
-            "continuous_analysis": 1,
-            "analysis_status": 1,
-            "analysis_completed": {
-                "analysis_type": ["analysis_type_value1", "analysis_type_value2"]
-            },
-            "analysis_error": [
-                {"code": 411, "message": "message_value", "details": {}}
-            ],
-            "analysis_status_error": {},
-            "cpe": "cpe_value",
-            "last_scan_time": {},
-            "archive_time": {},
-        },
-        "attestation": {
-            "serialized_payload": b"serialized_payload_blob",
-            "signatures": [
-                {"signature": b"signature_blob", "public_key_id": "public_key_id_value"}
-            ],
-            "jwts": [{"compact_jwt": "compact_jwt_value"}],
-        },
-        "upgrade": {
-            "package": "package_value",
-            "parsed_version": {},
-            "distribution": {
-                "cpe_uri": "cpe_uri_value",
-                "classification": "classification_value",
-                "severity": "severity_value",
-                "cve": ["cve_value1", "cve_value2"],
-            },
-            "windows_update": {
-                "identity": {"update_id": "update_id_value", "revision": 879},
-                "title": "title_value",
-                "description": "description_value",
-                "categories": [
-                    {"category_id": "category_id_value", "name": "name_value"}
-                ],
-                "kb_article_ids": ["kb_article_ids_value1", "kb_article_ids_value2"],
-                "support_url": "support_url_value",
-                "last_published_timestamp": {},
-            },
-        },
-        "compliance": {
-            "non_compliant_files": [
-                {
-                    "path": "path_value",
-                    "display_command": "display_command_value",
-                    "reason": "reason_value",
-                }
-            ],
-            "non_compliance_reason": "non_compliance_reason_value",
-        },
-        "dsse_attestation": {
-            "envelope": {
-                "payload": b"payload_blob",
-                "payload_type": "payload_type_value",
-                "signatures": [{"sig": b"sig_blob", "keyid": "keyid_value"}],
-            },
-            "statement": {},
-        },
-        "envelope": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7049,8 +6585,9 @@ def test_update_occurrence_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Occurrence.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Occurrence.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7119,8 +6656,9 @@ def test_get_occurrence_note_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Note.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Note.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7199,8 +6737,9 @@ def test_get_occurrence_note_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.Note.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.Note.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7321,8 +6860,9 @@ def test_get_occurrence_note_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Note.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Note.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7390,8 +6930,9 @@ def test_get_note_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Note.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Note.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7468,8 +7009,9 @@ def test_get_note_rest_required_fields(request_type=grafeas.GetNoteRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.Note.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.Note.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7588,8 +7130,9 @@ def test_get_note_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Note.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Note.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7652,8 +7195,9 @@ def test_list_notes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.ListNotesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.ListNotesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7734,8 +7278,9 @@ def test_list_notes_rest_required_fields(request_type=grafeas.ListNotesRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.ListNotesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.ListNotesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7866,8 +7411,9 @@ def test_list_notes_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.ListNotesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.ListNotesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8409,6 +7955,73 @@ def test_create_note_rest(request_type):
             },
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = grafeas.CreateNoteRequest.meta.fields["note"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["note"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["note"][field])):
+                    del request_init["note"][field][i][subfield]
+            else:
+                del request_init["note"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8425,8 +8038,9 @@ def test_create_note_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Note.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Note.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8513,8 +8127,9 @@ def test_create_note_rest_required_fields(request_type=grafeas.CreateNoteRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.Note.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.Note.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8611,196 +8226,6 @@ def test_create_note_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1"}
-    request_init["note"] = {
-        "name": "name_value",
-        "short_description": "short_description_value",
-        "long_description": "long_description_value",
-        "kind": 1,
-        "related_url": [{"url": "url_value", "label": "label_value"}],
-        "expiration_time": {"seconds": 751, "nanos": 543},
-        "create_time": {},
-        "update_time": {},
-        "related_note_names": [
-            "related_note_names_value1",
-            "related_note_names_value2",
-        ],
-        "vulnerability": {
-            "cvss_score": 0.1082,
-            "severity": 1,
-            "details": [
-                {
-                    "severity_name": "severity_name_value",
-                    "description": "description_value",
-                    "package_type": "package_type_value",
-                    "affected_cpe_uri": "affected_cpe_uri_value",
-                    "affected_package": "affected_package_value",
-                    "affected_version_start": {
-                        "epoch": 527,
-                        "name": "name_value",
-                        "revision": "revision_value",
-                        "inclusive": True,
-                        "kind": 1,
-                        "full_name": "full_name_value",
-                    },
-                    "affected_version_end": {},
-                    "fixed_cpe_uri": "fixed_cpe_uri_value",
-                    "fixed_package": "fixed_package_value",
-                    "fixed_version": {},
-                    "is_obsolete": True,
-                    "source_update_time": {},
-                    "source": "source_value",
-                    "vendor": "vendor_value",
-                }
-            ],
-            "cvss_v3": {
-                "base_score": 0.1046,
-                "exploitability_score": 0.21580000000000002,
-                "impact_score": 0.1273,
-                "attack_vector": 1,
-                "attack_complexity": 1,
-                "privileges_required": 1,
-                "user_interaction": 1,
-                "scope": 1,
-                "confidentiality_impact": 1,
-                "integrity_impact": 1,
-                "availability_impact": 1,
-            },
-            "windows_details": [
-                {
-                    "cpe_uri": "cpe_uri_value",
-                    "name": "name_value",
-                    "description": "description_value",
-                    "fixing_kbs": [{"name": "name_value", "url": "url_value"}],
-                }
-            ],
-            "source_update_time": {},
-            "cvss_version": 1,
-            "cvss_v2": {
-                "base_score": 0.1046,
-                "exploitability_score": 0.21580000000000002,
-                "impact_score": 0.1273,
-                "attack_vector": 1,
-                "attack_complexity": 1,
-                "authentication": 1,
-                "privileges_required": 1,
-                "user_interaction": 1,
-                "scope": 1,
-                "confidentiality_impact": 1,
-                "integrity_impact": 1,
-                "availability_impact": 1,
-            },
-        },
-        "build": {"builder_version": "builder_version_value"},
-        "image": {
-            "resource_url": "resource_url_value",
-            "fingerprint": {
-                "v1_name": "v1_name_value",
-                "v2_blob": ["v2_blob_value1", "v2_blob_value2"],
-                "v2_name": "v2_name_value",
-            },
-        },
-        "package": {
-            "name": "name_value",
-            "distribution": [
-                {
-                    "cpe_uri": "cpe_uri_value",
-                    "architecture": 1,
-                    "latest_version": {},
-                    "maintainer": "maintainer_value",
-                    "url": "url_value",
-                    "description": "description_value",
-                }
-            ],
-            "package_type": "package_type_value",
-            "cpe_uri": "cpe_uri_value",
-            "architecture": 1,
-            "version": {},
-            "maintainer": "maintainer_value",
-            "url": "url_value",
-            "description": "description_value",
-            "license_": {
-                "expression": "expression_value",
-                "comments": "comments_value",
-            },
-            "digest": [{"algo": "algo_value", "digest_bytes": b"digest_bytes_blob"}],
-        },
-        "deployment": {"resource_uri": ["resource_uri_value1", "resource_uri_value2"]},
-        "discovery": {"analysis_kind": 1},
-        "attestation": {"hint": {"human_readable_name": "human_readable_name_value"}},
-        "upgrade": {
-            "package": "package_value",
-            "version": {},
-            "distributions": [
-                {
-                    "cpe_uri": "cpe_uri_value",
-                    "classification": "classification_value",
-                    "severity": "severity_value",
-                    "cve": ["cve_value1", "cve_value2"],
-                }
-            ],
-            "windows_update": {
-                "identity": {"update_id": "update_id_value", "revision": 879},
-                "title": "title_value",
-                "description": "description_value",
-                "categories": [
-                    {"category_id": "category_id_value", "name": "name_value"}
-                ],
-                "kb_article_ids": ["kb_article_ids_value1", "kb_article_ids_value2"],
-                "support_url": "support_url_value",
-                "last_published_timestamp": {},
-            },
-        },
-        "compliance": {
-            "title": "title_value",
-            "description": "description_value",
-            "version": [
-                {
-                    "cpe_uri": "cpe_uri_value",
-                    "benchmark_document": "benchmark_document_value",
-                    "version": "version_value",
-                }
-            ],
-            "rationale": "rationale_value",
-            "remediation": "remediation_value",
-            "cis_benchmark": {"profile_level": 1384, "severity": 1},
-            "scan_instructions": b"scan_instructions_blob",
-        },
-        "dsse_attestation": {
-            "hint": {"human_readable_name": "human_readable_name_value"}
-        },
-        "vulnerability_assessment": {
-            "title": "title_value",
-            "short_description": "short_description_value",
-            "long_description": "long_description_value",
-            "language_code": "language_code_value",
-            "publisher": {
-                "name": "name_value",
-                "issuing_authority": "issuing_authority_value",
-                "publisher_namespace": "publisher_namespace_value",
-            },
-            "product": {
-                "name": "name_value",
-                "id": "id_value",
-                "generic_uri": "generic_uri_value",
-            },
-            "assessment": {
-                "cve": "cve_value",
-                "short_description": "short_description_value",
-                "long_description": "long_description_value",
-                "related_uris": {},
-                "state": 1,
-                "impacts": ["impacts_value1", "impacts_value2"],
-                "justification": {"justification_type": 1, "details": "details_value"},
-                "remediations": [
-                    {
-                        "remediation_type": 1,
-                        "details": "details_value",
-                        "remediation_uri": {},
-                    }
-                ],
-            },
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8840,8 +8265,9 @@ def test_create_note_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Note.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Note.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8904,8 +8330,9 @@ def test_batch_create_notes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.BatchCreateNotesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.BatchCreateNotesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8980,8 +8407,9 @@ def test_batch_create_notes_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.BatchCreateNotesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.BatchCreateNotesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9113,8 +8541,9 @@ def test_batch_create_notes_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.BatchCreateNotesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.BatchCreateNotesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9357,6 +8786,73 @@ def test_update_note_rest(request_type):
             },
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = grafeas.UpdateNoteRequest.meta.fields["note"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["note"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["note"][field])):
+                    del request_init["note"][field][i][subfield]
+            else:
+                del request_init["note"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9373,8 +8869,9 @@ def test_update_note_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Note.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Note.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9454,8 +8951,9 @@ def test_update_note_rest_required_fields(request_type=grafeas.UpdateNoteRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.Note.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.Note.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9545,196 +9043,6 @@ def test_update_note_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/notes/sample2"}
-    request_init["note"] = {
-        "name": "name_value",
-        "short_description": "short_description_value",
-        "long_description": "long_description_value",
-        "kind": 1,
-        "related_url": [{"url": "url_value", "label": "label_value"}],
-        "expiration_time": {"seconds": 751, "nanos": 543},
-        "create_time": {},
-        "update_time": {},
-        "related_note_names": [
-            "related_note_names_value1",
-            "related_note_names_value2",
-        ],
-        "vulnerability": {
-            "cvss_score": 0.1082,
-            "severity": 1,
-            "details": [
-                {
-                    "severity_name": "severity_name_value",
-                    "description": "description_value",
-                    "package_type": "package_type_value",
-                    "affected_cpe_uri": "affected_cpe_uri_value",
-                    "affected_package": "affected_package_value",
-                    "affected_version_start": {
-                        "epoch": 527,
-                        "name": "name_value",
-                        "revision": "revision_value",
-                        "inclusive": True,
-                        "kind": 1,
-                        "full_name": "full_name_value",
-                    },
-                    "affected_version_end": {},
-                    "fixed_cpe_uri": "fixed_cpe_uri_value",
-                    "fixed_package": "fixed_package_value",
-                    "fixed_version": {},
-                    "is_obsolete": True,
-                    "source_update_time": {},
-                    "source": "source_value",
-                    "vendor": "vendor_value",
-                }
-            ],
-            "cvss_v3": {
-                "base_score": 0.1046,
-                "exploitability_score": 0.21580000000000002,
-                "impact_score": 0.1273,
-                "attack_vector": 1,
-                "attack_complexity": 1,
-                "privileges_required": 1,
-                "user_interaction": 1,
-                "scope": 1,
-                "confidentiality_impact": 1,
-                "integrity_impact": 1,
-                "availability_impact": 1,
-            },
-            "windows_details": [
-                {
-                    "cpe_uri": "cpe_uri_value",
-                    "name": "name_value",
-                    "description": "description_value",
-                    "fixing_kbs": [{"name": "name_value", "url": "url_value"}],
-                }
-            ],
-            "source_update_time": {},
-            "cvss_version": 1,
-            "cvss_v2": {
-                "base_score": 0.1046,
-                "exploitability_score": 0.21580000000000002,
-                "impact_score": 0.1273,
-                "attack_vector": 1,
-                "attack_complexity": 1,
-                "authentication": 1,
-                "privileges_required": 1,
-                "user_interaction": 1,
-                "scope": 1,
-                "confidentiality_impact": 1,
-                "integrity_impact": 1,
-                "availability_impact": 1,
-            },
-        },
-        "build": {"builder_version": "builder_version_value"},
-        "image": {
-            "resource_url": "resource_url_value",
-            "fingerprint": {
-                "v1_name": "v1_name_value",
-                "v2_blob": ["v2_blob_value1", "v2_blob_value2"],
-                "v2_name": "v2_name_value",
-            },
-        },
-        "package": {
-            "name": "name_value",
-            "distribution": [
-                {
-                    "cpe_uri": "cpe_uri_value",
-                    "architecture": 1,
-                    "latest_version": {},
-                    "maintainer": "maintainer_value",
-                    "url": "url_value",
-                    "description": "description_value",
-                }
-            ],
-            "package_type": "package_type_value",
-            "cpe_uri": "cpe_uri_value",
-            "architecture": 1,
-            "version": {},
-            "maintainer": "maintainer_value",
-            "url": "url_value",
-            "description": "description_value",
-            "license_": {
-                "expression": "expression_value",
-                "comments": "comments_value",
-            },
-            "digest": [{"algo": "algo_value", "digest_bytes": b"digest_bytes_blob"}],
-        },
-        "deployment": {"resource_uri": ["resource_uri_value1", "resource_uri_value2"]},
-        "discovery": {"analysis_kind": 1},
-        "attestation": {"hint": {"human_readable_name": "human_readable_name_value"}},
-        "upgrade": {
-            "package": "package_value",
-            "version": {},
-            "distributions": [
-                {
-                    "cpe_uri": "cpe_uri_value",
-                    "classification": "classification_value",
-                    "severity": "severity_value",
-                    "cve": ["cve_value1", "cve_value2"],
-                }
-            ],
-            "windows_update": {
-                "identity": {"update_id": "update_id_value", "revision": 879},
-                "title": "title_value",
-                "description": "description_value",
-                "categories": [
-                    {"category_id": "category_id_value", "name": "name_value"}
-                ],
-                "kb_article_ids": ["kb_article_ids_value1", "kb_article_ids_value2"],
-                "support_url": "support_url_value",
-                "last_published_timestamp": {},
-            },
-        },
-        "compliance": {
-            "title": "title_value",
-            "description": "description_value",
-            "version": [
-                {
-                    "cpe_uri": "cpe_uri_value",
-                    "benchmark_document": "benchmark_document_value",
-                    "version": "version_value",
-                }
-            ],
-            "rationale": "rationale_value",
-            "remediation": "remediation_value",
-            "cis_benchmark": {"profile_level": 1384, "severity": 1},
-            "scan_instructions": b"scan_instructions_blob",
-        },
-        "dsse_attestation": {
-            "hint": {"human_readable_name": "human_readable_name_value"}
-        },
-        "vulnerability_assessment": {
-            "title": "title_value",
-            "short_description": "short_description_value",
-            "long_description": "long_description_value",
-            "language_code": "language_code_value",
-            "publisher": {
-                "name": "name_value",
-                "issuing_authority": "issuing_authority_value",
-                "publisher_namespace": "publisher_namespace_value",
-            },
-            "product": {
-                "name": "name_value",
-                "id": "id_value",
-                "generic_uri": "generic_uri_value",
-            },
-            "assessment": {
-                "cve": "cve_value",
-                "short_description": "short_description_value",
-                "long_description": "long_description_value",
-                "related_uris": {},
-                "state": 1,
-                "impacts": ["impacts_value1", "impacts_value2"],
-                "justification": {"justification_type": 1, "details": "details_value"},
-                "remediations": [
-                    {
-                        "remediation_type": 1,
-                        "details": "details_value",
-                        "remediation_uri": {},
-                    }
-                ],
-            },
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9774,8 +9082,9 @@ def test_update_note_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.Note.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.Note.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9840,8 +9149,9 @@ def test_list_note_occurrences_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.ListNoteOccurrencesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.ListNoteOccurrencesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9924,8 +9234,9 @@ def test_list_note_occurrences_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grafeas.ListNoteOccurrencesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grafeas.ListNoteOccurrencesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10058,8 +9369,9 @@ def test_list_note_occurrences_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grafeas.ListNoteOccurrencesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grafeas.ListNoteOccurrencesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

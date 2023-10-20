@@ -7,8 +7,8 @@ Api Reference
 .. toctree::
     :maxdepth: 2
 
-    grafeas_v1/services
-    grafeas_v1/types
+    grafeas_v1/services_
+    grafeas_v1/types_
 
 Changelog
 ---------
