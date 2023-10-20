@@ -4736,6 +4736,73 @@ def test_create_connection_rest(request_type):
         "annotations": {},
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = repositories.CreateConnectionRequest.meta.fields["connection"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["connection"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["connection"][field])):
+                    del request_init["connection"][field][i][subfield]
+            else:
+                del request_init["connection"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4934,51 +5001,6 @@ def test_create_connection_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["connection"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "github_config": {
-            "authorizer_credential": {
-                "oauth_token_secret_version": "oauth_token_secret_version_value",
-                "username": "username_value",
-            },
-            "app_installation_id": 2014,
-        },
-        "github_enterprise_config": {
-            "host_uri": "host_uri_value",
-            "api_key": "api_key_value",
-            "app_id": 621,
-            "app_slug": "app_slug_value",
-            "private_key_secret_version": "private_key_secret_version_value",
-            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
-            "app_installation_id": 2014,
-            "service_directory_config": {"service": "service_value"},
-            "ssl_ca": "ssl_ca_value",
-            "server_version": "server_version_value",
-        },
-        "gitlab_config": {
-            "host_uri": "host_uri_value",
-            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
-            "read_authorizer_credential": {
-                "user_token_secret_version": "user_token_secret_version_value",
-                "username": "username_value",
-            },
-            "authorizer_credential": {},
-            "service_directory_config": {},
-            "ssl_ca": "ssl_ca_value",
-            "server_version": "server_version_value",
-        },
-        "installation_state": {
-            "stage": 1,
-            "message": "message_value",
-            "action_uri": "action_uri_value",
-        },
-        "disabled": True,
-        "reconciling": True,
-        "annotations": {},
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5088,8 +5110,9 @@ def test_get_connection_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.Connection.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.Connection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5167,8 +5190,9 @@ def test_get_connection_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = repositories.Connection.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = repositories.Connection.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5295,8 +5319,9 @@ def test_get_connection_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.Connection.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.Connection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5361,8 +5386,9 @@ def test_list_connections_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.ListConnectionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.ListConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5444,8 +5470,9 @@ def test_list_connections_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = repositories.ListConnectionsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = repositories.ListConnectionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5578,8 +5605,9 @@ def test_list_connections_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.ListConnectionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.ListConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5736,6 +5764,73 @@ def test_update_connection_rest(request_type):
         "annotations": {},
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = repositories.UpdateConnectionRequest.meta.fields["connection"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["connection"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["connection"][field])):
+                    del request_init["connection"][field][i][subfield]
+            else:
+                del request_init["connection"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5923,51 +6018,6 @@ def test_update_connection_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "connection": {"name": "projects/sample1/locations/sample2/connections/sample3"}
-    }
-    request_init["connection"] = {
-        "name": "projects/sample1/locations/sample2/connections/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "github_config": {
-            "authorizer_credential": {
-                "oauth_token_secret_version": "oauth_token_secret_version_value",
-                "username": "username_value",
-            },
-            "app_installation_id": 2014,
-        },
-        "github_enterprise_config": {
-            "host_uri": "host_uri_value",
-            "api_key": "api_key_value",
-            "app_id": 621,
-            "app_slug": "app_slug_value",
-            "private_key_secret_version": "private_key_secret_version_value",
-            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
-            "app_installation_id": 2014,
-            "service_directory_config": {"service": "service_value"},
-            "ssl_ca": "ssl_ca_value",
-            "server_version": "server_version_value",
-        },
-        "gitlab_config": {
-            "host_uri": "host_uri_value",
-            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
-            "read_authorizer_credential": {
-                "user_token_secret_version": "user_token_secret_version_value",
-                "username": "username_value",
-            },
-            "authorizer_credential": {},
-            "service_directory_config": {},
-            "ssl_ca": "ssl_ca_value",
-            "server_version": "server_version_value",
-        },
-        "installation_state": {
-            "stage": 1,
-            "message": "message_value",
-            "action_uri": "action_uri_value",
-        },
-        "disabled": True,
-        "reconciling": True,
-        "annotations": {},
-        "etag": "etag_value",
     }
     request = request_type(**request_init)
 
@@ -6354,6 +6404,73 @@ def test_create_repository_rest(request_type):
         "etag": "etag_value",
         "webhook_id": "webhook_id_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = repositories.CreateRepositoryRequest.meta.fields["repository"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["repository"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["repository"][field])):
+                    del request_init["repository"][field][i][subfield]
+            else:
+                del request_init["repository"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6552,15 +6669,6 @@ def test_create_repository_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/connections/sample3"}
-    request_init["repository"] = {
-        "name": "name_value",
-        "remote_uri": "remote_uri_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "annotations": {},
-        "etag": "etag_value",
-        "webhook_id": "webhook_id_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6950,8 +7058,9 @@ def test_get_repository_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.Repository.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.Repository.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7029,8 +7138,9 @@ def test_get_repository_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = repositories.Repository.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = repositories.Repository.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7159,8 +7269,9 @@ def test_get_repository_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.Repository.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.Repository.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7225,8 +7336,9 @@ def test_list_repositories_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.ListRepositoriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.ListRepositoriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7309,8 +7421,9 @@ def test_list_repositories_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = repositories.ListRepositoriesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = repositories.ListRepositoriesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7446,8 +7559,9 @@ def test_list_repositories_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.ListRepositoriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.ListRepositoriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7857,8 +7971,9 @@ def test_fetch_read_write_token_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.FetchReadWriteTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.FetchReadWriteTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7934,8 +8049,9 @@ def test_fetch_read_write_token_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = repositories.FetchReadWriteTokenResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = repositories.FetchReadWriteTokenResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8064,8 +8180,9 @@ def test_fetch_read_write_token_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.FetchReadWriteTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.FetchReadWriteTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8132,8 +8249,9 @@ def test_fetch_read_token_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.FetchReadTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.FetchReadTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8209,8 +8327,9 @@ def test_fetch_read_token_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = repositories.FetchReadTokenResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = repositories.FetchReadTokenResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8339,8 +8458,9 @@ def test_fetch_read_token_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.FetchReadTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.FetchReadTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8407,10 +8527,9 @@ def test_fetch_linkable_repositories_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.FetchLinkableRepositoriesResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.FetchLinkableRepositoriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8492,10 +8611,11 @@ def test_fetch_linkable_repositories_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = repositories.FetchLinkableRepositoriesResponse.pb(
+            # Convert return value to protobuf type
+            return_value = repositories.FetchLinkableRepositoriesResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8703,8 +8823,9 @@ def test_fetch_git_refs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.FetchGitRefsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.FetchGitRefsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8781,8 +8902,9 @@ def test_fetch_git_refs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = repositories.FetchGitRefsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = repositories.FetchGitRefsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8911,8 +9033,9 @@ def test_fetch_git_refs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repositories.FetchGitRefsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repositories.FetchGitRefsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

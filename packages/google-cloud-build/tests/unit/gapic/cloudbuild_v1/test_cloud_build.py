@@ -5411,6 +5411,73 @@ def test_create_build_rest(request_type):
         "warnings": [{"text": "text_value", "priority": 1}],
         "failure_info": {"type_": 1, "detail": "detail_value"},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloudbuild.CreateBuildRequest.meta.fields["build"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["build"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["build"][field])):
+                    del request_init["build"][field][i][subfield]
+            else:
+                del request_init["build"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5591,178 +5658,6 @@ def test_create_build_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project_id": "sample1"}
-    request_init["build"] = {
-        "name": "name_value",
-        "id": "id_value",
-        "project_id": "project_id_value",
-        "status": 10,
-        "status_detail": "status_detail_value",
-        "source": {
-            "storage_source": {
-                "bucket": "bucket_value",
-                "object_": "object__value",
-                "generation": 1068,
-            },
-            "repo_source": {
-                "project_id": "project_id_value",
-                "repo_name": "repo_name_value",
-                "branch_name": "branch_name_value",
-                "tag_name": "tag_name_value",
-                "commit_sha": "commit_sha_value",
-                "dir_": "dir__value",
-                "invert_regex": True,
-                "substitutions": {},
-            },
-            "git_source": {
-                "url": "url_value",
-                "dir_": "dir__value",
-                "revision": "revision_value",
-            },
-            "storage_source_manifest": {
-                "bucket": "bucket_value",
-                "object_": "object__value",
-                "generation": 1068,
-            },
-        },
-        "steps": [
-            {
-                "name": "name_value",
-                "env": ["env_value1", "env_value2"],
-                "args": ["args_value1", "args_value2"],
-                "dir_": "dir__value",
-                "id": "id_value",
-                "wait_for": ["wait_for_value1", "wait_for_value2"],
-                "entrypoint": "entrypoint_value",
-                "secret_env": ["secret_env_value1", "secret_env_value2"],
-                "volumes": [{"name": "name_value", "path": "path_value"}],
-                "timing": {
-                    "start_time": {"seconds": 751, "nanos": 543},
-                    "end_time": {},
-                },
-                "pull_timing": {},
-                "timeout": {"seconds": 751, "nanos": 543},
-                "status": 10,
-                "allow_failure": True,
-                "exit_code": 948,
-                "allow_exit_codes": [1702, 1703],
-                "script": "script_value",
-                "automap_substitutions": True,
-            }
-        ],
-        "results": {
-            "images": [
-                {"name": "name_value", "digest": "digest_value", "push_timing": {}}
-            ],
-            "build_step_images": [
-                "build_step_images_value1",
-                "build_step_images_value2",
-            ],
-            "artifact_manifest": "artifact_manifest_value",
-            "num_artifacts": 1392,
-            "build_step_outputs": [
-                b"build_step_outputs_blob1",
-                b"build_step_outputs_blob2",
-            ],
-            "artifact_timing": {},
-            "python_packages": [
-                {
-                    "uri": "uri_value",
-                    "file_hashes": {
-                        "file_hash": [{"type_": 1, "value": b"value_blob"}]
-                    },
-                    "push_timing": {},
-                }
-            ],
-            "maven_artifacts": [
-                {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
-            ],
-            "npm_packages": [
-                {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
-            ],
-        },
-        "create_time": {},
-        "start_time": {},
-        "finish_time": {},
-        "timeout": {},
-        "images": ["images_value1", "images_value2"],
-        "queue_ttl": {},
-        "artifacts": {
-            "images": ["images_value1", "images_value2"],
-            "objects": {
-                "location": "location_value",
-                "paths": ["paths_value1", "paths_value2"],
-                "timing": {},
-            },
-            "maven_artifacts": [
-                {
-                    "repository": "repository_value",
-                    "path": "path_value",
-                    "artifact_id": "artifact_id_value",
-                    "group_id": "group_id_value",
-                    "version": "version_value",
-                }
-            ],
-            "python_packages": [
-                {
-                    "repository": "repository_value",
-                    "paths": ["paths_value1", "paths_value2"],
-                }
-            ],
-            "npm_packages": [
-                {"repository": "repository_value", "package_path": "package_path_value"}
-            ],
-        },
-        "logs_bucket": "logs_bucket_value",
-        "source_provenance": {
-            "resolved_storage_source": {},
-            "resolved_repo_source": {},
-            "resolved_storage_source_manifest": {},
-            "file_hashes": {},
-        },
-        "build_trigger_id": "build_trigger_id_value",
-        "options": {
-            "source_provenance_hash": [1],
-            "requested_verify_option": 1,
-            "machine_type": 1,
-            "disk_size_gb": 1261,
-            "substitution_option": 1,
-            "dynamic_substitutions": True,
-            "automap_substitutions": True,
-            "log_streaming_option": 1,
-            "worker_pool": "worker_pool_value",
-            "pool": {"name": "name_value"},
-            "logging": 1,
-            "env": ["env_value1", "env_value2"],
-            "secret_env": ["secret_env_value1", "secret_env_value2"],
-            "volumes": {},
-            "default_logs_bucket_behavior": 1,
-        },
-        "log_url": "log_url_value",
-        "substitutions": {},
-        "tags": ["tags_value1", "tags_value2"],
-        "secrets": [{"kms_key_name": "kms_key_name_value", "secret_env": {}}],
-        "timing": {},
-        "approval": {
-            "state": 1,
-            "config": {"approval_required": True},
-            "result": {
-                "approver_account": "approver_account_value",
-                "approval_time": {},
-                "decision": 1,
-                "comment": "comment_value",
-                "url": "url_value",
-            },
-        },
-        "service_account": "service_account_value",
-        "available_secrets": {
-            "secret_manager": [
-                {"version_name": "version_name_value", "env": "env_value"}
-            ],
-            "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
-        },
-        "warnings": [{"text": "text_value", "priority": 1}],
-        "failure_info": {"type_": 1, "detail": "detail_value"},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5875,8 +5770,9 @@ def test_get_build_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.Build.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.Build.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5965,8 +5861,9 @@ def test_get_build_rest_required_fields(request_type=cloudbuild.GetBuildRequest)
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloudbuild.Build.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloudbuild.Build.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6096,8 +5993,9 @@ def test_get_build_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.Build.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.Build.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6161,8 +6059,9 @@ def test_list_builds_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.ListBuildsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.ListBuildsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6244,8 +6143,9 @@ def test_list_builds_rest_required_fields(request_type=cloudbuild.ListBuildsRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloudbuild.ListBuildsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloudbuild.ListBuildsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6379,8 +6279,9 @@ def test_list_builds_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.ListBuildsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.ListBuildsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6509,8 +6410,9 @@ def test_cancel_build_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.Build.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.Build.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6598,8 +6500,9 @@ def test_cancel_build_rest_required_fields(request_type=cloudbuild.CancelBuildRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloudbuild.Build.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloudbuild.Build.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6729,8 +6632,9 @@ def test_cancel_build_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.Build.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.Build.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7557,6 +7461,73 @@ def test_create_build_trigger_rest(request_type):
             "push": {},
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloudbuild.CreateBuildTriggerRequest.meta.fields["trigger"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["trigger"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["trigger"][field])):
+                    del request_init["trigger"][field][i][subfield]
+            else:
+                del request_init["trigger"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7579,8 +7550,9 @@ def test_create_build_trigger_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7667,8 +7639,9 @@ def test_create_build_trigger_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloudbuild.BuildTrigger.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7764,241 +7737,6 @@ def test_create_build_trigger_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project_id": "sample1"}
-    request_init["trigger"] = {
-        "resource_name": "resource_name_value",
-        "id": "id_value",
-        "description": "description_value",
-        "name": "name_value",
-        "tags": ["tags_value1", "tags_value2"],
-        "trigger_template": {
-            "project_id": "project_id_value",
-            "repo_name": "repo_name_value",
-            "branch_name": "branch_name_value",
-            "tag_name": "tag_name_value",
-            "commit_sha": "commit_sha_value",
-            "dir_": "dir__value",
-            "invert_regex": True,
-            "substitutions": {},
-        },
-        "github": {
-            "installation_id": 1598,
-            "owner": "owner_value",
-            "name": "name_value",
-            "pull_request": {
-                "branch": "branch_value",
-                "comment_control": 1,
-                "invert_regex": True,
-            },
-            "push": {
-                "branch": "branch_value",
-                "tag": "tag_value",
-                "invert_regex": True,
-            },
-        },
-        "pubsub_config": {
-            "subscription": "subscription_value",
-            "topic": "topic_value",
-            "service_account_email": "service_account_email_value",
-            "state": 1,
-        },
-        "webhook_config": {"secret": "secret_value", "state": 1},
-        "autodetect": True,
-        "build": {
-            "name": "name_value",
-            "id": "id_value",
-            "project_id": "project_id_value",
-            "status": 10,
-            "status_detail": "status_detail_value",
-            "source": {
-                "storage_source": {
-                    "bucket": "bucket_value",
-                    "object_": "object__value",
-                    "generation": 1068,
-                },
-                "repo_source": {},
-                "git_source": {
-                    "url": "url_value",
-                    "dir_": "dir__value",
-                    "revision": "revision_value",
-                },
-                "storage_source_manifest": {
-                    "bucket": "bucket_value",
-                    "object_": "object__value",
-                    "generation": 1068,
-                },
-            },
-            "steps": [
-                {
-                    "name": "name_value",
-                    "env": ["env_value1", "env_value2"],
-                    "args": ["args_value1", "args_value2"],
-                    "dir_": "dir__value",
-                    "id": "id_value",
-                    "wait_for": ["wait_for_value1", "wait_for_value2"],
-                    "entrypoint": "entrypoint_value",
-                    "secret_env": ["secret_env_value1", "secret_env_value2"],
-                    "volumes": [{"name": "name_value", "path": "path_value"}],
-                    "timing": {
-                        "start_time": {"seconds": 751, "nanos": 543},
-                        "end_time": {},
-                    },
-                    "pull_timing": {},
-                    "timeout": {"seconds": 751, "nanos": 543},
-                    "status": 10,
-                    "allow_failure": True,
-                    "exit_code": 948,
-                    "allow_exit_codes": [1702, 1703],
-                    "script": "script_value",
-                    "automap_substitutions": True,
-                }
-            ],
-            "results": {
-                "images": [
-                    {"name": "name_value", "digest": "digest_value", "push_timing": {}}
-                ],
-                "build_step_images": [
-                    "build_step_images_value1",
-                    "build_step_images_value2",
-                ],
-                "artifact_manifest": "artifact_manifest_value",
-                "num_artifacts": 1392,
-                "build_step_outputs": [
-                    b"build_step_outputs_blob1",
-                    b"build_step_outputs_blob2",
-                ],
-                "artifact_timing": {},
-                "python_packages": [
-                    {
-                        "uri": "uri_value",
-                        "file_hashes": {
-                            "file_hash": [{"type_": 1, "value": b"value_blob"}]
-                        },
-                        "push_timing": {},
-                    }
-                ],
-                "maven_artifacts": [
-                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
-                ],
-                "npm_packages": [
-                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
-                ],
-            },
-            "create_time": {},
-            "start_time": {},
-            "finish_time": {},
-            "timeout": {},
-            "images": ["images_value1", "images_value2"],
-            "queue_ttl": {},
-            "artifacts": {
-                "images": ["images_value1", "images_value2"],
-                "objects": {
-                    "location": "location_value",
-                    "paths": ["paths_value1", "paths_value2"],
-                    "timing": {},
-                },
-                "maven_artifacts": [
-                    {
-                        "repository": "repository_value",
-                        "path": "path_value",
-                        "artifact_id": "artifact_id_value",
-                        "group_id": "group_id_value",
-                        "version": "version_value",
-                    }
-                ],
-                "python_packages": [
-                    {
-                        "repository": "repository_value",
-                        "paths": ["paths_value1", "paths_value2"],
-                    }
-                ],
-                "npm_packages": [
-                    {
-                        "repository": "repository_value",
-                        "package_path": "package_path_value",
-                    }
-                ],
-            },
-            "logs_bucket": "logs_bucket_value",
-            "source_provenance": {
-                "resolved_storage_source": {},
-                "resolved_repo_source": {},
-                "resolved_storage_source_manifest": {},
-                "file_hashes": {},
-            },
-            "build_trigger_id": "build_trigger_id_value",
-            "options": {
-                "source_provenance_hash": [1],
-                "requested_verify_option": 1,
-                "machine_type": 1,
-                "disk_size_gb": 1261,
-                "substitution_option": 1,
-                "dynamic_substitutions": True,
-                "automap_substitutions": True,
-                "log_streaming_option": 1,
-                "worker_pool": "worker_pool_value",
-                "pool": {"name": "name_value"},
-                "logging": 1,
-                "env": ["env_value1", "env_value2"],
-                "secret_env": ["secret_env_value1", "secret_env_value2"],
-                "volumes": {},
-                "default_logs_bucket_behavior": 1,
-            },
-            "log_url": "log_url_value",
-            "substitutions": {},
-            "tags": ["tags_value1", "tags_value2"],
-            "secrets": [{"kms_key_name": "kms_key_name_value", "secret_env": {}}],
-            "timing": {},
-            "approval": {
-                "state": 1,
-                "config": {"approval_required": True},
-                "result": {
-                    "approver_account": "approver_account_value",
-                    "approval_time": {},
-                    "decision": 1,
-                    "comment": "comment_value",
-                    "url": "url_value",
-                },
-            },
-            "service_account": "service_account_value",
-            "available_secrets": {
-                "secret_manager": [
-                    {"version_name": "version_name_value", "env": "env_value"}
-                ],
-                "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
-            },
-            "warnings": [{"text": "text_value", "priority": 1}],
-            "failure_info": {"type_": 1, "detail": "detail_value"},
-        },
-        "filename": "filename_value",
-        "git_file_source": {
-            "path": "path_value",
-            "uri": "uri_value",
-            "repository": "repository_value",
-            "repo_type": 1,
-            "revision": "revision_value",
-            "github_enterprise_config": "github_enterprise_config_value",
-        },
-        "create_time": {},
-        "disabled": True,
-        "substitutions": {},
-        "ignored_files": ["ignored_files_value1", "ignored_files_value2"],
-        "included_files": ["included_files_value1", "included_files_value2"],
-        "filter": "filter_value",
-        "source_to_build": {
-            "uri": "uri_value",
-            "repository": "repository_value",
-            "ref": "ref_value",
-            "repo_type": 1,
-            "github_enterprise_config": "github_enterprise_config_value",
-        },
-        "service_account": "service_account_value",
-        "repository_event_config": {
-            "repository": "repository_value",
-            "repository_type": 1,
-            "pull_request": {},
-            "push": {},
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8037,8 +7775,9 @@ def test_create_build_trigger_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8112,8 +7851,9 @@ def test_get_build_trigger_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8203,8 +7943,9 @@ def test_get_build_trigger_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloudbuild.BuildTrigger.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8338,8 +8079,9 @@ def test_get_build_trigger_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8405,8 +8147,9 @@ def test_list_build_triggers_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.ListBuildTriggersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.ListBuildTriggersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8489,8 +8232,9 @@ def test_list_build_triggers_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloudbuild.ListBuildTriggersResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloudbuild.ListBuildTriggersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8624,8 +8368,9 @@ def test_list_build_triggers_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.ListBuildTriggersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.ListBuildTriggersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9237,6 +8982,73 @@ def test_update_build_trigger_rest(request_type):
             "push": {},
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloudbuild.UpdateBuildTriggerRequest.meta.fields["trigger"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["trigger"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["trigger"][field])):
+                    del request_init["trigger"][field][i][subfield]
+            else:
+                del request_init["trigger"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9259,8 +9071,9 @@ def test_update_build_trigger_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9351,8 +9164,9 @@ def test_update_build_trigger_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloudbuild.BuildTrigger.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9449,241 +9263,6 @@ def test_update_build_trigger_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project_id": "sample1", "trigger_id": "sample2"}
-    request_init["trigger"] = {
-        "resource_name": "resource_name_value",
-        "id": "id_value",
-        "description": "description_value",
-        "name": "name_value",
-        "tags": ["tags_value1", "tags_value2"],
-        "trigger_template": {
-            "project_id": "project_id_value",
-            "repo_name": "repo_name_value",
-            "branch_name": "branch_name_value",
-            "tag_name": "tag_name_value",
-            "commit_sha": "commit_sha_value",
-            "dir_": "dir__value",
-            "invert_regex": True,
-            "substitutions": {},
-        },
-        "github": {
-            "installation_id": 1598,
-            "owner": "owner_value",
-            "name": "name_value",
-            "pull_request": {
-                "branch": "branch_value",
-                "comment_control": 1,
-                "invert_regex": True,
-            },
-            "push": {
-                "branch": "branch_value",
-                "tag": "tag_value",
-                "invert_regex": True,
-            },
-        },
-        "pubsub_config": {
-            "subscription": "subscription_value",
-            "topic": "topic_value",
-            "service_account_email": "service_account_email_value",
-            "state": 1,
-        },
-        "webhook_config": {"secret": "secret_value", "state": 1},
-        "autodetect": True,
-        "build": {
-            "name": "name_value",
-            "id": "id_value",
-            "project_id": "project_id_value",
-            "status": 10,
-            "status_detail": "status_detail_value",
-            "source": {
-                "storage_source": {
-                    "bucket": "bucket_value",
-                    "object_": "object__value",
-                    "generation": 1068,
-                },
-                "repo_source": {},
-                "git_source": {
-                    "url": "url_value",
-                    "dir_": "dir__value",
-                    "revision": "revision_value",
-                },
-                "storage_source_manifest": {
-                    "bucket": "bucket_value",
-                    "object_": "object__value",
-                    "generation": 1068,
-                },
-            },
-            "steps": [
-                {
-                    "name": "name_value",
-                    "env": ["env_value1", "env_value2"],
-                    "args": ["args_value1", "args_value2"],
-                    "dir_": "dir__value",
-                    "id": "id_value",
-                    "wait_for": ["wait_for_value1", "wait_for_value2"],
-                    "entrypoint": "entrypoint_value",
-                    "secret_env": ["secret_env_value1", "secret_env_value2"],
-                    "volumes": [{"name": "name_value", "path": "path_value"}],
-                    "timing": {
-                        "start_time": {"seconds": 751, "nanos": 543},
-                        "end_time": {},
-                    },
-                    "pull_timing": {},
-                    "timeout": {"seconds": 751, "nanos": 543},
-                    "status": 10,
-                    "allow_failure": True,
-                    "exit_code": 948,
-                    "allow_exit_codes": [1702, 1703],
-                    "script": "script_value",
-                    "automap_substitutions": True,
-                }
-            ],
-            "results": {
-                "images": [
-                    {"name": "name_value", "digest": "digest_value", "push_timing": {}}
-                ],
-                "build_step_images": [
-                    "build_step_images_value1",
-                    "build_step_images_value2",
-                ],
-                "artifact_manifest": "artifact_manifest_value",
-                "num_artifacts": 1392,
-                "build_step_outputs": [
-                    b"build_step_outputs_blob1",
-                    b"build_step_outputs_blob2",
-                ],
-                "artifact_timing": {},
-                "python_packages": [
-                    {
-                        "uri": "uri_value",
-                        "file_hashes": {
-                            "file_hash": [{"type_": 1, "value": b"value_blob"}]
-                        },
-                        "push_timing": {},
-                    }
-                ],
-                "maven_artifacts": [
-                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
-                ],
-                "npm_packages": [
-                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
-                ],
-            },
-            "create_time": {},
-            "start_time": {},
-            "finish_time": {},
-            "timeout": {},
-            "images": ["images_value1", "images_value2"],
-            "queue_ttl": {},
-            "artifacts": {
-                "images": ["images_value1", "images_value2"],
-                "objects": {
-                    "location": "location_value",
-                    "paths": ["paths_value1", "paths_value2"],
-                    "timing": {},
-                },
-                "maven_artifacts": [
-                    {
-                        "repository": "repository_value",
-                        "path": "path_value",
-                        "artifact_id": "artifact_id_value",
-                        "group_id": "group_id_value",
-                        "version": "version_value",
-                    }
-                ],
-                "python_packages": [
-                    {
-                        "repository": "repository_value",
-                        "paths": ["paths_value1", "paths_value2"],
-                    }
-                ],
-                "npm_packages": [
-                    {
-                        "repository": "repository_value",
-                        "package_path": "package_path_value",
-                    }
-                ],
-            },
-            "logs_bucket": "logs_bucket_value",
-            "source_provenance": {
-                "resolved_storage_source": {},
-                "resolved_repo_source": {},
-                "resolved_storage_source_manifest": {},
-                "file_hashes": {},
-            },
-            "build_trigger_id": "build_trigger_id_value",
-            "options": {
-                "source_provenance_hash": [1],
-                "requested_verify_option": 1,
-                "machine_type": 1,
-                "disk_size_gb": 1261,
-                "substitution_option": 1,
-                "dynamic_substitutions": True,
-                "automap_substitutions": True,
-                "log_streaming_option": 1,
-                "worker_pool": "worker_pool_value",
-                "pool": {"name": "name_value"},
-                "logging": 1,
-                "env": ["env_value1", "env_value2"],
-                "secret_env": ["secret_env_value1", "secret_env_value2"],
-                "volumes": {},
-                "default_logs_bucket_behavior": 1,
-            },
-            "log_url": "log_url_value",
-            "substitutions": {},
-            "tags": ["tags_value1", "tags_value2"],
-            "secrets": [{"kms_key_name": "kms_key_name_value", "secret_env": {}}],
-            "timing": {},
-            "approval": {
-                "state": 1,
-                "config": {"approval_required": True},
-                "result": {
-                    "approver_account": "approver_account_value",
-                    "approval_time": {},
-                    "decision": 1,
-                    "comment": "comment_value",
-                    "url": "url_value",
-                },
-            },
-            "service_account": "service_account_value",
-            "available_secrets": {
-                "secret_manager": [
-                    {"version_name": "version_name_value", "env": "env_value"}
-                ],
-                "inline": [{"kms_key_name": "kms_key_name_value", "env_map": {}}],
-            },
-            "warnings": [{"text": "text_value", "priority": 1}],
-            "failure_info": {"type_": 1, "detail": "detail_value"},
-        },
-        "filename": "filename_value",
-        "git_file_source": {
-            "path": "path_value",
-            "uri": "uri_value",
-            "repository": "repository_value",
-            "repo_type": 1,
-            "revision": "revision_value",
-            "github_enterprise_config": "github_enterprise_config_value",
-        },
-        "create_time": {},
-        "disabled": True,
-        "substitutions": {},
-        "ignored_files": ["ignored_files_value1", "ignored_files_value2"],
-        "included_files": ["included_files_value1", "included_files_value2"],
-        "filter": "filter_value",
-        "source_to_build": {
-            "uri": "uri_value",
-            "repository": "repository_value",
-            "ref": "ref_value",
-            "repo_type": 1,
-            "github_enterprise_config": "github_enterprise_config_value",
-        },
-        "service_account": "service_account_value",
-        "repository_event_config": {
-            "repository": "repository_value",
-            "repository_type": 1,
-            "pull_request": {},
-            "push": {},
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9723,8 +9302,9 @@ def test_update_build_trigger_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.BuildTrigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.BuildTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9789,6 +9369,73 @@ def test_run_build_trigger_rest(request_type):
         "invert_regex": True,
         "substitutions": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloudbuild.RunBuildTriggerRequest.meta.fields["source"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["source"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["source"][field])):
+                    del request_init["source"][field][i][subfield]
+            else:
+                del request_init["source"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9977,16 +9624,6 @@ def test_run_build_trigger_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project_id": "sample1", "trigger_id": "sample2"}
-    request_init["source"] = {
-        "project_id": "project_id_value",
-        "repo_name": "repo_name_value",
-        "branch_name": "branch_name_value",
-        "tag_name": "tag_name_value",
-        "commit_sha": "commit_sha_value",
-        "dir_": "dir__value",
-        "invert_regex": True,
-        "substitutions": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10091,6 +9728,73 @@ def test_receive_trigger_webhook_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloudbuild.ReceiveTriggerWebhookRequest.meta.fields["body"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["body"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["body"][field])):
+                    del request_init["body"][field][i][subfield]
+            else:
+                del request_init["body"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10101,8 +9805,9 @@ def test_receive_trigger_webhook_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.ReceiveTriggerWebhookResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.ReceiveTriggerWebhookResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10179,16 +9884,6 @@ def test_receive_trigger_webhook_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project_id": "sample1", "trigger": "sample2"}
-    request_init["body"] = {
-        "content_type": "content_type_value",
-        "data": b"data_blob",
-        "extensions": [
-            {
-                "type_url": "type.googleapis.com/google.protobuf.Duration",
-                "value": b"\x08\x0c\x10\xdb\x07",
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10246,6 +9941,73 @@ def test_create_worker_pool_rest(request_type):
         },
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloudbuild.CreateWorkerPoolRequest.meta.fields["worker_pool"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["worker_pool"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["worker_pool"][field])):
+                    del request_init["worker_pool"][field][i][subfield]
+            else:
+                del request_init["worker_pool"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10454,28 +10216,6 @@ def test_create_worker_pool_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["worker_pool"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "annotations": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "state": 1,
-        "private_pool_v1_config": {
-            "worker_config": {
-                "machine_type": "machine_type_value",
-                "disk_size_gb": 1261,
-            },
-            "network_config": {
-                "peered_network": "peered_network_value",
-                "egress_option": 1,
-                "peered_network_ip_range": "peered_network_ip_range_value",
-            },
-        },
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10586,8 +10326,9 @@ def test_get_worker_pool_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.WorkerPool.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.WorkerPool.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10666,8 +10407,9 @@ def test_get_worker_pool_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloudbuild.WorkerPool.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloudbuild.WorkerPool.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10794,8 +10536,9 @@ def test_get_worker_pool_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.WorkerPool.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.WorkerPool.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11156,6 +10899,73 @@ def test_update_worker_pool_rest(request_type):
         },
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloudbuild.UpdateWorkerPoolRequest.meta.fields["worker_pool"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["worker_pool"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["worker_pool"][field])):
+                    del request_init["worker_pool"][field][i][subfield]
+            else:
+                del request_init["worker_pool"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -11344,28 +11154,6 @@ def test_update_worker_pool_rest_bad_request(
             "name": "projects/sample1/locations/sample2/workerPools/sample3"
         }
     }
-    request_init["worker_pool"] = {
-        "name": "projects/sample1/locations/sample2/workerPools/sample3",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "annotations": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "state": 1,
-        "private_pool_v1_config": {
-            "worker_config": {
-                "machine_type": "machine_type_value",
-                "disk_size_gb": 1261,
-            },
-            "network_config": {
-                "peered_network": "peered_network_value",
-                "egress_option": 1,
-                "peered_network_ip_range": "peered_network_ip_range_value",
-            },
-        },
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -11474,8 +11262,9 @@ def test_list_worker_pools_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.ListWorkerPoolsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.ListWorkerPoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11557,8 +11346,9 @@ def test_list_worker_pools_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloudbuild.ListWorkerPoolsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloudbuild.ListWorkerPoolsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11691,8 +11481,9 @@ def test_list_worker_pools_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloudbuild.ListWorkerPoolsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloudbuild.ListWorkerPoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
