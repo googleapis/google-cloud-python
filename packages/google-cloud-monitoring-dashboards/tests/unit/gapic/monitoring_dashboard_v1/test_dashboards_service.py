@@ -1859,6 +1859,73 @@ def test_create_dashboard_rest(request_type):
         ],
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = dashboards_service.CreateDashboardRequest.meta.fields["dashboard"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["dashboard"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["dashboard"][field])):
+                    del request_init["dashboard"][field][i][subfield]
+            else:
+                del request_init["dashboard"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -1873,8 +1940,9 @@ def test_create_dashboard_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = dashboard.Dashboard.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = dashboard.Dashboard.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1954,8 +2022,9 @@ def test_create_dashboard_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = dashboard.Dashboard.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = dashboard.Dashboard.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2049,139 +2118,6 @@ def test_create_dashboard_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1"}
-    request_init["dashboard"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "etag": "etag_value",
-        "grid_layout": {
-            "columns": 769,
-            "widgets": [
-                {
-                    "title": "title_value",
-                    "xy_chart": {
-                        "data_sets": [
-                            {
-                                "time_series_query": {
-                                    "time_series_filter": {
-                                        "filter": "filter_value",
-                                        "aggregation": {
-                                            "alignment_period": {
-                                                "seconds": 751,
-                                                "nanos": 543,
-                                            },
-                                            "per_series_aligner": 1,
-                                            "cross_series_reducer": 1,
-                                            "group_by_fields": [
-                                                "group_by_fields_value1",
-                                                "group_by_fields_value2",
-                                            ],
-                                        },
-                                        "secondary_aggregation": {},
-                                        "pick_time_series_filter": {
-                                            "ranking_method": 1,
-                                            "num_time_series": 1608,
-                                            "direction": 1,
-                                        },
-                                        "statistical_time_series_filter": {
-                                            "ranking_method": 1,
-                                            "num_time_series": 1608,
-                                        },
-                                    },
-                                    "time_series_filter_ratio": {
-                                        "numerator": {
-                                            "filter": "filter_value",
-                                            "aggregation": {},
-                                        },
-                                        "denominator": {},
-                                        "secondary_aggregation": {},
-                                        "pick_time_series_filter": {},
-                                        "statistical_time_series_filter": {},
-                                    },
-                                    "time_series_query_language": "time_series_query_language_value",
-                                    "prometheus_query": "prometheus_query_value",
-                                    "unit_override": "unit_override_value",
-                                },
-                                "plot_type": 1,
-                                "legend_template": "legend_template_value",
-                                "min_alignment_period": {},
-                                "target_axis": 1,
-                            }
-                        ],
-                        "timeshift_duration": {},
-                        "thresholds": [
-                            {
-                                "label": "label_value",
-                                "value": 0.541,
-                                "color": 4,
-                                "direction": 1,
-                                "target_axis": 1,
-                            }
-                        ],
-                        "x_axis": {"label": "label_value", "scale": 1},
-                        "y_axis": {},
-                        "y2_axis": {},
-                        "chart_options": {"mode": 1},
-                    },
-                    "scorecard": {
-                        "time_series_query": {},
-                        "gauge_view": {"lower_bound": 0.1184, "upper_bound": 0.1187},
-                        "spark_chart_view": {
-                            "spark_chart_type": 1,
-                            "min_alignment_period": {},
-                        },
-                        "thresholds": {},
-                    },
-                    "text": {"content": "content_value", "format_": 1},
-                    "blank": {},
-                    "alert_chart": {"name": "name_value"},
-                    "time_series_table": {
-                        "data_sets": [
-                            {
-                                "time_series_query": {},
-                                "table_template": "table_template_value",
-                                "min_alignment_period": {},
-                                "table_display_options": {
-                                    "shown_columns": [
-                                        "shown_columns_value1",
-                                        "shown_columns_value2",
-                                    ]
-                                },
-                            }
-                        ],
-                        "metric_visualization": 1,
-                        "column_settings": [
-                            {"column": "column_value", "visible": True}
-                        ],
-                    },
-                    "collapsible_group": {"collapsed": True},
-                    "logs_panel": {
-                        "filter": "filter_value",
-                        "resource_names": [
-                            "resource_names_value1",
-                            "resource_names_value2",
-                        ],
-                    },
-                }
-            ],
-        },
-        "mosaic_layout": {
-            "columns": 769,
-            "tiles": [
-                {"x_pos": 553, "y_pos": 554, "width": 544, "height": 633, "widget": {}}
-            ],
-        },
-        "row_layout": {"rows": [{"weight": 648, "widgets": {}}]},
-        "column_layout": {"columns": [{"weight": 648, "widgets": {}}]},
-        "dashboard_filters": [
-            {
-                "label_key": "label_key_value",
-                "template_variable": "template_variable_value",
-                "string_value": "string_value_value",
-                "filter_type": 1,
-            }
-        ],
-        "labels": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2229,8 +2165,9 @@ def test_list_dashboards_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = dashboards_service.ListDashboardsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = dashboards_service.ListDashboardsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2312,8 +2249,9 @@ def test_list_dashboards_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = dashboards_service.ListDashboardsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = dashboards_service.ListDashboardsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2515,8 +2453,9 @@ def test_get_dashboard_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = dashboard.Dashboard.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = dashboard.Dashboard.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2593,8 +2532,9 @@ def test_get_dashboard_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = dashboard.Dashboard.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = dashboard.Dashboard.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3046,6 +2986,73 @@ def test_update_dashboard_rest(request_type):
         ],
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = dashboards_service.UpdateDashboardRequest.meta.fields["dashboard"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["dashboard"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["dashboard"][field])):
+                    del request_init["dashboard"][field][i][subfield]
+            else:
+                del request_init["dashboard"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3060,8 +3067,9 @@ def test_update_dashboard_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = dashboard.Dashboard.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = dashboard.Dashboard.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3136,8 +3144,9 @@ def test_update_dashboard_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = dashboard.Dashboard.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = dashboard.Dashboard.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3223,139 +3232,6 @@ def test_update_dashboard_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"dashboard": {"name": "projects/sample1/dashboards/sample2"}}
-    request_init["dashboard"] = {
-        "name": "projects/sample1/dashboards/sample2",
-        "display_name": "display_name_value",
-        "etag": "etag_value",
-        "grid_layout": {
-            "columns": 769,
-            "widgets": [
-                {
-                    "title": "title_value",
-                    "xy_chart": {
-                        "data_sets": [
-                            {
-                                "time_series_query": {
-                                    "time_series_filter": {
-                                        "filter": "filter_value",
-                                        "aggregation": {
-                                            "alignment_period": {
-                                                "seconds": 751,
-                                                "nanos": 543,
-                                            },
-                                            "per_series_aligner": 1,
-                                            "cross_series_reducer": 1,
-                                            "group_by_fields": [
-                                                "group_by_fields_value1",
-                                                "group_by_fields_value2",
-                                            ],
-                                        },
-                                        "secondary_aggregation": {},
-                                        "pick_time_series_filter": {
-                                            "ranking_method": 1,
-                                            "num_time_series": 1608,
-                                            "direction": 1,
-                                        },
-                                        "statistical_time_series_filter": {
-                                            "ranking_method": 1,
-                                            "num_time_series": 1608,
-                                        },
-                                    },
-                                    "time_series_filter_ratio": {
-                                        "numerator": {
-                                            "filter": "filter_value",
-                                            "aggregation": {},
-                                        },
-                                        "denominator": {},
-                                        "secondary_aggregation": {},
-                                        "pick_time_series_filter": {},
-                                        "statistical_time_series_filter": {},
-                                    },
-                                    "time_series_query_language": "time_series_query_language_value",
-                                    "prometheus_query": "prometheus_query_value",
-                                    "unit_override": "unit_override_value",
-                                },
-                                "plot_type": 1,
-                                "legend_template": "legend_template_value",
-                                "min_alignment_period": {},
-                                "target_axis": 1,
-                            }
-                        ],
-                        "timeshift_duration": {},
-                        "thresholds": [
-                            {
-                                "label": "label_value",
-                                "value": 0.541,
-                                "color": 4,
-                                "direction": 1,
-                                "target_axis": 1,
-                            }
-                        ],
-                        "x_axis": {"label": "label_value", "scale": 1},
-                        "y_axis": {},
-                        "y2_axis": {},
-                        "chart_options": {"mode": 1},
-                    },
-                    "scorecard": {
-                        "time_series_query": {},
-                        "gauge_view": {"lower_bound": 0.1184, "upper_bound": 0.1187},
-                        "spark_chart_view": {
-                            "spark_chart_type": 1,
-                            "min_alignment_period": {},
-                        },
-                        "thresholds": {},
-                    },
-                    "text": {"content": "content_value", "format_": 1},
-                    "blank": {},
-                    "alert_chart": {"name": "name_value"},
-                    "time_series_table": {
-                        "data_sets": [
-                            {
-                                "time_series_query": {},
-                                "table_template": "table_template_value",
-                                "min_alignment_period": {},
-                                "table_display_options": {
-                                    "shown_columns": [
-                                        "shown_columns_value1",
-                                        "shown_columns_value2",
-                                    ]
-                                },
-                            }
-                        ],
-                        "metric_visualization": 1,
-                        "column_settings": [
-                            {"column": "column_value", "visible": True}
-                        ],
-                    },
-                    "collapsible_group": {"collapsed": True},
-                    "logs_panel": {
-                        "filter": "filter_value",
-                        "resource_names": [
-                            "resource_names_value1",
-                            "resource_names_value2",
-                        ],
-                    },
-                }
-            ],
-        },
-        "mosaic_layout": {
-            "columns": 769,
-            "tiles": [
-                {"x_pos": 553, "y_pos": 554, "width": 544, "height": 633, "widget": {}}
-            ],
-        },
-        "row_layout": {"rows": [{"weight": 648, "widgets": {}}]},
-        "column_layout": {"columns": [{"weight": 648, "widgets": {}}]},
-        "dashboard_filters": [
-            {
-                "label_key": "label_key_value",
-                "template_variable": "template_variable_value",
-                "string_value": "string_value_value",
-                "filter_type": 1,
-            }
-        ],
-        "labels": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
