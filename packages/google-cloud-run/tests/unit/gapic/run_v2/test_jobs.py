@@ -2736,6 +2736,73 @@ def test_create_job_rest(request_type):
         "satisfies_pzs": True,
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcr_job.CreateJobRequest.meta.fields["job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["job"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["job"][field])):
+                    del request_init["job"][field][i][subfield]
+            else:
+                del request_init["job"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2938,138 +3005,6 @@ def test_create_job_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["job"] = {
-        "name": "name_value",
-        "uid": "uid_value",
-        "generation": 1068,
-        "labels": {},
-        "annotations": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "expire_time": {},
-        "creator": "creator_value",
-        "last_modifier": "last_modifier_value",
-        "client": "client_value",
-        "client_version": "client_version_value",
-        "launch_stage": 6,
-        "binary_authorization": {
-            "use_default": True,
-            "breakglass_justification": "breakglass_justification_value",
-        },
-        "template": {
-            "labels": {},
-            "annotations": {},
-            "parallelism": 1174,
-            "task_count": 1083,
-            "template": {
-                "containers": [
-                    {
-                        "name": "name_value",
-                        "image": "image_value",
-                        "command": ["command_value1", "command_value2"],
-                        "args": ["args_value1", "args_value2"],
-                        "env": [
-                            {
-                                "name": "name_value",
-                                "value": "value_value",
-                                "value_source": {
-                                    "secret_key_ref": {
-                                        "secret": "secret_value",
-                                        "version": "version_value",
-                                    }
-                                },
-                            }
-                        ],
-                        "resources": {
-                            "limits": {},
-                            "cpu_idle": True,
-                            "startup_cpu_boost": True,
-                        },
-                        "ports": [{"name": "name_value", "container_port": 1511}],
-                        "volume_mounts": [
-                            {"name": "name_value", "mount_path": "mount_path_value"}
-                        ],
-                        "working_dir": "working_dir_value",
-                        "liveness_probe": {
-                            "initial_delay_seconds": 2214,
-                            "timeout_seconds": 1621,
-                            "period_seconds": 1489,
-                            "failure_threshold": 1812,
-                            "http_get": {
-                                "path": "path_value",
-                                "http_headers": [
-                                    {"name": "name_value", "value": "value_value"}
-                                ],
-                                "port": 453,
-                            },
-                            "tcp_socket": {"port": 453},
-                            "grpc": {"port": 453, "service": "service_value"},
-                        },
-                        "startup_probe": {},
-                        "depends_on": ["depends_on_value1", "depends_on_value2"],
-                    }
-                ],
-                "volumes": [
-                    {
-                        "name": "name_value",
-                        "secret": {
-                            "secret": "secret_value",
-                            "items": [
-                                {
-                                    "path": "path_value",
-                                    "version": "version_value",
-                                    "mode": 421,
-                                }
-                            ],
-                            "default_mode": 1257,
-                        },
-                        "cloud_sql_instance": {
-                            "instances": ["instances_value1", "instances_value2"]
-                        },
-                        "empty_dir": {"medium": 1, "size_limit": "size_limit_value"},
-                    }
-                ],
-                "max_retries": 1187,
-                "timeout": {"seconds": 751, "nanos": 543},
-                "service_account": "service_account_value",
-                "execution_environment": 1,
-                "encryption_key": "encryption_key_value",
-                "vpc_access": {
-                    "connector": "connector_value",
-                    "egress": 1,
-                    "network_interfaces": [
-                        {
-                            "network": "network_value",
-                            "subnetwork": "subnetwork_value",
-                            "tags": ["tags_value1", "tags_value2"],
-                        }
-                    ],
-                },
-            },
-        },
-        "observed_generation": 2021,
-        "terminal_condition": {
-            "type_": "type__value",
-            "state": 1,
-            "message": "message_value",
-            "last_transition_time": {},
-            "severity": 1,
-            "reason": 1,
-            "revision_reason": 1,
-            "execution_reason": 1,
-        },
-        "conditions": {},
-        "execution_count": 1628,
-        "latest_created_execution": {
-            "name": "name_value",
-            "create_time": {},
-            "completion_time": {},
-        },
-        "reconciling": True,
-        "satisfies_pzs": True,
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3187,8 +3122,9 @@ def test_get_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = job.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3273,8 +3209,9 @@ def test_get_job_rest_required_fields(request_type=job.GetJobRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = job.Job.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3393,8 +3330,9 @@ def test_get_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = job.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3458,8 +3396,9 @@ def test_list_jobs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = job.ListJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = job.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3540,8 +3479,9 @@ def test_list_jobs_rest_required_fields(request_type=job.ListJobsRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = job.ListJobsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = job.ListJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3669,8 +3609,9 @@ def test_list_jobs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = job.ListJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = job.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3909,6 +3850,73 @@ def test_update_job_rest(request_type):
         "satisfies_pzs": True,
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcr_job.UpdateJobRequest.meta.fields["job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["job"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["job"][field])):
+                    del request_init["job"][field][i][subfield]
+            else:
+                del request_init["job"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4087,138 +4095,6 @@ def test_update_job_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"job": {"name": "projects/sample1/locations/sample2/jobs/sample3"}}
-    request_init["job"] = {
-        "name": "projects/sample1/locations/sample2/jobs/sample3",
-        "uid": "uid_value",
-        "generation": 1068,
-        "labels": {},
-        "annotations": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "expire_time": {},
-        "creator": "creator_value",
-        "last_modifier": "last_modifier_value",
-        "client": "client_value",
-        "client_version": "client_version_value",
-        "launch_stage": 6,
-        "binary_authorization": {
-            "use_default": True,
-            "breakglass_justification": "breakglass_justification_value",
-        },
-        "template": {
-            "labels": {},
-            "annotations": {},
-            "parallelism": 1174,
-            "task_count": 1083,
-            "template": {
-                "containers": [
-                    {
-                        "name": "name_value",
-                        "image": "image_value",
-                        "command": ["command_value1", "command_value2"],
-                        "args": ["args_value1", "args_value2"],
-                        "env": [
-                            {
-                                "name": "name_value",
-                                "value": "value_value",
-                                "value_source": {
-                                    "secret_key_ref": {
-                                        "secret": "secret_value",
-                                        "version": "version_value",
-                                    }
-                                },
-                            }
-                        ],
-                        "resources": {
-                            "limits": {},
-                            "cpu_idle": True,
-                            "startup_cpu_boost": True,
-                        },
-                        "ports": [{"name": "name_value", "container_port": 1511}],
-                        "volume_mounts": [
-                            {"name": "name_value", "mount_path": "mount_path_value"}
-                        ],
-                        "working_dir": "working_dir_value",
-                        "liveness_probe": {
-                            "initial_delay_seconds": 2214,
-                            "timeout_seconds": 1621,
-                            "period_seconds": 1489,
-                            "failure_threshold": 1812,
-                            "http_get": {
-                                "path": "path_value",
-                                "http_headers": [
-                                    {"name": "name_value", "value": "value_value"}
-                                ],
-                                "port": 453,
-                            },
-                            "tcp_socket": {"port": 453},
-                            "grpc": {"port": 453, "service": "service_value"},
-                        },
-                        "startup_probe": {},
-                        "depends_on": ["depends_on_value1", "depends_on_value2"],
-                    }
-                ],
-                "volumes": [
-                    {
-                        "name": "name_value",
-                        "secret": {
-                            "secret": "secret_value",
-                            "items": [
-                                {
-                                    "path": "path_value",
-                                    "version": "version_value",
-                                    "mode": 421,
-                                }
-                            ],
-                            "default_mode": 1257,
-                        },
-                        "cloud_sql_instance": {
-                            "instances": ["instances_value1", "instances_value2"]
-                        },
-                        "empty_dir": {"medium": 1, "size_limit": "size_limit_value"},
-                    }
-                ],
-                "max_retries": 1187,
-                "timeout": {"seconds": 751, "nanos": 543},
-                "service_account": "service_account_value",
-                "execution_environment": 1,
-                "encryption_key": "encryption_key_value",
-                "vpc_access": {
-                    "connector": "connector_value",
-                    "egress": 1,
-                    "network_interfaces": [
-                        {
-                            "network": "network_value",
-                            "subnetwork": "subnetwork_value",
-                            "tags": ["tags_value1", "tags_value2"],
-                        }
-                    ],
-                },
-            },
-        },
-        "observed_generation": 2021,
-        "terminal_condition": {
-            "type_": "type__value",
-            "state": 1,
-            "message": "message_value",
-            "last_transition_time": {},
-            "severity": 1,
-            "reason": 1,
-            "revision_reason": 1,
-            "execution_reason": 1,
-        },
-        "conditions": {},
-        "execution_count": 1628,
-        "latest_created_execution": {
-            "name": "name_value",
-            "create_time": {},
-            "completion_time": {},
-        },
-        "reconciling": True,
-        "satisfies_pzs": True,
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4851,8 +4727,7 @@ def test_get_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4930,8 +4805,7 @@ def test_get_iam_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = return_value
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5061,8 +4935,7 @@ def test_set_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5139,8 +5012,7 @@ def test_set_iam_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = return_value
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5277,8 +5149,7 @@ def test_test_iam_permissions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5358,8 +5229,7 @@ def test_test_iam_permissions_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = return_value
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
