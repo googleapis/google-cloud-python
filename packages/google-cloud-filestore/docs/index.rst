@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    filestore_v1/services
-    filestore_v1/types
+    filestore_v1/services_
+    filestore_v1/types_
 
 
 Changelog
