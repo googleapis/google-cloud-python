@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,8 @@ from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -335,6 +337,48 @@ class ServiceManagerTransport(abc.ABC):
         Union[
             servicemanager.GenerateConfigReportResponse,
             Awaitable[servicemanager.GenerateConfigReportResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
     ]:
         raise NotImplementedError()

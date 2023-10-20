@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,8 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import json_format
 import grpc  # type: ignore
 from requests import __version__ as requests_version
@@ -474,6 +476,94 @@ class ServiceManagerRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_service
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ServiceManager server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_iam_policy(
+        self,
+        request: iam_policy_pb2.GetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ServiceManager server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ServiceManager server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_iam_policy(
+        self,
+        request: iam_policy_pb2.SetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ServiceManager server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ServiceManager server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_test_iam_permissions(
+        self,
+        request: iam_policy_pb2.TestIamPermissionsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ServiceManager server.
+        """
+        return request, metadata
+
+    def post_test_iam_permissions(
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ServiceManager server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_operations(
+        self,
+        request: operations_pb2.ListOperationsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_operations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ServiceManager server.
+        """
+        return request, metadata
+
+    def post_list_operations(
+        self, response: operations_pb2.ListOperationsResponse
+    ) -> operations_pb2.ListOperationsResponse:
+        """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
         after it is returned by the ServiceManager server but before
@@ -2011,6 +2101,296 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeleteService(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_iam_policy(self):
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetIamPolicy(ServiceManagerRestStub):
+        def __call__(
+            self,
+            request: iam_policy_pb2.GetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the get iam policy method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.GetIamPolicyRequest):
+                    The request object for GetIamPolicy method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                policy_pb2.Policy: Response from GetIamPolicy method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=services/*}:getIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=services/*/consumers/*}:getIamPolicy",
+                    "body": "*",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            body = json.dumps(transcoded_request["body"])
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = policy_pb2.Policy()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_get_iam_policy(resp)
+            return resp
+
+    @property
+    def set_iam_policy(self):
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _SetIamPolicy(ServiceManagerRestStub):
+        def __call__(
+            self,
+            request: iam_policy_pb2.SetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the set iam policy method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.SetIamPolicyRequest):
+                    The request object for SetIamPolicy method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                policy_pb2.Policy: Response from SetIamPolicy method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=services/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=services/*/consumers/*}:setIamPolicy",
+                    "body": "*",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            body = json.dumps(transcoded_request["body"])
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = policy_pb2.Policy()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_set_iam_policy(resp)
+            return resp
+
+    @property
+    def test_iam_permissions(self):
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _TestIamPermissions(ServiceManagerRestStub):
+        def __call__(
+            self,
+            request: iam_policy_pb2.TestIamPermissionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> iam_policy_pb2.TestIamPermissionsResponse:
+            r"""Call the test iam permissions method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.TestIamPermissionsRequest):
+                    The request object for TestIamPermissions method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=services/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=services/*/consumers/*}:testIamPermissions",
+                    "body": "*",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            body = json.dumps(transcoded_request["body"])
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = iam_policy_pb2.TestIamPermissionsResponse()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_test_iam_permissions(resp)
+            return resp
+
+    @property
+    def list_operations(self):
+        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _ListOperations(ServiceManagerRestStub):
+        def __call__(
+            self,
+            request: operations_pb2.ListOperationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.ListOperationsResponse:
+            r"""Call the list operations method over HTTP.
+
+            Args:
+                request (operations_pb2.ListOperationsRequest):
+                    The request object for ListOperations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                operations_pb2.ListOperationsResponse: Response from ListOperations method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/operations",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_list_operations(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = operations_pb2.ListOperationsResponse()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_list_operations(resp)
+            return resp
 
     @property
     def kind(self) -> str:

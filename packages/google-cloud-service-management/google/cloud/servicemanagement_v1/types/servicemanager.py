@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ __protobuf__ = proto.module(
         "ListServiceRolloutsRequest",
         "ListServiceRolloutsResponse",
         "GetServiceRolloutRequest",
+        "EnableServiceResponse",
         "GenerateConfigReportRequest",
         "GenerateConfigReportResponse",
     },
@@ -59,7 +60,7 @@ class ListServicesRequest(proto.Message):
         page_size (int):
             The max number of items to include in the
             response list. Page size is 50 if not specified.
-            Maximum value is 100.
+            Maximum value is 500.
         page_token (str):
             Token identifying which result to start with;
             returned by a previous list call.
@@ -155,7 +156,7 @@ class DeleteServiceRequest(proto.Message):
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+            `overview <https://cloud.google.com/service-management/overview>`__
             for naming requirements. For example:
             ``example.googleapis.com``.
     """
@@ -172,7 +173,7 @@ class UndeleteServiceRequest(proto.Message):
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+            `overview <https://cloud.google.com/service-management/overview>`__
             for naming requirements. For example:
             ``example.googleapis.com``.
     """
@@ -204,7 +205,7 @@ class GetServiceConfigRequest(proto.Message):
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+            `overview <https://cloud.google.com/service-management/overview>`__
             for naming requirements. For example:
             ``example.googleapis.com``.
         config_id (str):
@@ -255,7 +256,7 @@ class ListServiceConfigsRequest(proto.Message):
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+            `overview <https://cloud.google.com/service-management/overview>`__
             for naming requirements. For example:
             ``example.googleapis.com``.
         page_token (str):
@@ -311,7 +312,7 @@ class CreateServiceConfigRequest(proto.Message):
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+            `overview <https://cloud.google.com/service-management/overview>`__
             for naming requirements. For example:
             ``example.googleapis.com``.
         service_config (google.api.service_pb2.Service):
@@ -335,7 +336,7 @@ class SubmitConfigSourceRequest(proto.Message):
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+            `overview <https://cloud.google.com/service-management/overview>`__
             for naming requirements. For example:
             ``example.googleapis.com``.
         config_source (google.cloud.servicemanagement_v1.types.ConfigSource):
@@ -384,7 +385,7 @@ class CreateServiceRolloutRequest(proto.Message):
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+            `overview <https://cloud.google.com/service-management/overview>`__
             for naming requirements. For example:
             ``example.googleapis.com``.
         rollout (google.cloud.servicemanagement_v1.types.Rollout):
@@ -409,7 +410,7 @@ class ListServiceRolloutsRequest(proto.Message):
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+            `overview <https://cloud.google.com/service-management/overview>`__
             for naming requirements. For example:
             ``example.googleapis.com``.
         page_token (str):
@@ -420,13 +421,15 @@ class ListServiceRolloutsRequest(proto.Message):
             Maximum value is 100.
         filter (str):
             Required. Use ``filter`` to return subset of rollouts. The
-            following filters are supported: -- To limit the results to
-            only those in status
-            (google.api.servicemanagement.v1.RolloutStatus) 'SUCCESS',
-            use filter='status=SUCCESS' -- To limit the results to those
-            in status (google.api.servicemanagement.v1.RolloutStatus)
-            'CANCELLED' or 'FAILED', use filter='status=CANCELLED OR
-            status=FAILED'
+            following filters are supported:
+
+            -- By [status]
+            [google.api.servicemanagement.v1.Rollout.RolloutStatus]. For
+            example, ``filter='status=SUCCESS'``
+
+            -- By [strategy]
+            [google.api.servicemanagement.v1.Rollout.strategy]. For
+            example, ``filter='strategy=TrafficPercentStrategy'``
     """
 
     service_name: str = proto.Field(
@@ -478,7 +481,7 @@ class GetServiceRolloutRequest(proto.Message):
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+            `overview <https://cloud.google.com/service-management/overview>`__
             for naming requirements. For example:
             ``example.googleapis.com``.
         rollout_id (str):
@@ -493,6 +496,10 @@ class GetServiceRolloutRequest(proto.Message):
         proto.STRING,
         number=2,
     )
+
+
+class EnableServiceResponse(proto.Message):
+    r"""Operation payload for EnableService method."""
 
 
 class GenerateConfigReportRequest(proto.Message):

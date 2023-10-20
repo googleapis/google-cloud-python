@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ from google.cloud.servicemanagement_v1.types.servicemanager import (
     CreateServiceRequest,
     CreateServiceRolloutRequest,
     DeleteServiceRequest,
+    EnableServiceResponse,
     GenerateConfigReportRequest,
     GenerateConfigReportResponse,
     GetServiceConfigRequest,
@@ -71,6 +72,7 @@ __all__ = (
     "CreateServiceRequest",
     "CreateServiceRolloutRequest",
     "DeleteServiceRequest",
+    "EnableServiceResponse",
     "GenerateConfigReportRequest",
     "GenerateConfigReportResponse",
     "GetServiceConfigRequest",
