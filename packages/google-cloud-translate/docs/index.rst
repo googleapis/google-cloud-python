@@ -18,16 +18,16 @@ v3 API Reference
 .. toctree::
    :maxdepth: 2
    
-   Client (v3) <translate_v3/services>
-   Types (v3) <translate_v3/types>
+   Client (v3) <translate_v3/services_>
+   Types (v3) <translate_v3/types_>
 
 v3beta1 API Reference
 ---------------------
 .. toctree::
    :maxdepth: 2
 
-   Client (v3beta1) <translate_v3beta1/services>
-   Types (v3beta1) <translate_v3beta1/types>
+   Client (v3beta1) <translate_v3beta1/services_>
+   Types (v3beta1) <translate_v3beta1/types_>
 
 v2 API Reference
 ----------------
