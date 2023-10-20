@@ -47,7 +47,7 @@ for library in s.get_staging_dirs(default_version):
 
         # Adjust docs based on new submodule namespace google.cloud.gkehub_vX.{submodule}_v1.types"
         s.replace(
-          library  / f"docs/{submodule}_v1/types.rst",
+          library  / f"docs/{submodule}_v1/types_.rst",
           f"google.cloud.gkehub.{submodule}_v1.types",
           f"google.cloud.gkehub_{library.name}.{submodule}_v1.types",
         )

@@ -2708,8 +2708,9 @@ def test_list_memberships_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = membership.ListMembershipsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = membership.ListMembershipsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2794,8 +2795,9 @@ def test_list_memberships_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = membership.ListMembershipsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = membership.ListMembershipsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2930,8 +2932,9 @@ def test_list_memberships_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = membership.ListMembershipsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = membership.ListMembershipsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3057,8 +3060,9 @@ def test_get_membership_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = membership.Membership.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = membership.Membership.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3139,8 +3143,9 @@ def test_get_membership_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = membership.Membership.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = membership.Membership.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3267,8 +3272,9 @@ def test_get_membership_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = membership.Membership.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = membership.Membership.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3385,6 +3391,73 @@ def test_create_membership_rest(request_type):
             "cluster_hash": "cluster_hash_value",
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = membership.CreateMembershipRequest.meta.fields["resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["resource"][field])):
+                    del request_init["resource"][field][i][subfield]
+            else:
+                del request_init["resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3593,70 +3666,6 @@ def test_create_membership_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["resource"] = {
-        "name": "name_value",
-        "labels": {},
-        "description": "description_value",
-        "endpoint": {
-            "gke_cluster": {
-                "resource_link": "resource_link_value",
-                "cluster_missing": True,
-            },
-            "on_prem_cluster": {
-                "resource_link": "resource_link_value",
-                "cluster_missing": True,
-                "admin_cluster": True,
-                "cluster_type": 1,
-            },
-            "multi_cloud_cluster": {
-                "resource_link": "resource_link_value",
-                "cluster_missing": True,
-            },
-            "edge_cluster": {"resource_link": "resource_link_value"},
-            "appliance_cluster": {"resource_link": "resource_link_value"},
-            "kubernetes_metadata": {
-                "kubernetes_api_server_version": "kubernetes_api_server_version_value",
-                "node_provider_id": "node_provider_id_value",
-                "node_count": 1070,
-                "vcpu_count": 1094,
-                "memory_mb": 967,
-                "update_time": {"seconds": 751, "nanos": 543},
-            },
-            "kubernetes_resource": {
-                "membership_cr_manifest": "membership_cr_manifest_value",
-                "membership_resources": [
-                    {"manifest": "manifest_value", "cluster_scoped": True}
-                ],
-                "connect_resources": {},
-                "resource_options": {
-                    "connect_version": "connect_version_value",
-                    "v1beta1_crd": True,
-                    "k8s_version": "k8s_version_value",
-                },
-            },
-        },
-        "state": {"code": 1, "description": "description_value", "update_time": {}},
-        "authority": {
-            "issuer": "issuer_value",
-            "workload_identity_pool": "workload_identity_pool_value",
-            "identity_provider": "identity_provider_value",
-            "oidc_jwks": b"oidc_jwks_blob",
-        },
-        "create_time": {},
-        "update_time": {},
-        "delete_time": {},
-        "external_id": "external_id_value",
-        "last_connection_time": {},
-        "unique_id": "unique_id_value",
-        "infrastructure_type": 1,
-        "monitoring_config": {
-            "project_id": "project_id_value",
-            "location": "location_value",
-            "cluster": "cluster_value",
-            "kubernetes_metrics_prefix": "kubernetes_metrics_prefix_value",
-            "cluster_hash": "cluster_hash_value",
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4095,6 +4104,73 @@ def test_update_membership_rest(request_type):
             "cluster_hash": "cluster_hash_value",
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = membership.UpdateMembershipRequest.meta.fields["resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["resource"][field])):
+                    del request_init["resource"][field][i][subfield]
+            else:
+                del request_init["resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4290,70 +4366,6 @@ def test_update_membership_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/memberships/sample3"}
-    request_init["resource"] = {
-        "name": "name_value",
-        "labels": {},
-        "description": "description_value",
-        "endpoint": {
-            "gke_cluster": {
-                "resource_link": "resource_link_value",
-                "cluster_missing": True,
-            },
-            "on_prem_cluster": {
-                "resource_link": "resource_link_value",
-                "cluster_missing": True,
-                "admin_cluster": True,
-                "cluster_type": 1,
-            },
-            "multi_cloud_cluster": {
-                "resource_link": "resource_link_value",
-                "cluster_missing": True,
-            },
-            "edge_cluster": {"resource_link": "resource_link_value"},
-            "appliance_cluster": {"resource_link": "resource_link_value"},
-            "kubernetes_metadata": {
-                "kubernetes_api_server_version": "kubernetes_api_server_version_value",
-                "node_provider_id": "node_provider_id_value",
-                "node_count": 1070,
-                "vcpu_count": 1094,
-                "memory_mb": 967,
-                "update_time": {"seconds": 751, "nanos": 543},
-            },
-            "kubernetes_resource": {
-                "membership_cr_manifest": "membership_cr_manifest_value",
-                "membership_resources": [
-                    {"manifest": "manifest_value", "cluster_scoped": True}
-                ],
-                "connect_resources": {},
-                "resource_options": {
-                    "connect_version": "connect_version_value",
-                    "v1beta1_crd": True,
-                    "k8s_version": "k8s_version_value",
-                },
-            },
-        },
-        "state": {"code": 1, "description": "description_value", "update_time": {}},
-        "authority": {
-            "issuer": "issuer_value",
-            "workload_identity_pool": "workload_identity_pool_value",
-            "identity_provider": "identity_provider_value",
-            "oidc_jwks": b"oidc_jwks_blob",
-        },
-        "create_time": {},
-        "update_time": {},
-        "delete_time": {},
-        "external_id": "external_id_value",
-        "last_connection_time": {},
-        "unique_id": "unique_id_value",
-        "infrastructure_type": 1,
-        "monitoring_config": {
-            "project_id": "project_id_value",
-            "location": "location_value",
-            "cluster": "cluster_value",
-            "kubernetes_metrics_prefix": "kubernetes_metrics_prefix_value",
-            "cluster_hash": "cluster_hash_value",
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4460,8 +4472,9 @@ def test_generate_connect_manifest_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = membership.GenerateConnectManifestResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = membership.GenerateConnectManifestResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4545,10 +4558,9 @@ def test_generate_connect_manifest_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = membership.GenerateConnectManifestResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = membership.GenerateConnectManifestResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4694,8 +4706,9 @@ def test_validate_exclusivity_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = membership.ValidateExclusivityResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = membership.ValidateExclusivityResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4785,8 +4798,9 @@ def test_validate_exclusivity_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = membership.ValidateExclusivityResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = membership.ValidateExclusivityResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4941,10 +4955,9 @@ def test_generate_exclusivity_manifest_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = membership.GenerateExclusivityManifestResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = membership.GenerateExclusivityManifestResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5027,10 +5040,11 @@ def test_generate_exclusivity_manifest_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = membership.GenerateExclusivityManifestResponse.pb(
+            # Convert return value to protobuf type
+            return_value = membership.GenerateExclusivityManifestResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
