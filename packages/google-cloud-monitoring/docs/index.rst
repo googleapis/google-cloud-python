@@ -9,8 +9,8 @@ API Reference
     :maxdepth: 2
 
     query.rst
-    monitoring_v3/services
-    monitoring_v3/types
+    monitoring_v3/services_
+    monitoring_v3/types_
 
 
 Migration Guide
