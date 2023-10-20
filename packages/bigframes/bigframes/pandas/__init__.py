@@ -290,16 +290,16 @@ read_json.__doc__ = inspect.getdoc(bigframes.session.Session.read_json)
 
 
 def read_gbq(
-    query: str,
+    query_or_table: str,
     *,
     index_col: Iterable[str] | str = (),
     col_order: Iterable[str] = (),
     max_results: Optional[int] = None,
 ) -> bigframes.dataframe.DataFrame:
-    _set_default_session_location_if_possible(query)
+    _set_default_session_location_if_possible(query_or_table)
     return global_session.with_default_session(
         bigframes.session.Session.read_gbq,
-        query,
+        query_or_table,
         index_col=index_col,
         col_order=col_order,
         max_results=max_results,

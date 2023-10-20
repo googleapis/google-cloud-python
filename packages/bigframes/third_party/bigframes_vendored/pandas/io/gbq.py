@@ -11,7 +11,7 @@ from bigframes import constants
 class GBQIOMixin:
     def read_gbq(
         self,
-        query: str,
+        query_or_table: str,
         *,
         index_col: Iterable[str] | str = (),
         col_order: Iterable[str] = (),
@@ -69,7 +69,7 @@ class GBQIOMixin:
             [5 rows x 3 columns]
 
         Args:
-            query (str):
+            query_or_table (str):
                 A SQL string to be executed or a BigQuery table to be read. The
                 table must be specified in the format of
                 `project.dataset.tablename` or `dataset.tablename`.

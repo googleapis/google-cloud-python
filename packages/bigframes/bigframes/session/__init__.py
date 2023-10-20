@@ -262,7 +262,7 @@ class Session(
 
     def read_gbq(
         self,
-        query: str,
+        query_or_table: str,
         *,
         index_col: Iterable[str] | str = (),
         col_order: Iterable[str] = (),
@@ -270,9 +270,9 @@ class Session(
         # Add a verify index argument that fails if the index is not unique.
     ) -> dataframe.DataFrame:
         # TODO(b/281571214): Generate prompt to show the progress of read_gbq.
-        if _is_query(query):
+        if _is_query(query_or_table):
             return self._read_gbq_query(
-                query,
+                query_or_table,
                 index_col=index_col,
                 col_order=col_order,
                 max_results=max_results,
@@ -283,7 +283,7 @@ class Session(
             # deterministic query so we can avoid serializing if we have a
             # unique index.
             return self._read_gbq_table(
-                query,
+                query_or_table,
                 index_col=index_col,
                 col_order=col_order,
                 max_results=max_results,
