@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    kms_v1/services
-    kms_v1/types
+    kms_v1/services_
+    kms_v1/types_
 
 
 Migration Guide
