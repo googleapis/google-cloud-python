@@ -2513,6 +2513,73 @@ def test_create_job_rest(request_type):
         "created_from_snapshot_id": "created_from_snapshot_id_value",
         "satisfies_pzs": True,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = jobs.CreateJobRequest.meta.fields["job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["job"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["job"][field])):
+                    del request_init["job"][field][i][subfield]
+            else:
+                del request_init["job"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2538,8 +2605,9 @@ def test_create_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2626,230 +2694,6 @@ def test_create_job_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project_id": "sample1", "location": "sample2"}
-    request_init["job"] = {
-        "id": "id_value",
-        "project_id": "project_id_value",
-        "name": "name_value",
-        "type_": 1,
-        "environment": {
-            "temp_storage_prefix": "temp_storage_prefix_value",
-            "cluster_manager_api_service": "cluster_manager_api_service_value",
-            "experiments": ["experiments_value1", "experiments_value2"],
-            "service_options": ["service_options_value1", "service_options_value2"],
-            "service_kms_key_name": "service_kms_key_name_value",
-            "worker_pools": [
-                {
-                    "kind": "kind_value",
-                    "num_workers": 1212,
-                    "packages": [{"name": "name_value", "location": "location_value"}],
-                    "default_package_set": 1,
-                    "machine_type": "machine_type_value",
-                    "teardown_policy": 1,
-                    "disk_size_gb": 1261,
-                    "disk_type": "disk_type_value",
-                    "disk_source_image": "disk_source_image_value",
-                    "zone": "zone_value",
-                    "taskrunner_settings": {
-                        "task_user": "task_user_value",
-                        "task_group": "task_group_value",
-                        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
-                        "base_url": "base_url_value",
-                        "dataflow_api_version": "dataflow_api_version_value",
-                        "parallel_worker_settings": {
-                            "base_url": "base_url_value",
-                            "reporting_enabled": True,
-                            "service_path": "service_path_value",
-                            "shuffle_service_path": "shuffle_service_path_value",
-                            "worker_id": "worker_id_value",
-                            "temp_storage_prefix": "temp_storage_prefix_value",
-                        },
-                        "base_task_dir": "base_task_dir_value",
-                        "continue_on_exception": True,
-                        "log_to_serialconsole": True,
-                        "alsologtostderr": True,
-                        "log_upload_location": "log_upload_location_value",
-                        "log_dir": "log_dir_value",
-                        "temp_storage_prefix": "temp_storage_prefix_value",
-                        "harness_command": "harness_command_value",
-                        "workflow_file_name": "workflow_file_name_value",
-                        "commandlines_file_name": "commandlines_file_name_value",
-                        "vm_id": "vm_id_value",
-                        "language_hint": "language_hint_value",
-                        "streaming_worker_main_class": "streaming_worker_main_class_value",
-                    },
-                    "on_host_maintenance": "on_host_maintenance_value",
-                    "data_disks": [
-                        {
-                            "size_gb": 739,
-                            "disk_type": "disk_type_value",
-                            "mount_point": "mount_point_value",
-                        }
-                    ],
-                    "metadata": {},
-                    "autoscaling_settings": {"algorithm": 1, "max_num_workers": 1633},
-                    "pool_args": {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    },
-                    "network": "network_value",
-                    "subnetwork": "subnetwork_value",
-                    "worker_harness_container_image": "worker_harness_container_image_value",
-                    "num_threads_per_worker": 2361,
-                    "ip_configuration": 1,
-                    "sdk_harness_container_images": [
-                        {
-                            "container_image": "container_image_value",
-                            "use_single_core_per_container": True,
-                            "environment_id": "environment_id_value",
-                            "capabilities": [
-                                "capabilities_value1",
-                                "capabilities_value2",
-                            ],
-                        }
-                    ],
-                }
-            ],
-            "user_agent": {"fields": {}},
-            "version": {},
-            "dataset": "dataset_value",
-            "sdk_pipeline_options": {},
-            "internal_experiments": {},
-            "service_account_email": "service_account_email_value",
-            "flex_resource_scheduling_goal": 1,
-            "worker_region": "worker_region_value",
-            "worker_zone": "worker_zone_value",
-            "shuffle_mode": 1,
-            "debug_options": {"enable_hot_key_logging": True},
-        },
-        "steps": [{"kind": "kind_value", "name": "name_value", "properties": {}}],
-        "steps_location": "steps_location_value",
-        "current_state": 1,
-        "current_state_time": {"seconds": 751, "nanos": 543},
-        "requested_state": 1,
-        "execution_info": {"stages": {}},
-        "create_time": {},
-        "replace_job_id": "replace_job_id_value",
-        "transform_name_mapping": {},
-        "client_request_id": "client_request_id_value",
-        "replaced_by_job_id": "replaced_by_job_id_value",
-        "temp_files": ["temp_files_value1", "temp_files_value2"],
-        "labels": {},
-        "location": "location_value",
-        "pipeline_description": {
-            "original_pipeline_transform": [
-                {
-                    "kind": 1,
-                    "id": "id_value",
-                    "name": "name_value",
-                    "display_data": [
-                        {
-                            "key": "key_value",
-                            "namespace": "namespace_value",
-                            "str_value": "str_value_value",
-                            "int64_value": 1073,
-                            "float_value": 0.117,
-                            "java_class_value": "java_class_value_value",
-                            "timestamp_value": {},
-                            "duration_value": {"seconds": 751, "nanos": 543},
-                            "bool_value": True,
-                            "short_str_value": "short_str_value_value",
-                            "url": "url_value",
-                            "label": "label_value",
-                        }
-                    ],
-                    "output_collection_name": [
-                        "output_collection_name_value1",
-                        "output_collection_name_value2",
-                    ],
-                    "input_collection_name": [
-                        "input_collection_name_value1",
-                        "input_collection_name_value2",
-                    ],
-                }
-            ],
-            "execution_pipeline_stage": [
-                {
-                    "name": "name_value",
-                    "id": "id_value",
-                    "kind": 1,
-                    "input_source": [
-                        {
-                            "user_name": "user_name_value",
-                            "name": "name_value",
-                            "original_transform_or_collection": "original_transform_or_collection_value",
-                            "size_bytes": 1089,
-                        }
-                    ],
-                    "output_source": {},
-                    "prerequisite_stage": [
-                        "prerequisite_stage_value1",
-                        "prerequisite_stage_value2",
-                    ],
-                    "component_transform": [
-                        {
-                            "user_name": "user_name_value",
-                            "name": "name_value",
-                            "original_transform": "original_transform_value",
-                        }
-                    ],
-                    "component_source": [
-                        {
-                            "user_name": "user_name_value",
-                            "name": "name_value",
-                            "original_transform_or_collection": "original_transform_or_collection_value",
-                        }
-                    ],
-                }
-            ],
-            "display_data": {},
-        },
-        "stage_states": [
-            {
-                "execution_stage_name": "execution_stage_name_value",
-                "execution_stage_state": 1,
-                "current_state_time": {},
-            }
-        ],
-        "job_metadata": {
-            "sdk_version": {
-                "version": "version_value",
-                "version_display_name": "version_display_name_value",
-                "sdk_support_status": 1,
-            },
-            "spanner_details": [
-                {
-                    "project_id": "project_id_value",
-                    "instance_id": "instance_id_value",
-                    "database_id": "database_id_value",
-                }
-            ],
-            "bigquery_details": [
-                {
-                    "table": "table_value",
-                    "dataset": "dataset_value",
-                    "project_id": "project_id_value",
-                    "query": "query_value",
-                }
-            ],
-            "big_table_details": [
-                {
-                    "project_id": "project_id_value",
-                    "instance_id": "instance_id_value",
-                    "table_id": "table_id_value",
-                }
-            ],
-            "pubsub_details": [
-                {"topic": "topic_value", "subscription": "subscription_value"}
-            ],
-            "file_details": [{"file_pattern": "file_pattern_value"}],
-            "datastore_details": [
-                {"namespace": "namespace_value", "project_id": "project_id_value"}
-            ],
-        },
-        "start_time": {},
-        "created_from_snapshot_id": "created_from_snapshot_id_value",
-        "satisfies_pzs": True,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2910,8 +2754,9 @@ def test_get_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3257,6 +3102,73 @@ def test_update_job_rest(request_type):
         "created_from_snapshot_id": "created_from_snapshot_id_value",
         "satisfies_pzs": True,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = jobs.UpdateJobRequest.meta.fields["job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["job"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["job"][field])):
+                    del request_init["job"][field][i][subfield]
+            else:
+                del request_init["job"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3282,8 +3194,9 @@ def test_update_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3370,230 +3283,6 @@ def test_update_job_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project_id": "sample1", "location": "sample2", "job_id": "sample3"}
-    request_init["job"] = {
-        "id": "id_value",
-        "project_id": "project_id_value",
-        "name": "name_value",
-        "type_": 1,
-        "environment": {
-            "temp_storage_prefix": "temp_storage_prefix_value",
-            "cluster_manager_api_service": "cluster_manager_api_service_value",
-            "experiments": ["experiments_value1", "experiments_value2"],
-            "service_options": ["service_options_value1", "service_options_value2"],
-            "service_kms_key_name": "service_kms_key_name_value",
-            "worker_pools": [
-                {
-                    "kind": "kind_value",
-                    "num_workers": 1212,
-                    "packages": [{"name": "name_value", "location": "location_value"}],
-                    "default_package_set": 1,
-                    "machine_type": "machine_type_value",
-                    "teardown_policy": 1,
-                    "disk_size_gb": 1261,
-                    "disk_type": "disk_type_value",
-                    "disk_source_image": "disk_source_image_value",
-                    "zone": "zone_value",
-                    "taskrunner_settings": {
-                        "task_user": "task_user_value",
-                        "task_group": "task_group_value",
-                        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
-                        "base_url": "base_url_value",
-                        "dataflow_api_version": "dataflow_api_version_value",
-                        "parallel_worker_settings": {
-                            "base_url": "base_url_value",
-                            "reporting_enabled": True,
-                            "service_path": "service_path_value",
-                            "shuffle_service_path": "shuffle_service_path_value",
-                            "worker_id": "worker_id_value",
-                            "temp_storage_prefix": "temp_storage_prefix_value",
-                        },
-                        "base_task_dir": "base_task_dir_value",
-                        "continue_on_exception": True,
-                        "log_to_serialconsole": True,
-                        "alsologtostderr": True,
-                        "log_upload_location": "log_upload_location_value",
-                        "log_dir": "log_dir_value",
-                        "temp_storage_prefix": "temp_storage_prefix_value",
-                        "harness_command": "harness_command_value",
-                        "workflow_file_name": "workflow_file_name_value",
-                        "commandlines_file_name": "commandlines_file_name_value",
-                        "vm_id": "vm_id_value",
-                        "language_hint": "language_hint_value",
-                        "streaming_worker_main_class": "streaming_worker_main_class_value",
-                    },
-                    "on_host_maintenance": "on_host_maintenance_value",
-                    "data_disks": [
-                        {
-                            "size_gb": 739,
-                            "disk_type": "disk_type_value",
-                            "mount_point": "mount_point_value",
-                        }
-                    ],
-                    "metadata": {},
-                    "autoscaling_settings": {"algorithm": 1, "max_num_workers": 1633},
-                    "pool_args": {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    },
-                    "network": "network_value",
-                    "subnetwork": "subnetwork_value",
-                    "worker_harness_container_image": "worker_harness_container_image_value",
-                    "num_threads_per_worker": 2361,
-                    "ip_configuration": 1,
-                    "sdk_harness_container_images": [
-                        {
-                            "container_image": "container_image_value",
-                            "use_single_core_per_container": True,
-                            "environment_id": "environment_id_value",
-                            "capabilities": [
-                                "capabilities_value1",
-                                "capabilities_value2",
-                            ],
-                        }
-                    ],
-                }
-            ],
-            "user_agent": {"fields": {}},
-            "version": {},
-            "dataset": "dataset_value",
-            "sdk_pipeline_options": {},
-            "internal_experiments": {},
-            "service_account_email": "service_account_email_value",
-            "flex_resource_scheduling_goal": 1,
-            "worker_region": "worker_region_value",
-            "worker_zone": "worker_zone_value",
-            "shuffle_mode": 1,
-            "debug_options": {"enable_hot_key_logging": True},
-        },
-        "steps": [{"kind": "kind_value", "name": "name_value", "properties": {}}],
-        "steps_location": "steps_location_value",
-        "current_state": 1,
-        "current_state_time": {"seconds": 751, "nanos": 543},
-        "requested_state": 1,
-        "execution_info": {"stages": {}},
-        "create_time": {},
-        "replace_job_id": "replace_job_id_value",
-        "transform_name_mapping": {},
-        "client_request_id": "client_request_id_value",
-        "replaced_by_job_id": "replaced_by_job_id_value",
-        "temp_files": ["temp_files_value1", "temp_files_value2"],
-        "labels": {},
-        "location": "location_value",
-        "pipeline_description": {
-            "original_pipeline_transform": [
-                {
-                    "kind": 1,
-                    "id": "id_value",
-                    "name": "name_value",
-                    "display_data": [
-                        {
-                            "key": "key_value",
-                            "namespace": "namespace_value",
-                            "str_value": "str_value_value",
-                            "int64_value": 1073,
-                            "float_value": 0.117,
-                            "java_class_value": "java_class_value_value",
-                            "timestamp_value": {},
-                            "duration_value": {"seconds": 751, "nanos": 543},
-                            "bool_value": True,
-                            "short_str_value": "short_str_value_value",
-                            "url": "url_value",
-                            "label": "label_value",
-                        }
-                    ],
-                    "output_collection_name": [
-                        "output_collection_name_value1",
-                        "output_collection_name_value2",
-                    ],
-                    "input_collection_name": [
-                        "input_collection_name_value1",
-                        "input_collection_name_value2",
-                    ],
-                }
-            ],
-            "execution_pipeline_stage": [
-                {
-                    "name": "name_value",
-                    "id": "id_value",
-                    "kind": 1,
-                    "input_source": [
-                        {
-                            "user_name": "user_name_value",
-                            "name": "name_value",
-                            "original_transform_or_collection": "original_transform_or_collection_value",
-                            "size_bytes": 1089,
-                        }
-                    ],
-                    "output_source": {},
-                    "prerequisite_stage": [
-                        "prerequisite_stage_value1",
-                        "prerequisite_stage_value2",
-                    ],
-                    "component_transform": [
-                        {
-                            "user_name": "user_name_value",
-                            "name": "name_value",
-                            "original_transform": "original_transform_value",
-                        }
-                    ],
-                    "component_source": [
-                        {
-                            "user_name": "user_name_value",
-                            "name": "name_value",
-                            "original_transform_or_collection": "original_transform_or_collection_value",
-                        }
-                    ],
-                }
-            ],
-            "display_data": {},
-        },
-        "stage_states": [
-            {
-                "execution_stage_name": "execution_stage_name_value",
-                "execution_stage_state": 1,
-                "current_state_time": {},
-            }
-        ],
-        "job_metadata": {
-            "sdk_version": {
-                "version": "version_value",
-                "version_display_name": "version_display_name_value",
-                "sdk_support_status": 1,
-            },
-            "spanner_details": [
-                {
-                    "project_id": "project_id_value",
-                    "instance_id": "instance_id_value",
-                    "database_id": "database_id_value",
-                }
-            ],
-            "bigquery_details": [
-                {
-                    "table": "table_value",
-                    "dataset": "dataset_value",
-                    "project_id": "project_id_value",
-                    "query": "query_value",
-                }
-            ],
-            "big_table_details": [
-                {
-                    "project_id": "project_id_value",
-                    "instance_id": "instance_id_value",
-                    "table_id": "table_id_value",
-                }
-            ],
-            "pubsub_details": [
-                {"topic": "topic_value", "subscription": "subscription_value"}
-            ],
-            "file_details": [{"file_pattern": "file_pattern_value"}],
-            "datastore_details": [
-                {"namespace": "namespace_value", "project_id": "project_id_value"}
-            ],
-        },
-        "start_time": {},
-        "created_from_snapshot_id": "created_from_snapshot_id_value",
-        "satisfies_pzs": True,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3641,8 +3330,9 @@ def test_list_jobs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.ListJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3820,8 +3510,9 @@ def test_aggregated_list_jobs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.ListJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4015,8 +3706,9 @@ def test_snapshot_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = snapshots.Snapshot.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = snapshots.Snapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
