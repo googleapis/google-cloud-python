@@ -84,8 +84,8 @@ API. By default, you will get ``v1``, the latest stable version.
 .. toctree::
     :maxdepth: 2
 
-    vision_v1/services
-    vision_v1/types
+    vision_v1/services_
+    vision_v1/types_
 
 
 A new beta release with additional features over the current stable version,
@@ -96,8 +96,8 @@ usual beta admonishment (changes are possible, etc.) applies.
 .. toctree::
     :maxdepth: 2
 
-    vision_v1p4beta1/services
-    vision_v1p4beta1/types
+    vision_v1p4beta1/services_
+    vision_v1p4beta1/types_
 
 Previous beta releases ``v1p3beta1`` and ``v1p2beta1`` are provided as well.
 
@@ -106,8 +106,8 @@ An API and type reference is provided for ``v1p3beta1``:
 .. toctree::
     :maxdepth: 2
 
-    vision_v1p3beta1/services
-    vision_v1p3beta1/types
+    vision_v1p3beta1/services_
+    vision_v1p3beta1/types_
 
 
 An API and type reference is provided for ``v1p2beta1``:
@@ -115,8 +115,8 @@ An API and type reference is provided for ``v1p2beta1``:
 .. toctree::
     :maxdepth: 2
 
-    vision_v1p2beta1/services
-    vision_v1p2beta1/types
+    vision_v1p2beta1/services_
+    vision_v1p2beta1/types_
 
 Migration Guide
 ---------------
