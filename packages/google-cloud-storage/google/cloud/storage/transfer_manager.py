@@ -865,11 +865,11 @@ def download_chunks_concurrently(
     :raises:
         :exc:`concurrent.futures.TimeoutError`
             if deadline is exceeded.
-        :exc:`google.resumable_media.common.DataCorruption` if the download's
-            checksum doesn't agree with server-computed checksum. The
-            `google.resumable_media` exception is used here for consistency
-            with other download methods despite the exception originating
-            elsewhere.
+        :exc:`google.resumable_media.common.DataCorruption`
+            if the download's checksum doesn't agree with server-computed
+            checksum. The `google.resumable_media` exception is used here for
+            consistency with other download methods despite the exception
+            originating elsewhere.
     """
     client = blob.client
 
