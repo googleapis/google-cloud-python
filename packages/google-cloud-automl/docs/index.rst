@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    automl_v1/services
-    automl_v1/types
+    automl_v1/services_
+    automl_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    automl_v1beta1/services
-    automl_v1beta1/types
+    automl_v1beta1/services_
+    automl_v1beta1/types_
 
 
 Migration Guide

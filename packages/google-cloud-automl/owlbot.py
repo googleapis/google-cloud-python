@@ -57,7 +57,7 @@ for library in s.get_staging_dirs(default_version):
         )
 
         s.replace(
-            library / "docs/automl_v1beta1/services.rst",
+            library / "docs/automl_v1beta1/services_.rst",
             """auto_ml
     prediction_service""",
             """auto_ml
