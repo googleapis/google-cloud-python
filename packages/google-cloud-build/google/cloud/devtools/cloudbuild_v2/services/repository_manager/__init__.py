@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import RepositoryManagerClient
 from .async_client import RepositoryManagerAsyncClient
+from .client import RepositoryManagerClient
 
 __all__ = (
     "RepositoryManagerClient",

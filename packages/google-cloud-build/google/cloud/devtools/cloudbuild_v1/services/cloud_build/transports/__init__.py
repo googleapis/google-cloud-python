@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import CloudBuildTransport
 from .grpc import CloudBuildGrpcTransport
 from .grpc_asyncio import CloudBuildGrpcAsyncIOTransport
-from .rest import CloudBuildRestTransport
-from .rest import CloudBuildRestInterceptor
-
+from .rest import CloudBuildRestInterceptor, CloudBuildRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudBuildTransport]]

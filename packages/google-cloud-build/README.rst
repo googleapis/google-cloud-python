@@ -1,9 +1,9 @@
-Python Client for Cloud Build API
-=================================
+Python Client for Cloud Build
+=============================
 
 |stable| |pypi| |versions|
 
-`Cloud Build API`_: lets you build software quickly across all languages. Get complete control over defining custom workflows for building, testing, and deploying across multiple environments such as VMs, serverless, Kubernetes, or Firebase.
+`Cloud Build`_: lets you build software quickly across all languages. Get complete control over defining custom workflows for building, testing, and deploying across multiple environments such as VMs, serverless, Kubernetes, or Firebase.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Build API
    :target: https://pypi.org/project/google-cloud-build/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-build.svg
    :target: https://pypi.org/project/google-cloud-build/
-.. _Cloud Build API: https://cloud.google.com/cloud-build/docs/
+.. _Cloud Build: https://cloud.google.com/cloud-build/docs/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudbuild/latest
 .. _Product Documentation:  https://cloud.google.com/cloud-build/docs/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Build API.`_
+3. `Enable the Cloud Build.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Build API.:  https://cloud.google.com/cloud-build/docs/
+.. _Enable the Cloud Build.:  https://cloud.google.com/cloud-build/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-cloudbuild/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-build/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Build API
+-  Read the `Client Library Documentation`_ for Cloud Build
    to see other available methods on the client.
--  Read the `Cloud Build API Product documentation`_ to learn
+-  Read the `Cloud Build Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Build API Product documentation:  https://cloud.google.com/cloud-build/docs/
+.. _Cloud Build Product documentation:  https://cloud.google.com/cloud-build/docs/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
