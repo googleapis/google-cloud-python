@@ -17,6 +17,20 @@ class ParquetIOMixin:
             Instead, set a serialized index column as the index and sort by
             that in the resulting DataFrame.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> gcs_path = "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
+            >>> df = bpd.read_parquet(path=gcs_path)
+            >>> df.head(2)
+                  name post_abbr
+            0  Alabama        AL
+            1   Alaska        AK
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
         Args:
             path (str):
                 Local or Cloud Storage path to Parquet file.

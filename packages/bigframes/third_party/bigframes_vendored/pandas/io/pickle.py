@@ -25,6 +25,24 @@ class PickleIOMixin:
             If the content of the pickle file is a Series and its name attribute is None,
             the name will be set to '0' by default.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> gcs_path = "gs://bigframes-dev-testing/test_pickle.pkl"
+            >>> df = bpd.read_pickle(filepath_or_buffer=gcs_path)
+            >>> df.head(2)
+                                                 species island  culmen_length_mm  \\
+            0        Adelie Penguin (Pygoscelis adeliae)  Dream              36.6
+            1        Adelie Penguin (Pygoscelis adeliae)  Dream              39.8
+            <BLANKLINE>
+               culmen_depth_mm  flipper_length_mm  body_mass_g     sex
+            0             18.4              184.0       3475.0  FEMALE
+            1             19.1              184.0       4650.0    MALE
+            <BLANKLINE>
+            [2 rows x 7 columns]
+
         Args:
             filepath_or_buffer (str, path object, or file-like object):
                 String, path object (implementing os.PathLike[str]), or file-like object

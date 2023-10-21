@@ -55,6 +55,20 @@ class ReaderIOMixin:
             file. Instead, set a serialized index column as the index and sort by
             that in the resulting DataFrame.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> gcs_path = "gs://cloud-samples-data/bigquery/us-states/us-states.csv"
+            >>> df = bpd.read_csv(filepath_or_buffer=gcs_path)
+            >>> df.head(2)
+                  name post_abbr
+            0  Alabama        AL
+            1   Alaska        AK
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
         Args:
             filepath_or_buffer (str):
                 A local or Google Cloud Storage (`gs://`) path with `engine="bigquery"`
@@ -64,7 +78,7 @@ class ReaderIOMixin:
                 can be any ISO-8859-1 single-byte character. To use a character in the range
                 128-255, you must encode the character as UTF-8. Both engines support
                 `sep="\t"` to specify tab character as separator. Default engine supports
-                having any number of spaces as separator by specifying `sep="\s+"`. Separators
+                having any number of spaces as separator by specifying `sep="\\s+"`. Separators
                 longer than 1 character are interpreted as regular expressions by the default
                 engine. BigQuery engine only supports single character separators.
             header (Optional[int], default 0):
@@ -145,6 +159,20 @@ class ReaderIOMixin:
             using `engine="bigquery"` will not guarantee the same ordering as the
             file. Instead, set a serialized index column as the index and sort by
             that in the resulting DataFrame.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> gcs_path = "gs://bigframes-dev-testing/sample1.json"
+            >>> df = bpd.read_json(path_or_buf=gcs_path, lines=True, orient="records")
+            >>> df.head(2)
+               id   name
+            0   1  Alice
+            1   2    Bob
+            <BLANKLINE>
+            [2 rows x 2 columns]
 
         Args:
             path_or_buf (a valid JSON str, path object or file-like object):
