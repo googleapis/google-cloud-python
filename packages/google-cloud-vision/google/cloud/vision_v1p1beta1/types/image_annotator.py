@@ -17,15 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.vision_v1p1beta1.types import geometry
-from google.cloud.vision_v1p1beta1.types import text_annotation
-from google.cloud.vision_v1p1beta1.types import web_detection as gcv_web_detection
 from google.rpc import status_pb2  # type: ignore
 from google.type import color_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.vision_v1p1beta1.types import web_detection as gcv_web_detection
+from google.cloud.vision_v1p1beta1.types import geometry, text_annotation
 
 __protobuf__ = proto.module(
     package="google.cloud.vision.v1p1beta1",
