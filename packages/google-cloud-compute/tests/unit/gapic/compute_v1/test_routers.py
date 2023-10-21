@@ -569,8 +569,9 @@ def test_aggregated_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.RouterAggregatedList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.RouterAggregatedList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -660,8 +661,9 @@ def test_aggregated_list_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.RouterAggregatedList.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.RouterAggregatedList.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -796,8 +798,9 @@ def test_aggregated_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.RouterAggregatedList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.RouterAggregatedList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -947,8 +950,9 @@ def test_delete_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1052,8 +1056,9 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRouterRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1187,8 +1192,9 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1276,8 +1282,9 @@ def test_delete_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1359,8 +1366,9 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteRouterRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1494,8 +1502,9 @@ def test_delete_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1570,8 +1579,9 @@ def test_get_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Router.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Router.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1660,8 +1670,9 @@ def test_get_rest_required_fields(request_type=compute.GetRouterRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Router.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Router.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1795,8 +1806,9 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Router.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Router.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1866,8 +1878,9 @@ def test_get_nat_mapping_info_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.VmEndpointNatMappingsList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.VmEndpointNatMappingsList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1964,8 +1977,9 @@ def test_get_nat_mapping_info_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.VmEndpointNatMappingsList.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.VmEndpointNatMappingsList.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2112,8 +2126,9 @@ def test_get_nat_mapping_info_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.VmEndpointNatMappingsList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.VmEndpointNatMappingsList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2239,8 +2254,9 @@ def test_get_router_status_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.RouterStatusResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.RouterStatusResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2323,8 +2339,9 @@ def test_get_router_status_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.RouterStatusResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.RouterStatusResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2462,8 +2479,9 @@ def test_get_router_status_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.RouterStatusResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.RouterStatusResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2636,6 +2654,73 @@ def test_insert_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.InsertRouterRequest.meta.fields["router_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["router_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["router_resource"][field])):
+                    del request_init["router_resource"][field][i][subfield]
+            else:
+                del request_init["router_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2669,8 +2754,9 @@ def test_insert_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2771,8 +2857,9 @@ def test_insert_rest_required_fields(request_type=compute.InsertRouterRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2863,124 +2950,6 @@ def test_insert_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["router_resource"] = {
-        "bgp": {
-            "advertise_mode": "advertise_mode_value",
-            "advertised_groups": [
-                "advertised_groups_value1",
-                "advertised_groups_value2",
-            ],
-            "advertised_ip_ranges": [
-                {"description": "description_value", "range_": "range__value"}
-            ],
-            "asn": 322,
-            "keepalive_interval": 1914,
-        },
-        "bgp_peers": [
-            {
-                "advertise_mode": "advertise_mode_value",
-                "advertised_groups": [
-                    "advertised_groups_value1",
-                    "advertised_groups_value2",
-                ],
-                "advertised_ip_ranges": {},
-                "advertised_route_priority": 2714,
-                "bfd": {
-                    "min_receive_interval": 2122,
-                    "min_transmit_interval": 2265,
-                    "multiplier": 1095,
-                    "session_initialization_mode": "session_initialization_mode_value",
-                },
-                "custom_learned_ip_ranges": [{"range_": "range__value"}],
-                "custom_learned_route_priority": 3140,
-                "enable": "enable_value",
-                "enable_ipv6": True,
-                "interface_name": "interface_name_value",
-                "ip_address": "ip_address_value",
-                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
-                "management_type": "management_type_value",
-                "md5_authentication_key_name": "md5_authentication_key_name_value",
-                "name": "name_value",
-                "peer_asn": 845,
-                "peer_ip_address": "peer_ip_address_value",
-                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
-                "router_appliance_instance": "router_appliance_instance_value",
-            }
-        ],
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "encrypted_interconnect_router": True,
-        "id": 205,
-        "interfaces": [
-            {
-                "ip_range": "ip_range_value",
-                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
-                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
-                "management_type": "management_type_value",
-                "name": "name_value",
-                "private_ip_address": "private_ip_address_value",
-                "redundant_interface": "redundant_interface_value",
-                "subnetwork": "subnetwork_value",
-            }
-        ],
-        "kind": "kind_value",
-        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
-        "name": "name_value",
-        "nats": [
-            {
-                "auto_network_tier": "auto_network_tier_value",
-                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
-                "enable_dynamic_port_allocation": True,
-                "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
-                "icmp_idle_timeout_sec": 2214,
-                "log_config": {"enable": True, "filter": "filter_value"},
-                "max_ports_per_vm": 1733,
-                "min_ports_per_vm": 1731,
-                "name": "name_value",
-                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
-                "rules": [
-                    {
-                        "action": {
-                            "source_nat_active_ips": [
-                                "source_nat_active_ips_value1",
-                                "source_nat_active_ips_value2",
-                            ],
-                            "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value1",
-                                "source_nat_drain_ips_value2",
-                            ],
-                        },
-                        "description": "description_value",
-                        "match": "match_value",
-                        "rule_number": 1184,
-                    }
-                ],
-                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
-                "subnetworks": [
-                    {
-                        "name": "name_value",
-                        "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value1",
-                            "secondary_ip_range_names_value2",
-                        ],
-                        "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value1",
-                            "source_ip_ranges_to_nat_value2",
-                        ],
-                    }
-                ],
-                "tcp_established_idle_timeout_sec": 3371,
-                "tcp_time_wait_timeout_sec": 2665,
-                "tcp_transitory_idle_timeout_sec": 3330,
-                "udp_idle_timeout_sec": 2118,
-            }
-        ],
-        "network": "network_value",
-        "region": "region_value",
-        "self_link": "self_link_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3022,8 +2991,9 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3198,6 +3168,73 @@ def test_insert_unary_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.InsertRouterRequest.meta.fields["router_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["router_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["router_resource"][field])):
+                    del request_init["router_resource"][field][i][subfield]
+            else:
+                del request_init["router_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3231,8 +3268,9 @@ def test_insert_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3311,8 +3349,9 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertRouterRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3403,124 +3442,6 @@ def test_insert_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["router_resource"] = {
-        "bgp": {
-            "advertise_mode": "advertise_mode_value",
-            "advertised_groups": [
-                "advertised_groups_value1",
-                "advertised_groups_value2",
-            ],
-            "advertised_ip_ranges": [
-                {"description": "description_value", "range_": "range__value"}
-            ],
-            "asn": 322,
-            "keepalive_interval": 1914,
-        },
-        "bgp_peers": [
-            {
-                "advertise_mode": "advertise_mode_value",
-                "advertised_groups": [
-                    "advertised_groups_value1",
-                    "advertised_groups_value2",
-                ],
-                "advertised_ip_ranges": {},
-                "advertised_route_priority": 2714,
-                "bfd": {
-                    "min_receive_interval": 2122,
-                    "min_transmit_interval": 2265,
-                    "multiplier": 1095,
-                    "session_initialization_mode": "session_initialization_mode_value",
-                },
-                "custom_learned_ip_ranges": [{"range_": "range__value"}],
-                "custom_learned_route_priority": 3140,
-                "enable": "enable_value",
-                "enable_ipv6": True,
-                "interface_name": "interface_name_value",
-                "ip_address": "ip_address_value",
-                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
-                "management_type": "management_type_value",
-                "md5_authentication_key_name": "md5_authentication_key_name_value",
-                "name": "name_value",
-                "peer_asn": 845,
-                "peer_ip_address": "peer_ip_address_value",
-                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
-                "router_appliance_instance": "router_appliance_instance_value",
-            }
-        ],
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "encrypted_interconnect_router": True,
-        "id": 205,
-        "interfaces": [
-            {
-                "ip_range": "ip_range_value",
-                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
-                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
-                "management_type": "management_type_value",
-                "name": "name_value",
-                "private_ip_address": "private_ip_address_value",
-                "redundant_interface": "redundant_interface_value",
-                "subnetwork": "subnetwork_value",
-            }
-        ],
-        "kind": "kind_value",
-        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
-        "name": "name_value",
-        "nats": [
-            {
-                "auto_network_tier": "auto_network_tier_value",
-                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
-                "enable_dynamic_port_allocation": True,
-                "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
-                "icmp_idle_timeout_sec": 2214,
-                "log_config": {"enable": True, "filter": "filter_value"},
-                "max_ports_per_vm": 1733,
-                "min_ports_per_vm": 1731,
-                "name": "name_value",
-                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
-                "rules": [
-                    {
-                        "action": {
-                            "source_nat_active_ips": [
-                                "source_nat_active_ips_value1",
-                                "source_nat_active_ips_value2",
-                            ],
-                            "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value1",
-                                "source_nat_drain_ips_value2",
-                            ],
-                        },
-                        "description": "description_value",
-                        "match": "match_value",
-                        "rule_number": 1184,
-                    }
-                ],
-                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
-                "subnetworks": [
-                    {
-                        "name": "name_value",
-                        "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value1",
-                            "secondary_ip_range_names_value2",
-                        ],
-                        "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value1",
-                            "source_ip_ranges_to_nat_value2",
-                        ],
-                    }
-                ],
-                "tcp_established_idle_timeout_sec": 3371,
-                "tcp_time_wait_timeout_sec": 2665,
-                "tcp_transitory_idle_timeout_sec": 3330,
-                "udp_idle_timeout_sec": 2118,
-            }
-        ],
-        "network": "network_value",
-        "region": "region_value",
-        "self_link": "self_link_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3562,8 +3483,9 @@ def test_insert_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3635,8 +3557,9 @@ def test_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.RouterList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.RouterList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3726,8 +3649,9 @@ def test_list_rest_required_fields(request_type=compute.ListRoutersRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.RouterList.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.RouterList.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3863,8 +3787,9 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.RouterList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.RouterList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4091,6 +4016,73 @@ def test_patch_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.PatchRouterRequest.meta.fields["router_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["router_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["router_resource"][field])):
+                    del request_init["router_resource"][field][i][subfield]
+            else:
+                del request_init["router_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4124,8 +4116,9 @@ def test_patch_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4230,8 +4223,9 @@ def test_patch_rest_required_fields(request_type=compute.PatchRouterRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4323,124 +4317,6 @@ def test_patch_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request_init["router_resource"] = {
-        "bgp": {
-            "advertise_mode": "advertise_mode_value",
-            "advertised_groups": [
-                "advertised_groups_value1",
-                "advertised_groups_value2",
-            ],
-            "advertised_ip_ranges": [
-                {"description": "description_value", "range_": "range__value"}
-            ],
-            "asn": 322,
-            "keepalive_interval": 1914,
-        },
-        "bgp_peers": [
-            {
-                "advertise_mode": "advertise_mode_value",
-                "advertised_groups": [
-                    "advertised_groups_value1",
-                    "advertised_groups_value2",
-                ],
-                "advertised_ip_ranges": {},
-                "advertised_route_priority": 2714,
-                "bfd": {
-                    "min_receive_interval": 2122,
-                    "min_transmit_interval": 2265,
-                    "multiplier": 1095,
-                    "session_initialization_mode": "session_initialization_mode_value",
-                },
-                "custom_learned_ip_ranges": [{"range_": "range__value"}],
-                "custom_learned_route_priority": 3140,
-                "enable": "enable_value",
-                "enable_ipv6": True,
-                "interface_name": "interface_name_value",
-                "ip_address": "ip_address_value",
-                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
-                "management_type": "management_type_value",
-                "md5_authentication_key_name": "md5_authentication_key_name_value",
-                "name": "name_value",
-                "peer_asn": 845,
-                "peer_ip_address": "peer_ip_address_value",
-                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
-                "router_appliance_instance": "router_appliance_instance_value",
-            }
-        ],
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "encrypted_interconnect_router": True,
-        "id": 205,
-        "interfaces": [
-            {
-                "ip_range": "ip_range_value",
-                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
-                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
-                "management_type": "management_type_value",
-                "name": "name_value",
-                "private_ip_address": "private_ip_address_value",
-                "redundant_interface": "redundant_interface_value",
-                "subnetwork": "subnetwork_value",
-            }
-        ],
-        "kind": "kind_value",
-        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
-        "name": "name_value",
-        "nats": [
-            {
-                "auto_network_tier": "auto_network_tier_value",
-                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
-                "enable_dynamic_port_allocation": True,
-                "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
-                "icmp_idle_timeout_sec": 2214,
-                "log_config": {"enable": True, "filter": "filter_value"},
-                "max_ports_per_vm": 1733,
-                "min_ports_per_vm": 1731,
-                "name": "name_value",
-                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
-                "rules": [
-                    {
-                        "action": {
-                            "source_nat_active_ips": [
-                                "source_nat_active_ips_value1",
-                                "source_nat_active_ips_value2",
-                            ],
-                            "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value1",
-                                "source_nat_drain_ips_value2",
-                            ],
-                        },
-                        "description": "description_value",
-                        "match": "match_value",
-                        "rule_number": 1184,
-                    }
-                ],
-                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
-                "subnetworks": [
-                    {
-                        "name": "name_value",
-                        "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value1",
-                            "secondary_ip_range_names_value2",
-                        ],
-                        "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value1",
-                            "source_ip_ranges_to_nat_value2",
-                        ],
-                    }
-                ],
-                "tcp_established_idle_timeout_sec": 3371,
-                "tcp_time_wait_timeout_sec": 2665,
-                "tcp_transitory_idle_timeout_sec": 3330,
-                "udp_idle_timeout_sec": 2118,
-            }
-        ],
-        "network": "network_value",
-        "region": "region_value",
-        "self_link": "self_link_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4487,8 +4363,9 @@ def test_patch_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4664,6 +4541,73 @@ def test_patch_unary_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.PatchRouterRequest.meta.fields["router_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["router_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["router_resource"][field])):
+                    del request_init["router_resource"][field][i][subfield]
+            else:
+                del request_init["router_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4697,8 +4641,9 @@ def test_patch_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4781,8 +4726,9 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchRouterReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4874,124 +4820,6 @@ def test_patch_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request_init["router_resource"] = {
-        "bgp": {
-            "advertise_mode": "advertise_mode_value",
-            "advertised_groups": [
-                "advertised_groups_value1",
-                "advertised_groups_value2",
-            ],
-            "advertised_ip_ranges": [
-                {"description": "description_value", "range_": "range__value"}
-            ],
-            "asn": 322,
-            "keepalive_interval": 1914,
-        },
-        "bgp_peers": [
-            {
-                "advertise_mode": "advertise_mode_value",
-                "advertised_groups": [
-                    "advertised_groups_value1",
-                    "advertised_groups_value2",
-                ],
-                "advertised_ip_ranges": {},
-                "advertised_route_priority": 2714,
-                "bfd": {
-                    "min_receive_interval": 2122,
-                    "min_transmit_interval": 2265,
-                    "multiplier": 1095,
-                    "session_initialization_mode": "session_initialization_mode_value",
-                },
-                "custom_learned_ip_ranges": [{"range_": "range__value"}],
-                "custom_learned_route_priority": 3140,
-                "enable": "enable_value",
-                "enable_ipv6": True,
-                "interface_name": "interface_name_value",
-                "ip_address": "ip_address_value",
-                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
-                "management_type": "management_type_value",
-                "md5_authentication_key_name": "md5_authentication_key_name_value",
-                "name": "name_value",
-                "peer_asn": 845,
-                "peer_ip_address": "peer_ip_address_value",
-                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
-                "router_appliance_instance": "router_appliance_instance_value",
-            }
-        ],
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "encrypted_interconnect_router": True,
-        "id": 205,
-        "interfaces": [
-            {
-                "ip_range": "ip_range_value",
-                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
-                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
-                "management_type": "management_type_value",
-                "name": "name_value",
-                "private_ip_address": "private_ip_address_value",
-                "redundant_interface": "redundant_interface_value",
-                "subnetwork": "subnetwork_value",
-            }
-        ],
-        "kind": "kind_value",
-        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
-        "name": "name_value",
-        "nats": [
-            {
-                "auto_network_tier": "auto_network_tier_value",
-                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
-                "enable_dynamic_port_allocation": True,
-                "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
-                "icmp_idle_timeout_sec": 2214,
-                "log_config": {"enable": True, "filter": "filter_value"},
-                "max_ports_per_vm": 1733,
-                "min_ports_per_vm": 1731,
-                "name": "name_value",
-                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
-                "rules": [
-                    {
-                        "action": {
-                            "source_nat_active_ips": [
-                                "source_nat_active_ips_value1",
-                                "source_nat_active_ips_value2",
-                            ],
-                            "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value1",
-                                "source_nat_drain_ips_value2",
-                            ],
-                        },
-                        "description": "description_value",
-                        "match": "match_value",
-                        "rule_number": 1184,
-                    }
-                ],
-                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
-                "subnetworks": [
-                    {
-                        "name": "name_value",
-                        "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value1",
-                            "secondary_ip_range_names_value2",
-                        ],
-                        "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value1",
-                            "source_ip_ranges_to_nat_value2",
-                        ],
-                    }
-                ],
-                "tcp_established_idle_timeout_sec": 3371,
-                "tcp_time_wait_timeout_sec": 2665,
-                "tcp_transitory_idle_timeout_sec": 3330,
-                "udp_idle_timeout_sec": 2118,
-            }
-        ],
-        "network": "network_value",
-        "region": "region_value",
-        "self_link": "self_link_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5038,8 +4866,9 @@ def test_patch_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5215,6 +5044,73 @@ def test_preview_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.PreviewRouterRequest.meta.fields["router_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["router_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["router_resource"][field])):
+                    del request_init["router_resource"][field][i][subfield]
+            else:
+                del request_init["router_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5225,8 +5121,9 @@ def test_preview_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.RoutersPreviewResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.RoutersPreviewResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5307,8 +5204,9 @@ def test_preview_rest_required_fields(request_type=compute.PreviewRouterRequest)
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.RoutersPreviewResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.RoutersPreviewResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5402,124 +5300,6 @@ def test_preview_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request_init["router_resource"] = {
-        "bgp": {
-            "advertise_mode": "advertise_mode_value",
-            "advertised_groups": [
-                "advertised_groups_value1",
-                "advertised_groups_value2",
-            ],
-            "advertised_ip_ranges": [
-                {"description": "description_value", "range_": "range__value"}
-            ],
-            "asn": 322,
-            "keepalive_interval": 1914,
-        },
-        "bgp_peers": [
-            {
-                "advertise_mode": "advertise_mode_value",
-                "advertised_groups": [
-                    "advertised_groups_value1",
-                    "advertised_groups_value2",
-                ],
-                "advertised_ip_ranges": {},
-                "advertised_route_priority": 2714,
-                "bfd": {
-                    "min_receive_interval": 2122,
-                    "min_transmit_interval": 2265,
-                    "multiplier": 1095,
-                    "session_initialization_mode": "session_initialization_mode_value",
-                },
-                "custom_learned_ip_ranges": [{"range_": "range__value"}],
-                "custom_learned_route_priority": 3140,
-                "enable": "enable_value",
-                "enable_ipv6": True,
-                "interface_name": "interface_name_value",
-                "ip_address": "ip_address_value",
-                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
-                "management_type": "management_type_value",
-                "md5_authentication_key_name": "md5_authentication_key_name_value",
-                "name": "name_value",
-                "peer_asn": 845,
-                "peer_ip_address": "peer_ip_address_value",
-                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
-                "router_appliance_instance": "router_appliance_instance_value",
-            }
-        ],
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "encrypted_interconnect_router": True,
-        "id": 205,
-        "interfaces": [
-            {
-                "ip_range": "ip_range_value",
-                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
-                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
-                "management_type": "management_type_value",
-                "name": "name_value",
-                "private_ip_address": "private_ip_address_value",
-                "redundant_interface": "redundant_interface_value",
-                "subnetwork": "subnetwork_value",
-            }
-        ],
-        "kind": "kind_value",
-        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
-        "name": "name_value",
-        "nats": [
-            {
-                "auto_network_tier": "auto_network_tier_value",
-                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
-                "enable_dynamic_port_allocation": True,
-                "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
-                "icmp_idle_timeout_sec": 2214,
-                "log_config": {"enable": True, "filter": "filter_value"},
-                "max_ports_per_vm": 1733,
-                "min_ports_per_vm": 1731,
-                "name": "name_value",
-                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
-                "rules": [
-                    {
-                        "action": {
-                            "source_nat_active_ips": [
-                                "source_nat_active_ips_value1",
-                                "source_nat_active_ips_value2",
-                            ],
-                            "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value1",
-                                "source_nat_drain_ips_value2",
-                            ],
-                        },
-                        "description": "description_value",
-                        "match": "match_value",
-                        "rule_number": 1184,
-                    }
-                ],
-                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
-                "subnetworks": [
-                    {
-                        "name": "name_value",
-                        "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value1",
-                            "secondary_ip_range_names_value2",
-                        ],
-                        "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value1",
-                            "source_ip_ranges_to_nat_value2",
-                        ],
-                    }
-                ],
-                "tcp_established_idle_timeout_sec": 3371,
-                "tcp_time_wait_timeout_sec": 2665,
-                "tcp_transitory_idle_timeout_sec": 3330,
-                "udp_idle_timeout_sec": 2118,
-            }
-        ],
-        "network": "network_value",
-        "region": "region_value",
-        "self_link": "self_link_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5566,8 +5346,9 @@ def test_preview_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.RoutersPreviewResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.RoutersPreviewResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5743,6 +5524,73 @@ def test_update_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.UpdateRouterRequest.meta.fields["router_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["router_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["router_resource"][field])):
+                    del request_init["router_resource"][field][i][subfield]
+            else:
+                del request_init["router_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5776,8 +5624,9 @@ def test_update_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5882,8 +5731,9 @@ def test_update_rest_required_fields(request_type=compute.UpdateRouterRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5975,124 +5825,6 @@ def test_update_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request_init["router_resource"] = {
-        "bgp": {
-            "advertise_mode": "advertise_mode_value",
-            "advertised_groups": [
-                "advertised_groups_value1",
-                "advertised_groups_value2",
-            ],
-            "advertised_ip_ranges": [
-                {"description": "description_value", "range_": "range__value"}
-            ],
-            "asn": 322,
-            "keepalive_interval": 1914,
-        },
-        "bgp_peers": [
-            {
-                "advertise_mode": "advertise_mode_value",
-                "advertised_groups": [
-                    "advertised_groups_value1",
-                    "advertised_groups_value2",
-                ],
-                "advertised_ip_ranges": {},
-                "advertised_route_priority": 2714,
-                "bfd": {
-                    "min_receive_interval": 2122,
-                    "min_transmit_interval": 2265,
-                    "multiplier": 1095,
-                    "session_initialization_mode": "session_initialization_mode_value",
-                },
-                "custom_learned_ip_ranges": [{"range_": "range__value"}],
-                "custom_learned_route_priority": 3140,
-                "enable": "enable_value",
-                "enable_ipv6": True,
-                "interface_name": "interface_name_value",
-                "ip_address": "ip_address_value",
-                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
-                "management_type": "management_type_value",
-                "md5_authentication_key_name": "md5_authentication_key_name_value",
-                "name": "name_value",
-                "peer_asn": 845,
-                "peer_ip_address": "peer_ip_address_value",
-                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
-                "router_appliance_instance": "router_appliance_instance_value",
-            }
-        ],
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "encrypted_interconnect_router": True,
-        "id": 205,
-        "interfaces": [
-            {
-                "ip_range": "ip_range_value",
-                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
-                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
-                "management_type": "management_type_value",
-                "name": "name_value",
-                "private_ip_address": "private_ip_address_value",
-                "redundant_interface": "redundant_interface_value",
-                "subnetwork": "subnetwork_value",
-            }
-        ],
-        "kind": "kind_value",
-        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
-        "name": "name_value",
-        "nats": [
-            {
-                "auto_network_tier": "auto_network_tier_value",
-                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
-                "enable_dynamic_port_allocation": True,
-                "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
-                "icmp_idle_timeout_sec": 2214,
-                "log_config": {"enable": True, "filter": "filter_value"},
-                "max_ports_per_vm": 1733,
-                "min_ports_per_vm": 1731,
-                "name": "name_value",
-                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
-                "rules": [
-                    {
-                        "action": {
-                            "source_nat_active_ips": [
-                                "source_nat_active_ips_value1",
-                                "source_nat_active_ips_value2",
-                            ],
-                            "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value1",
-                                "source_nat_drain_ips_value2",
-                            ],
-                        },
-                        "description": "description_value",
-                        "match": "match_value",
-                        "rule_number": 1184,
-                    }
-                ],
-                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
-                "subnetworks": [
-                    {
-                        "name": "name_value",
-                        "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value1",
-                            "secondary_ip_range_names_value2",
-                        ],
-                        "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value1",
-                            "source_ip_ranges_to_nat_value2",
-                        ],
-                    }
-                ],
-                "tcp_established_idle_timeout_sec": 3371,
-                "tcp_time_wait_timeout_sec": 2665,
-                "tcp_transitory_idle_timeout_sec": 3330,
-                "udp_idle_timeout_sec": 2118,
-            }
-        ],
-        "network": "network_value",
-        "region": "region_value",
-        "self_link": "self_link_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6139,8 +5871,9 @@ def test_update_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6316,6 +6049,73 @@ def test_update_unary_rest(request_type):
         "region": "region_value",
         "self_link": "self_link_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.UpdateRouterRequest.meta.fields["router_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["router_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["router_resource"][field])):
+                    del request_init["router_resource"][field][i][subfield]
+            else:
+                del request_init["router_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6349,8 +6149,9 @@ def test_update_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6433,8 +6234,9 @@ def test_update_unary_rest_required_fields(request_type=compute.UpdateRouterRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6526,124 +6328,6 @@ def test_update_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
-    request_init["router_resource"] = {
-        "bgp": {
-            "advertise_mode": "advertise_mode_value",
-            "advertised_groups": [
-                "advertised_groups_value1",
-                "advertised_groups_value2",
-            ],
-            "advertised_ip_ranges": [
-                {"description": "description_value", "range_": "range__value"}
-            ],
-            "asn": 322,
-            "keepalive_interval": 1914,
-        },
-        "bgp_peers": [
-            {
-                "advertise_mode": "advertise_mode_value",
-                "advertised_groups": [
-                    "advertised_groups_value1",
-                    "advertised_groups_value2",
-                ],
-                "advertised_ip_ranges": {},
-                "advertised_route_priority": 2714,
-                "bfd": {
-                    "min_receive_interval": 2122,
-                    "min_transmit_interval": 2265,
-                    "multiplier": 1095,
-                    "session_initialization_mode": "session_initialization_mode_value",
-                },
-                "custom_learned_ip_ranges": [{"range_": "range__value"}],
-                "custom_learned_route_priority": 3140,
-                "enable": "enable_value",
-                "enable_ipv6": True,
-                "interface_name": "interface_name_value",
-                "ip_address": "ip_address_value",
-                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
-                "management_type": "management_type_value",
-                "md5_authentication_key_name": "md5_authentication_key_name_value",
-                "name": "name_value",
-                "peer_asn": 845,
-                "peer_ip_address": "peer_ip_address_value",
-                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
-                "router_appliance_instance": "router_appliance_instance_value",
-            }
-        ],
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "encrypted_interconnect_router": True,
-        "id": 205,
-        "interfaces": [
-            {
-                "ip_range": "ip_range_value",
-                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
-                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
-                "management_type": "management_type_value",
-                "name": "name_value",
-                "private_ip_address": "private_ip_address_value",
-                "redundant_interface": "redundant_interface_value",
-                "subnetwork": "subnetwork_value",
-            }
-        ],
-        "kind": "kind_value",
-        "md5_authentication_keys": [{"key": "key_value", "name": "name_value"}],
-        "name": "name_value",
-        "nats": [
-            {
-                "auto_network_tier": "auto_network_tier_value",
-                "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
-                "enable_dynamic_port_allocation": True,
-                "enable_endpoint_independent_mapping": True,
-                "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
-                "icmp_idle_timeout_sec": 2214,
-                "log_config": {"enable": True, "filter": "filter_value"},
-                "max_ports_per_vm": 1733,
-                "min_ports_per_vm": 1731,
-                "name": "name_value",
-                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
-                "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
-                "rules": [
-                    {
-                        "action": {
-                            "source_nat_active_ips": [
-                                "source_nat_active_ips_value1",
-                                "source_nat_active_ips_value2",
-                            ],
-                            "source_nat_drain_ips": [
-                                "source_nat_drain_ips_value1",
-                                "source_nat_drain_ips_value2",
-                            ],
-                        },
-                        "description": "description_value",
-                        "match": "match_value",
-                        "rule_number": 1184,
-                    }
-                ],
-                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
-                "subnetworks": [
-                    {
-                        "name": "name_value",
-                        "secondary_ip_range_names": [
-                            "secondary_ip_range_names_value1",
-                            "secondary_ip_range_names_value2",
-                        ],
-                        "source_ip_ranges_to_nat": [
-                            "source_ip_ranges_to_nat_value1",
-                            "source_ip_ranges_to_nat_value2",
-                        ],
-                    }
-                ],
-                "tcp_established_idle_timeout_sec": 3371,
-                "tcp_time_wait_timeout_sec": 2665,
-                "tcp_transitory_idle_timeout_sec": 3330,
-                "udp_idle_timeout_sec": 2118,
-            }
-        ],
-        "network": "network_value",
-        "region": "region_value",
-        "self_link": "self_link_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6690,8 +6374,9 @@ def test_update_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

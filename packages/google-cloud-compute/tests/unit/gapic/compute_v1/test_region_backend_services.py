@@ -638,8 +638,9 @@ def test_delete_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -745,8 +746,9 @@ def test_delete_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -888,8 +890,9 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -981,8 +984,9 @@ def test_delete_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1066,8 +1070,9 @@ def test_delete_unary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1209,8 +1214,9 @@ def test_delete_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1305,8 +1311,9 @@ def test_get_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.BackendService.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.BackendService.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1411,8 +1418,9 @@ def test_get_rest_required_fields(request_type=compute.GetRegionBackendServiceRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.BackendService.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.BackendService.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1556,8 +1564,9 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.BackendService.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.BackendService.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1617,6 +1626,81 @@ def test_get_health_rest(request_type):
         "backend_service": "sample3",
     }
     request_init["resource_group_reference_resource"] = {"group": "group_value"}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.GetHealthRegionBackendServiceRequest.meta.fields[
+        "resource_group_reference_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "resource_group_reference_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["resource_group_reference_resource"][field])
+                ):
+                    del request_init["resource_group_reference_resource"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["resource_group_reference_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -1629,8 +1713,9 @@ def test_get_health_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.BackendServiceGroupHealth.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.BackendServiceGroupHealth.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1714,8 +1799,9 @@ def test_get_health_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.BackendServiceGroupHealth.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.BackendServiceGroupHealth.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1817,7 +1903,6 @@ def test_get_health_rest_bad_request(
         "region": "sample2",
         "backend_service": "sample3",
     }
-    request_init["resource_group_reference_resource"] = {"group": "group_value"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -1864,8 +1949,9 @@ def test_get_health_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.BackendServiceGroupHealth.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.BackendServiceGroupHealth.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1937,8 +2023,9 @@ def test_get_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Policy.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2025,8 +2112,9 @@ def test_get_iam_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Policy.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2165,8 +2253,9 @@ def test_get_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Policy.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2376,6 +2465,77 @@ def test_insert_rest(request_type):
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.InsertRegionBackendServiceRequest.meta.fields[
+        "backend_service_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "backend_service_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backend_service_resource"][field])):
+                    del request_init["backend_service_resource"][field][i][subfield]
+            else:
+                del request_init["backend_service_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2409,8 +2569,9 @@ def test_insert_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2513,8 +2674,9 @@ def test_insert_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2609,161 +2771,6 @@ def test_insert_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["backend_service_resource"] = {
-        "affinity_cookie_ttl_sec": 2432,
-        "backends": [
-            {
-                "balancing_mode": "balancing_mode_value",
-                "capacity_scaler": 0.1575,
-                "description": "description_value",
-                "failover": True,
-                "group": "group_value",
-                "max_connections": 1608,
-                "max_connections_per_endpoint": 2990,
-                "max_connections_per_instance": 2978,
-                "max_rate": 849,
-                "max_rate_per_endpoint": 0.22310000000000002,
-                "max_rate_per_instance": 0.22190000000000001,
-                "max_utilization": 0.1633,
-            }
-        ],
-        "cdn_policy": {
-            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
-            "cache_key_policy": {
-                "include_host": True,
-                "include_http_headers": [
-                    "include_http_headers_value1",
-                    "include_http_headers_value2",
-                ],
-                "include_named_cookies": [
-                    "include_named_cookies_value1",
-                    "include_named_cookies_value2",
-                ],
-                "include_protocol": True,
-                "include_query_string": True,
-                "query_string_blacklist": [
-                    "query_string_blacklist_value1",
-                    "query_string_blacklist_value2",
-                ],
-                "query_string_whitelist": [
-                    "query_string_whitelist_value1",
-                    "query_string_whitelist_value2",
-                ],
-            },
-            "cache_mode": "cache_mode_value",
-            "client_ttl": 1074,
-            "default_ttl": 1176,
-            "max_ttl": 761,
-            "negative_caching": True,
-            "negative_caching_policy": [{"code": 411, "ttl": 340}],
-            "request_coalescing": True,
-            "serve_while_stale": 1813,
-            "signed_url_cache_max_age_sec": 2890,
-            "signed_url_key_names": [
-                "signed_url_key_names_value1",
-                "signed_url_key_names_value2",
-            ],
-        },
-        "circuit_breakers": {
-            "max_connections": 1608,
-            "max_pending_requests": 2149,
-            "max_requests": 1313,
-            "max_requests_per_connection": 2902,
-            "max_retries": 1187,
-        },
-        "compression_mode": "compression_mode_value",
-        "connection_draining": {"draining_timeout_sec": 2124},
-        "connection_tracking_policy": {
-            "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
-            "enable_strong_affinity": True,
-            "idle_timeout_sec": 1694,
-            "tracking_mode": "tracking_mode_value",
-        },
-        "consistent_hash": {
-            "http_cookie": {
-                "name": "name_value",
-                "path": "path_value",
-                "ttl": {"nanos": 543, "seconds": 751},
-            },
-            "http_header_name": "http_header_name_value",
-            "minimum_ring_size": 1829,
-        },
-        "creation_timestamp": "creation_timestamp_value",
-        "custom_request_headers": [
-            "custom_request_headers_value1",
-            "custom_request_headers_value2",
-        ],
-        "custom_response_headers": [
-            "custom_response_headers_value1",
-            "custom_response_headers_value2",
-        ],
-        "description": "description_value",
-        "edge_security_policy": "edge_security_policy_value",
-        "enable_c_d_n": True,
-        "failover_policy": {
-            "disable_connection_drain_on_failover": True,
-            "drop_traffic_if_unhealthy": True,
-            "failover_ratio": 0.1494,
-        },
-        "fingerprint": "fingerprint_value",
-        "health_checks": ["health_checks_value1", "health_checks_value2"],
-        "iap": {
-            "enabled": True,
-            "oauth2_client_id": "oauth2_client_id_value",
-            "oauth2_client_secret": "oauth2_client_secret_value",
-            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
-        },
-        "id": 205,
-        "kind": "kind_value",
-        "load_balancing_scheme": "load_balancing_scheme_value",
-        "locality_lb_policies": [
-            {
-                "custom_policy": {"data": "data_value", "name": "name_value"},
-                "policy": {"name": "name_value"},
-            }
-        ],
-        "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {
-            "enable": True,
-            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
-            "optional_mode": "optional_mode_value",
-            "sample_rate": 0.1165,
-        },
-        "max_stream_duration": {},
-        "metadatas": {},
-        "name": "name_value",
-        "network": "network_value",
-        "outlier_detection": {
-            "base_ejection_time": {},
-            "consecutive_errors": 1956,
-            "consecutive_gateway_failure": 2880,
-            "enforcing_consecutive_errors": 3006,
-            "enforcing_consecutive_gateway_failure": 3930,
-            "enforcing_success_rate": 2334,
-            "interval": {},
-            "max_ejection_percent": 2118,
-            "success_rate_minimum_hosts": 2799,
-            "success_rate_request_volume": 2915,
-            "success_rate_stdev_factor": 2663,
-        },
-        "port": 453,
-        "port_name": "port_name_value",
-        "protocol": "protocol_value",
-        "region": "region_value",
-        "security_policy": "security_policy_value",
-        "security_settings": {
-            "client_tls_policy": "client_tls_policy_value",
-            "subject_alt_names": [
-                "subject_alt_names_value1",
-                "subject_alt_names_value2",
-            ],
-        },
-        "self_link": "self_link_value",
-        "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
-        "session_affinity": "session_affinity_value",
-        "subsetting": {"policy": "policy_value"},
-        "timeout_sec": 1185,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2805,8 +2812,9 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3018,6 +3026,77 @@ def test_insert_unary_rest(request_type):
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.InsertRegionBackendServiceRequest.meta.fields[
+        "backend_service_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "backend_service_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backend_service_resource"][field])):
+                    del request_init["backend_service_resource"][field][i][subfield]
+            else:
+                del request_init["backend_service_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3051,8 +3130,9 @@ def test_insert_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3133,8 +3213,9 @@ def test_insert_unary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3229,161 +3310,6 @@ def test_insert_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["backend_service_resource"] = {
-        "affinity_cookie_ttl_sec": 2432,
-        "backends": [
-            {
-                "balancing_mode": "balancing_mode_value",
-                "capacity_scaler": 0.1575,
-                "description": "description_value",
-                "failover": True,
-                "group": "group_value",
-                "max_connections": 1608,
-                "max_connections_per_endpoint": 2990,
-                "max_connections_per_instance": 2978,
-                "max_rate": 849,
-                "max_rate_per_endpoint": 0.22310000000000002,
-                "max_rate_per_instance": 0.22190000000000001,
-                "max_utilization": 0.1633,
-            }
-        ],
-        "cdn_policy": {
-            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
-            "cache_key_policy": {
-                "include_host": True,
-                "include_http_headers": [
-                    "include_http_headers_value1",
-                    "include_http_headers_value2",
-                ],
-                "include_named_cookies": [
-                    "include_named_cookies_value1",
-                    "include_named_cookies_value2",
-                ],
-                "include_protocol": True,
-                "include_query_string": True,
-                "query_string_blacklist": [
-                    "query_string_blacklist_value1",
-                    "query_string_blacklist_value2",
-                ],
-                "query_string_whitelist": [
-                    "query_string_whitelist_value1",
-                    "query_string_whitelist_value2",
-                ],
-            },
-            "cache_mode": "cache_mode_value",
-            "client_ttl": 1074,
-            "default_ttl": 1176,
-            "max_ttl": 761,
-            "negative_caching": True,
-            "negative_caching_policy": [{"code": 411, "ttl": 340}],
-            "request_coalescing": True,
-            "serve_while_stale": 1813,
-            "signed_url_cache_max_age_sec": 2890,
-            "signed_url_key_names": [
-                "signed_url_key_names_value1",
-                "signed_url_key_names_value2",
-            ],
-        },
-        "circuit_breakers": {
-            "max_connections": 1608,
-            "max_pending_requests": 2149,
-            "max_requests": 1313,
-            "max_requests_per_connection": 2902,
-            "max_retries": 1187,
-        },
-        "compression_mode": "compression_mode_value",
-        "connection_draining": {"draining_timeout_sec": 2124},
-        "connection_tracking_policy": {
-            "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
-            "enable_strong_affinity": True,
-            "idle_timeout_sec": 1694,
-            "tracking_mode": "tracking_mode_value",
-        },
-        "consistent_hash": {
-            "http_cookie": {
-                "name": "name_value",
-                "path": "path_value",
-                "ttl": {"nanos": 543, "seconds": 751},
-            },
-            "http_header_name": "http_header_name_value",
-            "minimum_ring_size": 1829,
-        },
-        "creation_timestamp": "creation_timestamp_value",
-        "custom_request_headers": [
-            "custom_request_headers_value1",
-            "custom_request_headers_value2",
-        ],
-        "custom_response_headers": [
-            "custom_response_headers_value1",
-            "custom_response_headers_value2",
-        ],
-        "description": "description_value",
-        "edge_security_policy": "edge_security_policy_value",
-        "enable_c_d_n": True,
-        "failover_policy": {
-            "disable_connection_drain_on_failover": True,
-            "drop_traffic_if_unhealthy": True,
-            "failover_ratio": 0.1494,
-        },
-        "fingerprint": "fingerprint_value",
-        "health_checks": ["health_checks_value1", "health_checks_value2"],
-        "iap": {
-            "enabled": True,
-            "oauth2_client_id": "oauth2_client_id_value",
-            "oauth2_client_secret": "oauth2_client_secret_value",
-            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
-        },
-        "id": 205,
-        "kind": "kind_value",
-        "load_balancing_scheme": "load_balancing_scheme_value",
-        "locality_lb_policies": [
-            {
-                "custom_policy": {"data": "data_value", "name": "name_value"},
-                "policy": {"name": "name_value"},
-            }
-        ],
-        "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {
-            "enable": True,
-            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
-            "optional_mode": "optional_mode_value",
-            "sample_rate": 0.1165,
-        },
-        "max_stream_duration": {},
-        "metadatas": {},
-        "name": "name_value",
-        "network": "network_value",
-        "outlier_detection": {
-            "base_ejection_time": {},
-            "consecutive_errors": 1956,
-            "consecutive_gateway_failure": 2880,
-            "enforcing_consecutive_errors": 3006,
-            "enforcing_consecutive_gateway_failure": 3930,
-            "enforcing_success_rate": 2334,
-            "interval": {},
-            "max_ejection_percent": 2118,
-            "success_rate_minimum_hosts": 2799,
-            "success_rate_request_volume": 2915,
-            "success_rate_stdev_factor": 2663,
-        },
-        "port": 453,
-        "port_name": "port_name_value",
-        "protocol": "protocol_value",
-        "region": "region_value",
-        "security_policy": "security_policy_value",
-        "security_settings": {
-            "client_tls_policy": "client_tls_policy_value",
-            "subject_alt_names": [
-                "subject_alt_names_value1",
-                "subject_alt_names_value2",
-            ],
-        },
-        "self_link": "self_link_value",
-        "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
-        "session_affinity": "session_affinity_value",
-        "subsetting": {"policy": "policy_value"},
-        "timeout_sec": 1185,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3425,8 +3351,9 @@ def test_insert_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3498,8 +3425,9 @@ def test_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.BackendServiceList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.BackendServiceList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3591,8 +3519,9 @@ def test_list_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.BackendServiceList.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.BackendServiceList.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3734,8 +3663,9 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.BackendServiceList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.BackendServiceList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4003,6 +3933,77 @@ def test_patch_rest(request_type):
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.PatchRegionBackendServiceRequest.meta.fields[
+        "backend_service_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "backend_service_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backend_service_resource"][field])):
+                    del request_init["backend_service_resource"][field][i][subfield]
+            else:
+                del request_init["backend_service_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4036,8 +4037,9 @@ def test_patch_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4144,8 +4146,9 @@ def test_patch_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4245,161 +4248,6 @@ def test_patch_rest_bad_request(
         "region": "sample2",
         "backend_service": "sample3",
     }
-    request_init["backend_service_resource"] = {
-        "affinity_cookie_ttl_sec": 2432,
-        "backends": [
-            {
-                "balancing_mode": "balancing_mode_value",
-                "capacity_scaler": 0.1575,
-                "description": "description_value",
-                "failover": True,
-                "group": "group_value",
-                "max_connections": 1608,
-                "max_connections_per_endpoint": 2990,
-                "max_connections_per_instance": 2978,
-                "max_rate": 849,
-                "max_rate_per_endpoint": 0.22310000000000002,
-                "max_rate_per_instance": 0.22190000000000001,
-                "max_utilization": 0.1633,
-            }
-        ],
-        "cdn_policy": {
-            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
-            "cache_key_policy": {
-                "include_host": True,
-                "include_http_headers": [
-                    "include_http_headers_value1",
-                    "include_http_headers_value2",
-                ],
-                "include_named_cookies": [
-                    "include_named_cookies_value1",
-                    "include_named_cookies_value2",
-                ],
-                "include_protocol": True,
-                "include_query_string": True,
-                "query_string_blacklist": [
-                    "query_string_blacklist_value1",
-                    "query_string_blacklist_value2",
-                ],
-                "query_string_whitelist": [
-                    "query_string_whitelist_value1",
-                    "query_string_whitelist_value2",
-                ],
-            },
-            "cache_mode": "cache_mode_value",
-            "client_ttl": 1074,
-            "default_ttl": 1176,
-            "max_ttl": 761,
-            "negative_caching": True,
-            "negative_caching_policy": [{"code": 411, "ttl": 340}],
-            "request_coalescing": True,
-            "serve_while_stale": 1813,
-            "signed_url_cache_max_age_sec": 2890,
-            "signed_url_key_names": [
-                "signed_url_key_names_value1",
-                "signed_url_key_names_value2",
-            ],
-        },
-        "circuit_breakers": {
-            "max_connections": 1608,
-            "max_pending_requests": 2149,
-            "max_requests": 1313,
-            "max_requests_per_connection": 2902,
-            "max_retries": 1187,
-        },
-        "compression_mode": "compression_mode_value",
-        "connection_draining": {"draining_timeout_sec": 2124},
-        "connection_tracking_policy": {
-            "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
-            "enable_strong_affinity": True,
-            "idle_timeout_sec": 1694,
-            "tracking_mode": "tracking_mode_value",
-        },
-        "consistent_hash": {
-            "http_cookie": {
-                "name": "name_value",
-                "path": "path_value",
-                "ttl": {"nanos": 543, "seconds": 751},
-            },
-            "http_header_name": "http_header_name_value",
-            "minimum_ring_size": 1829,
-        },
-        "creation_timestamp": "creation_timestamp_value",
-        "custom_request_headers": [
-            "custom_request_headers_value1",
-            "custom_request_headers_value2",
-        ],
-        "custom_response_headers": [
-            "custom_response_headers_value1",
-            "custom_response_headers_value2",
-        ],
-        "description": "description_value",
-        "edge_security_policy": "edge_security_policy_value",
-        "enable_c_d_n": True,
-        "failover_policy": {
-            "disable_connection_drain_on_failover": True,
-            "drop_traffic_if_unhealthy": True,
-            "failover_ratio": 0.1494,
-        },
-        "fingerprint": "fingerprint_value",
-        "health_checks": ["health_checks_value1", "health_checks_value2"],
-        "iap": {
-            "enabled": True,
-            "oauth2_client_id": "oauth2_client_id_value",
-            "oauth2_client_secret": "oauth2_client_secret_value",
-            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
-        },
-        "id": 205,
-        "kind": "kind_value",
-        "load_balancing_scheme": "load_balancing_scheme_value",
-        "locality_lb_policies": [
-            {
-                "custom_policy": {"data": "data_value", "name": "name_value"},
-                "policy": {"name": "name_value"},
-            }
-        ],
-        "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {
-            "enable": True,
-            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
-            "optional_mode": "optional_mode_value",
-            "sample_rate": 0.1165,
-        },
-        "max_stream_duration": {},
-        "metadatas": {},
-        "name": "name_value",
-        "network": "network_value",
-        "outlier_detection": {
-            "base_ejection_time": {},
-            "consecutive_errors": 1956,
-            "consecutive_gateway_failure": 2880,
-            "enforcing_consecutive_errors": 3006,
-            "enforcing_consecutive_gateway_failure": 3930,
-            "enforcing_success_rate": 2334,
-            "interval": {},
-            "max_ejection_percent": 2118,
-            "success_rate_minimum_hosts": 2799,
-            "success_rate_request_volume": 2915,
-            "success_rate_stdev_factor": 2663,
-        },
-        "port": 453,
-        "port_name": "port_name_value",
-        "protocol": "protocol_value",
-        "region": "region_value",
-        "security_policy": "security_policy_value",
-        "security_settings": {
-            "client_tls_policy": "client_tls_policy_value",
-            "subject_alt_names": [
-                "subject_alt_names_value1",
-                "subject_alt_names_value2",
-            ],
-        },
-        "self_link": "self_link_value",
-        "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
-        "session_affinity": "session_affinity_value",
-        "subsetting": {"policy": "policy_value"},
-        "timeout_sec": 1185,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4446,8 +4294,9 @@ def test_patch_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4664,6 +4513,77 @@ def test_patch_unary_rest(request_type):
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.PatchRegionBackendServiceRequest.meta.fields[
+        "backend_service_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "backend_service_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backend_service_resource"][field])):
+                    del request_init["backend_service_resource"][field][i][subfield]
+            else:
+                del request_init["backend_service_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4697,8 +4617,9 @@ def test_patch_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4783,8 +4704,9 @@ def test_patch_unary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4884,161 +4806,6 @@ def test_patch_unary_rest_bad_request(
         "region": "sample2",
         "backend_service": "sample3",
     }
-    request_init["backend_service_resource"] = {
-        "affinity_cookie_ttl_sec": 2432,
-        "backends": [
-            {
-                "balancing_mode": "balancing_mode_value",
-                "capacity_scaler": 0.1575,
-                "description": "description_value",
-                "failover": True,
-                "group": "group_value",
-                "max_connections": 1608,
-                "max_connections_per_endpoint": 2990,
-                "max_connections_per_instance": 2978,
-                "max_rate": 849,
-                "max_rate_per_endpoint": 0.22310000000000002,
-                "max_rate_per_instance": 0.22190000000000001,
-                "max_utilization": 0.1633,
-            }
-        ],
-        "cdn_policy": {
-            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
-            "cache_key_policy": {
-                "include_host": True,
-                "include_http_headers": [
-                    "include_http_headers_value1",
-                    "include_http_headers_value2",
-                ],
-                "include_named_cookies": [
-                    "include_named_cookies_value1",
-                    "include_named_cookies_value2",
-                ],
-                "include_protocol": True,
-                "include_query_string": True,
-                "query_string_blacklist": [
-                    "query_string_blacklist_value1",
-                    "query_string_blacklist_value2",
-                ],
-                "query_string_whitelist": [
-                    "query_string_whitelist_value1",
-                    "query_string_whitelist_value2",
-                ],
-            },
-            "cache_mode": "cache_mode_value",
-            "client_ttl": 1074,
-            "default_ttl": 1176,
-            "max_ttl": 761,
-            "negative_caching": True,
-            "negative_caching_policy": [{"code": 411, "ttl": 340}],
-            "request_coalescing": True,
-            "serve_while_stale": 1813,
-            "signed_url_cache_max_age_sec": 2890,
-            "signed_url_key_names": [
-                "signed_url_key_names_value1",
-                "signed_url_key_names_value2",
-            ],
-        },
-        "circuit_breakers": {
-            "max_connections": 1608,
-            "max_pending_requests": 2149,
-            "max_requests": 1313,
-            "max_requests_per_connection": 2902,
-            "max_retries": 1187,
-        },
-        "compression_mode": "compression_mode_value",
-        "connection_draining": {"draining_timeout_sec": 2124},
-        "connection_tracking_policy": {
-            "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
-            "enable_strong_affinity": True,
-            "idle_timeout_sec": 1694,
-            "tracking_mode": "tracking_mode_value",
-        },
-        "consistent_hash": {
-            "http_cookie": {
-                "name": "name_value",
-                "path": "path_value",
-                "ttl": {"nanos": 543, "seconds": 751},
-            },
-            "http_header_name": "http_header_name_value",
-            "minimum_ring_size": 1829,
-        },
-        "creation_timestamp": "creation_timestamp_value",
-        "custom_request_headers": [
-            "custom_request_headers_value1",
-            "custom_request_headers_value2",
-        ],
-        "custom_response_headers": [
-            "custom_response_headers_value1",
-            "custom_response_headers_value2",
-        ],
-        "description": "description_value",
-        "edge_security_policy": "edge_security_policy_value",
-        "enable_c_d_n": True,
-        "failover_policy": {
-            "disable_connection_drain_on_failover": True,
-            "drop_traffic_if_unhealthy": True,
-            "failover_ratio": 0.1494,
-        },
-        "fingerprint": "fingerprint_value",
-        "health_checks": ["health_checks_value1", "health_checks_value2"],
-        "iap": {
-            "enabled": True,
-            "oauth2_client_id": "oauth2_client_id_value",
-            "oauth2_client_secret": "oauth2_client_secret_value",
-            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
-        },
-        "id": 205,
-        "kind": "kind_value",
-        "load_balancing_scheme": "load_balancing_scheme_value",
-        "locality_lb_policies": [
-            {
-                "custom_policy": {"data": "data_value", "name": "name_value"},
-                "policy": {"name": "name_value"},
-            }
-        ],
-        "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {
-            "enable": True,
-            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
-            "optional_mode": "optional_mode_value",
-            "sample_rate": 0.1165,
-        },
-        "max_stream_duration": {},
-        "metadatas": {},
-        "name": "name_value",
-        "network": "network_value",
-        "outlier_detection": {
-            "base_ejection_time": {},
-            "consecutive_errors": 1956,
-            "consecutive_gateway_failure": 2880,
-            "enforcing_consecutive_errors": 3006,
-            "enforcing_consecutive_gateway_failure": 3930,
-            "enforcing_success_rate": 2334,
-            "interval": {},
-            "max_ejection_percent": 2118,
-            "success_rate_minimum_hosts": 2799,
-            "success_rate_request_volume": 2915,
-            "success_rate_stdev_factor": 2663,
-        },
-        "port": 453,
-        "port_name": "port_name_value",
-        "protocol": "protocol_value",
-        "region": "region_value",
-        "security_policy": "security_policy_value",
-        "security_settings": {
-            "client_tls_policy": "client_tls_policy_value",
-            "subject_alt_names": [
-                "subject_alt_names_value1",
-                "subject_alt_names_value2",
-            ],
-        },
-        "self_link": "self_link_value",
-        "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
-        "session_affinity": "session_affinity_value",
-        "subsetting": {"policy": "policy_value"},
-        "timeout_sec": 1185,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5085,8 +4852,9 @@ def test_patch_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5221,6 +4989,81 @@ def test_set_iam_policy_rest(request_type):
             "version": 774,
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.SetIamPolicyRegionBackendServiceRequest.meta.fields[
+        "region_set_policy_request_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "region_set_policy_request_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["region_set_policy_request_resource"][field])
+                ):
+                    del request_init["region_set_policy_request_resource"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["region_set_policy_request_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5235,8 +5078,9 @@ def test_set_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Policy.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5322,8 +5166,9 @@ def test_set_iam_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Policy.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5420,83 +5265,6 @@ def test_set_iam_policy_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "resource": "sample3"}
-    request_init["region_set_policy_request_resource"] = {
-        "bindings": [
-            {
-                "binding_id": "binding_id_value",
-                "condition": {
-                    "description": "description_value",
-                    "expression": "expression_value",
-                    "location": "location_value",
-                    "title": "title_value",
-                },
-                "members": ["members_value1", "members_value2"],
-                "role": "role_value",
-            }
-        ],
-        "etag": "etag_value",
-        "policy": {
-            "audit_configs": [
-                {
-                    "audit_log_configs": [
-                        {
-                            "exempted_members": [
-                                "exempted_members_value1",
-                                "exempted_members_value2",
-                            ],
-                            "ignore_child_exemptions": True,
-                            "log_type": "log_type_value",
-                        }
-                    ],
-                    "exempted_members": [
-                        "exempted_members_value1",
-                        "exempted_members_value2",
-                    ],
-                    "service": "service_value",
-                }
-            ],
-            "bindings": {},
-            "etag": "etag_value",
-            "iam_owned": True,
-            "rules": [
-                {
-                    "action": "action_value",
-                    "conditions": [
-                        {
-                            "iam": "iam_value",
-                            "op": "op_value",
-                            "svc": "svc_value",
-                            "sys": "sys_value",
-                            "values": ["values_value1", "values_value2"],
-                        }
-                    ],
-                    "description": "description_value",
-                    "ins": ["ins_value1", "ins_value2"],
-                    "log_configs": [
-                        {
-                            "cloud_audit": {
-                                "authorization_logging_options": {
-                                    "permission_type": "permission_type_value"
-                                },
-                                "log_name": "log_name_value",
-                            },
-                            "counter": {
-                                "custom_fields": [
-                                    {"name": "name_value", "value": "value_value"}
-                                ],
-                                "field": "field_value",
-                                "metric": "metric_value",
-                            },
-                            "data_access": {"log_mode": "log_mode_value"},
-                        }
-                    ],
-                    "not_ins": ["not_ins_value1", "not_ins_value2"],
-                    "permissions": ["permissions_value1", "permissions_value2"],
-                }
-            ],
-            "version": 774,
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5543,8 +5311,9 @@ def test_set_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Policy.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5761,6 +5530,77 @@ def test_update_rest(request_type):
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.UpdateRegionBackendServiceRequest.meta.fields[
+        "backend_service_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "backend_service_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backend_service_resource"][field])):
+                    del request_init["backend_service_resource"][field][i][subfield]
+            else:
+                del request_init["backend_service_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5794,8 +5634,9 @@ def test_update_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5902,8 +5743,9 @@ def test_update_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6003,161 +5845,6 @@ def test_update_rest_bad_request(
         "region": "sample2",
         "backend_service": "sample3",
     }
-    request_init["backend_service_resource"] = {
-        "affinity_cookie_ttl_sec": 2432,
-        "backends": [
-            {
-                "balancing_mode": "balancing_mode_value",
-                "capacity_scaler": 0.1575,
-                "description": "description_value",
-                "failover": True,
-                "group": "group_value",
-                "max_connections": 1608,
-                "max_connections_per_endpoint": 2990,
-                "max_connections_per_instance": 2978,
-                "max_rate": 849,
-                "max_rate_per_endpoint": 0.22310000000000002,
-                "max_rate_per_instance": 0.22190000000000001,
-                "max_utilization": 0.1633,
-            }
-        ],
-        "cdn_policy": {
-            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
-            "cache_key_policy": {
-                "include_host": True,
-                "include_http_headers": [
-                    "include_http_headers_value1",
-                    "include_http_headers_value2",
-                ],
-                "include_named_cookies": [
-                    "include_named_cookies_value1",
-                    "include_named_cookies_value2",
-                ],
-                "include_protocol": True,
-                "include_query_string": True,
-                "query_string_blacklist": [
-                    "query_string_blacklist_value1",
-                    "query_string_blacklist_value2",
-                ],
-                "query_string_whitelist": [
-                    "query_string_whitelist_value1",
-                    "query_string_whitelist_value2",
-                ],
-            },
-            "cache_mode": "cache_mode_value",
-            "client_ttl": 1074,
-            "default_ttl": 1176,
-            "max_ttl": 761,
-            "negative_caching": True,
-            "negative_caching_policy": [{"code": 411, "ttl": 340}],
-            "request_coalescing": True,
-            "serve_while_stale": 1813,
-            "signed_url_cache_max_age_sec": 2890,
-            "signed_url_key_names": [
-                "signed_url_key_names_value1",
-                "signed_url_key_names_value2",
-            ],
-        },
-        "circuit_breakers": {
-            "max_connections": 1608,
-            "max_pending_requests": 2149,
-            "max_requests": 1313,
-            "max_requests_per_connection": 2902,
-            "max_retries": 1187,
-        },
-        "compression_mode": "compression_mode_value",
-        "connection_draining": {"draining_timeout_sec": 2124},
-        "connection_tracking_policy": {
-            "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
-            "enable_strong_affinity": True,
-            "idle_timeout_sec": 1694,
-            "tracking_mode": "tracking_mode_value",
-        },
-        "consistent_hash": {
-            "http_cookie": {
-                "name": "name_value",
-                "path": "path_value",
-                "ttl": {"nanos": 543, "seconds": 751},
-            },
-            "http_header_name": "http_header_name_value",
-            "minimum_ring_size": 1829,
-        },
-        "creation_timestamp": "creation_timestamp_value",
-        "custom_request_headers": [
-            "custom_request_headers_value1",
-            "custom_request_headers_value2",
-        ],
-        "custom_response_headers": [
-            "custom_response_headers_value1",
-            "custom_response_headers_value2",
-        ],
-        "description": "description_value",
-        "edge_security_policy": "edge_security_policy_value",
-        "enable_c_d_n": True,
-        "failover_policy": {
-            "disable_connection_drain_on_failover": True,
-            "drop_traffic_if_unhealthy": True,
-            "failover_ratio": 0.1494,
-        },
-        "fingerprint": "fingerprint_value",
-        "health_checks": ["health_checks_value1", "health_checks_value2"],
-        "iap": {
-            "enabled": True,
-            "oauth2_client_id": "oauth2_client_id_value",
-            "oauth2_client_secret": "oauth2_client_secret_value",
-            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
-        },
-        "id": 205,
-        "kind": "kind_value",
-        "load_balancing_scheme": "load_balancing_scheme_value",
-        "locality_lb_policies": [
-            {
-                "custom_policy": {"data": "data_value", "name": "name_value"},
-                "policy": {"name": "name_value"},
-            }
-        ],
-        "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {
-            "enable": True,
-            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
-            "optional_mode": "optional_mode_value",
-            "sample_rate": 0.1165,
-        },
-        "max_stream_duration": {},
-        "metadatas": {},
-        "name": "name_value",
-        "network": "network_value",
-        "outlier_detection": {
-            "base_ejection_time": {},
-            "consecutive_errors": 1956,
-            "consecutive_gateway_failure": 2880,
-            "enforcing_consecutive_errors": 3006,
-            "enforcing_consecutive_gateway_failure": 3930,
-            "enforcing_success_rate": 2334,
-            "interval": {},
-            "max_ejection_percent": 2118,
-            "success_rate_minimum_hosts": 2799,
-            "success_rate_request_volume": 2915,
-            "success_rate_stdev_factor": 2663,
-        },
-        "port": 453,
-        "port_name": "port_name_value",
-        "protocol": "protocol_value",
-        "region": "region_value",
-        "security_policy": "security_policy_value",
-        "security_settings": {
-            "client_tls_policy": "client_tls_policy_value",
-            "subject_alt_names": [
-                "subject_alt_names_value1",
-                "subject_alt_names_value2",
-            ],
-        },
-        "self_link": "self_link_value",
-        "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
-        "session_affinity": "session_affinity_value",
-        "subsetting": {"policy": "policy_value"},
-        "timeout_sec": 1185,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6204,8 +5891,9 @@ def test_update_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6422,6 +6110,77 @@ def test_update_unary_rest(request_type):
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.UpdateRegionBackendServiceRequest.meta.fields[
+        "backend_service_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "backend_service_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backend_service_resource"][field])):
+                    del request_init["backend_service_resource"][field][i][subfield]
+            else:
+                del request_init["backend_service_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6455,8 +6214,9 @@ def test_update_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6541,8 +6301,9 @@ def test_update_unary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6642,161 +6403,6 @@ def test_update_unary_rest_bad_request(
         "region": "sample2",
         "backend_service": "sample3",
     }
-    request_init["backend_service_resource"] = {
-        "affinity_cookie_ttl_sec": 2432,
-        "backends": [
-            {
-                "balancing_mode": "balancing_mode_value",
-                "capacity_scaler": 0.1575,
-                "description": "description_value",
-                "failover": True,
-                "group": "group_value",
-                "max_connections": 1608,
-                "max_connections_per_endpoint": 2990,
-                "max_connections_per_instance": 2978,
-                "max_rate": 849,
-                "max_rate_per_endpoint": 0.22310000000000002,
-                "max_rate_per_instance": 0.22190000000000001,
-                "max_utilization": 0.1633,
-            }
-        ],
-        "cdn_policy": {
-            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
-            "cache_key_policy": {
-                "include_host": True,
-                "include_http_headers": [
-                    "include_http_headers_value1",
-                    "include_http_headers_value2",
-                ],
-                "include_named_cookies": [
-                    "include_named_cookies_value1",
-                    "include_named_cookies_value2",
-                ],
-                "include_protocol": True,
-                "include_query_string": True,
-                "query_string_blacklist": [
-                    "query_string_blacklist_value1",
-                    "query_string_blacklist_value2",
-                ],
-                "query_string_whitelist": [
-                    "query_string_whitelist_value1",
-                    "query_string_whitelist_value2",
-                ],
-            },
-            "cache_mode": "cache_mode_value",
-            "client_ttl": 1074,
-            "default_ttl": 1176,
-            "max_ttl": 761,
-            "negative_caching": True,
-            "negative_caching_policy": [{"code": 411, "ttl": 340}],
-            "request_coalescing": True,
-            "serve_while_stale": 1813,
-            "signed_url_cache_max_age_sec": 2890,
-            "signed_url_key_names": [
-                "signed_url_key_names_value1",
-                "signed_url_key_names_value2",
-            ],
-        },
-        "circuit_breakers": {
-            "max_connections": 1608,
-            "max_pending_requests": 2149,
-            "max_requests": 1313,
-            "max_requests_per_connection": 2902,
-            "max_retries": 1187,
-        },
-        "compression_mode": "compression_mode_value",
-        "connection_draining": {"draining_timeout_sec": 2124},
-        "connection_tracking_policy": {
-            "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
-            "enable_strong_affinity": True,
-            "idle_timeout_sec": 1694,
-            "tracking_mode": "tracking_mode_value",
-        },
-        "consistent_hash": {
-            "http_cookie": {
-                "name": "name_value",
-                "path": "path_value",
-                "ttl": {"nanos": 543, "seconds": 751},
-            },
-            "http_header_name": "http_header_name_value",
-            "minimum_ring_size": 1829,
-        },
-        "creation_timestamp": "creation_timestamp_value",
-        "custom_request_headers": [
-            "custom_request_headers_value1",
-            "custom_request_headers_value2",
-        ],
-        "custom_response_headers": [
-            "custom_response_headers_value1",
-            "custom_response_headers_value2",
-        ],
-        "description": "description_value",
-        "edge_security_policy": "edge_security_policy_value",
-        "enable_c_d_n": True,
-        "failover_policy": {
-            "disable_connection_drain_on_failover": True,
-            "drop_traffic_if_unhealthy": True,
-            "failover_ratio": 0.1494,
-        },
-        "fingerprint": "fingerprint_value",
-        "health_checks": ["health_checks_value1", "health_checks_value2"],
-        "iap": {
-            "enabled": True,
-            "oauth2_client_id": "oauth2_client_id_value",
-            "oauth2_client_secret": "oauth2_client_secret_value",
-            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
-        },
-        "id": 205,
-        "kind": "kind_value",
-        "load_balancing_scheme": "load_balancing_scheme_value",
-        "locality_lb_policies": [
-            {
-                "custom_policy": {"data": "data_value", "name": "name_value"},
-                "policy": {"name": "name_value"},
-            }
-        ],
-        "locality_lb_policy": "locality_lb_policy_value",
-        "log_config": {
-            "enable": True,
-            "optional_fields": ["optional_fields_value1", "optional_fields_value2"],
-            "optional_mode": "optional_mode_value",
-            "sample_rate": 0.1165,
-        },
-        "max_stream_duration": {},
-        "metadatas": {},
-        "name": "name_value",
-        "network": "network_value",
-        "outlier_detection": {
-            "base_ejection_time": {},
-            "consecutive_errors": 1956,
-            "consecutive_gateway_failure": 2880,
-            "enforcing_consecutive_errors": 3006,
-            "enforcing_consecutive_gateway_failure": 3930,
-            "enforcing_success_rate": 2334,
-            "interval": {},
-            "max_ejection_percent": 2118,
-            "success_rate_minimum_hosts": 2799,
-            "success_rate_request_volume": 2915,
-            "success_rate_stdev_factor": 2663,
-        },
-        "port": 453,
-        "port_name": "port_name_value",
-        "protocol": "protocol_value",
-        "region": "region_value",
-        "security_policy": "security_policy_value",
-        "security_settings": {
-            "client_tls_policy": "client_tls_policy_value",
-            "subject_alt_names": [
-                "subject_alt_names_value1",
-                "subject_alt_names_value2",
-            ],
-        },
-        "self_link": "self_link_value",
-        "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
-        "session_affinity": "session_affinity_value",
-        "subsetting": {"policy": "policy_value"},
-        "timeout_sec": 1185,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6843,8 +6449,9 @@ def test_update_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

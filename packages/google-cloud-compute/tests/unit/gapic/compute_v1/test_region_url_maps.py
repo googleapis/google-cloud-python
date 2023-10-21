@@ -606,8 +606,9 @@ def test_delete_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -711,8 +712,9 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRegionUrlMapRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -850,8 +852,9 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -939,8 +942,9 @@ def test_delete_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1024,8 +1028,9 @@ def test_delete_unary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1163,8 +1168,9 @@ def test_delete_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1239,8 +1245,9 @@ def test_get_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.UrlMap.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.UrlMap.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1329,8 +1336,9 @@ def test_get_rest_required_fields(request_type=compute.GetRegionUrlMapRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.UrlMap.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.UrlMap.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1466,8 +1474,9 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.UrlMap.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.UrlMap.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1693,6 +1702,73 @@ def test_insert_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.InsertRegionUrlMapRequest.meta.fields["url_map_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["url_map_resource"][field])):
+                    del request_init["url_map_resource"][field][i][subfield]
+            else:
+                del request_init["url_map_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -1726,8 +1802,9 @@ def test_insert_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1828,8 +1905,9 @@ def test_insert_rest_required_fields(request_type=compute.InsertRegionUrlMapRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1924,177 +2002,6 @@ def test_insert_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2136,8 +2043,9 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2365,6 +2273,73 @@ def test_insert_unary_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.InsertRegionUrlMapRequest.meta.fields["url_map_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["url_map_resource"][field])):
+                    del request_init["url_map_resource"][field][i][subfield]
+            else:
+                del request_init["url_map_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2398,8 +2373,9 @@ def test_insert_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2480,8 +2456,9 @@ def test_insert_unary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2576,177 +2553,6 @@ def test_insert_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2788,8 +2594,9 @@ def test_insert_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2861,8 +2668,9 @@ def test_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.UrlMapList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.UrlMapList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2952,8 +2760,9 @@ def test_list_rest_required_fields(request_type=compute.ListRegionUrlMapsRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.UrlMapList.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.UrlMapList.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3093,8 +2902,9 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.UrlMapList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.UrlMapList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3374,6 +3184,73 @@ def test_patch_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.PatchRegionUrlMapRequest.meta.fields["url_map_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["url_map_resource"][field])):
+                    del request_init["url_map_resource"][field][i][subfield]
+            else:
+                del request_init["url_map_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3407,8 +3284,9 @@ def test_patch_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3513,8 +3391,9 @@ def test_patch_rest_required_fields(request_type=compute.PatchRegionUrlMapReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3610,177 +3489,6 @@ def test_patch_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3827,8 +3535,9 @@ def test_patch_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4057,6 +3766,73 @@ def test_patch_unary_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.PatchRegionUrlMapRequest.meta.fields["url_map_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["url_map_resource"][field])):
+                    del request_init["url_map_resource"][field][i][subfield]
+            else:
+                del request_init["url_map_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4090,8 +3866,9 @@ def test_patch_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4176,8 +3953,9 @@ def test_patch_unary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4273,177 +4051,6 @@ def test_patch_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4490,8 +4097,9 @@ def test_patch_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4720,6 +4328,73 @@ def test_update_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.UpdateRegionUrlMapRequest.meta.fields["url_map_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["url_map_resource"][field])):
+                    del request_init["url_map_resource"][field][i][subfield]
+            else:
+                del request_init["url_map_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4753,8 +4428,9 @@ def test_update_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4859,8 +4535,9 @@ def test_update_rest_required_fields(request_type=compute.UpdateRegionUrlMapRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4956,177 +4633,6 @@ def test_update_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5173,8 +4679,9 @@ def test_update_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5403,6 +4910,73 @@ def test_update_unary_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.UpdateRegionUrlMapRequest.meta.fields["url_map_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["url_map_resource"][field])):
+                    del request_init["url_map_resource"][field][i][subfield]
+            else:
+                del request_init["url_map_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5436,8 +5010,9 @@ def test_update_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5522,8 +5097,9 @@ def test_update_unary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5619,177 +5195,6 @@ def test_update_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5836,8 +5241,9 @@ def test_update_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6071,6 +5477,86 @@ def test_validate_rest(request_type):
             ],
         }
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.ValidateRegionUrlMapRequest.meta.fields[
+        "region_url_maps_validate_request_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "region_url_maps_validate_request_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0,
+                    len(
+                        request_init["region_url_maps_validate_request_resource"][field]
+                    ),
+                ):
+                    del request_init["region_url_maps_validate_request_resource"][
+                        field
+                    ][i][subfield]
+            else:
+                del request_init["region_url_maps_validate_request_resource"][field][
+                    subfield
+                ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6081,8 +5567,9 @@ def test_validate_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.UrlMapsValidateResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.UrlMapsValidateResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6165,8 +5652,9 @@ def test_validate_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.UrlMapsValidateResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.UrlMapsValidateResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6264,182 +5752,6 @@ def test_validate_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request_init["region_url_maps_validate_request_resource"] = {
-        "resource": {
-            "creation_timestamp": "creation_timestamp_value",
-            "default_route_action": {
-                "cors_policy": {
-                    "allow_credentials": True,
-                    "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                    "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                    "allow_origin_regexes": [
-                        "allow_origin_regexes_value1",
-                        "allow_origin_regexes_value2",
-                    ],
-                    "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                    "disabled": True,
-                    "expose_headers": [
-                        "expose_headers_value1",
-                        "expose_headers_value2",
-                    ],
-                    "max_age": 722,
-                },
-                "fault_injection_policy": {
-                    "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                    "delay": {
-                        "fixed_delay": {"nanos": 543, "seconds": 751},
-                        "percentage": 0.10540000000000001,
-                    },
-                },
-                "max_stream_duration": {},
-                "request_mirror_policy": {"backend_service": "backend_service_value"},
-                "retry_policy": {
-                    "num_retries": 1197,
-                    "per_try_timeout": {},
-                    "retry_conditions": [
-                        "retry_conditions_value1",
-                        "retry_conditions_value2",
-                    ],
-                },
-                "timeout": {},
-                "url_rewrite": {
-                    "host_rewrite": "host_rewrite_value",
-                    "path_prefix_rewrite": "path_prefix_rewrite_value",
-                    "path_template_rewrite": "path_template_rewrite_value",
-                },
-                "weighted_backend_services": [
-                    {
-                        "backend_service": "backend_service_value",
-                        "header_action": {
-                            "request_headers_to_add": [
-                                {
-                                    "header_name": "header_name_value",
-                                    "header_value": "header_value_value",
-                                    "replace": True,
-                                }
-                            ],
-                            "request_headers_to_remove": [
-                                "request_headers_to_remove_value1",
-                                "request_headers_to_remove_value2",
-                            ],
-                            "response_headers_to_add": {},
-                            "response_headers_to_remove": [
-                                "response_headers_to_remove_value1",
-                                "response_headers_to_remove_value2",
-                            ],
-                        },
-                        "weight": 648,
-                    }
-                ],
-            },
-            "default_service": "default_service_value",
-            "default_url_redirect": {
-                "host_redirect": "host_redirect_value",
-                "https_redirect": True,
-                "path_redirect": "path_redirect_value",
-                "prefix_redirect": "prefix_redirect_value",
-                "redirect_response_code": "redirect_response_code_value",
-                "strip_query": True,
-            },
-            "description": "description_value",
-            "fingerprint": "fingerprint_value",
-            "header_action": {},
-            "host_rules": [
-                {
-                    "description": "description_value",
-                    "hosts": ["hosts_value1", "hosts_value2"],
-                    "path_matcher": "path_matcher_value",
-                }
-            ],
-            "id": 205,
-            "kind": "kind_value",
-            "name": "name_value",
-            "path_matchers": [
-                {
-                    "default_route_action": {},
-                    "default_service": "default_service_value",
-                    "default_url_redirect": {},
-                    "description": "description_value",
-                    "header_action": {},
-                    "name": "name_value",
-                    "path_rules": [
-                        {
-                            "paths": ["paths_value1", "paths_value2"],
-                            "route_action": {},
-                            "service": "service_value",
-                            "url_redirect": {},
-                        }
-                    ],
-                    "route_rules": [
-                        {
-                            "description": "description_value",
-                            "header_action": {},
-                            "match_rules": [
-                                {
-                                    "full_path_match": "full_path_match_value",
-                                    "header_matches": [
-                                        {
-                                            "exact_match": "exact_match_value",
-                                            "header_name": "header_name_value",
-                                            "invert_match": True,
-                                            "prefix_match": "prefix_match_value",
-                                            "present_match": True,
-                                            "range_match": {
-                                                "range_end": 931,
-                                                "range_start": 1178,
-                                            },
-                                            "regex_match": "regex_match_value",
-                                            "suffix_match": "suffix_match_value",
-                                        }
-                                    ],
-                                    "ignore_case": True,
-                                    "metadata_filters": [
-                                        {
-                                            "filter_labels": [
-                                                {
-                                                    "name": "name_value",
-                                                    "value": "value_value",
-                                                }
-                                            ],
-                                            "filter_match_criteria": "filter_match_criteria_value",
-                                        }
-                                    ],
-                                    "path_template_match": "path_template_match_value",
-                                    "prefix_match": "prefix_match_value",
-                                    "query_parameter_matches": [
-                                        {
-                                            "exact_match": "exact_match_value",
-                                            "name": "name_value",
-                                            "present_match": True,
-                                            "regex_match": "regex_match_value",
-                                        }
-                                    ],
-                                    "regex_match": "regex_match_value",
-                                }
-                            ],
-                            "priority": 898,
-                            "route_action": {},
-                            "service": "service_value",
-                            "url_redirect": {},
-                        }
-                    ],
-                }
-            ],
-            "region": "region_value",
-            "self_link": "self_link_value",
-            "tests": [
-                {
-                    "description": "description_value",
-                    "expected_output_url": "expected_output_url_value",
-                    "expected_redirect_response_code": 3275,
-                    "headers": [{"name": "name_value", "value": "value_value"}],
-                    "host": "host_value",
-                    "path": "path_value",
-                    "service": "service_value",
-                }
-            ],
-        }
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6486,8 +5798,9 @@ def test_validate_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.UrlMapsValidateResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.UrlMapsValidateResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

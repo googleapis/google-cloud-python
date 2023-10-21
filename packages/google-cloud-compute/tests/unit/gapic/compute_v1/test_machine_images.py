@@ -606,8 +606,9 @@ def test_delete_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -707,8 +708,9 @@ def test_delete_rest_required_fields(request_type=compute.DeleteMachineImageRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -840,8 +842,9 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -928,8 +931,9 @@ def test_delete_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1009,8 +1013,9 @@ def test_delete_unary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1142,8 +1147,9 @@ def test_delete_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1220,8 +1226,9 @@ def test_get_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.MachineImage.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.MachineImage.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1309,8 +1316,9 @@ def test_get_rest_required_fields(request_type=compute.GetMachineImageRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.MachineImage.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.MachineImage.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1440,8 +1448,9 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.MachineImage.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.MachineImage.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1509,8 +1518,9 @@ def test_get_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Policy.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1593,8 +1603,9 @@ def test_get_iam_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Policy.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1726,8 +1737,9 @@ def test_get_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Policy.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2008,6 +2020,75 @@ def test_insert_rest(request_type):
         "storage_locations": ["storage_locations_value1", "storage_locations_value2"],
         "total_storage_bytes": 2046,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.InsertMachineImageRequest.meta.fields["machine_image_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "machine_image_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["machine_image_resource"][field])):
+                    del request_init["machine_image_resource"][field][i][subfield]
+            else:
+                del request_init["machine_image_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2041,8 +2122,9 @@ def test_insert_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2144,8 +2226,9 @@ def test_insert_rest_required_fields(request_type=compute.InsertMachineImageRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2244,233 +2327,6 @@ def test_insert_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
-    request_init["machine_image_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "guest_flush": True,
-        "id": 205,
-        "instance_properties": {
-            "advanced_machine_features": {
-                "enable_nested_virtualization": True,
-                "enable_uefi_networking": True,
-                "threads_per_core": 1689,
-                "visible_core_count": 1918,
-            },
-            "can_ip_forward": True,
-            "confidential_instance_config": {"enable_confidential_compute": True},
-            "description": "description_value",
-            "disks": [
-                {
-                    "architecture": "architecture_value",
-                    "auto_delete": True,
-                    "boot": True,
-                    "device_name": "device_name_value",
-                    "disk_encryption_key": {
-                        "kms_key_name": "kms_key_name_value",
-                        "kms_key_service_account": "kms_key_service_account_value",
-                        "raw_key": "raw_key_value",
-                        "rsa_encrypted_key": "rsa_encrypted_key_value",
-                        "sha256": "sha256_value",
-                    },
-                    "disk_size_gb": 1261,
-                    "force_attach": True,
-                    "guest_os_features": [{"type_": "type__value"}],
-                    "index": 536,
-                    "initialize_params": {
-                        "architecture": "architecture_value",
-                        "description": "description_value",
-                        "disk_name": "disk_name_value",
-                        "disk_size_gb": 1261,
-                        "disk_type": "disk_type_value",
-                        "labels": {},
-                        "licenses": ["licenses_value1", "licenses_value2"],
-                        "on_update_action": "on_update_action_value",
-                        "provisioned_iops": 1740,
-                        "provisioned_throughput": 2411,
-                        "replica_zones": [
-                            "replica_zones_value1",
-                            "replica_zones_value2",
-                        ],
-                        "resource_manager_tags": {},
-                        "resource_policies": [
-                            "resource_policies_value1",
-                            "resource_policies_value2",
-                        ],
-                        "source_image": "source_image_value",
-                        "source_image_encryption_key": {},
-                        "source_snapshot": "source_snapshot_value",
-                        "source_snapshot_encryption_key": {},
-                    },
-                    "interface": "interface_value",
-                    "kind": "kind_value",
-                    "licenses": ["licenses_value1", "licenses_value2"],
-                    "mode": "mode_value",
-                    "saved_state": "saved_state_value",
-                    "shielded_instance_initial_state": {
-                        "dbs": [
-                            {"content": "content_value", "file_type": "file_type_value"}
-                        ],
-                        "dbxs": {},
-                        "keks": {},
-                        "pk": {},
-                    },
-                    "source": "source_value",
-                    "type_": "type__value",
-                }
-            ],
-            "guest_accelerators": [
-                {
-                    "accelerator_count": 1805,
-                    "accelerator_type": "accelerator_type_value",
-                }
-            ],
-            "key_revocation_action_type": "key_revocation_action_type_value",
-            "labels": {},
-            "machine_type": "machine_type_value",
-            "metadata": {
-                "fingerprint": "fingerprint_value",
-                "items": [{"key": "key_value", "value": "value_value"}],
-                "kind": "kind_value",
-            },
-            "min_cpu_platform": "min_cpu_platform_value",
-            "network_interfaces": [
-                {
-                    "access_configs": [
-                        {
-                            "external_ipv6": "external_ipv6_value",
-                            "external_ipv6_prefix_length": 2837,
-                            "kind": "kind_value",
-                            "name": "name_value",
-                            "nat_i_p": "nat_i_p_value",
-                            "network_tier": "network_tier_value",
-                            "public_ptr_domain_name": "public_ptr_domain_name_value",
-                            "set_public_ptr": True,
-                            "type_": "type__value",
-                        }
-                    ],
-                    "alias_ip_ranges": [
-                        {
-                            "ip_cidr_range": "ip_cidr_range_value",
-                            "subnetwork_range_name": "subnetwork_range_name_value",
-                        }
-                    ],
-                    "fingerprint": "fingerprint_value",
-                    "internal_ipv6_prefix_length": 2831,
-                    "ipv6_access_configs": {},
-                    "ipv6_access_type": "ipv6_access_type_value",
-                    "ipv6_address": "ipv6_address_value",
-                    "kind": "kind_value",
-                    "name": "name_value",
-                    "network": "network_value",
-                    "network_attachment": "network_attachment_value",
-                    "network_i_p": "network_i_p_value",
-                    "nic_type": "nic_type_value",
-                    "queue_count": 1197,
-                    "stack_type": "stack_type_value",
-                    "subnetwork": "subnetwork_value",
-                }
-            ],
-            "network_performance_config": {
-                "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
-            },
-            "private_ipv6_google_access": "private_ipv6_google_access_value",
-            "reservation_affinity": {
-                "consume_reservation_type": "consume_reservation_type_value",
-                "key": "key_value",
-                "values": ["values_value1", "values_value2"],
-            },
-            "resource_manager_tags": {},
-            "resource_policies": [
-                "resource_policies_value1",
-                "resource_policies_value2",
-            ],
-            "scheduling": {
-                "automatic_restart": True,
-                "instance_termination_action": "instance_termination_action_value",
-                "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
-                "location_hint": "location_hint_value",
-                "min_node_cpus": 1379,
-                "node_affinities": [
-                    {
-                        "key": "key_value",
-                        "operator": "operator_value",
-                        "values": ["values_value1", "values_value2"],
-                    }
-                ],
-                "on_host_maintenance": "on_host_maintenance_value",
-                "preemptible": True,
-                "provisioning_model": "provisioning_model_value",
-            },
-            "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
-            ],
-            "shielded_instance_config": {
-                "enable_integrity_monitoring": True,
-                "enable_secure_boot": True,
-                "enable_vtpm": True,
-            },
-            "tags": {
-                "fingerprint": "fingerprint_value",
-                "items": ["items_value1", "items_value2"],
-            },
-        },
-        "kind": "kind_value",
-        "machine_image_encryption_key": {},
-        "name": "name_value",
-        "satisfies_pzs": True,
-        "saved_disks": [
-            {
-                "architecture": "architecture_value",
-                "kind": "kind_value",
-                "source_disk": "source_disk_value",
-                "storage_bytes": 1403,
-                "storage_bytes_status": "storage_bytes_status_value",
-            }
-        ],
-        "self_link": "self_link_value",
-        "source_disk_encryption_keys": [
-            {"disk_encryption_key": {}, "source_disk": "source_disk_value"}
-        ],
-        "source_instance": "source_instance_value",
-        "source_instance_properties": {
-            "can_ip_forward": True,
-            "deletion_protection": True,
-            "description": "description_value",
-            "disks": [
-                {
-                    "auto_delete": True,
-                    "boot": True,
-                    "device_name": "device_name_value",
-                    "disk_encryption_key": {},
-                    "disk_size_gb": 1261,
-                    "disk_type": "disk_type_value",
-                    "guest_os_features": {},
-                    "index": 536,
-                    "interface": "interface_value",
-                    "kind": "kind_value",
-                    "licenses": ["licenses_value1", "licenses_value2"],
-                    "mode": "mode_value",
-                    "source": "source_value",
-                    "storage_bytes": 1403,
-                    "storage_bytes_status": "storage_bytes_status_value",
-                    "type_": "type__value",
-                }
-            ],
-            "guest_accelerators": {},
-            "key_revocation_action_type": "key_revocation_action_type_value",
-            "labels": {},
-            "machine_type": "machine_type_value",
-            "metadata": {},
-            "min_cpu_platform": "min_cpu_platform_value",
-            "network_interfaces": {},
-            "scheduling": {},
-            "service_accounts": {},
-            "tags": {},
-        },
-        "status": "status_value",
-        "storage_locations": ["storage_locations_value1", "storage_locations_value2"],
-        "total_storage_bytes": 2046,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2511,8 +2367,9 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2795,6 +2652,75 @@ def test_insert_unary_rest(request_type):
         "storage_locations": ["storage_locations_value1", "storage_locations_value2"],
         "total_storage_bytes": 2046,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.InsertMachineImageRequest.meta.fields["machine_image_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "machine_image_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["machine_image_resource"][field])):
+                    del request_init["machine_image_resource"][field][i][subfield]
+            else:
+                del request_init["machine_image_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2828,8 +2754,9 @@ def test_insert_unary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2911,8 +2838,9 @@ def test_insert_unary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3011,233 +2939,6 @@ def test_insert_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
-    request_init["machine_image_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "guest_flush": True,
-        "id": 205,
-        "instance_properties": {
-            "advanced_machine_features": {
-                "enable_nested_virtualization": True,
-                "enable_uefi_networking": True,
-                "threads_per_core": 1689,
-                "visible_core_count": 1918,
-            },
-            "can_ip_forward": True,
-            "confidential_instance_config": {"enable_confidential_compute": True},
-            "description": "description_value",
-            "disks": [
-                {
-                    "architecture": "architecture_value",
-                    "auto_delete": True,
-                    "boot": True,
-                    "device_name": "device_name_value",
-                    "disk_encryption_key": {
-                        "kms_key_name": "kms_key_name_value",
-                        "kms_key_service_account": "kms_key_service_account_value",
-                        "raw_key": "raw_key_value",
-                        "rsa_encrypted_key": "rsa_encrypted_key_value",
-                        "sha256": "sha256_value",
-                    },
-                    "disk_size_gb": 1261,
-                    "force_attach": True,
-                    "guest_os_features": [{"type_": "type__value"}],
-                    "index": 536,
-                    "initialize_params": {
-                        "architecture": "architecture_value",
-                        "description": "description_value",
-                        "disk_name": "disk_name_value",
-                        "disk_size_gb": 1261,
-                        "disk_type": "disk_type_value",
-                        "labels": {},
-                        "licenses": ["licenses_value1", "licenses_value2"],
-                        "on_update_action": "on_update_action_value",
-                        "provisioned_iops": 1740,
-                        "provisioned_throughput": 2411,
-                        "replica_zones": [
-                            "replica_zones_value1",
-                            "replica_zones_value2",
-                        ],
-                        "resource_manager_tags": {},
-                        "resource_policies": [
-                            "resource_policies_value1",
-                            "resource_policies_value2",
-                        ],
-                        "source_image": "source_image_value",
-                        "source_image_encryption_key": {},
-                        "source_snapshot": "source_snapshot_value",
-                        "source_snapshot_encryption_key": {},
-                    },
-                    "interface": "interface_value",
-                    "kind": "kind_value",
-                    "licenses": ["licenses_value1", "licenses_value2"],
-                    "mode": "mode_value",
-                    "saved_state": "saved_state_value",
-                    "shielded_instance_initial_state": {
-                        "dbs": [
-                            {"content": "content_value", "file_type": "file_type_value"}
-                        ],
-                        "dbxs": {},
-                        "keks": {},
-                        "pk": {},
-                    },
-                    "source": "source_value",
-                    "type_": "type__value",
-                }
-            ],
-            "guest_accelerators": [
-                {
-                    "accelerator_count": 1805,
-                    "accelerator_type": "accelerator_type_value",
-                }
-            ],
-            "key_revocation_action_type": "key_revocation_action_type_value",
-            "labels": {},
-            "machine_type": "machine_type_value",
-            "metadata": {
-                "fingerprint": "fingerprint_value",
-                "items": [{"key": "key_value", "value": "value_value"}],
-                "kind": "kind_value",
-            },
-            "min_cpu_platform": "min_cpu_platform_value",
-            "network_interfaces": [
-                {
-                    "access_configs": [
-                        {
-                            "external_ipv6": "external_ipv6_value",
-                            "external_ipv6_prefix_length": 2837,
-                            "kind": "kind_value",
-                            "name": "name_value",
-                            "nat_i_p": "nat_i_p_value",
-                            "network_tier": "network_tier_value",
-                            "public_ptr_domain_name": "public_ptr_domain_name_value",
-                            "set_public_ptr": True,
-                            "type_": "type__value",
-                        }
-                    ],
-                    "alias_ip_ranges": [
-                        {
-                            "ip_cidr_range": "ip_cidr_range_value",
-                            "subnetwork_range_name": "subnetwork_range_name_value",
-                        }
-                    ],
-                    "fingerprint": "fingerprint_value",
-                    "internal_ipv6_prefix_length": 2831,
-                    "ipv6_access_configs": {},
-                    "ipv6_access_type": "ipv6_access_type_value",
-                    "ipv6_address": "ipv6_address_value",
-                    "kind": "kind_value",
-                    "name": "name_value",
-                    "network": "network_value",
-                    "network_attachment": "network_attachment_value",
-                    "network_i_p": "network_i_p_value",
-                    "nic_type": "nic_type_value",
-                    "queue_count": 1197,
-                    "stack_type": "stack_type_value",
-                    "subnetwork": "subnetwork_value",
-                }
-            ],
-            "network_performance_config": {
-                "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
-            },
-            "private_ipv6_google_access": "private_ipv6_google_access_value",
-            "reservation_affinity": {
-                "consume_reservation_type": "consume_reservation_type_value",
-                "key": "key_value",
-                "values": ["values_value1", "values_value2"],
-            },
-            "resource_manager_tags": {},
-            "resource_policies": [
-                "resource_policies_value1",
-                "resource_policies_value2",
-            ],
-            "scheduling": {
-                "automatic_restart": True,
-                "instance_termination_action": "instance_termination_action_value",
-                "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
-                "location_hint": "location_hint_value",
-                "min_node_cpus": 1379,
-                "node_affinities": [
-                    {
-                        "key": "key_value",
-                        "operator": "operator_value",
-                        "values": ["values_value1", "values_value2"],
-                    }
-                ],
-                "on_host_maintenance": "on_host_maintenance_value",
-                "preemptible": True,
-                "provisioning_model": "provisioning_model_value",
-            },
-            "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
-            ],
-            "shielded_instance_config": {
-                "enable_integrity_monitoring": True,
-                "enable_secure_boot": True,
-                "enable_vtpm": True,
-            },
-            "tags": {
-                "fingerprint": "fingerprint_value",
-                "items": ["items_value1", "items_value2"],
-            },
-        },
-        "kind": "kind_value",
-        "machine_image_encryption_key": {},
-        "name": "name_value",
-        "satisfies_pzs": True,
-        "saved_disks": [
-            {
-                "architecture": "architecture_value",
-                "kind": "kind_value",
-                "source_disk": "source_disk_value",
-                "storage_bytes": 1403,
-                "storage_bytes_status": "storage_bytes_status_value",
-            }
-        ],
-        "self_link": "self_link_value",
-        "source_disk_encryption_keys": [
-            {"disk_encryption_key": {}, "source_disk": "source_disk_value"}
-        ],
-        "source_instance": "source_instance_value",
-        "source_instance_properties": {
-            "can_ip_forward": True,
-            "deletion_protection": True,
-            "description": "description_value",
-            "disks": [
-                {
-                    "auto_delete": True,
-                    "boot": True,
-                    "device_name": "device_name_value",
-                    "disk_encryption_key": {},
-                    "disk_size_gb": 1261,
-                    "disk_type": "disk_type_value",
-                    "guest_os_features": {},
-                    "index": 536,
-                    "interface": "interface_value",
-                    "kind": "kind_value",
-                    "licenses": ["licenses_value1", "licenses_value2"],
-                    "mode": "mode_value",
-                    "source": "source_value",
-                    "storage_bytes": 1403,
-                    "storage_bytes_status": "storage_bytes_status_value",
-                    "type_": "type__value",
-                }
-            ],
-            "guest_accelerators": {},
-            "key_revocation_action_type": "key_revocation_action_type_value",
-            "labels": {},
-            "machine_type": "machine_type_value",
-            "metadata": {},
-            "min_cpu_platform": "min_cpu_platform_value",
-            "network_interfaces": {},
-            "scheduling": {},
-            "service_accounts": {},
-            "tags": {},
-        },
-        "status": "status_value",
-        "storage_locations": ["storage_locations_value1", "storage_locations_value2"],
-        "total_storage_bytes": 2046,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3278,8 +2979,9 @@ def test_insert_unary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3350,8 +3052,9 @@ def test_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.MachineImageList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.MachineImageList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3437,8 +3140,9 @@ def test_list_rest_required_fields(request_type=compute.ListMachineImagesRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.MachineImageList.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.MachineImageList.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3574,8 +3278,9 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.MachineImageList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.MachineImageList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3760,6 +3465,81 @@ def test_set_iam_policy_rest(request_type):
             "version": 774,
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.SetIamPolicyMachineImageRequest.meta.fields[
+        "global_set_policy_request_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "global_set_policy_request_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["global_set_policy_request_resource"][field])
+                ):
+                    del request_init["global_set_policy_request_resource"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["global_set_policy_request_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3774,8 +3554,9 @@ def test_set_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Policy.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3857,8 +3638,9 @@ def test_set_iam_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.Policy.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3953,83 +3735,6 @@ def test_set_iam_policy_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
-    request_init["global_set_policy_request_resource"] = {
-        "bindings": [
-            {
-                "binding_id": "binding_id_value",
-                "condition": {
-                    "description": "description_value",
-                    "expression": "expression_value",
-                    "location": "location_value",
-                    "title": "title_value",
-                },
-                "members": ["members_value1", "members_value2"],
-                "role": "role_value",
-            }
-        ],
-        "etag": "etag_value",
-        "policy": {
-            "audit_configs": [
-                {
-                    "audit_log_configs": [
-                        {
-                            "exempted_members": [
-                                "exempted_members_value1",
-                                "exempted_members_value2",
-                            ],
-                            "ignore_child_exemptions": True,
-                            "log_type": "log_type_value",
-                        }
-                    ],
-                    "exempted_members": [
-                        "exempted_members_value1",
-                        "exempted_members_value2",
-                    ],
-                    "service": "service_value",
-                }
-            ],
-            "bindings": {},
-            "etag": "etag_value",
-            "iam_owned": True,
-            "rules": [
-                {
-                    "action": "action_value",
-                    "conditions": [
-                        {
-                            "iam": "iam_value",
-                            "op": "op_value",
-                            "svc": "svc_value",
-                            "sys": "sys_value",
-                            "values": ["values_value1", "values_value2"],
-                        }
-                    ],
-                    "description": "description_value",
-                    "ins": ["ins_value1", "ins_value2"],
-                    "log_configs": [
-                        {
-                            "cloud_audit": {
-                                "authorization_logging_options": {
-                                    "permission_type": "permission_type_value"
-                                },
-                                "log_name": "log_name_value",
-                            },
-                            "counter": {
-                                "custom_fields": [
-                                    {"name": "name_value", "value": "value_value"}
-                                ],
-                                "field": "field_value",
-                                "metric": "metric_value",
-                            },
-                            "data_access": {"log_mode": "log_mode_value"},
-                        }
-                    ],
-                    "not_ins": ["not_ins_value1", "not_ins_value2"],
-                    "permissions": ["permissions_value1", "permissions_value2"],
-                }
-            ],
-            "version": 774,
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4071,8 +3776,9 @@ def test_set_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.Policy.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4132,6 +3838,81 @@ def test_test_iam_permissions_rest(request_type):
     request_init["test_permissions_request_resource"] = {
         "permissions": ["permissions_value1", "permissions_value2"]
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.TestIamPermissionsMachineImageRequest.meta.fields[
+        "test_permissions_request_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "test_permissions_request_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["test_permissions_request_resource"][field])
+                ):
+                    del request_init["test_permissions_request_resource"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["test_permissions_request_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4144,8 +3925,9 @@ def test_test_iam_permissions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.TestPermissionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.TestPermissionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4225,8 +4007,9 @@ def test_test_iam_permissions_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = compute.TestPermissionsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = compute.TestPermissionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4323,9 +4106,6 @@ def test_test_iam_permissions_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
-    request_init["test_permissions_request_resource"] = {
-        "permissions": ["permissions_value1", "permissions_value2"]
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4367,8 +4147,9 @@ def test_test_iam_permissions_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = compute.TestPermissionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = compute.TestPermissionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
