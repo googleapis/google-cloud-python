@@ -47,7 +47,7 @@ dependencies = [
     "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
     "grafeas >=1.4.1, <2.0dev",
 ]
-url = "https://github.com/googleapis/python-containeranalysis"
+url = "https://github.com/googleapis/google-cloud-python"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
