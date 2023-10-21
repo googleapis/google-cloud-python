@@ -23,8 +23,7 @@ import copy
 import datetime
 
 import google.cloud.monitoring_v3 as monitoring_v3
-from google.cloud.monitoring_v3 import _dataframe
-from google.cloud.monitoring_v3 import types
+from google.cloud.monitoring_v3 import _dataframe, types
 
 _UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
 

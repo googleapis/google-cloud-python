@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import MetricServiceClient
 from .async_client import MetricServiceAsyncClient
+from .client import MetricServiceClient
 
 __all__ = (
     "MetricServiceClient",

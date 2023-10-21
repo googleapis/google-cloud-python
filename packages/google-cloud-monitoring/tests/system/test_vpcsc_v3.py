@@ -20,12 +20,12 @@
 # limitations under the License.
 
 import os
-import pytest
 
 from google.api_core import exceptions
-from google.cloud import monitoring_v3
+import pytest
 from test_utils.vpcsc_config import vpcsc_config
 
+from google.cloud import monitoring_v3
 
 _VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy"
 

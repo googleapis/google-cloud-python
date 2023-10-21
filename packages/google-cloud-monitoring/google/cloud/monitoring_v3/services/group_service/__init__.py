@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import GroupServiceClient
 from .async_client import GroupServiceAsyncClient
+from .client import GroupServiceClient
 
 __all__ = (
     "GroupServiceClient",

@@ -18,15 +18,15 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
 from google.api import monitored_resource_pb2  # type: ignore
-from google.cloud.monitoring_v3.types import group
-from google.cloud.monitoring_v3.types import group_service
+
+from google.cloud.monitoring_v3.types import group, group_service
 
 
 class ListGroupsPager:

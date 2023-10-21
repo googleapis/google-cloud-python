@@ -16,6 +16,7 @@ from __future__ import absolute_import
 
 import datetime
 import unittest
+
 import mock
 
 from google.cloud import monitoring_v3 as monitoring_v3
@@ -23,7 +24,6 @@ from google.cloud.monitoring_v3 import MetricServiceClient
 from google.cloud.monitoring_v3.services.metric_service.transports import (
     MetricServiceGrpcTransport,
 )
-
 
 PROJECT = "my-project"
 

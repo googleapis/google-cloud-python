@@ -19,7 +19,6 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.monitoring.v3",
     manifest={

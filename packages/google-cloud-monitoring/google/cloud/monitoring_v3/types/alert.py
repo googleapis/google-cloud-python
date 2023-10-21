@@ -17,14 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.monitoring_v3.types import common
-from google.cloud.monitoring_v3.types import mutation_record as gm_mutation_record
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.monitoring_v3.types import mutation_record as gm_mutation_record
+from google.cloud.monitoring_v3.types import common
 
 __protobuf__ = proto.module(
     package="google.monitoring.v3",

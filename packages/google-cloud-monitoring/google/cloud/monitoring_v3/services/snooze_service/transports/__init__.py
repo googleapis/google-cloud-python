@@ -20,7 +20,6 @@ from .base import SnoozeServiceTransport
 from .grpc import SnoozeServiceGrpcTransport
 from .grpc_asyncio import SnoozeServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SnoozeServiceTransport]]
 _transport_registry["grpc"] = SnoozeServiceGrpcTransport
