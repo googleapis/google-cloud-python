@@ -1,0 +1,18 @@
+{
+    "name": "automl",
+    "name_pretty": "Cloud AutoML",
+    "product_documentation": "https://cloud.google.com/automl/docs/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/automl/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559744",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_COMBO",
+    "repo": "googleapis/python-automl",
+    "distribution_name": "google-cloud-automl",
+    "api_id": "automl.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": "@googleapis/cdpe-cloudai",
+    "api_shortname": "automl",
+    "api_description": "makes the power of machine learning available to you even if you have limited knowledge of machine learning. You can use AutoML to build on Google's machine learning capabilities to create your own custom machine learning models that are tailored to your business needs, and then integrate those models into your applications and web sites."
+}
