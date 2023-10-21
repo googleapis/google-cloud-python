@@ -13,10 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .cloudbuild import (
-    OperationMetadata,
-    RunWorkflowCustomOperationMetadata,
-)
+from .cloudbuild import OperationMetadata, RunWorkflowCustomOperationMetadata
 from .repositories import (
     BatchCreateRepositoriesRequest,
     BatchCreateRepositoriesResponse,

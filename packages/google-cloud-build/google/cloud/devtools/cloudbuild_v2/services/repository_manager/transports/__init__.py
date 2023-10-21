@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import RepositoryManagerTransport
 from .grpc import RepositoryManagerGrpcTransport
 from .grpc_asyncio import RepositoryManagerGrpcAsyncIOTransport
-from .rest import RepositoryManagerRestTransport
-from .rest import RepositoryManagerRestInterceptor
-
+from .rest import RepositoryManagerRestInterceptor, RepositoryManagerRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[RepositoryManagerTransport]]
