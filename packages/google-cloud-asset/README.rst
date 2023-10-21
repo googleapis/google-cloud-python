@@ -1,9 +1,9 @@
-Python Client for Cloud Asset Inventory API
-===========================================
+Python Client for Cloud Asset Inventory
+=======================================
 
 |stable| |pypi| |versions|
 
-`Cloud Asset Inventory API`_: provides inventory services based on a time series database. This database keeps a five week history of Google Cloud asset metadata. The Cloud Asset Inventory export service allows you to export all asset metadata at a certain timestamp or export event change history during a timeframe.
+`Cloud Asset Inventory`_: provides inventory services based on a time series database. This database keeps a five week history of Google Cloud asset metadata. The Cloud Asset Inventory export service allows you to export all asset metadata at a certain timestamp or export event change history during a timeframe.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Asset Inventory API
    :target: https://pypi.org/project/google-cloud-asset/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-asset.svg
    :target: https://pypi.org/project/google-cloud-asset/
-.. _Cloud Asset Inventory API: https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview
+.. _Cloud Asset Inventory: https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudasset/latest
 .. _Product Documentation:  https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Asset Inventory API.`_
+3. `Enable the Cloud Asset Inventory.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Asset Inventory API.:  https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview
+.. _Enable the Cloud Asset Inventory.:  https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-asset/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-asset/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Asset Inventory API
+-  Read the `Client Library Documentation`_ for Cloud Asset Inventory
    to see other available methods on the client.
--  Read the `Cloud Asset Inventory API Product documentation`_ to learn
+-  Read the `Cloud Asset Inventory Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Asset Inventory API Product documentation:  https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview
+.. _Cloud Asset Inventory Product documentation:  https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
