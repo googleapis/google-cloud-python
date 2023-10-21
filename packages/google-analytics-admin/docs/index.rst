@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    admin_v1alpha/services_
-    admin_v1alpha/types_
+    admin_v1alpha/services
+    admin_v1alpha/types
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    admin_v1beta/services_
-    admin_v1beta/types_
+    admin_v1beta/services
+    admin_v1beta/types
 
 
 Changelog
@@ -31,4 +31,4 @@ For a list of all ``google-analytics-admin`` releases:
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG
