@@ -22,47 +22,50 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 from collections.abc import Iterable
-from google.protobuf import json_format
 import json
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
-from google.protobuf import json_format
 
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import future
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
-from google.api_core import operations_v1
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.automl_v1.services.prediction_service import (
     PredictionServiceAsyncClient,
+    PredictionServiceClient,
+    transports,
 )
-from google.cloud.automl_v1.services.prediction_service import PredictionServiceClient
-from google.cloud.automl_v1.services.prediction_service import transports
-from google.cloud.automl_v1.types import annotation_payload
-from google.cloud.automl_v1.types import data_items
-from google.cloud.automl_v1.types import geometry
-from google.cloud.automl_v1.types import io
-from google.cloud.automl_v1.types import operations
-from google.cloud.automl_v1.types import prediction_service
-from google.cloud.automl_v1.types import text_segment
+from google.cloud.automl_v1.types import (
+    annotation_payload,
+    data_items,
+    geometry,
+    io,
+    operations,
+    prediction_service,
+    text_segment,
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-import google.auth
+from google.protobuf import json_format
 
 
 def client_cert_source_callback():

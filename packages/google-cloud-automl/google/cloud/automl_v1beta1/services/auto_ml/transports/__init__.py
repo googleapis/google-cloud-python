@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import AutoMlTransport
 from .grpc import AutoMlGrpcTransport
 from .grpc_asyncio import AutoMlGrpcAsyncIOTransport
-from .rest import AutoMlRestTransport
-from .rest import AutoMlRestInterceptor
-
+from .rest import AutoMlRestInterceptor, AutoMlRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[AutoMlTransport]]

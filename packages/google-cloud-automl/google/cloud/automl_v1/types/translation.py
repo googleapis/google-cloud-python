@@ -21,7 +21,6 @@ import proto  # type: ignore
 
 from google.cloud.automl_v1.types import data_items
 
-
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1",
     manifest={

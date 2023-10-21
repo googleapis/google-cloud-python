@@ -19,13 +19,8 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.automl_v1beta1.types import image
-from google.cloud.automl_v1beta1.types import tables
-from google.cloud.automl_v1beta1.types import text
-from google.cloud.automl_v1beta1.types import translation
-from google.cloud.automl_v1beta1.types import video
+from google.cloud.automl_v1beta1.types import image, tables, text, translation, video
 from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",

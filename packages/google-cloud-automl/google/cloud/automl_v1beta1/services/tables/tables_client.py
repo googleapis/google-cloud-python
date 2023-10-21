@@ -18,18 +18,16 @@
 
 import copy
 import logging
+
 import pkg_resources
 
-from google.api_core.gapic_v1 import client_info
-
 from google.api_core import exceptions
-from google.cloud.automl_v1beta1 import AutoMlClient
-from google.cloud.automl_v1beta1 import PredictionServiceClient
-from google.cloud.automl_v1beta1.types import data_items
-from google.cloud.automl_v1beta1.services.tables import gcs_client
-from google.protobuf import struct_pb2
+from google.api_core.gapic_v1 import client_info
 import google.cloud.automl_v1beta1
-
+from google.cloud.automl_v1beta1 import AutoMlClient, PredictionServiceClient
+from google.cloud.automl_v1beta1.services.tables import gcs_client
+from google.cloud.automl_v1beta1.types import data_items
+from google.protobuf import struct_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
 _LOGGER = logging.getLogger(__name__)

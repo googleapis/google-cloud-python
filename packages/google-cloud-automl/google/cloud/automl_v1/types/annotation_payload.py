@@ -25,7 +25,6 @@ from google.cloud.automl_v1.types import text_extraction as gca_text_extraction
 from google.cloud.automl_v1.types import text_sentiment as gca_text_sentiment
 from google.cloud.automl_v1.types import translation as gca_translation
 
-
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1",
     manifest={

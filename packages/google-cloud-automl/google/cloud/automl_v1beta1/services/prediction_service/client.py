@@ -29,16 +29,15 @@ from typing import (
     cast,
 )
 
-from google.cloud.automl_v1beta1 import gapic_version as package_version
-
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
+from google.cloud.automl_v1beta1 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
 
 try:
@@ -48,12 +47,15 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.automl_v1beta1.types import annotation_payload
-from google.cloud.automl_v1beta1.types import data_items
-from google.cloud.automl_v1beta1.types import io
-from google.cloud.automl_v1beta1.types import operations
-from google.cloud.automl_v1beta1.types import prediction_service
-from .transports.base import PredictionServiceTransport, DEFAULT_CLIENT_INFO
+from google.cloud.automl_v1beta1.types import (
+    annotation_payload,
+    data_items,
+    io,
+    operations,
+    prediction_service,
+)
+
+from .transports.base import DEFAULT_CLIENT_INFO, PredictionServiceTransport
 from .transports.grpc import PredictionServiceGrpcTransport
 from .transports.grpc_asyncio import PredictionServiceGrpcAsyncIOTransport
 from .transports.rest import PredictionServiceRestTransport

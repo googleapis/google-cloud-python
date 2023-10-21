@@ -20,12 +20,11 @@ from typing import MutableMapping, MutableSequence
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import classification as gca_classification
-from google.cloud.automl_v1beta1.types import detection
-from google.cloud.automl_v1beta1.types import tables as gca_tables
 from google.cloud.automl_v1beta1.types import text_extraction as gca_text_extraction
 from google.cloud.automl_v1beta1.types import text_sentiment as gca_text_sentiment
+from google.cloud.automl_v1beta1.types import detection
+from google.cloud.automl_v1beta1.types import tables as gca_tables
 from google.cloud.automl_v1beta1.types import translation as gca_translation
-
 
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",

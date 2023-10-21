@@ -11,27 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    automl_v1/services_
-    automl_v1/types_
+    automl_v1/services
+    automl_v1/types
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    automl_v1beta1/services_
-    automl_v1beta1/types_
-
-
-Migration Guide
----------------
-
-See the guide below for instructions on migrating to the latest version.
-
-.. toctree::
-    :maxdepth: 2
-
-    UPGRADING
+    automl_v1beta1/services
+    automl_v1beta1/types
 
 
 Changelog
@@ -42,4 +31,4 @@ For a list of all ``google-cloud-automl`` releases:
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG

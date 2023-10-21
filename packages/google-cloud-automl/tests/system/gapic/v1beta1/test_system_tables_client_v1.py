@@ -15,17 +15,17 @@
 # limitations under the License.
 
 import os
-import pandas
-import pytest
 import random
 import string
 import time
 import unittest
 
-from google.cloud import automl_v1beta1
-from google.api_core import exceptions
-
+import pandas
+import pytest
 from test_utils.vpcsc_config import vpcsc_config
+
+from google.api_core import exceptions
+from google.cloud import automl_v1beta1
 
 PROJECT = os.environ["PROJECT_ID"]
 REGION = "us-central1"

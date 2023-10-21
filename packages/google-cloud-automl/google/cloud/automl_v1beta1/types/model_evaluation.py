@@ -19,14 +19,15 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.automl_v1beta1.types import classification
-from google.cloud.automl_v1beta1.types import detection
-from google.cloud.automl_v1beta1.types import regression
-from google.cloud.automl_v1beta1.types import text_extraction
-from google.cloud.automl_v1beta1.types import text_sentiment
-from google.cloud.automl_v1beta1.types import translation
+from google.cloud.automl_v1beta1.types import (
+    classification,
+    detection,
+    regression,
+    text_extraction,
+    text_sentiment,
+    translation,
+)
 from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",

@@ -16,10 +16,11 @@
 
 """Unit tests."""
 
+import re
+
 import mock
 import pandas
 import pytest
-import re
 
 from google.api_core import exceptions
 from google.auth.credentials import AnonymousCredentials

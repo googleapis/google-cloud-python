@@ -13,30 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
-
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
-from google.api_core import operations_v1
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
+import warnings
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.automl_v1beta1.types import annotation_spec
 from google.cloud.automl_v1beta1.types import column_spec
 from google.cloud.automl_v1beta1.types import column_spec as gca_column_spec
 from google.cloud.automl_v1beta1.types import dataset
 from google.cloud.automl_v1beta1.types import dataset as gca_dataset
-from google.cloud.automl_v1beta1.types import model
-from google.cloud.automl_v1beta1.types import model_evaluation
-from google.cloud.automl_v1beta1.types import service
+from google.cloud.automl_v1beta1.types import model, model_evaluation, service
 from google.cloud.automl_v1beta1.types import table_spec
 from google.cloud.automl_v1beta1.types import table_spec as gca_table_spec
 from google.longrunning import operations_pb2  # type: ignore
-from .base import AutoMlTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, AutoMlTransport
 from .grpc import AutoMlGrpcTransport
 
 

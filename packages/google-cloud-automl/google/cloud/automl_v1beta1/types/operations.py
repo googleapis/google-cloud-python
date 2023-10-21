@@ -23,7 +23,6 @@ from google.cloud.automl_v1beta1.types import io
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",
     manifest={
