@@ -1,0 +1,43 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.asset_v1p4beta1",
+  "protoPackage": "google.cloud.asset.v1p4beta1",
+  "schema": "1.0",
+  "services": {
+    "AssetService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AssetServiceClient",
+          "rpcs": {
+            "AnalyzeIamPolicy": {
+              "methods": [
+                "analyze_iam_policy"
+              ]
+            },
+            "ExportIamPolicyAnalysis": {
+              "methods": [
+                "export_iam_policy_analysis"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AssetServiceAsyncClient",
+          "rpcs": {
+            "AnalyzeIamPolicy": {
+              "methods": [
+                "analyze_iam_policy"
+              ]
+            },
+            "ExportIamPolicyAnalysis": {
+              "methods": [
+                "export_iam_policy_analysis"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
