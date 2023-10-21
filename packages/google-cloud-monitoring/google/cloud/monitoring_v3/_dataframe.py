@@ -23,7 +23,6 @@ except ImportError:  # pragma: NO COVER
 
 from google.cloud import monitoring_v3
 
-
 TOP_RESOURCE_LABELS = ("project_id", "aws_account", "location", "region", "zone")
 
 

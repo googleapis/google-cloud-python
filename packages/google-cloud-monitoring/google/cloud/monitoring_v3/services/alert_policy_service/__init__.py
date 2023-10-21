@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import AlertPolicyServiceClient
 from .async_client import AlertPolicyServiceAsyncClient
+from .client import AlertPolicyServiceClient
 
 __all__ = (
     "AlertPolicyServiceClient",

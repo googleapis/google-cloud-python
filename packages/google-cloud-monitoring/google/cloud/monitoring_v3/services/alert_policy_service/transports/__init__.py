@@ -20,7 +20,6 @@ from .base import AlertPolicyServiceTransport
 from .grpc import AlertPolicyServiceGrpcTransport
 from .grpc_asyncio import AlertPolicyServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

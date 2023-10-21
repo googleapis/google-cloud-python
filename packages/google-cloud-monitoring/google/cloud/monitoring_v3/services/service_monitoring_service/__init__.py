@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ServiceMonitoringServiceClient
 from .async_client import ServiceMonitoringServiceAsyncClient
+from .client import ServiceMonitoringServiceClient
 
 __all__ = (
     "ServiceMonitoringServiceClient",

@@ -22,40 +22,38 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
 
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.monitoring_v3.services.notification_channel_service import (
-    NotificationChannelServiceAsyncClient,
-)
-from google.cloud.monitoring_v3.services.notification_channel_service import (
-    NotificationChannelServiceClient,
-)
-from google.cloud.monitoring_v3.services.notification_channel_service import pagers
-from google.cloud.monitoring_v3.services.notification_channel_service import transports
-from google.cloud.monitoring_v3.types import common
-from google.cloud.monitoring_v3.types import mutation_record
-from google.cloud.monitoring_v3.types import notification
-from google.cloud.monitoring_v3.types import notification_service
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.monitoring_v3.services.notification_channel_service import (
+    NotificationChannelServiceAsyncClient,
+    NotificationChannelServiceClient,
+    pagers,
+    transports,
+)
+from google.cloud.monitoring_v3.types import (
+    common,
+    mutation_record,
+    notification,
+    notification_service,
+)
 
 
 def client_cert_source_callback():

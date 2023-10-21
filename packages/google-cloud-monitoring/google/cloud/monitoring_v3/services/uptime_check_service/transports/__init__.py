@@ -20,7 +20,6 @@ from .base import UptimeCheckServiceTransport
 from .grpc import UptimeCheckServiceGrpcTransport
 from .grpc_asyncio import UptimeCheckServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

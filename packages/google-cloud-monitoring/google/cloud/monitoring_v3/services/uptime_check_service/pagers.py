@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.monitoring_v3.types import uptime
-from google.cloud.monitoring_v3.types import uptime_service
+from google.cloud.monitoring_v3.types import uptime, uptime_service
 
 
 class ListUptimeCheckConfigsPager:
