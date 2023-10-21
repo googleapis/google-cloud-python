@@ -16,10 +16,10 @@
 """Unit tests for VPC-SC."""
 
 import pytest
+from test_utils.vpcsc_config import vpcsc_config
 
 from google.api_core import exceptions
 from google.cloud import translate_v3beta1
-from test_utils.vpcsc_config import vpcsc_config
 
 _VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy"
 
