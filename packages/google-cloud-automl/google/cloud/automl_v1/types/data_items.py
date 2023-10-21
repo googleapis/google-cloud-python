@@ -19,10 +19,8 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.automl_v1.types import geometry
-from google.cloud.automl_v1.types import io
+from google.cloud.automl_v1.types import geometry, io
 from google.cloud.automl_v1.types import text_segment as gca_text_segment
-
 
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1",

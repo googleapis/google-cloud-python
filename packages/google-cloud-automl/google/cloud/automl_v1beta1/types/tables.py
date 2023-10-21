@@ -19,12 +19,9 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.automl_v1beta1.types import column_spec
-from google.cloud.automl_v1beta1.types import data_stats
-from google.cloud.automl_v1beta1.types import ranges
+from google.cloud.automl_v1beta1.types import column_spec, data_stats, ranges
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",

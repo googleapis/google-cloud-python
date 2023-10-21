@@ -22,58 +22,60 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 from collections.abc import Iterable
-from google.protobuf import json_format
 import json
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
-from google.protobuf import json_format
 
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import future
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
-from google.api_core import operations_v1
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.automl_v1.services.auto_ml import AutoMlAsyncClient
-from google.cloud.automl_v1.services.auto_ml import AutoMlClient
-from google.cloud.automl_v1.services.auto_ml import pagers
-from google.cloud.automl_v1.services.auto_ml import transports
-from google.cloud.automl_v1.types import annotation_spec
-from google.cloud.automl_v1.types import classification
+from google.cloud.automl_v1.services.auto_ml import (
+    AutoMlAsyncClient,
+    AutoMlClient,
+    pagers,
+    transports,
+)
+from google.cloud.automl_v1.types import (
+    model_evaluation,
+    operations,
+    service,
+    text,
+    text_extraction,
+    text_sentiment,
+    translation,
+)
+from google.cloud.automl_v1.types import annotation_spec, classification
 from google.cloud.automl_v1.types import dataset
 from google.cloud.automl_v1.types import dataset as gca_dataset
-from google.cloud.automl_v1.types import detection
-from google.cloud.automl_v1.types import image
-from google.cloud.automl_v1.types import io
+from google.cloud.automl_v1.types import detection, image, io
 from google.cloud.automl_v1.types import model
 from google.cloud.automl_v1.types import model as gca_model
-from google.cloud.automl_v1.types import model_evaluation
-from google.cloud.automl_v1.types import operations
-from google.cloud.automl_v1.types import service
-from google.cloud.automl_v1.types import text
-from google.cloud.automl_v1.types import text_extraction
-from google.cloud.automl_v1.types import text_sentiment
-from google.cloud.automl_v1.types import translation
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
 
 
 def client_cert_source_callback():

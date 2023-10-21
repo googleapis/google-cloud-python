@@ -19,10 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.automl_v1beta1.types import annotation_payload
-from google.cloud.automl_v1beta1.types import data_items
-from google.cloud.automl_v1beta1.types import io
-
+from google.cloud.automl_v1beta1.types import annotation_payload, data_items, io
 
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",

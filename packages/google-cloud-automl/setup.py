@@ -46,7 +46,7 @@ extras = {
     "pandas": ["pandas>=1.0.5"],
     "storage": ["google-cloud-storage >=1.18.0, <3.0.0dev"],
 }
-url = "https://github.com/googleapis/python-automl"
+url = "https://github.com/googleapis/google-cloud-python"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 

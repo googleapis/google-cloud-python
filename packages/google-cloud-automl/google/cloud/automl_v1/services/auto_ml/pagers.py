@@ -18,16 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.automl_v1.types import dataset
-from google.cloud.automl_v1.types import model
-from google.cloud.automl_v1.types import model_evaluation
-from google.cloud.automl_v1.types import service
+from google.cloud.automl_v1.types import dataset, model, model_evaluation, service
 
 
 class ListDatasetsPager:

@@ -23,7 +23,7 @@ import pytest
 from google.api_core import exceptions
 from google.auth.credentials import AnonymousCredentials
 from google.cloud import automl_v1beta1
-from google.cloud.automl_v1beta1.types import data_types, data_items
+from google.cloud.automl_v1beta1.types import data_items, data_types
 from google.protobuf import struct_pb2 as struct
 
 PROJECT = "project"

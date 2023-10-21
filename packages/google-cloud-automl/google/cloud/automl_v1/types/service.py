@@ -19,13 +19,11 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.automl_v1.types import dataset as gca_dataset
-from google.cloud.automl_v1.types import image
-from google.cloud.automl_v1.types import io
-from google.cloud.automl_v1.types import model as gca_model
 from google.cloud.automl_v1.types import model_evaluation as gca_model_evaluation
+from google.cloud.automl_v1.types import dataset as gca_dataset
+from google.cloud.automl_v1.types import image, io
+from google.cloud.automl_v1.types import model as gca_model
 from google.protobuf import field_mask_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1",

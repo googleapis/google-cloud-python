@@ -18,93 +18,116 @@ from google.cloud.automl_v1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.auto_ml import AutoMlClient
-from .services.auto_ml import AutoMlAsyncClient
-from .services.prediction_service import PredictionServiceClient
-from .services.prediction_service import PredictionServiceAsyncClient
-
+from .services.auto_ml import AutoMlAsyncClient, AutoMlClient
+from .services.prediction_service import (
+    PredictionServiceAsyncClient,
+    PredictionServiceClient,
+)
 from .types.annotation_payload import AnnotationPayload
 from .types.annotation_spec import AnnotationSpec
-from .types.classification import ClassificationAnnotation
-from .types.classification import ClassificationEvaluationMetrics
-from .types.classification import ClassificationType
-from .types.data_items import Document
-from .types.data_items import DocumentDimensions
-from .types.data_items import ExamplePayload
-from .types.data_items import Image
-from .types.data_items import TextSnippet
+from .types.classification import (
+    ClassificationAnnotation,
+    ClassificationEvaluationMetrics,
+    ClassificationType,
+)
+from .types.data_items import (
+    Document,
+    DocumentDimensions,
+    ExamplePayload,
+    Image,
+    TextSnippet,
+)
 from .types.dataset import Dataset
-from .types.detection import BoundingBoxMetricsEntry
-from .types.detection import ImageObjectDetectionAnnotation
-from .types.detection import ImageObjectDetectionEvaluationMetrics
-from .types.geometry import BoundingPoly
-from .types.geometry import NormalizedVertex
-from .types.image import ImageClassificationDatasetMetadata
-from .types.image import ImageClassificationModelDeploymentMetadata
-from .types.image import ImageClassificationModelMetadata
-from .types.image import ImageObjectDetectionDatasetMetadata
-from .types.image import ImageObjectDetectionModelDeploymentMetadata
-from .types.image import ImageObjectDetectionModelMetadata
-from .types.io import BatchPredictInputConfig
-from .types.io import BatchPredictOutputConfig
-from .types.io import DocumentInputConfig
-from .types.io import GcsDestination
-from .types.io import GcsSource
-from .types.io import InputConfig
-from .types.io import ModelExportOutputConfig
-from .types.io import OutputConfig
+from .types.detection import (
+    BoundingBoxMetricsEntry,
+    ImageObjectDetectionAnnotation,
+    ImageObjectDetectionEvaluationMetrics,
+)
+from .types.geometry import BoundingPoly, NormalizedVertex
+from .types.image import (
+    ImageClassificationDatasetMetadata,
+    ImageClassificationModelDeploymentMetadata,
+    ImageClassificationModelMetadata,
+    ImageObjectDetectionDatasetMetadata,
+    ImageObjectDetectionModelDeploymentMetadata,
+    ImageObjectDetectionModelMetadata,
+)
+from .types.io import (
+    BatchPredictInputConfig,
+    BatchPredictOutputConfig,
+    DocumentInputConfig,
+    GcsDestination,
+    GcsSource,
+    InputConfig,
+    ModelExportOutputConfig,
+    OutputConfig,
+)
 from .types.model import Model
 from .types.model_evaluation import ModelEvaluation
-from .types.operations import BatchPredictOperationMetadata
-from .types.operations import CreateDatasetOperationMetadata
-from .types.operations import CreateModelOperationMetadata
-from .types.operations import DeleteOperationMetadata
-from .types.operations import DeployModelOperationMetadata
-from .types.operations import ExportDataOperationMetadata
-from .types.operations import ExportModelOperationMetadata
-from .types.operations import ImportDataOperationMetadata
-from .types.operations import OperationMetadata
-from .types.operations import UndeployModelOperationMetadata
-from .types.prediction_service import BatchPredictRequest
-from .types.prediction_service import BatchPredictResult
-from .types.prediction_service import PredictRequest
-from .types.prediction_service import PredictResponse
-from .types.service import CreateDatasetRequest
-from .types.service import CreateModelRequest
-from .types.service import DeleteDatasetRequest
-from .types.service import DeleteModelRequest
-from .types.service import DeployModelRequest
-from .types.service import ExportDataRequest
-from .types.service import ExportModelRequest
-from .types.service import GetAnnotationSpecRequest
-from .types.service import GetDatasetRequest
-from .types.service import GetModelEvaluationRequest
-from .types.service import GetModelRequest
-from .types.service import ImportDataRequest
-from .types.service import ListDatasetsRequest
-from .types.service import ListDatasetsResponse
-from .types.service import ListModelEvaluationsRequest
-from .types.service import ListModelEvaluationsResponse
-from .types.service import ListModelsRequest
-from .types.service import ListModelsResponse
-from .types.service import UndeployModelRequest
-from .types.service import UpdateDatasetRequest
-from .types.service import UpdateModelRequest
-from .types.text import TextClassificationDatasetMetadata
-from .types.text import TextClassificationModelMetadata
-from .types.text import TextExtractionDatasetMetadata
-from .types.text import TextExtractionModelMetadata
-from .types.text import TextSentimentDatasetMetadata
-from .types.text import TextSentimentModelMetadata
-from .types.text_extraction import TextExtractionAnnotation
-from .types.text_extraction import TextExtractionEvaluationMetrics
+from .types.operations import (
+    BatchPredictOperationMetadata,
+    CreateDatasetOperationMetadata,
+    CreateModelOperationMetadata,
+    DeleteOperationMetadata,
+    DeployModelOperationMetadata,
+    ExportDataOperationMetadata,
+    ExportModelOperationMetadata,
+    ImportDataOperationMetadata,
+    OperationMetadata,
+    UndeployModelOperationMetadata,
+)
+from .types.prediction_service import (
+    BatchPredictRequest,
+    BatchPredictResult,
+    PredictRequest,
+    PredictResponse,
+)
+from .types.service import (
+    CreateDatasetRequest,
+    CreateModelRequest,
+    DeleteDatasetRequest,
+    DeleteModelRequest,
+    DeployModelRequest,
+    ExportDataRequest,
+    ExportModelRequest,
+    GetAnnotationSpecRequest,
+    GetDatasetRequest,
+    GetModelEvaluationRequest,
+    GetModelRequest,
+    ImportDataRequest,
+    ListDatasetsRequest,
+    ListDatasetsResponse,
+    ListModelEvaluationsRequest,
+    ListModelEvaluationsResponse,
+    ListModelsRequest,
+    ListModelsResponse,
+    UndeployModelRequest,
+    UpdateDatasetRequest,
+    UpdateModelRequest,
+)
+from .types.text import (
+    TextClassificationDatasetMetadata,
+    TextClassificationModelMetadata,
+    TextExtractionDatasetMetadata,
+    TextExtractionModelMetadata,
+    TextSentimentDatasetMetadata,
+    TextSentimentModelMetadata,
+)
+from .types.text_extraction import (
+    TextExtractionAnnotation,
+    TextExtractionEvaluationMetrics,
+)
 from .types.text_segment import TextSegment
-from .types.text_sentiment import TextSentimentAnnotation
-from .types.text_sentiment import TextSentimentEvaluationMetrics
-from .types.translation import TranslationAnnotation
-from .types.translation import TranslationDatasetMetadata
-from .types.translation import TranslationEvaluationMetrics
-from .types.translation import TranslationModelMetadata
+from .types.text_sentiment import (
+    TextSentimentAnnotation,
+    TextSentimentEvaluationMetrics,
+)
+from .types.translation import (
+    TranslationAnnotation,
+    TranslationDatasetMetadata,
+    TranslationEvaluationMetrics,
+    TranslationModelMetadata,
+)
 
 __all__ = (
     "AutoMlAsyncClient",

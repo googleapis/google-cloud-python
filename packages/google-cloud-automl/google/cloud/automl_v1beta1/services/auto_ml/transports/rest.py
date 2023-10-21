@@ -14,25 +14,28 @@
 # limitations under the License.
 #
 
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import rest_streaming
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from google.api_core import operations_v1
-from requests import __version__ as requests_version
 import dataclasses
+import json  # type: ignore
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+
+import grpc  # type: ignore
+from requests import __version__ as requests_version
+
+from google.api_core import (
+    gapic_v1,
+    operations_v1,
+    path_template,
+    rest_helpers,
+    rest_streaming,
+)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import json_format
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -45,15 +48,13 @@ from google.cloud.automl_v1beta1.types import column_spec
 from google.cloud.automl_v1beta1.types import column_spec as gca_column_spec
 from google.cloud.automl_v1beta1.types import dataset
 from google.cloud.automl_v1beta1.types import dataset as gca_dataset
-from google.cloud.automl_v1beta1.types import model
-from google.cloud.automl_v1beta1.types import model_evaluation
-from google.cloud.automl_v1beta1.types import service
+from google.cloud.automl_v1beta1.types import model, model_evaluation, service
 from google.cloud.automl_v1beta1.types import table_spec
 from google.cloud.automl_v1beta1.types import table_spec as gca_table_spec
 from google.longrunning import operations_pb2  # type: ignore
 
-from .base import AutoMlTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-
+from .base import AutoMlTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,

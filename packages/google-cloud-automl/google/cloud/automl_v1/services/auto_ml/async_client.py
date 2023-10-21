@@ -28,13 +28,12 @@ from typing import (
     Union,
 )
 
-from google.cloud.automl_v1 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.automl_v1 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
 
 try:
@@ -45,28 +44,28 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.automl_v1.services.auto_ml import pagers
-from google.cloud.automl_v1.types import annotation_spec
-from google.cloud.automl_v1.types import classification
+from google.cloud.automl_v1.types import (
+    model_evaluation,
+    operations,
+    service,
+    text,
+    text_extraction,
+    text_sentiment,
+    translation,
+)
+from google.cloud.automl_v1.types import annotation_spec, classification
 from google.cloud.automl_v1.types import dataset
 from google.cloud.automl_v1.types import dataset as gca_dataset
-from google.cloud.automl_v1.types import detection
-from google.cloud.automl_v1.types import image
-from google.cloud.automl_v1.types import io
+from google.cloud.automl_v1.types import detection, image, io
 from google.cloud.automl_v1.types import model
 from google.cloud.automl_v1.types import model as gca_model
-from google.cloud.automl_v1.types import model_evaluation
-from google.cloud.automl_v1.types import operations
-from google.cloud.automl_v1.types import service
-from google.cloud.automl_v1.types import text
-from google.cloud.automl_v1.types import text_extraction
-from google.cloud.automl_v1.types import text_sentiment
-from google.cloud.automl_v1.types import translation
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import AutoMlTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import AutoMlGrpcAsyncIOTransport
+
 from .client import AutoMlClient
+from .transports.base import DEFAULT_CLIENT_INFO, AutoMlTransport
+from .transports.grpc_asyncio import AutoMlGrpcAsyncIOTransport
 
 
 class AutoMlAsyncClient:

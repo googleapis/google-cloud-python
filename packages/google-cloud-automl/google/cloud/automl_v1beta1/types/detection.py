@@ -22,7 +22,6 @@ import proto  # type: ignore
 from google.cloud.automl_v1beta1.types import geometry
 from google.protobuf import duration_pb2  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",
     manifest={

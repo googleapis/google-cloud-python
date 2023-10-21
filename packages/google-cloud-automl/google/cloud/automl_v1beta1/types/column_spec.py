@@ -22,7 +22,6 @@ import proto  # type: ignore
 from google.cloud.automl_v1beta1.types import data_stats as gca_data_stats
 from google.cloud.automl_v1beta1.types import data_types
 
-
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",
     manifest={
