@@ -1,34 +1,22 @@
-Python Client for Google Cloud Vision
-=====================================
+Python Client for Cloud Vision
+==============================
 
-|GA| |pypi| |versions|
+|stable| |pypi| |versions|
 
-The `Google Cloud Vision`_  API enables developers to
-understand the content of an image by encapsulating powerful machine
-learning models in an easy to use REST API. It quickly classifies images
-into thousands of categories (e.g., "sailboat", "lion", "Eiffel Tower"),
-detects individual objects and faces within images, and finds and reads
-printed words contained within images. You can build metadata on your
-image catalog, moderate offensive content, or enable new marketing
-scenarios through image sentiment analysis. Analyze images uploaded
-in the request or integrate with your image storage on Google Cloud
-Storage.
+`Cloud Vision`_: allows developers to easily integrate vision detection features within applications, including image labeling, face and landmark detection, optical character recognition (OCR), and tagging of explicit content.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-vision.svg
    :target: https://pypi.org/project/google-cloud-vision/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vision.svg
    :target: https://pypi.org/project/google-cloud-vision/
-.. _Vision: https://cloud.google.com/vision/
-
-.. _Google Cloud Vision: https://cloud.google.com/vision/
+.. _Cloud Vision: https://cloud.google.com/vision/docs/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vision/latest
-.. _Product Documentation: https://cloud.google.com/vision/reference/rest/
-
+.. _Product Documentation:  https://cloud.google.com/vision/docs/
 
 Quick Start
 -----------
@@ -37,51 +25,64 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Vision API.`_
+3. `Enable the Cloud Vision.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Vision API.:  https://cloud.google.com/vision
+.. _Enable the Cloud Vision.:  https://cloud.google.com/vision/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
 
-Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
-create isolated Python environments. The basic problem it addresses is one of
-dependencies and versions, and indirectly permissions.
+Install this library in a virtual environment using `venv`_. `venv`_ is a tool that
+creates isolated Python environments. These isolated environments can have separate
+versions of Python packages, which allows you to isolate one project's dependencies
+from the dependencies of other projects.
 
-With `virtualenv`_, it's possible to install this library without needing system
+With `venv`_, it's possible to install this library without needing system
 install permissions, and without clashing with the installed system
 dependencies.
 
-.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+.. _`venv`: https://docs.python.org/3/library/venv.html
+
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/`_ folder.
+
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-vision/samples
 
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
+Python.
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7.
+Python >= 3.7
 
-The last version of this library compatible with Python 2.7 is google-cloud-vision==1.0.0.
+.. _active: https://devguide.python.org/devcycle/#in-development-main-branch
+.. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
-RaspberryPi ARM devices 
-^^^^^^^^^^^^^^^^^^^^^^^
-Note: Raspberry Pi ARMv6 is not supported.
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an `end-of-life`_
+version of Python, we recommend that you update as soon as possible to an actively supported version.
+
+.. _end-of-life: https://devguide.python.org/devcycle/#end-of-life-branches
 
 Mac/Linux
 ^^^^^^^^^
 
 .. code-block:: console
 
-    pip install virtualenv
-    virtualenv <your-env>
+    python3 -m venv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-vision
+    pip install google-cloud-vision
 
 
 Windows
@@ -89,53 +90,19 @@ Windows
 
 .. code-block:: console
 
-    pip install virtualenv
-    virtualenv <your-env>
-    <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-vision
-
-
-Example Usage
-~~~~~~~~~~~~~
-
-.. code-block:: python
-
-   from google.cloud import vision
-
-   client = vision.ImageAnnotatorClient()
-   response = client.annotate_image({
-     'image': {'source': {'image_uri': 'gs://my-test-bucket/image.jpg'}},
-     'features': [{'type_': vision.Feature.Type.FACE_DETECTION}]
-   })
-
-Known Limitations
-~~~~~~~~~~~~~~~~~
-
-Pylint Does Not Work Out Of The Box
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Pylint throws errors by default when checking code that uses feature methods on the 
-``ImageAnnotatorClient`` class, such as ``label_detection()`` or ``text_detection()``.
-
-As a workaround, member checking on all methods of the ``ImageAnnotatorClient`` can be
-disabled using Pylint's ``generated-members`` option. To do this on a line-by-line basis,
-add a comment like ``# pylint: disable=no-member`` to suppress this error. To do this
-for a whole project, you can add the following lines to a ``.pylintrc`` file in your project::
-
-  [TYPECHECK]
-  
-  generated-members=<<REGULAR EXPRESSION>>
-
-Substitute a regular expression of your choosing that matches all lines for which you want to
-disable this error check. For example, if you choose a convention of naming your
-``ImageAnnotatorClient`` variables ``image_annotator_client``, then your regex could be
-``image_annotator_client.*`` or something similar.
-
+    py -m venv <your-env>
+    .\<your-env>\Scripts\activate
+    pip install google-cloud-vision
 
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Vision
-   API to see other available methods on the client.
--  Read the `Product documentation`_ to learn
+-  Read the `Client Library Documentation`_ for Cloud Vision
+   to see other available methods on the client.
+-  Read the `Cloud Vision Product documentation`_ to learn
    more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
+
+.. _Cloud Vision Product documentation:  https://cloud.google.com/vision/docs/
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
