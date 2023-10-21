@@ -1,9 +1,9 @@
-Python Client for Analytics Admin API
-=====================================
+Python Client for Analytics Admin
+=================================
 
 |preview| |pypi| |versions|
 
-`Analytics Admin API`_: allows you to manage Google Analytics accounts and properties.
+`Analytics Admin`_: allows you to manage Google Analytics accounts and properties.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Analytics Admin API
    :target: https://pypi.org/project/google-analytics-admin/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-analytics-admin.svg
    :target: https://pypi.org/project/google-analytics-admin/
-.. _Analytics Admin API: https://developers.google.com/analytics/
+.. _Analytics Admin: https://developers.google.com/analytics/
 .. _Client Library Documentation: https://googleapis.dev/python/analyticsadmin/latest
 .. _Product Documentation:  https://developers.google.com/analytics/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Analytics Admin API.`_
+3. `Enable the Analytics Admin.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Analytics Admin API.:  https://developers.google.com/analytics/
+.. _Enable the Analytics Admin.:  https://developers.google.com/analytics/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-analytics-admin/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-analytics-admin/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Analytics Admin API
+-  Read the `Client Library Documentation`_ for Analytics Admin
    to see other available methods on the client.
--  Read the `Analytics Admin API Product documentation`_ to learn
+-  Read the `Analytics Admin Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Analytics Admin API Product documentation:  https://developers.google.com/analytics/
+.. _Analytics Admin Product documentation:  https://developers.google.com/analytics/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
