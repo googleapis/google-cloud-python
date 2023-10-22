@@ -1,9 +1,9 @@
-Python Client for Cloud Run API
-===============================
+Python Client for Cloud Run
+===========================
 
 |preview| |pypi| |versions|
 
-`Cloud Run API`_: is a managed compute platform that enables you to run containers that are invocable via requests or events.
+`Cloud Run`_: is a managed compute platform that enables you to run containers that are invocable via requests or events.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Run API
    :target: https://pypi.org/project/google-cloud-run/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-run.svg
    :target: https://pypi.org/project/google-cloud-run/
-.. _Cloud Run API: https://cloud.google.com/run/docs
+.. _Cloud Run: https://cloud.google.com/run/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/run/latest
 .. _Product Documentation:  https://cloud.google.com/run/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Run API.`_
+3. `Enable the Cloud Run.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Run API.:  https://cloud.google.com/run/docs
+.. _Enable the Cloud Run.:  https://cloud.google.com/run/docs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-run/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-run/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Run API
+-  Read the `Client Library Documentation`_ for Cloud Run
    to see other available methods on the client.
--  Read the `Cloud Run API Product documentation`_ to learn
+-  Read the `Cloud Run Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Run API Product documentation:  https://cloud.google.com/run/docs
+.. _Cloud Run Product documentation:  https://cloud.google.com/run/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
