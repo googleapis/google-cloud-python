@@ -13,12 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .geometry import (
-    BoundingPoly,
-    NormalizedVertex,
-    Position,
-    Vertex,
-)
+from .geometry import BoundingPoly, NormalizedVertex, Position, Vertex
 from .image_annotator import (
     AnnotateFileResponse,
     AnnotateImageRequest,
@@ -46,6 +41,7 @@ from .image_annotator import (
     ImageSource,
     InputConfig,
     LatLongRect,
+    Likelihood,
     LocationInfo,
     OperationMetadata,
     OutputConfig,
@@ -53,19 +49,9 @@ from .image_annotator import (
     SafeSearchAnnotation,
     TextDetectionParams,
     WebDetectionParams,
-    Likelihood,
 )
-from .text_annotation import (
-    Block,
-    Page,
-    Paragraph,
-    Symbol,
-    TextAnnotation,
-    Word,
-)
-from .web_detection import (
-    WebDetection,
-)
+from .text_annotation import Block, Page, Paragraph, Symbol, TextAnnotation, Word
+from .web_detection import WebDetection
 
 __all__ = (
     "BoundingPoly",

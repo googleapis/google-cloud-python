@@ -14,24 +14,21 @@
 
 """System tests for Vision API."""
 
-import grpc
 import io
 import json
 import os
 import time
 import unittest
 
-import pytest
-
 from google.api_core import exceptions
-from google.cloud import storage
-from google.cloud import vision
 from google.protobuf import field_mask_pb2 as field_mask
-
+import grpc
+import pytest
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
 from test_utils.vpcsc_config import vpcsc_config
 
+from google.cloud import storage, vision
 
 _SYS_TESTS_DIR = os.path.realpath(os.path.dirname(__file__))
 FACE_FILE = os.path.join(_SYS_TESTS_DIR, "data", "faces.jpg")

@@ -13,13 +13,13 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+
 import unittest
 
+from google.auth.credentials import Credentials
 import mock
 
-from google.auth.credentials import Credentials
-from google.cloud import vision
-from google.cloud import vision_helpers
+from google.cloud import vision, vision_helpers
 
 
 class DecoratorTests(unittest.TestCase):

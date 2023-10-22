@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import ImageAnnotatorTransport
 from .grpc import ImageAnnotatorGrpcTransport
 from .grpc_asyncio import ImageAnnotatorGrpcAsyncIOTransport
-from .rest import ImageAnnotatorRestTransport
-from .rest import ImageAnnotatorRestInterceptor
-
+from .rest import ImageAnnotatorRestInterceptor, ImageAnnotatorRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ImageAnnotatorTransport]]

@@ -13,16 +13,16 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+
 import builtins
 import io
 import unittest
 
+from google.auth.credentials import Credentials
 import mock
 
-from google.auth.credentials import Credentials
-
-from google.cloud.vision_v1 import ImageAnnotatorClient
 import google.cloud.vision_v1 as vision_v1
+from google.cloud.vision_v1 import ImageAnnotatorClient
 
 
 class TestSingleImageHelper(unittest.TestCase):
