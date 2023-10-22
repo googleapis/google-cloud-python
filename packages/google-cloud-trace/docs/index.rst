@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    trace_v2/services_
-    trace_v2/types_
+    trace_v2/services
+    trace_v2/types
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    trace_v1/services_
-    trace_v1/types_
+    trace_v1/services
+    trace_v1/types
 
 
 Changelog
@@ -31,4 +31,4 @@ For a list of all ``google-cloud-trace`` releases:
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG
