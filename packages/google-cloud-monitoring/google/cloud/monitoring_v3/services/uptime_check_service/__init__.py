@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import UptimeCheckServiceClient
 from .async_client import UptimeCheckServiceAsyncClient
+from .client import UptimeCheckServiceClient
 
 __all__ = (
     "UptimeCheckServiceClient",

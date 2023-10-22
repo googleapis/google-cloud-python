@@ -18,14 +18,15 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
 from google.api import metric_pb2  # type: ignore
 from google.api import monitored_resource_pb2  # type: ignore
+
 from google.cloud.monitoring_v3.types import metric as gm_metric
 from google.cloud.monitoring_v3.types import metric_service
 

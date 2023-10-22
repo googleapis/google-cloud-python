@@ -20,7 +20,6 @@ from .base import ServiceMonitoringServiceTransport
 from .grpc import ServiceMonitoringServiceGrpcTransport
 from .grpc_asyncio import ServiceMonitoringServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

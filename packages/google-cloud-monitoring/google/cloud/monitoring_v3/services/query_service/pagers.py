@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.monitoring_v3.types import metric
-from google.cloud.monitoring_v3.types import metric_service
+from google.cloud.monitoring_v3.types import metric, metric_service
 
 
 class QueryTimeSeriesPager:

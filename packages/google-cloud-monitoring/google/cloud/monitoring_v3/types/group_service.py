@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.api import monitored_resource_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.monitoring_v3.types import common
 from google.cloud.monitoring_v3.types import group as gm_group
-
 
 __protobuf__ = proto.module(
     package="google.monitoring.v3",

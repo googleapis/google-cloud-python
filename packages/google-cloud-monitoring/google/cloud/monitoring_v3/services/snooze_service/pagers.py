@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.monitoring_v3.types import snooze
-from google.cloud.monitoring_v3.types import snooze_service
+from google.cloud.monitoring_v3.types import snooze, snooze_service
 
 
 class ListSnoozesPager:

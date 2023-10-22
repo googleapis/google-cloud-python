@@ -29,17 +29,17 @@ from typing import (
     cast,
 )
 
-from google.cloud.monitoring_v3 import gapic_version as package_version
-
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.monitoring_v3 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -50,11 +50,13 @@ from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore
 from google.api import monitored_resource_pb2  # type: ignore
+
 from google.cloud.monitoring_v3.services.metric_service import pagers
 from google.cloud.monitoring_v3.types import common
 from google.cloud.monitoring_v3.types import metric as gm_metric
 from google.cloud.monitoring_v3.types import metric_service
-from .transports.base import MetricServiceTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, MetricServiceTransport
 from .transports.grpc import MetricServiceGrpcTransport
 from .transports.grpc_asyncio import MetricServiceGrpcAsyncIOTransport
 
