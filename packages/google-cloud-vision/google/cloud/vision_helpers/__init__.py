@@ -13,9 +13,9 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-import proto
 
 from google.api_core import protobuf_helpers as protobuf
+import proto
 
 
 class VisionHelpers(object):

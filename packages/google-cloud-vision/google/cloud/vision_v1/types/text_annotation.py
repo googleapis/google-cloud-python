@@ -21,7 +21,6 @@ import proto  # type: ignore
 
 from google.cloud.vision_v1.types import geometry
 
-
 __protobuf__ = proto.module(
     package="google.cloud.vision.v1",
     manifest={
