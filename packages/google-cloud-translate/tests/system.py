@@ -15,11 +15,11 @@
 
 
 import os
-import pytest
 import unittest
 
-from google.cloud import translate_v2
-from google.cloud import translate
+import pytest
+
+from google.cloud import translate, translate_v2
 
 
 class Config(object):
