@@ -17,9 +17,7 @@
 
 import proto  # type: ignore
 
-
 from google.monitoring.dashboard_v1.types import layouts
-
 
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",

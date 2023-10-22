@@ -17,7 +17,6 @@
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",
     manifest={

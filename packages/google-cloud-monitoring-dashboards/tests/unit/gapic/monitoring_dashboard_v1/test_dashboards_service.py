@@ -22,55 +22,51 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 from collections.abc import Iterable
-from google.protobuf import json_format
 import json
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
-from google.protobuf import json_format
 
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.monitoring_dashboard_v1.services.dashboards_service import (
-    DashboardsServiceAsyncClient,
-)
-from google.cloud.monitoring_dashboard_v1.services.dashboards_service import (
-    DashboardsServiceClient,
-)
-from google.cloud.monitoring_dashboard_v1.services.dashboards_service import pagers
-from google.cloud.monitoring_dashboard_v1.services.dashboards_service import transports
-from google.cloud.monitoring_dashboard_v1.types import alertchart
-from google.cloud.monitoring_dashboard_v1.types import collapsible_group
-from google.cloud.monitoring_dashboard_v1.types import common
-from google.cloud.monitoring_dashboard_v1.types import dashboard
-from google.cloud.monitoring_dashboard_v1.types import dashboard_filter
-from google.cloud.monitoring_dashboard_v1.types import dashboards_service
-from google.cloud.monitoring_dashboard_v1.types import layouts
-from google.cloud.monitoring_dashboard_v1.types import logs_panel
-from google.cloud.monitoring_dashboard_v1.types import metrics
-from google.cloud.monitoring_dashboard_v1.types import scorecard
-from google.cloud.monitoring_dashboard_v1.types import table
-from google.cloud.monitoring_dashboard_v1.types import table_display_options
-from google.cloud.monitoring_dashboard_v1.types import text
-from google.cloud.monitoring_dashboard_v1.types import widget
-from google.cloud.monitoring_dashboard_v1.types import xychart
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
-import google.auth
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+from google.cloud.monitoring_dashboard_v1.services.dashboards_service import (
+    DashboardsServiceAsyncClient,
+    DashboardsServiceClient,
+    pagers,
+    transports,
+)
+from google.cloud.monitoring_dashboard_v1.types import (
+    alertchart,
+    collapsible_group,
+    common,
+    dashboard,
+    dashboard_filter,
+    dashboards_service,
+    layouts,
+    logs_panel,
+    metrics,
+    scorecard,
+    table,
+    table_display_options,
+    text,
+    widget,
+    xychart,
+)
 
 
 def client_cert_source_callback():

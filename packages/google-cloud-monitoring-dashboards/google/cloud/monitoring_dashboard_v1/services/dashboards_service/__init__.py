@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import DashboardsServiceClient
 from .async_client import DashboardsServiceAsyncClient
+from .client import DashboardsServiceClient
 
 __all__ = (
     "DashboardsServiceClient",

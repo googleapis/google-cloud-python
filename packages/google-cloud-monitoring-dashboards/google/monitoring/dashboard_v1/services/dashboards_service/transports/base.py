@@ -17,17 +17,15 @@
 
 import abc
 import typing
-import pkg_resources
 
-from google import auth
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.auth import credentials  # type: ignore
-
-from google.monitoring.dashboard_v1.types import dashboard
-from google.monitoring.dashboard_v1.types import dashboards_service
 from google.protobuf import empty_pb2 as empty  # type: ignore
+import pkg_resources
 
+from google import auth
+from google.monitoring.dashboard_v1.types import dashboard, dashboards_service
 
 try:
     _client_info = gapic_v1.client_info.ClientInfo(

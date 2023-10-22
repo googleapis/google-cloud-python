@@ -15,14 +15,12 @@
 # limitations under the License.
 #
 
+from google.protobuf import empty_pb2 as empty  # type: ignore
 import proto  # type: ignore
-
 
 from google.monitoring.dashboard_v1.types import scorecard as gmd_scorecard
 from google.monitoring.dashboard_v1.types import text as gmd_text
 from google.monitoring.dashboard_v1.types import xychart
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",

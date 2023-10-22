@@ -15,11 +15,8 @@
 # limitations under the License.
 #
 
-import proto  # type: ignore
-
-
 from google.protobuf import duration_pb2 as duration  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",

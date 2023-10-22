@@ -19,23 +19,21 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Sequence, Tuple, Type, Union
-import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
+import google.api_core.client_options as ClientOptions  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 from google.monitoring.dashboard_v1.services.dashboards_service import pagers
-from google.monitoring.dashboard_v1.types import dashboard
-from google.monitoring.dashboard_v1.types import dashboards_service
-from google.monitoring.dashboard_v1.types import layouts
+from google.monitoring.dashboard_v1.types import dashboard, dashboards_service, layouts
 
+from .client import DashboardsServiceClient
 from .transports.base import DashboardsServiceTransport
 from .transports.grpc_asyncio import DashboardsServiceGrpcAsyncIOTransport
-from .client import DashboardsServiceClient
 
 
 class DashboardsServiceAsyncClient:

@@ -13,23 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .alertchart import (
-    AlertChart,
-)
-from .collapsible_group import (
-    CollapsibleGroup,
-)
-from .common import (
-    Aggregation,
-    PickTimeSeriesFilter,
-    StatisticalTimeSeriesFilter,
-)
-from .dashboard import (
-    Dashboard,
-)
-from .dashboard_filter import (
-    DashboardFilter,
-)
+from .alertchart import AlertChart
+from .collapsible_group import CollapsibleGroup
+from .common import Aggregation, PickTimeSeriesFilter, StatisticalTimeSeriesFilter
+from .dashboard import Dashboard
+from .dashboard_filter import DashboardFilter
 from .dashboards_service import (
     CreateDashboardRequest,
     DeleteDashboardRequest,
@@ -38,41 +26,21 @@ from .dashboards_service import (
     ListDashboardsResponse,
     UpdateDashboardRequest,
 )
-from .layouts import (
-    ColumnLayout,
-    GridLayout,
-    MosaicLayout,
-    RowLayout,
-)
-from .logs_panel import (
-    LogsPanel,
-)
+from .layouts import ColumnLayout, GridLayout, MosaicLayout, RowLayout
+from .logs_panel import LogsPanel
 from .metrics import (
+    SparkChartType,
     Threshold,
     TimeSeriesFilter,
     TimeSeriesFilterRatio,
     TimeSeriesQuery,
-    SparkChartType,
 )
-from .scorecard import (
-    Scorecard,
-)
-from .table import (
-    TimeSeriesTable,
-)
-from .table_display_options import (
-    TableDisplayOptions,
-)
-from .text import (
-    Text,
-)
-from .widget import (
-    Widget,
-)
-from .xychart import (
-    ChartOptions,
-    XyChart,
-)
+from .scorecard import Scorecard
+from .table import TimeSeriesTable
+from .table_display_options import TableDisplayOptions
+from .text import Text
+from .widget import Widget
+from .xychart import ChartOptions, XyChart
 
 __all__ = (
     "AlertChart",

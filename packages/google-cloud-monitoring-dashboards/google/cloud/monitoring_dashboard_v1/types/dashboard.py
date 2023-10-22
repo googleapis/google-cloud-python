@@ -19,9 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.monitoring_dashboard_v1.types import dashboard_filter
-from google.cloud.monitoring_dashboard_v1.types import layouts
-
+from google.cloud.monitoring_dashboard_v1.types import dashboard_filter, layouts
 
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",

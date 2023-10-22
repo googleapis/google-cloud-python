@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import DashboardsServiceTransport
 from .grpc import DashboardsServiceGrpcTransport
 from .grpc_asyncio import DashboardsServiceGrpcAsyncIOTransport
-from .rest import DashboardsServiceRestTransport
-from .rest import DashboardsServiceRestInterceptor
-
+from .rest import DashboardsServiceRestInterceptor, DashboardsServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DashboardsServiceTransport]]

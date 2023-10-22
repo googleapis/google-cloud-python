@@ -28,14 +28,14 @@ from typing import (
     Union,
 )
 
-from google.cloud.monitoring_dashboard_v1 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.monitoring_dashboard_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -43,13 +43,16 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.services.dashboards_service import pagers
-from google.cloud.monitoring_dashboard_v1.types import dashboard
-from google.cloud.monitoring_dashboard_v1.types import dashboard_filter
-from google.cloud.monitoring_dashboard_v1.types import dashboards_service
-from google.cloud.monitoring_dashboard_v1.types import layouts
-from .transports.base import DashboardsServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import DashboardsServiceGrpcAsyncIOTransport
+from google.cloud.monitoring_dashboard_v1.types import (
+    dashboard,
+    dashboard_filter,
+    dashboards_service,
+    layouts,
+)
+
 from .client import DashboardsServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, DashboardsServiceTransport
+from .transports.grpc_asyncio import DashboardsServiceGrpcAsyncIOTransport
 
 
 class DashboardsServiceAsyncClient:
