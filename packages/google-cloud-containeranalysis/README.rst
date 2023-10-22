@@ -1,9 +1,9 @@
-Python Client for Container Analysis API
-========================================
+Python Client for Container Analysis
+====================================
 
 |stable| |pypi| |versions|
 
-`Container Analysis API`_: is a service that provides vulnerability scanning and metadata storage for software artifacts. The service performs vulnerability scans on built software artifacts, such as the images in Container Registry, then stores the resulting metadata and makes it available for consumption through an API. The metadata may come from several sources, including vulnerability scanning, other Cloud services, and third-party providers.
+`Container Analysis`_: is a service that provides vulnerability scanning and metadata storage for software artifacts. The service performs vulnerability scans on built software artifacts, such as the images in Container Registry, then stores the resulting metadata and makes it available for consumption through an API. The metadata may come from several sources, including vulnerability scanning, other Cloud services, and third-party providers.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Container Analysis API
    :target: https://pypi.org/project/google-cloud-containeranalysis/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-containeranalysis.svg
    :target: https://pypi.org/project/google-cloud-containeranalysis/
-.. _Container Analysis API: https://cloud.google.com/container-registry/docs/container-analysis
+.. _Container Analysis: https://cloud.google.com/container-registry/docs/container-analysis
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/containeranalysis/latest
 .. _Product Documentation:  https://cloud.google.com/container-registry/docs/container-analysis
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Container Analysis API.`_
+3. `Enable the Container Analysis.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Container Analysis API.:  https://cloud.google.com/container-registry/docs/container-analysis
+.. _Enable the Container Analysis.:  https://cloud.google.com/container-registry/docs/container-analysis
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-containeranalysis/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-containeranalysis/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Container Analysis API
+-  Read the `Client Library Documentation`_ for Container Analysis
    to see other available methods on the client.
--  Read the `Container Analysis API Product documentation`_ to learn
+-  Read the `Container Analysis Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Container Analysis API Product documentation:  https://cloud.google.com/container-registry/docs/container-analysis
+.. _Container Analysis Product documentation:  https://cloud.google.com/container-registry/docs/container-analysis
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
