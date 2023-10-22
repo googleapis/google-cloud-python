@@ -18,30 +18,28 @@
 import warnings
 
 from .services.dashboards_service import DashboardsServiceClient
-from .types.common import Aggregation
-from .types.common import PickTimeSeriesFilter
-from .types.common import StatisticalTimeSeriesFilter
+from .types.common import Aggregation, PickTimeSeriesFilter, StatisticalTimeSeriesFilter
 from .types.dashboard import Dashboard
-from .types.dashboards_service import CreateDashboardRequest
-from .types.dashboards_service import DeleteDashboardRequest
-from .types.dashboards_service import GetDashboardRequest
-from .types.dashboards_service import ListDashboardsRequest
-from .types.dashboards_service import ListDashboardsResponse
-from .types.dashboards_service import UpdateDashboardRequest
-from .types.layouts import ColumnLayout
-from .types.layouts import GridLayout
-from .types.layouts import RowLayout
-from .types.metrics import SparkChartType
-from .types.metrics import Threshold
-from .types.metrics import TimeSeriesFilter
-from .types.metrics import TimeSeriesFilterRatio
-from .types.metrics import TimeSeriesQuery
+from .types.dashboards_service import (
+    CreateDashboardRequest,
+    DeleteDashboardRequest,
+    GetDashboardRequest,
+    ListDashboardsRequest,
+    ListDashboardsResponse,
+    UpdateDashboardRequest,
+)
+from .types.layouts import ColumnLayout, GridLayout, RowLayout
+from .types.metrics import (
+    SparkChartType,
+    Threshold,
+    TimeSeriesFilter,
+    TimeSeriesFilterRatio,
+    TimeSeriesQuery,
+)
 from .types.scorecard import Scorecard
 from .types.text import Text
 from .types.widget import Widget
-from .types.xychart import ChartOptions
-from .types.xychart import XyChart
-
+from .types.xychart import ChartOptions, XyChart
 
 __all__ = (
     "Aggregation",

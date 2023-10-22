@@ -21,7 +21,6 @@ import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
 
-
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",
     manifest={

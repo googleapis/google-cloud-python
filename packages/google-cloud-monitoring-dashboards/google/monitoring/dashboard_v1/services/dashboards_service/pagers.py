@@ -17,8 +17,7 @@
 
 from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
 
-from google.monitoring.dashboard_v1.types import dashboard
-from google.monitoring.dashboard_v1.types import dashboards_service
+from google.monitoring.dashboard_v1.types import dashboard, dashboards_service
 
 
 class ListDashboardsPager:

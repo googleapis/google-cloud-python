@@ -17,19 +17,18 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import empty_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.monitoring_dashboard_v1.types import alertchart
 from google.cloud.monitoring_dashboard_v1.types import (
     collapsible_group as gmd_collapsible_group,
 )
 from google.cloud.monitoring_dashboard_v1.types import logs_panel as gmd_logs_panel
 from google.cloud.monitoring_dashboard_v1.types import scorecard as gmd_scorecard
+from google.cloud.monitoring_dashboard_v1.types import alertchart
 from google.cloud.monitoring_dashboard_v1.types import table
 from google.cloud.monitoring_dashboard_v1.types import text as gmd_text
 from google.cloud.monitoring_dashboard_v1.types import xychart
-from google.protobuf import empty_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",

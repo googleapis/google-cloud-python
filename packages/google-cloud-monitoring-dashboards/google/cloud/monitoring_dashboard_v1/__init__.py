@@ -18,39 +18,38 @@ from google.cloud.monitoring_dashboard_v1 import gapic_version as package_versio
 __version__ = package_version.__version__
 
 
-from .services.dashboards_service import DashboardsServiceClient
-from .services.dashboards_service import DashboardsServiceAsyncClient
-
+from .services.dashboards_service import (
+    DashboardsServiceAsyncClient,
+    DashboardsServiceClient,
+)
 from .types.alertchart import AlertChart
 from .types.collapsible_group import CollapsibleGroup
-from .types.common import Aggregation
-from .types.common import PickTimeSeriesFilter
-from .types.common import StatisticalTimeSeriesFilter
+from .types.common import Aggregation, PickTimeSeriesFilter, StatisticalTimeSeriesFilter
 from .types.dashboard import Dashboard
 from .types.dashboard_filter import DashboardFilter
-from .types.dashboards_service import CreateDashboardRequest
-from .types.dashboards_service import DeleteDashboardRequest
-from .types.dashboards_service import GetDashboardRequest
-from .types.dashboards_service import ListDashboardsRequest
-from .types.dashboards_service import ListDashboardsResponse
-from .types.dashboards_service import UpdateDashboardRequest
-from .types.layouts import ColumnLayout
-from .types.layouts import GridLayout
-from .types.layouts import MosaicLayout
-from .types.layouts import RowLayout
+from .types.dashboards_service import (
+    CreateDashboardRequest,
+    DeleteDashboardRequest,
+    GetDashboardRequest,
+    ListDashboardsRequest,
+    ListDashboardsResponse,
+    UpdateDashboardRequest,
+)
+from .types.layouts import ColumnLayout, GridLayout, MosaicLayout, RowLayout
 from .types.logs_panel import LogsPanel
-from .types.metrics import Threshold
-from .types.metrics import TimeSeriesFilter
-from .types.metrics import TimeSeriesFilterRatio
-from .types.metrics import TimeSeriesQuery
-from .types.metrics import SparkChartType
+from .types.metrics import (
+    SparkChartType,
+    Threshold,
+    TimeSeriesFilter,
+    TimeSeriesFilterRatio,
+    TimeSeriesQuery,
+)
 from .types.scorecard import Scorecard
 from .types.table import TimeSeriesTable
 from .types.table_display_options import TableDisplayOptions
 from .types.text import Text
 from .types.widget import Widget
-from .types.xychart import ChartOptions
-from .types.xychart import XyChart
+from .types.xychart import ChartOptions, XyChart
 
 __all__ = (
     "DashboardsServiceAsyncClient",

@@ -22,7 +22,6 @@ from .base import DashboardsServiceTransport
 from .grpc import DashboardsServiceGrpcTransport
 from .grpc_asyncio import DashboardsServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DashboardsServiceTransport]]
 _transport_registry["grpc"] = DashboardsServiceGrpcTransport

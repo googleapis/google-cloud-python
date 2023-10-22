@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.monitoring_dashboard_v1.types import dashboard
-from google.cloud.monitoring_dashboard_v1.types import dashboards_service
+from google.cloud.monitoring_dashboard_v1.types import dashboard, dashboards_service
 
 
 class ListDashboardsPager:

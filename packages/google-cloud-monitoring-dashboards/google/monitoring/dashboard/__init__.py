@@ -23,39 +23,36 @@ from google.monitoring.dashboard_v1.services.dashboards_service.async_client imp
 from google.monitoring.dashboard_v1.services.dashboards_service.client import (
     DashboardsServiceClient,
 )
-from google.monitoring.dashboard_v1.types.common import Aggregation
-from google.monitoring.dashboard_v1.types.common import PickTimeSeriesFilter
-from google.monitoring.dashboard_v1.types.common import StatisticalTimeSeriesFilter
+from google.monitoring.dashboard_v1.types.common import (
+    Aggregation,
+    PickTimeSeriesFilter,
+    StatisticalTimeSeriesFilter,
+)
 from google.monitoring.dashboard_v1.types.dashboard import Dashboard
 from google.monitoring.dashboard_v1.types.dashboards_service import (
     CreateDashboardRequest,
-)
-from google.monitoring.dashboard_v1.types.dashboards_service import (
     DeleteDashboardRequest,
-)
-from google.monitoring.dashboard_v1.types.dashboards_service import GetDashboardRequest
-from google.monitoring.dashboard_v1.types.dashboards_service import (
+    GetDashboardRequest,
     ListDashboardsRequest,
-)
-from google.monitoring.dashboard_v1.types.dashboards_service import (
     ListDashboardsResponse,
-)
-from google.monitoring.dashboard_v1.types.dashboards_service import (
     UpdateDashboardRequest,
 )
-from google.monitoring.dashboard_v1.types.layouts import ColumnLayout
-from google.monitoring.dashboard_v1.types.layouts import GridLayout
-from google.monitoring.dashboard_v1.types.layouts import RowLayout
-from google.monitoring.dashboard_v1.types.metrics import SparkChartType
-from google.monitoring.dashboard_v1.types.metrics import Threshold
-from google.monitoring.dashboard_v1.types.metrics import TimeSeriesFilter
-from google.monitoring.dashboard_v1.types.metrics import TimeSeriesFilterRatio
-from google.monitoring.dashboard_v1.types.metrics import TimeSeriesQuery
+from google.monitoring.dashboard_v1.types.layouts import (
+    ColumnLayout,
+    GridLayout,
+    RowLayout,
+)
+from google.monitoring.dashboard_v1.types.metrics import (
+    SparkChartType,
+    Threshold,
+    TimeSeriesFilter,
+    TimeSeriesFilterRatio,
+    TimeSeriesQuery,
+)
 from google.monitoring.dashboard_v1.types.scorecard import Scorecard
 from google.monitoring.dashboard_v1.types.text import Text
 from google.monitoring.dashboard_v1.types.widget import Widget
-from google.monitoring.dashboard_v1.types.xychart import ChartOptions
-from google.monitoring.dashboard_v1.types.xychart import XyChart
+from google.monitoring.dashboard_v1.types.xychart import ChartOptions, XyChart
 
 __all__ = (
     "Aggregation",
