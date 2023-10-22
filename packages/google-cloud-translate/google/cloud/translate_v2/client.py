@@ -17,9 +17,7 @@
 
 import google.api_core.client_options
 from google.cloud.client import Client as BaseClient
-
 from google.cloud.translate_v2._http import Connection
-
 
 ENGLISH_ISO_639 = "en"
 """ISO 639-1 language code for English."""

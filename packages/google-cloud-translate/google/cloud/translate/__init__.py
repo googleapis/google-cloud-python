@@ -18,66 +18,51 @@ from google.cloud.translate import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.translate_v3.services.translation_service.client import (
-    TranslationServiceClient,
-)
 from google.cloud.translate_v3.services.translation_service.async_client import (
     TranslationServiceAsyncClient,
 )
-
-from google.cloud.translate_v3.types.translation_service import BatchDocumentInputConfig
+from google.cloud.translate_v3.services.translation_service.client import (
+    TranslationServiceClient,
+)
 from google.cloud.translate_v3.types.translation_service import (
+    BatchDocumentInputConfig,
     BatchDocumentOutputConfig,
-)
-from google.cloud.translate_v3.types.translation_service import (
     BatchTranslateDocumentMetadata,
-)
-from google.cloud.translate_v3.types.translation_service import (
     BatchTranslateDocumentRequest,
-)
-from google.cloud.translate_v3.types.translation_service import (
     BatchTranslateDocumentResponse,
-)
-from google.cloud.translate_v3.types.translation_service import BatchTranslateMetadata
-from google.cloud.translate_v3.types.translation_service import BatchTranslateResponse
-from google.cloud.translate_v3.types.translation_service import (
+    BatchTranslateMetadata,
+    BatchTranslateResponse,
     BatchTranslateTextRequest,
-)
-from google.cloud.translate_v3.types.translation_service import CreateGlossaryMetadata
-from google.cloud.translate_v3.types.translation_service import CreateGlossaryRequest
-from google.cloud.translate_v3.types.translation_service import DeleteGlossaryMetadata
-from google.cloud.translate_v3.types.translation_service import DeleteGlossaryRequest
-from google.cloud.translate_v3.types.translation_service import DeleteGlossaryResponse
-from google.cloud.translate_v3.types.translation_service import DetectedLanguage
-from google.cloud.translate_v3.types.translation_service import DetectLanguageRequest
-from google.cloud.translate_v3.types.translation_service import DetectLanguageResponse
-from google.cloud.translate_v3.types.translation_service import DocumentInputConfig
-from google.cloud.translate_v3.types.translation_service import DocumentOutputConfig
-from google.cloud.translate_v3.types.translation_service import DocumentTranslation
-from google.cloud.translate_v3.types.translation_service import GcsDestination
-from google.cloud.translate_v3.types.translation_service import GcsSource
-from google.cloud.translate_v3.types.translation_service import GetGlossaryRequest
-from google.cloud.translate_v3.types.translation_service import (
+    CreateGlossaryMetadata,
+    CreateGlossaryRequest,
+    DeleteGlossaryMetadata,
+    DeleteGlossaryRequest,
+    DeleteGlossaryResponse,
+    DetectedLanguage,
+    DetectLanguageRequest,
+    DetectLanguageResponse,
+    DocumentInputConfig,
+    DocumentOutputConfig,
+    DocumentTranslation,
+    GcsDestination,
+    GcsSource,
+    GetGlossaryRequest,
     GetSupportedLanguagesRequest,
-)
-from google.cloud.translate_v3.types.translation_service import Glossary
-from google.cloud.translate_v3.types.translation_service import GlossaryInputConfig
-from google.cloud.translate_v3.types.translation_service import InputConfig
-from google.cloud.translate_v3.types.translation_service import ListGlossariesRequest
-from google.cloud.translate_v3.types.translation_service import ListGlossariesResponse
-from google.cloud.translate_v3.types.translation_service import OutputConfig
-from google.cloud.translate_v3.types.translation_service import SupportedLanguage
-from google.cloud.translate_v3.types.translation_service import SupportedLanguages
-from google.cloud.translate_v3.types.translation_service import TranslateDocumentRequest
-from google.cloud.translate_v3.types.translation_service import (
+    Glossary,
+    GlossaryInputConfig,
+    InputConfig,
+    ListGlossariesRequest,
+    ListGlossariesResponse,
+    OutputConfig,
+    SupportedLanguage,
+    SupportedLanguages,
+    TranslateDocumentRequest,
     TranslateDocumentResponse,
-)
-from google.cloud.translate_v3.types.translation_service import (
     TranslateTextGlossaryConfig,
+    TranslateTextRequest,
+    TranslateTextResponse,
+    Translation,
 )
-from google.cloud.translate_v3.types.translation_service import TranslateTextRequest
-from google.cloud.translate_v3.types.translation_service import TranslateTextResponse
-from google.cloud.translate_v3.types.translation_service import Translation
 
 __all__ = (
     "TranslationServiceClient",

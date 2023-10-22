@@ -15,7 +15,6 @@
 """Create / interact with Google Cloud Translation connections."""
 
 from google.cloud import _http
-
 from google.cloud.translate_v2 import __version__
 
 

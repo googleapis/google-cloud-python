@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import TranslationServiceClient
 from .async_client import TranslationServiceAsyncClient
+from .client import TranslationServiceClient
 
 __all__ = (
     "TranslationServiceClient",

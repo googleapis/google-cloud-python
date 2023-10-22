@@ -21,5 +21,4 @@ __version__ = get_distribution("google-cloud-translate").version
 
 from google.cloud.translate_v2.client import Client
 
-
 __all__ = ("__version__", "Client")

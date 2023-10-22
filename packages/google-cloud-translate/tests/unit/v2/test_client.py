@@ -61,8 +61,8 @@ class TestClient(unittest.TestCase):
         )
 
     def test_constructor_w_empty_client_options(self):
-        from google.cloud._http import ClientInfo
         from google.api_core.client_options import ClientOptions
+        from google.cloud._http import ClientInfo
 
         http = object()
         target = "es"
@@ -79,8 +79,8 @@ class TestClient(unittest.TestCase):
         )
 
     def test_constructor_w_client_options_object(self):
-        from google.cloud._http import ClientInfo
         from google.api_core.client_options import ClientOptions
+        from google.cloud._http import ClientInfo
 
         http = object()
         target = "es"
