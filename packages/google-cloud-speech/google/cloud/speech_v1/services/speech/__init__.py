@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import SpeechClient
 from .async_client import SpeechAsyncClient
+from .client import SpeechClient
 
 __all__ = (
     "SpeechClient",

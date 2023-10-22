@@ -13,13 +13,13 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-from types import GeneratorType
 
+from types import GeneratorType
 from unittest import mock
 
 import google.auth.credentials
-from google.cloud.speech_v1 import SpeechClient
-from google.cloud.speech_v1 import types
+
+from google.cloud.speech_v1 import SpeechClient, types
 
 
 def make_speech_client():

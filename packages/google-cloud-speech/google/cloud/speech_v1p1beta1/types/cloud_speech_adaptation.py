@@ -17,11 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.speech_v1p1beta1.types import resource
-from google.protobuf import field_mask_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.speech.v1p1beta1",

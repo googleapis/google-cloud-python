@@ -17,14 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.speech_v1.types import resource
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.speech_v1.types import resource
 
 __protobuf__ = proto.module(
     package="google.cloud.speech.v1",

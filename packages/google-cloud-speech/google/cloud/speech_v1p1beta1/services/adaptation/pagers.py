@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.speech_v1p1beta1.types import cloud_speech_adaptation
-from google.cloud.speech_v1p1beta1.types import resource
+from google.cloud.speech_v1p1beta1.types import cloud_speech_adaptation, resource
 
 
 class ListPhraseSetPager:
