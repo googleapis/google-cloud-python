@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import AdaptationClient
 from .async_client import AdaptationAsyncClient
+from .client import AdaptationClient
 
 __all__ = (
     "AdaptationClient",

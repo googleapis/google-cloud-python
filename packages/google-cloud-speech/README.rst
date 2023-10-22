@@ -1,9 +1,9 @@
-Python Client for Cloud Speech API
-==================================
+Python Client for Cloud Speech
+==============================
 
 |stable| |pypi| |versions|
 
-`Cloud Speech API`_: enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service.
+`Cloud Speech`_: enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Speech API
    :target: https://pypi.org/project/google-cloud-speech/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-speech.svg
    :target: https://pypi.org/project/google-cloud-speech/
-.. _Cloud Speech API: https://cloud.google.com/speech-to-text/docs/
+.. _Cloud Speech: https://cloud.google.com/speech-to-text/docs/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/speech/latest
 .. _Product Documentation:  https://cloud.google.com/speech-to-text/docs/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Speech API.`_
+3. `Enable the Cloud Speech.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Speech API.:  https://cloud.google.com/speech-to-text/docs/
+.. _Enable the Cloud Speech.:  https://cloud.google.com/speech-to-text/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-speech/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-speech/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Speech API
+-  Read the `Client Library Documentation`_ for Cloud Speech
    to see other available methods on the client.
--  Read the `Cloud Speech API Product documentation`_ to learn
+-  Read the `Cloud Speech Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Speech API Product documentation:  https://cloud.google.com/speech-to-text/docs/
+.. _Cloud Speech Product documentation:  https://cloud.google.com/speech-to-text/docs/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

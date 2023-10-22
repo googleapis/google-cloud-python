@@ -18,48 +18,51 @@ from google.cloud.speech_v1p1beta1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.adaptation import AdaptationClient
-from .services.adaptation import AdaptationAsyncClient
-from .services.speech import SpeechClient
-from .services.speech import SpeechAsyncClient
-
-from .types.cloud_speech import LongRunningRecognizeMetadata
-from .types.cloud_speech import LongRunningRecognizeRequest
-from .types.cloud_speech import LongRunningRecognizeResponse
-from .types.cloud_speech import RecognitionAudio
-from .types.cloud_speech import RecognitionConfig
-from .types.cloud_speech import RecognitionMetadata
-from .types.cloud_speech import RecognizeRequest
-from .types.cloud_speech import RecognizeResponse
-from .types.cloud_speech import SpeakerDiarizationConfig
-from .types.cloud_speech import SpeechAdaptationInfo
-from .types.cloud_speech import SpeechContext
-from .types.cloud_speech import SpeechRecognitionAlternative
-from .types.cloud_speech import SpeechRecognitionResult
-from .types.cloud_speech import StreamingRecognitionConfig
-from .types.cloud_speech import StreamingRecognitionResult
-from .types.cloud_speech import StreamingRecognizeRequest
-from .types.cloud_speech import StreamingRecognizeResponse
-from .types.cloud_speech import TranscriptOutputConfig
-from .types.cloud_speech import WordInfo
-from .types.cloud_speech_adaptation import CreateCustomClassRequest
-from .types.cloud_speech_adaptation import CreatePhraseSetRequest
-from .types.cloud_speech_adaptation import DeleteCustomClassRequest
-from .types.cloud_speech_adaptation import DeletePhraseSetRequest
-from .types.cloud_speech_adaptation import GetCustomClassRequest
-from .types.cloud_speech_adaptation import GetPhraseSetRequest
-from .types.cloud_speech_adaptation import ListCustomClassesRequest
-from .types.cloud_speech_adaptation import ListCustomClassesResponse
-from .types.cloud_speech_adaptation import ListPhraseSetRequest
-from .types.cloud_speech_adaptation import ListPhraseSetResponse
-from .types.cloud_speech_adaptation import UpdateCustomClassRequest
-from .types.cloud_speech_adaptation import UpdatePhraseSetRequest
-from .types.resource import CustomClass
-from .types.resource import PhraseSet
-from .types.resource import SpeechAdaptation
-from .types.resource import TranscriptNormalization
-
 from google.cloud.speech_v1.helpers import SpeechHelpers
+
+from .services.adaptation import AdaptationAsyncClient, AdaptationClient
+from .services.speech import SpeechAsyncClient, SpeechClient
+from .types.cloud_speech import (
+    LongRunningRecognizeMetadata,
+    LongRunningRecognizeRequest,
+    LongRunningRecognizeResponse,
+    RecognitionAudio,
+    RecognitionConfig,
+    RecognitionMetadata,
+    RecognizeRequest,
+    RecognizeResponse,
+    SpeakerDiarizationConfig,
+    SpeechAdaptationInfo,
+    SpeechContext,
+    SpeechRecognitionAlternative,
+    SpeechRecognitionResult,
+    StreamingRecognitionConfig,
+    StreamingRecognitionResult,
+    StreamingRecognizeRequest,
+    StreamingRecognizeResponse,
+    TranscriptOutputConfig,
+    WordInfo,
+)
+from .types.cloud_speech_adaptation import (
+    CreateCustomClassRequest,
+    CreatePhraseSetRequest,
+    DeleteCustomClassRequest,
+    DeletePhraseSetRequest,
+    GetCustomClassRequest,
+    GetPhraseSetRequest,
+    ListCustomClassesRequest,
+    ListCustomClassesResponse,
+    ListPhraseSetRequest,
+    ListPhraseSetResponse,
+    UpdateCustomClassRequest,
+    UpdatePhraseSetRequest,
+)
+from .types.resource import (
+    CustomClass,
+    PhraseSet,
+    SpeechAdaptation,
+    TranscriptNormalization,
+)
 
 
 class SpeechClient(SpeechHelpers, SpeechClient):

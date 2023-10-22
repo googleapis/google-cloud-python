@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 import io
+import os
+
 import requests
 
 from google.cloud import speech_v1p1beta1

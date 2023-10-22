@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import SpeechTransport
 from .grpc import SpeechGrpcTransport
 from .grpc_asyncio import SpeechGrpcAsyncIOTransport
-from .rest import SpeechRestTransport
-from .rest import SpeechRestInterceptor
-
+from .rest import SpeechRestInterceptor, SpeechRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SpeechTransport]]
