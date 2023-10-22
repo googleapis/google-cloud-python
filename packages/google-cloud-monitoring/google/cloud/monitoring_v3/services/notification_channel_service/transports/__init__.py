@@ -20,7 +20,6 @@ from .base import NotificationChannelServiceTransport
 from .grpc import NotificationChannelServiceGrpcTransport
 from .grpc_asyncio import NotificationChannelServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

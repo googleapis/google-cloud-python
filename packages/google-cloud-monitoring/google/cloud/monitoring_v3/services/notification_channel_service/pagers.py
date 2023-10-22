@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.monitoring_v3.types import notification
-from google.cloud.monitoring_v3.types import notification_service
+from google.cloud.monitoring_v3.types import notification, notification_service
 
 
 class ListNotificationChannelDescriptorsPager:

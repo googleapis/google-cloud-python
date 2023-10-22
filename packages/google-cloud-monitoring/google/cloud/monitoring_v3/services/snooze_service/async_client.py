@@ -28,29 +28,31 @@ from typing import (
     Union,
 )
 
-from google.cloud.monitoring_v3 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.monitoring_v3 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.protobuf import field_mask_pb2  # type: ignore
+
 from google.cloud.monitoring_v3.services.snooze_service import pagers
 from google.cloud.monitoring_v3.types import common
 from google.cloud.monitoring_v3.types import snooze
 from google.cloud.monitoring_v3.types import snooze as gm_snooze
 from google.cloud.monitoring_v3.types import snooze_service
-from google.protobuf import field_mask_pb2  # type: ignore
-from .transports.base import SnoozeServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import SnoozeServiceGrpcAsyncIOTransport
+
 from .client import SnoozeServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, SnoozeServiceTransport
+from .transports.grpc_asyncio import SnoozeServiceGrpcAsyncIOTransport
 
 
 class SnoozeServiceAsyncClient:

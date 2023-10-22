@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.monitoring_v3.types import alert
-from google.cloud.monitoring_v3.types import alert_service
+from google.cloud.monitoring_v3.types import alert, alert_service
 
 
 class ListAlertPoliciesPager:

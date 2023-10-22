@@ -43,7 +43,7 @@ dependencies = [
 ]
 extras = {"pandas": "pandas >= 0.17.1"}
 
-url = "https://github.com/googleapis/python-monitoring"
+url = "https://github.com/googleapis/google-cloud-python"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
