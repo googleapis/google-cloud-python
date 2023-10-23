@@ -93,7 +93,6 @@ for gcs_path in gs://vertex_sdk_private_releases/bigframe/ \
     do
       gsutil cp -v dist/* ${gcs_path}
       gsutil cp -v LICENSE ${gcs_path}
-      gsutil cp -v ${THIRD_PARTY_NOTICES_FILE} ${gcs_path}
       gsutil -m cp -r -v "notebooks/" ${gcs_path}notebooks/
 
     done
