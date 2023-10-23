@@ -484,4 +484,5 @@ __all___ = [
     # Session management APIs
     "get_global_session",
     "close_session",
+    "reset_session",
 ]
