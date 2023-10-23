@@ -2448,6 +2448,7 @@ class Test_Bucket(unittest.TestCase):
         bucket._properties["lifecycle"] = {"rule": rules}
         self.assertEqual(list(bucket.lifecycle_rules), rules)
 
+        # This is a deprecated alias and will test both methods
         bucket.clear_lifecyle_rules()
 
         self.assertEqual(list(bucket.lifecycle_rules), [])

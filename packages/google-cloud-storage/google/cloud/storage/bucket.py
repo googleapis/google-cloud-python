@@ -2275,13 +2275,17 @@ class Bucket(_PropertyMixin):
         rules = [dict(rule) for rule in rules]  # Convert helpers if needed
         self._patch_property("lifecycle", {"rule": rules})
 
-    def clear_lifecyle_rules(self):
+    def clear_lifecycle_rules(self):
         """Clear lifecycle rules configured for this bucket.
 
         See https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
         """
         self.lifecycle_rules = []
+
+    def clear_lifecyle_rules(self):
+        """Deprecated alias for clear_lifecycle_rules."""
+        return self.clear_lifecycle_rules()
 
     def add_lifecycle_delete_rule(self, **kw):
         """Add a "delete" rule to lifecycle rules configured for this bucket.
