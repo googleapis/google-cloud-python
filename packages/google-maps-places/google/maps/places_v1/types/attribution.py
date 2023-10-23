@@ -19,11 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.maps.places.v1',
+    package="google.maps.places.v1",
     manifest={
-        'AuthorAttribution',
+        "AuthorAttribution",
     },
 )
 

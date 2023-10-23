@@ -17,16 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import money_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.maps.places.v1',
+    package="google.maps.places.v1",
     manifest={
-        'FuelOptions',
+        "FuelOptions",
     },
 )
 
@@ -54,6 +52,7 @@ class FuelOptions(proto.Message):
             update_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time the fuel price was last updated.
         """
+
         class FuelType(proto.Enum):
             r"""Types of fuel.
 
@@ -117,10 +116,10 @@ class FuelOptions(proto.Message):
             BIO_DIESEL = 17
             TRUCK_DIESEL = 18
 
-        type_: 'FuelOptions.FuelPrice.FuelType' = proto.Field(
+        type_: "FuelOptions.FuelPrice.FuelType" = proto.Field(
             proto.ENUM,
             number=1,
-            enum='FuelOptions.FuelPrice.FuelType',
+            enum="FuelOptions.FuelPrice.FuelType",
         )
         price: money_pb2.Money = proto.Field(
             proto.MESSAGE,

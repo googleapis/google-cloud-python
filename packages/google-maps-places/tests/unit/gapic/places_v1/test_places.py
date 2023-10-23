@@ -36,6 +36,7 @@ from google.geo.type.types import viewport
 from google.oauth2 import service_account
 from google.protobuf import json_format
 from google.type import latlng_pb2  # type: ignore
+from google.type import localized_text_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -49,7 +50,15 @@ from google.maps.places_v1.services.places import (
     PlacesClient,
     transports,
 )
-from google.maps.places_v1.types import geometry, place, places_service
+from google.maps.places_v1.types import (
+    ev_charging,
+    fuel_options,
+    geometry,
+    photo,
+    place,
+    places_service,
+    review,
+)
 
 
 def client_cert_source_callback():
@@ -662,6 +671,89 @@ def test_places_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
+        places_service.SearchNearbyRequest,
+        dict,
+    ],
+)
+def test_search_nearby(request_type, transport: str = "grpc"):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_nearby), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = places_service.SearchNearbyResponse()
+        response = client.search_nearby(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.SearchNearbyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, places_service.SearchNearbyResponse)
+
+
+def test_search_nearby_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_nearby), "__call__") as call:
+        client.search_nearby()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.SearchNearbyRequest()
+
+
+@pytest.mark.asyncio
+async def test_search_nearby_async(
+    transport: str = "grpc_asyncio", request_type=places_service.SearchNearbyRequest
+):
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_nearby), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            places_service.SearchNearbyResponse()
+        )
+        response = await client.search_nearby(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.SearchNearbyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, places_service.SearchNearbyResponse)
+
+
+@pytest.mark.asyncio
+async def test_search_nearby_async_from_dict():
+    await test_search_nearby_async(request_type=dict)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         places_service.SearchTextRequest,
         dict,
     ],
@@ -745,6 +837,827 @@ async def test_search_text_async_from_dict():
 @pytest.mark.parametrize(
     "request_type",
     [
+        places_service.GetPhotoMediaRequest,
+        dict,
+    ],
+)
+def test_get_photo_media(request_type, transport: str = "grpc"):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = places_service.PhotoMedia(
+            name="name_value",
+            photo_uri="photo_uri_value",
+        )
+        response = client.get_photo_media(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.GetPhotoMediaRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, places_service.PhotoMedia)
+    assert response.name == "name_value"
+    assert response.photo_uri == "photo_uri_value"
+
+
+def test_get_photo_media_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
+        client.get_photo_media()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.GetPhotoMediaRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_photo_media_async(
+    transport: str = "grpc_asyncio", request_type=places_service.GetPhotoMediaRequest
+):
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            places_service.PhotoMedia(
+                name="name_value",
+                photo_uri="photo_uri_value",
+            )
+        )
+        response = await client.get_photo_media(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.GetPhotoMediaRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, places_service.PhotoMedia)
+    assert response.name == "name_value"
+    assert response.photo_uri == "photo_uri_value"
+
+
+@pytest.mark.asyncio
+async def test_get_photo_media_async_from_dict():
+    await test_get_photo_media_async(request_type=dict)
+
+
+def test_get_photo_media_field_headers():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = places_service.GetPhotoMediaRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
+        call.return_value = places_service.PhotoMedia()
+        client.get_photo_media(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_photo_media_field_headers_async():
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = places_service.GetPhotoMediaRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            places_service.PhotoMedia()
+        )
+        await client.get_photo_media(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_photo_media_flattened():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = places_service.PhotoMedia()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_photo_media(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_photo_media_flattened_error():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_photo_media(
+            places_service.GetPhotoMediaRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_photo_media_flattened_async():
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_photo_media), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = places_service.PhotoMedia()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            places_service.PhotoMedia()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_photo_media(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_photo_media_flattened_error_async():
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_photo_media(
+            places_service.GetPhotoMediaRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        places_service.GetPlaceRequest,
+        dict,
+    ],
+)
+def test_get_place(request_type, transport: str = "grpc"):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_place), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = place.Place(
+            name="name_value",
+            id="id_value",
+            types=["types_value"],
+            national_phone_number="national_phone_number_value",
+            international_phone_number="international_phone_number_value",
+            formatted_address="formatted_address_value",
+            rating=0.645,
+            google_maps_uri="google_maps_uri_value",
+            website_uri="website_uri_value",
+            utc_offset_minutes=1942,
+            adr_format_address="adr_format_address_value",
+            business_status=place.Place.BusinessStatus.OPERATIONAL,
+            price_level=place.PriceLevel.PRICE_LEVEL_FREE,
+            user_rating_count=1835,
+            icon_mask_base_uri="icon_mask_base_uri_value",
+            icon_background_color="icon_background_color_value",
+            takeout=True,
+            delivery=True,
+            dine_in=True,
+            curbside_pickup=True,
+            reservable=True,
+            serves_breakfast=True,
+            serves_lunch=True,
+            serves_dinner=True,
+            serves_beer=True,
+            serves_wine=True,
+            serves_brunch=True,
+            serves_vegetarian_food=True,
+            outdoor_seating=True,
+            live_music=True,
+            menu_for_children=True,
+            serves_cocktails=True,
+            serves_dessert=True,
+            serves_coffee=True,
+            good_for_children=True,
+            allows_dogs=True,
+            restroom=True,
+            good_for_groups=True,
+            good_for_watching_sports=True,
+        )
+        response = client.get_place(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.GetPlaceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, place.Place)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.types == ["types_value"]
+    assert response.national_phone_number == "national_phone_number_value"
+    assert response.international_phone_number == "international_phone_number_value"
+    assert response.formatted_address == "formatted_address_value"
+    assert math.isclose(response.rating, 0.645, rel_tol=1e-6)
+    assert response.google_maps_uri == "google_maps_uri_value"
+    assert response.website_uri == "website_uri_value"
+    assert response.utc_offset_minutes == 1942
+    assert response.adr_format_address == "adr_format_address_value"
+    assert response.business_status == place.Place.BusinessStatus.OPERATIONAL
+    assert response.price_level == place.PriceLevel.PRICE_LEVEL_FREE
+    assert response.user_rating_count == 1835
+    assert response.icon_mask_base_uri == "icon_mask_base_uri_value"
+    assert response.icon_background_color == "icon_background_color_value"
+    assert response.takeout is True
+    assert response.delivery is True
+    assert response.dine_in is True
+    assert response.curbside_pickup is True
+    assert response.reservable is True
+    assert response.serves_breakfast is True
+    assert response.serves_lunch is True
+    assert response.serves_dinner is True
+    assert response.serves_beer is True
+    assert response.serves_wine is True
+    assert response.serves_brunch is True
+    assert response.serves_vegetarian_food is True
+    assert response.outdoor_seating is True
+    assert response.live_music is True
+    assert response.menu_for_children is True
+    assert response.serves_cocktails is True
+    assert response.serves_dessert is True
+    assert response.serves_coffee is True
+    assert response.good_for_children is True
+    assert response.allows_dogs is True
+    assert response.restroom is True
+    assert response.good_for_groups is True
+    assert response.good_for_watching_sports is True
+
+
+def test_get_place_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_place), "__call__") as call:
+        client.get_place()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.GetPlaceRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_place_async(
+    transport: str = "grpc_asyncio", request_type=places_service.GetPlaceRequest
+):
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_place), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            place.Place(
+                name="name_value",
+                id="id_value",
+                types=["types_value"],
+                national_phone_number="national_phone_number_value",
+                international_phone_number="international_phone_number_value",
+                formatted_address="formatted_address_value",
+                rating=0.645,
+                google_maps_uri="google_maps_uri_value",
+                website_uri="website_uri_value",
+                utc_offset_minutes=1942,
+                adr_format_address="adr_format_address_value",
+                business_status=place.Place.BusinessStatus.OPERATIONAL,
+                price_level=place.PriceLevel.PRICE_LEVEL_FREE,
+                user_rating_count=1835,
+                icon_mask_base_uri="icon_mask_base_uri_value",
+                icon_background_color="icon_background_color_value",
+                takeout=True,
+                delivery=True,
+                dine_in=True,
+                curbside_pickup=True,
+                reservable=True,
+                serves_breakfast=True,
+                serves_lunch=True,
+                serves_dinner=True,
+                serves_beer=True,
+                serves_wine=True,
+                serves_brunch=True,
+                serves_vegetarian_food=True,
+                outdoor_seating=True,
+                live_music=True,
+                menu_for_children=True,
+                serves_cocktails=True,
+                serves_dessert=True,
+                serves_coffee=True,
+                good_for_children=True,
+                allows_dogs=True,
+                restroom=True,
+                good_for_groups=True,
+                good_for_watching_sports=True,
+            )
+        )
+        response = await client.get_place(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.GetPlaceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, place.Place)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.types == ["types_value"]
+    assert response.national_phone_number == "national_phone_number_value"
+    assert response.international_phone_number == "international_phone_number_value"
+    assert response.formatted_address == "formatted_address_value"
+    assert math.isclose(response.rating, 0.645, rel_tol=1e-6)
+    assert response.google_maps_uri == "google_maps_uri_value"
+    assert response.website_uri == "website_uri_value"
+    assert response.utc_offset_minutes == 1942
+    assert response.adr_format_address == "adr_format_address_value"
+    assert response.business_status == place.Place.BusinessStatus.OPERATIONAL
+    assert response.price_level == place.PriceLevel.PRICE_LEVEL_FREE
+    assert response.user_rating_count == 1835
+    assert response.icon_mask_base_uri == "icon_mask_base_uri_value"
+    assert response.icon_background_color == "icon_background_color_value"
+    assert response.takeout is True
+    assert response.delivery is True
+    assert response.dine_in is True
+    assert response.curbside_pickup is True
+    assert response.reservable is True
+    assert response.serves_breakfast is True
+    assert response.serves_lunch is True
+    assert response.serves_dinner is True
+    assert response.serves_beer is True
+    assert response.serves_wine is True
+    assert response.serves_brunch is True
+    assert response.serves_vegetarian_food is True
+    assert response.outdoor_seating is True
+    assert response.live_music is True
+    assert response.menu_for_children is True
+    assert response.serves_cocktails is True
+    assert response.serves_dessert is True
+    assert response.serves_coffee is True
+    assert response.good_for_children is True
+    assert response.allows_dogs is True
+    assert response.restroom is True
+    assert response.good_for_groups is True
+    assert response.good_for_watching_sports is True
+
+
+@pytest.mark.asyncio
+async def test_get_place_async_from_dict():
+    await test_get_place_async(request_type=dict)
+
+
+def test_get_place_field_headers():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = places_service.GetPlaceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_place), "__call__") as call:
+        call.return_value = place.Place()
+        client.get_place(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_place_field_headers_async():
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = places_service.GetPlaceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_place), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(place.Place())
+        await client.get_place(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_place_flattened():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_place), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = place.Place()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_place(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_place_flattened_error():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_place(
+            places_service.GetPlaceRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_place_flattened_async():
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_place), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = place.Place()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(place.Place())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_place(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_place_flattened_error_async():
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_place(
+            places_service.GetPlaceRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        places_service.SearchNearbyRequest,
+        dict,
+    ],
+)
+def test_search_nearby_rest(request_type):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = places_service.SearchNearbyResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = places_service.SearchNearbyResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_nearby(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, places_service.SearchNearbyResponse)
+
+
+def test_search_nearby_rest_required_fields(
+    request_type=places_service.SearchNearbyRequest,
+):
+    transport_class = transports.PlacesRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_nearby._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).search_nearby._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = places_service.SearchNearbyResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = places_service.SearchNearbyResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.search_nearby(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_search_nearby_rest_unset_required_fields():
+    transport = transports.PlacesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.search_nearby._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("locationRestriction",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_nearby_rest_interceptors(null_interceptor):
+    transport = transports.PlacesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PlacesRestInterceptor(),
+    )
+    client = PlacesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PlacesRestInterceptor, "post_search_nearby"
+    ) as post, mock.patch.object(
+        transports.PlacesRestInterceptor, "pre_search_nearby"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = places_service.SearchNearbyRequest.pb(
+            places_service.SearchNearbyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = places_service.SearchNearbyResponse.to_json(
+            places_service.SearchNearbyResponse()
+        )
+
+        request = places_service.SearchNearbyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = places_service.SearchNearbyResponse()
+
+        client.search_nearby(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_nearby_rest_bad_request(
+    transport: str = "rest", request_type=places_service.SearchNearbyRequest
+):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.search_nearby(request)
+
+
+def test_search_nearby_rest_error():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         places_service.SearchTextRequest,
         dict,
     ],
@@ -767,8 +1680,9 @@ def test_search_text_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = places_service.SearchTextResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = places_service.SearchTextResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -843,8 +1757,9 @@ def test_search_text_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = places_service.SearchTextResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = places_service.SearchTextResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -945,6 +1860,644 @@ def test_search_text_rest_bad_request(
 
 
 def test_search_text_rest_error():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        places_service.GetPhotoMediaRequest,
+        dict,
+    ],
+)
+def test_get_photo_media_rest(request_type):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "places/sample1/photos/sample2/media"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = places_service.PhotoMedia(
+            name="name_value",
+            photo_uri="photo_uri_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = places_service.PhotoMedia.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_photo_media(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, places_service.PhotoMedia)
+    assert response.name == "name_value"
+    assert response.photo_uri == "photo_uri_value"
+
+
+def test_get_photo_media_rest_required_fields(
+    request_type=places_service.GetPhotoMediaRequest,
+):
+    transport_class = transports.PlacesRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_photo_media._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_photo_media._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "max_height_px",
+            "max_width_px",
+            "skip_http_redirect",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = places_service.PhotoMedia()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = places_service.PhotoMedia.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_photo_media(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_photo_media_rest_unset_required_fields():
+    transport = transports.PlacesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_photo_media._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "maxHeightPx",
+                "maxWidthPx",
+                "skipHttpRedirect",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_photo_media_rest_interceptors(null_interceptor):
+    transport = transports.PlacesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PlacesRestInterceptor(),
+    )
+    client = PlacesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PlacesRestInterceptor, "post_get_photo_media"
+    ) as post, mock.patch.object(
+        transports.PlacesRestInterceptor, "pre_get_photo_media"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = places_service.GetPhotoMediaRequest.pb(
+            places_service.GetPhotoMediaRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = places_service.PhotoMedia.to_json(
+            places_service.PhotoMedia()
+        )
+
+        request = places_service.GetPhotoMediaRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = places_service.PhotoMedia()
+
+        client.get_photo_media(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_photo_media_rest_bad_request(
+    transport: str = "rest", request_type=places_service.GetPhotoMediaRequest
+):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "places/sample1/photos/sample2/media"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_photo_media(request)
+
+
+def test_get_photo_media_rest_flattened():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = places_service.PhotoMedia()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "places/sample1/photos/sample2/media"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = places_service.PhotoMedia.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_photo_media(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=places/*/photos/*/media}" % client.transport._host, args[1]
+        )
+
+
+def test_get_photo_media_rest_flattened_error(transport: str = "rest"):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_photo_media(
+            places_service.GetPhotoMediaRequest(),
+            name="name_value",
+        )
+
+
+def test_get_photo_media_rest_error():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        places_service.GetPlaceRequest,
+        dict,
+    ],
+)
+def test_get_place_rest(request_type):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "places/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = place.Place(
+            name="name_value",
+            id="id_value",
+            types=["types_value"],
+            national_phone_number="national_phone_number_value",
+            international_phone_number="international_phone_number_value",
+            formatted_address="formatted_address_value",
+            rating=0.645,
+            google_maps_uri="google_maps_uri_value",
+            website_uri="website_uri_value",
+            utc_offset_minutes=1942,
+            adr_format_address="adr_format_address_value",
+            business_status=place.Place.BusinessStatus.OPERATIONAL,
+            price_level=place.PriceLevel.PRICE_LEVEL_FREE,
+            user_rating_count=1835,
+            icon_mask_base_uri="icon_mask_base_uri_value",
+            icon_background_color="icon_background_color_value",
+            takeout=True,
+            delivery=True,
+            dine_in=True,
+            curbside_pickup=True,
+            reservable=True,
+            serves_breakfast=True,
+            serves_lunch=True,
+            serves_dinner=True,
+            serves_beer=True,
+            serves_wine=True,
+            serves_brunch=True,
+            serves_vegetarian_food=True,
+            outdoor_seating=True,
+            live_music=True,
+            menu_for_children=True,
+            serves_cocktails=True,
+            serves_dessert=True,
+            serves_coffee=True,
+            good_for_children=True,
+            allows_dogs=True,
+            restroom=True,
+            good_for_groups=True,
+            good_for_watching_sports=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = place.Place.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_place(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, place.Place)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.types == ["types_value"]
+    assert response.national_phone_number == "national_phone_number_value"
+    assert response.international_phone_number == "international_phone_number_value"
+    assert response.formatted_address == "formatted_address_value"
+    assert math.isclose(response.rating, 0.645, rel_tol=1e-6)
+    assert response.google_maps_uri == "google_maps_uri_value"
+    assert response.website_uri == "website_uri_value"
+    assert response.utc_offset_minutes == 1942
+    assert response.adr_format_address == "adr_format_address_value"
+    assert response.business_status == place.Place.BusinessStatus.OPERATIONAL
+    assert response.price_level == place.PriceLevel.PRICE_LEVEL_FREE
+    assert response.user_rating_count == 1835
+    assert response.icon_mask_base_uri == "icon_mask_base_uri_value"
+    assert response.icon_background_color == "icon_background_color_value"
+    assert response.takeout is True
+    assert response.delivery is True
+    assert response.dine_in is True
+    assert response.curbside_pickup is True
+    assert response.reservable is True
+    assert response.serves_breakfast is True
+    assert response.serves_lunch is True
+    assert response.serves_dinner is True
+    assert response.serves_beer is True
+    assert response.serves_wine is True
+    assert response.serves_brunch is True
+    assert response.serves_vegetarian_food is True
+    assert response.outdoor_seating is True
+    assert response.live_music is True
+    assert response.menu_for_children is True
+    assert response.serves_cocktails is True
+    assert response.serves_dessert is True
+    assert response.serves_coffee is True
+    assert response.good_for_children is True
+    assert response.allows_dogs is True
+    assert response.restroom is True
+    assert response.good_for_groups is True
+    assert response.good_for_watching_sports is True
+
+
+def test_get_place_rest_required_fields(request_type=places_service.GetPlaceRequest):
+    transport_class = transports.PlacesRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_place._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_place._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "language_code",
+            "region_code",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = place.Place()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = place.Place.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_place(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_place_rest_unset_required_fields():
+    transport = transports.PlacesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_place._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "languageCode",
+                "regionCode",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_place_rest_interceptors(null_interceptor):
+    transport = transports.PlacesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PlacesRestInterceptor(),
+    )
+    client = PlacesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PlacesRestInterceptor, "post_get_place"
+    ) as post, mock.patch.object(
+        transports.PlacesRestInterceptor, "pre_get_place"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = places_service.GetPlaceRequest.pb(places_service.GetPlaceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = place.Place.to_json(place.Place())
+
+        request = places_service.GetPlaceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = place.Place()
+
+        client.get_place(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_place_rest_bad_request(
+    transport: str = "rest", request_type=places_service.GetPlaceRequest
+):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "places/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_place(request)
+
+
+def test_get_place_rest_flattened():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = place.Place()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "places/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = place.Place.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_place(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=places/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_place_rest_flattened_error(transport: str = "rest"):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_place(
+            places_service.GetPlaceRequest(),
+            name="name_value",
+        )
+
+
+def test_get_place_rest_error():
     client = PlacesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -1088,7 +2641,12 @@ def test_places_base_transport():
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
-    methods = ("search_text",)
+    methods = (
+        "search_nearby",
+        "search_text",
+        "get_photo_media",
+        "get_place",
+    )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
@@ -1343,8 +2901,17 @@ def test_places_client_transport_session_collision(transport_name):
         credentials=creds2,
         transport=transport_name,
     )
+    session1 = client1.transport.search_nearby._session
+    session2 = client2.transport.search_nearby._session
+    assert session1 != session2
     session1 = client1.transport.search_text._session
     session2 = client2.transport.search_text._session
+    assert session1 != session2
+    session1 = client1.transport.get_photo_media._session
+    session2 = client2.transport.get_photo_media._session
+    assert session1 != session2
+    session1 = client1.transport.get_place._session
+    session2 = client2.transport.get_place._session
     assert session1 != session2
 
 
@@ -1466,8 +3033,97 @@ def test_places_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_photo_path():
+    place = "squid"
+    photo = "clam"
+    expected = "places/{place}/photos/{photo}".format(
+        place=place,
+        photo=photo,
+    )
+    actual = PlacesClient.photo_path(place, photo)
+    assert expected == actual
+
+
+def test_parse_photo_path():
+    expected = {
+        "place": "whelk",
+        "photo": "octopus",
+    }
+    path = PlacesClient.photo_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PlacesClient.parse_photo_path(path)
+    assert expected == actual
+
+
+def test_photo_media_path():
+    place_id = "oyster"
+    photo_reference = "nudibranch"
+    expected = "places/{place_id}/photos/{photo_reference}/media".format(
+        place_id=place_id,
+        photo_reference=photo_reference,
+    )
+    actual = PlacesClient.photo_media_path(place_id, photo_reference)
+    assert expected == actual
+
+
+def test_parse_photo_media_path():
+    expected = {
+        "place_id": "cuttlefish",
+        "photo_reference": "mussel",
+    }
+    path = PlacesClient.photo_media_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PlacesClient.parse_photo_media_path(path)
+    assert expected == actual
+
+
+def test_place_path():
+    place_id = "winkle"
+    expected = "places/{place_id}".format(
+        place_id=place_id,
+    )
+    actual = PlacesClient.place_path(place_id)
+    assert expected == actual
+
+
+def test_parse_place_path():
+    expected = {
+        "place_id": "nautilus",
+    }
+    path = PlacesClient.place_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PlacesClient.parse_place_path(path)
+    assert expected == actual
+
+
+def test_review_path():
+    place = "scallop"
+    review = "abalone"
+    expected = "places/{place}/reviews/{review}".format(
+        place=place,
+        review=review,
+    )
+    actual = PlacesClient.review_path(place, review)
+    assert expected == actual
+
+
+def test_parse_review_path():
+    expected = {
+        "place": "squid",
+        "review": "clam",
+    }
+    path = PlacesClient.review_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PlacesClient.parse_review_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1477,7 +3133,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "octopus",
     }
     path = PlacesClient.common_billing_account_path(**expected)
 
@@ -1487,7 +3143,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -1497,7 +3153,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nudibranch",
     }
     path = PlacesClient.common_folder_path(**expected)
 
@@ -1507,7 +3163,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -1517,7 +3173,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "mussel",
     }
     path = PlacesClient.common_organization_path(**expected)
 
@@ -1527,7 +3183,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -1537,7 +3193,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nautilus",
     }
     path = PlacesClient.common_project_path(**expected)
 
@@ -1547,8 +3203,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -1559,8 +3215,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "squid",
+        "location": "clam",
     }
     path = PlacesClient.common_location_path(**expected)
 

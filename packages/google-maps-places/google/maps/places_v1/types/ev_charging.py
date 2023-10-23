@@ -17,16 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.maps.places.v1',
+    package="google.maps.places.v1",
     manifest={
-        'EVConnectorType',
-        'EVChargeOptions',
+        "EVConnectorType",
+        "EVChargeOptions",
     },
 )
 
@@ -133,10 +131,10 @@ class EVChargeOptions(proto.Message):
                 updated.
         """
 
-        type_: 'EVConnectorType' = proto.Field(
+        type_: "EVConnectorType" = proto.Field(
             proto.ENUM,
             number=1,
-            enum='EVConnectorType',
+            enum="EVConnectorType",
         )
         max_charge_rate_kw: float = proto.Field(
             proto.DOUBLE,

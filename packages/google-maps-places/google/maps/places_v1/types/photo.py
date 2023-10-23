@@ -21,11 +21,10 @@ import proto  # type: ignore
 
 from google.maps.places_v1.types import attribution
 
-
 __protobuf__ = proto.module(
-    package='google.maps.places.v1',
+    package="google.maps.places.v1",
     manifest={
-        'Photo',
+        "Photo",
     },
 )
 
@@ -60,7 +59,9 @@ class Photo(proto.Message):
         proto.INT32,
         number=3,
     )
-    author_attributions: MutableSequence[attribution.AuthorAttribution] = proto.RepeatedField(
+    author_attributions: MutableSequence[
+        attribution.AuthorAttribution
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=attribution.AuthorAttribution,
