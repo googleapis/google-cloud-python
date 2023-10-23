@@ -31,6 +31,16 @@ def docproto():
 
 
 @pytest.fixture
+def large_docproto():
+    with open(
+        "tests/unit/resources/multi_page/pretrained-ocr-v1.0-2020-09-23_output.json",
+        "r",
+        encoding="utf-8",
+    ) as f:
+        return documentai.Document.from_json(f.read())
+
+
+@pytest.fixture
 def docproto_with_symbols():
     with open(
         "tests/unit/resources/toolbox_invoice_test-with-symbols.json",
@@ -245,6 +255,21 @@ def test_Paragraph(docproto):
     # checking cached value
     assert paragraph.text == "Invoice\n"
     assert paragraph.hocr_bounding_box == "bbox 1310 220 1534 282"
+
+
+def test_page_elements_large_document(large_docproto):
+    for pg in large_docproto.pages:
+        wrapped_page = page.Page(
+            documentai_object=pg, document_text=large_docproto.text
+        )
+        for block in wrapped_page.blocks:
+            assert block.text != ""
+        for paragraph in wrapped_page.paragraphs:
+            assert paragraph.text != ""
+        for line in wrapped_page.lines:
+            assert line.text != ""
+        for token in wrapped_page.tokens:
+            assert token.text != ""
 
 
 def test_Line(docproto):

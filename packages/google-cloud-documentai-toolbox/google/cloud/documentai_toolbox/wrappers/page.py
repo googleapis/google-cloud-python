@@ -122,7 +122,7 @@ class BasePageElement(ABC):
         """
         if self._text is None:
             self._text = _text_from_layout(
-                layout=self.documentai_object.layout, text=self._page.text
+                layout=self.documentai_object.layout, text=self._page.document_text
             )
         return self._text
 
@@ -324,13 +324,15 @@ def _text_from_layout(layout: documentai.Document.Page.Layout, text: str) -> str
             Required. an element with layout fields.
         text (str):
             Required. UTF-8 encoded text in reading order
-            from the document.
+            of the `documentai.Document` containing the layout element.
 
     Returns:
         str:
             Text from a single element.
     """
 
+    # Note: `layout.text_anchor.text_segments` are indexes into the full Document text.
+    # https://cloud.google.com/document-ai/docs/reference/rest/v1/Document#textsegment
     return "".join(
         text[int(segment.start_index) : int(segment.end_index)]
         for segment in layout.text_anchor.text_segments
