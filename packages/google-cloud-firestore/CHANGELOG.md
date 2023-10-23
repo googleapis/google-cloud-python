@@ -5,6 +5,24 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.13.0](https://github.com/googleapis/python-firestore/compare/v2.12.0...v2.13.0) (2023-10-23)
+
+
+### Features
+
+* Sum/Avg aggregation queries ([#715](https://github.com/googleapis/python-firestore/issues/715)) ([443475b](https://github.com/googleapis/python-firestore/commit/443475b01395a1749b02035313c54e1d775da09b))
+
+
+### Bug Fixes
+
+* Ensure transactions rollback on failure ([#767](https://github.com/googleapis/python-firestore/issues/767)) ([cdaf25b](https://github.com/googleapis/python-firestore/commit/cdaf25b35d27355e4ea577843004fdc2d16bb4ac))
+* Improve AsyncQuery typing ([#782](https://github.com/googleapis/python-firestore/issues/782)) ([ae1247b](https://github.com/googleapis/python-firestore/commit/ae1247b4502d395eac7b387dbdd5ef162264069f))
+
+
+### Documentation
+
+* Minor formatting ([41b5ea0](https://github.com/googleapis/python-firestore/commit/41b5ea091245bea291c8de841205ecb53a26087f))
+
 ## [2.12.0](https://github.com/googleapis/python-firestore/compare/v2.11.1...v2.12.0) (2023-08-07)
 
 
