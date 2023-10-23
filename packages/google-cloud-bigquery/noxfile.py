@@ -26,6 +26,7 @@ MYPY_VERSION = "mypy==0.910"
 PYTYPE_VERSION = "pytype==2021.4.9"
 BLACK_VERSION = "black==23.7.0"
 BLACK_PATHS = (
+    "benchmark",
     "docs",
     "google",
     "samples",
@@ -381,6 +382,7 @@ def lint(session):
     session.run("flake8", "tests")
     session.run("flake8", os.path.join("docs", "samples"))
     session.run("flake8", os.path.join("docs", "snippets.py"))
+    session.run("flake8", "benchmark")
     session.run("black", "--check", *BLACK_PATHS)
 
 
