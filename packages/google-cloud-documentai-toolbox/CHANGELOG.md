@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.11.0-alpha...v0.11.1-alpha) (2023-10-23)
+
+
+### Bug Fixes
+
+* Empty Page SubElements ([#186](https://github.com/googleapis/python-documentai-toolbox/issues/186)) ([2a5dbf5](https://github.com/googleapis/python-documentai-toolbox/commit/2a5dbf52dfe1a17ff3a6e090682258521923d76b))
+
 ## [0.11.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.10.3-alpha...v0.11.0-alpha) (2023-10-18)
 
 
