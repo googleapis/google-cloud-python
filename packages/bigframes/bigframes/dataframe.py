@@ -46,7 +46,6 @@ import bigframes.core.groupby as groupby
 import bigframes.core.guid
 import bigframes.core.indexers as indexers
 import bigframes.core.indexes as indexes
-import bigframes.core.io
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.core.window
@@ -56,6 +55,7 @@ import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.series
 import bigframes.series as bf_series
+import bigframes.session._io.bigquery
 import third_party.bigframes_vendored.pandas.core.frame as vendored_pandas_frame
 import third_party.bigframes_vendored.pandas.pandas._typing as vendored_pandas_typing
 
@@ -2201,9 +2201,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
 
         result_table = self._run_io_query(
-            index=index, ordering_id=bigframes.core.io.IO_ORDERING_ID
+            index=index, ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID
         )
-        export_data_statement = bigframes.core.io.create_export_csv_statement(
+        export_data_statement = bigframes.session._io.bigquery.create_export_csv_statement(
             f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
             uri=path_or_buf,
             field_delimiter=sep,
@@ -2243,9 +2243,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             )
 
         result_table = self._run_io_query(
-            index=index, ordering_id=bigframes.core.io.IO_ORDERING_ID
+            index=index, ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID
         )
-        export_data_statement = bigframes.core.io.create_export_data_statement(
+        export_data_statement = bigframes.session._io.bigquery.create_export_data_statement(
             f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
             uri=path_or_buf,
             format="JSON",
@@ -2319,9 +2319,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             export_options["compression"] = compression.upper()
 
         result_table = self._run_io_query(
-            index=index, ordering_id=bigframes.core.io.IO_ORDERING_ID
+            index=index, ordering_id=bigframes.session._io.bigquery.IO_ORDERING_ID
         )
-        export_data_statement = bigframes.core.io.create_export_data_statement(
+        export_data_statement = bigframes.session._io.bigquery.create_export_data_statement(
             f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
             uri=path,
             format="PARQUET",

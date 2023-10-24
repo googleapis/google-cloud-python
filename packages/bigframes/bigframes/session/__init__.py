@@ -67,13 +67,13 @@ import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.guid as guid
-import bigframes.core.io as bigframes_io
 from bigframes.core.ordering import IntegerEncoding, OrderingColumnReference
 import bigframes.core.utils as utils
 import bigframes.dataframe as dataframe
 import bigframes.formatting_helpers as formatting_helpers
 from bigframes.remote_function import read_gbq_function as bigframes_rgf
 from bigframes.remote_function import remote_function as bigframes_rf
+import bigframes.session._io.bigquery as bigframes_io
 import bigframes.session.clients
 import bigframes.version
 

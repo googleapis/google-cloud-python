@@ -18,7 +18,7 @@ from typing import Iterable
 import google.cloud.bigquery as bigquery
 import pytest
 
-import bigframes.core.io
+import bigframes.session._io.bigquery
 
 
 def test_create_snapshot_sql_doesnt_timetravel_anonymous_datasets():
@@ -26,7 +26,7 @@ def test_create_snapshot_sql_doesnt_timetravel_anonymous_datasets():
         "my-test-project._e8166e0cdb.anonbb92cd"
     )
 
-    sql = bigframes.core.io.create_snapshot_sql(
+    sql = bigframes.session._io.bigquery.create_snapshot_sql(
         table_ref, datetime.datetime.now(datetime.timezone.utc)
     )
 
@@ -40,7 +40,7 @@ def test_create_snapshot_sql_doesnt_timetravel_anonymous_datasets():
 def test_create_snapshot_sql_doesnt_timetravel_session_datasets():
     table_ref = bigquery.TableReference.from_string("my-test-project._session.abcdefg")
 
-    sql = bigframes.core.io.create_snapshot_sql(
+    sql = bigframes.session._io.bigquery.create_snapshot_sql(
         table_ref, datetime.datetime.now(datetime.timezone.utc)
     )
 
@@ -101,4 +101,5 @@ def test_create_snapshot_sql_doesnt_timetravel_session_datasets():
     ),
 )
 def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str):
-    pass
+    sql = bigframes.session._io.bigquery.bq_schema_to_sql(schema)
+    assert sql == expected
