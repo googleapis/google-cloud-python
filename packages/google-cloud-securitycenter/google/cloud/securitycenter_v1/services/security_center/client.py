@@ -905,7 +905,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+    ) -> (
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+    ):
         r"""Creates a resident
         SecurityHealthAnalyticsCustomModule at the scope of the
         given CRM parent, and also creates inherited
@@ -2462,7 +2464,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule:
+    ) -> (
+        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule
+    ):
         r"""Retrieves an
         EffectiveSecurityHealthAnalyticsCustomModule.
 
@@ -5290,7 +5294,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+    ) -> (
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+    ):
         r"""Updates the SecurityHealthAnalyticsCustomModule under
         the given name based on the given update mask. Updating
         the enablement state is supported on both resident and
