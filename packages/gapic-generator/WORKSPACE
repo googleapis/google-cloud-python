@@ -2,14 +2,14 @@ workspace(name = "gapic_generator_python")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-_bazel_skylib_version = "0.9.0"
+_bazel_skylib_version = "1.4.0"
 
-_bazel_skylib_sha256 = "1dde365491125a3db70731e25658dfdd3bc5dbdfd11b840b3e987ecf043c7ca0"
+_bazel_skylib_sha256 = "f24ab666394232f834f74d19e2ff142b0af17466ea0c69a3f4c276ee75f6efce"
 
 http_archive(
     name = "bazel_skylib",
     sha256 = _bazel_skylib_sha256,
-    url = "https://github.com/bazelbuild/bazel-skylib/releases/download/{0}/bazel_skylib-{0}.tar.gz".format(_bazel_skylib_version),
+    url = "https://github.com/bazelbuild/bazel-skylib/releases/download/{0}/bazel-skylib-{0}.tar.gz".format(_bazel_skylib_version),
 )
 
 _io_bazel_rules_go_version = "0.33.0"
@@ -59,10 +59,6 @@ gapic_generator_python()
 
 gapic_generator_register_toolchains()
 
-load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
-
-protobuf_deps()
-
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/1781):
 # Remove this import once gRPC depends on a newer version.
 #
@@ -81,15 +77,35 @@ http_archive(
     ],
 )
 
-#
-# Import grpc as a native bazel dependency. This avoids duplication and also
-# speeds up loading phase a lot (otherwise python_rules will be building grpcio
-# from sources in a single-core speed, which takes around 5 minutes on a regular
-# workstation)
-#
+_grpc_version = "1.55.1"
+
+_grpc_sha256 = "17c0685da231917a7b3be2671a7b13b550a85fdda5e475313264c5f51c4da3f8"
+
+http_archive(
+    name = "com_github_grpc_grpc",
+    sha256 = _grpc_sha256,
+    strip_prefix = "grpc-%s" % _grpc_version,
+    urls = ["https://github.com/grpc/grpc/archive/v%s.zip" % _grpc_version],
+)
+# instantiated in grpc_deps().
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "0b0395d34e000f1229679e10d984ed7913078f3dd7f26cf0476467f5e65716f4",
+    strip_prefix = "protobuf-23.2",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v23.2.tar.gz"],
+)
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
+
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps", "PROTOBUF_MAVEN_ARTIFACTS")
+# This is actually already done within grpc_deps but calling this for Bazel convention.
+protobuf_deps()
+
+# gRPC enforces a specific version of Go toolchain which conflicts with our build.
+# All the relevant parts of grpc_extra_deps() are imported in this  WORKSPACE file
+# explicitly, that is why we do not call grpc_extra_deps() here and call
+# apple_rules_dependencies and apple_support_dependencies macros explicitly.
 
 load("@build_bazel_rules_apple//apple:repositories.bzl", "apple_rules_dependencies")
 
