@@ -1242,7 +1242,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 raise NotImplementedError(
                     "Cannot reindex with index with different nlevels"
                 )
-            new_indexer = bigframes.dataframe.DataFrame(index=index)[[]]
+            new_indexer = bigframes.dataframe.DataFrame(
+                index=index, session=self._get_block().expr._session
+            )[[]]
         # multiindex join is senstive to index names, so we will set all these
         result = new_indexer.rename_axis(range(new_indexer.index.nlevels)).join(
             self.to_frame().rename_axis(range(self.index.nlevels)),
