@@ -177,7 +177,7 @@ def fragment_alternative_templates(session):
 @contextmanager
 def showcase_library(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
-    include_service_yaml=False,
+    include_service_yaml=True,
 ):
     """Install the generated library into the session for showcase tests."""
 
