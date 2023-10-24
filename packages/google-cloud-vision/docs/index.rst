@@ -11,40 +11,40 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    vision_v1/services
-    vision_v1/types
+    vision_v1/services_
+    vision_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    vision_v1p1beta1/services
-    vision_v1p1beta1/types
+    vision_v1p1beta1/services_
+    vision_v1p1beta1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    vision_v1p2beta1/services
-    vision_v1p2beta1/types
+    vision_v1p2beta1/services_
+    vision_v1p2beta1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    vision_v1p3beta1/services
-    vision_v1p3beta1/types
+    vision_v1p3beta1/services_
+    vision_v1p3beta1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    vision_v1p4beta1/services
-    vision_v1p4beta1/types
+    vision_v1p4beta1/services_
+    vision_v1p4beta1/types_
 
 
 Changelog

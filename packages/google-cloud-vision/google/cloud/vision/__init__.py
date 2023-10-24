@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from google.cloud.vision import gapic_version as package_version
 
 __version__ = package_version.__version__
 
 
-from google.cloud.vision_v1 import ImageAnnotatorClient
 from google.cloud.vision_v1.services.image_annotator.async_client import (
     ImageAnnotatorAsyncClient,
 )
+from google.cloud.vision_v1 import ImageAnnotatorClient
 from google.cloud.vision_v1.services.product_search.async_client import (
     ProductSearchAsyncClient,
 )
@@ -124,7 +122,14 @@ from google.cloud.vision_v1.types.text_annotation import (
 from google.cloud.vision_v1.types.web_detection import WebDetection
 
 __all__ = (
-    "AddProductToProductSetRequest",
+    "ImageAnnotatorClient",
+    "ImageAnnotatorAsyncClient",
+    "ProductSearchClient",
+    "ProductSearchAsyncClient",
+    "BoundingPoly",
+    "NormalizedVertex",
+    "Position",
+    "Vertex",
     "AnnotateFileRequest",
     "AnnotateFileResponse",
     "AnnotateImageRequest",
@@ -139,42 +144,49 @@ __all__ = (
     "BatchAnnotateFilesResponse",
     "BatchAnnotateImagesRequest",
     "BatchAnnotateImagesResponse",
-    "BatchOperationMetadata",
-    "Block",
-    "BoundingPoly",
     "ColorInfo",
-    "CreateProductRequest",
-    "CreateProductSetRequest",
-    "CreateReferenceImageRequest",
     "CropHint",
     "CropHintsAnnotation",
     "CropHintsParams",
-    "DeleteProductRequest",
-    "DeleteProductSetRequest",
-    "DeleteReferenceImageRequest",
     "DominantColorsAnnotation",
     "EntityAnnotation",
     "FaceAnnotation",
     "Feature",
     "GcsDestination",
     "GcsSource",
-    "GetProductRequest",
-    "GetProductSetRequest",
-    "GetReferenceImageRequest",
     "Image",
     "ImageAnnotationContext",
-    "ImageAnnotatorAsyncClient",
-    "ImageAnnotatorClient",
     "ImageContext",
     "ImageProperties",
     "ImageSource",
+    "InputConfig",
+    "LatLongRect",
+    "LocalizedObjectAnnotation",
+    "LocationInfo",
+    "OperationMetadata",
+    "OutputConfig",
+    "Property",
+    "SafeSearchAnnotation",
+    "TextDetectionParams",
+    "WebDetectionParams",
+    "Likelihood",
+    "ProductSearchParams",
+    "ProductSearchResults",
+    "AddProductToProductSetRequest",
+    "BatchOperationMetadata",
+    "CreateProductRequest",
+    "CreateProductSetRequest",
+    "CreateReferenceImageRequest",
+    "DeleteProductRequest",
+    "DeleteProductSetRequest",
+    "DeleteReferenceImageRequest",
+    "GetProductRequest",
+    "GetProductSetRequest",
+    "GetReferenceImageRequest",
     "ImportProductSetsGcsSource",
     "ImportProductSetsInputConfig",
     "ImportProductSetsRequest",
     "ImportProductSetsResponse",
-    "InputConfig",
-    "LatLongRect",
-    "Likelihood",
     "ListProductSetsRequest",
     "ListProductSetsResponse",
     "ListProductsInProductSetRequest",
@@ -183,33 +195,19 @@ __all__ = (
     "ListProductsResponse",
     "ListReferenceImagesRequest",
     "ListReferenceImagesResponse",
-    "LocalizedObjectAnnotation",
-    "LocationInfo",
-    "NormalizedVertex",
-    "OperationMetadata",
-    "OutputConfig",
-    "Page",
-    "Paragraph",
-    "Position",
     "Product",
-    "ProductSearchAsyncClient",
-    "ProductSearchClient",
-    "ProductSearchParams",
-    "ProductSearchResults",
     "ProductSet",
     "ProductSetPurgeConfig",
-    "Property",
     "PurgeProductsRequest",
     "ReferenceImage",
     "RemoveProductFromProductSetRequest",
-    "SafeSearchAnnotation",
-    "Symbol",
-    "TextAnnotation",
-    "TextDetectionParams",
     "UpdateProductRequest",
     "UpdateProductSetRequest",
-    "Vertex",
-    "WebDetection",
-    "WebDetectionParams",
+    "Block",
+    "Page",
+    "Paragraph",
+    "Symbol",
+    "TextAnnotation",
     "Word",
+    "WebDetection",
 )
