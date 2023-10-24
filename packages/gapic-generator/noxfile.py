@@ -178,6 +178,7 @@ def fragment_alternative_templates(session):
 def showcase_library(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
     include_service_yaml=True,
+    retry_config=True,
 ):
     """Install the generated library into the session for showcase tests."""
 
@@ -218,11 +219,23 @@ def showcase_library(
                 external=True,
                 silent=True,
             )
+        if retry_config:
+            session.run(
+                "curl",
+                "https://github.com/googleapis/gapic-showcase/releases/"
+                f"download/v{showcase_version}/"
+                f"showcase_grpc_service_config.json",
+                "-L",
+                "--output",
+                path.join(tmp_dir, "showcase_grpc_service_config.json"),
+                external=True,
+                silent=True,
+            )
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
         opts = "--python_gapic_opt="
-        if include_service_yaml:
-            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest", f"service-yaml={tmp_dir}/showcase_v1beta1.yaml"))
+        if include_service_yaml and retry_config:
+            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest", f"service-yaml={tmp_dir}/showcase_v1beta1.yaml", f"retry-config={tmp_dir}/showcase_grpc_service_config.json"))
         else:
             opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest",))            
         cmd_tup = (
