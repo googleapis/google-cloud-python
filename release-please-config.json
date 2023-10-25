@@ -409,7 +409,12 @@
             "component": "google-cloud-bigquery-datatransfer",
             "extra-files": [
                 "google/cloud/bigquery_datatransfer/gapic_version.py",
-                "google/cloud/bigquery_datatransfer_v1/gapic_version.py"
+                "google/cloud/bigquery_datatransfer_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datatransfer.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -450,7 +455,12 @@
             "component": "google-cloud-bigquery-reservation",
             "extra-files": [
                 "google/cloud/bigquery_reservation/gapic_version.py",
-                "google/cloud/bigquery_reservation_v1/gapic_version.py"
+                "google/cloud/bigquery_reservation_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.reservation.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -729,7 +739,12 @@
             "component": "google-cloud-dataproc",
             "extra-files": [
                 "google/cloud/dataproc/gapic_version.py",
-                "google/cloud/dataproc_v1/gapic_version.py"
+                "google/cloud/dataproc_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.dataproc.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -1447,7 +1462,17 @@
             "extra-files": [
                 "google/cloud/osconfig/gapic_version.py",
                 "google/cloud/osconfig_v1/gapic_version.py",
-                "google/cloud/osconfig_v1alpha/gapic_version.py"
+                "google/cloud/osconfig_v1alpha/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.osconfig.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.osconfig.v1alpha.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -1672,7 +1697,22 @@
                 "google/cloud/retail/gapic_version.py",
                 "google/cloud/retail_v2/gapic_version.py",
                 "google/cloud/retail_v2alpha/gapic_version.py",
-                "google/cloud/retail_v2beta/gapic_version.py"
+                "google/cloud/retail_v2beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.retail.v2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.retail.v2alpha.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.retail.v2beta.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -1683,7 +1723,17 @@
             "extra-files": [
                 "google/cloud/scheduler/gapic_version.py",
                 "google/cloud/scheduler_v1/gapic_version.py",
-                "google/cloud/scheduler_v1beta1/gapic_version.py"
+                "google/cloud/scheduler_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.scheduler.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.scheduler.v1beta1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -1838,7 +1888,12 @@
             "component": "google-cloud-storage-transfer",
             "extra-files": [
                 "google/cloud/storage_transfer/gapic_version.py",
-                "google/cloud/storage_transfer_v1/gapic_version.py"
+                "google/cloud/storage_transfer_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.storagetransfer.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -1901,7 +1956,22 @@
                 "google/cloud/tasks/gapic_version.py",
                 "google/cloud/tasks_v2/gapic_version.py",
                 "google/cloud/tasks_v2beta2/gapic_version.py",
-                "google/cloud/tasks_v2beta3/gapic_version.py"
+                "google/cloud/tasks_v2beta3/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tasks.v2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tasks.v2beta2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tasks.v2beta3.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -1949,7 +2019,12 @@
             "component": "google-cloud-video-live-stream",
             "extra-files": [
                 "google/cloud/video/live_stream/gapic_version.py",
-                "google/cloud/video/live_stream_v1/gapic_version.py"
+                "google/cloud/video/live_stream_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.video.livestream.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -1969,7 +2044,12 @@
             "component": "google-cloud-video-transcoder",
             "extra-files": [
                 "google/cloud/video/transcoder/gapic_version.py",
-                "google/cloud/video/transcoder_v1/gapic_version.py"
+                "google/cloud/video/transcoder_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.video.transcoder.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
