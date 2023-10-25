@@ -14059,8 +14059,9 @@ def test_list_assets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14146,8 +14147,9 @@ def test_list_assets_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ListAssetsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ListAssetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14283,8 +14285,9 @@ def test_list_assets_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14407,8 +14410,9 @@ def test_get_asset_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Asset.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Asset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14485,8 +14489,9 @@ def test_get_asset_rest_required_fields(request_type=migrationcenter.GetAssetReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.Asset.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.Asset.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14611,8 +14616,9 @@ def test_get_asset_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Asset.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Asset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14932,6 +14938,73 @@ def test_update_asset_rest(request_type):
         "sources": ["sources_value1", "sources_value2"],
         "assigned_groups": ["assigned_groups_value1", "assigned_groups_value2"],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.UpdateAssetRequest.meta.fields["asset"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["asset"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["asset"][field])):
+                    del request_init["asset"][field][i][subfield]
+            else:
+                del request_init["asset"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14946,8 +15019,9 @@ def test_update_asset_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Asset.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Asset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15027,8 +15101,9 @@ def test_update_asset_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.Asset.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.Asset.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15131,272 +15206,6 @@ def test_update_asset_rest_bad_request(
     request_init = {
         "asset": {"name": "projects/sample1/locations/sample2/assets/sample3"}
     }
-    request_init["asset"] = {
-        "name": "projects/sample1/locations/sample2/assets/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "attributes": {},
-        "machine_details": {
-            "uuid": "uuid_value",
-            "machine_name": "machine_name_value",
-            "create_time": {},
-            "core_count": 1073,
-            "memory_mb": 967,
-            "power_state": 1,
-            "architecture": {
-                "cpu_architecture": "cpu_architecture_value",
-                "cpu_name": "cpu_name_value",
-                "vendor": "vendor_value",
-                "cpu_thread_count": 1703,
-                "cpu_socket_count": 1720,
-                "bios": {
-                    "bios_name": "bios_name_value",
-                    "id": "id_value",
-                    "manufacturer": "manufacturer_value",
-                    "version": "version_value",
-                    "release_date": {"year": 433, "month": 550, "day": 318},
-                    "smbios_uuid": "smbios_uuid_value",
-                },
-                "firmware_type": 1,
-                "hyperthreading": 1,
-            },
-            "guest_os": {
-                "os_name": "os_name_value",
-                "family": 1,
-                "version": "version_value",
-                "config": {
-                    "issue": "issue_value",
-                    "fstab": {
-                        "entries": [
-                            {
-                                "spec": "spec_value",
-                                "file": "file_value",
-                                "vfstype": "vfstype_value",
-                                "mntops": "mntops_value",
-                                "freq": 430,
-                                "passno": 660,
-                            }
-                        ]
-                    },
-                    "hosts": {
-                        "entries": [
-                            {
-                                "ip": "ip_value",
-                                "host_names": [
-                                    "host_names_value1",
-                                    "host_names_value2",
-                                ],
-                            }
-                        ]
-                    },
-                    "nfs_exports": {
-                        "entries": [
-                            {
-                                "export_directory": "export_directory_value",
-                                "hosts": ["hosts_value1", "hosts_value2"],
-                            }
-                        ]
-                    },
-                    "selinux_mode": 1,
-                },
-                "runtime": {
-                    "services": {
-                        "entries": [
-                            {
-                                "service_name": "service_name_value",
-                                "state": 1,
-                                "start_mode": 1,
-                                "exe_path": "exe_path_value",
-                                "cmdline": "cmdline_value",
-                                "pid": 317,
-                            }
-                        ]
-                    },
-                    "processes": {
-                        "entries": [
-                            {
-                                "pid": 317,
-                                "exe_path": "exe_path_value",
-                                "cmdline": "cmdline_value",
-                                "user": "user_value",
-                                "attributes": {},
-                            }
-                        ]
-                    },
-                    "network": {
-                        "scan_time": {},
-                        "connections": {
-                            "entries": [
-                                {
-                                    "protocol": "protocol_value",
-                                    "local_ip_address": "local_ip_address_value",
-                                    "local_port": 1071,
-                                    "remote_ip_address": "remote_ip_address_value",
-                                    "remote_port": 1200,
-                                    "state": 1,
-                                    "pid": 317,
-                                    "process_name": "process_name_value",
-                                }
-                            ]
-                        },
-                    },
-                    "last_boot_time": {},
-                    "domain": "domain_value",
-                    "machine_name": "machine_name_value",
-                    "installed_apps": {
-                        "entries": [
-                            {
-                                "application_name": "application_name_value",
-                                "vendor": "vendor_value",
-                                "install_time": {},
-                                "path": "path_value",
-                                "version": "version_value",
-                            }
-                        ]
-                    },
-                    "open_file_list": {
-                        "entries": [
-                            {
-                                "command": "command_value",
-                                "user": "user_value",
-                                "file_type": "file_type_value",
-                                "file_path": "file_path_value",
-                            }
-                        ]
-                    },
-                },
-            },
-            "network": {
-                "primary_ip_address": "primary_ip_address_value",
-                "public_ip_address": "public_ip_address_value",
-                "primary_mac_address": "primary_mac_address_value",
-                "adapters": {
-                    "entries": [
-                        {
-                            "adapter_type": "adapter_type_value",
-                            "mac_address": "mac_address_value",
-                            "addresses": {
-                                "entries": [
-                                    {
-                                        "ip_address": "ip_address_value",
-                                        "subnet_mask": "subnet_mask_value",
-                                        "bcast": "bcast_value",
-                                        "fqdn": "fqdn_value",
-                                        "assignment": 1,
-                                    }
-                                ]
-                            },
-                        }
-                    ]
-                },
-            },
-            "disks": {
-                "total_capacity_bytes": 2135,
-                "total_free_bytes": 1707,
-                "disks": {
-                    "entries": [
-                        {
-                            "capacity_bytes": 1492,
-                            "free_bytes": 1064,
-                            "disk_label": "disk_label_value",
-                            "disk_label_type": "disk_label_type_value",
-                            "interface_type": 1,
-                            "partitions": {
-                                "entries": [
-                                    {
-                                        "type_": "type__value",
-                                        "file_system": "file_system_value",
-                                        "mount_point": "mount_point_value",
-                                        "capacity_bytes": 1492,
-                                        "free_bytes": 1064,
-                                        "uuid": "uuid_value",
-                                        "sub_partitions": {},
-                                    }
-                                ]
-                            },
-                            "hw_address": "hw_address_value",
-                            "vmware": {
-                                "backing_type": 1,
-                                "shared": True,
-                                "vmdk_mode": 1,
-                                "rdm_compatibility": 1,
-                            },
-                        }
-                    ]
-                },
-            },
-            "platform": {
-                "vmware_details": {
-                    "vcenter_version": "vcenter_version_value",
-                    "esx_version": "esx_version_value",
-                    "osid": "osid_value",
-                    "vcenter_folder": "vcenter_folder_value",
-                    "vcenter_uri": "vcenter_uri_value",
-                    "vcenter_vm_id": "vcenter_vm_id_value",
-                },
-                "aws_ec2_details": {
-                    "machine_type_label": "machine_type_label_value",
-                    "location": "location_value",
-                },
-                "azure_vm_details": {
-                    "machine_type_label": "machine_type_label_value",
-                    "location": "location_value",
-                    "provisioning_state": "provisioning_state_value",
-                },
-                "generic_details": {"location": "location_value"},
-                "physical_details": {"location": "location_value"},
-            },
-        },
-        "insight_list": {
-            "insights": [
-                {
-                    "migration_insight": {
-                        "fit": {"fit_level": 1},
-                        "compute_engine_target": {
-                            "shape": {
-                                "memory_mb": 967,
-                                "physical_core_count": 2029,
-                                "logical_core_count": 1899,
-                                "series": "series_value",
-                                "machine_type": "machine_type_value",
-                                "storage": [{"type_": 1, "size_gb": 739}],
-                            }
-                        },
-                    },
-                    "generic_insight": {
-                        "message_id": 1041,
-                        "default_message": "default_message_value",
-                        "additional_information": [
-                            "additional_information_value1",
-                            "additional_information_value2",
-                        ],
-                    },
-                }
-            ],
-            "update_time": {},
-        },
-        "performance_data": {
-            "daily_resource_usage_aggregations": [
-                {
-                    "date": {},
-                    "cpu": {
-                        "utilization_percentage": {
-                            "average": 0.731,
-                            "median": 0.622,
-                            "nintey_fifth_percentile": 0.2449,
-                            "peak": 0.417,
-                        }
-                    },
-                    "memory": {"utilization_percentage": {}},
-                    "network": {"ingress_bps": {}, "egress_bps": {}},
-                    "disk": {"iops": {}},
-                }
-            ]
-        },
-        "sources": ["sources_value1", "sources_value2"],
-        "assigned_groups": ["assigned_groups_value1", "assigned_groups_value2"],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -15437,8 +15246,9 @@ def test_update_asset_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Asset.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Asset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15502,8 +15312,9 @@ def test_batch_update_assets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.BatchUpdateAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.BatchUpdateAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15578,8 +15389,9 @@ def test_batch_update_assets_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.BatchUpdateAssetsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.BatchUpdateAssetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15717,8 +15529,9 @@ def test_batch_update_assets_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.BatchUpdateAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.BatchUpdateAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16531,6 +16344,73 @@ def test_report_asset_frames_rest(request_type):
             }
         ]
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.ReportAssetFramesRequest.meta.fields["frames"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["frames"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["frames"][field])):
+                    del request_init["frames"][field][i][subfield]
+            else:
+                del request_init["frames"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -16541,8 +16421,9 @@ def test_report_asset_frames_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ReportAssetFramesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ReportAssetFramesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16626,8 +16507,9 @@ def test_report_asset_frames_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ReportAssetFramesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ReportAssetFramesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16729,239 +16611,6 @@ def test_report_asset_frames_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["frames"] = {
-        "frames_data": [
-            {
-                "machine_details": {
-                    "uuid": "uuid_value",
-                    "machine_name": "machine_name_value",
-                    "create_time": {"seconds": 751, "nanos": 543},
-                    "core_count": 1073,
-                    "memory_mb": 967,
-                    "power_state": 1,
-                    "architecture": {
-                        "cpu_architecture": "cpu_architecture_value",
-                        "cpu_name": "cpu_name_value",
-                        "vendor": "vendor_value",
-                        "cpu_thread_count": 1703,
-                        "cpu_socket_count": 1720,
-                        "bios": {
-                            "bios_name": "bios_name_value",
-                            "id": "id_value",
-                            "manufacturer": "manufacturer_value",
-                            "version": "version_value",
-                            "release_date": {"year": 433, "month": 550, "day": 318},
-                            "smbios_uuid": "smbios_uuid_value",
-                        },
-                        "firmware_type": 1,
-                        "hyperthreading": 1,
-                    },
-                    "guest_os": {
-                        "os_name": "os_name_value",
-                        "family": 1,
-                        "version": "version_value",
-                        "config": {
-                            "issue": "issue_value",
-                            "fstab": {
-                                "entries": [
-                                    {
-                                        "spec": "spec_value",
-                                        "file": "file_value",
-                                        "vfstype": "vfstype_value",
-                                        "mntops": "mntops_value",
-                                        "freq": 430,
-                                        "passno": 660,
-                                    }
-                                ]
-                            },
-                            "hosts": {
-                                "entries": [
-                                    {
-                                        "ip": "ip_value",
-                                        "host_names": [
-                                            "host_names_value1",
-                                            "host_names_value2",
-                                        ],
-                                    }
-                                ]
-                            },
-                            "nfs_exports": {
-                                "entries": [
-                                    {
-                                        "export_directory": "export_directory_value",
-                                        "hosts": ["hosts_value1", "hosts_value2"],
-                                    }
-                                ]
-                            },
-                            "selinux_mode": 1,
-                        },
-                        "runtime": {
-                            "services": {
-                                "entries": [
-                                    {
-                                        "service_name": "service_name_value",
-                                        "state": 1,
-                                        "start_mode": 1,
-                                        "exe_path": "exe_path_value",
-                                        "cmdline": "cmdline_value",
-                                        "pid": 317,
-                                    }
-                                ]
-                            },
-                            "processes": {
-                                "entries": [
-                                    {
-                                        "pid": 317,
-                                        "exe_path": "exe_path_value",
-                                        "cmdline": "cmdline_value",
-                                        "user": "user_value",
-                                        "attributes": {},
-                                    }
-                                ]
-                            },
-                            "network": {
-                                "scan_time": {},
-                                "connections": {
-                                    "entries": [
-                                        {
-                                            "protocol": "protocol_value",
-                                            "local_ip_address": "local_ip_address_value",
-                                            "local_port": 1071,
-                                            "remote_ip_address": "remote_ip_address_value",
-                                            "remote_port": 1200,
-                                            "state": 1,
-                                            "pid": 317,
-                                            "process_name": "process_name_value",
-                                        }
-                                    ]
-                                },
-                            },
-                            "last_boot_time": {},
-                            "domain": "domain_value",
-                            "machine_name": "machine_name_value",
-                            "installed_apps": {
-                                "entries": [
-                                    {
-                                        "application_name": "application_name_value",
-                                        "vendor": "vendor_value",
-                                        "install_time": {},
-                                        "path": "path_value",
-                                        "version": "version_value",
-                                    }
-                                ]
-                            },
-                            "open_file_list": {
-                                "entries": [
-                                    {
-                                        "command": "command_value",
-                                        "user": "user_value",
-                                        "file_type": "file_type_value",
-                                        "file_path": "file_path_value",
-                                    }
-                                ]
-                            },
-                        },
-                    },
-                    "network": {
-                        "primary_ip_address": "primary_ip_address_value",
-                        "public_ip_address": "public_ip_address_value",
-                        "primary_mac_address": "primary_mac_address_value",
-                        "adapters": {
-                            "entries": [
-                                {
-                                    "adapter_type": "adapter_type_value",
-                                    "mac_address": "mac_address_value",
-                                    "addresses": {
-                                        "entries": [
-                                            {
-                                                "ip_address": "ip_address_value",
-                                                "subnet_mask": "subnet_mask_value",
-                                                "bcast": "bcast_value",
-                                                "fqdn": "fqdn_value",
-                                                "assignment": 1,
-                                            }
-                                        ]
-                                    },
-                                }
-                            ]
-                        },
-                    },
-                    "disks": {
-                        "total_capacity_bytes": 2135,
-                        "total_free_bytes": 1707,
-                        "disks": {
-                            "entries": [
-                                {
-                                    "capacity_bytes": 1492,
-                                    "free_bytes": 1064,
-                                    "disk_label": "disk_label_value",
-                                    "disk_label_type": "disk_label_type_value",
-                                    "interface_type": 1,
-                                    "partitions": {
-                                        "entries": [
-                                            {
-                                                "type_": "type__value",
-                                                "file_system": "file_system_value",
-                                                "mount_point": "mount_point_value",
-                                                "capacity_bytes": 1492,
-                                                "free_bytes": 1064,
-                                                "uuid": "uuid_value",
-                                                "sub_partitions": {},
-                                            }
-                                        ]
-                                    },
-                                    "hw_address": "hw_address_value",
-                                    "vmware": {
-                                        "backing_type": 1,
-                                        "shared": True,
-                                        "vmdk_mode": 1,
-                                        "rdm_compatibility": 1,
-                                    },
-                                }
-                            ]
-                        },
-                    },
-                    "platform": {
-                        "vmware_details": {
-                            "vcenter_version": "vcenter_version_value",
-                            "esx_version": "esx_version_value",
-                            "osid": "osid_value",
-                            "vcenter_folder": "vcenter_folder_value",
-                            "vcenter_uri": "vcenter_uri_value",
-                            "vcenter_vm_id": "vcenter_vm_id_value",
-                        },
-                        "aws_ec2_details": {
-                            "machine_type_label": "machine_type_label_value",
-                            "location": "location_value",
-                        },
-                        "azure_vm_details": {
-                            "machine_type_label": "machine_type_label_value",
-                            "location": "location_value",
-                            "provisioning_state": "provisioning_state_value",
-                        },
-                        "generic_details": {"location": "location_value"},
-                        "physical_details": {"location": "location_value"},
-                    },
-                },
-                "report_time": {},
-                "labels": {},
-                "attributes": {},
-                "performance_samples": [
-                    {
-                        "sample_time": {},
-                        "memory": {"utilized_percentage": 0.2023},
-                        "cpu": {"utilized_percentage": 0.2023},
-                        "network": {
-                            "average_ingress_bps": 0.20090000000000002,
-                            "average_egress_bps": 0.1895,
-                        },
-                        "disk": {"average_iops": 0.1269},
-                    }
-                ],
-                "trace_token": "trace_token_value",
-            }
-        ]
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -17007,8 +16656,9 @@ def test_aggregate_assets_values_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.AggregateAssetsValuesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.AggregateAssetsValuesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17083,10 +16733,11 @@ def test_aggregate_assets_values_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.AggregateAssetsValuesResponse.pb(
+            # Convert return value to protobuf type
+            return_value = migrationcenter.AggregateAssetsValuesResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -17246,6 +16897,73 @@ def test_create_import_job_rest(request_type):
             "total_rows_count": 1750,
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.CreateImportJobRequest.meta.fields["import_job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["import_job"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["import_job"][field])):
+                    del request_init["import_job"][field][i][subfield]
+            else:
+                del request_init["import_job"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17454,41 +17172,6 @@ def test_create_import_job_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["import_job"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "complete_time": {},
-        "state": 1,
-        "labels": {},
-        "asset_source": "asset_source_value",
-        "validation_report": {
-            "file_validations": [
-                {
-                    "file_name": "file_name_value",
-                    "row_errors": [
-                        {
-                            "row_number": 1088,
-                            "vm_name": "vm_name_value",
-                            "vm_uuid": "vm_uuid_value",
-                            "errors": [
-                                {"error_details": "error_details_value", "severity": 1}
-                            ],
-                        }
-                    ],
-                    "partial_report": True,
-                    "file_errors": {},
-                }
-            ],
-            "job_errors": {},
-        },
-        "execution_report": {
-            "frames_reported": 1602,
-            "execution_errors": {},
-            "total_rows_count": 1750,
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -17595,8 +17278,9 @@ def test_list_import_jobs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListImportJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListImportJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17682,8 +17366,9 @@ def test_list_import_jobs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ListImportJobsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ListImportJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -17819,8 +17504,9 @@ def test_list_import_jobs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListImportJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListImportJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17944,8 +17630,9 @@ def test_get_import_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ImportJob.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ImportJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18028,8 +17715,9 @@ def test_get_import_job_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ImportJob.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ImportJob.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18156,8 +17844,9 @@ def test_get_import_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ImportJob.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ImportJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -18525,6 +18214,73 @@ def test_update_import_job_rest(request_type):
             "total_rows_count": 1750,
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.UpdateImportJobRequest.meta.fields["import_job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["import_job"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["import_job"][field])):
+                    del request_init["import_job"][field][i][subfield]
+            else:
+                del request_init["import_job"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18715,41 +18471,6 @@ def test_update_import_job_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "import_job": {"name": "projects/sample1/locations/sample2/importJobs/sample3"}
-    }
-    request_init["import_job"] = {
-        "name": "projects/sample1/locations/sample2/importJobs/sample3",
-        "display_name": "display_name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "complete_time": {},
-        "state": 1,
-        "labels": {},
-        "asset_source": "asset_source_value",
-        "validation_report": {
-            "file_validations": [
-                {
-                    "file_name": "file_name_value",
-                    "row_errors": [
-                        {
-                            "row_number": 1088,
-                            "vm_name": "vm_name_value",
-                            "vm_uuid": "vm_uuid_value",
-                            "errors": [
-                                {"error_details": "error_details_value", "severity": 1}
-                            ],
-                        }
-                    ],
-                    "partial_report": True,
-                    "file_errors": {},
-                }
-            ],
-            "job_errors": {},
-        },
-        "execution_report": {
-            "frames_reported": 1602,
-            "execution_errors": {},
-            "total_rows_count": 1750,
-        },
     }
     request = request_type(**request_init)
 
@@ -19396,8 +19117,9 @@ def test_get_import_data_file_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ImportDataFile.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ImportDataFile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19478,8 +19200,9 @@ def test_get_import_data_file_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ImportDataFile.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ImportDataFile.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19608,8 +19331,9 @@ def test_get_import_data_file_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ImportDataFile.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ImportDataFile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19675,8 +19399,9 @@ def test_list_import_data_files_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListImportDataFilesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListImportDataFilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19761,10 +19486,9 @@ def test_list_import_data_files_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ListImportDataFilesResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ListImportDataFilesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19901,8 +19625,9 @@ def test_list_import_data_files_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListImportDataFilesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListImportDataFilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -20026,6 +19751,75 @@ def test_create_import_data_file_rest(request_type):
             "uri_expiration_time": {},
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.CreateImportDataFileRequest.meta.fields[
+        "import_data_file"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["import_data_file"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["import_data_file"][field])):
+                    del request_init["import_data_file"][field][i][subfield]
+            else:
+                del request_init["import_data_file"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20234,18 +20028,6 @@ def test_create_import_data_file_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/importJobs/sample3"}
-    request_init["import_data_file"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "format_": 1,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "state": 1,
-        "upload_file_info": {
-            "signed_uri": "signed_uri_value",
-            "headers": {},
-            "uri_expiration_time": {},
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -20626,8 +20408,9 @@ def test_list_groups_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListGroupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListGroupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -20712,8 +20495,9 @@ def test_list_groups_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ListGroupsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ListGroupsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20848,8 +20632,9 @@ def test_list_groups_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListGroupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListGroupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -20972,8 +20757,9 @@ def test_get_group_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Group.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Group.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -21048,8 +20834,9 @@ def test_get_group_rest_required_fields(request_type=migrationcenter.GetGroupReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.Group.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.Group.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -21174,8 +20961,9 @@ def test_get_group_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Group.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Group.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -21235,6 +21023,73 @@ def test_create_group_rest(request_type):
         "display_name": "display_name_value",
         "description": "description_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.CreateGroupRequest.meta.fields["group"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["group"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["group"][field])):
+                    del request_init["group"][field][i][subfield]
+            else:
+                del request_init["group"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -21443,14 +21298,6 @@ def test_create_group_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["group"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "description": "description_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -21554,6 +21401,73 @@ def test_update_group_rest(request_type):
         "display_name": "display_name_value",
         "description": "description_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.UpdateGroupRequest.meta.fields["group"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["group"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["group"][field])):
+                    del request_init["group"][field][i][subfield]
+            else:
+                del request_init["group"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -21744,14 +21658,6 @@ def test_update_group_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "group": {"name": "projects/sample1/locations/sample2/groups/sample3"}
-    }
-    request_init["group"] = {
-        "name": "projects/sample1/locations/sample2/groups/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "description": "description_value",
     }
     request = request_type(**request_init)
 
@@ -22668,8 +22574,9 @@ def test_list_error_frames_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListErrorFramesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListErrorFramesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -22753,8 +22660,9 @@ def test_list_error_frames_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ListErrorFramesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ListErrorFramesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -22890,8 +22798,9 @@ def test_list_error_frames_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListErrorFramesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListErrorFramesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -23017,8 +22926,9 @@ def test_get_error_frame_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ErrorFrame.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ErrorFrame.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -23095,8 +23005,9 @@ def test_get_error_frame_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ErrorFrame.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ErrorFrame.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -23225,8 +23136,9 @@ def test_get_error_frame_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ErrorFrame.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ErrorFrame.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -23292,8 +23204,9 @@ def test_list_sources_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListSourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListSourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -23378,8 +23291,9 @@ def test_list_sources_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ListSourcesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ListSourcesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -23514,8 +23428,9 @@ def test_list_sources_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListSourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListSourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -23644,8 +23559,9 @@ def test_get_source_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Source.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -23726,8 +23642,9 @@ def test_get_source_rest_required_fields(request_type=migrationcenter.GetSourceR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.Source.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.Source.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -23852,8 +23769,9 @@ def test_get_source_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Source.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -23918,6 +23836,73 @@ def test_create_source_rest(request_type):
         "error_frame_count": 1820,
         "state": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.CreateSourceRequest.meta.fields["source"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["source"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["source"][field])):
+                    del request_init["source"][field][i][subfield]
+            else:
+                del request_init["source"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -24126,19 +24111,6 @@ def test_create_source_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["source"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "type_": 1,
-        "priority": 898,
-        "managed": True,
-        "pending_frame_count": 2007,
-        "error_frame_count": 1820,
-        "state": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -24247,6 +24219,73 @@ def test_update_source_rest(request_type):
         "error_frame_count": 1820,
         "state": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.UpdateSourceRequest.meta.fields["source"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["source"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["source"][field])):
+                    del request_init["source"][field][i][subfield]
+            else:
+                del request_init["source"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -24437,19 +24476,6 @@ def test_update_source_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "source": {"name": "projects/sample1/locations/sample2/sources/sample3"}
-    }
-    request_init["source"] = {
-        "name": "projects/sample1/locations/sample2/sources/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "type_": 1,
-        "priority": 898,
-        "managed": True,
-        "pending_frame_count": 2007,
-        "error_frame_count": 1820,
-        "state": 1,
     }
     request = request_type(**request_init)
 
@@ -24822,8 +24848,9 @@ def test_list_preference_sets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListPreferenceSetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListPreferenceSetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -24907,10 +24934,9 @@ def test_list_preference_sets_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ListPreferenceSetsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ListPreferenceSetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -25044,8 +25070,9 @@ def test_list_preference_sets_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListPreferenceSetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListPreferenceSetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -25169,8 +25196,9 @@ def test_get_preference_set_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.PreferenceSet.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.PreferenceSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -25247,8 +25275,9 @@ def test_get_preference_set_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.PreferenceSet.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.PreferenceSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -25375,8 +25404,9 @@ def test_get_preference_set_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.PreferenceSet.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.PreferenceSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -25465,6 +25495,75 @@ def test_create_preference_set_rest(request_type):
             },
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.CreatePreferenceSetRequest.meta.fields[
+        "preference_set"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["preference_set"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["preference_set"][field])):
+                    del request_init["preference_set"][field][i][subfield]
+            else:
+                del request_init["preference_set"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -25673,42 +25772,6 @@ def test_create_preference_set_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["preference_set"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "virtual_machine_preferences": {
-            "target_product": 1,
-            "region_preferences": {
-                "preferred_regions": [
-                    "preferred_regions_value1",
-                    "preferred_regions_value2",
-                ]
-            },
-            "commitment_plan": 1,
-            "sizing_optimization_strategy": 1,
-            "compute_engine_preferences": {
-                "machine_preferences": {
-                    "allowed_machine_series": [{"code": "code_value"}]
-                },
-                "license_type": 1,
-            },
-            "vmware_engine_preferences": {
-                "cpu_overcommit_ratio": 0.2154,
-                "memory_overcommit_ratio": 0.24910000000000002,
-                "storage_deduplication_compression_ratio": 0.4168,
-                "commitment_plan": 1,
-            },
-            "sole_tenancy_preferences": {
-                "cpu_overcommit_ratio": 0.2154,
-                "host_maintenance_policy": 1,
-                "commitment_plan": 1,
-                "node_types": [{"node_name": "node_name_value"}],
-            },
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -25843,6 +25906,75 @@ def test_update_preference_set_rest(request_type):
             },
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.UpdatePreferenceSetRequest.meta.fields[
+        "preference_set"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["preference_set"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["preference_set"][field])):
+                    del request_init["preference_set"][field][i][subfield]
+            else:
+                del request_init["preference_set"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -26035,42 +26167,6 @@ def test_update_preference_set_rest_bad_request(
         "preference_set": {
             "name": "projects/sample1/locations/sample2/preferenceSets/sample3"
         }
-    }
-    request_init["preference_set"] = {
-        "name": "projects/sample1/locations/sample2/preferenceSets/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "virtual_machine_preferences": {
-            "target_product": 1,
-            "region_preferences": {
-                "preferred_regions": [
-                    "preferred_regions_value1",
-                    "preferred_regions_value2",
-                ]
-            },
-            "commitment_plan": 1,
-            "sizing_optimization_strategy": 1,
-            "compute_engine_preferences": {
-                "machine_preferences": {
-                    "allowed_machine_series": [{"code": "code_value"}]
-                },
-                "license_type": 1,
-            },
-            "vmware_engine_preferences": {
-                "cpu_overcommit_ratio": 0.2154,
-                "memory_overcommit_ratio": 0.24910000000000002,
-                "storage_deduplication_compression_ratio": 0.4168,
-                "commitment_plan": 1,
-            },
-            "sole_tenancy_preferences": {
-                "cpu_overcommit_ratio": 0.2154,
-                "host_maintenance_policy": 1,
-                "commitment_plan": 1,
-                "node_types": [{"node_name": "node_name_value"}],
-            },
-        },
     }
     request = request_type(**request_init)
 
@@ -26448,8 +26544,9 @@ def test_get_settings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Settings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -26525,8 +26622,9 @@ def test_get_settings_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.Settings.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.Settings.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -26651,8 +26749,9 @@ def test_get_settings_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Settings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -26708,6 +26807,73 @@ def test_update_settings_rest(request_type):
         "name": "projects/sample1/locations/sample2/settings",
         "preference_set": "preference_set_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.UpdateSettingsRequest.meta.fields["settings"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["settings"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["settings"][field])):
+                    del request_init["settings"][field][i][subfield]
+            else:
+                del request_init["settings"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -26897,10 +27063,6 @@ def test_update_settings_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"settings": {"name": "projects/sample1/locations/sample2/settings"}}
-    request_init["settings"] = {
-        "name": "projects/sample1/locations/sample2/settings",
-        "preference_set": "preference_set_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -27005,6 +27167,73 @@ def test_create_report_config_rest(request_type):
             {"group": "group_value", "preference_set": "preference_set_value"}
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.CreateReportConfigRequest.meta.fields["report_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["report_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["report_config"][field])):
+                    del request_init["report_config"][field][i][subfield]
+            else:
+                del request_init["report_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -27213,16 +27442,6 @@ def test_create_report_config_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["report_config"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "group_preferenceset_assignments": [
-            {"group": "group_value", "preference_set": "preference_set_value"}
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -27331,8 +27550,9 @@ def test_get_report_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ReportConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ReportConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -27409,8 +27629,9 @@ def test_get_report_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ReportConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ReportConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -27537,8 +27758,9 @@ def test_get_report_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ReportConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ReportConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -27604,8 +27826,9 @@ def test_list_report_configs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListReportConfigsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListReportConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -27690,8 +27913,9 @@ def test_list_report_configs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ListReportConfigsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ListReportConfigsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -27826,8 +28050,9 @@ def test_list_report_configs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListReportConfigsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListReportConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -28345,6 +28570,73 @@ def test_create_report_rest(request_type):
             ],
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = migrationcenter.CreateReportRequest.meta.fields["report"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["report"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["report"][field])):
+                    del request_init["report"][field][i][subfield]
+            else:
+                del request_init["report"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -28555,132 +28847,6 @@ def test_create_report_rest_bad_request(
     request_init = {
         "parent": "projects/sample1/locations/sample2/reportConfigs/sample3"
     }
-    request_init["report"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "type_": 1,
-        "state": 1,
-        "summary": {
-            "all_assets_stats": {
-                "total_memory_bytes": 1954,
-                "total_storage_bytes": 2046,
-                "total_cores": 1183,
-                "total_assets": 1302,
-                "memory_utilization_chart": {"used": 433, "free": 418},
-                "storage_utilization_chart": {},
-                "operating_system": {
-                    "data_points": [{"label": "label_value", "value": 0.541}]
-                },
-                "core_count_histogram": {
-                    "buckets": [
-                        {"lower_bound": 1184, "upper_bound": 1187, "count": 553}
-                    ]
-                },
-                "memory_bytes_histogram": {},
-                "storage_bytes_histogram": {},
-            },
-            "group_findings": [
-                {
-                    "display_name": "display_name_value",
-                    "description": "description_value",
-                    "asset_aggregate_stats": {},
-                    "overlapping_asset_count": 2478,
-                    "preference_set_findings": [
-                        {
-                            "display_name": "display_name_value",
-                            "description": "description_value",
-                            "machine_preferences": {
-                                "target_product": 1,
-                                "region_preferences": {
-                                    "preferred_regions": [
-                                        "preferred_regions_value1",
-                                        "preferred_regions_value2",
-                                    ]
-                                },
-                                "commitment_plan": 1,
-                                "sizing_optimization_strategy": 1,
-                                "compute_engine_preferences": {
-                                    "machine_preferences": {
-                                        "allowed_machine_series": [
-                                            {"code": "code_value"}
-                                        ]
-                                    },
-                                    "license_type": 1,
-                                },
-                                "vmware_engine_preferences": {
-                                    "cpu_overcommit_ratio": 0.2154,
-                                    "memory_overcommit_ratio": 0.24910000000000002,
-                                    "storage_deduplication_compression_ratio": 0.4168,
-                                    "commitment_plan": 1,
-                                },
-                                "sole_tenancy_preferences": {
-                                    "cpu_overcommit_ratio": 0.2154,
-                                    "host_maintenance_policy": 1,
-                                    "commitment_plan": 1,
-                                    "node_types": [{"node_name": "node_name_value"}],
-                                },
-                            },
-                            "monthly_cost_total": {
-                                "currency_code": "currency_code_value",
-                                "units": 563,
-                                "nanos": 543,
-                            },
-                            "monthly_cost_compute": {},
-                            "monthly_cost_os_license": {},
-                            "monthly_cost_network_egress": {},
-                            "monthly_cost_storage": {},
-                            "monthly_cost_other": {},
-                            "compute_engine_finding": {
-                                "allocated_regions": [
-                                    "allocated_regions_value1",
-                                    "allocated_regions_value2",
-                                ],
-                                "allocated_asset_count": 2224,
-                                "machine_series_allocations": [
-                                    {
-                                        "machine_series": {},
-                                        "allocated_asset_count": 2224,
-                                    }
-                                ],
-                                "allocated_disk_types": [1],
-                            },
-                            "vmware_engine_finding": {
-                                "allocated_regions": [
-                                    "allocated_regions_value1",
-                                    "allocated_regions_value2",
-                                ],
-                                "allocated_asset_count": 2224,
-                                "node_allocations": [
-                                    {
-                                        "vmware_node": {"code": "code_value"},
-                                        "node_count": 1070,
-                                        "allocated_asset_count": 2224,
-                                    }
-                                ],
-                            },
-                            "sole_tenant_finding": {
-                                "allocated_regions": [
-                                    "allocated_regions_value1",
-                                    "allocated_regions_value2",
-                                ],
-                                "allocated_asset_count": 2224,
-                                "node_allocations": [
-                                    {
-                                        "node": {},
-                                        "node_count": 1070,
-                                        "allocated_asset_count": 2224,
-                                    }
-                                ],
-                            },
-                        }
-                    ],
-                }
-            ],
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -28795,8 +28961,9 @@ def test_get_report_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Report.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Report.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -28875,8 +29042,9 @@ def test_get_report_rest_required_fields(request_type=migrationcenter.GetReportR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.Report.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.Report.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -29005,8 +29173,9 @@ def test_get_report_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.Report.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.Report.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -29074,8 +29243,9 @@ def test_list_reports_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListReportsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -29161,8 +29331,9 @@ def test_list_reports_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = migrationcenter.ListReportsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = migrationcenter.ListReportsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -29302,8 +29473,9 @@ def test_list_reports_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = migrationcenter.ListReportsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = migrationcenter.ListReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

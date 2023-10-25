@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.1...google-cloud-batch-v0.17.2) (2023-10-19)
+
+
+### Features
+
+* expose display_name to batch v1 API ([8235ef6](https://github.com/googleapis/google-cloud-python/commit/8235ef62943bae4bb574c4d5555ce46db231c7d2))
+
 ## [0.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.0...google-cloud-batch-v0.17.1) (2023-09-30)
 
 
