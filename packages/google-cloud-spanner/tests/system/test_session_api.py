@@ -1913,6 +1913,19 @@ def test_execute_sql_w_manual_consume(sessions_database):
     assert streamed._pending_chunk is None
 
 
+def test_execute_sql_w_to_dict_list(sessions_database):
+    sd = _sample_data
+    row_count = 40
+    _set_up_table(sessions_database, row_count)
+
+    with sessions_database.snapshot() as snapshot:
+        rows = snapshot.execute_sql(sd.SQL).to_dict_list()
+        all_data_rows = list(_row_data(row_count))
+        row_data = [list(row.values()) for row in rows]
+        sd._check_row_data(row_data, all_data_rows)
+        assert all(set(row.keys()) == set(sd.COLUMNS) for row in rows)
+
+
 def _check_sql_results(
     database,
     sql,

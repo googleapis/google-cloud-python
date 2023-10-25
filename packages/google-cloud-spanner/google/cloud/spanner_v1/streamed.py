@@ -190,6 +190,27 @@ class StreamedResultSet(object):
         except StopIteration:
             return answer
 
+    def to_dict_list(self):
+        """Return the result of a query as a list of dictionaries.
+        In each dictionary the key is the column name and the value is the
+        value of the that column in a given row.
+
+        :rtype:
+           :class:`list of dict`
+        :returns: result rows as a list of dictionaries
+        """
+        rows = []
+        for row in self:
+            rows.append(
+                {
+                    column: value
+                    for column, value in zip(
+                        [column.name for column in self._metadata.row_type.fields], row
+                    )
+                }
+            )
+        return rows
+
 
 class Unmergeable(ValueError):
     """Unable to merge two values.
