@@ -67,8 +67,8 @@ def test_decomposition_configure_fit_score_predict(
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
     pd.testing.assert_frame_equal(
-        result.sort_index(),
-        expected,
+        abs(result.sort_index()),  # results may differ by a minus sign
+        abs(expected),
         check_exact=False,
         rtol=0.1,
     )

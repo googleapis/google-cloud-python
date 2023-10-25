@@ -431,10 +431,16 @@ def test_pipeline_PCA_fit_score_predict(session, penguins_df_default_index):
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
     pd.testing.assert_frame_equal(
-        predictions[
-            ["principal_component_1", "principal_component_2", "principal_component_3"]
-        ],
-        expected,
+        abs(  # results may differ by a minus sign
+            predictions[
+                [
+                    "principal_component_1",
+                    "principal_component_2",
+                    "principal_component_3",
+                ]
+            ]
+        ),
+        abs(expected),
         check_exact=False,
         rtol=0.1,
     )
