@@ -2111,6 +2111,10 @@ class InsertBehaviorTest(_InsertBehaviorTest):
     def test_insert_from_select_autoinc(self):
         pass
 
+    @pytest.mark.skip("Spanner does not support auto increment")
+    def test_no_results_for_non_returning_insert(self, connection, style, executemany):
+        pass
+
     def test_autoclose_on_insert(self):
         """
         SPANNER OVERRIDE:
@@ -2493,6 +2497,17 @@ class LikeFunctionsTest(_LikeFunctionsTest):
 @pytest.mark.skip("Spanner doesn't support IS DISTINCT FROM clause")
 class IsOrIsNotDistinctFromTest(_IsOrIsNotDistinctFromTest):
     pass
+
+
+@pytest.mark.skip("Spanner doesn't bizarre characters in foreign key names")
+class BizarroCharacterFKResolutionTest(fixtures.TestBase):
+    pass
+
+
+class IsolationLevelTest(fixtures.TestBase):
+    @pytest.mark.skip("Cloud Spanner does not support different isolation levels")
+    def test_dialect_user_setting_is_restored(self, testing_engine):
+        pass
 
 
 class OrderByLabelTest(_OrderByLabelTest):

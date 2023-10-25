@@ -304,7 +304,7 @@ class SpannerSQLCompiler(SQLCompiler):
         generate a SQL statement.
         """
         raw = ["\\", "'", '"', "\n", "\t", "\r"]
-        if type(value) == str and any(single in value for single in raw):
+        if isinstance(value, str) and any(single in value for single in raw):
             value = 'r"""{}"""'.format(value)
             return value
         else:
