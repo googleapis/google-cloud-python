@@ -14,6 +14,9 @@
 
 """Manages OpenTelemetry trace creation and handling"""
 
+import collections
+import os
+
 from contextlib import contextmanager
 
 from google.api_core.exceptions import GoogleAPICallError
@@ -46,6 +49,16 @@ def trace_call(name, extra_attributes=None):
     }
 
     if extra_attributes:
+        if os.environ.get("SQLALCHEMY_SPANNER_TRACE_HIDE_QUERY_PARAMETERS"):
+            extra_attributes.pop("db.params", None)
+
+        # Stringify "db.params" sequence values before sending to OpenTelemetry,
+        # otherwise OpenTelemetry may log a Warning if types differ.
+        if isinstance(extra_attributes, dict):
+            for k, v in extra_attributes.items():
+                if k == "db.params" and isinstance(v, collections.abc.Sequence):
+                    extra_attributes[k] = [str(e) for e in v]
+
         attributes.update(extra_attributes)
 
     with tracer.start_as_current_span(
