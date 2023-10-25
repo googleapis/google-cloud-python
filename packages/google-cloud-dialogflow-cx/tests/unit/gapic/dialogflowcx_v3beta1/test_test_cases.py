@@ -3603,8 +3603,9 @@ def test_list_test_cases_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = test_case.ListTestCasesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = test_case.ListTestCasesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3687,8 +3688,9 @@ def test_list_test_cases_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = test_case.ListTestCasesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = test_case.ListTestCasesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3818,8 +3820,9 @@ def test_list_test_cases_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = test_case.ListTestCasesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = test_case.ListTestCasesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4208,8 +4211,9 @@ def test_get_test_case_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = test_case.TestCase.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = test_case.TestCase.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4285,8 +4289,9 @@ def test_get_test_case_rest_required_fields(request_type=test_case.GetTestCaseRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = test_case.TestCase.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = test_case.TestCase.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4409,8 +4414,9 @@ def test_get_test_case_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = test_case.TestCase.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = test_case.TestCase.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4696,6 +4702,73 @@ def test_create_test_case_rest(request_type):
             "test_time": {},
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcdc_test_case.CreateTestCaseRequest.meta.fields["test_case"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["test_case"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["test_case"][field])):
+                    del request_init["test_case"][field][i][subfield]
+            else:
+                del request_init["test_case"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4711,8 +4784,9 @@ def test_create_test_case_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_test_case.TestCase.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_test_case.TestCase.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4791,8 +4865,9 @@ def test_create_test_case_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcdc_test_case.TestCase.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcdc_test_case.TestCase.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4886,239 +4961,6 @@ def test_create_test_case_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request_init["test_case"] = {
-        "name": "name_value",
-        "tags": ["tags_value1", "tags_value2"],
-        "display_name": "display_name_value",
-        "notes": "notes_value",
-        "test_config": {
-            "tracking_parameters": [
-                "tracking_parameters_value1",
-                "tracking_parameters_value2",
-            ],
-            "flow": "flow_value",
-            "page": "page_value",
-        },
-        "test_case_conversation_turns": [
-            {
-                "user_input": {
-                    "input": {
-                        "text": {"text": "text_value"},
-                        "intent": {"intent": "intent_value"},
-                        "audio": {
-                            "config": {
-                                "audio_encoding": 1,
-                                "sample_rate_hertz": 1817,
-                                "enable_word_info": True,
-                                "phrase_hints": [
-                                    "phrase_hints_value1",
-                                    "phrase_hints_value2",
-                                ],
-                                "model": "model_value",
-                                "model_variant": 1,
-                                "single_utterance": True,
-                            },
-                            "audio": b"audio_blob",
-                        },
-                        "event": {"event": "event_value"},
-                        "dtmf": {
-                            "digits": "digits_value",
-                            "finish_digit": "finish_digit_value",
-                        },
-                        "language_code": "language_code_value",
-                    },
-                    "injected_parameters": {"fields": {}},
-                    "is_webhook_enabled": True,
-                    "enable_sentiment_analysis": True,
-                },
-                "virtual_agent_output": {
-                    "session_parameters": {},
-                    "differences": [{"type_": 1, "description": "description_value"}],
-                    "diagnostic_info": {},
-                    "triggered_intent": {
-                        "name": "name_value",
-                        "display_name": "display_name_value",
-                        "training_phrases": [
-                            {
-                                "id": "id_value",
-                                "parts": [
-                                    {
-                                        "text": "text_value",
-                                        "parameter_id": "parameter_id_value",
-                                    }
-                                ],
-                                "repeat_count": 1289,
-                            }
-                        ],
-                        "parameters": [
-                            {
-                                "id": "id_value",
-                                "entity_type": "entity_type_value",
-                                "is_list": True,
-                                "redact": True,
-                            }
-                        ],
-                        "priority": 898,
-                        "is_fallback": True,
-                        "labels": {},
-                        "description": "description_value",
-                    },
-                    "current_page": {
-                        "name": "name_value",
-                        "display_name": "display_name_value",
-                        "entry_fulfillment": {
-                            "messages": [
-                                {
-                                    "text": {
-                                        "text": ["text_value1", "text_value2"],
-                                        "allow_playback_interruption": True,
-                                    },
-                                    "payload": {},
-                                    "conversation_success": {"metadata": {}},
-                                    "output_audio_text": {
-                                        "text": "text_value",
-                                        "ssml": "ssml_value",
-                                        "allow_playback_interruption": True,
-                                    },
-                                    "live_agent_handoff": {"metadata": {}},
-                                    "end_interaction": {},
-                                    "play_audio": {
-                                        "audio_uri": "audio_uri_value",
-                                        "allow_playback_interruption": True,
-                                    },
-                                    "mixed_audio": {
-                                        "segments": [
-                                            {
-                                                "audio": b"audio_blob",
-                                                "uri": "uri_value",
-                                                "allow_playback_interruption": True,
-                                            }
-                                        ]
-                                    },
-                                    "telephony_transfer_call": {
-                                        "phone_number": "phone_number_value"
-                                    },
-                                    "knowledge_info_card": {},
-                                    "channel": "channel_value",
-                                }
-                            ],
-                            "webhook": "webhook_value",
-                            "return_partial_responses": True,
-                            "tag": "tag_value",
-                            "set_parameter_actions": [
-                                {
-                                    "parameter": "parameter_value",
-                                    "value": {
-                                        "null_value": 0,
-                                        "number_value": 0.1285,
-                                        "string_value": "string_value_value",
-                                        "bool_value": True,
-                                        "struct_value": {},
-                                        "list_value": {"values": {}},
-                                    },
-                                }
-                            ],
-                            "conditional_cases": [
-                                {
-                                    "cases": [
-                                        {
-                                            "condition": "condition_value",
-                                            "case_content": [
-                                                {"message": {}, "additional_cases": {}}
-                                            ],
-                                        }
-                                    ]
-                                }
-                            ],
-                            "advanced_settings": {
-                                "audio_export_gcs_destination": {"uri": "uri_value"},
-                                "dtmf_settings": {
-                                    "enabled": True,
-                                    "max_digits": 1065,
-                                    "finish_digit": "finish_digit_value",
-                                },
-                                "logging_settings": {
-                                    "enable_stackdriver_logging": True,
-                                    "enable_interaction_logging": True,
-                                },
-                            },
-                            "enable_generative_fallback": True,
-                        },
-                        "form": {
-                            "parameters": [
-                                {
-                                    "display_name": "display_name_value",
-                                    "required": True,
-                                    "entity_type": "entity_type_value",
-                                    "is_list": True,
-                                    "fill_behavior": {
-                                        "initial_prompt_fulfillment": {},
-                                        "reprompt_event_handlers": [
-                                            {
-                                                "name": "name_value",
-                                                "event": "event_value",
-                                                "trigger_fulfillment": {},
-                                                "target_page": "target_page_value",
-                                                "target_flow": "target_flow_value",
-                                            }
-                                        ],
-                                    },
-                                    "default_value": {},
-                                    "redact": True,
-                                    "advanced_settings": {},
-                                }
-                            ]
-                        },
-                        "transition_route_groups": [
-                            "transition_route_groups_value1",
-                            "transition_route_groups_value2",
-                        ],
-                        "transition_routes": [
-                            {
-                                "name": "name_value",
-                                "description": "description_value",
-                                "intent": "intent_value",
-                                "condition": "condition_value",
-                                "trigger_fulfillment": {},
-                                "target_page": "target_page_value",
-                                "target_flow": "target_flow_value",
-                            }
-                        ],
-                        "event_handlers": {},
-                        "advanced_settings": {},
-                        "knowledge_connector_settings": {
-                            "enabled": True,
-                            "trigger_fulfillment": {},
-                            "target_page": "target_page_value",
-                            "target_flow": "target_flow_value",
-                            "data_store_connections": [
-                                {"data_store_type": 1, "data_store": "data_store_value"}
-                            ],
-                        },
-                    },
-                    "text_responses": {},
-                    "status": {
-                        "code": 411,
-                        "message": "message_value",
-                        "details": [
-                            {
-                                "type_url": "type.googleapis.com/google.protobuf.Duration",
-                                "value": b"\x08\x0c\x10\xdb\x07",
-                            }
-                        ],
-                    },
-                },
-            }
-        ],
-        "creation_time": {"seconds": 751, "nanos": 543},
-        "last_test_result": {
-            "name": "name_value",
-            "environment": "environment_value",
-            "conversation_turns": {},
-            "test_result": 1,
-            "test_time": {},
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5157,8 +4999,9 @@ def test_create_test_case_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_test_case.TestCase.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_test_case.TestCase.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5449,6 +5292,73 @@ def test_update_test_case_rest(request_type):
             "test_time": {},
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcdc_test_case.UpdateTestCaseRequest.meta.fields["test_case"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["test_case"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["test_case"][field])):
+                    del request_init["test_case"][field][i][subfield]
+            else:
+                del request_init["test_case"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5464,8 +5374,9 @@ def test_update_test_case_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_test_case.TestCase.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_test_case.TestCase.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5541,8 +5452,9 @@ def test_update_test_case_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcdc_test_case.TestCase.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcdc_test_case.TestCase.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5640,239 +5552,6 @@ def test_update_test_case_rest_bad_request(
             "name": "projects/sample1/locations/sample2/agents/sample3/testCases/sample4"
         }
     }
-    request_init["test_case"] = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/testCases/sample4",
-        "tags": ["tags_value1", "tags_value2"],
-        "display_name": "display_name_value",
-        "notes": "notes_value",
-        "test_config": {
-            "tracking_parameters": [
-                "tracking_parameters_value1",
-                "tracking_parameters_value2",
-            ],
-            "flow": "flow_value",
-            "page": "page_value",
-        },
-        "test_case_conversation_turns": [
-            {
-                "user_input": {
-                    "input": {
-                        "text": {"text": "text_value"},
-                        "intent": {"intent": "intent_value"},
-                        "audio": {
-                            "config": {
-                                "audio_encoding": 1,
-                                "sample_rate_hertz": 1817,
-                                "enable_word_info": True,
-                                "phrase_hints": [
-                                    "phrase_hints_value1",
-                                    "phrase_hints_value2",
-                                ],
-                                "model": "model_value",
-                                "model_variant": 1,
-                                "single_utterance": True,
-                            },
-                            "audio": b"audio_blob",
-                        },
-                        "event": {"event": "event_value"},
-                        "dtmf": {
-                            "digits": "digits_value",
-                            "finish_digit": "finish_digit_value",
-                        },
-                        "language_code": "language_code_value",
-                    },
-                    "injected_parameters": {"fields": {}},
-                    "is_webhook_enabled": True,
-                    "enable_sentiment_analysis": True,
-                },
-                "virtual_agent_output": {
-                    "session_parameters": {},
-                    "differences": [{"type_": 1, "description": "description_value"}],
-                    "diagnostic_info": {},
-                    "triggered_intent": {
-                        "name": "name_value",
-                        "display_name": "display_name_value",
-                        "training_phrases": [
-                            {
-                                "id": "id_value",
-                                "parts": [
-                                    {
-                                        "text": "text_value",
-                                        "parameter_id": "parameter_id_value",
-                                    }
-                                ],
-                                "repeat_count": 1289,
-                            }
-                        ],
-                        "parameters": [
-                            {
-                                "id": "id_value",
-                                "entity_type": "entity_type_value",
-                                "is_list": True,
-                                "redact": True,
-                            }
-                        ],
-                        "priority": 898,
-                        "is_fallback": True,
-                        "labels": {},
-                        "description": "description_value",
-                    },
-                    "current_page": {
-                        "name": "name_value",
-                        "display_name": "display_name_value",
-                        "entry_fulfillment": {
-                            "messages": [
-                                {
-                                    "text": {
-                                        "text": ["text_value1", "text_value2"],
-                                        "allow_playback_interruption": True,
-                                    },
-                                    "payload": {},
-                                    "conversation_success": {"metadata": {}},
-                                    "output_audio_text": {
-                                        "text": "text_value",
-                                        "ssml": "ssml_value",
-                                        "allow_playback_interruption": True,
-                                    },
-                                    "live_agent_handoff": {"metadata": {}},
-                                    "end_interaction": {},
-                                    "play_audio": {
-                                        "audio_uri": "audio_uri_value",
-                                        "allow_playback_interruption": True,
-                                    },
-                                    "mixed_audio": {
-                                        "segments": [
-                                            {
-                                                "audio": b"audio_blob",
-                                                "uri": "uri_value",
-                                                "allow_playback_interruption": True,
-                                            }
-                                        ]
-                                    },
-                                    "telephony_transfer_call": {
-                                        "phone_number": "phone_number_value"
-                                    },
-                                    "knowledge_info_card": {},
-                                    "channel": "channel_value",
-                                }
-                            ],
-                            "webhook": "webhook_value",
-                            "return_partial_responses": True,
-                            "tag": "tag_value",
-                            "set_parameter_actions": [
-                                {
-                                    "parameter": "parameter_value",
-                                    "value": {
-                                        "null_value": 0,
-                                        "number_value": 0.1285,
-                                        "string_value": "string_value_value",
-                                        "bool_value": True,
-                                        "struct_value": {},
-                                        "list_value": {"values": {}},
-                                    },
-                                }
-                            ],
-                            "conditional_cases": [
-                                {
-                                    "cases": [
-                                        {
-                                            "condition": "condition_value",
-                                            "case_content": [
-                                                {"message": {}, "additional_cases": {}}
-                                            ],
-                                        }
-                                    ]
-                                }
-                            ],
-                            "advanced_settings": {
-                                "audio_export_gcs_destination": {"uri": "uri_value"},
-                                "dtmf_settings": {
-                                    "enabled": True,
-                                    "max_digits": 1065,
-                                    "finish_digit": "finish_digit_value",
-                                },
-                                "logging_settings": {
-                                    "enable_stackdriver_logging": True,
-                                    "enable_interaction_logging": True,
-                                },
-                            },
-                            "enable_generative_fallback": True,
-                        },
-                        "form": {
-                            "parameters": [
-                                {
-                                    "display_name": "display_name_value",
-                                    "required": True,
-                                    "entity_type": "entity_type_value",
-                                    "is_list": True,
-                                    "fill_behavior": {
-                                        "initial_prompt_fulfillment": {},
-                                        "reprompt_event_handlers": [
-                                            {
-                                                "name": "name_value",
-                                                "event": "event_value",
-                                                "trigger_fulfillment": {},
-                                                "target_page": "target_page_value",
-                                                "target_flow": "target_flow_value",
-                                            }
-                                        ],
-                                    },
-                                    "default_value": {},
-                                    "redact": True,
-                                    "advanced_settings": {},
-                                }
-                            ]
-                        },
-                        "transition_route_groups": [
-                            "transition_route_groups_value1",
-                            "transition_route_groups_value2",
-                        ],
-                        "transition_routes": [
-                            {
-                                "name": "name_value",
-                                "description": "description_value",
-                                "intent": "intent_value",
-                                "condition": "condition_value",
-                                "trigger_fulfillment": {},
-                                "target_page": "target_page_value",
-                                "target_flow": "target_flow_value",
-                            }
-                        ],
-                        "event_handlers": {},
-                        "advanced_settings": {},
-                        "knowledge_connector_settings": {
-                            "enabled": True,
-                            "trigger_fulfillment": {},
-                            "target_page": "target_page_value",
-                            "target_flow": "target_flow_value",
-                            "data_store_connections": [
-                                {"data_store_type": 1, "data_store": "data_store_value"}
-                            ],
-                        },
-                    },
-                    "text_responses": {},
-                    "status": {
-                        "code": 411,
-                        "message": "message_value",
-                        "details": [
-                            {
-                                "type_url": "type.googleapis.com/google.protobuf.Duration",
-                                "value": b"\x08\x0c\x10\xdb\x07",
-                            }
-                        ],
-                    },
-                },
-            }
-        ],
-        "creation_time": {"seconds": 751, "nanos": 543},
-        "last_test_result": {
-            "name": "name_value",
-            "environment": "environment_value",
-            "conversation_turns": {},
-            "test_result": 1,
-            "test_time": {},
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5915,8 +5594,9 @@ def test_update_test_case_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_test_case.TestCase.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_test_case.TestCase.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6408,8 +6088,9 @@ def test_calculate_coverage_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = test_case.CalculateCoverageResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = test_case.CalculateCoverageResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6486,8 +6167,9 @@ def test_calculate_coverage_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = test_case.CalculateCoverageResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = test_case.CalculateCoverageResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7044,8 +6726,9 @@ def test_list_test_case_results_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = test_case.ListTestCaseResultsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = test_case.ListTestCaseResultsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7128,8 +6811,9 @@ def test_list_test_case_results_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = test_case.ListTestCaseResultsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = test_case.ListTestCaseResultsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7265,8 +6949,9 @@ def test_list_test_case_results_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = test_case.ListTestCaseResultsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = test_case.ListTestCaseResultsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7394,8 +7079,9 @@ def test_get_test_case_result_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = test_case.TestCaseResult.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = test_case.TestCaseResult.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7472,8 +7158,9 @@ def test_get_test_case_result_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = test_case.TestCaseResult.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = test_case.TestCaseResult.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7600,8 +7287,9 @@ def test_get_test_case_result_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = test_case.TestCaseResult.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = test_case.TestCaseResult.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

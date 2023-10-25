@@ -6764,8 +6764,9 @@ def test_get_workstation_cluster_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.WorkstationCluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.WorkstationCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6848,8 +6849,9 @@ def test_get_workstation_cluster_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = workstations.WorkstationCluster.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = workstations.WorkstationCluster.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6978,8 +6980,9 @@ def test_get_workstation_cluster_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.WorkstationCluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.WorkstationCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7045,8 +7048,9 @@ def test_list_workstation_clusters_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.ListWorkstationClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.ListWorkstationClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7129,10 +7133,9 @@ def test_list_workstation_clusters_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = workstations.ListWorkstationClustersResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = workstations.ListWorkstationClustersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7267,8 +7270,9 @@ def test_list_workstation_clusters_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.ListWorkstationClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.ListWorkstationClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7412,6 +7416,75 @@ def test_create_workstation_cluster_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.CreateWorkstationClusterRequest.meta.fields[
+        "workstation_cluster"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation_cluster"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation_cluster"][field])):
+                    del request_init["workstation_cluster"][field][i][subfield]
+            else:
+                del request_init["workstation_cluster"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7623,40 +7696,6 @@ def test_create_workstation_cluster_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["workstation_cluster"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "network": "network_value",
-        "subnetwork": "subnetwork_value",
-        "control_plane_ip": "control_plane_ip_value",
-        "private_cluster_config": {
-            "enable_private_endpoint": True,
-            "cluster_hostname": "cluster_hostname_value",
-            "service_attachment_uri": "service_attachment_uri_value",
-            "allowed_projects": ["allowed_projects_value1", "allowed_projects_value2"],
-        },
-        "degraded": True,
-        "conditions": [
-            {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7789,6 +7828,75 @@ def test_update_workstation_cluster_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.UpdateWorkstationClusterRequest.meta.fields[
+        "workstation_cluster"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation_cluster"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation_cluster"][field])):
+                    del request_init["workstation_cluster"][field][i][subfield]
+            else:
+                del request_init["workstation_cluster"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7983,40 +8091,6 @@ def test_update_workstation_cluster_rest_bad_request(
         "workstation_cluster": {
             "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
         }
-    }
-    request_init["workstation_cluster"] = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "network": "network_value",
-        "subnetwork": "subnetwork_value",
-        "control_plane_ip": "control_plane_ip_value",
-        "private_cluster_config": {
-            "enable_private_endpoint": True,
-            "cluster_hostname": "cluster_hostname_value",
-            "service_attachment_uri": "service_attachment_uri_value",
-            "allowed_projects": ["allowed_projects_value1", "allowed_projects_value2"],
-        },
-        "degraded": True,
-        "conditions": [
-            {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            }
-        ],
     }
     request = request_type(**request_init)
 
@@ -8420,8 +8494,9 @@ def test_get_workstation_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.WorkstationConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.WorkstationConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8502,8 +8577,9 @@ def test_get_workstation_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = workstations.WorkstationConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = workstations.WorkstationConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8632,8 +8708,9 @@ def test_get_workstation_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.WorkstationConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.WorkstationConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8701,8 +8778,9 @@ def test_list_workstation_configs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.ListWorkstationConfigsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.ListWorkstationConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8785,10 +8863,9 @@ def test_list_workstation_configs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = workstations.ListWorkstationConfigsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = workstations.ListWorkstationConfigsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8925,8 +9002,9 @@ def test_list_workstation_configs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.ListWorkstationConfigsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.ListWorkstationConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9053,10 +9131,11 @@ def test_list_usable_workstation_configs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.ListUsableWorkstationConfigsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = workstations.ListUsableWorkstationConfigsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9139,10 +9218,11 @@ def test_list_usable_workstation_configs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = workstations.ListUsableWorkstationConfigsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = workstations.ListUsableWorkstationConfigsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9284,10 +9364,11 @@ def test_list_usable_workstation_configs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.ListUsableWorkstationConfigsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = workstations.ListUsableWorkstationConfigsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9479,6 +9560,75 @@ def test_create_workstation_config_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.CreateWorkstationConfigRequest.meta.fields[
+        "workstation_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation_config"][field])):
+                    del request_init["workstation_config"][field][i][subfield]
+            else:
+                del request_init["workstation_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9692,81 +9842,6 @@ def test_create_workstation_config_rest_bad_request(
     request_init = {
         "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
     }
-    request_init["workstation_config"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "idle_timeout": {"seconds": 751, "nanos": 543},
-        "running_timeout": {},
-        "host": {
-            "gce_instance": {
-                "machine_type": "machine_type_value",
-                "service_account": "service_account_value",
-                "service_account_scopes": [
-                    "service_account_scopes_value1",
-                    "service_account_scopes_value2",
-                ],
-                "tags": ["tags_value1", "tags_value2"],
-                "pool_size": 980,
-                "pooled_instances": 1706,
-                "disable_public_ip_addresses": True,
-                "enable_nested_virtualization": True,
-                "shielded_instance_config": {
-                    "enable_secure_boot": True,
-                    "enable_vtpm": True,
-                    "enable_integrity_monitoring": True,
-                },
-                "confidential_instance_config": {"enable_confidential_compute": True},
-                "boot_disk_size_gb": 1792,
-            }
-        },
-        "persistent_directories": [
-            {
-                "gce_pd": {
-                    "size_gb": 739,
-                    "fs_type": "fs_type_value",
-                    "disk_type": "disk_type_value",
-                    "source_snapshot": "source_snapshot_value",
-                    "reclaim_policy": 1,
-                },
-                "mount_path": "mount_path_value",
-            }
-        ],
-        "container": {
-            "image": "image_value",
-            "command": ["command_value1", "command_value2"],
-            "args": ["args_value1", "args_value2"],
-            "env": {},
-            "working_dir": "working_dir_value",
-            "run_as_user": 1190,
-        },
-        "encryption_key": {
-            "kms_key": "kms_key_value",
-            "kms_key_service_account": "kms_key_service_account_value",
-        },
-        "readiness_checks": [{"path": "path_value", "port": 453}],
-        "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
-        "degraded": True,
-        "conditions": [
-            {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9942,6 +10017,75 @@ def test_update_workstation_config_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.UpdateWorkstationConfigRequest.meta.fields[
+        "workstation_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation_config"][field])):
+                    del request_init["workstation_config"][field][i][subfield]
+            else:
+                del request_init["workstation_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10136,81 +10280,6 @@ def test_update_workstation_config_rest_bad_request(
         "workstation_config": {
             "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
         }
-    }
-    request_init["workstation_config"] = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "idle_timeout": {"seconds": 751, "nanos": 543},
-        "running_timeout": {},
-        "host": {
-            "gce_instance": {
-                "machine_type": "machine_type_value",
-                "service_account": "service_account_value",
-                "service_account_scopes": [
-                    "service_account_scopes_value1",
-                    "service_account_scopes_value2",
-                ],
-                "tags": ["tags_value1", "tags_value2"],
-                "pool_size": 980,
-                "pooled_instances": 1706,
-                "disable_public_ip_addresses": True,
-                "enable_nested_virtualization": True,
-                "shielded_instance_config": {
-                    "enable_secure_boot": True,
-                    "enable_vtpm": True,
-                    "enable_integrity_monitoring": True,
-                },
-                "confidential_instance_config": {"enable_confidential_compute": True},
-                "boot_disk_size_gb": 1792,
-            }
-        },
-        "persistent_directories": [
-            {
-                "gce_pd": {
-                    "size_gb": 739,
-                    "fs_type": "fs_type_value",
-                    "disk_type": "disk_type_value",
-                    "source_snapshot": "source_snapshot_value",
-                    "reclaim_policy": 1,
-                },
-                "mount_path": "mount_path_value",
-            }
-        ],
-        "container": {
-            "image": "image_value",
-            "command": ["command_value1", "command_value2"],
-            "args": ["args_value1", "args_value2"],
-            "env": {},
-            "working_dir": "working_dir_value",
-            "run_as_user": 1190,
-        },
-        "encryption_key": {
-            "kms_key": "kms_key_value",
-            "kms_key_service_account": "kms_key_service_account_value",
-        },
-        "readiness_checks": [{"path": "path_value", "port": 453}],
-        "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
-        "degraded": True,
-        "conditions": [
-            {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            }
-        ],
     }
     request = request_type(**request_init)
 
@@ -10614,8 +10683,9 @@ def test_get_workstation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.Workstation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.Workstation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10696,8 +10766,9 @@ def test_get_workstation_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = workstations.Workstation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = workstations.Workstation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10826,8 +10897,9 @@ def test_get_workstation_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.Workstation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.Workstation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10895,8 +10967,9 @@ def test_list_workstations_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.ListWorkstationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.ListWorkstationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10979,8 +11052,9 @@ def test_list_workstations_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = workstations.ListWorkstationsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = workstations.ListWorkstationsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11117,8 +11191,9 @@ def test_list_workstations_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.ListWorkstationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.ListWorkstationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11245,8 +11320,9 @@ def test_list_usable_workstations_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.ListUsableWorkstationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.ListUsableWorkstationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11329,10 +11405,9 @@ def test_list_usable_workstations_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = workstations.ListUsableWorkstationsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = workstations.ListUsableWorkstationsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11469,8 +11544,9 @@ def test_list_usable_workstations_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.ListUsableWorkstationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.ListUsableWorkstationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11599,6 +11675,73 @@ def test_create_workstation_rest(request_type):
         "state": 1,
         "host": "host_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.CreateWorkstationRequest.meta.fields["workstation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation"][field])):
+                    del request_init["workstation"][field][i][subfield]
+            else:
+                del request_init["workstation"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -11809,21 +11952,6 @@ def test_create_workstation_rest_bad_request(
     request_init = {
         "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
     }
-    request_init["workstation"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "start_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "state": 1,
-        "host": "host_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -11939,6 +12067,73 @@ def test_update_workstation_rest(request_type):
         "state": 1,
         "host": "host_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.UpdateWorkstationRequest.meta.fields["workstation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation"][field])):
+                    del request_init["workstation"][field][i][subfield]
+            else:
+                del request_init["workstation"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12133,21 +12328,6 @@ def test_update_workstation_rest_bad_request(
         "workstation": {
             "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
         }
-    }
-    request_init["workstation"] = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "start_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "state": 1,
-        "host": "host_value",
     }
     request = request_type(**request_init)
 
@@ -13083,8 +13263,9 @@ def test_generate_access_token_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.GenerateAccessTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.GenerateAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13160,8 +13341,9 @@ def test_generate_access_token_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = workstations.GenerateAccessTokenResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = workstations.GenerateAccessTokenResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13290,8 +13472,9 @@ def test_generate_access_token_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = workstations.GenerateAccessTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = workstations.GenerateAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
