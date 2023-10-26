@@ -416,6 +416,30 @@ class Block:
         )
         return df, query_job
 
+    def to_pandas_batches(self):
+        """Download results one message at a time."""
+        dtypes = dict(zip(self.index_columns, self.index_dtypes))
+        dtypes.update(zip(self.value_columns, self.dtypes))
+        results_iterator, _ = self._expr.start_query()
+        for arrow_table in results_iterator.to_arrow_iterable(
+            bqstorage_client=self._expr._session.bqstoragereadclient
+        ):
+            df = bigframes.session._io.pandas.arrow_to_pandas(arrow_table, dtypes)
+            self._copy_index_to_pandas(df)
+            yield df
+
+    def _copy_index_to_pandas(self, df: pd.DataFrame):
+        """Set the index on pandas DataFrame to match this block.
+
+        Warning: This method modifies ``df`` inplace.
+        """
+        if self.index_columns:
+            df.set_index(list(self.index_columns), inplace=True)
+            # Pandas names is annotated as list[str] rather than the more
+            # general Sequence[Label] that BigQuery DataFrames has.
+            # See: https://github.com/pandas-dev/pandas-stubs/issues/804
+            df.index.names = self.index.names  # type: ignore
+
     def _compute_and_count(
         self,
         value_keys: Optional[Iterable[str]] = None,
@@ -489,10 +513,7 @@ class Block:
         else:
             total_rows = results_iterator.total_rows
             df = self._to_dataframe(results_iterator)
-
-            if self.index_columns:
-                df.set_index(list(self.index_columns), inplace=True)
-                df.index.names = self.index.names  # type: ignore
+            self._copy_index_to_pandas(df)
 
         return df, total_rows, query_job
 

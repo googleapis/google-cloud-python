@@ -893,6 +893,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         self._set_internal_query_job(query_job)
         return df.set_axis(self._block.column_labels, axis=1, copy=False)
 
+    def to_pandas_batches(self) -> Iterable[pandas.DataFrame]:
+        """Stream DataFrame results to an iterable of pandas DataFrame"""
+        return self._block.to_pandas_batches()
+
     def _compute_dry_run(self) -> bigquery.QueryJob:
         return self._block._compute_dry_run()
 

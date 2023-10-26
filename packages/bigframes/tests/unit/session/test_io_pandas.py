@@ -234,6 +234,62 @@ import bigframes.session._io.pandas
         pytest.param(
             pyarrow.Table.from_pydict(
                 {
+                    "bool": pyarrow.chunked_array(
+                        [[True, None], [True, False]],
+                        type=pyarrow.bool_(),
+                    ),
+                    "bytes": pyarrow.chunked_array(
+                        [[b"123", None], [b"abc", b"xyz"]],
+                        type=pyarrow.binary(),
+                    ),
+                    "float": pyarrow.chunked_array(
+                        [[1.0, None], [float("nan"), -1.0]],
+                        type=pyarrow.float64(),
+                    ),
+                    "int": pyarrow.chunked_array(
+                        [[1, None], [-1, 2**63 - 1]],
+                        type=pyarrow.int64(),
+                    ),
+                    "string": pyarrow.chunked_array(
+                        [["123", None], ["abc", "xyz"]],
+                        type=pyarrow.string(),
+                    ),
+                }
+            ),
+            {
+                "bool": "boolean",
+                "bytes": "object",
+                "float": pandas.Float64Dtype(),
+                "int": pandas.Int64Dtype(),
+                "string": "string[pyarrow]",
+            },
+            pandas.DataFrame(
+                {
+                    "bool": pandas.Series([True, None, True, False], dtype="boolean"),
+                    "bytes": [b"123", None, b"abc", b"xyz"],
+                    "float": pandas.Series(
+                        pandas.arrays.FloatingArray(  # type: ignore
+                            numpy.array(
+                                [1.0, float("nan"), float("nan"), -1.0], dtype="float64"
+                            ),
+                            numpy.array([False, True, False, False], dtype="bool"),
+                        ),
+                        dtype=pandas.Float64Dtype(),
+                    ),
+                    "int": pandas.Series(
+                        [1, None, -1, 2**63 - 1],
+                        dtype=pandas.Int64Dtype(),
+                    ),
+                    "string": pandas.Series(
+                        ["123", None, "abc", "xyz"], dtype="string[pyarrow]"
+                    ),
+                }
+            ),
+            id="scalar-dtypes-chunked_array",
+        ),
+        pytest.param(
+            pyarrow.Table.from_pydict(
+                {
                     "geocol": [
                         "POINT(32 210)",
                         None,

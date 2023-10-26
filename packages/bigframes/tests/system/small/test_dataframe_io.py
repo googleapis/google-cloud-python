@@ -83,6 +83,14 @@ def test_to_pandas_array_struct_correct_result(session):
     )
 
 
+def test_to_pandas_batches_w_correct_dtypes(scalars_df_default_index):
+    """Verify to_pandas_batches() APIs returns the expected dtypes."""
+    expected = scalars_df_default_index.dtypes
+    for df in scalars_df_default_index.to_pandas_batches():
+        actual = df.dtypes
+        pd.testing.assert_series_equal(actual, expected)
+
+
 @pytest.mark.parametrize(
     ("index"),
     [True, False],
