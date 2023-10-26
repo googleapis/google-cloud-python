@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    commerce_consumer_procurement_v1/services
-    commerce_consumer_procurement_v1/types
+    commerce_consumer_procurement_v1/services_
+    commerce_consumer_procurement_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    commerce_consumer_procurement_v1alpha1/services
-    commerce_consumer_procurement_v1alpha1/types
+    commerce_consumer_procurement_v1alpha1/services_
+    commerce_consumer_procurement_v1alpha1/types_
 
 
 Changelog

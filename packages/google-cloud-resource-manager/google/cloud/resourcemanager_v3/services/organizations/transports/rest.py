@@ -1013,7 +1013,6 @@ class OrganizationsRestTransport(OrganizationsTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
-
             r"""Call the get operation method over HTTP.
 
             Args:

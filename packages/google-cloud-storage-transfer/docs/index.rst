@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    storage_transfer_v1/services
-    storage_transfer_v1/types
+    storage_transfer_v1/services_
+    storage_transfer_v1/types_
 
 
 Changelog
