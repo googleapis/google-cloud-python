@@ -22,9 +22,9 @@ http_archive(
     ],
 )
 
-_rules_python_version = "0.24.0"
+_rules_python_version = "0.26.0"
 
-_rules_python_sha256 = "0a8003b044294d7840ac7d9d73eef05d6ceb682d7516781a4ec62eeb34702578"
+_rules_python_sha256 = "9d04041ac92a0985e344235f5d946f71ac543f1b1565f2cdbc9a2aaee8adf55b"
 
 http_archive(
     name = "rules_python",
@@ -35,9 +35,10 @@ http_archive(
 
 load("@rules_python//python:repositories.bzl", "py_repositories")
 
+py_repositories()
+
 load("@rules_python//python:pip.bzl", "pip_parse")
 
-py_repositories()
 
 pip_parse(
     name = "gapic_generator_python_pip_deps",
