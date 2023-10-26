@@ -400,7 +400,11 @@ def hockey_df(
     hockey_table_id: str, session: bigframes.Session
 ) -> bigframes.dataframe.DataFrame:
     """DataFrame pointing at test data."""
-    return session.read_gbq(hockey_table_id)
+    return (
+        session.read_gbq(hockey_table_id)
+        .set_index(["player_name", "season"])
+        .sort_index()
+    )
 
 
 @pytest.fixture(scope="session")
@@ -419,7 +423,7 @@ def hockey_pandas_df() -> pd.DataFrame:
             "season": pd.Int64Dtype(),
         },
     )
-    df.index = df.index.astype("Int64")
+    df = df.set_index(["player_name", "season"]).sort_index()
     return df
 
 

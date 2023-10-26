@@ -1949,8 +1949,14 @@ def test_df_pivot(scalars_dfs, values, index, columns):
     ],
 )
 def test_df_pivot_hockey(hockey_df, hockey_pandas_df, values, index, columns):
-    bf_result = hockey_df.pivot(values=values, index=index, columns=columns).to_pandas()
-    pd_result = hockey_pandas_df.pivot(values=values, index=index, columns=columns)
+    bf_result = (
+        hockey_df.reset_index()
+        .pivot(values=values, index=index, columns=columns)
+        .to_pandas()
+    )
+    pd_result = hockey_pandas_df.reset_index().pivot(
+        values=values, index=index, columns=columns
+    )
 
     # Pandas produces NaN, where bq dataframes produces pd.NA
     pd.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)

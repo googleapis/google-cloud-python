@@ -909,13 +909,36 @@ def test_column_multi_index_reorder_levels(scalars_df_index, scalars_pandas_df_i
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
-def test_multi_index_unstack(hockey_df, hockey_pandas_df):
+@pytest.mark.parametrize(
+    ("level",),
+    [(["position", "team_name"],), ([-2, -1],), (["position"],), ("season",), (-3,)],
+)
+def test_df_multi_index_unstack(hockey_df, hockey_pandas_df, level):
     bf_result = (
-        hockey_df.set_index(["team_name", "season", "position"]).unstack().to_pandas()
+        hockey_df.set_index(["team_name", "position"], append=True)
+        .unstack(level=level)
+        .to_pandas()
     )
     pd_result = hockey_pandas_df.set_index(
-        ["team_name", "season", "position"]
-    ).unstack()
+        ["team_name", "position"], append=True
+    ).unstack(level=level)
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+
+@pytest.mark.parametrize(
+    ("level",),
+    [(["position", "team_name"],), ([-2, -1],), (["position"],), ("season",), (-3,)],
+)
+def test_series_multi_index_unstack(hockey_df, hockey_pandas_df, level):
+    bf_result = (
+        hockey_df.set_index(["team_name", "position"], append=True)["number"]
+        .unstack(level=level)
+        .to_pandas()
+    )
+    pd_result = hockey_pandas_df.set_index(["team_name", "position"], append=True)[
+        "number"
+    ].unstack(level=level)
 
     pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 

@@ -352,22 +352,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return Series(self._block.reorder_levels(resolved_level_ids))
 
     def _resolve_levels(self, level: LevelsType) -> typing.Sequence[str]:
-        if _is_list_like(level):
-            levels = list(level)
-        else:
-            levels = [level]
-        resolved_level_ids = []
-        for level_ref in levels:
-            if isinstance(level_ref, int):
-                resolved_level_ids.append(self._block.index_columns[level_ref])
-            elif isinstance(level_ref, typing.Hashable):
-                matching_ids = self._block.index_name_to_col_id.get(level_ref, [])
-                if len(matching_ids) != 1:
-                    raise ValueError("level name cannot be found or is ambiguous")
-                resolved_level_ids.append(matching_ids[0])
-            else:
-                raise ValueError(f"Unexpected level: {level_ref}")
-        return resolved_level_ids
+        return self._block.resolve_index_level(level)
 
     def between(self, left, right, inclusive="both"):
         if inclusive not in ["both", "neither", "left", "right"]:
@@ -917,6 +902,29 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return typing.cast(
             scalars.Scalar, Series(block.select_column(row_nums)).iloc[0]
         )
+
+    def unstack(self, level: LevelsType = -1):
+        if isinstance(level, int) or isinstance(level, str):
+            level = [level]
+
+        block = self._block
+
+        if self.index.nlevels == 1:
+            raise ValueError("Series must have multi-index to unstack")
+
+        # Pivot by index levels
+        unstack_ids = self._resolve_levels(level)
+        block = block.reset_index(drop=False)
+        block = block.set_index(
+            [col for col in self._block.index_columns if col not in unstack_ids]
+        )
+
+        pivot_block = block.pivot(
+            columns=unstack_ids,
+            values=self._block.value_columns,
+            values_in_index=False,
+        )
+        return bigframes.dataframe.DataFrame(pivot_block)
 
     def idxmax(self) -> blocks.Label:
         block = self._block.order_by(

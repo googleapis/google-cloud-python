@@ -1654,6 +1654,19 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def unstack(self, level):
+        """
+        Unstack, also known as pivot, Series with MultiIndex to produce DataFrame.
+
+        Args:
+            level (int, str, or list of these, default last level):
+                Level(s) to unstack, can pass level name.
+
+        Returns:
+            DataFrame: Unstacked Series.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def argmax(self):
         """
         Return int position of the smallest value in the Series.
