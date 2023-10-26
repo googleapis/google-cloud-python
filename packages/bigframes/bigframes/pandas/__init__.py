@@ -134,6 +134,19 @@ def cut(
 cut.__doc__ = vendored_pandas_tile.cut.__doc__
 
 
+def qcut(
+    x: bigframes.series.Series,
+    q: int,
+    *,
+    labels: Optional[bool] = None,
+    duplicates: typing.Literal["drop", "error"] = "error",
+) -> bigframes.series.Series:
+    return bigframes.core.reshape.qcut(x, q, labels=labels, duplicates=duplicates)
+
+
+qcut.__doc__ = vendored_pandas_tile.qcut.__doc__
+
+
 def merge(
     left: DataFrame,
     right: DataFrame,

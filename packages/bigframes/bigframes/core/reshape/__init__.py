@@ -20,6 +20,7 @@ import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.utils as utils
 import bigframes.dataframe
+import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.series
 
@@ -118,3 +119,35 @@ def cut(
             f"Only labels=False is supported in BigQuery DataFrames so far. {constants.FEEDBACK_LINK}"
         )
     return x._apply_window_op(agg_ops.CutOp(bins), window_spec=core.WindowSpec())
+
+
+def qcut(
+    x: bigframes.series.Series,
+    q: typing.Union[int, typing.Sequence[float]],
+    *,
+    labels: Optional[bool] = None,
+    duplicates: typing.Literal["drop", "error"] = "error",
+) -> bigframes.series.Series:
+    if isinstance(q, int) and q <= 0:
+        raise ValueError("`q` should be a positive integer.")
+
+    if labels is not False:
+        raise NotImplementedError(
+            f"Only labels=False is supported in BigQuery DataFrames so far. {constants.FEEDBACK_LINK}"
+        )
+    if duplicates != "drop":
+        raise NotImplementedError(
+            f"Only duplicates='drop' is supported in BigQuery DataFrames so far. {constants.FEEDBACK_LINK}"
+        )
+    block = x._block
+    label = block.col_id_to_label[x._value_column]
+    block, nullity_id = block.apply_unary_op(x._value_column, ops.notnull_op)
+    block, result = block.apply_window_op(
+        x._value_column,
+        agg_ops.QcutOp(q),
+        window_spec=core.WindowSpec(grouping_keys=(nullity_id,)),
+    )
+    block, result = block.apply_binary_op(
+        result, nullity_id, ops.partial_arg3(ops.where_op, None), result_label=label
+    )
+    return bigframes.series.Series(block.select_column(result))

@@ -65,3 +65,33 @@ def cut(
             False : returns an ndarray of integers.
     """
     raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+
+def qcut(x, q, *, labels=None, duplicates="error"):
+    """
+    Quantile-based discretization function.
+
+    Discretize variable into equal-sized buckets based on rank or based
+    on sample quantiles. For example 1000 values for 10 quantiles would
+    produce a Categorical object indicating quantile membership for each data point.
+
+    Args:
+        x (Series):
+            The input Series to be binned. Must be 1-dimensional.
+        q (int or list-like of float):
+            Number of quantiles. 10 for deciles, 4 for quartiles, etc. Alternately
+            array of quantiles, e.g. [0, .25, .5, .75, 1.] for quartiles.
+        labels (None):
+            Used as labels for the resulting bins. Must be of the same length as
+            the resulting bins. If False, return only integer indicators of the
+            bins. If True, raises an error.
+        duplicates ({default 'raise', 'drop'}, optional):
+            If bin edges are not unique, raise ValueError or drop non-uniques.
+
+    Returns:
+        Series: Categorical or Series of integers if labels is False
+            The return type (Categorical or Series) depends on the input: a Series
+            of type category if input is a Series else Categorical. Bins are
+            represented as categories when categorical data is returned.
+    """
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

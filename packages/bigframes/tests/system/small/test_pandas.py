@@ -223,3 +223,28 @@ def test_cut(scalars_dfs):
     bf_result = bf_result.to_pandas()
     pd_result = pd_result.astype("Int64")
     pd.testing.assert_series_equal(bf_result, pd_result)
+
+
+@pytest.mark.parametrize(
+    ("q",),
+    [
+        (1,),
+        (2,),
+        (7,),
+        (32,),
+        ([0, 0.1, 0.3, 0.4, 0.9, 1.0],),
+        ([0.5, 0.9],),
+    ],
+)
+def test_qcut(scalars_dfs, q):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    pd_result = pd.qcut(
+        scalars_pandas_df["float64_col"], q, labels=False, duplicates="drop"
+    )
+    bf_result = bpd.qcut(scalars_df["float64_col"], q, labels=False, duplicates="drop")
+
+    bf_result = bf_result.to_pandas()
+    pd_result = pd_result.astype("Int64")
+
+    pd.testing.assert_series_equal(bf_result, pd_result)
