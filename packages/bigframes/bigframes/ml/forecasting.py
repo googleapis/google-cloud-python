@@ -112,6 +112,12 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
     ) -> bpd.DataFrame:
         """Calculate evaluation metrics of the model.
 
+        .. note::
+
+            Output matches that of the BigQuery ML.EVALUTE function.
+            See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-evaluate#time_series_models
+            for the outputs relevant to this model type.
+
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 A BigQuery DataFrame only contains 1 column as
