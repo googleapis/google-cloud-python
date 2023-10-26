@@ -24,9 +24,6 @@ import google.api_core.exceptions
 from google.cloud import bigquery_connection_v1, resourcemanager_v3
 from google.iam.v1 import iam_policy_pb2, policy_pb2
 
-logging.basicConfig(
-    level=logging.INFO, format="[%(levelname)s][%(asctime)s][%(name)s] %(message)s"
-)
 logger = logging.getLogger(__name__)
 
 

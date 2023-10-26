@@ -53,11 +53,6 @@ import ibis.expr.rules as rlz
 from bigframes import clients
 import bigframes.constants as constants
 
-# TODO(shobs): Change the min log level to INFO after the development stabilizes
-# before June 2023
-logging.basicConfig(
-    level=logging.INFO, format="[%(levelname)s][%(asctime)s][%(name)s] %(message)s"
-)
 logger = logging.getLogger(__name__)
 
 # Protocol version 4 is available in python version 3.4 and above
