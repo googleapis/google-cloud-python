@@ -70,10 +70,14 @@ class DataformAsyncClient:
     parse_compilation_result_path = staticmethod(
         DataformClient.parse_compilation_result_path
     )
+    release_config_path = staticmethod(DataformClient.release_config_path)
+    parse_release_config_path = staticmethod(DataformClient.parse_release_config_path)
     repository_path = staticmethod(DataformClient.repository_path)
     parse_repository_path = staticmethod(DataformClient.parse_repository_path)
     secret_version_path = staticmethod(DataformClient.secret_version_path)
     parse_secret_version_path = staticmethod(DataformClient.parse_secret_version_path)
+    workflow_config_path = staticmethod(DataformClient.workflow_config_path)
+    parse_workflow_config_path = staticmethod(DataformClient.parse_workflow_config_path)
     workflow_invocation_path = staticmethod(DataformClient.workflow_invocation_path)
     parse_workflow_invocation_path = staticmethod(
         DataformClient.parse_workflow_invocation_path
@@ -753,6 +757,425 @@ class DataformAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def commit_repository_changes(
+        self,
+        request: Optional[Union[dataform.CommitRepositoryChangesRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Applies a Git commit to a Repository. The Repository must not
+        have a value for ``git_remote_settings.url``.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_commit_repository_changes():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                commit_metadata = dataform_v1beta1.CommitMetadata()
+                commit_metadata.author.name = "name_value"
+                commit_metadata.author.email_address = "email_address_value"
+
+                request = dataform_v1beta1.CommitRepositoryChangesRequest(
+                    name="name_value",
+                    commit_metadata=commit_metadata,
+                )
+
+                # Make the request
+                await client.commit_repository_changes(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.CommitRepositoryChangesRequest, dict]]):
+                The request object. ``CommitRepositoryChanges`` request message.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        request = dataform.CommitRepositoryChangesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.commit_repository_changes,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def read_repository_file(
+        self,
+        request: Optional[Union[dataform.ReadRepositoryFileRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dataform.ReadRepositoryFileResponse:
+        r"""Returns the contents of a file (inside a Repository). The
+        Repository must not have a value for
+        ``git_remote_settings.url``.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_read_repository_file():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.ReadRepositoryFileRequest(
+                    name="name_value",
+                    path="path_value",
+                )
+
+                # Make the request
+                response = await client.read_repository_file(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.ReadRepositoryFileRequest, dict]]):
+                The request object. ``ReadRepositoryFile`` request message.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.ReadRepositoryFileResponse:
+                ReadRepositoryFile response message.
+        """
+        # Create or coerce a protobuf request object.
+        request = dataform.ReadRepositoryFileRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.read_repository_file,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def query_repository_directory_contents(
+        self,
+        request: Optional[
+            Union[dataform.QueryRepositoryDirectoryContentsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.QueryRepositoryDirectoryContentsAsyncPager:
+        r"""Returns the contents of a given Repository directory. The
+        Repository must not have a value for
+        ``git_remote_settings.url``.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_query_repository_directory_contents():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.QueryRepositoryDirectoryContentsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.query_repository_directory_contents(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.QueryRepositoryDirectoryContentsRequest, dict]]):
+                The request object. ``QueryRepositoryDirectoryContents`` request message.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.services.dataform.pagers.QueryRepositoryDirectoryContentsAsyncPager:
+                QueryRepositoryDirectoryContents response message.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = dataform.QueryRepositoryDirectoryContentsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.query_repository_directory_contents,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.QueryRepositoryDirectoryContentsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def fetch_repository_history(
+        self,
+        request: Optional[Union[dataform.FetchRepositoryHistoryRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.FetchRepositoryHistoryAsyncPager:
+        r"""Fetches a Repository's history of commits. The Repository must
+        not have a value for ``git_remote_settings.url``.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_fetch_repository_history():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.FetchRepositoryHistoryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.fetch_repository_history(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.FetchRepositoryHistoryRequest, dict]]):
+                The request object. ``FetchRepositoryHistory`` request message.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.services.dataform.pagers.FetchRepositoryHistoryAsyncPager:
+                FetchRepositoryHistory response message.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = dataform.FetchRepositoryHistoryRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.fetch_repository_history,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.FetchRepositoryHistoryAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def compute_repository_access_token_status(
+        self,
+        request: Optional[
+            Union[dataform.ComputeRepositoryAccessTokenStatusRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dataform.ComputeRepositoryAccessTokenStatusResponse:
+        r"""Computes a Repository's Git access token status.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_compute_repository_access_token_status():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.ComputeRepositoryAccessTokenStatusRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.compute_repository_access_token_status(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.ComputeRepositoryAccessTokenStatusRequest, dict]]):
+                The request object. ``ComputeRepositoryAccessTokenStatus`` request message.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.ComputeRepositoryAccessTokenStatusResponse:
+                ComputeRepositoryAccessTokenStatus response message.
+        """
+        # Create or coerce a protobuf request object.
+        request = dataform.ComputeRepositoryAccessTokenStatusRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.compute_repository_access_token_status,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def fetch_remote_branches(
         self,
@@ -2487,6 +2910,552 @@ class DataformAsyncClient:
         # Done; return the response.
         return response
 
+    async def list_release_configs(
+        self,
+        request: Optional[Union[dataform.ListReleaseConfigsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListReleaseConfigsAsyncPager:
+        r"""Lists ReleaseConfigs in a given Repository.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_list_release_configs():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.ListReleaseConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_release_configs(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.ListReleaseConfigsRequest, dict]]):
+                The request object. ``ListReleaseConfigs`` request message.
+            parent (:class:`str`):
+                Required. The repository in which to list release
+                configs. Must be in the format
+                ``projects/*/locations/*/repositories/*``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.services.dataform.pagers.ListReleaseConfigsAsyncPager:
+                ListReleaseConfigs response message.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dataform.ListReleaseConfigsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_release_configs,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListReleaseConfigsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_release_config(
+        self,
+        request: Optional[Union[dataform.GetReleaseConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dataform.ReleaseConfig:
+        r"""Fetches a single ReleaseConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_get_release_config():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.GetReleaseConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_release_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.GetReleaseConfigRequest, dict]]):
+                The request object. ``GetReleaseConfig`` request message.
+            name (:class:`str`):
+                Required. The release config's name.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.ReleaseConfig:
+                Represents a Dataform release
+                configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dataform.GetReleaseConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_release_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_release_config(
+        self,
+        request: Optional[Union[dataform.CreateReleaseConfigRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        release_config: Optional[dataform.ReleaseConfig] = None,
+        release_config_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dataform.ReleaseConfig:
+        r"""Creates a new ReleaseConfig in a given Repository.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_create_release_config():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                release_config = dataform_v1beta1.ReleaseConfig()
+                release_config.git_commitish = "git_commitish_value"
+
+                request = dataform_v1beta1.CreateReleaseConfigRequest(
+                    parent="parent_value",
+                    release_config=release_config,
+                    release_config_id="release_config_id_value",
+                )
+
+                # Make the request
+                response = await client.create_release_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.CreateReleaseConfigRequest, dict]]):
+                The request object. ``CreateReleaseConfig`` request message.
+            parent (:class:`str`):
+                Required. The repository in which to create the release
+                config. Must be in the format
+                ``projects/*/locations/*/repositories/*``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            release_config (:class:`google.cloud.dataform_v1beta1.types.ReleaseConfig`):
+                Required. The release config to
+                create.
+
+                This corresponds to the ``release_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            release_config_id (:class:`str`):
+                Required. The ID to use for the
+                release config, which will become the
+                final component of the release config's
+                resource name.
+
+                This corresponds to the ``release_config_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.ReleaseConfig:
+                Represents a Dataform release
+                configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, release_config, release_config_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dataform.CreateReleaseConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if release_config is not None:
+            request.release_config = release_config
+        if release_config_id is not None:
+            request.release_config_id = release_config_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_release_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_release_config(
+        self,
+        request: Optional[Union[dataform.UpdateReleaseConfigRequest, dict]] = None,
+        *,
+        release_config: Optional[dataform.ReleaseConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dataform.ReleaseConfig:
+        r"""Updates a single ReleaseConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_update_release_config():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                release_config = dataform_v1beta1.ReleaseConfig()
+                release_config.git_commitish = "git_commitish_value"
+
+                request = dataform_v1beta1.UpdateReleaseConfigRequest(
+                    release_config=release_config,
+                )
+
+                # Make the request
+                response = await client.update_release_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.UpdateReleaseConfigRequest, dict]]):
+                The request object. ``UpdateReleaseConfig`` request message.
+            release_config (:class:`google.cloud.dataform_v1beta1.types.ReleaseConfig`):
+                Required. The release config to
+                update.
+
+                This corresponds to the ``release_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. Specifies the fields to be
+                updated in the release config. If left
+                unset, all fields will be updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.ReleaseConfig:
+                Represents a Dataform release
+                configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([release_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dataform.UpdateReleaseConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if release_config is not None:
+            request.release_config = release_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_release_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("release_config.name", request.release_config.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_release_config(
+        self,
+        request: Optional[Union[dataform.DeleteReleaseConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a single ReleaseConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_delete_release_config():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.DeleteReleaseConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_release_config(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.DeleteReleaseConfigRequest, dict]]):
+                The request object. ``DeleteReleaseConfig`` request message.
+            name (:class:`str`):
+                Required. The release config's name.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dataform.DeleteReleaseConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_release_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
     async def list_compilation_results(
         self,
         request: Optional[Union[dataform.ListCompilationResultsRequest, dict]] = None,
@@ -2913,6 +3882,552 @@ class DataformAsyncClient:
         # Done; return the response.
         return response
 
+    async def list_workflow_configs(
+        self,
+        request: Optional[Union[dataform.ListWorkflowConfigsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListWorkflowConfigsAsyncPager:
+        r"""Lists WorkflowConfigs in a given Repository.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_list_workflow_configs():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.ListWorkflowConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_workflow_configs(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.ListWorkflowConfigsRequest, dict]]):
+                The request object. ``ListWorkflowConfigs`` request message.
+            parent (:class:`str`):
+                Required. The repository in which to list workflow
+                configs. Must be in the format
+                ``projects/*/locations/*/repositories/*``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.services.dataform.pagers.ListWorkflowConfigsAsyncPager:
+                ListWorkflowConfigs response message.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dataform.ListWorkflowConfigsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_workflow_configs,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListWorkflowConfigsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_workflow_config(
+        self,
+        request: Optional[Union[dataform.GetWorkflowConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dataform.WorkflowConfig:
+        r"""Fetches a single WorkflowConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_get_workflow_config():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.GetWorkflowConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_workflow_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.GetWorkflowConfigRequest, dict]]):
+                The request object. ``GetWorkflowConfig`` request message.
+            name (:class:`str`):
+                Required. The workflow config's name.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.WorkflowConfig:
+                Represents a Dataform workflow
+                configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dataform.GetWorkflowConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_workflow_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_workflow_config(
+        self,
+        request: Optional[Union[dataform.CreateWorkflowConfigRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        workflow_config: Optional[dataform.WorkflowConfig] = None,
+        workflow_config_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dataform.WorkflowConfig:
+        r"""Creates a new WorkflowConfig in a given Repository.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_create_workflow_config():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                workflow_config = dataform_v1beta1.WorkflowConfig()
+                workflow_config.release_config = "release_config_value"
+
+                request = dataform_v1beta1.CreateWorkflowConfigRequest(
+                    parent="parent_value",
+                    workflow_config=workflow_config,
+                    workflow_config_id="workflow_config_id_value",
+                )
+
+                # Make the request
+                response = await client.create_workflow_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.CreateWorkflowConfigRequest, dict]]):
+                The request object. ``CreateWorkflowConfig`` request message.
+            parent (:class:`str`):
+                Required. The repository in which to create the workflow
+                config. Must be in the format
+                ``projects/*/locations/*/repositories/*``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            workflow_config (:class:`google.cloud.dataform_v1beta1.types.WorkflowConfig`):
+                Required. The workflow config to
+                create.
+
+                This corresponds to the ``workflow_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            workflow_config_id (:class:`str`):
+                Required. The ID to use for the
+                workflow config, which will become the
+                final component of the workflow config's
+                resource name.
+
+                This corresponds to the ``workflow_config_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.WorkflowConfig:
+                Represents a Dataform workflow
+                configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, workflow_config, workflow_config_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dataform.CreateWorkflowConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if workflow_config is not None:
+            request.workflow_config = workflow_config
+        if workflow_config_id is not None:
+            request.workflow_config_id = workflow_config_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_workflow_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_workflow_config(
+        self,
+        request: Optional[Union[dataform.UpdateWorkflowConfigRequest, dict]] = None,
+        *,
+        workflow_config: Optional[dataform.WorkflowConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dataform.WorkflowConfig:
+        r"""Updates a single WorkflowConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_update_workflow_config():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                workflow_config = dataform_v1beta1.WorkflowConfig()
+                workflow_config.release_config = "release_config_value"
+
+                request = dataform_v1beta1.UpdateWorkflowConfigRequest(
+                    workflow_config=workflow_config,
+                )
+
+                # Make the request
+                response = await client.update_workflow_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.UpdateWorkflowConfigRequest, dict]]):
+                The request object. ``UpdateWorkflowConfig`` request message.
+            workflow_config (:class:`google.cloud.dataform_v1beta1.types.WorkflowConfig`):
+                Required. The workflow config to
+                update.
+
+                This corresponds to the ``workflow_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. Specifies the fields to be
+                updated in the workflow config. If left
+                unset, all fields will be updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.WorkflowConfig:
+                Represents a Dataform workflow
+                configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([workflow_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dataform.UpdateWorkflowConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if workflow_config is not None:
+            request.workflow_config = workflow_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_workflow_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("workflow_config.name", request.workflow_config.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_workflow_config(
+        self,
+        request: Optional[Union[dataform.DeleteWorkflowConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a single WorkflowConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            async def sample_delete_workflow_config():
+                # Create a client
+                client = dataform_v1beta1.DataformAsyncClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.DeleteWorkflowConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_workflow_config(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.dataform_v1beta1.types.DeleteWorkflowConfigRequest, dict]]):
+                The request object. ``DeleteWorkflowConfig`` request message.
+            name (:class:`str`):
+                Required. The workflow config's name.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dataform.DeleteWorkflowConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_workflow_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
     async def list_workflow_invocations(
         self,
         request: Optional[Union[dataform.ListWorkflowInvocationsRequest, dict]] = None,
@@ -3157,8 +4672,12 @@ class DataformAsyncClient:
                 client = dataform_v1beta1.DataformAsyncClient()
 
                 # Initialize request argument(s)
+                workflow_invocation = dataform_v1beta1.WorkflowInvocation()
+                workflow_invocation.compilation_result = "compilation_result_value"
+
                 request = dataform_v1beta1.CreateWorkflowInvocationRequest(
                     parent="parent_value",
+                    workflow_invocation=workflow_invocation,
                 )
 
                 # Make the request
@@ -3486,6 +5005,306 @@ class DataformAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def set_iam_policy(
+        self,
+        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> policy_pb2.Policy:
+        r"""Sets the IAM access control policy on the specified function.
+
+        Replaces any existing policy.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.SetIamPolicyRequest`):
+                The request object. Request message for `SetIamPolicy`
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy.
+                It is used to specify access control policies for Cloud
+                Platform resources.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource.
+
+                **JSON Example**
+
+                ::
+
+                    {
+                      "bindings": [
+                        {
+                          "role": "roles/resourcemanager.organizationAdmin",
+                          "members": [
+                            "user:mike@example.com",
+                            "group:admins@example.com",
+                            "domain:google.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                          ]
+                        },
+                        {
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
+                        }
+                      ]
+                    }
+
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
+                For a description of IAM and its features, see the `IAM
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.set_iam_policy,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_iam_policy(
+        self,
+        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> policy_pb2.Policy:
+        r"""Gets the IAM access control policy for a function.
+
+        Returns an empty policy if the function exists and does not have a
+        policy set.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.GetIamPolicyRequest`):
+                The request object. Request message for `GetIamPolicy`
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if
+                any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy.
+                It is used to specify access control policies for Cloud
+                Platform resources.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource.
+
+                **JSON Example**
+
+                ::
+
+                    {
+                      "bindings": [
+                        {
+                          "role": "roles/resourcemanager.organizationAdmin",
+                          "members": [
+                            "user:mike@example.com",
+                            "group:admins@example.com",
+                            "domain:google.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                          ]
+                        },
+                        {
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
+                        }
+                      ]
+                    }
+
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
+                For a description of IAM and its features, see the `IAM
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_iam_policy,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def test_iam_permissions(
+        self,
+        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        r"""Tests the specified IAM permissions against the IAM access control
+            policy for a function.
+
+        If the function does not exist, this will return an empty set
+        of permissions, not a NOT_FOUND error.
+
+        Args:
+            request (:class:`~.iam_policy_pb2.TestIamPermissionsRequest`):
+                The request object. Request message for
+                `TestIamPermissions` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.iam_policy_pb2.TestIamPermissionsResponse:
+                Response message for ``TestIamPermissions`` method.
+        """
+        # Create or coerce a protobuf request object.
+
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.test_iam_permissions,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

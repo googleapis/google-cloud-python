@@ -367,6 +367,159 @@ class DataformGrpcTransport(DataformTransport):
         return self._stubs["delete_repository"]
 
     @property
+    def commit_repository_changes(
+        self,
+    ) -> Callable[[dataform.CommitRepositoryChangesRequest], empty_pb2.Empty]:
+        r"""Return a callable for the commit repository changes method over gRPC.
+
+        Applies a Git commit to a Repository. The Repository must not
+        have a value for ``git_remote_settings.url``.
+
+        Returns:
+            Callable[[~.CommitRepositoryChangesRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "commit_repository_changes" not in self._stubs:
+            self._stubs["commit_repository_changes"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/CommitRepositoryChanges",
+                request_serializer=dataform.CommitRepositoryChangesRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["commit_repository_changes"]
+
+    @property
+    def read_repository_file(
+        self,
+    ) -> Callable[
+        [dataform.ReadRepositoryFileRequest], dataform.ReadRepositoryFileResponse
+    ]:
+        r"""Return a callable for the read repository file method over gRPC.
+
+        Returns the contents of a file (inside a Repository). The
+        Repository must not have a value for
+        ``git_remote_settings.url``.
+
+        Returns:
+            Callable[[~.ReadRepositoryFileRequest],
+                    ~.ReadRepositoryFileResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "read_repository_file" not in self._stubs:
+            self._stubs["read_repository_file"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/ReadRepositoryFile",
+                request_serializer=dataform.ReadRepositoryFileRequest.serialize,
+                response_deserializer=dataform.ReadRepositoryFileResponse.deserialize,
+            )
+        return self._stubs["read_repository_file"]
+
+    @property
+    def query_repository_directory_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryRepositoryDirectoryContentsRequest],
+        dataform.QueryRepositoryDirectoryContentsResponse,
+    ]:
+        r"""Return a callable for the query repository directory
+        contents method over gRPC.
+
+        Returns the contents of a given Repository directory. The
+        Repository must not have a value for
+        ``git_remote_settings.url``.
+
+        Returns:
+            Callable[[~.QueryRepositoryDirectoryContentsRequest],
+                    ~.QueryRepositoryDirectoryContentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_repository_directory_contents" not in self._stubs:
+            self._stubs[
+                "query_repository_directory_contents"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/QueryRepositoryDirectoryContents",
+                request_serializer=dataform.QueryRepositoryDirectoryContentsRequest.serialize,
+                response_deserializer=dataform.QueryRepositoryDirectoryContentsResponse.deserialize,
+            )
+        return self._stubs["query_repository_directory_contents"]
+
+    @property
+    def fetch_repository_history(
+        self,
+    ) -> Callable[
+        [dataform.FetchRepositoryHistoryRequest],
+        dataform.FetchRepositoryHistoryResponse,
+    ]:
+        r"""Return a callable for the fetch repository history method over gRPC.
+
+        Fetches a Repository's history of commits. The Repository must
+        not have a value for ``git_remote_settings.url``.
+
+        Returns:
+            Callable[[~.FetchRepositoryHistoryRequest],
+                    ~.FetchRepositoryHistoryResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_repository_history" not in self._stubs:
+            self._stubs["fetch_repository_history"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/FetchRepositoryHistory",
+                request_serializer=dataform.FetchRepositoryHistoryRequest.serialize,
+                response_deserializer=dataform.FetchRepositoryHistoryResponse.deserialize,
+            )
+        return self._stubs["fetch_repository_history"]
+
+    @property
+    def compute_repository_access_token_status(
+        self,
+    ) -> Callable[
+        [dataform.ComputeRepositoryAccessTokenStatusRequest],
+        dataform.ComputeRepositoryAccessTokenStatusResponse,
+    ]:
+        r"""Return a callable for the compute repository access
+        token status method over gRPC.
+
+        Computes a Repository's Git access token status.
+
+        Returns:
+            Callable[[~.ComputeRepositoryAccessTokenStatusRequest],
+                    ~.ComputeRepositoryAccessTokenStatusResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "compute_repository_access_token_status" not in self._stubs:
+            self._stubs[
+                "compute_repository_access_token_status"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/ComputeRepositoryAccessTokenStatus",
+                request_serializer=dataform.ComputeRepositoryAccessTokenStatusRequest.serialize,
+                response_deserializer=dataform.ComputeRepositoryAccessTokenStatusResponse.deserialize,
+            )
+        return self._stubs["compute_repository_access_token_status"]
+
+    @property
     def fetch_remote_branches(
         self,
     ) -> Callable[
@@ -930,6 +1083,138 @@ class DataformGrpcTransport(DataformTransport):
         return self._stubs["write_file"]
 
     @property
+    def list_release_configs(
+        self,
+    ) -> Callable[
+        [dataform.ListReleaseConfigsRequest], dataform.ListReleaseConfigsResponse
+    ]:
+        r"""Return a callable for the list release configs method over gRPC.
+
+        Lists ReleaseConfigs in a given Repository.
+
+        Returns:
+            Callable[[~.ListReleaseConfigsRequest],
+                    ~.ListReleaseConfigsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_release_configs" not in self._stubs:
+            self._stubs["list_release_configs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/ListReleaseConfigs",
+                request_serializer=dataform.ListReleaseConfigsRequest.serialize,
+                response_deserializer=dataform.ListReleaseConfigsResponse.deserialize,
+            )
+        return self._stubs["list_release_configs"]
+
+    @property
+    def get_release_config(
+        self,
+    ) -> Callable[[dataform.GetReleaseConfigRequest], dataform.ReleaseConfig]:
+        r"""Return a callable for the get release config method over gRPC.
+
+        Fetches a single ReleaseConfig.
+
+        Returns:
+            Callable[[~.GetReleaseConfigRequest],
+                    ~.ReleaseConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_release_config" not in self._stubs:
+            self._stubs["get_release_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/GetReleaseConfig",
+                request_serializer=dataform.GetReleaseConfigRequest.serialize,
+                response_deserializer=dataform.ReleaseConfig.deserialize,
+            )
+        return self._stubs["get_release_config"]
+
+    @property
+    def create_release_config(
+        self,
+    ) -> Callable[[dataform.CreateReleaseConfigRequest], dataform.ReleaseConfig]:
+        r"""Return a callable for the create release config method over gRPC.
+
+        Creates a new ReleaseConfig in a given Repository.
+
+        Returns:
+            Callable[[~.CreateReleaseConfigRequest],
+                    ~.ReleaseConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_release_config" not in self._stubs:
+            self._stubs["create_release_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/CreateReleaseConfig",
+                request_serializer=dataform.CreateReleaseConfigRequest.serialize,
+                response_deserializer=dataform.ReleaseConfig.deserialize,
+            )
+        return self._stubs["create_release_config"]
+
+    @property
+    def update_release_config(
+        self,
+    ) -> Callable[[dataform.UpdateReleaseConfigRequest], dataform.ReleaseConfig]:
+        r"""Return a callable for the update release config method over gRPC.
+
+        Updates a single ReleaseConfig.
+
+        Returns:
+            Callable[[~.UpdateReleaseConfigRequest],
+                    ~.ReleaseConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_release_config" not in self._stubs:
+            self._stubs["update_release_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/UpdateReleaseConfig",
+                request_serializer=dataform.UpdateReleaseConfigRequest.serialize,
+                response_deserializer=dataform.ReleaseConfig.deserialize,
+            )
+        return self._stubs["update_release_config"]
+
+    @property
+    def delete_release_config(
+        self,
+    ) -> Callable[[dataform.DeleteReleaseConfigRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete release config method over gRPC.
+
+        Deletes a single ReleaseConfig.
+
+        Returns:
+            Callable[[~.DeleteReleaseConfigRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_release_config" not in self._stubs:
+            self._stubs["delete_release_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteReleaseConfig",
+                request_serializer=dataform.DeleteReleaseConfigRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_release_config"]
+
+    @property
     def list_compilation_results(
         self,
     ) -> Callable[
@@ -1045,6 +1330,138 @@ class DataformGrpcTransport(DataformTransport):
                 response_deserializer=dataform.QueryCompilationResultActionsResponse.deserialize,
             )
         return self._stubs["query_compilation_result_actions"]
+
+    @property
+    def list_workflow_configs(
+        self,
+    ) -> Callable[
+        [dataform.ListWorkflowConfigsRequest], dataform.ListWorkflowConfigsResponse
+    ]:
+        r"""Return a callable for the list workflow configs method over gRPC.
+
+        Lists WorkflowConfigs in a given Repository.
+
+        Returns:
+            Callable[[~.ListWorkflowConfigsRequest],
+                    ~.ListWorkflowConfigsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_workflow_configs" not in self._stubs:
+            self._stubs["list_workflow_configs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/ListWorkflowConfigs",
+                request_serializer=dataform.ListWorkflowConfigsRequest.serialize,
+                response_deserializer=dataform.ListWorkflowConfigsResponse.deserialize,
+            )
+        return self._stubs["list_workflow_configs"]
+
+    @property
+    def get_workflow_config(
+        self,
+    ) -> Callable[[dataform.GetWorkflowConfigRequest], dataform.WorkflowConfig]:
+        r"""Return a callable for the get workflow config method over gRPC.
+
+        Fetches a single WorkflowConfig.
+
+        Returns:
+            Callable[[~.GetWorkflowConfigRequest],
+                    ~.WorkflowConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_workflow_config" not in self._stubs:
+            self._stubs["get_workflow_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/GetWorkflowConfig",
+                request_serializer=dataform.GetWorkflowConfigRequest.serialize,
+                response_deserializer=dataform.WorkflowConfig.deserialize,
+            )
+        return self._stubs["get_workflow_config"]
+
+    @property
+    def create_workflow_config(
+        self,
+    ) -> Callable[[dataform.CreateWorkflowConfigRequest], dataform.WorkflowConfig]:
+        r"""Return a callable for the create workflow config method over gRPC.
+
+        Creates a new WorkflowConfig in a given Repository.
+
+        Returns:
+            Callable[[~.CreateWorkflowConfigRequest],
+                    ~.WorkflowConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_workflow_config" not in self._stubs:
+            self._stubs["create_workflow_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/CreateWorkflowConfig",
+                request_serializer=dataform.CreateWorkflowConfigRequest.serialize,
+                response_deserializer=dataform.WorkflowConfig.deserialize,
+            )
+        return self._stubs["create_workflow_config"]
+
+    @property
+    def update_workflow_config(
+        self,
+    ) -> Callable[[dataform.UpdateWorkflowConfigRequest], dataform.WorkflowConfig]:
+        r"""Return a callable for the update workflow config method over gRPC.
+
+        Updates a single WorkflowConfig.
+
+        Returns:
+            Callable[[~.UpdateWorkflowConfigRequest],
+                    ~.WorkflowConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_workflow_config" not in self._stubs:
+            self._stubs["update_workflow_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/UpdateWorkflowConfig",
+                request_serializer=dataform.UpdateWorkflowConfigRequest.serialize,
+                response_deserializer=dataform.WorkflowConfig.deserialize,
+            )
+        return self._stubs["update_workflow_config"]
+
+    @property
+    def delete_workflow_config(
+        self,
+    ) -> Callable[[dataform.DeleteWorkflowConfigRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete workflow config method over gRPC.
+
+        Deletes a single WorkflowConfig.
+
+        Returns:
+            Callable[[~.DeleteWorkflowConfigRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_workflow_config" not in self._stubs:
+            self._stubs["delete_workflow_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteWorkflowConfig",
+                request_serializer=dataform.DeleteWorkflowConfigRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_workflow_config"]
 
     @property
     def list_workflow_invocations(
@@ -1254,6 +1671,86 @@ class DataformGrpcTransport(DataformTransport):
                 response_deserializer=locations_pb2.Location.FromString,
             )
         return self._stubs["get_location"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the set iam policy method over gRPC.
+        Sets the IAM access control policy on the specified
+        function. Replaces any existing policy.
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/SetIamPolicy",
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the get iam policy method over gRPC.
+        Gets the IAM access control policy for a function.
+        Returns an empty policy if the function exists and does
+        not have a policy set.
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/GetIamPolicy",
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
+        r"""Return a callable for the test iam permissions method over gRPC.
+        Tests the specified permissions against the IAM access control
+        policy for a function. If the function does not exist, this will
+        return an empty set of permissions, not a NOT_FOUND error.
+        Returns:
+            Callable[[~.TestIamPermissionsRequest],
+                    ~.TestIamPermissionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/TestIamPermissions",
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
+            )
+        return self._stubs["test_iam_permissions"]
 
     @property
     def kind(self) -> str:
