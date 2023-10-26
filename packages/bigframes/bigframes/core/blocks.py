@@ -28,11 +28,8 @@ import typing
 from typing import Iterable, List, Optional, Sequence, Tuple
 import warnings
 
-import geopandas as gpd  # type: ignore
 import google.cloud.bigquery as bigquery
-import numpy
 import pandas as pd
-import pyarrow as pa  # type: ignore
 
 import bigframes.constants as constants
 import bigframes.core as core
@@ -46,6 +43,7 @@ import bigframes.core.utils as utils
 import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+import bigframes.session._io.pandas
 import third_party.bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 
 # Type constraint for wherever column labels are used
@@ -372,34 +370,11 @@ class Block:
         level_names = [self.col_id_to_index_name[index_id] for index_id in ids]
         return Block(self.expr, ids, self.column_labels, level_names)
 
-    @classmethod
-    def _to_dataframe(
-        cls, result, schema: typing.Mapping[str, bigframes.dtypes.Dtype]
-    ) -> pd.DataFrame:
+    def _to_dataframe(self, result) -> pd.DataFrame:
         """Convert BigQuery data to pandas DataFrame with specific dtypes."""
-        dtypes = bigframes.dtypes.to_pandas_dtypes_overrides(result.schema)
-        df = result.to_dataframe(
-            dtypes=dtypes,
-            bool_dtype=pd.BooleanDtype(),
-            int_dtype=pd.Int64Dtype(),
-            float_dtype=pd.Float64Dtype(),
-            string_dtype=pd.StringDtype(storage="pyarrow"),
-            date_dtype=pd.ArrowDtype(pa.date32()),
-            datetime_dtype=pd.ArrowDtype(pa.timestamp("us")),
-            time_dtype=pd.ArrowDtype(pa.time64("us")),
-            timestamp_dtype=pd.ArrowDtype(pa.timestamp("us", tz="UTC")),
-        )
-
-        # Convert Geography column from StringDType to GeometryDtype.
-        for column_name, dtype in schema.items():
-            if dtype == gpd.array.GeometryDtype():
-                df[column_name] = gpd.GeoSeries.from_wkt(
-                    # https://github.com/geopandas/geopandas/issues/1879
-                    df[column_name].replace({numpy.nan: None}),
-                    # BigQuery geography type is based on the WGS84 reference ellipsoid.
-                    crs="EPSG:4326",
-                )
-        return df
+        dtypes = dict(zip(self.index_columns, self.index_dtypes))
+        dtypes.update(zip(self.value_columns, self.dtypes))
+        return self._expr._session._rows_to_dataframe(result, dtypes)
 
     def to_pandas(
         self,
@@ -480,8 +455,7 @@ class Block:
             if sampling_method == _HEAD:
                 total_rows = int(results_iterator.total_rows * fraction)
                 results_iterator.max_results = total_rows
-                schema = dict(zip(self.value_columns, self.dtypes))
-                df = self._to_dataframe(results_iterator, schema)
+                df = self._to_dataframe(results_iterator)
 
                 if self.index_columns:
                     df.set_index(list(self.index_columns), inplace=True)
@@ -510,8 +484,7 @@ class Block:
                 )
         else:
             total_rows = results_iterator.total_rows
-            schema = dict(zip(self.value_columns, self.dtypes))
-            df = self._to_dataframe(results_iterator, schema)
+            df = self._to_dataframe(results_iterator)
 
             if self.index_columns:
                 df.set_index(list(self.index_columns), inplace=True)

@@ -29,40 +29,41 @@ import bigframes.dtypes
         # TODO(bmil): Add ARRAY, INTERVAL, STRUCT to cover all the standard
         # BigQuery data types as they appear in Ibis:
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
-        (ibis_dtypes.Decimal(precision=76, scale=38, nullable=True), np.dtype("O")),
-        (ibis_dtypes.boolean, pd.BooleanDtype()),
-        (ibis_dtypes.binary, np.dtype("O")),
-        (ibis_dtypes.date, pd.ArrowDtype(pa.date32())),
-        (ibis_dtypes.Timestamp(), pd.ArrowDtype(pa.timestamp("us"))),
-        (ibis_dtypes.float64, pd.Float64Dtype()),
-        (
+        pytest.param(
+            ibis_dtypes.Decimal(precision=76, scale=38, nullable=True),
+            np.dtype("O"),
+            id="bignumeric",
+        ),
+        pytest.param(ibis_dtypes.boolean, pd.BooleanDtype(), id="bool"),
+        pytest.param(ibis_dtypes.binary, np.dtype("O"), id="bytes"),
+        pytest.param(ibis_dtypes.date, pd.ArrowDtype(pa.date32()), id="date"),
+        pytest.param(
+            ibis_dtypes.Timestamp(), pd.ArrowDtype(pa.timestamp("us")), id="datetime"
+        ),
+        pytest.param(ibis_dtypes.float64, pd.Float64Dtype(), id="float"),
+        pytest.param(
             ibis_dtypes.GeoSpatial(geotype="geography", srid=4326, nullable=True),
             gpd.array.GeometryDtype(),
+            id="geography",
         ),
-        (ibis_dtypes.int64, pd.Int64Dtype()),
-        (ibis_dtypes.json, np.dtype("O")),
-        (ibis_dtypes.Decimal(precision=38, scale=9, nullable=True), np.dtype("O")),
-        (ibis_dtypes.string, pd.StringDtype(storage="pyarrow")),
-        (ibis_dtypes.time, pd.ArrowDtype(pa.time64("us"))),
-        (
+        pytest.param(ibis_dtypes.int8, pd.Int64Dtype(), id="int8-as-int64"),
+        pytest.param(ibis_dtypes.int64, pd.Int64Dtype(), id="int64"),
+        # TODO(tswast): custom dtype (or at least string dtype) for JSON objects
+        pytest.param(ibis_dtypes.json, np.dtype("O"), id="json"),
+        pytest.param(
+            ibis_dtypes.Decimal(precision=38, scale=9, nullable=True),
+            np.dtype("O"),
+            id="numeric",
+        ),
+        pytest.param(
+            ibis_dtypes.string, pd.StringDtype(storage="pyarrow"), id="string"
+        ),
+        pytest.param(ibis_dtypes.time, pd.ArrowDtype(pa.time64("us")), id="time"),
+        pytest.param(
             ibis_dtypes.Timestamp(timezone="UTC"),
             pd.ArrowDtype(pa.timestamp("us", tz="UTC")),  # type: ignore
+            id="timestamp",
         ),
-    ],
-    ids=[
-        "bignumeric",
-        "bool",
-        "bytes",
-        "date",
-        "datetime",
-        "float",
-        "geography",
-        "int64",
-        "json",
-        "numeric",
-        "string",
-        "time",
-        "timestamp",
     ],
 )
 def test_ibis_dtype_converts(ibis_dtype, bigframes_dtype):

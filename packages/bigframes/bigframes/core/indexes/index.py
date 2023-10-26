@@ -399,9 +399,10 @@ class IndexValue:
         """Executes deferred operations and downloads the results."""
         # Project down to only the index column. So the query can be cached to visualize other data.
         index_columns = list(self._block.index_columns)
+        dtypes = dict(zip(index_columns, self.dtypes))
         expr = self._expr.select_columns(index_columns)
         results, _ = expr.start_query()
-        df = expr._session._rows_to_dataframe(results)
+        df = expr._session._rows_to_dataframe(results, dtypes)
         df = df.set_index(index_columns)
         index = df.index
         index.names = list(self._block._index_labels)

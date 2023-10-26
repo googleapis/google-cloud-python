@@ -169,6 +169,10 @@ def ibis_dtype_to_bigframes_dtype(
     if isinstance(ibis_dtype, ibis_dtypes.Struct):
         return pd.ArrowDtype(ibis_dtype_to_arrow_dtype(ibis_dtype))
 
+    # BigQuery only supports integers of size 64 bits.
+    if isinstance(ibis_dtype, ibis_dtypes.Integer):
+        return pd.Int64Dtype()
+
     if ibis_dtype in IBIS_TO_BIGFRAMES:
         return IBIS_TO_BIGFRAMES[ibis_dtype]
     elif isinstance(ibis_dtype, ibis_dtypes.Null):
@@ -372,6 +376,8 @@ def cast_ibis_value(
         ibis_dtypes.float64: (ibis_dtypes.string, ibis_dtypes.int64),
         ibis_dtypes.string: (ibis_dtypes.int64, ibis_dtypes.float64),
         ibis_dtypes.date: (),
+        ibis_dtypes.Decimal(precision=38, scale=9): (ibis_dtypes.float64,),
+        ibis_dtypes.Decimal(precision=76, scale=38): (ibis_dtypes.float64,),
         ibis_dtypes.time: (),
         ibis_dtypes.timestamp: (ibis_dtypes.Timestamp(timezone="UTC"),),
         ibis_dtypes.Timestamp(timezone="UTC"): (ibis_dtypes.timestamp,),

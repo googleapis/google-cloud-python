@@ -1515,14 +1515,10 @@ class Session(
         return table.num_bytes
 
     def _rows_to_dataframe(
-        self, row_iterator: bigquery.table.RowIterator
+        self, row_iterator: bigquery.table.RowIterator, dtypes: Dict
     ) -> pandas.DataFrame:
-        return row_iterator.to_dataframe(
-            bool_dtype=pandas.BooleanDtype(),
-            int_dtype=pandas.Int64Dtype(),
-            float_dtype=pandas.Float64Dtype(),
-            string_dtype=pandas.StringDtype(storage="pyarrow"),
-        )
+        arrow_table = row_iterator.to_arrow()
+        return bigframes.session._io.pandas.arrow_to_pandas(arrow_table, dtypes)
 
     def _start_generic_job(self, job: formatting_helpers.GenericJob):
         if bigframes.options.display.progress_bar is not None:
