@@ -16,6 +16,7 @@
 # TODO(orrbradford): cleanup up typings and documenttion in this file
 
 import datetime
+import random
 from typing import Any, Optional, Union
 
 import google.api_core.exceptions as api_core_exceptions
@@ -57,9 +58,9 @@ def repr_query_job_html(query_job: Optional[bigquery.QueryJob]):
         Pywidget html table.
     """
     if query_job is None:
-        return widgets.HTML("No job information available")
+        return display.HTML("No job information available")
     if query_job.dry_run:
-        return widgets.HTML(
+        return display.HTML(
             f"Computation deferred. Computation will process {get_formatted_bytes(query_job.total_bytes_processed)}"
         )
     table_html = "<style> td {text-align: left;}</style>"
@@ -125,16 +126,20 @@ def wait_for_query_job(
     Returns:
         A row iterator over the query results.
     """
-    loading_bar = widgets.HTML(get_query_job_loading_html(query_job))
     if progress_bar == "auto":
         progress_bar = "notebook" if in_ipython() else "terminal"
 
     try:
         if progress_bar == "notebook":
-            display.display(loading_bar)
+            display_id = str(random.random())
+            loading_bar = display.HTML(get_query_job_loading_html(query_job))
+            display.display(loading_bar, display_id=display_id)
             query_result = query_job.result(max_results=max_results)
             query_job.reload()
-            loading_bar.value = get_query_job_loading_html(query_job)
+            display.update_display(
+                display.HTML(get_query_job_loading_html(query_job)),
+                display_id=display_id,
+            )
         elif progress_bar == "terminal":
             initial_loading_bar = get_query_job_loading_string(query_job)
             print(initial_loading_bar)
@@ -171,16 +176,19 @@ def wait_for_job(job: GenericJob, progress_bar: Optional[str] = None):
         progress_bar (str, Optional):
             Which progress bar to show.
     """
-    loading_bar = widgets.HTML(get_base_job_loading_html(job))
     if progress_bar == "auto":
         progress_bar = "notebook" if in_ipython() else "terminal"
 
     try:
         if progress_bar == "notebook":
-            display.display(loading_bar)
+            display_id = str(random.random())
+            loading_bar = display.HTML(get_base_job_loading_html(job))
+            display.display(loading_bar, display_id=display_id)
             job.result()
             job.reload()
-            loading_bar.value = get_base_job_loading_html(job)
+            display.update_display(
+                display.HTML(get_base_job_loading_html(job)), display_id=display_id
+            )
         elif progress_bar == "terminal":
             inital_loading_bar = get_base_job_loading_string(job)
             print(inital_loading_bar)

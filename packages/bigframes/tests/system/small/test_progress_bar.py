@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
 import tempfile
 
 import pandas as pd
@@ -19,94 +20,84 @@ import pandas as pd
 import bigframes as bf
 import bigframes.formatting_helpers as formatting_helpers
 
+job_load_message_regex = r"\w+ job [\w-]+ is \w+\."
+
 
 def test_progress_bar_dataframe(
     penguins_df_default_index: bf.dataframe.DataFrame, capsys
 ):
-    bf.options.display.progress_bar = "notebook"
+    bf.options.display.progress_bar = "terminal"
+    capsys.readouterr()  # clear output
     penguins_df_default_index.to_pandas()
-    html_check = "HTML(value="
-    open_job_check = "Open Job"
-    lines = capsys.readouterr().out.split("\n")
-    lines = [line for line in lines if len(line) > 0]
-    assert len(lines) > 0
+
+    assert_loading_msg_exist(capsys.readouterr().out)
     assert penguins_df_default_index.query_job is not None
-    for line in lines:
-        assert html_check in line and open_job_check in line
 
 
 def test_progress_bar_series(penguins_df_default_index: bf.dataframe.DataFrame, capsys):
-    bf.options.display.progress_bar = "notebook"
+    bf.options.display.progress_bar = "terminal"
     series = penguins_df_default_index["body_mass_g"].head(10)
+    capsys.readouterr()  # clear output
     series.to_pandas()
-    html_check = "HTML(value="
-    open_job_check = "Open Job"
-    lines = capsys.readouterr().out.split("\n")
-    lines = [line for line in lines if len(line) > 0]
-    assert len(lines) > 0
+
+    assert_loading_msg_exist(capsys.readouterr().out)
     assert series.query_job is not None
-    for line in lines:
-        assert html_check in line and open_job_check in line
 
 
 def test_progress_bar_scalar(penguins_df_default_index: bf.dataframe.DataFrame, capsys):
-    bf.options.display.progress_bar = "notebook"
+    bf.options.display.progress_bar = "terminal"
+    capsys.readouterr()  # clear output
     penguins_df_default_index["body_mass_g"].head(10).mean()
-    html_check = "HTML(value="
-    open_job_check = "Open Job"
-    lines = capsys.readouterr().out.split("\n")
-    lines = [line for line in lines if len(line) > 0]
-    assert len(lines) > 0
-    for line in lines:
-        assert html_check in line and open_job_check in line
+
+    assert_loading_msg_exist(capsys.readouterr().out)
 
 
 def test_progress_bar_read_gbq(session: bf.Session, penguins_table_id: str, capsys):
-    bf.options.display.progress_bar = "notebook"
+    bf.options.display.progress_bar = "terminal"
+    capsys.readouterr()  # clear output
     session.read_gbq(penguins_table_id)
-    html_check = "HTML(value="
-    open_job_check = "Open Job"
-    lines = capsys.readouterr().out.split("\n")
-    lines = [line for line in lines if len(line) > 0]
-    assert len(lines) > 0
-    for line in lines:
-        assert html_check in line and open_job_check in line
+
+    assert_loading_msg_exist(capsys.readouterr().out)
 
 
 def test_progress_bar_extract_jobs(
     penguins_df_default_index: bf.dataframe.DataFrame, gcs_folder, capsys
 ):
-    bf.options.display.progress_bar = "notebook"
+    bf.options.display.progress_bar = "terminal"
     path = gcs_folder + "test_read_csv_progress_bar*.csv"
+    capsys.readouterr()  # clear output
     penguins_df_default_index.to_csv(path)
-    html_check = "HTML(value="
-    open_job_check = "Open Job"
-    lines = capsys.readouterr().out.split("\n")
-    lines = [line for line in lines if len(line) > 0]
-    assert len(lines) > 0
-    for line in lines:
-        assert html_check in line and open_job_check in line
+
+    assert_loading_msg_exist(capsys.readouterr().out)
 
 
 def test_progress_bar_load_jobs(
     session: bf.Session, penguins_pandas_df_default_index: pd.DataFrame, capsys
 ):
-    bf.options.display.progress_bar = "notebook"
+    bf.options.display.progress_bar = "terminal"
     with tempfile.TemporaryDirectory() as dir:
         path = dir + "/test_read_csv_progress_bar*.csv"
         penguins_pandas_df_default_index.to_csv(path, index=False)
+        capsys.readouterr()  # clear output
         session.read_csv(path)
-    html_check = "HTML(value="
-    open_job_check = "Open Job"
-    lines = capsys.readouterr().out.split("\n")
+
+    assert_loading_msg_exist(capsys.readouterr().out)
+
+
+def assert_loading_msg_exist(capystOut: str, pattern=job_load_message_regex):
+    numLoadingMsg = 0
+    lines = capystOut.split("\n")
     lines = [line for line in lines if len(line) > 0]
+
     assert len(lines) > 0
     for line in lines:
-        assert html_check in line and open_job_check in line
+        if re.match(pattern, line) is not None:
+            numLoadingMsg += 1
+    assert numLoadingMsg > 0
 
 
 def test_query_job_repr_html(penguins_df_default_index: bf.dataframe.DataFrame):
-    bf.options.display.progress_bar = "notebook"
+    bf.options.display.progress_bar = "terminal"
     penguins_df_default_index._block._expr._session.bqclient.default_query_job_config.use_query_cache = (
         False
     )
