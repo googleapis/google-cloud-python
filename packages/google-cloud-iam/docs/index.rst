@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    iam_v2/services
-    iam_v2/types
+    iam_v2/services_
+    iam_v2/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    iam_credentials_v1/services
-    iam_credentials_v1/types
+    iam_credentials_v1/services_
+    iam_credentials_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    iam_v2beta/services
-    iam_v2beta/types
+    iam_v2beta/services_
+    iam_v2beta/types_
 
 
 Changelog

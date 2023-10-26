@@ -588,7 +588,9 @@ class SecurityCenterRestInterceptor:
     def post_create_security_health_analytics_custom_module(
         self,
         response: gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
-    ) -> gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+    ) -> (
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+    ):
         """Post-rpc interceptor for create_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the response
@@ -719,7 +721,9 @@ class SecurityCenterRestInterceptor:
     def post_get_effective_security_health_analytics_custom_module(
         self,
         response: effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
-    ) -> effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule:
+    ) -> (
+        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule
+    ):
         """Post-rpc interceptor for get_effective_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the response
@@ -982,7 +986,9 @@ class SecurityCenterRestInterceptor:
     def post_list_descendant_security_health_analytics_custom_modules(
         self,
         response: securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
-    ) -> securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse:
+    ) -> (
+        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
+    ):
         """Post-rpc interceptor for list_descendant_security_health_analytics_custom_modules
 
         Override in a subclass to manipulate the response
@@ -1009,7 +1015,9 @@ class SecurityCenterRestInterceptor:
     def post_list_effective_security_health_analytics_custom_modules(
         self,
         response: securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
-    ) -> securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse:
+    ) -> (
+        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
+    ):
         """Post-rpc interceptor for list_effective_security_health_analytics_custom_modules
 
         Override in a subclass to manipulate the response
@@ -1447,7 +1455,9 @@ class SecurityCenterRestInterceptor:
     def post_update_security_health_analytics_custom_module(
         self,
         response: gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
-    ) -> gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+    ) -> (
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+    ):
         """Post-rpc interceptor for update_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the response
@@ -2330,7 +2340,9 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+        ) -> (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+        ):
             r"""Call the create security health
             analytics custom module method over HTTP.
 
@@ -3012,7 +3024,9 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule:
+        ) -> (
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule
+        ):
             r"""Call the get effective security
             health analytics custom module method over HTTP.
 
@@ -3601,7 +3615,9 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+        ) -> (
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+        ):
             r"""Call the get security health
             analytics custom module method over HTTP.
 
@@ -4224,7 +4240,9 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse:
+        ) -> (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
+        ):
             r"""Call the list descendant security
             health analytics custom modules method over HTTP.
 
@@ -4337,7 +4355,9 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse:
+        ) -> (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
+        ):
             r"""Call the list effective security
             health analytics custom modules method over HTTP.
 
@@ -6347,7 +6367,9 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+        ) -> (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+        ):
             r"""Call the update security health
             analytics custom module method over HTTP.
 
@@ -7166,7 +7188,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> None:
-
             r"""Call the cancel operation method over HTTP.
 
             Args:
@@ -7229,7 +7250,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> None:
-
             r"""Call the delete operation method over HTTP.
 
             Args:
@@ -7292,7 +7312,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
-
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -7359,7 +7378,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.ListOperationsResponse:
-
             r"""Call the list operations method over HTTP.
 
             Args:
