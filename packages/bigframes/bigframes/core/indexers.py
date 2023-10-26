@@ -310,7 +310,9 @@ def _loc_getitem_series_or_dataframe(
                 index_name = temporary_index_names[i]
                 values = [entry[i] for entry in key]
                 index_cols_dict[index_name] = values
-            keys_df = bigframes.dataframe.DataFrame(index_cols_dict)
+            keys_df = bigframes.dataframe.DataFrame(
+                index_cols_dict, session=series_or_dataframe._get_block().expr._session
+            )
             keys_df = keys_df.set_index(temporary_index_names, drop=True)
             keys_df = keys_df.rename_axis(original_index_names)
         else:
@@ -320,7 +322,10 @@ def _loc_getitem_series_or_dataframe(
             index_name_is_none = index_name is None
             if index_name_is_none:
                 index_name = "unnamed_col"
-            keys_df = bigframes.dataframe.DataFrame({index_name: key})
+            keys_df = bigframes.dataframe.DataFrame(
+                {index_name: key},
+                session=series_or_dataframe._get_block().expr._session,
+            )
             keys_df = keys_df.set_index(index_name, drop=True)
             if index_name_is_none:
                 keys_df.index.name = None
