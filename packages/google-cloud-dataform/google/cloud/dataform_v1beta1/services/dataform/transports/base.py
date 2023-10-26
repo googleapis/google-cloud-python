@@ -151,6 +151,31 @@ class DataformTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.commit_repository_changes: gapic_v1.method.wrap_method(
+                self.commit_repository_changes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.read_repository_file: gapic_v1.method.wrap_method(
+                self.read_repository_file,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_repository_directory_contents: gapic_v1.method.wrap_method(
+                self.query_repository_directory_contents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_repository_history: gapic_v1.method.wrap_method(
+                self.fetch_repository_history,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.compute_repository_access_token_status: gapic_v1.method.wrap_method(
+                self.compute_repository_access_token_status,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.fetch_remote_branches: gapic_v1.method.wrap_method(
                 self.fetch_remote_branches,
                 default_timeout=None,
@@ -256,6 +281,31 @@ class DataformTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_release_configs: gapic_v1.method.wrap_method(
+                self.list_release_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_release_config: gapic_v1.method.wrap_method(
+                self.get_release_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_release_config: gapic_v1.method.wrap_method(
+                self.create_release_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_release_config: gapic_v1.method.wrap_method(
+                self.update_release_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_release_config: gapic_v1.method.wrap_method(
+                self.delete_release_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_compilation_results: gapic_v1.method.wrap_method(
                 self.list_compilation_results,
                 default_timeout=None,
@@ -273,6 +323,31 @@ class DataformTransport(abc.ABC):
             ),
             self.query_compilation_result_actions: gapic_v1.method.wrap_method(
                 self.query_compilation_result_actions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_workflow_configs: gapic_v1.method.wrap_method(
+                self.list_workflow_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_workflow_config: gapic_v1.method.wrap_method(
+                self.get_workflow_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_workflow_config: gapic_v1.method.wrap_method(
+                self.create_workflow_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_workflow_config: gapic_v1.method.wrap_method(
+                self.update_workflow_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_workflow_config: gapic_v1.method.wrap_method(
+                self.delete_workflow_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -362,6 +437,63 @@ class DataformTransport(abc.ABC):
     ) -> Callable[
         [dataform.DeleteRepositoryRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def commit_repository_changes(
+        self,
+    ) -> Callable[
+        [dataform.CommitRepositoryChangesRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def read_repository_file(
+        self,
+    ) -> Callable[
+        [dataform.ReadRepositoryFileRequest],
+        Union[
+            dataform.ReadRepositoryFileResponse,
+            Awaitable[dataform.ReadRepositoryFileResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_repository_directory_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryRepositoryDirectoryContentsRequest],
+        Union[
+            dataform.QueryRepositoryDirectoryContentsResponse,
+            Awaitable[dataform.QueryRepositoryDirectoryContentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_repository_history(
+        self,
+    ) -> Callable[
+        [dataform.FetchRepositoryHistoryRequest],
+        Union[
+            dataform.FetchRepositoryHistoryResponse,
+            Awaitable[dataform.FetchRepositoryHistoryResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def compute_repository_access_token_status(
+        self,
+    ) -> Callable[
+        [dataform.ComputeRepositoryAccessTokenStatusRequest],
+        Union[
+            dataform.ComputeRepositoryAccessTokenStatusResponse,
+            Awaitable[dataform.ComputeRepositoryAccessTokenStatusResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -577,6 +709,54 @@ class DataformTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_release_configs(
+        self,
+    ) -> Callable[
+        [dataform.ListReleaseConfigsRequest],
+        Union[
+            dataform.ListReleaseConfigsResponse,
+            Awaitable[dataform.ListReleaseConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_release_config(
+        self,
+    ) -> Callable[
+        [dataform.GetReleaseConfigRequest],
+        Union[dataform.ReleaseConfig, Awaitable[dataform.ReleaseConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_release_config(
+        self,
+    ) -> Callable[
+        [dataform.CreateReleaseConfigRequest],
+        Union[dataform.ReleaseConfig, Awaitable[dataform.ReleaseConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_release_config(
+        self,
+    ) -> Callable[
+        [dataform.UpdateReleaseConfigRequest],
+        Union[dataform.ReleaseConfig, Awaitable[dataform.ReleaseConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_release_config(
+        self,
+    ) -> Callable[
+        [dataform.DeleteReleaseConfigRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_compilation_results(
         self,
     ) -> Callable[
@@ -615,6 +795,54 @@ class DataformTransport(abc.ABC):
             dataform.QueryCompilationResultActionsResponse,
             Awaitable[dataform.QueryCompilationResultActionsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_workflow_configs(
+        self,
+    ) -> Callable[
+        [dataform.ListWorkflowConfigsRequest],
+        Union[
+            dataform.ListWorkflowConfigsResponse,
+            Awaitable[dataform.ListWorkflowConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_workflow_config(
+        self,
+    ) -> Callable[
+        [dataform.GetWorkflowConfigRequest],
+        Union[dataform.WorkflowConfig, Awaitable[dataform.WorkflowConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_workflow_config(
+        self,
+    ) -> Callable[
+        [dataform.CreateWorkflowConfigRequest],
+        Union[dataform.WorkflowConfig, Awaitable[dataform.WorkflowConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_workflow_config(
+        self,
+    ) -> Callable[
+        [dataform.UpdateWorkflowConfigRequest],
+        Union[dataform.WorkflowConfig, Awaitable[dataform.WorkflowConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_workflow_config(
+        self,
+    ) -> Callable[
+        [dataform.DeleteWorkflowConfigRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 
@@ -674,6 +902,36 @@ class DataformTransport(abc.ABC):
         Union[
             dataform.QueryWorkflowInvocationActionsResponse,
             Awaitable[dataform.QueryWorkflowInvocationActionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
     ]:
         raise NotImplementedError()
