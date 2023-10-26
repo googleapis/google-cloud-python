@@ -23,7 +23,6 @@ import queue
 import warnings
 from typing import Any, Union
 
-from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import _pyarrow_helpers
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import schema
@@ -745,7 +744,7 @@ def _download_table_bqstorage_stream(
 
     # Avoid deprecation warnings for passing in unnecessary read session.
     # https://github.com/googleapis/python-bigquery-storage/issues/229
-    if _helpers.BQ_STORAGE_VERSIONS.is_read_session_optional:
+    if _versions_helpers.BQ_STORAGE_VERSIONS.is_read_session_optional:
         rowstream = reader.rows()
     else:
         rowstream = reader.rows(session)

@@ -2260,7 +2260,7 @@ class TestRowIterator(unittest.TestCase):
         iterator = self._make_one(first_page_response=None)  # not cached
 
         patcher = mock.patch(
-            "google.cloud.bigquery.table._helpers.BQ_STORAGE_VERSIONS.verify_version",
+            "google.cloud.bigquery.table._versions_helpers.BQ_STORAGE_VERSIONS.try_import",
             side_effect=exceptions.LegacyBigQueryStorageError("BQ Storage too old"),
         )
         with patcher, warnings.catch_warnings(record=True) as warned:
@@ -2866,11 +2866,11 @@ class TestRowIterator(unittest.TestCase):
         mock_client = _mock_client()
         row_iterator = self._make_one(mock_client, api_request, path, schema)
 
-        def mock_verify_version():
+        def mock_verify_version(raise_if_error: bool = False):
             raise exceptions.LegacyBigQueryStorageError("no bqstorage")
 
         with mock.patch(
-            "google.cloud.bigquery._helpers.BQ_STORAGE_VERSIONS.verify_version",
+            "google.cloud.bigquery._versions_helpers.BQ_STORAGE_VERSIONS.try_import",
             mock_verify_version,
         ):
             tbl = row_iterator.to_arrow(create_bqstorage_client=True)

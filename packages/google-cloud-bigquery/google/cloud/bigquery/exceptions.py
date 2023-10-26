@@ -23,3 +23,9 @@ class LegacyBigQueryStorageError(BigQueryError):
 
 class LegacyPyarrowError(BigQueryError):
     """Raised when too old a version of pyarrow package is detected at runtime."""
+
+
+class BigQueryStorageNotFoundError(BigQueryError):
+    """Raised when BigQuery Storage extra is not installed when trying to
+    import it.
+    """

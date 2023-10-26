@@ -826,7 +826,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
 
         patcher = mock.patch(
-            "google.cloud.bigquery.client.BQ_STORAGE_VERSIONS.verify_version",
+            "google.cloud.bigquery.client._versions_helpers.BQ_STORAGE_VERSIONS.try_import",
             side_effect=exceptions.LegacyBigQueryStorageError("BQ Storage too old"),
         )
         with patcher, warnings.catch_warnings(record=True) as warned:
@@ -861,7 +861,7 @@ class TestClient(unittest.TestCase):
         mock_storage_client = mock.sentinel.mock_storage_client
 
         patcher = mock.patch(
-            "google.cloud.bigquery.client.BQ_STORAGE_VERSIONS.verify_version",
+            "google.cloud.bigquery.client._versions_helpers.BQ_STORAGE_VERSIONS.try_import",
             side_effect=exceptions.LegacyBigQueryStorageError("BQ Storage too old"),
         )
         with patcher, warnings.catch_warnings(record=True) as warned:

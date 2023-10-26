@@ -65,26 +65,25 @@ except ImportError:
     DEFAULT_BQSTORAGE_CLIENT_INFO = None  # type: ignore
 
 
+from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery import _job_helpers
-from google.cloud.bigquery._job_helpers import make_job_id as _make_job_id
+from google.cloud.bigquery import _pandas_helpers
+from google.cloud.bigquery import _versions_helpers
+from google.cloud.bigquery import enums
+from google.cloud.bigquery import exceptions as bq_exceptions
+from google.cloud.bigquery import job
 from google.cloud.bigquery._helpers import _get_sub_prop
 from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._helpers import _verify_job_config_type
 from google.cloud.bigquery._helpers import _get_bigquery_host
-from google.cloud.bigquery._helpers import BQ_STORAGE_VERSIONS
 from google.cloud.bigquery._helpers import _DEFAULT_HOST
-from google.cloud.bigquery._http import Connection
-from google.cloud.bigquery import _pandas_helpers
-from google.cloud.bigquery import _versions_helpers
+from google.cloud.bigquery._job_helpers import make_job_id as _make_job_id
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
-from google.cloud.bigquery import enums
 from google.cloud.bigquery.enums import AutoRowIDs
-from google.cloud.bigquery import exceptions as bq_exceptions
-from google.cloud.bigquery.opentelemetry_tracing import create_span
-from google.cloud.bigquery import job
+from google.cloud.bigquery.format_options import ParquetOptions
 from google.cloud.bigquery.job import (
     CopyJob,
     CopyJobConfig,
@@ -98,6 +97,7 @@ from google.cloud.bigquery.job import (
 from google.cloud.bigquery.model import Model
 from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.model import _model_arg_to_model_ref
+from google.cloud.bigquery.opentelemetry_tracing import create_span
 from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.retry import (
     DEFAULT_JOB_RETRY,
@@ -113,7 +113,6 @@ from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import RowIterator
-from google.cloud.bigquery.format_options import ParquetOptions
 
 pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
 
@@ -545,29 +544,32 @@ class Client(ClientWithProject):
                 An existing BigQuery Storage client instance. If ``None``, a new
                 instance is created and returned.
             client_options:
-                Custom options used with a new BigQuery Storage client instance if one
-                is created.
+                Custom options used with a new BigQuery Storage client instance
+                if one is created.
             client_info:
-                The client info used with a new BigQuery Storage client instance if one
-                is created.
+                The client info used with a new BigQuery Storage client
+                instance if one is created.
 
         Returns:
             A BigQuery Storage API client.
         """
+
         try:
-            from google.cloud import bigquery_storage  # type: ignore
-        except ImportError:
+            bigquery_storage = _versions_helpers.BQ_STORAGE_VERSIONS.try_import(
+                raise_if_error=True
+            )
+        except bq_exceptions.BigQueryStorageNotFoundError:
             warnings.warn(
                 "Cannot create BigQuery Storage client, the dependency "
                 "google-cloud-bigquery-storage is not installed."
             )
             return None
-
-        try:
-            BQ_STORAGE_VERSIONS.verify_version()
         except bq_exceptions.LegacyBigQueryStorageError as exc:
-            warnings.warn(str(exc))
+            warnings.warn(
+                "Dependency google-cloud-bigquery-storage is outdated: " + str(exc)
+            )
             return None
+
         if bqstorage_client is None:
             bqstorage_client = bigquery_storage.BigQueryReadClient(
                 credentials=self._credentials,

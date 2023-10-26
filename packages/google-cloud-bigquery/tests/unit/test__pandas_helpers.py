@@ -40,7 +40,6 @@ import pytest
 from google import api_core
 
 from google.cloud.bigquery import exceptions
-from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import _pyarrow_helpers
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import schema
@@ -56,12 +55,7 @@ else:  # pragma: NO COVER
     # used in test parameterization.
     pyarrow = mock.Mock()
 
-try:
-    from google.cloud import bigquery_storage
-
-    _helpers.BQ_STORAGE_VERSIONS.verify_version()
-except ImportError:  # pragma: NO COVER
-    bigquery_storage = None
+bigquery_storage = _versions_helpers.BQ_STORAGE_VERSIONS.try_import()
 
 PANDAS_MINIUM_VERSION = pkg_resources.parse_version("1.0.0")
 
@@ -1616,7 +1610,9 @@ def test__download_table_bqstorage_stream_includes_read_session(
     import google.cloud.bigquery_storage_v1.reader
     import google.cloud.bigquery_storage_v1.types
 
-    monkeypatch.setattr(_helpers.BQ_STORAGE_VERSIONS, "_installed_version", None)
+    monkeypatch.setattr(
+        _versions_helpers.BQ_STORAGE_VERSIONS, "_installed_version", None
+    )
     monkeypatch.setattr(bigquery_storage, "__version__", "2.5.0")
     bqstorage_client = mock.create_autospec(
         bigquery_storage.BigQueryReadClient, instance=True
@@ -1641,7 +1637,7 @@ def test__download_table_bqstorage_stream_includes_read_session(
 
 @pytest.mark.skipif(
     bigquery_storage is None
-    or not _helpers.BQ_STORAGE_VERSIONS.is_read_session_optional,
+    or not _versions_helpers.BQ_STORAGE_VERSIONS.is_read_session_optional,
     reason="Requires `google-cloud-bigquery-storage` >= 2.6.0",
 )
 def test__download_table_bqstorage_stream_omits_read_session(
@@ -1650,7 +1646,9 @@ def test__download_table_bqstorage_stream_omits_read_session(
     import google.cloud.bigquery_storage_v1.reader
     import google.cloud.bigquery_storage_v1.types
 
-    monkeypatch.setattr(_helpers.BQ_STORAGE_VERSIONS, "_installed_version", None)
+    monkeypatch.setattr(
+        _versions_helpers.BQ_STORAGE_VERSIONS, "_installed_version", None
+    )
     monkeypatch.setattr(bigquery_storage, "__version__", "2.6.0")
     bqstorage_client = mock.create_autospec(
         bigquery_storage.BigQueryReadClient, instance=True
