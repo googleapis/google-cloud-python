@@ -26,9 +26,6 @@ def test_create_text_generator_model(palm2_text_generator_model):
     assert palm2_text_generator_model._bqml_model is not None
 
 
-@pytest.mark.skip(
-    reason="Temporarily disable to validate the hypothesis that LLM capacity is causing the presubmit tests to take long to run."
-)
 @pytest.mark.flaky(retries=2, delay=120)
 def test_create_text_generator_model_default_session(bq_connection, llm_text_pandas_df):
     import bigframes.pandas as bpd
@@ -51,9 +48,6 @@ def test_create_text_generator_model_default_session(bq_connection, llm_text_pan
     assert all(series.str.len() > 20)
 
 
-@pytest.mark.skip(
-    reason="Temporarily disable to validate the hypothesis that LLM capacity is causing the presubmit tests to take long to run."
-)
 @pytest.mark.flaky(retries=2, delay=120)
 def test_create_text_generator_model_default_connection(llm_text_pandas_df):
     from bigframes import _config
@@ -80,9 +74,6 @@ def test_create_text_generator_model_default_connection(llm_text_pandas_df):
 
 
 # Marked as flaky only because BQML LLM is in preview, the service only has limited capacity, not stable enough.
-@pytest.mark.skip(
-    reason="Temporarily disable to validate the hypothesis that LLM capacity is causing the presubmit tests to take long to run."
-)
 @pytest.mark.flaky(retries=2, delay=120)
 def test_text_generator_predict_default_params_success(
     palm2_text_generator_model, llm_text_df
@@ -94,9 +85,6 @@ def test_text_generator_predict_default_params_success(
     assert all(series.str.len() > 20)
 
 
-@pytest.mark.skip(
-    reason="Temporarily disable to validate the hypothesis that LLM capacity is causing the presubmit tests to take long to run."
-)
 @pytest.mark.flaky(retries=2, delay=120)
 def test_text_generator_predict_series_default_params_success(
     palm2_text_generator_model, llm_text_df
@@ -108,9 +96,6 @@ def test_text_generator_predict_series_default_params_success(
     assert all(series.str.len() > 20)
 
 
-@pytest.mark.skip(
-    reason="Temporarily disable to validate the hypothesis that LLM capacity is causing the presubmit tests to take long to run."
-)
 @pytest.mark.flaky(retries=2, delay=120)
 def test_text_generator_predict_arbitrary_col_label_success(
     palm2_text_generator_model, llm_text_df
@@ -123,9 +108,6 @@ def test_text_generator_predict_arbitrary_col_label_success(
     assert all(series.str.len() > 20)
 
 
-@pytest.mark.skip(
-    reason="Temporarily disable to validate the hypothesis that LLM capacity is causing the presubmit tests to take long to run."
-)
 @pytest.mark.flaky(retries=2, delay=120)
 def test_text_generator_predict_with_params_success(
     palm2_text_generator_model, llm_text_df
@@ -157,9 +139,6 @@ def test_create_text_embedding_generator_model_defaults(bq_connection):
     assert model._bqml_model is not None
 
 
-@pytest.mark.skip(
-    reason="Temporarily disable to validate the hypothesis that LLM capacity is causing the presubmit tests to take long to run."
-)
 @pytest.mark.flaky(retries=2, delay=120)
 def test_embedding_generator_predict_success(
     palm2_embedding_generator_model, llm_text_df
@@ -173,9 +152,6 @@ def test_embedding_generator_predict_success(
     assert value.size == 768
 
 
-@pytest.mark.skip(
-    reason="Temporarily disable to validate the hypothesis that LLM capacity is causing the presubmit tests to take long to run."
-)
 @pytest.mark.flaky(retries=2, delay=120)
 def test_embedding_generator_predict_series_success(
     palm2_embedding_generator_model, llm_text_df
