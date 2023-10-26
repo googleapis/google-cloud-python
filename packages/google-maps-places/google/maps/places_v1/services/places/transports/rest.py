@@ -36,7 +36,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 
-from google.maps.places_v1.types import places_service
+from google.maps.places_v1.types import place, places_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import PlacesTransport
@@ -63,6 +63,30 @@ class PlacesRestInterceptor:
 
     .. code-block:: python
         class MyCustomPlacesInterceptor(PlacesRestInterceptor):
+            def pre_get_photo_media(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_photo_media(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_place(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_place(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_search_nearby(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_search_nearby(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_search_text(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -76,6 +100,73 @@ class PlacesRestInterceptor:
 
 
     """
+
+    def pre_get_photo_media(
+        self,
+        request: places_service.GetPhotoMediaRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[places_service.GetPhotoMediaRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_photo_media
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Places server.
+        """
+        return request, metadata
+
+    def post_get_photo_media(
+        self, response: places_service.PhotoMedia
+    ) -> places_service.PhotoMedia:
+        """Post-rpc interceptor for get_photo_media
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Places server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_place(
+        self,
+        request: places_service.GetPlaceRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[places_service.GetPlaceRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_place
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Places server.
+        """
+        return request, metadata
+
+    def post_get_place(self, response: place.Place) -> place.Place:
+        """Post-rpc interceptor for get_place
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Places server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_search_nearby(
+        self,
+        request: places_service.SearchNearbyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[places_service.SearchNearbyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for search_nearby
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Places server.
+        """
+        return request, metadata
+
+    def post_search_nearby(
+        self, response: places_service.SearchNearbyResponse
+    ) -> places_service.SearchNearbyResponse:
+        """Post-rpc interceptor for search_nearby
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Places server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_search_text(
         self,
@@ -111,7 +202,11 @@ class PlacesRestStub:
 class PlacesRestTransport(PlacesTransport):
     """REST backend transport for Places.
 
-    Service definition for the Places API.
+    Service definition for the Places API. Note: every request actually
+    requires a field mask set outside of the request proto (all/'*' is
+    not assumed). That can be set via either a side channel
+    (SystemParameterContext) over RPC, or a header (X-Goog-FieldMask)
+    over HTTP. See: https://cloud.google.com/apis/docs/system-parameters
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -197,6 +292,277 @@ class PlacesRestTransport(PlacesTransport):
         self._interceptor = interceptor or PlacesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
+    class _GetPhotoMedia(PlacesRestStub):
+        def __hash__(self):
+            return hash("GetPhotoMedia")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: places_service.GetPhotoMediaRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> places_service.PhotoMedia:
+            r"""Call the get photo media method over HTTP.
+
+            Args:
+                request (~.places_service.GetPhotoMediaRequest):
+                    The request object. Request for fetching a photo of a
+                place using a photo resource name.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.places_service.PhotoMedia:
+                    A photo media from Places API.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=places/*/photos/*/media}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_photo_media(request, metadata)
+            pb_request = places_service.GetPhotoMediaRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = places_service.PhotoMedia()
+            pb_resp = places_service.PhotoMedia.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_photo_media(resp)
+            return resp
+
+    class _GetPlace(PlacesRestStub):
+        def __hash__(self):
+            return hash("GetPlace")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: places_service.GetPlaceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> place.Place:
+            r"""Call the get place method over HTTP.
+
+            Args:
+                request (~.places_service.GetPlaceRequest):
+                    The request object. Request for fetching a Place with a
+                place id (in a name) string.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.place.Place:
+                    All the information representing a
+                Place.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=places/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_place(request, metadata)
+            pb_request = places_service.GetPlaceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = place.Place()
+            pb_resp = place.Place.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_place(resp)
+            return resp
+
+    class _SearchNearby(PlacesRestStub):
+        def __hash__(self):
+            return hash("SearchNearby")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: places_service.SearchNearbyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> places_service.SearchNearbyResponse:
+            r"""Call the search nearby method over HTTP.
+
+            Args:
+                request (~.places_service.SearchNearbyRequest):
+                    The request object. Request proto for Search Nearby.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.places_service.SearchNearbyResponse:
+                    Response proto for Search Nearby.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/places:searchNearby",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_search_nearby(request, metadata)
+            pb_request = places_service.SearchNearbyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = places_service.SearchNearbyResponse()
+            pb_resp = places_service.SearchNearbyResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_search_nearby(resp)
+            return resp
+
     class _SearchText(PlacesRestStub):
         def __hash__(self):
             return hash("SearchText")
@@ -223,8 +589,7 @@ class PlacesRestTransport(PlacesTransport):
 
             Args:
                 request (~.places_service.SearchTextRequest):
-                    The request object. Request data structure for
-                SearchText.
+                    The request object. Request proto for SearchText.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -239,7 +604,7 @@ class PlacesRestTransport(PlacesTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1/Text:search",
+                    "uri": "/v1/places:searchText",
                     "body": "*",
                 },
             ]
@@ -292,6 +657,30 @@ class PlacesRestTransport(PlacesTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_search_text(resp)
             return resp
+
+    @property
+    def get_photo_media(
+        self,
+    ) -> Callable[[places_service.GetPhotoMediaRequest], places_service.PhotoMedia]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetPhotoMedia(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_place(self) -> Callable[[places_service.GetPlaceRequest], place.Place]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetPlace(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def search_nearby(
+        self,
+    ) -> Callable[
+        [places_service.SearchNearbyRequest], places_service.SearchNearbyResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SearchNearby(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def search_text(
