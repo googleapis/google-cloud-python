@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    translate_v3/services
-    translate_v3/types
+    translate_v3/services_
+    translate_v3/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    translate_v2/services
-    translate_v2/types
+    translate_v2/services_
+    translate_v2/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    translate_v3beta1/services
-    translate_v3beta1/types
+    translate_v3beta1/services_
+    translate_v3beta1/types_
 
 
 Changelog
