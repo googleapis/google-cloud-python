@@ -2022,7 +2022,17 @@
             "extra-files": [
                 "google/cloud/texttospeech/gapic_version.py",
                 "google/cloud/texttospeech_v1/gapic_version.py",
-                "google/cloud/texttospeech_v1beta1/gapic_version.py"
+                "google/cloud/texttospeech_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.texttospeech.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.texttospeech.v1beta1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -2074,7 +2084,12 @@
             "component": "google-cloud-video-stitcher",
             "extra-files": [
                 "google/cloud/video/stitcher/gapic_version.py",
-                "google/cloud/video/stitcher_v1/gapic_version.py"
+                "google/cloud/video/stitcher_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.video.stitcher.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -2103,7 +2118,32 @@
                 "google/cloud/videointelligence_v1beta2/gapic_version.py",
                 "google/cloud/videointelligence_v1p1beta1/gapic_version.py",
                 "google/cloud/videointelligence_v1p2beta1/gapic_version.py",
-                "google/cloud/videointelligence_v1p3beta1/gapic_version.py"
+                "google/cloud/videointelligence_v1p3beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.videointelligence.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.videointelligence.v1beta2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.videointelligence.v1p1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.videointelligence.v1p2beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.videointelligence.v1p3beta1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
