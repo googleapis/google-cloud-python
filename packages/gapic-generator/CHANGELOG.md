@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.11.10](https://github.com/googleapis/gapic-generator-python/compare/v1.11.9...v1.11.10) (2023-10-26)
+
+
+### Bug Fixes
+
+* Upgrade rules_python to 0.26.0 ([#1825](https://github.com/googleapis/gapic-generator-python/issues/1825)) ([5d66387](https://github.com/googleapis/gapic-generator-python/commit/5d66387cd42a38d54dde5e8f0153446fee194b27))
+
 ## [1.11.9](https://github.com/googleapis/gapic-generator-python/compare/v1.11.8...v1.11.9) (2023-10-18)
 
 
