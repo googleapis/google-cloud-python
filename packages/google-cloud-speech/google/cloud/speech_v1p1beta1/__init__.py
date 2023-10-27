@@ -18,8 +18,6 @@ from google.cloud.speech_v1p1beta1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.speech_v1.helpers import SpeechHelpers
-
 from .services.adaptation import AdaptationAsyncClient, AdaptationClient
 from .services.speech import SpeechAsyncClient, SpeechClient
 from .types.cloud_speech import (
@@ -63,6 +61,8 @@ from .types.resource import (
     SpeechAdaptation,
     TranscriptNormalization,
 )
+
+from google.cloud.speech_v1.helpers import SpeechHelpers
 
 
 class SpeechClient(SpeechHelpers, SpeechClient):
