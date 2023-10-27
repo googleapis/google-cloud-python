@@ -25,7 +25,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.maps.places_v1 import gapic_version as package_version
-from google.maps.places_v1.types import places_service
+from google.maps.places_v1.types import place, places_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -122,8 +122,23 @@ class PlacesTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.search_nearby: gapic_v1.method.wrap_method(
+                self.search_nearby,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.search_text: gapic_v1.method.wrap_method(
                 self.search_text,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_photo_media: gapic_v1.method.wrap_method(
+                self.get_photo_media,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_place: gapic_v1.method.wrap_method(
+                self.get_place,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -139,6 +154,18 @@ class PlacesTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def search_nearby(
+        self,
+    ) -> Callable[
+        [places_service.SearchNearbyRequest],
+        Union[
+            places_service.SearchNearbyResponse,
+            Awaitable[places_service.SearchNearbyResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def search_text(
         self,
     ) -> Callable[
@@ -147,6 +174,23 @@ class PlacesTransport(abc.ABC):
             places_service.SearchTextResponse,
             Awaitable[places_service.SearchTextResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_photo_media(
+        self,
+    ) -> Callable[
+        [places_service.GetPhotoMediaRequest],
+        Union[places_service.PhotoMedia, Awaitable[places_service.PhotoMedia]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_place(
+        self,
+    ) -> Callable[
+        [places_service.GetPlaceRequest], Union[place.Place, Awaitable[place.Place]]
     ]:
         raise NotImplementedError()
 

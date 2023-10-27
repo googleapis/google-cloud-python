@@ -3046,6 +3046,75 @@ def test_create_attached_cluster_rest(request_type):
         "authorization": {"admin_users": [{"username": "username_value"}]},
         "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = attached_service.CreateAttachedClusterRequest.meta.fields[
+        "attached_cluster"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["attached_cluster"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["attached_cluster"][field])):
+                    del request_init["attached_cluster"][field][i][subfield]
+            else:
+                del request_init["attached_cluster"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3253,32 +3322,6 @@ def test_create_attached_cluster_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["attached_cluster"] = {
-        "name": "name_value",
-        "description": "description_value",
-        "oidc_config": {"issuer_url": "issuer_url_value", "jwks": b"jwks_blob"},
-        "platform_version": "platform_version_value",
-        "distribution": "distribution_value",
-        "cluster_region": "cluster_region_value",
-        "fleet": {"project": "project_value", "membership": "membership_value"},
-        "state": 1,
-        "uid": "uid_value",
-        "reconciling": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "etag": "etag_value",
-        "kubernetes_version": "kubernetes_version_value",
-        "annotations": {},
-        "workload_identity_config": {
-            "issuer_uri": "issuer_uri_value",
-            "workload_pool": "workload_pool_value",
-            "identity_provider": "identity_provider_value",
-        },
-        "logging_config": {"component_config": {"enable_components": [1]}},
-        "errors": [{"message": "message_value"}],
-        "authorization": {"admin_users": [{"username": "username_value"}]},
-        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3403,6 +3446,75 @@ def test_update_attached_cluster_rest(request_type):
         "authorization": {"admin_users": [{"username": "username_value"}]},
         "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = attached_service.UpdateAttachedClusterRequest.meta.fields[
+        "attached_cluster"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["attached_cluster"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["attached_cluster"][field])):
+                    del request_init["attached_cluster"][field][i][subfield]
+            else:
+                del request_init["attached_cluster"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3595,32 +3707,6 @@ def test_update_attached_cluster_rest_bad_request(
         "attached_cluster": {
             "name": "projects/sample1/locations/sample2/attachedClusters/sample3"
         }
-    }
-    request_init["attached_cluster"] = {
-        "name": "projects/sample1/locations/sample2/attachedClusters/sample3",
-        "description": "description_value",
-        "oidc_config": {"issuer_url": "issuer_url_value", "jwks": b"jwks_blob"},
-        "platform_version": "platform_version_value",
-        "distribution": "distribution_value",
-        "cluster_region": "cluster_region_value",
-        "fleet": {"project": "project_value", "membership": "membership_value"},
-        "state": 1,
-        "uid": "uid_value",
-        "reconciling": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "etag": "etag_value",
-        "kubernetes_version": "kubernetes_version_value",
-        "annotations": {},
-        "workload_identity_config": {
-            "issuer_uri": "issuer_uri_value",
-            "workload_pool": "workload_pool_value",
-            "identity_provider": "identity_provider_value",
-        },
-        "logging_config": {"component_config": {"enable_components": [1]}},
-        "errors": [{"message": "message_value"}],
-        "authorization": {"admin_users": [{"username": "username_value"}]},
-        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
     }
     request = request_type(**request_init)
 
@@ -4029,8 +4115,9 @@ def test_get_attached_cluster_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = attached_resources.AttachedCluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = attached_resources.AttachedCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4114,8 +4201,9 @@ def test_get_attached_cluster_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = attached_resources.AttachedCluster.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = attached_resources.AttachedCluster.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4244,8 +4332,9 @@ def test_get_attached_cluster_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = attached_resources.AttachedCluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = attached_resources.AttachedCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4310,8 +4399,9 @@ def test_list_attached_clusters_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = attached_service.ListAttachedClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = attached_service.ListAttachedClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4393,10 +4483,11 @@ def test_list_attached_clusters_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = attached_service.ListAttachedClustersResponse.pb(
+            # Convert return value to protobuf type
+            return_value = attached_service.ListAttachedClustersResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4531,8 +4622,9 @@ def test_list_attached_clusters_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = attached_service.ListAttachedClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = attached_service.ListAttachedClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4942,8 +5034,9 @@ def test_get_attached_server_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = attached_resources.AttachedServerConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = attached_resources.AttachedServerConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5018,8 +5111,9 @@ def test_get_attached_server_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = attached_resources.AttachedServerConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = attached_resources.AttachedServerConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5147,8 +5241,9 @@ def test_get_attached_server_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = attached_resources.AttachedServerConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = attached_resources.AttachedServerConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5213,12 +5308,13 @@ def test_generate_attached_cluster_install_manifest_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
+        # Convert return value to protobuf type
+        return_value = (
             attached_service.GenerateAttachedClusterInstallManifestResponse.pb(
                 return_value
             )
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5320,12 +5416,13 @@ def test_generate_attached_cluster_install_manifest_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = (
+            # Convert return value to protobuf type
+            return_value = (
                 attached_service.GenerateAttachedClusterInstallManifestResponse.pb(
                     return_value
                 )
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5485,12 +5582,13 @@ def test_generate_attached_cluster_install_manifest_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
+        # Convert return value to protobuf type
+        return_value = (
             attached_service.GenerateAttachedClusterInstallManifestResponse.pb(
                 return_value
             )
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

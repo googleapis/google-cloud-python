@@ -1,0 +1,18 @@
+{
+    "name": "vision",
+    "name_pretty": "Cloud Vision",
+    "product_documentation": "https://cloud.google.com/vision/docs/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/vision/latest",
+    "issue_tracker": "https://issuetracker.google.com/issues?q=status:open%20componentid:187174",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_COMBO",
+    "repo": "googleapis/python-vision",
+    "distribution_name": "google-cloud-vision",
+    "api_id": "vision.googleapis.com",
+    "requires_billing": false,
+    "default_version": "v1",
+    "codeowner_team": "@googleapis/cdpe-cloudai",
+    "api_shortname": "vision",
+    "api_description": "allows developers to easily integrate vision detection features within applications, including image labeling, face and landmark detection, optical character recognition (OCR), and tagging of explicit content."
+}
