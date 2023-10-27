@@ -10,7 +10,7 @@ Before you begin, you must create a Google Cloud Platform project. Use the
 the service for free.
 
 pandas-gbq `authenticates with the Google BigQuery service
-<https://cloud.google.com/bigquery/docs/authentication/>`_ via OAuth 2.0. Use
+<https://cloud.google.com/bigquery/docs/authentication>`_ via OAuth 2.0. Use
 the ``credentials`` argument to explicitly pass in Google
 :class:`~google.auth.credentials.Credentials`.
 
@@ -132,6 +132,13 @@ To use service account credentials, set the ``credentials`` parameter to the res
         )
         df = pandas_gbq.read_gbq(sql, project_id="YOUR-PROJECT-ID", credentials=credentials)
 
+Alternatively, you can set ``GOOGLE_APPLICATION_CREDENTIALS`` environment variable to the
+full path to the JSON file.
+
+.. code-block:: shell
+
+   $ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json
+
 Use the :func:`~google.oauth2.service_account.Credentials.with_scopes` method
 to use authorize with specific OAuth2 scopes, which may be required in
 queries to federated data sources such as Google Sheets.
@@ -148,8 +155,10 @@ queries to federated data sources such as Google Sheets.
    df = pandas_gbq.read_gbq(..., credentials=credentials)
 
 See the `Getting started with authentication on Google Cloud Platform
-<https://cloud.google.com/docs/authentication/getting-started>`_ guide for
-more information on service accounts.
+<https://cloud.google.com/docs/authentication/getting-started>`_ guide and
+`Google Auth Library User Guide
+<https://google-auth.readthedocs.io/en/latest/user-guide.html>`_ for more information
+on service accounts.
 
 .. _authentication-user:
 
