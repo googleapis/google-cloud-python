@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "ArtifactRegistryClient",
           "rpcs": {
+            "BatchDeleteVersions": {
+              "methods": [
+                "batch_delete_versions"
+              ]
+            },
             "CreateRepository": {
               "methods": [
                 "create_repository"
@@ -190,6 +195,11 @@
         "grpc-async": {
           "libraryClient": "ArtifactRegistryAsyncClient",
           "rpcs": {
+            "BatchDeleteVersions": {
+              "methods": [
+                "batch_delete_versions"
+              ]
+            },
             "CreateRepository": {
               "methods": [
                 "create_repository"
@@ -370,6 +380,11 @@
         "rest": {
           "libraryClient": "ArtifactRegistryClient",
           "rpcs": {
+            "BatchDeleteVersions": {
+              "methods": [
+                "batch_delete_versions"
+              ]
+            },
             "CreateRepository": {
               "methods": [
                 "create_repository"

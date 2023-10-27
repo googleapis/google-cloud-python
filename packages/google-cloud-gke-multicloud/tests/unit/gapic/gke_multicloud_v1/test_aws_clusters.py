@@ -4109,6 +4109,73 @@ def test_create_aws_cluster_rest(request_type):
         "errors": [{"message": "message_value"}],
         "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = aws_service.CreateAwsClusterRequest.meta.fields["aws_cluster"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["aws_cluster"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["aws_cluster"][field])):
+                    del request_init["aws_cluster"][field][i][subfield]
+            else:
+                del request_init["aws_cluster"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4316,71 +4383,6 @@ def test_create_aws_cluster_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["aws_cluster"] = {
-        "name": "name_value",
-        "description": "description_value",
-        "networking": {
-            "vpc_id": "vpc_id_value",
-            "pod_address_cidr_blocks": [
-                "pod_address_cidr_blocks_value1",
-                "pod_address_cidr_blocks_value2",
-            ],
-            "service_address_cidr_blocks": [
-                "service_address_cidr_blocks_value1",
-                "service_address_cidr_blocks_value2",
-            ],
-        },
-        "aws_region": "aws_region_value",
-        "control_plane": {
-            "version": "version_value",
-            "instance_type": "instance_type_value",
-            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
-            "subnet_ids": ["subnet_ids_value1", "subnet_ids_value2"],
-            "security_group_ids": [
-                "security_group_ids_value1",
-                "security_group_ids_value2",
-            ],
-            "iam_instance_profile": "iam_instance_profile_value",
-            "root_volume": {
-                "size_gib": 844,
-                "volume_type": 1,
-                "iops": 443,
-                "kms_key_arn": "kms_key_arn_value",
-            },
-            "main_volume": {},
-            "database_encryption": {"kms_key_arn": "kms_key_arn_value"},
-            "tags": {},
-            "aws_services_authentication": {
-                "role_arn": "role_arn_value",
-                "role_session_name": "role_session_name_value",
-            },
-            "proxy_config": {
-                "secret_arn": "secret_arn_value",
-                "secret_version": "secret_version_value",
-            },
-            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
-            "instance_placement": {"tenancy": 1},
-        },
-        "authorization": {"admin_users": [{"username": "username_value"}]},
-        "state": 1,
-        "endpoint": "endpoint_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "etag": "etag_value",
-        "annotations": {},
-        "workload_identity_config": {
-            "issuer_uri": "issuer_uri_value",
-            "workload_pool": "workload_pool_value",
-            "identity_provider": "identity_provider_value",
-        },
-        "cluster_ca_certificate": "cluster_ca_certificate_value",
-        "fleet": {"project": "project_value", "membership": "membership_value"},
-        "logging_config": {"component_config": {"enable_components": [1]}},
-        "errors": [{"message": "message_value"}],
-        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4544,6 +4546,73 @@ def test_update_aws_cluster_rest(request_type):
         "errors": [{"message": "message_value"}],
         "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = aws_service.UpdateAwsClusterRequest.meta.fields["aws_cluster"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["aws_cluster"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["aws_cluster"][field])):
+                    del request_init["aws_cluster"][field][i][subfield]
+            else:
+                del request_init["aws_cluster"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4737,71 +4806,6 @@ def test_update_aws_cluster_rest_bad_request(
             "name": "projects/sample1/locations/sample2/awsClusters/sample3"
         }
     }
-    request_init["aws_cluster"] = {
-        "name": "projects/sample1/locations/sample2/awsClusters/sample3",
-        "description": "description_value",
-        "networking": {
-            "vpc_id": "vpc_id_value",
-            "pod_address_cidr_blocks": [
-                "pod_address_cidr_blocks_value1",
-                "pod_address_cidr_blocks_value2",
-            ],
-            "service_address_cidr_blocks": [
-                "service_address_cidr_blocks_value1",
-                "service_address_cidr_blocks_value2",
-            ],
-        },
-        "aws_region": "aws_region_value",
-        "control_plane": {
-            "version": "version_value",
-            "instance_type": "instance_type_value",
-            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
-            "subnet_ids": ["subnet_ids_value1", "subnet_ids_value2"],
-            "security_group_ids": [
-                "security_group_ids_value1",
-                "security_group_ids_value2",
-            ],
-            "iam_instance_profile": "iam_instance_profile_value",
-            "root_volume": {
-                "size_gib": 844,
-                "volume_type": 1,
-                "iops": 443,
-                "kms_key_arn": "kms_key_arn_value",
-            },
-            "main_volume": {},
-            "database_encryption": {"kms_key_arn": "kms_key_arn_value"},
-            "tags": {},
-            "aws_services_authentication": {
-                "role_arn": "role_arn_value",
-                "role_session_name": "role_session_name_value",
-            },
-            "proxy_config": {
-                "secret_arn": "secret_arn_value",
-                "secret_version": "secret_version_value",
-            },
-            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
-            "instance_placement": {"tenancy": 1},
-        },
-        "authorization": {"admin_users": [{"username": "username_value"}]},
-        "state": 1,
-        "endpoint": "endpoint_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "etag": "etag_value",
-        "annotations": {},
-        "workload_identity_config": {
-            "issuer_uri": "issuer_uri_value",
-            "workload_pool": "workload_pool_value",
-            "identity_provider": "identity_provider_value",
-        },
-        "cluster_ca_certificate": "cluster_ca_certificate_value",
-        "fleet": {"project": "project_value", "membership": "membership_value"},
-        "logging_config": {"component_config": {"enable_components": [1]}},
-        "errors": [{"message": "message_value"}],
-        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4918,8 +4922,9 @@ def test_get_aws_cluster_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = aws_resources.AwsCluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = aws_resources.AwsCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5002,8 +5007,9 @@ def test_get_aws_cluster_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = aws_resources.AwsCluster.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = aws_resources.AwsCluster.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5130,8 +5136,9 @@ def test_get_aws_cluster_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = aws_resources.AwsCluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = aws_resources.AwsCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5196,8 +5203,9 @@ def test_list_aws_clusters_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = aws_service.ListAwsClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = aws_service.ListAwsClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5279,8 +5287,9 @@ def test_list_aws_clusters_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = aws_service.ListAwsClustersResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = aws_service.ListAwsClustersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5413,8 +5422,9 @@ def test_list_aws_clusters_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = aws_service.ListAwsClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = aws_service.ListAwsClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5820,8 +5830,9 @@ def test_generate_aws_access_token_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = aws_service.GenerateAwsAccessTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = aws_service.GenerateAwsAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5896,10 +5907,9 @@ def test_generate_aws_access_token_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = aws_service.GenerateAwsAccessTokenResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = aws_service.GenerateAwsAccessTokenResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6068,6 +6078,73 @@ def test_create_aws_node_pool_rest(request_type):
         "max_pods_constraint": {"max_pods_per_node": 1798},
         "errors": [{"message": "message_value"}],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = aws_service.CreateAwsNodePoolRequest.meta.fields["aws_node_pool"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["aws_node_pool"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["aws_node_pool"][field])):
+                    del request_init["aws_node_pool"][field][i][subfield]
+            else:
+                del request_init["aws_node_pool"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6275,50 +6352,6 @@ def test_create_aws_node_pool_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/awsClusters/sample3"}
-    request_init["aws_node_pool"] = {
-        "name": "name_value",
-        "version": "version_value",
-        "config": {
-            "instance_type": "instance_type_value",
-            "root_volume": {
-                "size_gib": 844,
-                "volume_type": 1,
-                "iops": 443,
-                "kms_key_arn": "kms_key_arn_value",
-            },
-            "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
-            "labels": {},
-            "tags": {},
-            "iam_instance_profile": "iam_instance_profile_value",
-            "image_type": "image_type_value",
-            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
-            "security_group_ids": [
-                "security_group_ids_value1",
-                "security_group_ids_value2",
-            ],
-            "proxy_config": {
-                "secret_arn": "secret_arn_value",
-                "secret_version": "secret_version_value",
-            },
-            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
-            "instance_placement": {"tenancy": 1},
-            "autoscaling_metrics_collection": {
-                "granularity": "granularity_value",
-                "metrics": ["metrics_value1", "metrics_value2"],
-            },
-        },
-        "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
-        "subnet_id": "subnet_id_value",
-        "state": 1,
-        "uid": "uid_value",
-        "reconciling": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "etag": "etag_value",
-        "annotations": {},
-        "max_pods_constraint": {"max_pods_per_node": 1798},
-        "errors": [{"message": "message_value"}],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6463,6 +6496,73 @@ def test_update_aws_node_pool_rest(request_type):
         "max_pods_constraint": {"max_pods_per_node": 1798},
         "errors": [{"message": "message_value"}],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = aws_service.UpdateAwsNodePoolRequest.meta.fields["aws_node_pool"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["aws_node_pool"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["aws_node_pool"][field])):
+                    del request_init["aws_node_pool"][field][i][subfield]
+            else:
+                del request_init["aws_node_pool"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6656,50 +6756,6 @@ def test_update_aws_node_pool_rest_bad_request(
             "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
         }
     }
-    request_init["aws_node_pool"] = {
-        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4",
-        "version": "version_value",
-        "config": {
-            "instance_type": "instance_type_value",
-            "root_volume": {
-                "size_gib": 844,
-                "volume_type": 1,
-                "iops": 443,
-                "kms_key_arn": "kms_key_arn_value",
-            },
-            "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
-            "labels": {},
-            "tags": {},
-            "iam_instance_profile": "iam_instance_profile_value",
-            "image_type": "image_type_value",
-            "ssh_config": {"ec2_key_pair": "ec2_key_pair_value"},
-            "security_group_ids": [
-                "security_group_ids_value1",
-                "security_group_ids_value2",
-            ],
-            "proxy_config": {
-                "secret_arn": "secret_arn_value",
-                "secret_version": "secret_version_value",
-            },
-            "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
-            "instance_placement": {"tenancy": 1},
-            "autoscaling_metrics_collection": {
-                "granularity": "granularity_value",
-                "metrics": ["metrics_value1", "metrics_value2"],
-            },
-        },
-        "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
-        "subnet_id": "subnet_id_value",
-        "state": 1,
-        "uid": "uid_value",
-        "reconciling": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "etag": "etag_value",
-        "annotations": {},
-        "max_pods_constraint": {"max_pods_per_node": 1798},
-        "errors": [{"message": "message_value"}],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6816,8 +6872,9 @@ def test_get_aws_node_pool_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = aws_resources.AwsNodePool.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = aws_resources.AwsNodePool.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6898,8 +6955,9 @@ def test_get_aws_node_pool_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = aws_resources.AwsNodePool.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = aws_resources.AwsNodePool.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7028,8 +7086,9 @@ def test_get_aws_node_pool_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = aws_resources.AwsNodePool.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = aws_resources.AwsNodePool.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7094,8 +7153,9 @@ def test_list_aws_node_pools_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = aws_service.ListAwsNodePoolsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = aws_service.ListAwsNodePoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7177,8 +7237,9 @@ def test_list_aws_node_pools_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = aws_service.ListAwsNodePoolsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = aws_service.ListAwsNodePoolsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7313,8 +7374,9 @@ def test_list_aws_node_pools_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = aws_service.ListAwsNodePoolsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = aws_service.ListAwsNodePoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7725,8 +7787,9 @@ def test_get_aws_server_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = aws_resources.AwsServerConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = aws_resources.AwsServerConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7802,8 +7865,9 @@ def test_get_aws_server_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = aws_resources.AwsServerConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = aws_resources.AwsServerConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7928,8 +7992,9 @@ def test_get_aws_server_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = aws_resources.AwsServerConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = aws_resources.AwsServerConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
