@@ -118,54 +118,6 @@ def test_create_client_default_credentials():
     assert client is not None
 
 
-def test_create_partitioned_table(client, to_delete):
-    dataset_id = "create_table_partitioned_{}".format(_millis())
-    project = client.project
-    dataset_ref = bigquery.DatasetReference(project, dataset_id)
-    dataset = client.create_dataset(dataset_ref)
-    to_delete.append(dataset)
-
-    # TODO(tswast): remove this snippet once cloud.google.com is updated to use
-    # samples/snippets/create_partitioned_table.py
-    # [START bigquery_create_table_partitioned]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # project = client.project
-    # dataset_ref = bigquery.DatasetReference(project, 'my_dataset')
-
-    table_ref = dataset_ref.table("my_partitioned_table")
-    schema = [
-        bigquery.SchemaField("name", "STRING"),
-        bigquery.SchemaField("post_abbr", "STRING"),
-        bigquery.SchemaField("date", "DATE"),
-    ]
-    table = bigquery.Table(table_ref, schema=schema)
-    table.time_partitioning = bigquery.TimePartitioning(
-        type_=bigquery.TimePartitioningType.DAY,
-        field="date",  # name of column to use for partitioning
-        expiration_ms=7776000000,
-    )  # 90 days
-
-    table = client.create_table(table)
-
-    print(
-        "Created table {}, partitioned on column {}".format(
-            table.table_id, table.time_partitioning.field
-        )
-    )
-    # [END bigquery_create_table_partitioned]
-
-    assert table.time_partitioning.type_ == "DAY"
-    assert table.time_partitioning.field == "date"
-    assert table.time_partitioning.expiration_ms == 7776000000
-
-
-@pytest.mark.skip(
-    reason=(
-        "update_table() is flaky "
-        "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589"
-    )
-)
 @pytest.mark.skip(
     reason=(
         "update_table() is flaky "
@@ -201,54 +153,6 @@ def test_update_table_description(client, to_delete):
 
     assert table.description == "Updated description."
     # [END bigquery_update_table_description]
-
-
-@pytest.mark.skip(
-    reason=(
-        "update_table() is flaky "
-        "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589"
-    )
-)
-def test_relax_column(client, to_delete):
-    """Updates a schema field from required to nullable."""
-    dataset_id = "relax_column_dataset_{}".format(_millis())
-    table_id = "relax_column_table_{}".format(_millis())
-    project = client.project
-    dataset_ref = bigquery.DatasetReference(project, dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    dataset = client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # TODO(tswast): remove code sample once references to it on
-    # cloud.google.com are updated to samples/snippets/relax_column.py
-    # [START bigquery_relax_column]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-    # table_id = 'my_table'
-
-    original_schema = [
-        bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
-    ]
-
-    dataset_ref = bigquery.DatasetReference(project, dataset_id)
-    table_ref = dataset_ref.table(table_id)
-    table = bigquery.Table(table_ref, schema=original_schema)
-    table = client.create_table(table)
-    assert all(field.mode == "REQUIRED" for field in table.schema)
-
-    # SchemaField properties cannot be edited after initialization.
-    # To make changes, construct new SchemaField objects.
-    relaxed_schema = [
-        bigquery.SchemaField("full_name", "STRING", mode="NULLABLE"),
-        bigquery.SchemaField("age", "INTEGER", mode="NULLABLE"),
-    ]
-    table.schema = relaxed_schema
-    table = client.update_table(table, ["schema"])
-
-    assert all(field.mode == "NULLABLE" for field in table.schema)
-    # [END bigquery_relax_column]
 
 
 @pytest.mark.skip(
