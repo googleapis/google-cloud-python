@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    trace_v2/services
-    trace_v2/types
+    trace_v2/services_
+    trace_v2/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    trace_v1/services
-    trace_v1/types
+    trace_v1/services_
+    trace_v1/types_
 
 
 Changelog
