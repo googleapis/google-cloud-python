@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    iam_logging_v1/services
-    iam_logging_v1/types
+    iam_logging_v1/services_
+    iam_logging_v1/types_
 
 
 Changelog
