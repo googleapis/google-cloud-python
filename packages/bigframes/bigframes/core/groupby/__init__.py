@@ -193,7 +193,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
 
     def shift(self, periods=1) -> series.Series:
         window = core.WindowSpec(
-            grouping_keys=self._by_col_ids,
+            grouping_keys=tuple(self._by_col_ids),
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
         )
@@ -201,7 +201,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
 
     def diff(self, periods=1) -> series.Series:
         window = core.WindowSpec(
-            grouping_keys=self._by_col_ids,
+            grouping_keys=tuple(self._by_col_ids),
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
         )
@@ -210,7 +210,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
     def rolling(self, window: int, min_periods=None) -> windows.Window:
         # To get n size window, need current row and n-1 preceding rows.
         window_spec = core.WindowSpec(
-            grouping_keys=self._by_col_ids,
+            grouping_keys=tuple(self._by_col_ids),
             preceding=window - 1,
             following=0,
             min_periods=min_periods or window,
@@ -225,7 +225,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
 
     def expanding(self, min_periods: int = 1) -> windows.Window:
         window_spec = core.WindowSpec(
-            grouping_keys=self._by_col_ids,
+            grouping_keys=tuple(self._by_col_ids),
             following=0,
             min_periods=min_periods,
         )
@@ -389,7 +389,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
     ):
         """Apply window op to groupby. Defaults to grouped cumulative window."""
         window_spec = window or core.WindowSpec(
-            grouping_keys=self._by_col_ids, following=0
+            grouping_keys=tuple(self._by_col_ids), following=0
         )
         columns = self._aggregated_columns(numeric_only=numeric_only)
         block, result_ids = self._block.multi_apply_window_op(
@@ -528,7 +528,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
     def shift(self, periods=1) -> series.Series:
         """Shift index by desired number of periods."""
         window = core.WindowSpec(
-            grouping_keys=self._by_col_ids,
+            grouping_keys=tuple(self._by_col_ids),
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
         )
@@ -536,7 +536,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     def diff(self, periods=1) -> series.Series:
         window = core.WindowSpec(
-            grouping_keys=self._by_col_ids,
+            grouping_keys=tuple(self._by_col_ids),
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
         )
@@ -545,7 +545,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
     def rolling(self, window: int, min_periods=None) -> windows.Window:
         # To get n size window, need current row and n-1 preceding rows.
         window_spec = core.WindowSpec(
-            grouping_keys=self._by_col_ids,
+            grouping_keys=tuple(self._by_col_ids),
             preceding=window - 1,
             following=0,
             min_periods=min_periods or window,
@@ -564,7 +564,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     def expanding(self, min_periods: int = 1) -> windows.Window:
         window_spec = core.WindowSpec(
-            grouping_keys=self._by_col_ids,
+            grouping_keys=tuple(self._by_col_ids),
             following=0,
             min_periods=min_periods,
         )
@@ -597,7 +597,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
     ):
         """Apply window op to groupby. Defaults to grouped cumulative window."""
         window_spec = window or core.WindowSpec(
-            grouping_keys=self._by_col_ids, following=0
+            grouping_keys=tuple(self._by_col_ids), following=0
         )
 
         label = self._value_name if not discard_name else None

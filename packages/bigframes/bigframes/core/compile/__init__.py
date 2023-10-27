@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Helpers to join ArrayValue objects."""
+from bigframes.core.compile.compiled import CompiledArrayValue
+from bigframes.core.compile.compiler import compile_node
 
-from bigframes.core.joins.merge import merge
-from bigframes.core.joins.name_resolution import JOIN_NAME_REMAPPER, JoinNameRemapper
-
-__all__ = ("merge", "JoinNameRemapper", "JOIN_NAME_REMAPPER")
+__all__ = [
+    "compile_node",
+    "CompiledArrayValue",
+]

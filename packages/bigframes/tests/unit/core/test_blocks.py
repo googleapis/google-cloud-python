@@ -18,8 +18,6 @@ import pytest
 
 import bigframes.core.blocks as blocks
 
-from .. import resources
-
 
 @pytest.mark.parametrize(
     ("data",),
@@ -76,9 +74,8 @@ from .. import resources
 )
 def test_block_from_local(data):
     expected = pandas.DataFrame(data)
-    session = resources.create_pandas_session({})
 
-    block = blocks.block_from_local(data, session=session)
+    block = blocks.block_from_local(data)
 
     pandas.testing.assert_index_equal(block.column_labels, expected.columns)
     assert tuple(block.index_labels) == tuple(expected.index.names)

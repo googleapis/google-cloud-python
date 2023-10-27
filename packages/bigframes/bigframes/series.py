@@ -29,7 +29,6 @@ import typing_extensions
 
 import bigframes.constants as constants
 import bigframes.core
-from bigframes.core import WindowSpec
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.groupby as groupby
@@ -43,6 +42,7 @@ from bigframes.core.ordering import (
 import bigframes.core.scalar as scalars
 import bigframes.core.utils as utils
 import bigframes.core.window
+import bigframes.core.window_spec
 import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.formatting_helpers as formatter
@@ -367,43 +367,43 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def cumsum(self) -> Series:
         return self._apply_window_op(
-            agg_ops.sum_op, bigframes.core.WindowSpec(following=0)
+            agg_ops.sum_op, bigframes.core.window_spec.WindowSpec(following=0)
         )
 
     def ffill(self, *, limit: typing.Optional[int] = None) -> Series:
-        window = bigframes.core.WindowSpec(preceding=limit, following=0)
+        window = bigframes.core.window_spec.WindowSpec(preceding=limit, following=0)
         return self._apply_window_op(agg_ops.LastNonNullOp(), window)
 
     pad = ffill
 
     def bfill(self, *, limit: typing.Optional[int] = None) -> Series:
-        window = bigframes.core.WindowSpec(preceding=0, following=limit)
+        window = bigframes.core.window_spec.WindowSpec(preceding=0, following=limit)
         return self._apply_window_op(agg_ops.FirstNonNullOp(), window)
 
     def cummax(self) -> Series:
         return self._apply_window_op(
-            agg_ops.max_op, bigframes.core.WindowSpec(following=0)
+            agg_ops.max_op, bigframes.core.window_spec.WindowSpec(following=0)
         )
 
     def cummin(self) -> Series:
         return self._apply_window_op(
-            agg_ops.min_op, bigframes.core.WindowSpec(following=0)
+            agg_ops.min_op, bigframes.core.window_spec.WindowSpec(following=0)
         )
 
     def cumprod(self) -> Series:
         return self._apply_window_op(
-            agg_ops.product_op, bigframes.core.WindowSpec(following=0)
+            agg_ops.product_op, bigframes.core.window_spec.WindowSpec(following=0)
         )
 
     def shift(self, periods: int = 1) -> Series:
-        window = bigframes.core.WindowSpec(
+        window = bigframes.core.window_spec.WindowSpec(
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
         )
         return self._apply_window_op(agg_ops.ShiftOp(periods), window)
 
     def diff(self, periods: int = 1) -> Series:
-        window = bigframes.core.WindowSpec(
+        window = bigframes.core.window_spec.WindowSpec(
             preceding=periods if periods > 0 else None,
             following=-periods if periods < 0 else None,
         )
@@ -805,7 +805,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         block, max_value_count_col_id = block.apply_window_op(
             value_count_col_id,
             agg_ops.max_op,
-            window_spec=WindowSpec(),
+            window_spec=bigframes.core.window_spec.WindowSpec(),
         )
         block, is_mode_col_id = block.apply_binary_op(
             value_count_col_id,
@@ -1009,9 +1009,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self._block.get_stat(self._value_column, op)
 
     def _apply_window_op(
-        self,
-        op: agg_ops.WindowOp,
-        window_spec: bigframes.core.WindowSpec,
+        self, op: agg_ops.WindowOp, window_spec: bigframes.core.window_spec.WindowSpec
     ):
         block = self._block
         block, result_id = block.apply_window_op(
@@ -1070,7 +1068,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def rolling(self, window: int, min_periods=None) -> bigframes.core.window.Window:
         # To get n size window, need current row and n-1 preceding rows.
-        window_spec = WindowSpec(
+        window_spec = bigframes.core.window_spec.WindowSpec(
             preceding=window - 1, following=0, min_periods=min_periods or window
         )
         return bigframes.core.window.Window(
@@ -1078,7 +1076,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
 
     def expanding(self, min_periods: int = 1) -> bigframes.core.window.Window:
-        window_spec = WindowSpec(following=0, min_periods=min_periods)
+        window_spec = bigframes.core.window_spec.WindowSpec(
+            following=0, min_periods=min_periods
+        )
         return bigframes.core.window.Window(
             self._block, window_spec, self._block.value_columns, is_series=True
         )
@@ -1251,7 +1251,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                     "Cannot reindex with index with different nlevels"
                 )
             new_indexer = bigframes.dataframe.DataFrame(
-                index=index, session=self._get_block().expr._session
+                index=index, session=self._get_block().expr.session
             )[[]]
         # multiindex join is senstive to index names, so we will set all these
         result = new_indexer.rename_axis(range(new_indexer.index.nlevels)).join(
@@ -1415,7 +1415,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         elif isinstance(arg, Mapping):
             map_df = bigframes.dataframe.DataFrame(
                 {"keys": list(arg.keys()), self.name: list(arg.values())},
-                session=self._get_block().expr._session,
+                session=self._get_block().expr.session,
             )
             map_df = map_df.set_index("keys")
         elif callable(arg):

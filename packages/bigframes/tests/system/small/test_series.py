@@ -2858,7 +2858,7 @@ def test_map_series_input(scalars_dfs):
     pd_map_series = scalars_pandas_df.string_col.iloc[0 : len(new_index)]
     pd_map_series.index = new_index
     bf_map_series = series.Series(
-        pd_map_series, session=scalars_df._get_block().expr._session
+        pd_map_series, session=scalars_df._get_block().expr.session
     )
 
     pd_result = scalars_pandas_df.int64_too.map(pd_map_series)
@@ -2877,7 +2877,7 @@ def test_map_series_input_duplicates_error(scalars_dfs):
     pd_map_series = scalars_pandas_df.string_col.iloc[0 : len(new_index)]
     pd_map_series.index = new_index
     bf_map_series = series.Series(
-        pd_map_series, session=scalars_df._get_block().expr._session
+        pd_map_series, session=scalars_df._get_block().expr.session
     )
 
     with pytest.raises(pd.errors.InvalidIndexError):

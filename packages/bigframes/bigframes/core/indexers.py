@@ -311,7 +311,7 @@ def _loc_getitem_series_or_dataframe(
                 values = [entry[i] for entry in key]
                 index_cols_dict[index_name] = values
             keys_df = bigframes.dataframe.DataFrame(
-                index_cols_dict, session=series_or_dataframe._get_block().expr._session
+                index_cols_dict, session=series_or_dataframe._get_block().expr.session
             )
             keys_df = keys_df.set_index(temporary_index_names, drop=True)
             keys_df = keys_df.rename_axis(original_index_names)
@@ -324,7 +324,7 @@ def _loc_getitem_series_or_dataframe(
                 index_name = "unnamed_col"
             keys_df = bigframes.dataframe.DataFrame(
                 {index_name: key},
-                session=series_or_dataframe._get_block().expr._session,
+                session=series_or_dataframe._get_block().expr.session,
             )
             keys_df = keys_df.set_index(index_name, drop=True)
             if index_name_is_none:
@@ -343,7 +343,7 @@ def _loc_getitem_series_or_dataframe(
     elif pd.api.types.is_scalar(key):
         index_name = "unnamed_col"
         keys_df = bigframes.dataframe.DataFrame(
-            {index_name: [key]}, session=series_or_dataframe._get_block().expr._session
+            {index_name: [key]}, session=series_or_dataframe._get_block().expr.session
         )
         keys_df = keys_df.set_index(index_name, drop=True)
         keys_df.index.name = None

@@ -35,7 +35,6 @@ import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
-import bigframes.core.joins as joins
 import bigframes.core.joins.name_resolution as join_names
 import bigframes.core.ordering as ordering
 import bigframes.core.utils
@@ -378,7 +377,7 @@ class Block:
         """Convert BigQuery data to pandas DataFrame with specific dtypes."""
         dtypes = dict(zip(self.index_columns, self.index_dtypes))
         dtypes.update(zip(self.value_columns, self.dtypes))
-        return self._expr._session._rows_to_dataframe(result, dtypes)
+        return self._expr.session._rows_to_dataframe(result, dtypes)
 
     def to_pandas(
         self,
@@ -422,7 +421,7 @@ class Block:
         dtypes.update(zip(self.value_columns, self.dtypes))
         results_iterator, _ = self._expr.start_query()
         for arrow_table in results_iterator.to_arrow_iterable(
-            bqstorage_client=self._expr._session.bqstoragereadclient
+            bqstorage_client=self._expr.session.bqstoragereadclient
         ):
             df = bigframes.session._io.pandas.arrow_to_pandas(arrow_table, dtypes)
             self._copy_index_to_pandas(df)
@@ -454,7 +453,9 @@ class Block:
 
         results_iterator, query_job = expr.start_query(max_results=max_results)
 
-        table_size = expr._get_table_size(query_job.destination) / _BYTES_TO_MEGABYTES
+        table_size = (
+            expr.session._get_table_size(query_job.destination) / _BYTES_TO_MEGABYTES
+        )
         fraction = (
             max_download_size / table_size
             if (max_download_size is not None) and (table_size != 0)
@@ -819,7 +820,9 @@ class Block:
         axis: int | str = 0,
         value_col_id: str = "values",
         dropna: bool = True,
-        dtype=pd.Float64Dtype(),
+        dtype: typing.Union[
+            bigframes.dtypes.Dtype, typing.Tuple[bigframes.dtypes.Dtype, ...]
+        ] = pd.Float64Dtype(),
     ) -> Block:
         axis_n = utils.get_axis_number(axis)
         if axis_n == 0:
@@ -829,7 +832,7 @@ class Block:
             result_expr = self.expr.aggregate(aggregations, dropna=dropna).unpivot(
                 row_labels=self.column_labels.to_list(),
                 index_col_ids=["index"],
-                unpivot_columns=[(value_col_id, self.value_columns)],
+                unpivot_columns=tuple([(value_col_id, tuple(self.value_columns))]),
                 dtype=dtype,
             )
             return Block(result_expr, index_columns=["index"], column_labels=[None])
@@ -841,7 +844,7 @@ class Block:
             stacked_expr = expr_with_offsets.unpivot(
                 row_labels=self.column_labels.to_list(),
                 index_col_ids=[guid.generate_guid()],
-                unpivot_columns=[(value_col_id, self.value_columns)],
+                unpivot_columns=[(value_col_id, tuple(self.value_columns))],
                 passthrough_columns=[*self.index_columns, offset_col],
                 dtype=dtype,
             )
@@ -1029,13 +1032,13 @@ class Block:
             for col_id in column_ids
         ]
         columns = [
-            (col_id, [f"{col_id}-{stat.name}" for stat in stats])
+            (col_id, tuple(f"{col_id}-{stat.name}" for stat in stats))
             for col_id in column_ids
         ]
         expr = self.expr.aggregate(aggregations).unpivot(
             labels,
-            unpivot_columns=columns,
-            index_col_ids=[label_col_id],
+            unpivot_columns=tuple(columns),
+            index_col_ids=tuple([label_col_id]),
         )
         labels = self._get_labels_for_columns(column_ids)
         return Block(expr, column_labels=labels, index_columns=[label_col_id])
@@ -1342,7 +1345,7 @@ class Block:
             passthrough_columns=self.index_columns,
             unpivot_columns=unpivot_columns,
             index_col_ids=added_index_columns,
-            dtype=dtypes,
+            dtype=tuple(dtypes),
             how=how,
         )
         new_index_level_names = self.column_labels.names[-levels:]
@@ -1382,7 +1385,7 @@ class Block:
                     dtype = self._column_type(input_id)
             input_columns.append(input_id)
             # Input column i is the first one that
-        return input_columns, dtype or pd.Float64Dtype()
+        return tuple(input_columns), dtype or pd.Float64Dtype()
 
     def _column_type(self, col_id: str) -> bigframes.dtypes.Dtype:
         col_offset = self.value_columns.index(col_id)
@@ -1497,8 +1500,7 @@ class Block:
         sort: bool,
         suffixes: tuple[str, str] = ("_x", "_y"),
     ) -> Block:
-        joined_expr = joins.join_by_column(
-            self.expr,
+        joined_expr = self.expr.join(
             left_join_ids,
             other.expr,
             right_join_ids,
@@ -1708,7 +1710,7 @@ class Block:
         return result
 
 
-def block_from_local(data, session=None) -> Block:
+def block_from_local(data) -> Block:
     pd_data = pd.DataFrame(data)
     columns = pd_data.columns
 
@@ -1730,7 +1732,7 @@ def block_from_local(data, session=None) -> Block:
     )
     index_ids = pd_data.columns[: len(index_labels)]
 
-    keys_expr = core.ArrayValue.mem_expr_from_pandas(pd_data, session)
+    keys_expr = core.ArrayValue.from_pandas(pd_data)
     return Block(
         keys_expr,
         column_labels=columns,

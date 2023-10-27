@@ -23,15 +23,16 @@ import ibis
 import ibis.expr.types as ibis_types
 
 import bigframes.constants as constants
-import bigframes.core as core
+import bigframes.core.compile as compiled
 import bigframes.core.joins.name_resolution as naming
+import bigframes.core.ordering as orderings
 
 SUPPORTED_ROW_IDENTITY_HOW = {"outer", "left", "inner"}
 
 
 def join_by_row_identity(
-    left: core.ArrayValue, right: core.ArrayValue, *, how: str
-) -> core.ArrayValue:
+    left: compiled.CompiledArrayValue, right: compiled.CompiledArrayValue, *, how: str
+) -> compiled.CompiledArrayValue:
     """Compute join when we are joining by row identity not a specific column."""
     if how not in SUPPORTED_ROW_IDENTITY_HOW:
         raise NotImplementedError(
@@ -101,8 +102,8 @@ def join_by_row_identity(
         )
         # Assume that left ordering is sufficient since 1:1 join over same base table
         join_total_order_cols = left_total_order_cols
-        new_ordering = core.ExpressionOrdering(
-            ordering_columns, total_ordering_columns=join_total_order_cols
+        new_ordering = orderings.ExpressionOrdering(
+            tuple(ordering_columns), total_ordering_columns=join_total_order_cols
         )
 
     hidden_ordering_columns = [
@@ -117,8 +118,7 @@ def join_by_row_identity(
         if key.column_id in right._hidden_ordering_column_names.keys()
     ]
 
-    joined_expr = core.ArrayValue(
-        left._session,
+    joined_expr = compiled.CompiledArrayValue(
         left._table,
         columns=joined_columns,
         hidden_ordering_columns=hidden_ordering_columns,

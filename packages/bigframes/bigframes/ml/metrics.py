@@ -96,7 +96,7 @@ def roc_curve(
 
     y_true_series, y_score_series = utils.convert_to_series(y_true, y_score)
 
-    session = y_true_series._block.expr._session
+    session = y_true_series._block.expr.session
 
     # We operate on rows, so, remove the index if there is one
     # TODO(bmil): check that the indexes are equivalent before removing

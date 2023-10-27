@@ -170,9 +170,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                     if isinstance(dt, pandas.ArrowDtype)
                 )
             ):
-                self._block = blocks.block_from_local(
-                    pd_dataframe, session or bigframes.pandas.get_global_session()
-                )
+                self._block = blocks.block_from_local(pd_dataframe)
             elif session:
                 self._block = session.read_pandas(pd_dataframe)._get_block()
             else:
@@ -299,7 +297,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     @property
     def _session(self) -> bigframes.Session:
-        return self._get_block().expr._session
+        return self._get_block().expr.session
 
     def __len__(self):
         rows, _ = self.shape
@@ -1107,7 +1105,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 )
 
             local_df = bigframes.dataframe.DataFrame(
-                {k: v}, session=self._get_block().expr._session
+                {k: v}, session=self._get_block().expr.session
             )
             # local_df is likely (but not guarunteed) to be cached locally
             # since the original list came from memory and so is probably < MAX_INLINE_DF_SIZE
@@ -2203,7 +2201,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             field_delimiter=sep,
             header=header,
         )
-        _, query_job = self._block.expr._session._start_query(export_data_statement)
+        _, query_job = self._block.expr.session._start_query(export_data_statement)
         self._set_internal_query_job(query_job)
 
     def to_json(
@@ -2245,7 +2243,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             format="JSON",
             export_options={},
         )
-        _, query_job = self._block.expr._session._start_query(export_data_statement)
+        _, query_job = self._block.expr.session._start_query(export_data_statement)
         self._set_internal_query_job(query_job)
 
     def to_gbq(
@@ -2274,7 +2272,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             write_disposition=dispositions[if_exists],
             destination=bigquery.table.TableReference.from_string(
                 destination_table,
-                default_project=self._block.expr._session.bqclient.project,
+                default_project=self._block.expr.session.bqclient.project,
             ),
         )
 
@@ -2321,7 +2319,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             format="PARQUET",
             export_options=export_options,
         )
-        _, query_job = self._block.expr._session._start_query(export_data_statement)
+        _, query_job = self._block.expr.session._start_query(export_data_statement)
         self._set_internal_query_job(query_job)
 
     def to_dict(
@@ -2464,7 +2462,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         """Executes a query job presenting this dataframe and returns the destination
         table."""
         expr = self._block.expr
-        session = expr._session
+        session = expr.session
         sql = self._create_io_query(index=index, ordering_id=ordering_id)
         _, query_job = session._start_query(
             sql=sql, job_config=job_config  # type: ignore

@@ -86,7 +86,7 @@ class IntegerEncoding:
 class ExpressionOrdering:
     """Immutable object that holds information about the ordering of rows in a ArrayValue object."""
 
-    ordering_value_columns: Sequence[OrderingColumnReference] = ()
+    ordering_value_columns: typing.Tuple[OrderingColumnReference, ...] = ()
     integer_encoding: IntegerEncoding = IntegerEncoding(False)
     string_encoding: StringEncoding = StringEncoding(False)
     # A table has a total ordering defined by the identities of a set of 1 or more columns.
@@ -170,7 +170,7 @@ class ExpressionOrdering:
             mapping.get(col_id, col_id) for col_id in self.total_ordering_columns
         )
         return ExpressionOrdering(
-            new_value_columns,
+            tuple(new_value_columns),
             integer_encoding=self.integer_encoding,
             string_encoding=self.string_encoding,
             total_ordering_columns=new_total_order,

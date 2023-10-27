@@ -22,6 +22,7 @@ import pandas
 
 import bigframes
 import bigframes.core as core
+import bigframes.core.ordering
 import bigframes.session.clients
 
 """Utilities for creating test resources."""
@@ -61,14 +62,20 @@ def create_pandas_session(tables: Dict[str, pandas.DataFrame]) -> bigframes.Sess
 
 def create_arrayvalue(
     df: pandas.DataFrame, total_ordering_columns: List[str]
-) -> bigframes.core.ArrayValue:
+) -> core.ArrayValue:
     session = create_pandas_session({"test_table": df})
     ibis_table = session.ibis_client.table("test_table")
     columns = tuple(ibis_table[key] for key in ibis_table.columns)
-    ordering = core.ExpressionOrdering(
-        [core.OrderingColumnReference(column) for column in total_ordering_columns],
+    ordering = bigframes.core.ordering.ExpressionOrdering(
+        tuple(
+            [core.OrderingColumnReference(column) for column in total_ordering_columns]
+        ),
         total_ordering_columns=frozenset(total_ordering_columns),
     )
-    return core.ArrayValue(
-        session=session, table=ibis_table, columns=columns, ordering=ordering
+    return core.ArrayValue.from_ibis(
+        session=session,
+        table=ibis_table,
+        columns=columns,
+        hidden_ordering_columns=(),
+        ordering=ordering,
     )

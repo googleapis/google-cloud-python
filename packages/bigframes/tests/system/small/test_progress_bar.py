@@ -98,7 +98,7 @@ def assert_loading_msg_exist(capystOut: str, pattern=job_load_message_regex):
 
 def test_query_job_repr_html(penguins_df_default_index: bf.dataframe.DataFrame):
     bf.options.display.progress_bar = "terminal"
-    penguins_df_default_index._block._expr._session.bqclient.default_query_job_config.use_query_cache = (
+    penguins_df_default_index._block._expr.session.bqclient.default_query_job_config.use_query_cache = (
         False
     )
     penguins_df_default_index.to_pandas()
@@ -117,7 +117,7 @@ def test_query_job_repr_html(penguins_df_default_index: bf.dataframe.DataFrame):
 
 
 def test_query_job_repr(penguins_df_default_index: bf.dataframe.DataFrame):
-    penguins_df_default_index._block._expr._session.bqclient.default_query_job_config.use_query_cache = (
+    penguins_df_default_index._block._expr.session.bqclient.default_query_job_config.use_query_cache = (
         False
     )
     penguins_df_default_index.to_pandas()

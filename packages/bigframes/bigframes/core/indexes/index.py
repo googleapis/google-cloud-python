@@ -26,8 +26,7 @@ import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
-import bigframes.core.joins as joins
-import bigframes.core.joins.name_resolution as join_names
+import bigframes.core.joins as joining
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.dtypes
@@ -402,7 +401,7 @@ class IndexValue:
         dtypes = dict(zip(index_columns, self.dtypes))
         expr = self._expr.select_columns(index_columns)
         results, _ = expr.start_query()
-        df = expr._session._rows_to_dataframe(results, dtypes)
+        df = expr.session._rows_to_dataframe(results, dtypes)
         df = df.set_index(index_columns)
         index = df.index
         index.names = list(self._block._index_labels)
@@ -461,11 +460,10 @@ def join_mono_indexed(
 ) -> Tuple[IndexValue, Tuple[Mapping[str, str], Mapping[str, str]],]:
     left_expr = left._block.expr
     right_expr = right._block.expr
-    get_column_left, get_column_right = join_names.JOIN_NAME_REMAPPER(
+    get_column_left, get_column_right = joining.JOIN_NAME_REMAPPER(
         left_expr.column_ids, right_expr.column_ids
     )
-    combined_expr = joins.join_by_column(
-        left._block.expr,
+    combined_expr = left._block.expr.join(
         left._block.index_columns,
         right._block.expr,
         right._block.index_columns,
@@ -520,12 +518,11 @@ def join_multi_indexed(
 
     left_expr = left._block.expr
     right_expr = right._block.expr
-    get_column_left, get_column_right = join_names.JOIN_NAME_REMAPPER(
+    get_column_left, get_column_right = joining.JOIN_NAME_REMAPPER(
         left_expr.column_ids, right_expr.column_ids
     )
 
-    combined_expr = joins.join_by_column(
-        left_expr,
+    combined_expr = left_expr.join(
         left_join_ids,
         right_expr,
         right_join_ids,

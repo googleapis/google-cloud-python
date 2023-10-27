@@ -94,9 +94,7 @@ class SeriesMethods:
                     if isinstance(dt, pd.ArrowDtype)
                 )
             ):
-                self._block = blocks.block_from_local(
-                    pd_dataframe, session or bigframes.pandas.get_global_session()
-                )
+                self._block = blocks.block_from_local(pd_dataframe)
             elif session:
                 self._block = session.read_pandas(pd_dataframe)._get_block()
             else:

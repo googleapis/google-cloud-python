@@ -21,6 +21,7 @@ import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.ordering as ordering
+import bigframes.core.window_spec as windows
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 
@@ -68,21 +69,21 @@ def indicate_duplicates(
     if keep == "first":
         # Count how many copies occur up to current copy of value
         # Discard this value if there are copies BEFORE
-        window_spec = core.WindowSpec(
+        window_spec = windows.WindowSpec(
             grouping_keys=tuple(columns),
             following=0,
         )
     elif keep == "last":
         # Count how many copies occur up to current copy of values
         # Discard this value if there are copies AFTER
-        window_spec = core.WindowSpec(
+        window_spec = windows.WindowSpec(
             grouping_keys=tuple(columns),
             preceding=0,
         )
     else:  # keep == False
         # Count how many copies of the value occur in entire series.
         # Discard this value if there are copies ANYWHERE
-        window_spec = core.WindowSpec(grouping_keys=tuple(columns))
+        window_spec = windows.WindowSpec(grouping_keys=tuple(columns))
     block, dummy = block.create_constant(1)
     block, val_count_col_id = block.apply_window_op(
         dummy,
@@ -131,7 +132,7 @@ def value_counts(
     )
     count_id = agg_ids[0]
     if normalize:
-        unbound_window = core.WindowSpec()
+        unbound_window = windows.WindowSpec()
         block, total_count_id = block.apply_window_op(
             count_id, agg_ops.sum_op, unbound_window
         )
@@ -153,7 +154,7 @@ def value_counts(
 
 def pct_change(block: blocks.Block, periods: int = 1) -> blocks.Block:
     column_labels = block.column_labels
-    window_spec = core.WindowSpec(
+    window_spec = windows.WindowSpec(
         preceding=periods if periods > 0 else None,
         following=-periods if periods < 0 else None,
     )
@@ -195,7 +196,7 @@ def rank(
             ops.isnull_op,
         )
         nullity_col_ids.append(nullity_col_id)
-        window = core.WindowSpec(
+        window = windows.WindowSpec(
             # BigQuery has syntax to reorder nulls with "NULLS FIRST/LAST", but that is unavailable through ibis presently, so must order on a separate nullity expression first.
             ordering=(
                 ordering.OrderingColumnReference(
@@ -229,7 +230,7 @@ def rank(
             block, result_id = block.apply_window_op(
                 rownum_col_ids[i],
                 agg_op,
-                window_spec=core.WindowSpec(grouping_keys=[columns[i]]),
+                window_spec=windows.WindowSpec(grouping_keys=(columns[i],)),
                 skip_reproject_unsafe=(i < (len(columns) - 1)),
             )
             post_agg_rownum_col_ids.append(result_id)
@@ -311,7 +312,7 @@ def nsmallest(
         block, counter = block.apply_window_op(
             column_ids[0],
             agg_ops.rank_op,
-            window_spec=core.WindowSpec(ordering=order_refs),
+            window_spec=windows.WindowSpec(ordering=tuple(order_refs)),
         )
         block, condition = block.apply_unary_op(
             counter, ops.partial_right(ops.le_op, n)
@@ -343,7 +344,7 @@ def nlargest(
         block, counter = block.apply_window_op(
             column_ids[0],
             agg_ops.rank_op,
-            window_spec=core.WindowSpec(ordering=order_refs),
+            window_spec=windows.WindowSpec(ordering=tuple(order_refs)),
         )
         block, condition = block.apply_unary_op(
             counter, ops.partial_right(ops.le_op, n)
@@ -440,14 +441,14 @@ def _mean_delta_to_power(
     grouping_column_ids: typing.Sequence[str],
 ) -> typing.Tuple[blocks.Block, typing.Sequence[str]]:
     """Calculate (x-mean(x))^n. Useful for calculating moment statistics such as skew and kurtosis."""
-    window = core.WindowSpec(grouping_keys=grouping_column_ids)
+    window = windows.WindowSpec(grouping_keys=tuple(grouping_column_ids))
     block, mean_ids = block.multi_apply_window_op(column_ids, agg_ops.mean_op, window)
     delta_ids = []
     cube_op = ops.partial_right(ops.pow_op, n_power)
     for val_id, mean_val_id in zip(column_ids, mean_ids):
         block, delta_id = block.apply_binary_op(val_id, mean_val_id, ops.sub_op)
         block, delta_power_id = block.apply_unary_op(delta_id, cube_op)
-        block = block.drop_columns(delta_id)
+        block = block.drop_columns([delta_id])
         delta_ids.append(delta_power_id)
     return block, delta_ids
 
@@ -645,7 +646,7 @@ def _idx_extrema(
                 for idx_col in original_block.index_columns
             ],
         ]
-        window_spec = core.WindowSpec(ordering=order_refs)
+        window_spec = windows.WindowSpec(ordering=tuple(order_refs))
         idx_col = original_block.index_columns[0]
         block, result_col = block.apply_window_op(
             idx_col, agg_ops.first_op, window_spec
