@@ -473,7 +473,9 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse:
+        ) -> (
+            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse
+        ):
             r"""Call the list prediction api key
             registrations method over HTTP.
 

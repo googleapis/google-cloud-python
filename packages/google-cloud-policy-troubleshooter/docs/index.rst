@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    policytroubleshooter_v1/services
-    policytroubleshooter_v1/types
+    policytroubleshooter_v1/services_
+    policytroubleshooter_v1/types_
 
 
 Changelog

@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    alloydb_v1/services
-    alloydb_v1/types
+    alloydb_v1/services_
+    alloydb_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    alloydb_v1alpha/services
-    alloydb_v1alpha/types
+    alloydb_v1alpha/services_
+    alloydb_v1alpha/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    alloydb_v1beta/services
-    alloydb_v1beta/types
+    alloydb_v1beta/services_
+    alloydb_v1beta/types_
 
 
 Changelog

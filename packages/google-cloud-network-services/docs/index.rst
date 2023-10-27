@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    network_services_v1/services
-    network_services_v1/types
+    network_services_v1/services_
+    network_services_v1/types_
 
 
 Changelog
