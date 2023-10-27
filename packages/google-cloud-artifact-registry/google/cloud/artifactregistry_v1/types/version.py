@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
         "ListVersionsResponse",
         "GetVersionRequest",
         "DeleteVersionRequest",
+        "BatchDeleteVersionsRequest",
         "BatchDeleteVersionsMetadata",
     },
 )
@@ -229,6 +230,36 @@ class DeleteVersionRequest(proto.Message):
     force: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+
+
+class BatchDeleteVersionsRequest(proto.Message):
+    r"""The request to delete multiple versions across a repository.
+
+    Attributes:
+        parent (str):
+            The name of the repository holding all
+            requested versions.
+        names (MutableSequence[str]):
+            Required. The names of the versions to
+            delete. A maximum of 10000 versions can be
+            deleted in a batch.
+        validate_only (bool):
+            If true, the request is performed without
+            deleting data, following AIP-163.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

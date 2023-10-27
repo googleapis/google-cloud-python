@@ -18,6 +18,8 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -31,6 +33,17 @@ __protobuf__ = proto.module(
         "CreateRepositoryRequest",
         "UpdateRepositoryRequest",
         "DeleteRepositoryRequest",
+        "CommitRepositoryChangesRequest",
+        "ReadRepositoryFileRequest",
+        "ReadRepositoryFileResponse",
+        "QueryRepositoryDirectoryContentsRequest",
+        "QueryRepositoryDirectoryContentsResponse",
+        "FetchRepositoryHistoryRequest",
+        "FetchRepositoryHistoryResponse",
+        "CommitLogEntry",
+        "CommitMetadata",
+        "ComputeRepositoryAccessTokenStatusRequest",
+        "ComputeRepositoryAccessTokenStatusResponse",
         "FetchRemoteBranchesRequest",
         "FetchRemoteBranchesResponse",
         "Workspace",
@@ -52,6 +65,7 @@ __protobuf__ = proto.module(
         "FetchFileDiffResponse",
         "QueryDirectoryContentsRequest",
         "QueryDirectoryContentsResponse",
+        "DirectoryEntry",
         "MakeDirectoryRequest",
         "MakeDirectoryResponse",
         "RemoveDirectoryRequest",
@@ -66,7 +80,15 @@ __protobuf__ = proto.module(
         "WriteFileResponse",
         "InstallNpmPackagesRequest",
         "InstallNpmPackagesResponse",
+        "ReleaseConfig",
+        "ListReleaseConfigsRequest",
+        "ListReleaseConfigsResponse",
+        "GetReleaseConfigRequest",
+        "CreateReleaseConfigRequest",
+        "UpdateReleaseConfigRequest",
+        "DeleteReleaseConfigRequest",
         "CompilationResult",
+        "CodeCompilationConfig",
         "ListCompilationResultsRequest",
         "ListCompilationResultsResponse",
         "GetCompilationResultRequest",
@@ -76,6 +98,14 @@ __protobuf__ = proto.module(
         "CompilationResultAction",
         "QueryCompilationResultActionsRequest",
         "QueryCompilationResultActionsResponse",
+        "WorkflowConfig",
+        "InvocationConfig",
+        "ListWorkflowConfigsRequest",
+        "ListWorkflowConfigsResponse",
+        "GetWorkflowConfigRequest",
+        "CreateWorkflowConfigRequest",
+        "UpdateWorkflowConfigRequest",
+        "DeleteWorkflowConfigRequest",
         "WorkflowInvocation",
         "ListWorkflowInvocationsRequest",
         "ListWorkflowInvocationsResponse",
@@ -96,9 +126,37 @@ class Repository(proto.Message):
     Attributes:
         name (str):
             Output only. The repository's name.
+        display_name (str):
+            Optional. The repository's user-friendly
+            name.
         git_remote_settings (google.cloud.dataform_v1beta1.types.Repository.GitRemoteSettings):
             Optional. If set, configures this repository
             to be linked to a Git remote.
+        npmrc_environment_variables_secret_version (str):
+            Optional. The name of the Secret Manager secret version to
+            be used to interpolate variables into the .npmrc file for
+            package installation operations. Must be in the format
+            ``projects/*/secrets/*/versions/*``. The file itself must be
+            in a JSON format.
+        workspace_compilation_overrides (google.cloud.dataform_v1beta1.types.Repository.WorkspaceCompilationOverrides):
+            Optional. If set, fields of
+            ``workspace_compilation_overrides`` override the default
+            compilation settings that are specified in dataform.json
+            when creating workspace-scoped compilation results. See
+            documentation for ``WorkspaceCompilationOverrides`` for more
+            information.
+        labels (MutableMapping[str, str]):
+            Optional. Repository user labels.
+        set_authenticated_user_admin (bool):
+            Optional. Input only. If set to true, the
+            authenticated user will be granted the
+            roles/dataform.admin role on the created
+            repository. To modify access to the created
+            repository later apply setIamPolicy from
+            https://cloud.google.com/dataform/reference/rest#rest-resource:-v1beta1.projects.locations.repositories
+        service_account (str):
+            Optional. The service account to run workflow
+            invocations under.
     """
 
     class GitRemoteSettings(proto.Message):
@@ -111,16 +169,21 @@ class Repository(proto.Message):
                 Required. The Git remote's default branch
                 name.
             authentication_token_secret_version (str):
-                Required. The name of the Secret Manager secret version to
+                Optional. The name of the Secret Manager secret version to
                 use as an authentication token for Git operations. Must be
                 in the format ``projects/*/secrets/*/versions/*``.
+            ssh_authentication_config (google.cloud.dataform_v1beta1.types.Repository.GitRemoteSettings.SshAuthenticationConfig):
+                Optional. Authentication fields for remote
+                uris using SSH protocol.
             token_status (google.cloud.dataform_v1beta1.types.Repository.GitRemoteSettings.TokenStatus):
-                Output only. Indicates the status of the Git
-                access token.
+                Output only. Deprecated: The field does not
+                contain any token status information. Instead
+                use
+                https://cloud.google.com/dataform/reference/rest/v1beta1/projects.locations.repositories/computeAccessTokenStatus
         """
 
         class TokenStatus(proto.Enum):
-            r"""Indicates the status of a Git authentication token.
+            r"""
 
             Values:
                 TOKEN_STATUS_UNSPECIFIED (0):
@@ -141,6 +204,28 @@ class Repository(proto.Message):
             INVALID = 2
             VALID = 3
 
+        class SshAuthenticationConfig(proto.Message):
+            r"""Configures fields for performing SSH authentication.
+
+            Attributes:
+                user_private_key_secret_version (str):
+                    Required. The name of the Secret Manager secret version to
+                    use as a ssh private key for Git operations. Must be in the
+                    format ``projects/*/secrets/*/versions/*``.
+                host_public_key (str):
+                    Required. Content of a public SSH key to
+                    verify an identity of a remote Git host.
+            """
+
+            user_private_key_secret_version: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            host_public_key: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
         url: str = proto.Field(
             proto.STRING,
             number=1,
@@ -153,20 +238,87 @@ class Repository(proto.Message):
             proto.STRING,
             number=3,
         )
+        ssh_authentication_config: "Repository.GitRemoteSettings.SshAuthenticationConfig" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="Repository.GitRemoteSettings.SshAuthenticationConfig",
+        )
         token_status: "Repository.GitRemoteSettings.TokenStatus" = proto.Field(
             proto.ENUM,
             number=4,
             enum="Repository.GitRemoteSettings.TokenStatus",
         )
 
+    class WorkspaceCompilationOverrides(proto.Message):
+        r"""Configures workspace compilation overrides for a repository.
+        Primarily used by the UI (``console.cloud.google.com``).
+        ``schema_suffix`` and ``table_prefix`` can have a special expression
+        - ``${workspaceName}``, which refers to the workspace name from
+        which the compilation results will be created. API callers are
+        expected to resolve the expression in these overrides and provide
+        them explicitly in ``code_compilation_config``
+        (https://cloud.google.com/dataform/reference/rest/v1beta1/projects.locations.repositories.compilationResults#codecompilationconfig)
+        when creating workspace-scoped compilation results.
+
+        Attributes:
+            default_database (str):
+                Optional. The default database (Google Cloud
+                project ID).
+            schema_suffix (str):
+                Optional. The suffix that should be appended
+                to all schema (BigQuery dataset ID) names.
+            table_prefix (str):
+                Optional. The prefix that should be prepended
+                to all table names.
+        """
+
+        default_database: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        schema_suffix: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        table_prefix: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
     git_remote_settings: GitRemoteSettings = proto.Field(
         proto.MESSAGE,
         number=2,
         message=GitRemoteSettings,
+    )
+    npmrc_environment_variables_secret_version: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    workspace_compilation_overrides: WorkspaceCompilationOverrides = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=WorkspaceCompilationOverrides,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    set_authenticated_user_admin: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+    service_account: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 
@@ -342,6 +494,393 @@ class DeleteRepositoryRequest(proto.Message):
     force: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+
+
+class CommitRepositoryChangesRequest(proto.Message):
+    r"""``CommitRepositoryChanges`` request message.
+
+    Attributes:
+        name (str):
+            Required. The repository's name.
+        commit_metadata (google.cloud.dataform_v1beta1.types.CommitMetadata):
+            Required. The changes to commit to the
+            repository.
+        required_head_commit_sha (str):
+            Optional. The commit SHA which must be the
+            repository's current HEAD before applying this
+            commit; otherwise this request will fail. If
+            unset, no validation on the current HEAD commit
+            SHA is performed.
+        file_operations (MutableMapping[str, google.cloud.dataform_v1beta1.types.CommitRepositoryChangesRequest.FileOperation]):
+            A map to the path of the file to the
+            operation. The path is the full file path
+            including filename, from repository root.
+    """
+
+    class FileOperation(proto.Message):
+        r"""Represents a single file operation to the repository.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            write_file (google.cloud.dataform_v1beta1.types.CommitRepositoryChangesRequest.FileOperation.WriteFile):
+                Represents the write operation.
+
+                This field is a member of `oneof`_ ``operation``.
+            delete_file (google.cloud.dataform_v1beta1.types.CommitRepositoryChangesRequest.FileOperation.DeleteFile):
+                Represents the delete operation.
+
+                This field is a member of `oneof`_ ``operation``.
+        """
+
+        class WriteFile(proto.Message):
+            r"""Represents the write file operation (for files added or
+            modified).
+
+            Attributes:
+                contents (bytes):
+                    The file's contents.
+            """
+
+            contents: bytes = proto.Field(
+                proto.BYTES,
+                number=1,
+            )
+
+        class DeleteFile(proto.Message):
+            r"""Represents the delete file operation."""
+
+        write_file: "CommitRepositoryChangesRequest.FileOperation.WriteFile" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="operation",
+                message="CommitRepositoryChangesRequest.FileOperation.WriteFile",
+            )
+        )
+        delete_file: "CommitRepositoryChangesRequest.FileOperation.DeleteFile" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="operation",
+                message="CommitRepositoryChangesRequest.FileOperation.DeleteFile",
+            )
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    commit_metadata: "CommitMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CommitMetadata",
+    )
+    required_head_commit_sha: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    file_operations: MutableMapping[str, FileOperation] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=3,
+        message=FileOperation,
+    )
+
+
+class ReadRepositoryFileRequest(proto.Message):
+    r"""``ReadRepositoryFile`` request message.
+
+    Attributes:
+        name (str):
+            Required. The repository's name.
+        commit_sha (str):
+            Optional. The commit SHA for the commit to
+            read from. If unset, the file will be read from
+            HEAD.
+        path (str):
+            Required. Full file path to read including
+            filename, from repository root.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    commit_sha: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    path: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ReadRepositoryFileResponse(proto.Message):
+    r"""``ReadRepositoryFile`` response message.
+
+    Attributes:
+        contents (bytes):
+            The file's contents.
+    """
+
+    contents: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+
+
+class QueryRepositoryDirectoryContentsRequest(proto.Message):
+    r"""``QueryRepositoryDirectoryContents`` request message.
+
+    Attributes:
+        name (str):
+            Required. The repository's name.
+        commit_sha (str):
+            Optional. The Commit SHA for the commit to
+            query from. If unset, the directory will be
+            queried from HEAD.
+        path (str):
+            Optional. The directory's full path including
+            directory name, relative to root. If left unset,
+            the root is used.
+        page_size (int):
+            Optional. Maximum number of paths to return.
+            The server may return fewer items than
+            requested. If unspecified, the server will pick
+            an appropriate default.
+        page_token (str):
+            Optional. Page token received from a previous
+            ``QueryRepositoryDirectoryContents`` call. Provide this to
+            retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``QueryRepositoryDirectoryContents`` must match the call
+            that provided the page token.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    commit_sha: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    path: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class QueryRepositoryDirectoryContentsResponse(proto.Message):
+    r"""``QueryRepositoryDirectoryContents`` response message.
+
+    Attributes:
+        directory_entries (MutableSequence[google.cloud.dataform_v1beta1.types.DirectoryEntry]):
+            List of entries in the directory.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    directory_entries: MutableSequence["DirectoryEntry"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DirectoryEntry",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class FetchRepositoryHistoryRequest(proto.Message):
+    r"""``FetchRepositoryHistory`` request message.
+
+    Attributes:
+        name (str):
+            Required. The repository's name.
+        page_size (int):
+            Optional. Maximum number of commits to
+            return. The server may return fewer items than
+            requested. If unspecified, the server will pick
+            an appropriate default.
+        page_token (str):
+            Optional. Page token received from a previous
+            ``FetchRepositoryHistory`` call. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``FetchRepositoryHistory`` must match the call that provided
+            the page token.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class FetchRepositoryHistoryResponse(proto.Message):
+    r"""``FetchRepositoryHistory`` response message.
+
+    Attributes:
+        commits (MutableSequence[google.cloud.dataform_v1beta1.types.CommitLogEntry]):
+            A list of commit logs, ordered by 'git log'
+            default order.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    commits: MutableSequence["CommitLogEntry"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="CommitLogEntry",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CommitLogEntry(proto.Message):
+    r"""Represents a single commit log.
+
+    Attributes:
+        commit_time (google.protobuf.timestamp_pb2.Timestamp):
+            Commit timestamp.
+        commit_sha (str):
+            The commit SHA for this commit log entry.
+        author (google.cloud.dataform_v1beta1.types.CommitAuthor):
+            The commit author for this commit log entry.
+        commit_message (str):
+            The commit message for this commit log entry.
+    """
+
+    commit_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    commit_sha: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    author: "CommitAuthor" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="CommitAuthor",
+    )
+    commit_message: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class CommitMetadata(proto.Message):
+    r"""Represents a Dataform Git commit.
+
+    Attributes:
+        author (google.cloud.dataform_v1beta1.types.CommitAuthor):
+            Required. The commit's author.
+        commit_message (str):
+            Optional. The commit's message.
+    """
+
+    author: "CommitAuthor" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CommitAuthor",
+    )
+    commit_message: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ComputeRepositoryAccessTokenStatusRequest(proto.Message):
+    r"""``ComputeRepositoryAccessTokenStatus`` request message.
+
+    Attributes:
+        name (str):
+            Required. The repository's name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ComputeRepositoryAccessTokenStatusResponse(proto.Message):
+    r"""``ComputeRepositoryAccessTokenStatus`` response message.
+
+    Attributes:
+        token_status (google.cloud.dataform_v1beta1.types.ComputeRepositoryAccessTokenStatusResponse.TokenStatus):
+            Indicates the status of the Git access token.
+    """
+
+    class TokenStatus(proto.Enum):
+        r"""Indicates the status of a Git authentication token.
+
+        Values:
+            TOKEN_STATUS_UNSPECIFIED (0):
+                Default value. This value is unused.
+            NOT_FOUND (1):
+                The token could not be found in Secret
+                Manager (or the Dataform Service Account did not
+                have permission to access it).
+            INVALID (2):
+                The token could not be used to authenticate
+                against the Git remote.
+            VALID (3):
+                The token was used successfully to
+                authenticate against the Git remote.
+        """
+        TOKEN_STATUS_UNSPECIFIED = 0
+        NOT_FOUND = 1
+        INVALID = 2
+        VALID = 3
+
+    token_status: TokenStatus = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=TokenStatus,
     )
 
 
@@ -872,7 +1411,7 @@ class QueryDirectoryContentsResponse(proto.Message):
     r"""``QueryDirectoryContents`` response message.
 
     Attributes:
-        directory_entries (MutableSequence[google.cloud.dataform_v1beta1.types.QueryDirectoryContentsResponse.DirectoryEntry]):
+        directory_entries (MutableSequence[google.cloud.dataform_v1beta1.types.DirectoryEntry]):
             List of entries in the directory.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -880,50 +1419,51 @@ class QueryDirectoryContentsResponse(proto.Message):
             pages.
     """
 
-    class DirectoryEntry(proto.Message):
-        r"""Represents a single entry in a workspace directory.
-
-        This message has `oneof`_ fields (mutually exclusive fields).
-        For each oneof, at most one member field can be set at the same time.
-        Setting any member of the oneof automatically clears all other
-        members.
-
-        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
-        Attributes:
-            file (str):
-                A file in the directory.
-
-                This field is a member of `oneof`_ ``entry``.
-            directory (str):
-                A child directory in the directory.
-
-                This field is a member of `oneof`_ ``entry``.
-        """
-
-        file: str = proto.Field(
-            proto.STRING,
-            number=1,
-            oneof="entry",
-        )
-        directory: str = proto.Field(
-            proto.STRING,
-            number=2,
-            oneof="entry",
-        )
-
     @property
     def raw_page(self):
         return self
 
-    directory_entries: MutableSequence[DirectoryEntry] = proto.RepeatedField(
+    directory_entries: MutableSequence["DirectoryEntry"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message=DirectoryEntry,
+        message="DirectoryEntry",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class DirectoryEntry(proto.Message):
+    r"""Represents a single entry in a directory.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        file (str):
+            A file in the directory.
+
+            This field is a member of `oneof`_ ``entry``.
+        directory (str):
+            A child directory in the directory.
+
+            This field is a member of `oneof`_ ``entry``.
+    """
+
+    file: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="entry",
+    )
+    directory: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="entry",
     )
 
 
@@ -1142,6 +1682,281 @@ class InstallNpmPackagesResponse(proto.Message):
     r"""``InstallNpmPackages`` response message."""
 
 
+class ReleaseConfig(proto.Message):
+    r"""Represents a Dataform release configuration.
+
+    Attributes:
+        name (str):
+            Output only. The release config's name.
+        git_commitish (str):
+            Required. Git commit/tag/branch name at which the repository
+            should be compiled. Must exist in the remote repository.
+            Examples:
+
+            -  a commit SHA: ``12ade345``
+            -  a tag: ``tag1``
+            -  a branch name: ``branch1``
+        code_compilation_config (google.cloud.dataform_v1beta1.types.CodeCompilationConfig):
+            Optional. If set, fields of ``code_compilation_config``
+            override the default compilation settings that are specified
+            in dataform.json.
+        cron_schedule (str):
+            Optional. Optional schedule (in cron format)
+            for automatic creation of compilation results.
+        time_zone (str):
+            Optional. Specifies the time zone to be used when
+            interpreting cron_schedule. Must be a time zone name from
+            the time zone database
+            (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+            If left unspecified, the default is UTC.
+        recent_scheduled_release_records (MutableSequence[google.cloud.dataform_v1beta1.types.ReleaseConfig.ScheduledReleaseRecord]):
+            Output only. Records of the 10 most recent scheduled release
+            attempts, ordered in in descending order of
+            ``release_time``. Updated whenever automatic creation of a
+            compilation result is triggered by cron_schedule.
+        release_compilation_result (str):
+            Optional. The name of the currently released compilation
+            result for this release config. This value is updated when a
+            compilation result is created from this release config, or
+            when this resource is updated by API call (perhaps to roll
+            back to an earlier release). The compilation result must
+            have been created using this release config. Must be in the
+            format
+            ``projects/*/locations/*/repositories/*/compilationResults/*``.
+    """
+
+    class ScheduledReleaseRecord(proto.Message):
+        r"""A record of an attempt to create a compilation result for
+        this release config.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            release_time (google.protobuf.timestamp_pb2.Timestamp):
+                The timestamp of this release attempt.
+            compilation_result (str):
+                The name of the created compilation result, if one was
+                successfully created. Must be in the format
+                ``projects/*/locations/*/repositories/*/compilationResults/*``.
+
+                This field is a member of `oneof`_ ``result``.
+            error_status (google.rpc.status_pb2.Status):
+                The error status encountered upon this
+                attempt to create the compilation result, if the
+                attempt was unsuccessful.
+
+                This field is a member of `oneof`_ ``result``.
+        """
+
+        release_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        compilation_result: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="result",
+        )
+        error_status: status_pb2.Status = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="result",
+            message=status_pb2.Status,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    git_commitish: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    code_compilation_config: "CodeCompilationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="CodeCompilationConfig",
+    )
+    cron_schedule: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    time_zone: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    recent_scheduled_release_records: MutableSequence[
+        ScheduledReleaseRecord
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=ScheduledReleaseRecord,
+    )
+    release_compilation_result: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class ListReleaseConfigsRequest(proto.Message):
+    r"""``ListReleaseConfigs`` request message.
+
+    Attributes:
+        parent (str):
+            Required. The repository in which to list release configs.
+            Must be in the format
+            ``projects/*/locations/*/repositories/*``.
+        page_size (int):
+            Optional. Maximum number of release configs
+            to return. The server may return fewer items
+            than requested. If unspecified, the server will
+            pick an appropriate default.
+        page_token (str):
+            Optional. Page token received from a previous
+            ``ListReleaseConfigs`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListReleaseConfigs`` must match the call that provided the
+            page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListReleaseConfigsResponse(proto.Message):
+    r"""``ListReleaseConfigs`` response message.
+
+    Attributes:
+        release_configs (MutableSequence[google.cloud.dataform_v1beta1.types.ReleaseConfig]):
+            List of release configs.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Locations which could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    release_configs: MutableSequence["ReleaseConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ReleaseConfig",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetReleaseConfigRequest(proto.Message):
+    r"""``GetReleaseConfig`` request message.
+
+    Attributes:
+        name (str):
+            Required. The release config's name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateReleaseConfigRequest(proto.Message):
+    r"""``CreateReleaseConfig`` request message.
+
+    Attributes:
+        parent (str):
+            Required. The repository in which to create the release
+            config. Must be in the format
+            ``projects/*/locations/*/repositories/*``.
+        release_config (google.cloud.dataform_v1beta1.types.ReleaseConfig):
+            Required. The release config to create.
+        release_config_id (str):
+            Required. The ID to use for the release
+            config, which will become the final component of
+            the release config's resource name.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    release_config: "ReleaseConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ReleaseConfig",
+    )
+    release_config_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateReleaseConfigRequest(proto.Message):
+    r"""``UpdateReleaseConfig`` request message.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Specifies the fields to be updated
+            in the release config. If left unset, all fields
+            will be updated.
+        release_config (google.cloud.dataform_v1beta1.types.ReleaseConfig):
+            Required. The release config to update.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    release_config: "ReleaseConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ReleaseConfig",
+    )
+
+
+class DeleteReleaseConfigRequest(proto.Message):
+    r"""``DeleteReleaseConfig`` request message.
+
+    Attributes:
+        name (str):
+            Required. The release config's name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class CompilationResult(proto.Message):
     r"""Represents the result of compiling a Dataform project.
 
@@ -1171,10 +1986,21 @@ class CompilationResult(proto.Message):
             ``projects/*/locations/*/repositories/*/workspaces/*``.
 
             This field is a member of `oneof`_ ``source``.
-        code_compilation_config (google.cloud.dataform_v1beta1.types.CompilationResult.CodeCompilationConfig):
-            Immutable. If set, fields of ``code_compilation_overrides``
+        release_config (str):
+            Immutable. The name of the release config to compile. The
+            release config's 'current_compilation_result' field will be
+            updated to this compilation result. Must be in the format
+            ``projects/*/locations/*/repositories/*/releaseConfigs/*``.
+
+            This field is a member of `oneof`_ ``source``.
+        code_compilation_config (google.cloud.dataform_v1beta1.types.CodeCompilationConfig):
+            Immutable. If set, fields of ``code_compilation_config``
             override the default compilation settings that are specified
             in dataform.json.
+        resolved_git_commit_sha (str):
+            Output only. The fully resolved Git commit
+            SHA of the code that was compiled. Not set for
+            compilation results whose source is a workspace.
         dataform_core_version (str):
             Output only. The version of ``@dataform/core`` that was used
             for compilation.
@@ -1182,74 +2008,6 @@ class CompilationResult(proto.Message):
             Output only. Errors encountered during
             project compilation.
     """
-
-    class CodeCompilationConfig(proto.Message):
-        r"""Configures various aspects of Dataform code compilation.
-
-        Attributes:
-            default_database (str):
-                Optional. The default database (Google Cloud
-                project ID).
-            default_schema (str):
-                Optional. The default schema (BigQuery
-                dataset ID).
-            default_location (str):
-                Optional. The default BigQuery location to
-                use. Defaults to "US". See the BigQuery docs for
-                a full list of locations:
-
-                https://cloud.google.com/bigquery/docs/locations.
-            assertion_schema (str):
-                Optional. The default schema (BigQuery
-                dataset ID) for assertions.
-            vars (MutableMapping[str, str]):
-                Optional. User-defined variables that are
-                made available to project code during
-                compilation.
-            database_suffix (str):
-                Optional. The suffix that should be appended
-                to all database (Google Cloud project ID) names.
-            schema_suffix (str):
-                Optional. The suffix that should be appended
-                to all schema (BigQuery dataset ID) names.
-            table_prefix (str):
-                Optional. The prefix that should be prepended
-                to all table names.
-        """
-
-        default_database: str = proto.Field(
-            proto.STRING,
-            number=1,
-        )
-        default_schema: str = proto.Field(
-            proto.STRING,
-            number=2,
-        )
-        default_location: str = proto.Field(
-            proto.STRING,
-            number=8,
-        )
-        assertion_schema: str = proto.Field(
-            proto.STRING,
-            number=3,
-        )
-        vars: MutableMapping[str, str] = proto.MapField(
-            proto.STRING,
-            proto.STRING,
-            number=4,
-        )
-        database_suffix: str = proto.Field(
-            proto.STRING,
-            number=5,
-        )
-        schema_suffix: str = proto.Field(
-            proto.STRING,
-            number=6,
-        )
-        table_prefix: str = proto.Field(
-            proto.STRING,
-            number=7,
-        )
 
     class CompilationError(proto.Message):
         r"""An error encountered when attempting to compile a Dataform
@@ -1301,10 +2059,19 @@ class CompilationResult(proto.Message):
         number=3,
         oneof="source",
     )
-    code_compilation_config: CodeCompilationConfig = proto.Field(
+    release_config: str = proto.Field(
+        proto.STRING,
+        number=7,
+        oneof="source",
+    )
+    code_compilation_config: "CodeCompilationConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
-        message=CodeCompilationConfig,
+        message="CodeCompilationConfig",
+    )
+    resolved_git_commit_sha: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
     dataform_core_version: str = proto.Field(
         proto.STRING,
@@ -1314,6 +2081,75 @@ class CompilationResult(proto.Message):
         proto.MESSAGE,
         number=6,
         message=CompilationError,
+    )
+
+
+class CodeCompilationConfig(proto.Message):
+    r"""Configures various aspects of Dataform code compilation.
+
+    Attributes:
+        default_database (str):
+            Optional. The default database (Google Cloud
+            project ID).
+        default_schema (str):
+            Optional. The default schema (BigQuery
+            dataset ID).
+        default_location (str):
+            Optional. The default BigQuery location to
+            use. Defaults to "US". See the BigQuery docs for
+            a full list of locations:
+
+            https://cloud.google.com/bigquery/docs/locations.
+        assertion_schema (str):
+            Optional. The default schema (BigQuery
+            dataset ID) for assertions.
+        vars (MutableMapping[str, str]):
+            Optional. User-defined variables that are
+            made available to project code during
+            compilation.
+        database_suffix (str):
+            Optional. The suffix that should be appended
+            to all database (Google Cloud project ID) names.
+        schema_suffix (str):
+            Optional. The suffix that should be appended
+            to all schema (BigQuery dataset ID) names.
+        table_prefix (str):
+            Optional. The prefix that should be prepended
+            to all table names.
+    """
+
+    default_database: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    default_schema: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    default_location: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    assertion_schema: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    vars: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    database_suffix: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    schema_suffix: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    table_prefix: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -1969,17 +2805,343 @@ class QueryCompilationResultActionsResponse(proto.Message):
     )
 
 
+class WorkflowConfig(proto.Message):
+    r"""Represents a Dataform workflow configuration.
+
+    Attributes:
+        name (str):
+            Output only. The workflow config's name.
+        release_config (str):
+            Required. The name of the release config whose
+            release_compilation_result should be executed. Must be in
+            the format
+            ``projects/*/locations/*/repositories/*/releaseConfigs/*``.
+        invocation_config (google.cloud.dataform_v1beta1.types.InvocationConfig):
+            Optional. If left unset, a default
+            InvocationConfig will be used.
+        cron_schedule (str):
+            Optional. Optional schedule (in cron format)
+            for automatic execution of this workflow config.
+        time_zone (str):
+            Optional. Specifies the time zone to be used when
+            interpreting cron_schedule. Must be a time zone name from
+            the time zone database
+            (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+            If left unspecified, the default is UTC.
+        recent_scheduled_execution_records (MutableSequence[google.cloud.dataform_v1beta1.types.WorkflowConfig.ScheduledExecutionRecord]):
+            Output only. Records of the 10 most recent scheduled
+            execution attempts, ordered in in descending order of
+            ``execution_time``. Updated whenever automatic creation of a
+            workflow invocation is triggered by cron_schedule.
+    """
+
+    class ScheduledExecutionRecord(proto.Message):
+        r"""A record of an attempt to create a workflow invocation for
+        this workflow config.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            execution_time (google.protobuf.timestamp_pb2.Timestamp):
+                The timestamp of this execution attempt.
+            workflow_invocation (str):
+                The name of the created workflow invocation, if one was
+                successfully created. Must be in the format
+                ``projects/*/locations/*/repositories/*/workflowInvocations/*``.
+
+                This field is a member of `oneof`_ ``result``.
+            error_status (google.rpc.status_pb2.Status):
+                The error status encountered upon this
+                attempt to create the workflow invocation, if
+                the attempt was unsuccessful.
+
+                This field is a member of `oneof`_ ``result``.
+        """
+
+        execution_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        workflow_invocation: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="result",
+        )
+        error_status: status_pb2.Status = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="result",
+            message=status_pb2.Status,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    release_config: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    invocation_config: "InvocationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="InvocationConfig",
+    )
+    cron_schedule: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    time_zone: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    recent_scheduled_execution_records: MutableSequence[
+        ScheduledExecutionRecord
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=ScheduledExecutionRecord,
+    )
+
+
+class InvocationConfig(proto.Message):
+    r"""Includes various configuration options for a workflow invocation. If
+    both ``included_targets`` and ``included_tags`` are unset, all
+    actions will be included.
+
+    Attributes:
+        included_targets (MutableSequence[google.cloud.dataform_v1beta1.types.Target]):
+            Optional. The set of action identifiers to
+            include.
+        included_tags (MutableSequence[str]):
+            Optional. The set of tags to include.
+        transitive_dependencies_included (bool):
+            Optional. When set to true, transitive
+            dependencies of included actions will be
+            executed.
+        transitive_dependents_included (bool):
+            Optional. When set to true, transitive
+            dependents of included actions will be executed.
+        fully_refresh_incremental_tables_enabled (bool):
+            Optional. When set to true, any incremental
+            tables will be fully refreshed.
+        service_account (str):
+            Optional. The service account to run workflow
+            invocations under.
+    """
+
+    included_targets: MutableSequence["Target"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Target",
+    )
+    included_tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    transitive_dependencies_included: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    transitive_dependents_included: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    fully_refresh_incremental_tables_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    service_account: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class ListWorkflowConfigsRequest(proto.Message):
+    r"""``ListWorkflowConfigs`` request message.
+
+    Attributes:
+        parent (str):
+            Required. The repository in which to list workflow configs.
+            Must be in the format
+            ``projects/*/locations/*/repositories/*``.
+        page_size (int):
+            Optional. Maximum number of workflow configs
+            to return. The server may return fewer items
+            than requested. If unspecified, the server will
+            pick an appropriate default.
+        page_token (str):
+            Optional. Page token received from a previous
+            ``ListWorkflowConfigs`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListWorkflowConfigs`` must match the call that provided
+            the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListWorkflowConfigsResponse(proto.Message):
+    r"""``ListWorkflowConfigs`` response message.
+
+    Attributes:
+        workflow_configs (MutableSequence[google.cloud.dataform_v1beta1.types.WorkflowConfig]):
+            List of workflow configs.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Locations which could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    workflow_configs: MutableSequence["WorkflowConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="WorkflowConfig",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetWorkflowConfigRequest(proto.Message):
+    r"""``GetWorkflowConfig`` request message.
+
+    Attributes:
+        name (str):
+            Required. The workflow config's name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateWorkflowConfigRequest(proto.Message):
+    r"""``CreateWorkflowConfig`` request message.
+
+    Attributes:
+        parent (str):
+            Required. The repository in which to create the workflow
+            config. Must be in the format
+            ``projects/*/locations/*/repositories/*``.
+        workflow_config (google.cloud.dataform_v1beta1.types.WorkflowConfig):
+            Required. The workflow config to create.
+        workflow_config_id (str):
+            Required. The ID to use for the workflow
+            config, which will become the final component of
+            the workflow config's resource name.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    workflow_config: "WorkflowConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="WorkflowConfig",
+    )
+    workflow_config_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateWorkflowConfigRequest(proto.Message):
+    r"""``UpdateWorkflowConfig`` request message.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Specifies the fields to be updated
+            in the workflow config. If left unset, all
+            fields will be updated.
+        workflow_config (google.cloud.dataform_v1beta1.types.WorkflowConfig):
+            Required. The workflow config to update.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    workflow_config: "WorkflowConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="WorkflowConfig",
+    )
+
+
+class DeleteWorkflowConfigRequest(proto.Message):
+    r"""``DeleteWorkflowConfig`` request message.
+
+    Attributes:
+        name (str):
+            Required. The workflow config's name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class WorkflowInvocation(proto.Message):
     r"""Represents a single invocation of a compilation result.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
             Output only. The workflow invocation's name.
         compilation_result (str):
-            Immutable. The name of the compilation result to compile.
-            Must be in the format
+            Immutable. The name of the compilation result to use for
+            this invocation. Must be in the format
             ``projects/*/locations/*/repositories/*/compilationResults/*``.
-        invocation_config (google.cloud.dataform_v1beta1.types.WorkflowInvocation.InvocationConfig):
+
+            This field is a member of `oneof`_ ``compilation_source``.
+        workflow_config (str):
+            Immutable. The name of the workflow config to invoke. Must
+            be in the format
+            ``projects/*/locations/*/repositories/*/workflowConfigs/*``.
+
+            This field is a member of `oneof`_ ``compilation_source``.
+        invocation_config (google.cloud.dataform_v1beta1.types.InvocationConfig):
             Immutable. If left unset, a default
             InvocationConfig will be used.
         state (google.cloud.dataform_v1beta1.types.WorkflowInvocation.State):
@@ -2018,51 +3180,6 @@ class WorkflowInvocation(proto.Message):
         FAILED = 4
         CANCELING = 5
 
-    class InvocationConfig(proto.Message):
-        r"""Includes various configuration options for this workflow invocation.
-        If both ``included_targets`` and ``included_tags`` are unset, all
-        actions will be included.
-
-        Attributes:
-            included_targets (MutableSequence[google.cloud.dataform_v1beta1.types.Target]):
-                Immutable. The set of action identifiers to
-                include.
-            included_tags (MutableSequence[str]):
-                Immutable. The set of tags to include.
-            transitive_dependencies_included (bool):
-                Immutable. When set to true, transitive
-                dependencies of included actions will be
-                executed.
-            transitive_dependents_included (bool):
-                Immutable. When set to true, transitive
-                dependents of included actions will be executed.
-            fully_refresh_incremental_tables_enabled (bool):
-                Immutable. When set to true, any incremental
-                tables will be fully refreshed.
-        """
-
-        included_targets: MutableSequence["Target"] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Target",
-        )
-        included_tags: MutableSequence[str] = proto.RepeatedField(
-            proto.STRING,
-            number=2,
-        )
-        transitive_dependencies_included: bool = proto.Field(
-            proto.BOOL,
-            number=3,
-        )
-        transitive_dependents_included: bool = proto.Field(
-            proto.BOOL,
-            number=4,
-        )
-        fully_refresh_incremental_tables_enabled: bool = proto.Field(
-            proto.BOOL,
-            number=5,
-        )
-
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -2070,11 +3187,17 @@ class WorkflowInvocation(proto.Message):
     compilation_result: str = proto.Field(
         proto.STRING,
         number=2,
+        oneof="compilation_source",
     )
-    invocation_config: InvocationConfig = proto.Field(
+    workflow_config: str = proto.Field(
+        proto.STRING,
+        number=6,
+        oneof="compilation_source",
+    )
+    invocation_config: "InvocationConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message=InvocationConfig,
+        message="InvocationConfig",
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -2109,6 +3232,13 @@ class ListWorkflowInvocationsRequest(proto.Message):
             When paginating, all other parameters provided to
             ``ListWorkflowInvocations`` must match the call that
             provided the page token.
+        order_by (str):
+            Optional. This field only supports ordering by ``name``. If
+            unspecified, the server will choose the ordering. If
+            specified, the default order is ascending for the ``name``
+            field.
+        filter (str):
+            Optional. Filter for the returned list.
     """
 
     parent: str = proto.Field(
@@ -2122,6 +3252,14 @@ class ListWorkflowInvocationsRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -2255,8 +3393,7 @@ class WorkflowInvocationAction(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""Represents the current state of an workflow invocation
-        action.
+        r"""Represents the current state of a workflow invocation action.
 
         Values:
             PENDING (0):

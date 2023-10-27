@@ -155,6 +155,266 @@ class ListRepositoriesAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class QueryRepositoryDirectoryContentsPager:
+    """A pager for iterating through ``query_repository_directory_contents`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.QueryRepositoryDirectoryContentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``directory_entries`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``QueryRepositoryDirectoryContents`` requests and continue to iterate
+    through the ``directory_entries`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.QueryRepositoryDirectoryContentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dataform.QueryRepositoryDirectoryContentsResponse],
+        request: dataform.QueryRepositoryDirectoryContentsRequest,
+        response: dataform.QueryRepositoryDirectoryContentsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.QueryRepositoryDirectoryContentsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.QueryRepositoryDirectoryContentsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dataform.QueryRepositoryDirectoryContentsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dataform.QueryRepositoryDirectoryContentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[dataform.DirectoryEntry]:
+        for page in self.pages:
+            yield from page.directory_entries
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class QueryRepositoryDirectoryContentsAsyncPager:
+    """A pager for iterating through ``query_repository_directory_contents`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.QueryRepositoryDirectoryContentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``directory_entries`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``QueryRepositoryDirectoryContents`` requests and continue to iterate
+    through the ``directory_entries`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.QueryRepositoryDirectoryContentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[dataform.QueryRepositoryDirectoryContentsResponse]
+        ],
+        request: dataform.QueryRepositoryDirectoryContentsRequest,
+        response: dataform.QueryRepositoryDirectoryContentsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.QueryRepositoryDirectoryContentsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.QueryRepositoryDirectoryContentsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dataform.QueryRepositoryDirectoryContentsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[dataform.QueryRepositoryDirectoryContentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[dataform.DirectoryEntry]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.directory_entries:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class FetchRepositoryHistoryPager:
+    """A pager for iterating through ``fetch_repository_history`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.FetchRepositoryHistoryResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``commits`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``FetchRepositoryHistory`` requests and continue to iterate
+    through the ``commits`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.FetchRepositoryHistoryResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dataform.FetchRepositoryHistoryResponse],
+        request: dataform.FetchRepositoryHistoryRequest,
+        response: dataform.FetchRepositoryHistoryResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.FetchRepositoryHistoryRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.FetchRepositoryHistoryResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dataform.FetchRepositoryHistoryRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dataform.FetchRepositoryHistoryResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[dataform.CommitLogEntry]:
+        for page in self.pages:
+            yield from page.commits
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class FetchRepositoryHistoryAsyncPager:
+    """A pager for iterating through ``fetch_repository_history`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.FetchRepositoryHistoryResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``commits`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``FetchRepositoryHistory`` requests and continue to iterate
+    through the ``commits`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.FetchRepositoryHistoryResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dataform.FetchRepositoryHistoryResponse]],
+        request: dataform.FetchRepositoryHistoryRequest,
+        response: dataform.FetchRepositoryHistoryResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.FetchRepositoryHistoryRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.FetchRepositoryHistoryResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dataform.FetchRepositoryHistoryRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dataform.FetchRepositoryHistoryResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[dataform.CommitLogEntry]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.commits:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListWorkspacesPager:
     """A pager for iterating through ``list_workspaces`` requests.
 
@@ -337,9 +597,7 @@ class QueryDirectoryContentsPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[dataform.QueryDirectoryContentsResponse.DirectoryEntry]:
+    def __iter__(self) -> Iterator[dataform.DirectoryEntry]:
         for page in self.pages:
             yield from page.directory_entries
 
@@ -401,12 +659,138 @@ class QueryDirectoryContentsAsyncPager:
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[dataform.QueryDirectoryContentsResponse.DirectoryEntry]:
+    def __aiter__(self) -> AsyncIterator[dataform.DirectoryEntry]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.directory_entries:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListReleaseConfigsPager:
+    """A pager for iterating through ``list_release_configs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.ListReleaseConfigsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``release_configs`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListReleaseConfigs`` requests and continue to iterate
+    through the ``release_configs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.ListReleaseConfigsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dataform.ListReleaseConfigsResponse],
+        request: dataform.ListReleaseConfigsRequest,
+        response: dataform.ListReleaseConfigsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.ListReleaseConfigsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.ListReleaseConfigsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dataform.ListReleaseConfigsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dataform.ListReleaseConfigsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[dataform.ReleaseConfig]:
+        for page in self.pages:
+            yield from page.release_configs
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListReleaseConfigsAsyncPager:
+    """A pager for iterating through ``list_release_configs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.ListReleaseConfigsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``release_configs`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListReleaseConfigs`` requests and continue to iterate
+    through the ``release_configs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.ListReleaseConfigsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dataform.ListReleaseConfigsResponse]],
+        request: dataform.ListReleaseConfigsRequest,
+        response: dataform.ListReleaseConfigsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.ListReleaseConfigsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.ListReleaseConfigsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dataform.ListReleaseConfigsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dataform.ListReleaseConfigsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[dataform.ReleaseConfig]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.release_configs:
                     yield response
 
         return async_generator()
@@ -667,6 +1051,134 @@ class QueryCompilationResultActionsAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.compilation_result_actions:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListWorkflowConfigsPager:
+    """A pager for iterating through ``list_workflow_configs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.ListWorkflowConfigsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``workflow_configs`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListWorkflowConfigs`` requests and continue to iterate
+    through the ``workflow_configs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.ListWorkflowConfigsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dataform.ListWorkflowConfigsResponse],
+        request: dataform.ListWorkflowConfigsRequest,
+        response: dataform.ListWorkflowConfigsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.ListWorkflowConfigsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.ListWorkflowConfigsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dataform.ListWorkflowConfigsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dataform.ListWorkflowConfigsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[dataform.WorkflowConfig]:
+        for page in self.pages:
+            yield from page.workflow_configs
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListWorkflowConfigsAsyncPager:
+    """A pager for iterating through ``list_workflow_configs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.ListWorkflowConfigsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``workflow_configs`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListWorkflowConfigs`` requests and continue to iterate
+    through the ``workflow_configs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.ListWorkflowConfigsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dataform.ListWorkflowConfigsResponse]],
+        request: dataform.ListWorkflowConfigsRequest,
+        response: dataform.ListWorkflowConfigsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.ListWorkflowConfigsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.ListWorkflowConfigsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dataform.ListWorkflowConfigsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dataform.ListWorkflowConfigsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[dataform.WorkflowConfig]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.workflow_configs:
                     yield response
 
         return async_generator()
