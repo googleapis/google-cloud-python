@@ -22,7 +22,7 @@ import shutil
 import nox
 
 
-MYPY_VERSION = "mypy==0.910"
+MYPY_VERSION = "mypy==1.6.1"
 PYTYPE_VERSION = "pytype==2021.4.9"
 BLACK_VERSION = "black==23.7.0"
 BLACK_PATHS = (
@@ -137,7 +137,7 @@ def mypy(session):
         "types-requests",
         "types-setuptools",
     )
-    session.run("mypy", "google/cloud")
+    session.run("mypy", "google/cloud", "--show-traceback")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

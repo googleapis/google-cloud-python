@@ -1853,7 +1853,7 @@ class RowIterator(HTTPIterator):
     def to_dataframe_iterable(
         self,
         bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
-        dtypes: Dict[str, Any] = None,
+        dtypes: Optional[Dict[str, Any]] = None,
         max_queue_size: int = _pandas_helpers._MAX_QUEUE_SIZE_DEFAULT,  # type: ignore
     ) -> "pandas.DataFrame":
         """Create an iterable of pandas DataFrames, to process the table as a stream.
@@ -1929,7 +1929,7 @@ class RowIterator(HTTPIterator):
     def to_dataframe(
         self,
         bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
-        dtypes: Dict[str, Any] = None,
+        dtypes: Optional[Dict[str, Any]] = None,
         progress_bar_type: Optional[str] = None,
         create_bqstorage_client: bool = True,
         geography_as_object: bool = False,
@@ -2227,7 +2227,7 @@ class RowIterator(HTTPIterator):
     def to_geodataframe(
         self,
         bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
-        dtypes: Dict[str, Any] = None,
+        dtypes: Optional[Dict[str, Any]] = None,
         progress_bar_type: Optional[str] = None,
         create_bqstorage_client: bool = True,
         geography_column: Optional[str] = None,

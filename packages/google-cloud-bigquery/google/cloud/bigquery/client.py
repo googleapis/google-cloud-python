@@ -2182,12 +2182,12 @@ class Client(ClientWithProject):
         parent_job: Optional[Union[QueryJob, str]] = None,
         max_results: Optional[int] = None,
         page_token: Optional[str] = None,
-        all_users: bool = None,
+        all_users: Optional[bool] = None,
         state_filter: Optional[str] = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
-        min_creation_time: datetime.datetime = None,
-        max_creation_time: datetime.datetime = None,
+        min_creation_time: Optional[datetime.datetime] = None,
+        max_creation_time: Optional[datetime.datetime] = None,
         page_size: Optional[int] = None,
     ) -> page_iterator.Iterator:
         """List jobs for the project associated with this client.
@@ -3407,7 +3407,7 @@ class Client(ClientWithProject):
         self,
         table: Union[Table, TableReference, str],
         rows: Union[Iterable[Tuple], Iterable[Mapping[str, Any]]],
-        selected_fields: Sequence[SchemaField] = None,
+        selected_fields: Optional[Sequence[SchemaField]] = None,
         **kwargs,
     ) -> Sequence[Dict[str, Any]]:
         """Insert rows into a table via the streaming API.
@@ -3483,7 +3483,7 @@ class Client(ClientWithProject):
         self,
         table: Union[Table, TableReference, str],
         dataframe,
-        selected_fields: Sequence[SchemaField] = None,
+        selected_fields: Optional[Sequence[SchemaField]] = None,
         chunk_size: int = 500,
         **kwargs: Dict,
     ) -> Sequence[Sequence[dict]]:
@@ -3546,8 +3546,8 @@ class Client(ClientWithProject):
         row_ids: Union[
             Iterable[Optional[str]], AutoRowIDs, None
         ] = AutoRowIDs.GENERATE_UUID,
-        skip_invalid_rows: bool = None,
-        ignore_unknown_values: bool = None,
+        skip_invalid_rows: Optional[bool] = None,
+        ignore_unknown_values: Optional[bool] = None,
         template_suffix: Optional[str] = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
@@ -3738,7 +3738,7 @@ class Client(ClientWithProject):
     def list_rows(
         self,
         table: Union[Table, TableListItem, TableReference, str],
-        selected_fields: Sequence[SchemaField] = None,
+        selected_fields: Optional[Sequence[SchemaField]] = None,
         max_results: Optional[int] = None,
         page_token: Optional[str] = None,
         start_index: Optional[int] = None,
@@ -3851,7 +3851,7 @@ class Client(ClientWithProject):
         project: str,
         schema: SchemaField,
         total_rows: Optional[int] = None,
-        destination: Union[Table, TableReference, TableListItem, str] = None,
+        destination: Optional[Union[Table, TableReference, TableListItem, str]] = None,
         max_results: Optional[int] = None,
         start_index: Optional[int] = None,
         page_size: Optional[int] = None,
