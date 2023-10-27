@@ -2147,6 +2147,45 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-vision": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-vision",
+            "extra-files": [
+                "google/cloud/vision/gapic_version.py",
+                "google/cloud/vision_v1/gapic_version.py",
+                "google/cloud/vision_v1p1beta1/gapic_version.py",
+                "google/cloud/vision_v1p2beta1/gapic_version.py",
+                "google/cloud/vision_v1p3beta1/gapic_version.py",
+                "google/cloud/vision_v1p4beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vision.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vision.v1p1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vision.v1p2beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vision.v1p3beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vision.v1p4beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-vm-migration": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
