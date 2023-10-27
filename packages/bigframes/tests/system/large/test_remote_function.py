@@ -27,6 +27,7 @@ import pandas
 import pytest
 import test_utils.prefixer
 
+import bigframes
 from bigframes.remote_function import (
     get_cloud_function_name,
     get_remote_function_locations,
@@ -1120,3 +1121,92 @@ def test_remote_function_with_explicit_name_reuse(
         )
         for dir_ in dirs_to_cleanup:
             shutil.rmtree(dir_)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_via_session_context_connection_setter(
+    scalars_dfs, dataset_id, bq_cf_connection
+):
+    # Creating a session scoped only to this test as we would be setting a
+    # property in it
+    context = bigframes.BigQueryOptions()
+    context.bq_connection = bq_cf_connection
+    session = bigframes.connect(context)
+
+    try:
+        # Without an explicit bigquery connection, the one present in Session,
+        # set via context setter would be used. Without an explicit `reuse` the
+        # default behavior of reuse=True will take effect. Please note that the
+        # udf is same as the one used in other tests in this file so the underlying
+        # cloud function would be common with reuse=True. Since we are using a
+        # unique dataset_id, even though the cloud function would be reused, the bq
+        # remote function would still be created, making use of the bq connection
+        # set in the BigQueryOptions above.
+        @session.remote_function([int], int, dataset=dataset_id)
+        def square(x):
+            return x * x
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_int64_col = scalars_df["int64_col"]
+        bf_int64_col_filter = bf_int64_col.notnull()
+        bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
+        bf_result_col = bf_int64_col_filtered.apply(square)
+        bf_result = (
+            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+        )
+
+        pd_int64_col = scalars_pandas_df["int64_col"]
+        pd_int64_col_filter = pd_int64_col.notnull()
+        pd_int64_col_filtered = pd_int64_col[pd_int64_col_filter]
+        pd_result_col = pd_int64_col_filtered.apply(lambda x: x * x)
+        # TODO(shobs): Figure why pandas .apply() changes the dtype, i.e.
+        # pd_int64_col_filtered.dtype is Int64Dtype()
+        # pd_int64_col_filtered.apply(lambda x: x * x).dtype is int64.
+        # For this test let's force the pandas dtype to be same as bigframes' dtype.
+        pd_result_col = pd_result_col.astype(pandas.Int64Dtype())
+        pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
+
+        assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, square
+        )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_default_connection(session, scalars_dfs, dataset_id):
+    try:
+
+        @session.remote_function([int], int, dataset=dataset_id)
+        def square(x):
+            return x * x
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_int64_col = scalars_df["int64_col"]
+        bf_int64_col_filter = bf_int64_col.notnull()
+        bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
+        bf_result_col = bf_int64_col_filtered.apply(square)
+        bf_result = (
+            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+        )
+
+        pd_int64_col = scalars_pandas_df["int64_col"]
+        pd_int64_col_filter = pd_int64_col.notnull()
+        pd_int64_col_filtered = pd_int64_col[pd_int64_col_filter]
+        pd_result_col = pd_int64_col_filtered.apply(lambda x: x * x)
+        # TODO(shobs): Figure why pandas .apply() changes the dtype, i.e.
+        # pd_int64_col_filtered.dtype is Int64Dtype()
+        # pd_int64_col_filtered.apply(lambda x: x * x).dtype is int64.
+        # For this test let's force the pandas dtype to be same as bigframes' dtype.
+        pd_result_col = pd_result_col.astype(pandas.Int64Dtype())
+        pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
+
+        assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, square
+        )
