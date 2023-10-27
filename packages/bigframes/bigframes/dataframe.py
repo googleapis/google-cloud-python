@@ -1110,19 +1110,18 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             # local_df is likely (but not guarunteed) to be cached locally
             # since the original list came from memory and so is probably < MAX_INLINE_DF_SIZE
 
-            this_offsets_col_id = bigframes.core.guid.generate_guid()
-            this_expr = self._get_block()._expr.promote_offsets(this_offsets_col_id)
-            block = blocks.Block(
-                expr=this_expr,
-                index_labels=self.index.names,
-                index_columns=self._block.index_columns,
-                column_labels=[this_offsets_col_id] + list(self._block.value_columns),
-            )  # offsets are temporarily the first value column, label set to id
-            this_df_with_offsets = DataFrame(data=block)
-            join_result = this_df_with_offsets.join(
-                other=local_df, on=this_offsets_col_id, how="left"
+            new_column_block = local_df._block
+            original_index_column_ids = self._block.index_columns
+            self_block = self._block.reset_index(drop=False)
+            result_index, (get_column_left, get_column_right) = self_block.index.join(
+                new_column_block.index, how="left", block_identity_join=True
             )
-            return join_result.drop(columns=[this_offsets_col_id])
+            result_block = result_index._block
+            result_block = result_block.set_index(
+                [get_column_left[col_id] for col_id in original_index_column_ids],
+                index_labels=self._block.index_labels,
+            )
+            return DataFrame(result_block)
         else:
             return self._assign_scalar(k, v)
 
