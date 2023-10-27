@@ -19,8 +19,7 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    translate_v2/services_
-    translate_v2/types_
+    v2
 
 API Reference
 -------------

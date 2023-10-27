@@ -56,7 +56,7 @@ replacements:
       __all__ = (
     count: 5
   - paths: [
-    "packages/google-cloud-translate/setup.py"
+      "packages/google-cloud-translate/setup.py"
     ]
     before: |
       dependencies = \[
@@ -69,7 +69,7 @@ replacements:
           "proto-plus >= 1.22.0, <2.0.0dev",
     count: 1
   - paths: [
-    "packages/google-cloud-translate/testing/constraints-3.7.txt"
+      "packages/google-cloud-translate/testing/constraints-3.7.txt"
     ]
     before: |
       proto-plus==1.22.0
@@ -78,4 +78,23 @@ replacements:
       proto-plus==1.22.0
       google-cloud-core==1.4.4
       protobuf==3.19.5
+    count: 1
+  - paths: [
+      "packages/google-cloud-translate/docs/index.rst",
+    ]
+    before: |
+      API Reference
+      -------------
+      .. toctree::
+          :maxdepth: 2
+
+          translate_v2/services_
+          translate_v2/types_
+    after: |
+      API Reference
+      -------------
+      .. toctree::
+          :maxdepth: 2
+
+          v2
     count: 1
