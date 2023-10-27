@@ -584,7 +584,7 @@ def _add_decoder(response_raw, checksum):
     This is so that we can intercept the compressed bytes before they are
     decoded.
 
-    Only patches if the content encoding is ``gzip``.
+    Only patches if the content encoding is ``gzip`` or ``br``.
 
     Args:
         response_raw (urllib3.response.HTTPResponse): The raw response for
@@ -598,11 +598,15 @@ def _add_decoder(response_raw, checksum):
         caller will no longer need to hash to decoded bytes.
     """
     encoding = response_raw.headers.get("content-encoding", "").lower()
-    if encoding != "gzip":
+    if encoding == "gzip":
+        response_raw._decoder = _GzipDecoder(checksum)
+        return _helpers._DoNothingHash()
+    # Only activate if brotli is installed
+    elif encoding == "br" and _BrotliDecoder:  # type: ignore
+        response_raw._decoder = _BrotliDecoder(checksum)
+        return _helpers._DoNothingHash()
+    else:
         return checksum
-
-    response_raw._decoder = _GzipDecoder(checksum)
-    return _helpers._DoNothingHash()
 
 
 class _GzipDecoder(urllib3.response.GzipDecoder):
@@ -617,7 +621,7 @@ class _GzipDecoder(urllib3.response.GzipDecoder):
     """
 
     def __init__(self, checksum):
-        super(_GzipDecoder, self).__init__()
+        super().__init__()
         self._checksum = checksum
 
     def decompress(self, data):
@@ -630,4 +634,46 @@ class _GzipDecoder(urllib3.response.GzipDecoder):
             bytes: The decompressed bytes from ``data``.
         """
         self._checksum.update(data)
-        return super(_GzipDecoder, self).decompress(data)
+        return super().decompress(data)
+
+
+# urllib3.response.BrotliDecoder might not exist depending on whether brotli is
+# installed.
+if hasattr(urllib3.response, "BrotliDecoder"):
+
+    class _BrotliDecoder:
+        """Handler for ``brotli`` encoded bytes.
+
+        Allows a checksum function to see the compressed bytes before they are
+        decoded. This way the checksum of the compressed value can be computed.
+
+        Because BrotliDecoder's decompress method is dynamically created in
+        urllib3, a subclass is not practical. Instead, this class creates a
+        captive urllib3.requests.BrotliDecoder instance and acts as a proxy.
+
+        Args:
+            checksum (object):
+                A checksum which will be updated with compressed bytes.
+        """
+
+        def __init__(self, checksum):
+            self._decoder = urllib3.response.BrotliDecoder()
+            self._checksum = checksum
+
+        def decompress(self, data):
+            """Decompress the bytes.
+
+            Args:
+                data (bytes): The compressed bytes to be decompressed.
+
+            Returns:
+                bytes: The decompressed bytes from ``data``.
+            """
+            self._checksum.update(data)
+            return self._decoder.decompress(data)
+
+        def flush(self):
+            return self._decoder.flush()
+
+else:  # pragma: NO COVER
+    _BrotliDecoder = None  # type: ignore # pragma: NO COVER

@@ -1110,6 +1110,18 @@ class Test__add_decoder(object):
         assert isinstance(response_raw._decoder, download_mod._GzipDecoder)
         assert response_raw._decoder._checksum is mock.sentinel.md5_hash
 
+    def test_brotli(self):
+        headers = {"content-encoding": "br"}
+        response_raw = mock.Mock(headers=headers, spec=["headers", "_decoder"])
+        md5_hash = download_mod._add_decoder(response_raw, mock.sentinel.md5_hash)
+
+        assert md5_hash is not mock.sentinel.md5_hash
+        assert isinstance(md5_hash, _helpers._DoNothingHash)
+        assert isinstance(response_raw._decoder, download_mod._BrotliDecoder)
+        assert response_raw._decoder._checksum is mock.sentinel.md5_hash
+        # Go ahead and exercise the flush method, added only for completion
+        response_raw._decoder.flush()
+
 
 class Test_GzipDecoder(object):
     def test_constructor(self):
@@ -1121,6 +1133,22 @@ class Test_GzipDecoder(object):
         decoder = download_mod._GzipDecoder(md5_hash)
 
         data = b"\x1f\x8b\x08\x08"
+        result = decoder.decompress(data)
+
+        assert result == b""
+        md5_hash.update.assert_called_once_with(data)
+
+
+class Test_BrotliDecoder(object):
+    def test_constructor(self):
+        decoder = download_mod._BrotliDecoder(mock.sentinel.md5_hash)
+        assert decoder._checksum is mock.sentinel.md5_hash
+
+    def test_decompress(self):
+        md5_hash = mock.Mock(spec=["update"])
+        decoder = download_mod._BrotliDecoder(md5_hash)
+
+        data = b"\xc1\xf8I\xc0/\x83\xf3\xfa"
         result = decoder.decompress(data)
 
         assert result == b""

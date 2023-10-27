@@ -121,6 +121,15 @@ ALL_FILES = (
         "slices": (),
         "metadata": {"contentEncoding": "gzip"},
     },
+    {
+        "path": get_path("brotli.txt.br"),
+        "uncompressed": get_path("brotli.txt"),
+        "content_type": PLAIN_TEXT,
+        "md5": "MffJw7pTSX/7CVWFFPgwQA==",
+        "crc32c": "GGK0OQ==",
+        "slices": (),
+        "metadata": {"contentEncoding": "br"},
+    },
 )
 
 
@@ -298,7 +307,7 @@ class TestDownload(object):
         self, add_files, authorized_transport
     ):
         # Retrieve the gzip compressed file
-        info = ALL_FILES[-1]
+        info = ALL_FILES[-2]
         actual_contents = self._get_contents(info)
         blob_name = get_blob_name(info)
 
@@ -310,6 +319,27 @@ class TestDownload(object):
         response = download.consume(authorized_transport)
         assert response.status_code == http.client.OK
         assert response.headers.get(_helpers._STORED_CONTENT_ENCODING_HEADER) == "gzip"
+        assert response.headers.get("X-Goog-Stored-Content-Length") is not None
+        assert stream.getvalue() == actual_contents
+        check_tombstoned(download, authorized_transport)
+
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    def test_download_brotli_w_stored_content_headers(
+        self, add_files, authorized_transport, checksum
+    ):
+        # Retrieve the br compressed file
+        info = ALL_FILES[-1]
+        actual_contents = self._get_contents(info)
+        blob_name = get_blob_name(info)
+
+        # Create the actual download object.
+        media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
+        stream = io.BytesIO()
+        download = self._make_one(media_url, stream=stream, checksum=checksum)
+        # Consume the resource.
+        response = download.consume(authorized_transport)
+        assert response.status_code == http.client.OK
+        assert response.headers.get(_helpers._STORED_CONTENT_ENCODING_HEADER) == "br"
         assert response.headers.get("X-Goog-Stored-Content-Length") is not None
         assert stream.getvalue() == actual_contents
         check_tombstoned(download, authorized_transport)

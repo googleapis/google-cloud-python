@@ -38,7 +38,7 @@ def unit(session):
     )
 
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov", "pytest-asyncio<=0.14.0")
+    session.install("mock", "pytest", "pytest-cov", "pytest-asyncio<=0.14.0", "brotli")
     session.install("-e", ".[requests,aiohttp]", "-c", constraints_path)
 
     # Run py.test against the unit tests.
@@ -220,7 +220,7 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install("mock", "pytest", "google-cloud-testutils")
+    session.install("mock", "pytest", "google-cloud-testutils", "brotli")
     session.install("-e", ".[requests,aiohttp]", "-c", constraints_path)
 
     # Run py.test against the async system tests.
