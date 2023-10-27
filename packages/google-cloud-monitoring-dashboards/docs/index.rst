@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    dashboard_v1/services
-    dashboard_v1/types
+    monitoring_dashboard_v1/services_
+    monitoring_dashboard_v1/types_
 
 
 Changelog
