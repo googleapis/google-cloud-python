@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    tasks_v2/services
-    tasks_v2/types
+    tasks_v2/services_
+    tasks_v2/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    tasks_v2beta2/services
-    tasks_v2beta2/types
+    tasks_v2beta2/services_
+    tasks_v2beta2/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    tasks_v2beta3/services
-    tasks_v2beta3/types
+    tasks_v2beta3/services_
+    tasks_v2beta3/types_
 
 
 Changelog

@@ -2415,8 +2415,9 @@ def test_list_connectivity_tests_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reachability.ListConnectivityTestsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reachability.ListConnectivityTestsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2501,10 +2502,9 @@ def test_list_connectivity_tests_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reachability.ListConnectivityTestsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reachability.ListConnectivityTestsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2639,8 +2639,9 @@ def test_list_connectivity_tests_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reachability.ListConnectivityTestsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reachability.ListConnectivityTestsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2768,8 +2769,9 @@ def test_get_connectivity_test_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = connectivity_test.ConnectivityTest.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = connectivity_test.ConnectivityTest.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2848,8 +2850,9 @@ def test_get_connectivity_test_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = connectivity_test.ConnectivityTest.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = connectivity_test.ConnectivityTest.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2978,8 +2981,9 @@ def test_get_connectivity_test_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = connectivity_test.ConnectivityTest.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = connectivity_test.ConnectivityTest.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3282,6 +3286,73 @@ def test_create_connectivity_test_rest(request_type):
             },
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = reachability.CreateConnectivityTestRequest.meta.fields["resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["resource"][field])):
+                    del request_init["resource"][field][i][subfield]
+            else:
+                del request_init["resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3480,256 +3551,6 @@ def test_create_connectivity_test_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/global"}
-    request_init["resource"] = {
-        "name": "name_value",
-        "description": "description_value",
-        "source": {
-            "ip_address": "ip_address_value",
-            "port": 453,
-            "instance": "instance_value",
-            "forwarding_rule": "forwarding_rule_value",
-            "forwarding_rule_target": 1,
-            "load_balancer_id": "load_balancer_id_value",
-            "load_balancer_type": 1,
-            "gke_master_cluster": "gke_master_cluster_value",
-            "cloud_sql_instance": "cloud_sql_instance_value",
-            "cloud_function": {"uri": "uri_value"},
-            "app_engine_version": {"uri": "uri_value"},
-            "cloud_run_revision": {"uri": "uri_value"},
-            "network": "network_value",
-            "network_type": 1,
-            "project_id": "project_id_value",
-        },
-        "destination": {},
-        "protocol": "protocol_value",
-        "related_projects": ["related_projects_value1", "related_projects_value2"],
-        "display_name": "display_name_value",
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "reachability_details": {
-            "result": 1,
-            "verify_time": {},
-            "error": {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            },
-            "traces": [
-                {
-                    "endpoint_info": {
-                        "source_ip": "source_ip_value",
-                        "destination_ip": "destination_ip_value",
-                        "protocol": "protocol_value",
-                        "source_port": 1205,
-                        "destination_port": 1734,
-                        "source_network_uri": "source_network_uri_value",
-                        "destination_network_uri": "destination_network_uri_value",
-                        "source_agent_uri": "source_agent_uri_value",
-                    },
-                    "steps": [
-                        {
-                            "description": "description_value",
-                            "state": 1,
-                            "causes_drop": True,
-                            "project_id": "project_id_value",
-                            "instance": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "interface": "interface_value",
-                                "network_uri": "network_uri_value",
-                                "internal_ip": "internal_ip_value",
-                                "external_ip": "external_ip_value",
-                                "network_tags": [
-                                    "network_tags_value1",
-                                    "network_tags_value2",
-                                ],
-                                "service_account": "service_account_value",
-                            },
-                            "firewall": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "direction": "direction_value",
-                                "action": "action_value",
-                                "priority": 898,
-                                "network_uri": "network_uri_value",
-                                "target_tags": [
-                                    "target_tags_value1",
-                                    "target_tags_value2",
-                                ],
-                                "target_service_accounts": [
-                                    "target_service_accounts_value1",
-                                    "target_service_accounts_value2",
-                                ],
-                                "policy": "policy_value",
-                                "firewall_rule_type": 1,
-                            },
-                            "route": {
-                                "route_type": 1,
-                                "next_hop_type": 1,
-                                "route_scope": 1,
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "dest_ip_range": "dest_ip_range_value",
-                                "next_hop": "next_hop_value",
-                                "network_uri": "network_uri_value",
-                                "priority": 898,
-                                "instance_tags": [
-                                    "instance_tags_value1",
-                                    "instance_tags_value2",
-                                ],
-                                "src_ip_range": "src_ip_range_value",
-                                "dest_port_ranges": [
-                                    "dest_port_ranges_value1",
-                                    "dest_port_ranges_value2",
-                                ],
-                                "src_port_ranges": [
-                                    "src_port_ranges_value1",
-                                    "src_port_ranges_value2",
-                                ],
-                                "protocols": ["protocols_value1", "protocols_value2"],
-                                "ncc_hub_uri": "ncc_hub_uri_value",
-                                "ncc_spoke_uri": "ncc_spoke_uri_value",
-                            },
-                            "endpoint": {},
-                            "google_service": {
-                                "source_ip": "source_ip_value",
-                                "google_service_type": 1,
-                            },
-                            "forwarding_rule": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "matched_protocol": "matched_protocol_value",
-                                "matched_port_range": "matched_port_range_value",
-                                "vip": "vip_value",
-                                "target": "target_value",
-                                "network_uri": "network_uri_value",
-                            },
-                            "vpn_gateway": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "network_uri": "network_uri_value",
-                                "ip_address": "ip_address_value",
-                                "vpn_tunnel_uri": "vpn_tunnel_uri_value",
-                                "region": "region_value",
-                            },
-                            "vpn_tunnel": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "source_gateway": "source_gateway_value",
-                                "remote_gateway": "remote_gateway_value",
-                                "remote_gateway_ip": "remote_gateway_ip_value",
-                                "source_gateway_ip": "source_gateway_ip_value",
-                                "network_uri": "network_uri_value",
-                                "region": "region_value",
-                                "routing_type": 1,
-                            },
-                            "vpc_connector": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "location": "location_value",
-                            },
-                            "deliver": {
-                                "target": 1,
-                                "resource_uri": "resource_uri_value",
-                            },
-                            "forward": {
-                                "target": 1,
-                                "resource_uri": "resource_uri_value",
-                            },
-                            "abort": {
-                                "cause": 1,
-                                "resource_uri": "resource_uri_value",
-                                "projects_missing_permission": [
-                                    "projects_missing_permission_value1",
-                                    "projects_missing_permission_value2",
-                                ],
-                            },
-                            "drop": {"cause": 1, "resource_uri": "resource_uri_value"},
-                            "load_balancer": {
-                                "load_balancer_type": 1,
-                                "health_check_uri": "health_check_uri_value",
-                                "backends": [
-                                    {
-                                        "display_name": "display_name_value",
-                                        "uri": "uri_value",
-                                        "health_check_firewall_state": 1,
-                                        "health_check_allowing_firewall_rules": [
-                                            "health_check_allowing_firewall_rules_value1",
-                                            "health_check_allowing_firewall_rules_value2",
-                                        ],
-                                        "health_check_blocking_firewall_rules": [
-                                            "health_check_blocking_firewall_rules_value1",
-                                            "health_check_blocking_firewall_rules_value2",
-                                        ],
-                                    }
-                                ],
-                                "backend_type": 1,
-                                "backend_uri": "backend_uri_value",
-                            },
-                            "network": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "matched_ip_range": "matched_ip_range_value",
-                            },
-                            "gke_master": {
-                                "cluster_uri": "cluster_uri_value",
-                                "cluster_network_uri": "cluster_network_uri_value",
-                                "internal_ip": "internal_ip_value",
-                                "external_ip": "external_ip_value",
-                            },
-                            "cloud_sql_instance": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "network_uri": "network_uri_value",
-                                "internal_ip": "internal_ip_value",
-                                "external_ip": "external_ip_value",
-                                "region": "region_value",
-                            },
-                            "cloud_function": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "location": "location_value",
-                                "version_id": 1074,
-                            },
-                            "app_engine_version": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "runtime": "runtime_value",
-                                "environment": "environment_value",
-                            },
-                            "cloud_run_revision": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "location": "location_value",
-                                "service_uri": "service_uri_value",
-                            },
-                        }
-                    ],
-                }
-            ],
-        },
-        "probing_details": {
-            "result": 1,
-            "verify_time": {},
-            "error": {},
-            "abort_cause": 1,
-            "sent_probe_count": 1721,
-            "successful_probe_count": 2367,
-            "endpoint_info": {},
-            "probing_latency": {
-                "latency_percentiles": [{"percent": 753, "latency_micros": 1500}]
-            },
-            "destination_egress_location": {
-                "metropolitan_area": "metropolitan_area_value"
-            },
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4078,6 +3899,73 @@ def test_update_connectivity_test_rest(request_type):
             },
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = reachability.UpdateConnectivityTestRequest.meta.fields["resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["resource"][field])):
+                    del request_init["resource"][field][i][subfield]
+            else:
+                del request_init["resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4260,256 +4148,6 @@ def test_update_connectivity_test_rest_bad_request(
         "resource": {
             "name": "projects/sample1/locations/global/connectivityTests/sample2"
         }
-    }
-    request_init["resource"] = {
-        "name": "projects/sample1/locations/global/connectivityTests/sample2",
-        "description": "description_value",
-        "source": {
-            "ip_address": "ip_address_value",
-            "port": 453,
-            "instance": "instance_value",
-            "forwarding_rule": "forwarding_rule_value",
-            "forwarding_rule_target": 1,
-            "load_balancer_id": "load_balancer_id_value",
-            "load_balancer_type": 1,
-            "gke_master_cluster": "gke_master_cluster_value",
-            "cloud_sql_instance": "cloud_sql_instance_value",
-            "cloud_function": {"uri": "uri_value"},
-            "app_engine_version": {"uri": "uri_value"},
-            "cloud_run_revision": {"uri": "uri_value"},
-            "network": "network_value",
-            "network_type": 1,
-            "project_id": "project_id_value",
-        },
-        "destination": {},
-        "protocol": "protocol_value",
-        "related_projects": ["related_projects_value1", "related_projects_value2"],
-        "display_name": "display_name_value",
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "reachability_details": {
-            "result": 1,
-            "verify_time": {},
-            "error": {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            },
-            "traces": [
-                {
-                    "endpoint_info": {
-                        "source_ip": "source_ip_value",
-                        "destination_ip": "destination_ip_value",
-                        "protocol": "protocol_value",
-                        "source_port": 1205,
-                        "destination_port": 1734,
-                        "source_network_uri": "source_network_uri_value",
-                        "destination_network_uri": "destination_network_uri_value",
-                        "source_agent_uri": "source_agent_uri_value",
-                    },
-                    "steps": [
-                        {
-                            "description": "description_value",
-                            "state": 1,
-                            "causes_drop": True,
-                            "project_id": "project_id_value",
-                            "instance": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "interface": "interface_value",
-                                "network_uri": "network_uri_value",
-                                "internal_ip": "internal_ip_value",
-                                "external_ip": "external_ip_value",
-                                "network_tags": [
-                                    "network_tags_value1",
-                                    "network_tags_value2",
-                                ],
-                                "service_account": "service_account_value",
-                            },
-                            "firewall": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "direction": "direction_value",
-                                "action": "action_value",
-                                "priority": 898,
-                                "network_uri": "network_uri_value",
-                                "target_tags": [
-                                    "target_tags_value1",
-                                    "target_tags_value2",
-                                ],
-                                "target_service_accounts": [
-                                    "target_service_accounts_value1",
-                                    "target_service_accounts_value2",
-                                ],
-                                "policy": "policy_value",
-                                "firewall_rule_type": 1,
-                            },
-                            "route": {
-                                "route_type": 1,
-                                "next_hop_type": 1,
-                                "route_scope": 1,
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "dest_ip_range": "dest_ip_range_value",
-                                "next_hop": "next_hop_value",
-                                "network_uri": "network_uri_value",
-                                "priority": 898,
-                                "instance_tags": [
-                                    "instance_tags_value1",
-                                    "instance_tags_value2",
-                                ],
-                                "src_ip_range": "src_ip_range_value",
-                                "dest_port_ranges": [
-                                    "dest_port_ranges_value1",
-                                    "dest_port_ranges_value2",
-                                ],
-                                "src_port_ranges": [
-                                    "src_port_ranges_value1",
-                                    "src_port_ranges_value2",
-                                ],
-                                "protocols": ["protocols_value1", "protocols_value2"],
-                                "ncc_hub_uri": "ncc_hub_uri_value",
-                                "ncc_spoke_uri": "ncc_spoke_uri_value",
-                            },
-                            "endpoint": {},
-                            "google_service": {
-                                "source_ip": "source_ip_value",
-                                "google_service_type": 1,
-                            },
-                            "forwarding_rule": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "matched_protocol": "matched_protocol_value",
-                                "matched_port_range": "matched_port_range_value",
-                                "vip": "vip_value",
-                                "target": "target_value",
-                                "network_uri": "network_uri_value",
-                            },
-                            "vpn_gateway": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "network_uri": "network_uri_value",
-                                "ip_address": "ip_address_value",
-                                "vpn_tunnel_uri": "vpn_tunnel_uri_value",
-                                "region": "region_value",
-                            },
-                            "vpn_tunnel": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "source_gateway": "source_gateway_value",
-                                "remote_gateway": "remote_gateway_value",
-                                "remote_gateway_ip": "remote_gateway_ip_value",
-                                "source_gateway_ip": "source_gateway_ip_value",
-                                "network_uri": "network_uri_value",
-                                "region": "region_value",
-                                "routing_type": 1,
-                            },
-                            "vpc_connector": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "location": "location_value",
-                            },
-                            "deliver": {
-                                "target": 1,
-                                "resource_uri": "resource_uri_value",
-                            },
-                            "forward": {
-                                "target": 1,
-                                "resource_uri": "resource_uri_value",
-                            },
-                            "abort": {
-                                "cause": 1,
-                                "resource_uri": "resource_uri_value",
-                                "projects_missing_permission": [
-                                    "projects_missing_permission_value1",
-                                    "projects_missing_permission_value2",
-                                ],
-                            },
-                            "drop": {"cause": 1, "resource_uri": "resource_uri_value"},
-                            "load_balancer": {
-                                "load_balancer_type": 1,
-                                "health_check_uri": "health_check_uri_value",
-                                "backends": [
-                                    {
-                                        "display_name": "display_name_value",
-                                        "uri": "uri_value",
-                                        "health_check_firewall_state": 1,
-                                        "health_check_allowing_firewall_rules": [
-                                            "health_check_allowing_firewall_rules_value1",
-                                            "health_check_allowing_firewall_rules_value2",
-                                        ],
-                                        "health_check_blocking_firewall_rules": [
-                                            "health_check_blocking_firewall_rules_value1",
-                                            "health_check_blocking_firewall_rules_value2",
-                                        ],
-                                    }
-                                ],
-                                "backend_type": 1,
-                                "backend_uri": "backend_uri_value",
-                            },
-                            "network": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "matched_ip_range": "matched_ip_range_value",
-                            },
-                            "gke_master": {
-                                "cluster_uri": "cluster_uri_value",
-                                "cluster_network_uri": "cluster_network_uri_value",
-                                "internal_ip": "internal_ip_value",
-                                "external_ip": "external_ip_value",
-                            },
-                            "cloud_sql_instance": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "network_uri": "network_uri_value",
-                                "internal_ip": "internal_ip_value",
-                                "external_ip": "external_ip_value",
-                                "region": "region_value",
-                            },
-                            "cloud_function": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "location": "location_value",
-                                "version_id": 1074,
-                            },
-                            "app_engine_version": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "runtime": "runtime_value",
-                                "environment": "environment_value",
-                            },
-                            "cloud_run_revision": {
-                                "display_name": "display_name_value",
-                                "uri": "uri_value",
-                                "location": "location_value",
-                                "service_uri": "service_uri_value",
-                            },
-                        }
-                    ],
-                }
-            ],
-        },
-        "probing_details": {
-            "result": 1,
-            "verify_time": {},
-            "error": {},
-            "abort_cause": 1,
-            "sent_probe_count": 1721,
-            "successful_probe_count": 2367,
-            "endpoint_info": {},
-            "probing_latency": {
-                "latency_percentiles": [{"percent": 753, "latency_micros": 1500}]
-            },
-            "destination_egress_location": {
-                "metropolitan_area": "metropolitan_area_value"
-            },
-        },
     }
     request = request_type(**request_init)
 

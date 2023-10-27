@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    assuredworkloads_v1/services
-    assuredworkloads_v1/types
+    assuredworkloads_v1/services_
+    assuredworkloads_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    assuredworkloads_v1beta1/services
-    assuredworkloads_v1beta1/types
+    assuredworkloads_v1beta1/services_
+    assuredworkloads_v1beta1/types_
 
 
 Changelog

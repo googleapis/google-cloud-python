@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    dataqna_v1alpha/services
-    dataqna_v1alpha/types
+    dataqna_v1alpha/services_
+    dataqna_v1alpha/types_
 
 
 Changelog

@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    notebooks_v1/services
-    notebooks_v1/types
+    notebooks_v1/services_
+    notebooks_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    notebooks_v1beta1/services
-    notebooks_v1beta1/types
+    notebooks_v1beta1/services_
+    notebooks_v1beta1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    notebooks_v2/services
-    notebooks_v2/types
+    notebooks_v2/services_
+    notebooks_v2/types_
 
 
 Changelog
