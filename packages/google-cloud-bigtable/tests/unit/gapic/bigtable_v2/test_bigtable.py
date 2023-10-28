@@ -3004,8 +3004,9 @@ def test_read_rows_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.ReadRowsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.ReadRowsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         json_return_value = "[{}]".format(json_return_value)
 
@@ -3086,8 +3087,9 @@ def test_read_rows_rest_required_fields(request_type=bigtable.ReadRowsRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigtable.ReadRowsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = bigtable.ReadRowsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
             json_return_value = "[{}]".format(json_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -3215,8 +3217,9 @@ def test_read_rows_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.ReadRowsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.ReadRowsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         json_return_value = "[{}]".format(json_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3286,8 +3289,9 @@ def test_sample_row_keys_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.SampleRowKeysResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.SampleRowKeysResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         json_return_value = "[{}]".format(json_return_value)
 
@@ -3372,8 +3376,9 @@ def test_sample_row_keys_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigtable.SampleRowKeysResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = bigtable.SampleRowKeysResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
             json_return_value = "[{}]".format(json_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -3501,8 +3506,9 @@ def test_sample_row_keys_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.SampleRowKeysResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.SampleRowKeysResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         json_return_value = "[{}]".format(json_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3569,8 +3575,9 @@ def test_mutate_row_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.MutateRowResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.MutateRowResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3647,8 +3654,9 @@ def test_mutate_row_rest_required_fields(request_type=bigtable.MutateRowRequest)
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigtable.MutateRowResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = bigtable.MutateRowResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3787,8 +3795,9 @@ def test_mutate_row_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.MutateRowResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.MutateRowResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3858,8 +3867,9 @@ def test_mutate_rows_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.MutateRowsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.MutateRowsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         json_return_value = "[{}]".format(json_return_value)
 
@@ -3939,8 +3949,9 @@ def test_mutate_rows_rest_required_fields(request_type=bigtable.MutateRowsReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigtable.MutateRowsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = bigtable.MutateRowsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
             json_return_value = "[{}]".format(json_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -4077,8 +4088,9 @@ def test_mutate_rows_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.MutateRowsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.MutateRowsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         json_return_value = "[{}]".format(json_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4148,8 +4160,9 @@ def test_check_and_mutate_row_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.CheckAndMutateRowResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.CheckAndMutateRowResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4229,8 +4242,9 @@ def test_check_and_mutate_row_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigtable.CheckAndMutateRowResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = bigtable.CheckAndMutateRowResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4386,8 +4400,9 @@ def test_check_and_mutate_row_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.CheckAndMutateRowResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.CheckAndMutateRowResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4473,8 +4488,9 @@ def test_ping_and_warm_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.PingAndWarmResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.PingAndWarmResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4547,8 +4563,9 @@ def test_ping_and_warm_rest_required_fields(request_type=bigtable.PingAndWarmReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigtable.PingAndWarmResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = bigtable.PingAndWarmResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4670,8 +4687,9 @@ def test_ping_and_warm_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.PingAndWarmResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.PingAndWarmResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4733,8 +4751,9 @@ def test_read_modify_write_row_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.ReadModifyWriteRowResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.ReadModifyWriteRowResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4813,8 +4832,9 @@ def test_read_modify_write_row_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigtable.ReadModifyWriteRowResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = bigtable.ReadModifyWriteRowResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4951,8 +4971,9 @@ def test_read_modify_write_row_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.ReadModifyWriteRowResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.ReadModifyWriteRowResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5018,10 +5039,11 @@ def test_generate_initial_change_stream_partitions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.GenerateInitialChangeStreamPartitionsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = bigtable.GenerateInitialChangeStreamPartitionsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         json_return_value = "[{}]".format(json_return_value)
 
@@ -5107,10 +5129,11 @@ def test_generate_initial_change_stream_partitions_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigtable.GenerateInitialChangeStreamPartitionsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = bigtable.GenerateInitialChangeStreamPartitionsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
             json_return_value = "[{}]".format(json_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -5249,10 +5272,11 @@ def test_generate_initial_change_stream_partitions_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.GenerateInitialChangeStreamPartitionsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = bigtable.GenerateInitialChangeStreamPartitionsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         json_return_value = "[{}]".format(json_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5321,8 +5345,9 @@ def test_read_change_stream_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.ReadChangeStreamResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.ReadChangeStreamResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         json_return_value = "[{}]".format(json_return_value)
 
@@ -5404,8 +5429,9 @@ def test_read_change_stream_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigtable.ReadChangeStreamResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = bigtable.ReadChangeStreamResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
             json_return_value = "[{}]".format(json_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -5535,8 +5561,9 @@ def test_read_change_stream_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigtable.ReadChangeStreamResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigtable.ReadChangeStreamResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         json_return_value = "[{}]".format(json_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
