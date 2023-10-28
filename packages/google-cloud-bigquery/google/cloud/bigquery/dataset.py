@@ -525,12 +525,50 @@ class Dataset(object):
         "friendly_name": "friendlyName",
         "default_encryption_configuration": "defaultEncryptionConfiguration",
         "storage_billing_model": "storageBillingModel",
+        "default_rounding_mode": "defaultRoundingMode",
     }
 
     def __init__(self, dataset_ref) -> None:
         if isinstance(dataset_ref, str):
             dataset_ref = DatasetReference.from_string(dataset_ref)
         self._properties = {"datasetReference": dataset_ref.to_api_repr(), "labels": {}}
+
+    @property
+    def default_rounding_mode(self):
+        """Union[str, None]: defaultRoundingMode of the dataset as set by the user
+        (defaults to :data:`None`).
+
+        Set the value to one of ``'ROUND_HALF_AWAY_FROM_ZERO'``, ``'ROUND_HALF_EVEN'``, or
+        ``'ROUNDING_MODE_UNSPECIFIED'``.
+
+        See `default rounding mode
+        <https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#Dataset.FIELDS.default_rounding_mode>`_
+        in REST API docs and `updating the default rounding model
+        <https://cloud.google.com/bigquery/docs/updating-datasets#update_rounding_mode>`_
+        guide.
+
+        Raises:
+            ValueError: for invalid value types.
+        """
+        return self._properties.get("defaultRoundingMode")
+
+    @default_rounding_mode.setter
+    def default_rounding_mode(self, value):
+        possible_values = [
+            "ROUNDING_MODE_UNSPECIFIED",
+            "ROUND_HALF_AWAY_FROM_ZERO",
+            "ROUND_HALF_EVEN",
+        ]
+        if not isinstance(value, str) and value is not None:
+            raise ValueError("Pass a string, or None")
+        if value is None:
+            self._properties["defaultRoundingMode"] = "ROUNDING_MODE_UNSPECIFIED"
+        if value not in possible_values and value is not None:
+            raise ValueError(
+                f'rounding mode needs to be one of {",".join(possible_values)}'
+            )
+        if value:
+            self._properties["defaultRoundingMode"] = value
 
     @property
     def project(self):

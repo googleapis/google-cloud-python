@@ -265,6 +265,13 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(got.friendly_name, "Friendly")
         self.assertEqual(got.description, "Description")
 
+    def test_create_dataset_with_default_rounding_mode(self):
+        DATASET_ID = _make_dataset_id("create_dataset_rounding_mode")
+        dataset = self.temp_dataset(DATASET_ID, default_rounding_mode="ROUND_HALF_EVEN")
+
+        self.assertTrue(_dataset_exists(dataset))
+        self.assertEqual(dataset.default_rounding_mode, "ROUND_HALF_EVEN")
+
     def test_update_dataset(self):
         dataset = self.temp_dataset(_make_dataset_id("update_dataset"))
         self.assertTrue(_dataset_exists(dataset))
@@ -2286,12 +2293,15 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(pyarrow.types.is_list(record_col[1].type))
         self.assertTrue(pyarrow.types.is_int64(record_col[1].type.value_type))
 
-    def temp_dataset(self, dataset_id, location=None):
+    def temp_dataset(self, dataset_id, *args, **kwargs):
         project = Config.CLIENT.project
         dataset_ref = bigquery.DatasetReference(project, dataset_id)
         dataset = Dataset(dataset_ref)
-        if location:
-            dataset.location = location
+        if kwargs.get("location"):
+            dataset.location = kwargs.get("location")
+        if kwargs.get("default_rounding_mode"):
+            dataset.default_rounding_mode = kwargs.get("default_rounding_mode")
+
         dataset = helpers.retry_403(Config.CLIENT.create_dataset)(dataset)
         self.to_delete.append(dataset)
         return dataset
