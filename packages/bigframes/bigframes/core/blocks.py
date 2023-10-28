@@ -1356,13 +1356,50 @@ class Block:
             index_columns = [*added_index_columns, *self.index_columns]
             index_labels = [*new_index_level_names, *self._index_labels]
 
-        block = Block(
+        return Block(
             unpivot_expr,
             index_columns=index_columns,
             column_labels=result_index,
             index_labels=index_labels,
         )
-        return block
+
+    def melt(
+        self,
+        id_vars=typing.Sequence[str],
+        value_vars=typing.Sequence[str],
+        var_names=typing.Sequence[typing.Hashable],
+        value_name: typing.Hashable = "value",
+    ):
+        # TODO: Implement col_level and ignore_index
+        unpivot_col_id = guid.generate_guid()
+        var_col_ids = tuple([guid.generate_guid() for _ in var_names])
+        # single unpivot col
+        unpivot_col = (unpivot_col_id, tuple(value_vars))
+        value_labels = [self.col_id_to_label[col_id] for col_id in value_vars]
+        id_labels = [self.col_id_to_label[col_id] for col_id in id_vars]
+
+        dtype = self._expr.get_column_type(value_vars[0])
+
+        unpivot_expr = self._expr.unpivot(
+            row_labels=value_labels,
+            passthrough_columns=id_vars,
+            unpivot_columns=(unpivot_col,),
+            index_col_ids=var_col_ids,
+            dtype=dtype,
+            how="right",
+        )
+        index_id = guid.generate_guid()
+        unpivot_expr = unpivot_expr.promote_offsets(index_id)
+        # Need to reorder to get id_vars before var_col and unpivot_col
+        unpivot_expr = unpivot_expr.select_columns(
+            [index_id, *id_vars, *var_col_ids, unpivot_col_id]
+        )
+
+        return Block(
+            unpivot_expr,
+            column_labels=[*id_labels, *var_names, value_name],
+            index_columns=[index_id],
+        )
 
     def _create_stack_column(
         self, col_label: typing.Tuple, stack_labels: typing.Sequence[typing.Tuple]

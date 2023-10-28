@@ -2010,6 +2010,34 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def melt(self, id_vars, value_vars, var_name, value_name):
+        """
+        Unpivot a DataFrame from wide to long format, optionally leaving identifiers set.
+
+        This function is useful to massage a DataFrame into a format where one
+        or more columns are identifier variables (`id_vars`), while all other
+        columns, considered measured variables (`value_vars`), are "unpivoted" to
+        the row axis, leaving just two non-identifier columns, 'variable' and
+        'value'.
+
+        Parameters
+        ----------
+        id_vars (tuple, list, or ndarray, optional):
+            Column(s) to use as identifier variables.
+        value_vars (tuple, list, or ndarray, optional):
+            Column(s) to unpivot. If not specified, uses all columns that
+            are not set as `id_vars`.
+        var_name (scalar):
+            Name to use for the 'variable' column. If None it uses
+            ``frame.columns.name`` or 'variable'.
+        value_name (scalar, default 'value'):
+            Name to use for the 'value' column.
+
+        Returns:
+            DataFrame: Unpivoted DataFrame.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def nunique(self):
         """
         Count number of distinct elements in specified axis.

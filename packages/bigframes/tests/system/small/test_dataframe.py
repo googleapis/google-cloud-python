@@ -1919,6 +1919,49 @@ def test_df_stack(scalars_dfs):
     pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
 
 
+def test_df_melt_default(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    # To match bigquery dataframes
+    scalars_pandas_df = scalars_pandas_df.copy()
+    scalars_pandas_df.columns = scalars_pandas_df.columns.astype("string[pyarrow]")
+    # Can only stack identically-typed columns
+    columns = ["int64_col", "int64_too", "rowindex_2"]
+
+    bf_result = scalars_df[columns].melt().to_pandas()
+    pd_result = scalars_pandas_df[columns].melt()
+
+    # Pandas produces int64 index, Bigframes produces Int64 (nullable)
+    pd.testing.assert_frame_equal(
+        bf_result, pd_result, check_index_type=False, check_dtype=False
+    )
+
+
+def test_df_melt_parameterized(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    # To match bigquery dataframes
+    scalars_pandas_df = scalars_pandas_df.copy()
+    scalars_pandas_df.columns = scalars_pandas_df.columns.astype("string[pyarrow]")
+    # Can only stack identically-typed columns
+
+    bf_result = scalars_df.melt(
+        var_name="alice",
+        value_name="bob",
+        id_vars=["string_col"],
+        value_vars=["int64_col", "int64_too"],
+    ).to_pandas()
+    pd_result = scalars_pandas_df.melt(
+        var_name="alice",
+        value_name="bob",
+        id_vars=["string_col"],
+        value_vars=["int64_col", "int64_too"],
+    )
+
+    # Pandas produces int64 index, Bigframes produces Int64 (nullable)
+    pd.testing.assert_frame_equal(
+        bf_result, pd_result, check_index_type=False, check_dtype=False
+    )
+
+
 def test_df_unstack(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     # To match bigquery dataframes

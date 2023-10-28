@@ -1673,6 +1673,44 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def idxmax(self) -> bigframes.series.Series:
         return bigframes.series.Series(block_ops.idxmax(self._block))
 
+    def melt(
+        self,
+        id_vars: typing.Optional[typing.Iterable[typing.Hashable]] = None,
+        value_vars: typing.Optional[typing.Iterable[typing.Hashable]] = None,
+        var_name: typing.Union[
+            typing.Hashable, typing.Sequence[typing.Hashable]
+        ] = None,
+        value_name: typing.Hashable = "value",
+    ):
+        if var_name is None:
+            # Determine default var_name. Attempt to use column labels if they are unique
+            if self.columns.nlevels > 1:
+                if len(set(self.columns.names)) == len(self.columns.names):
+                    var_name = self.columns.names
+                else:
+                    var_name = [f"variable_{i}" for i in range(len(self.columns.names))]
+            else:
+                var_name = self.columns.name or "variable"
+
+        var_name = tuple(var_name) if utils.is_list_like(var_name) else (var_name,)
+
+        if id_vars is not None:
+            id_col_ids = [self._resolve_label_exact(col) for col in id_vars]
+        else:
+            id_col_ids = []
+        if value_vars is not None:
+            val_col_ids = [self._resolve_label_exact(col) for col in value_vars]
+        else:
+            val_col_ids = [
+                col_id
+                for col_id in self._block.value_columns
+                if col_id not in id_col_ids
+            ]
+
+        return DataFrame(
+            self._block.melt(id_col_ids, val_col_ids, var_name, value_name)
+        )
+
     def describe(self) -> DataFrame:
         df_numeric = self._drop_non_numeric(keep_bool=False)
         if len(df_numeric.columns) == 0:
