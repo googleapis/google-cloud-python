@@ -129,11 +129,18 @@
           uid: google.cloud.pubsub_v1.types.ExtensionRangeOptions.Declaration
         name: ExtensionRangeOptions
         uid: google.cloud.pubsub_v1.types.ExtensionRangeOptions
+      - name: FeatureSet
+        uid: google.cloud.pubsub_v1.types.FeatureSet
       - name: FieldDescriptorProto
         uid: google.cloud.pubsub_v1.types.FieldDescriptorProto
       - name: FieldMask
         uid: google.cloud.pubsub_v1.types.FieldMask
-      - name: FieldOptions
+      - items:
+        - name: Overview
+          uid: google.cloud.pubsub_v1.types.FieldOptions
+        - name: EditionDefault
+          uid: google.cloud.pubsub_v1.types.FieldOptions.EditionDefault
+        name: FieldOptions
         uid: google.cloud.pubsub_v1.types.FieldOptions
       - name: FileDescriptorProto
         uid: google.cloud.pubsub_v1.types.FileDescriptorProto

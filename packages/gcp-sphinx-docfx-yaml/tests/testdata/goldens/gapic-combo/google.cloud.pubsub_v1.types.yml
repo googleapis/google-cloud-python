@@ -28,6 +28,7 @@ items:
   - google.cloud.pubsub_v1.types.EnumValueOptions
   - google.cloud.pubsub_v1.types.ExpirationPolicy
   - google.cloud.pubsub_v1.types.ExtensionRangeOptions
+  - google.cloud.pubsub_v1.types.FeatureSet
   - google.cloud.pubsub_v1.types.FieldDescriptorProto
   - google.cloud.pubsub_v1.types.FieldMask
   - google.cloud.pubsub_v1.types.FieldOptions
@@ -236,6 +237,11 @@ references:
   name: ExtensionRangeOptions
   parent: google.cloud.pubsub_v1.types
   uid: google.cloud.pubsub_v1.types.ExtensionRangeOptions
+- fullName: google.cloud.pubsub_v1.types.FeatureSet
+  isExternal: false
+  name: FeatureSet
+  parent: google.cloud.pubsub_v1.types
+  uid: google.cloud.pubsub_v1.types.FeatureSet
 - fullName: google.cloud.pubsub_v1.types.FieldDescriptorProto
   isExternal: false
   name: FieldDescriptorProto
