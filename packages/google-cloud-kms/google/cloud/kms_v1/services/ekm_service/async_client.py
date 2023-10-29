@@ -1245,8 +1245,9 @@ class EkmServiceAsyncClient:
                 based on attributes about the request and/or target
                 resource.
 
+                **JSON Example**
 
-                **JSON Example**::
+                ::
 
                     {
                       "bindings": [
@@ -1365,9 +1366,9 @@ class EkmServiceAsyncClient:
                 based on attributes about the request and/or target
                 resource.
 
+                **JSON Example**
 
-                **JSON Example**::
-
+                ::
 
                     {
                       "bindings": [

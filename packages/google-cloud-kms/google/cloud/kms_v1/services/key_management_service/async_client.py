@@ -4067,8 +4067,9 @@ class KeyManagementServiceAsyncClient:
                 based on attributes about the request and/or target
                 resource.
 
+                **JSON Example**
 
-                **JSON Example**::
+                ::
 
                     {
                       "bindings": [
@@ -4187,9 +4188,9 @@ class KeyManagementServiceAsyncClient:
                 based on attributes about the request and/or target
                 resource.
 
+                **JSON Example**
 
-                **JSON Example**::
-
+                ::
 
                     {
                       "bindings": [

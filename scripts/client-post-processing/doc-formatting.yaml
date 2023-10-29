@@ -11,19 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-description: Revert reserved word defined in gapic-generator-python
-url: https://github.com/googleapis/google-cloud-python/issues/11924
+description: Fix formatting issues in docs
+url: https://github.com/googleapis/gapic-generator-python/issues/1829
 replacements:
   - paths: [
-      packages/google-cloud-trace/google/cloud/trace_v2/types/trace.py,
+      packages/google-cloud-kms/google/cloud/kms_v1/services/ekm_service/async_client.py,
+      packages/google-cloud-kms/google/cloud/kms_v1/services/key_management_service/async_client.py,
     ]
-    before: "type_"
-    after: "type"
-    count: 4
-  - paths: [
-      packages/google-cloud-kms/google/cloud/kms_v1/types/resources.py,
-      packages/google-cloud-kms/tests/unit/gapic/kms_v1/test_key_management_service.py,
-    ]
-    before: "format_"
-    after: "format"
-    count: 7
+    before: |
+      \                ::
+      \                    {
+    after: "                ::\n\n                    {\n"
+    count: 2

@@ -4165,9 +4165,9 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 based on attributes about the request and/or target
                 resource.
 
+                **JSON Example**
 
-                **JSON Example**::
-
+                ::
 
                     {
                       "bindings": [
@@ -4286,9 +4286,9 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 based on attributes about the request and/or target
                 resource.
 
+                **JSON Example**
 
-                **JSON Example**::
-
+                ::
 
                     {
                       "bindings": [
