@@ -4127,28 +4127,6 @@ def test_metric_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-"""def test_metric_descriptor_path():
-    project = "squid"
-    metric_descriptor = "clam"
-    expected = "projects/{project}/metricDescriptors/{metric_descriptor=**}".format(project=project, metric_descriptor=metric_descriptor, )
-    actual = MetricServiceClient.metric_descriptor_path(project, metric_descriptor)
-    assert expected == actual
-
-
-def test_parse_metric_descriptor_path():
-    expected = {
-        "project": "whelk",
-        "metric_descriptor": "octopus",
-    }
-    path = MetricServiceClient.metric_descriptor_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = MetricServiceClient.parse_metric_descriptor_path(path)
-    assert expected == actual
-
-"""
-
-
 def test_monitored_resource_descriptor_path():
     project = "oyster"
     monitored_resource_descriptor = "nudibranch"
