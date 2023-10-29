@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    config_v1/services
-    config_v1/types
+    config_v1/services_
+    config_v1/types_
 
 
 Changelog

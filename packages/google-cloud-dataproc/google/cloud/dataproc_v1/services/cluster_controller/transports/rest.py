@@ -1464,7 +1464,6 @@ class ClusterControllerRestTransport(ClusterControllerTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> policy_pb2.Policy:
-
             r"""Call the get iam policy method over HTTP.
 
             Args:
@@ -1564,7 +1563,6 @@ class ClusterControllerRestTransport(ClusterControllerTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> policy_pb2.Policy:
-
             r"""Call the set iam policy method over HTTP.
 
             Args:
@@ -1664,7 +1662,6 @@ class ClusterControllerRestTransport(ClusterControllerTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
-
             r"""Call the test iam permissions method over HTTP.
 
             Args:
@@ -1766,7 +1763,6 @@ class ClusterControllerRestTransport(ClusterControllerTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> None:
-
             r"""Call the cancel operation method over HTTP.
 
             Args:
@@ -1833,7 +1829,6 @@ class ClusterControllerRestTransport(ClusterControllerTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> None:
-
             r"""Call the delete operation method over HTTP.
 
             Args:
@@ -1900,7 +1895,6 @@ class ClusterControllerRestTransport(ClusterControllerTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
-
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -1971,7 +1965,6 @@ class ClusterControllerRestTransport(ClusterControllerTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.ListOperationsResponse:
-
             r"""Call the list operations method over HTTP.
 
             Args:

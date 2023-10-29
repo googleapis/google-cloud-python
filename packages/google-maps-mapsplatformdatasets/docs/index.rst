@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    mapsplatformdatasets_v1alpha/services
-    mapsplatformdatasets_v1alpha/types
+    mapsplatformdatasets_v1alpha/services_
+    mapsplatformdatasets_v1alpha/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    mapsplatformdatasets_v1/services
-    mapsplatformdatasets_v1/types
+    mapsplatformdatasets_v1/services_
+    mapsplatformdatasets_v1/types_
 
 
 Changelog

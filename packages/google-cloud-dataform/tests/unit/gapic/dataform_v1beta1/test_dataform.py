@@ -37,9 +37,11 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
@@ -1144,6 +1146,10 @@ def test_get_repository(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataform.Repository(
             name="name_value",
+            display_name="display_name_value",
+            npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+            set_authenticated_user_admin=True,
+            service_account="service_account_value",
         )
         response = client.get_repository(request)
 
@@ -1155,6 +1161,13 @@ def test_get_repository(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.npmrc_environment_variables_secret_version
+        == "npmrc_environment_variables_secret_version_value"
+    )
+    assert response.set_authenticated_user_admin is True
+    assert response.service_account == "service_account_value"
 
 
 def test_get_repository_empty_call():
@@ -1192,6 +1205,10 @@ async def test_get_repository_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataform.Repository(
                 name="name_value",
+                display_name="display_name_value",
+                npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+                set_authenticated_user_admin=True,
+                service_account="service_account_value",
             )
         )
         response = await client.get_repository(request)
@@ -1204,6 +1221,13 @@ async def test_get_repository_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.npmrc_environment_variables_secret_version
+        == "npmrc_environment_variables_secret_version_value"
+    )
+    assert response.set_authenticated_user_admin is True
+    assert response.service_account == "service_account_value"
 
 
 @pytest.mark.asyncio
@@ -1374,6 +1398,10 @@ def test_create_repository(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataform.Repository(
             name="name_value",
+            display_name="display_name_value",
+            npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+            set_authenticated_user_admin=True,
+            service_account="service_account_value",
         )
         response = client.create_repository(request)
 
@@ -1385,6 +1413,13 @@ def test_create_repository(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.npmrc_environment_variables_secret_version
+        == "npmrc_environment_variables_secret_version_value"
+    )
+    assert response.set_authenticated_user_admin is True
+    assert response.service_account == "service_account_value"
 
 
 def test_create_repository_empty_call():
@@ -1426,6 +1461,10 @@ async def test_create_repository_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataform.Repository(
                 name="name_value",
+                display_name="display_name_value",
+                npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+                set_authenticated_user_admin=True,
+                service_account="service_account_value",
             )
         )
         response = await client.create_repository(request)
@@ -1438,6 +1477,13 @@ async def test_create_repository_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.npmrc_environment_variables_secret_version
+        == "npmrc_environment_variables_secret_version_value"
+    )
+    assert response.set_authenticated_user_admin is True
+    assert response.service_account == "service_account_value"
 
 
 @pytest.mark.asyncio
@@ -1636,6 +1682,10 @@ def test_update_repository(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataform.Repository(
             name="name_value",
+            display_name="display_name_value",
+            npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+            set_authenticated_user_admin=True,
+            service_account="service_account_value",
         )
         response = client.update_repository(request)
 
@@ -1647,6 +1697,13 @@ def test_update_repository(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.npmrc_environment_variables_secret_version
+        == "npmrc_environment_variables_secret_version_value"
+    )
+    assert response.set_authenticated_user_admin is True
+    assert response.service_account == "service_account_value"
 
 
 def test_update_repository_empty_call():
@@ -1688,6 +1745,10 @@ async def test_update_repository_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataform.Repository(
                 name="name_value",
+                display_name="display_name_value",
+                npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+                set_authenticated_user_admin=True,
+                service_account="service_account_value",
             )
         )
         response = await client.update_repository(request)
@@ -1700,6 +1761,13 @@ async def test_update_repository_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.npmrc_environment_variables_secret_version
+        == "npmrc_environment_variables_secret_version_value"
+    )
+    assert response.set_authenticated_user_admin is True
+    assert response.service_account == "service_account_value"
 
 
 @pytest.mark.asyncio
@@ -2096,6 +2164,1201 @@ async def test_delete_repository_flattened_error_async():
             dataform.DeleteRepositoryRequest(),
             name="name_value",
         )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CommitRepositoryChangesRequest,
+        dict,
+    ],
+)
+def test_commit_repository_changes(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.commit_repository_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.commit_repository_changes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CommitRepositoryChangesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_commit_repository_changes_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.commit_repository_changes), "__call__"
+    ) as call:
+        client.commit_repository_changes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CommitRepositoryChangesRequest()
+
+
+@pytest.mark.asyncio
+async def test_commit_repository_changes_async(
+    transport: str = "grpc_asyncio",
+    request_type=dataform.CommitRepositoryChangesRequest,
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.commit_repository_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.commit_repository_changes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CommitRepositoryChangesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_commit_repository_changes_async_from_dict():
+    await test_commit_repository_changes_async(request_type=dict)
+
+
+def test_commit_repository_changes_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.CommitRepositoryChangesRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.commit_repository_changes), "__call__"
+    ) as call:
+        call.return_value = None
+        client.commit_repository_changes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_commit_repository_changes_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.CommitRepositoryChangesRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.commit_repository_changes), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.commit_repository_changes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ReadRepositoryFileRequest,
+        dict,
+    ],
+)
+def test_read_repository_file(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.read_repository_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ReadRepositoryFileResponse(
+            contents=b"contents_blob",
+        )
+        response = client.read_repository_file(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ReadRepositoryFileRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReadRepositoryFileResponse)
+    assert response.contents == b"contents_blob"
+
+
+def test_read_repository_file_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.read_repository_file), "__call__"
+    ) as call:
+        client.read_repository_file()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ReadRepositoryFileRequest()
+
+
+@pytest.mark.asyncio
+async def test_read_repository_file_async(
+    transport: str = "grpc_asyncio", request_type=dataform.ReadRepositoryFileRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.read_repository_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReadRepositoryFileResponse(
+                contents=b"contents_blob",
+            )
+        )
+        response = await client.read_repository_file(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ReadRepositoryFileRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReadRepositoryFileResponse)
+    assert response.contents == b"contents_blob"
+
+
+@pytest.mark.asyncio
+async def test_read_repository_file_async_from_dict():
+    await test_read_repository_file_async(request_type=dict)
+
+
+def test_read_repository_file_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.ReadRepositoryFileRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.read_repository_file), "__call__"
+    ) as call:
+        call.return_value = dataform.ReadRepositoryFileResponse()
+        client.read_repository_file(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_read_repository_file_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.ReadRepositoryFileRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.read_repository_file), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReadRepositoryFileResponse()
+        )
+        await client.read_repository_file(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.QueryRepositoryDirectoryContentsRequest,
+        dict,
+    ],
+)
+def test_query_repository_directory_contents(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_repository_directory_contents), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.QueryRepositoryDirectoryContentsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.query_repository_directory_contents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.QueryRepositoryDirectoryContentsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.QueryRepositoryDirectoryContentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_query_repository_directory_contents_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_repository_directory_contents), "__call__"
+    ) as call:
+        client.query_repository_directory_contents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.QueryRepositoryDirectoryContentsRequest()
+
+
+@pytest.mark.asyncio
+async def test_query_repository_directory_contents_async(
+    transport: str = "grpc_asyncio",
+    request_type=dataform.QueryRepositoryDirectoryContentsRequest,
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_repository_directory_contents), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.query_repository_directory_contents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.QueryRepositoryDirectoryContentsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.QueryRepositoryDirectoryContentsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_query_repository_directory_contents_async_from_dict():
+    await test_query_repository_directory_contents_async(request_type=dict)
+
+
+def test_query_repository_directory_contents_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.QueryRepositoryDirectoryContentsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_repository_directory_contents), "__call__"
+    ) as call:
+        call.return_value = dataform.QueryRepositoryDirectoryContentsResponse()
+        client.query_repository_directory_contents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_query_repository_directory_contents_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.QueryRepositoryDirectoryContentsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_repository_directory_contents), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.QueryRepositoryDirectoryContentsResponse()
+        )
+        await client.query_repository_directory_contents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_query_repository_directory_contents_pager(transport_name: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_repository_directory_contents), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[],
+                next_page_token="def",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", ""),)),
+        )
+        pager = client.query_repository_directory_contents(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dataform.DirectoryEntry) for i in results)
+
+
+def test_query_repository_directory_contents_pages(transport_name: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_repository_directory_contents), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[],
+                next_page_token="def",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.query_repository_directory_contents(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_query_repository_directory_contents_async_pager():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_repository_directory_contents),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[],
+                next_page_token="def",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.query_repository_directory_contents(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, dataform.DirectoryEntry) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_query_repository_directory_contents_async_pages():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_repository_directory_contents),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[],
+                next_page_token="def",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.query_repository_directory_contents(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.FetchRepositoryHistoryRequest,
+        dict,
+    ],
+)
+def test_fetch_repository_history(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_repository_history), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.FetchRepositoryHistoryResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.fetch_repository_history(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchRepositoryHistoryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FetchRepositoryHistoryPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_fetch_repository_history_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_repository_history), "__call__"
+    ) as call:
+        client.fetch_repository_history()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchRepositoryHistoryRequest()
+
+
+@pytest.mark.asyncio
+async def test_fetch_repository_history_async(
+    transport: str = "grpc_asyncio", request_type=dataform.FetchRepositoryHistoryRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_repository_history), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.FetchRepositoryHistoryResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.fetch_repository_history(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.FetchRepositoryHistoryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FetchRepositoryHistoryAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_fetch_repository_history_async_from_dict():
+    await test_fetch_repository_history_async(request_type=dict)
+
+
+def test_fetch_repository_history_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.FetchRepositoryHistoryRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_repository_history), "__call__"
+    ) as call:
+        call.return_value = dataform.FetchRepositoryHistoryResponse()
+        client.fetch_repository_history(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_fetch_repository_history_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.FetchRepositoryHistoryRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_repository_history), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.FetchRepositoryHistoryResponse()
+        )
+        await client.fetch_repository_history(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_fetch_repository_history_pager(transport_name: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_repository_history), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[],
+                next_page_token="def",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", ""),)),
+        )
+        pager = client.fetch_repository_history(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dataform.CommitLogEntry) for i in results)
+
+
+def test_fetch_repository_history_pages(transport_name: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_repository_history), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[],
+                next_page_token="def",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.fetch_repository_history(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_fetch_repository_history_async_pager():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_repository_history),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[],
+                next_page_token="def",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.fetch_repository_history(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, dataform.CommitLogEntry) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_fetch_repository_history_async_pages():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_repository_history),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[],
+                next_page_token="def",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.fetch_repository_history(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ComputeRepositoryAccessTokenStatusRequest,
+        dict,
+    ],
+)
+def test_compute_repository_access_token_status(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_repository_access_token_status), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ComputeRepositoryAccessTokenStatusResponse(
+            token_status=dataform.ComputeRepositoryAccessTokenStatusResponse.TokenStatus.NOT_FOUND,
+        )
+        response = client.compute_repository_access_token_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ComputeRepositoryAccessTokenStatusRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ComputeRepositoryAccessTokenStatusResponse)
+    assert (
+        response.token_status
+        == dataform.ComputeRepositoryAccessTokenStatusResponse.TokenStatus.NOT_FOUND
+    )
+
+
+def test_compute_repository_access_token_status_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_repository_access_token_status), "__call__"
+    ) as call:
+        client.compute_repository_access_token_status()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ComputeRepositoryAccessTokenStatusRequest()
+
+
+@pytest.mark.asyncio
+async def test_compute_repository_access_token_status_async(
+    transport: str = "grpc_asyncio",
+    request_type=dataform.ComputeRepositoryAccessTokenStatusRequest,
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_repository_access_token_status), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ComputeRepositoryAccessTokenStatusResponse(
+                token_status=dataform.ComputeRepositoryAccessTokenStatusResponse.TokenStatus.NOT_FOUND,
+            )
+        )
+        response = await client.compute_repository_access_token_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ComputeRepositoryAccessTokenStatusRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ComputeRepositoryAccessTokenStatusResponse)
+    assert (
+        response.token_status
+        == dataform.ComputeRepositoryAccessTokenStatusResponse.TokenStatus.NOT_FOUND
+    )
+
+
+@pytest.mark.asyncio
+async def test_compute_repository_access_token_status_async_from_dict():
+    await test_compute_repository_access_token_status_async(request_type=dict)
+
+
+def test_compute_repository_access_token_status_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.ComputeRepositoryAccessTokenStatusRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_repository_access_token_status), "__call__"
+    ) as call:
+        call.return_value = dataform.ComputeRepositoryAccessTokenStatusResponse()
+        client.compute_repository_access_token_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_compute_repository_access_token_status_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.ComputeRepositoryAccessTokenStatusRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_repository_access_token_status), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ComputeRepositoryAccessTokenStatusResponse()
+        )
+        await client.compute_repository_access_token_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
@@ -4756,9 +6019,9 @@ def test_query_directory_contents_pager(transport_name: str = "grpc"):
         call.side_effect = (
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
                 next_page_token="abc",
             ),
@@ -4768,14 +6031,14 @@ def test_query_directory_contents_pager(transport_name: str = "grpc"):
             ),
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
                 next_page_token="ghi",
             ),
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
             ),
             RuntimeError,
@@ -4791,10 +6054,7 @@ def test_query_directory_contents_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(
-            isinstance(i, dataform.QueryDirectoryContentsResponse.DirectoryEntry)
-            for i in results
-        )
+        assert all(isinstance(i, dataform.DirectoryEntry) for i in results)
 
 
 def test_query_directory_contents_pages(transport_name: str = "grpc"):
@@ -4811,9 +6071,9 @@ def test_query_directory_contents_pages(transport_name: str = "grpc"):
         call.side_effect = (
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
                 next_page_token="abc",
             ),
@@ -4823,14 +6083,14 @@ def test_query_directory_contents_pages(transport_name: str = "grpc"):
             ),
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
                 next_page_token="ghi",
             ),
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
             ),
             RuntimeError,
@@ -4856,9 +6116,9 @@ async def test_query_directory_contents_async_pager():
         call.side_effect = (
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
                 next_page_token="abc",
             ),
@@ -4868,14 +6128,14 @@ async def test_query_directory_contents_async_pager():
             ),
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
                 next_page_token="ghi",
             ),
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
             ),
             RuntimeError,
@@ -4889,10 +6149,7 @@ async def test_query_directory_contents_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(
-            isinstance(i, dataform.QueryDirectoryContentsResponse.DirectoryEntry)
-            for i in responses
-        )
+        assert all(isinstance(i, dataform.DirectoryEntry) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -4911,9 +6168,9 @@ async def test_query_directory_contents_async_pages():
         call.side_effect = (
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
                 next_page_token="abc",
             ),
@@ -4923,14 +6180,14 @@ async def test_query_directory_contents_async_pages():
             ),
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
                 next_page_token="ghi",
             ),
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
             ),
             RuntimeError,
@@ -5955,6 +7212,1504 @@ async def test_write_file_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        dataform.ListReleaseConfigsRequest,
+        dict,
+    ],
+)
+def test_list_release_configs(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ListReleaseConfigsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_release_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListReleaseConfigsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListReleaseConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_release_configs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs), "__call__"
+    ) as call:
+        client.list_release_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListReleaseConfigsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_release_configs_async(
+    transport: str = "grpc_asyncio", request_type=dataform.ListReleaseConfigsRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListReleaseConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_release_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListReleaseConfigsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListReleaseConfigsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_release_configs_async_from_dict():
+    await test_list_release_configs_async(request_type=dict)
+
+
+def test_list_release_configs_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.ListReleaseConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs), "__call__"
+    ) as call:
+        call.return_value = dataform.ListReleaseConfigsResponse()
+        client.list_release_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_release_configs_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.ListReleaseConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListReleaseConfigsResponse()
+        )
+        await client.list_release_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_release_configs_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ListReleaseConfigsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_release_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_release_configs_flattened_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_release_configs(
+            dataform.ListReleaseConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_release_configs_flattened_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ListReleaseConfigsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListReleaseConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_release_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_release_configs_flattened_error_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_release_configs(
+            dataform.ListReleaseConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_release_configs_pager(transport_name: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[],
+                next_page_token="def",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_release_configs(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dataform.ReleaseConfig) for i in results)
+
+
+def test_list_release_configs_pages(transport_name: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[],
+                next_page_token="def",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_release_configs(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_release_configs_async_pager():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[],
+                next_page_token="def",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_release_configs(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, dataform.ReleaseConfig) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_release_configs_async_pages():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_release_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[],
+                next_page_token="def",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_release_configs(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetReleaseConfigRequest,
+        dict,
+    ],
+)
+def test_get_release_config(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ReleaseConfig(
+            name="name_value",
+            git_commitish="git_commitish_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+            release_compilation_result="release_compilation_result_value",
+        )
+        response = client.get_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetReleaseConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReleaseConfig)
+    assert response.name == "name_value"
+    assert response.git_commitish == "git_commitish_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.release_compilation_result == "release_compilation_result_value"
+
+
+def test_get_release_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_release_config), "__call__"
+    ) as call:
+        client.get_release_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetReleaseConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_release_config_async(
+    transport: str = "grpc_asyncio", request_type=dataform.GetReleaseConfigRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig(
+                name="name_value",
+                git_commitish="git_commitish_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+                release_compilation_result="release_compilation_result_value",
+            )
+        )
+        response = await client.get_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetReleaseConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReleaseConfig)
+    assert response.name == "name_value"
+    assert response.git_commitish == "git_commitish_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.release_compilation_result == "release_compilation_result_value"
+
+
+@pytest.mark.asyncio
+async def test_get_release_config_async_from_dict():
+    await test_get_release_config_async(request_type=dict)
+
+
+def test_get_release_config_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.GetReleaseConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_release_config), "__call__"
+    ) as call:
+        call.return_value = dataform.ReleaseConfig()
+        client.get_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_release_config_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.GetReleaseConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_release_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig()
+        )
+        await client.get_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_release_config_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ReleaseConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_release_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_release_config_flattened_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_release_config(
+            dataform.GetReleaseConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_release_config_flattened_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ReleaseConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_release_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_release_config_flattened_error_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_release_config(
+            dataform.GetReleaseConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateReleaseConfigRequest,
+        dict,
+    ],
+)
+def test_create_release_config(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ReleaseConfig(
+            name="name_value",
+            git_commitish="git_commitish_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+            release_compilation_result="release_compilation_result_value",
+        )
+        response = client.create_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateReleaseConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReleaseConfig)
+    assert response.name == "name_value"
+    assert response.git_commitish == "git_commitish_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.release_compilation_result == "release_compilation_result_value"
+
+
+def test_create_release_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_release_config), "__call__"
+    ) as call:
+        client.create_release_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateReleaseConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_release_config_async(
+    transport: str = "grpc_asyncio", request_type=dataform.CreateReleaseConfigRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig(
+                name="name_value",
+                git_commitish="git_commitish_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+                release_compilation_result="release_compilation_result_value",
+            )
+        )
+        response = await client.create_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateReleaseConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReleaseConfig)
+    assert response.name == "name_value"
+    assert response.git_commitish == "git_commitish_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.release_compilation_result == "release_compilation_result_value"
+
+
+@pytest.mark.asyncio
+async def test_create_release_config_async_from_dict():
+    await test_create_release_config_async(request_type=dict)
+
+
+def test_create_release_config_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.CreateReleaseConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_release_config), "__call__"
+    ) as call:
+        call.return_value = dataform.ReleaseConfig()
+        client.create_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_release_config_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.CreateReleaseConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_release_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig()
+        )
+        await client.create_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_release_config_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ReleaseConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_release_config(
+            parent="parent_value",
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            release_config_id="release_config_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].release_config
+        mock_val = dataform.ReleaseConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].release_config_id
+        mock_val = "release_config_id_value"
+        assert arg == mock_val
+
+
+def test_create_release_config_flattened_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_release_config(
+            dataform.CreateReleaseConfigRequest(),
+            parent="parent_value",
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            release_config_id="release_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_release_config_flattened_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ReleaseConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_release_config(
+            parent="parent_value",
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            release_config_id="release_config_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].release_config
+        mock_val = dataform.ReleaseConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].release_config_id
+        mock_val = "release_config_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_release_config_flattened_error_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_release_config(
+            dataform.CreateReleaseConfigRequest(),
+            parent="parent_value",
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            release_config_id="release_config_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.UpdateReleaseConfigRequest,
+        dict,
+    ],
+)
+def test_update_release_config(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ReleaseConfig(
+            name="name_value",
+            git_commitish="git_commitish_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+            release_compilation_result="release_compilation_result_value",
+        )
+        response = client.update_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateReleaseConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReleaseConfig)
+    assert response.name == "name_value"
+    assert response.git_commitish == "git_commitish_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.release_compilation_result == "release_compilation_result_value"
+
+
+def test_update_release_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_release_config), "__call__"
+    ) as call:
+        client.update_release_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateReleaseConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_release_config_async(
+    transport: str = "grpc_asyncio", request_type=dataform.UpdateReleaseConfigRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig(
+                name="name_value",
+                git_commitish="git_commitish_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+                release_compilation_result="release_compilation_result_value",
+            )
+        )
+        response = await client.update_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateReleaseConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReleaseConfig)
+    assert response.name == "name_value"
+    assert response.git_commitish == "git_commitish_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.release_compilation_result == "release_compilation_result_value"
+
+
+@pytest.mark.asyncio
+async def test_update_release_config_async_from_dict():
+    await test_update_release_config_async(request_type=dict)
+
+
+def test_update_release_config_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.UpdateReleaseConfigRequest()
+
+    request.release_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_release_config), "__call__"
+    ) as call:
+        call.return_value = dataform.ReleaseConfig()
+        client.update_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "release_config.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_release_config_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.UpdateReleaseConfigRequest()
+
+    request.release_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_release_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig()
+        )
+        await client.update_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "release_config.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_release_config_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ReleaseConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_release_config(
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].release_config
+        mock_val = dataform.ReleaseConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_release_config_flattened_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_release_config(
+            dataform.UpdateReleaseConfigRequest(),
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_release_config_flattened_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ReleaseConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ReleaseConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_release_config(
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].release_config
+        mock_val = dataform.ReleaseConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_release_config_flattened_error_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_release_config(
+            dataform.UpdateReleaseConfigRequest(),
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteReleaseConfigRequest,
+        dict,
+    ],
+)
+def test_delete_release_config(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteReleaseConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_release_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_release_config), "__call__"
+    ) as call:
+        client.delete_release_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteReleaseConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_release_config_async(
+    transport: str = "grpc_asyncio", request_type=dataform.DeleteReleaseConfigRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteReleaseConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_release_config_async_from_dict():
+    await test_delete_release_config_async(request_type=dict)
+
+
+def test_delete_release_config_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.DeleteReleaseConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_release_config), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_release_config_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.DeleteReleaseConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_release_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_release_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_release_config_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_release_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_release_config_flattened_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_release_config(
+            dataform.DeleteReleaseConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_release_config_flattened_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_release_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_release_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_release_config_flattened_error_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_release_config(
+            dataform.DeleteReleaseConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         dataform.ListCompilationResultsRequest,
         dict,
     ],
@@ -6424,6 +9179,7 @@ def test_get_compilation_result(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataform.CompilationResult(
             name="name_value",
+            resolved_git_commit_sha="resolved_git_commit_sha_value",
             dataform_core_version="dataform_core_version_value",
             git_commitish="git_commitish_value",
         )
@@ -6437,6 +9193,7 @@ def test_get_compilation_result(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CompilationResult)
     assert response.name == "name_value"
+    assert response.resolved_git_commit_sha == "resolved_git_commit_sha_value"
     assert response.dataform_core_version == "dataform_core_version_value"
 
 
@@ -6479,6 +9236,7 @@ async def test_get_compilation_result_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataform.CompilationResult(
                 name="name_value",
+                resolved_git_commit_sha="resolved_git_commit_sha_value",
                 dataform_core_version="dataform_core_version_value",
             )
         )
@@ -6492,6 +9250,7 @@ async def test_get_compilation_result_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CompilationResult)
     assert response.name == "name_value"
+    assert response.resolved_git_commit_sha == "resolved_git_commit_sha_value"
     assert response.dataform_core_version == "dataform_core_version_value"
 
 
@@ -6675,6 +9434,7 @@ def test_create_compilation_result(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataform.CompilationResult(
             name="name_value",
+            resolved_git_commit_sha="resolved_git_commit_sha_value",
             dataform_core_version="dataform_core_version_value",
             git_commitish="git_commitish_value",
         )
@@ -6688,6 +9448,7 @@ def test_create_compilation_result(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CompilationResult)
     assert response.name == "name_value"
+    assert response.resolved_git_commit_sha == "resolved_git_commit_sha_value"
     assert response.dataform_core_version == "dataform_core_version_value"
 
 
@@ -6731,6 +9492,7 @@ async def test_create_compilation_result_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataform.CompilationResult(
                 name="name_value",
+                resolved_git_commit_sha="resolved_git_commit_sha_value",
                 dataform_core_version="dataform_core_version_value",
             )
         )
@@ -6744,6 +9506,7 @@ async def test_create_compilation_result_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CompilationResult)
     assert response.name == "name_value"
+    assert response.resolved_git_commit_sha == "resolved_git_commit_sha_value"
     assert response.dataform_core_version == "dataform_core_version_value"
 
 
@@ -7275,6 +10038,1492 @@ async def test_query_compilation_result_actions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        dataform.ListWorkflowConfigsRequest,
+        dict,
+    ],
+)
+def test_list_workflow_configs(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ListWorkflowConfigsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_workflow_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListWorkflowConfigsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListWorkflowConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_workflow_configs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs), "__call__"
+    ) as call:
+        client.list_workflow_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListWorkflowConfigsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_workflow_configs_async(
+    transport: str = "grpc_asyncio", request_type=dataform.ListWorkflowConfigsRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListWorkflowConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_workflow_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.ListWorkflowConfigsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListWorkflowConfigsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_workflow_configs_async_from_dict():
+    await test_list_workflow_configs_async(request_type=dict)
+
+
+def test_list_workflow_configs_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.ListWorkflowConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs), "__call__"
+    ) as call:
+        call.return_value = dataform.ListWorkflowConfigsResponse()
+        client.list_workflow_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_workflow_configs_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.ListWorkflowConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListWorkflowConfigsResponse()
+        )
+        await client.list_workflow_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_workflow_configs_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ListWorkflowConfigsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_workflow_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_workflow_configs_flattened_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_workflow_configs(
+            dataform.ListWorkflowConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_workflow_configs_flattened_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.ListWorkflowConfigsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.ListWorkflowConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_workflow_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_workflow_configs_flattened_error_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_workflow_configs(
+            dataform.ListWorkflowConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_workflow_configs_pager(transport_name: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[],
+                next_page_token="def",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_workflow_configs(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dataform.WorkflowConfig) for i in results)
+
+
+def test_list_workflow_configs_pages(transport_name: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[],
+                next_page_token="def",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_workflow_configs(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_workflow_configs_async_pager():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[],
+                next_page_token="def",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_workflow_configs(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, dataform.WorkflowConfig) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_workflow_configs_async_pages():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workflow_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[],
+                next_page_token="def",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_workflow_configs(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetWorkflowConfigRequest,
+        dict,
+    ],
+)
+def test_get_workflow_config(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.WorkflowConfig(
+            name="name_value",
+            release_config="release_config_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+        )
+        response = client.get_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetWorkflowConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.WorkflowConfig)
+    assert response.name == "name_value"
+    assert response.release_config == "release_config_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+
+
+def test_get_workflow_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workflow_config), "__call__"
+    ) as call:
+        client.get_workflow_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetWorkflowConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_workflow_config_async(
+    transport: str = "grpc_asyncio", request_type=dataform.GetWorkflowConfigRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig(
+                name="name_value",
+                release_config="release_config_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+            )
+        )
+        response = await client.get_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.GetWorkflowConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.WorkflowConfig)
+    assert response.name == "name_value"
+    assert response.release_config == "release_config_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+
+
+@pytest.mark.asyncio
+async def test_get_workflow_config_async_from_dict():
+    await test_get_workflow_config_async(request_type=dict)
+
+
+def test_get_workflow_config_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.GetWorkflowConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workflow_config), "__call__"
+    ) as call:
+        call.return_value = dataform.WorkflowConfig()
+        client.get_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_workflow_config_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.GetWorkflowConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workflow_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig()
+        )
+        await client.get_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_workflow_config_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.WorkflowConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_workflow_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_workflow_config_flattened_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_workflow_config(
+            dataform.GetWorkflowConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_workflow_config_flattened_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.WorkflowConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_workflow_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_workflow_config_flattened_error_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_workflow_config(
+            dataform.GetWorkflowConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateWorkflowConfigRequest,
+        dict,
+    ],
+)
+def test_create_workflow_config(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.WorkflowConfig(
+            name="name_value",
+            release_config="release_config_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+        )
+        response = client.create_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateWorkflowConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.WorkflowConfig)
+    assert response.name == "name_value"
+    assert response.release_config == "release_config_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+
+
+def test_create_workflow_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workflow_config), "__call__"
+    ) as call:
+        client.create_workflow_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateWorkflowConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_workflow_config_async(
+    transport: str = "grpc_asyncio", request_type=dataform.CreateWorkflowConfigRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig(
+                name="name_value",
+                release_config="release_config_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+            )
+        )
+        response = await client.create_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.CreateWorkflowConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.WorkflowConfig)
+    assert response.name == "name_value"
+    assert response.release_config == "release_config_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+
+
+@pytest.mark.asyncio
+async def test_create_workflow_config_async_from_dict():
+    await test_create_workflow_config_async(request_type=dict)
+
+
+def test_create_workflow_config_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.CreateWorkflowConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workflow_config), "__call__"
+    ) as call:
+        call.return_value = dataform.WorkflowConfig()
+        client.create_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_workflow_config_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.CreateWorkflowConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workflow_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig()
+        )
+        await client.create_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_workflow_config_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.WorkflowConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_workflow_config(
+            parent="parent_value",
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            workflow_config_id="workflow_config_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].workflow_config
+        mock_val = dataform.WorkflowConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].workflow_config_id
+        mock_val = "workflow_config_id_value"
+        assert arg == mock_val
+
+
+def test_create_workflow_config_flattened_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_workflow_config(
+            dataform.CreateWorkflowConfigRequest(),
+            parent="parent_value",
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            workflow_config_id="workflow_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_workflow_config_flattened_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.WorkflowConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_workflow_config(
+            parent="parent_value",
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            workflow_config_id="workflow_config_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].workflow_config
+        mock_val = dataform.WorkflowConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].workflow_config_id
+        mock_val = "workflow_config_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_workflow_config_flattened_error_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_workflow_config(
+            dataform.CreateWorkflowConfigRequest(),
+            parent="parent_value",
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            workflow_config_id="workflow_config_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.UpdateWorkflowConfigRequest,
+        dict,
+    ],
+)
+def test_update_workflow_config(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.WorkflowConfig(
+            name="name_value",
+            release_config="release_config_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+        )
+        response = client.update_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateWorkflowConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.WorkflowConfig)
+    assert response.name == "name_value"
+    assert response.release_config == "release_config_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+
+
+def test_update_workflow_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workflow_config), "__call__"
+    ) as call:
+        client.update_workflow_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateWorkflowConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_workflow_config_async(
+    transport: str = "grpc_asyncio", request_type=dataform.UpdateWorkflowConfigRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig(
+                name="name_value",
+                release_config="release_config_value",
+                cron_schedule="cron_schedule_value",
+                time_zone="time_zone_value",
+            )
+        )
+        response = await client.update_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.UpdateWorkflowConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.WorkflowConfig)
+    assert response.name == "name_value"
+    assert response.release_config == "release_config_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+
+
+@pytest.mark.asyncio
+async def test_update_workflow_config_async_from_dict():
+    await test_update_workflow_config_async(request_type=dict)
+
+
+def test_update_workflow_config_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.UpdateWorkflowConfigRequest()
+
+    request.workflow_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workflow_config), "__call__"
+    ) as call:
+        call.return_value = dataform.WorkflowConfig()
+        client.update_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "workflow_config.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_workflow_config_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.UpdateWorkflowConfigRequest()
+
+    request.workflow_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workflow_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig()
+        )
+        await client.update_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "workflow_config.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_workflow_config_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.WorkflowConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_workflow_config(
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].workflow_config
+        mock_val = dataform.WorkflowConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_workflow_config_flattened_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_workflow_config(
+            dataform.UpdateWorkflowConfigRequest(),
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_workflow_config_flattened_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dataform.WorkflowConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataform.WorkflowConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_workflow_config(
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].workflow_config
+        mock_val = dataform.WorkflowConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_workflow_config_flattened_error_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_workflow_config(
+            dataform.UpdateWorkflowConfigRequest(),
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteWorkflowConfigRequest,
+        dict,
+    ],
+)
+def test_delete_workflow_config(request_type, transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteWorkflowConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_workflow_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workflow_config), "__call__"
+    ) as call:
+        client.delete_workflow_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteWorkflowConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_workflow_config_async(
+    transport: str = "grpc_asyncio", request_type=dataform.DeleteWorkflowConfigRequest
+):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == dataform.DeleteWorkflowConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_workflow_config_async_from_dict():
+    await test_delete_workflow_config_async(request_type=dict)
+
+
+def test_delete_workflow_config_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.DeleteWorkflowConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workflow_config), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_workflow_config_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dataform.DeleteWorkflowConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workflow_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_workflow_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_workflow_config_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_workflow_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_workflow_config_flattened_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_workflow_config(
+            dataform.DeleteWorkflowConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_workflow_config_flattened_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workflow_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_workflow_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_workflow_config_flattened_error_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_workflow_config(
+            dataform.DeleteWorkflowConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         dataform.ListWorkflowInvocationsRequest,
         dict,
     ],
@@ -7745,8 +11994,8 @@ def test_get_workflow_invocation(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataform.WorkflowInvocation(
             name="name_value",
-            compilation_result="compilation_result_value",
             state=dataform.WorkflowInvocation.State.RUNNING,
+            compilation_result="compilation_result_value",
         )
         response = client.get_workflow_invocation(request)
 
@@ -7758,7 +12007,6 @@ def test_get_workflow_invocation(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowInvocation)
     assert response.name == "name_value"
-    assert response.compilation_result == "compilation_result_value"
     assert response.state == dataform.WorkflowInvocation.State.RUNNING
 
 
@@ -7801,7 +12049,6 @@ async def test_get_workflow_invocation_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataform.WorkflowInvocation(
                 name="name_value",
-                compilation_result="compilation_result_value",
                 state=dataform.WorkflowInvocation.State.RUNNING,
             )
         )
@@ -7815,7 +12062,6 @@ async def test_get_workflow_invocation_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowInvocation)
     assert response.name == "name_value"
-    assert response.compilation_result == "compilation_result_value"
     assert response.state == dataform.WorkflowInvocation.State.RUNNING
 
 
@@ -7999,8 +12245,8 @@ def test_create_workflow_invocation(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataform.WorkflowInvocation(
             name="name_value",
-            compilation_result="compilation_result_value",
             state=dataform.WorkflowInvocation.State.RUNNING,
+            compilation_result="compilation_result_value",
         )
         response = client.create_workflow_invocation(request)
 
@@ -8012,7 +12258,6 @@ def test_create_workflow_invocation(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowInvocation)
     assert response.name == "name_value"
-    assert response.compilation_result == "compilation_result_value"
     assert response.state == dataform.WorkflowInvocation.State.RUNNING
 
 
@@ -8056,7 +12301,6 @@ async def test_create_workflow_invocation_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataform.WorkflowInvocation(
                 name="name_value",
-                compilation_result="compilation_result_value",
                 state=dataform.WorkflowInvocation.State.RUNNING,
             )
         )
@@ -8070,7 +12314,6 @@ async def test_create_workflow_invocation_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowInvocation)
     assert response.name == "name_value"
-    assert response.compilation_result == "compilation_result_value"
     assert response.state == dataform.WorkflowInvocation.State.RUNNING
 
 
@@ -9352,6 +13595,10 @@ def test_get_repository_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = dataform.Repository(
             name="name_value",
+            display_name="display_name_value",
+            npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+            set_authenticated_user_admin=True,
+            service_account="service_account_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9368,6 +13615,13 @@ def test_get_repository_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.npmrc_environment_variables_secret_version
+        == "npmrc_environment_variables_secret_version_value"
+    )
+    assert response.set_authenticated_user_admin is True
+    assert response.service_account == "service_account_value"
 
 
 def test_get_repository_rest_required_fields(
@@ -9614,12 +13868,26 @@ def test_create_repository_rest(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["repository"] = {
         "name": "name_value",
+        "display_name": "display_name_value",
         "git_remote_settings": {
             "url": "url_value",
             "default_branch": "default_branch_value",
             "authentication_token_secret_version": "authentication_token_secret_version_value",
+            "ssh_authentication_config": {
+                "user_private_key_secret_version": "user_private_key_secret_version_value",
+                "host_public_key": "host_public_key_value",
+            },
             "token_status": 1,
         },
+        "npmrc_environment_variables_secret_version": "npmrc_environment_variables_secret_version_value",
+        "workspace_compilation_overrides": {
+            "default_database": "default_database_value",
+            "schema_suffix": "schema_suffix_value",
+            "table_prefix": "table_prefix_value",
+        },
+        "labels": {},
+        "set_authenticated_user_admin": True,
+        "service_account": "service_account_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -9695,6 +13963,10 @@ def test_create_repository_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = dataform.Repository(
             name="name_value",
+            display_name="display_name_value",
+            npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+            set_authenticated_user_admin=True,
+            service_account="service_account_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9711,6 +13983,13 @@ def test_create_repository_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.npmrc_environment_variables_secret_version
+        == "npmrc_environment_variables_secret_version_value"
+    )
+    assert response.set_authenticated_user_admin is True
+    assert response.service_account == "service_account_value"
 
 
 def test_create_repository_rest_required_fields(
@@ -9990,12 +14269,26 @@ def test_update_repository_rest(request_type):
     }
     request_init["repository"] = {
         "name": "projects/sample1/locations/sample2/repositories/sample3",
+        "display_name": "display_name_value",
         "git_remote_settings": {
             "url": "url_value",
             "default_branch": "default_branch_value",
             "authentication_token_secret_version": "authentication_token_secret_version_value",
+            "ssh_authentication_config": {
+                "user_private_key_secret_version": "user_private_key_secret_version_value",
+                "host_public_key": "host_public_key_value",
+            },
             "token_status": 1,
         },
+        "npmrc_environment_variables_secret_version": "npmrc_environment_variables_secret_version_value",
+        "workspace_compilation_overrides": {
+            "default_database": "default_database_value",
+            "schema_suffix": "schema_suffix_value",
+            "table_prefix": "table_prefix_value",
+        },
+        "labels": {},
+        "set_authenticated_user_admin": True,
+        "service_account": "service_account_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10071,6 +14364,10 @@ def test_update_repository_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = dataform.Repository(
             name="name_value",
+            display_name="display_name_value",
+            npmrc_environment_variables_secret_version="npmrc_environment_variables_secret_version_value",
+            set_authenticated_user_admin=True,
+            service_account="service_account_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -10087,6 +14384,13 @@ def test_update_repository_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.Repository)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.npmrc_environment_variables_secret_version
+        == "npmrc_environment_variables_secret_version_value"
+    )
+    assert response.set_authenticated_user_admin is True
+    assert response.service_account == "service_account_value"
 
 
 def test_update_repository_rest_required_fields(
@@ -10574,6 +14878,1273 @@ def test_delete_repository_rest_flattened_error(transport: str = "rest"):
 
 
 def test_delete_repository_rest_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CommitRepositoryChangesRequest,
+        dict,
+    ],
+)
+def test_commit_repository_changes_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.commit_repository_changes(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_commit_repository_changes_rest_required_fields(
+    request_type=dataform.CommitRepositoryChangesRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).commit_repository_changes._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).commit_repository_changes._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.commit_repository_changes(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_commit_repository_changes_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.commit_repository_changes._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "commitMetadata",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_commit_repository_changes_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_commit_repository_changes"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dataform.CommitRepositoryChangesRequest.pb(
+            dataform.CommitRepositoryChangesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = dataform.CommitRepositoryChangesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.commit_repository_changes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_commit_repository_changes_rest_bad_request(
+    transport: str = "rest", request_type=dataform.CommitRepositoryChangesRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.commit_repository_changes(request)
+
+
+def test_commit_repository_changes_rest_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ReadRepositoryFileRequest,
+        dict,
+    ],
+)
+def test_read_repository_file_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ReadRepositoryFileResponse(
+            contents=b"contents_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ReadRepositoryFileResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.read_repository_file(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReadRepositoryFileResponse)
+    assert response.contents == b"contents_blob"
+
+
+def test_read_repository_file_rest_required_fields(
+    request_type=dataform.ReadRepositoryFileRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["path"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "path" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).read_repository_file._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "path" in jsonified_request
+    assert jsonified_request["path"] == request_init["path"]
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["path"] = "path_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).read_repository_file._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "commit_sha",
+            "path",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "path" in jsonified_request
+    assert jsonified_request["path"] == "path_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.ReadRepositoryFileResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.ReadRepositoryFileResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.read_repository_file(request)
+
+            expected_params = [
+                (
+                    "path",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_read_repository_file_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.read_repository_file._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "commitSha",
+                "path",
+            )
+        )
+        & set(
+            (
+                "name",
+                "path",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_read_repository_file_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "post_read_repository_file"
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_read_repository_file"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.ReadRepositoryFileRequest.pb(
+            dataform.ReadRepositoryFileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = dataform.ReadRepositoryFileResponse.to_json(
+            dataform.ReadRepositoryFileResponse()
+        )
+
+        request = dataform.ReadRepositoryFileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.ReadRepositoryFileResponse()
+
+        client.read_repository_file(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_read_repository_file_rest_bad_request(
+    transport: str = "rest", request_type=dataform.ReadRepositoryFileRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.read_repository_file(request)
+
+
+def test_read_repository_file_rest_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.QueryRepositoryDirectoryContentsRequest,
+        dict,
+    ],
+)
+def test_query_repository_directory_contents_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.QueryRepositoryDirectoryContentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.QueryRepositoryDirectoryContentsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.query_repository_directory_contents(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.QueryRepositoryDirectoryContentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_query_repository_directory_contents_rest_required_fields(
+    request_type=dataform.QueryRepositoryDirectoryContentsRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_repository_directory_contents._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_repository_directory_contents._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "commit_sha",
+            "page_size",
+            "page_token",
+            "path",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.QueryRepositoryDirectoryContentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.QueryRepositoryDirectoryContentsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.query_repository_directory_contents(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_query_repository_directory_contents_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.query_repository_directory_contents._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "commitSha",
+                "pageSize",
+                "pageToken",
+                "path",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_query_repository_directory_contents_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "post_query_repository_directory_contents"
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_query_repository_directory_contents"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.QueryRepositoryDirectoryContentsRequest.pb(
+            dataform.QueryRepositoryDirectoryContentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            dataform.QueryRepositoryDirectoryContentsResponse.to_json(
+                dataform.QueryRepositoryDirectoryContentsResponse()
+            )
+        )
+
+        request = dataform.QueryRepositoryDirectoryContentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.QueryRepositoryDirectoryContentsResponse()
+
+        client.query_repository_directory_contents(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_query_repository_directory_contents_rest_bad_request(
+    transport: str = "rest",
+    request_type=dataform.QueryRepositoryDirectoryContentsRequest,
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.query_repository_directory_contents(request)
+
+
+def test_query_repository_directory_contents_rest_pager(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[],
+                next_page_token="def",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.QueryRepositoryDirectoryContentsResponse(
+                directory_entries=[
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            dataform.QueryRepositoryDirectoryContentsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        pager = client.query_repository_directory_contents(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dataform.DirectoryEntry) for i in results)
+
+        pages = list(
+            client.query_repository_directory_contents(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.FetchRepositoryHistoryRequest,
+        dict,
+    ],
+)
+def test_fetch_repository_history_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.FetchRepositoryHistoryResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.FetchRepositoryHistoryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_repository_history(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FetchRepositoryHistoryPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_fetch_repository_history_rest_required_fields(
+    request_type=dataform.FetchRepositoryHistoryRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_repository_history._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_repository_history._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.FetchRepositoryHistoryResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.FetchRepositoryHistoryResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.fetch_repository_history(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_fetch_repository_history_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.fetch_repository_history._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_repository_history_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "post_fetch_repository_history"
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_fetch_repository_history"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.FetchRepositoryHistoryRequest.pb(
+            dataform.FetchRepositoryHistoryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = dataform.FetchRepositoryHistoryResponse.to_json(
+            dataform.FetchRepositoryHistoryResponse()
+        )
+
+        request = dataform.FetchRepositoryHistoryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.FetchRepositoryHistoryResponse()
+
+        client.fetch_repository_history(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_repository_history_rest_bad_request(
+    transport: str = "rest", request_type=dataform.FetchRepositoryHistoryRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_repository_history(request)
+
+
+def test_fetch_repository_history_rest_pager(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[],
+                next_page_token="def",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.FetchRepositoryHistoryResponse(
+                commits=[
+                    dataform.CommitLogEntry(),
+                    dataform.CommitLogEntry(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            dataform.FetchRepositoryHistoryResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        pager = client.fetch_repository_history(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dataform.CommitLogEntry) for i in results)
+
+        pages = list(client.fetch_repository_history(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.ComputeRepositoryAccessTokenStatusRequest,
+        dict,
+    ],
+)
+def test_compute_repository_access_token_status_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ComputeRepositoryAccessTokenStatusResponse(
+            token_status=dataform.ComputeRepositoryAccessTokenStatusResponse.TokenStatus.NOT_FOUND,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ComputeRepositoryAccessTokenStatusResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.compute_repository_access_token_status(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ComputeRepositoryAccessTokenStatusResponse)
+    assert (
+        response.token_status
+        == dataform.ComputeRepositoryAccessTokenStatusResponse.TokenStatus.NOT_FOUND
+    )
+
+
+def test_compute_repository_access_token_status_rest_required_fields(
+    request_type=dataform.ComputeRepositoryAccessTokenStatusRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).compute_repository_access_token_status._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).compute_repository_access_token_status._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.ComputeRepositoryAccessTokenStatusResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.ComputeRepositoryAccessTokenStatusResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.compute_repository_access_token_status(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_compute_repository_access_token_status_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.compute_repository_access_token_status._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_compute_repository_access_token_status_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor,
+        "post_compute_repository_access_token_status",
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_compute_repository_access_token_status"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.ComputeRepositoryAccessTokenStatusRequest.pb(
+            dataform.ComputeRepositoryAccessTokenStatusRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            dataform.ComputeRepositoryAccessTokenStatusResponse.to_json(
+                dataform.ComputeRepositoryAccessTokenStatusResponse()
+            )
+        )
+
+        request = dataform.ComputeRepositoryAccessTokenStatusRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.ComputeRepositoryAccessTokenStatusResponse()
+
+        client.compute_repository_access_token_status(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_compute_repository_access_token_status_rest_bad_request(
+    transport: str = "rest",
+    request_type=dataform.ComputeRepositoryAccessTokenStatusRequest,
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.compute_repository_access_token_status(request)
+
+
+def test_compute_repository_access_token_status_rest_error():
     client = DataformClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -13971,9 +19542,9 @@ def test_query_directory_contents_rest_pager(transport: str = "rest"):
         response = (
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
                 next_page_token="abc",
             ),
@@ -13983,14 +19554,14 @@ def test_query_directory_contents_rest_pager(transport: str = "rest"):
             ),
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
                 next_page_token="ghi",
             ),
             dataform.QueryDirectoryContentsResponse(
                 directory_entries=[
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
-                    dataform.QueryDirectoryContentsResponse.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
+                    dataform.DirectoryEntry(),
                 ],
             ),
         )
@@ -14015,10 +19586,7 @@ def test_query_directory_contents_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(
-            isinstance(i, dataform.QueryDirectoryContentsResponse.DirectoryEntry)
-            for i in results
-        )
+        assert all(isinstance(i, dataform.DirectoryEntry) for i in results)
 
         pages = list(client.query_directory_contents(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -15592,6 +21160,1690 @@ def test_write_file_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        dataform.ListReleaseConfigsRequest,
+        dict,
+    ],
+)
+def test_list_release_configs_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ListReleaseConfigsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ListReleaseConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_release_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListReleaseConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_release_configs_rest_required_fields(
+    request_type=dataform.ListReleaseConfigsRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_release_configs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_release_configs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.ListReleaseConfigsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.ListReleaseConfigsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_release_configs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_release_configs_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_release_configs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_release_configs_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "post_list_release_configs"
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_list_release_configs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.ListReleaseConfigsRequest.pb(
+            dataform.ListReleaseConfigsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = dataform.ListReleaseConfigsResponse.to_json(
+            dataform.ListReleaseConfigsResponse()
+        )
+
+        request = dataform.ListReleaseConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.ListReleaseConfigsResponse()
+
+        client.list_release_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_release_configs_rest_bad_request(
+    transport: str = "rest", request_type=dataform.ListReleaseConfigsRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_release_configs(request)
+
+
+def test_list_release_configs_rest_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ListReleaseConfigsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ListReleaseConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_release_configs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/repositories/*}/releaseConfigs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_release_configs_rest_flattened_error(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_release_configs(
+            dataform.ListReleaseConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_release_configs_rest_pager(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[],
+                next_page_token="def",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.ListReleaseConfigsResponse(
+                release_configs=[
+                    dataform.ReleaseConfig(),
+                    dataform.ReleaseConfig(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            dataform.ListReleaseConfigsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        pager = client.list_release_configs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dataform.ReleaseConfig) for i in results)
+
+        pages = list(client.list_release_configs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetReleaseConfigRequest,
+        dict,
+    ],
+)
+def test_get_release_config_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ReleaseConfig(
+            name="name_value",
+            git_commitish="git_commitish_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+            release_compilation_result="release_compilation_result_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ReleaseConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_release_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReleaseConfig)
+    assert response.name == "name_value"
+    assert response.git_commitish == "git_commitish_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.release_compilation_result == "release_compilation_result_value"
+
+
+def test_get_release_config_rest_required_fields(
+    request_type=dataform.GetReleaseConfigRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_release_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_release_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.ReleaseConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.ReleaseConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_release_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_release_config_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_release_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_release_config_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "post_get_release_config"
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_get_release_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.GetReleaseConfigRequest.pb(
+            dataform.GetReleaseConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = dataform.ReleaseConfig.to_json(
+            dataform.ReleaseConfig()
+        )
+
+        request = dataform.GetReleaseConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.ReleaseConfig()
+
+        client.get_release_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_release_config_rest_bad_request(
+    transport: str = "rest", request_type=dataform.GetReleaseConfigRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_release_config(request)
+
+
+def test_get_release_config_rest_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ReleaseConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ReleaseConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_release_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/repositories/*/releaseConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_release_config_rest_flattened_error(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_release_config(
+            dataform.GetReleaseConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_get_release_config_rest_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateReleaseConfigRequest,
+        dict,
+    ],
+)
+def test_create_release_config_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request_init["release_config"] = {
+        "name": "name_value",
+        "git_commitish": "git_commitish_value",
+        "code_compilation_config": {
+            "default_database": "default_database_value",
+            "default_schema": "default_schema_value",
+            "default_location": "default_location_value",
+            "assertion_schema": "assertion_schema_value",
+            "vars": {},
+            "database_suffix": "database_suffix_value",
+            "schema_suffix": "schema_suffix_value",
+            "table_prefix": "table_prefix_value",
+        },
+        "cron_schedule": "cron_schedule_value",
+        "time_zone": "time_zone_value",
+        "recent_scheduled_release_records": [
+            {
+                "release_time": {"seconds": 751, "nanos": 543},
+                "compilation_result": "compilation_result_value",
+                "error_status": {
+                    "code": 411,
+                    "message": "message_value",
+                    "details": [
+                        {
+                            "type_url": "type.googleapis.com/google.protobuf.Duration",
+                            "value": b"\x08\x0c\x10\xdb\x07",
+                        }
+                    ],
+                },
+            }
+        ],
+        "release_compilation_result": "release_compilation_result_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = dataform.CreateReleaseConfigRequest.meta.fields["release_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["release_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["release_config"][field])):
+                    del request_init["release_config"][field][i][subfield]
+            else:
+                del request_init["release_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ReleaseConfig(
+            name="name_value",
+            git_commitish="git_commitish_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+            release_compilation_result="release_compilation_result_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ReleaseConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_release_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReleaseConfig)
+    assert response.name == "name_value"
+    assert response.git_commitish == "git_commitish_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.release_compilation_result == "release_compilation_result_value"
+
+
+def test_create_release_config_rest_required_fields(
+    request_type=dataform.CreateReleaseConfigRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["release_config_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "releaseConfigId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_release_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "releaseConfigId" in jsonified_request
+    assert jsonified_request["releaseConfigId"] == request_init["release_config_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["releaseConfigId"] = "release_config_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_release_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("release_config_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "releaseConfigId" in jsonified_request
+    assert jsonified_request["releaseConfigId"] == "release_config_id_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.ReleaseConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.ReleaseConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_release_config(request)
+
+            expected_params = [
+                (
+                    "releaseConfigId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_release_config_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_release_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("releaseConfigId",))
+        & set(
+            (
+                "parent",
+                "releaseConfig",
+                "releaseConfigId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_release_config_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "post_create_release_config"
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_create_release_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.CreateReleaseConfigRequest.pb(
+            dataform.CreateReleaseConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = dataform.ReleaseConfig.to_json(
+            dataform.ReleaseConfig()
+        )
+
+        request = dataform.CreateReleaseConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.ReleaseConfig()
+
+        client.create_release_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_release_config_rest_bad_request(
+    transport: str = "rest", request_type=dataform.CreateReleaseConfigRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_release_config(request)
+
+
+def test_create_release_config_rest_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ReleaseConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            release_config_id="release_config_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ReleaseConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_release_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/repositories/*}/releaseConfigs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_release_config_rest_flattened_error(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_release_config(
+            dataform.CreateReleaseConfigRequest(),
+            parent="parent_value",
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            release_config_id="release_config_id_value",
+        )
+
+
+def test_create_release_config_rest_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.UpdateReleaseConfigRequest,
+        dict,
+    ],
+)
+def test_update_release_config_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "release_config": {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4"
+        }
+    }
+    request_init["release_config"] = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4",
+        "git_commitish": "git_commitish_value",
+        "code_compilation_config": {
+            "default_database": "default_database_value",
+            "default_schema": "default_schema_value",
+            "default_location": "default_location_value",
+            "assertion_schema": "assertion_schema_value",
+            "vars": {},
+            "database_suffix": "database_suffix_value",
+            "schema_suffix": "schema_suffix_value",
+            "table_prefix": "table_prefix_value",
+        },
+        "cron_schedule": "cron_schedule_value",
+        "time_zone": "time_zone_value",
+        "recent_scheduled_release_records": [
+            {
+                "release_time": {"seconds": 751, "nanos": 543},
+                "compilation_result": "compilation_result_value",
+                "error_status": {
+                    "code": 411,
+                    "message": "message_value",
+                    "details": [
+                        {
+                            "type_url": "type.googleapis.com/google.protobuf.Duration",
+                            "value": b"\x08\x0c\x10\xdb\x07",
+                        }
+                    ],
+                },
+            }
+        ],
+        "release_compilation_result": "release_compilation_result_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = dataform.UpdateReleaseConfigRequest.meta.fields["release_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["release_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["release_config"][field])):
+                    del request_init["release_config"][field][i][subfield]
+            else:
+                del request_init["release_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ReleaseConfig(
+            name="name_value",
+            git_commitish="git_commitish_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+            release_compilation_result="release_compilation_result_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ReleaseConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_release_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.ReleaseConfig)
+    assert response.name == "name_value"
+    assert response.git_commitish == "git_commitish_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.release_compilation_result == "release_compilation_result_value"
+
+
+def test_update_release_config_rest_required_fields(
+    request_type=dataform.UpdateReleaseConfigRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_release_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_release_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.ReleaseConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.ReleaseConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_release_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_release_config_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_release_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("releaseConfig",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_release_config_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "post_update_release_config"
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_update_release_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.UpdateReleaseConfigRequest.pb(
+            dataform.UpdateReleaseConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = dataform.ReleaseConfig.to_json(
+            dataform.ReleaseConfig()
+        )
+
+        request = dataform.UpdateReleaseConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.ReleaseConfig()
+
+        client.update_release_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_release_config_rest_bad_request(
+    transport: str = "rest", request_type=dataform.UpdateReleaseConfigRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "release_config": {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_release_config(request)
+
+
+def test_update_release_config_rest_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ReleaseConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "release_config": {
+                "name": "projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ReleaseConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_release_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{release_config.name=projects/*/locations/*/repositories/*/releaseConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_release_config_rest_flattened_error(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_release_config(
+            dataform.UpdateReleaseConfigRequest(),
+            release_config=dataform.ReleaseConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_release_config_rest_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteReleaseConfigRequest,
+        dict,
+    ],
+)
+def test_delete_release_config_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_release_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_release_config_rest_required_fields(
+    request_type=dataform.DeleteReleaseConfigRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_release_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_release_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_release_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_release_config_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_release_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_release_config_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_delete_release_config"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dataform.DeleteReleaseConfigRequest.pb(
+            dataform.DeleteReleaseConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = dataform.DeleteReleaseConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_release_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_release_config_rest_bad_request(
+    transport: str = "rest", request_type=dataform.DeleteReleaseConfigRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_release_config(request)
+
+
+def test_delete_release_config_rest_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_release_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/repositories/*/releaseConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_release_config_rest_flattened_error(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_release_config(
+            dataform.DeleteReleaseConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_release_config_rest_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         dataform.ListCompilationResultsRequest,
         dict,
     ],
@@ -15960,6 +23212,7 @@ def test_get_compilation_result_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = dataform.CompilationResult(
             name="name_value",
+            resolved_git_commit_sha="resolved_git_commit_sha_value",
             dataform_core_version="dataform_core_version_value",
             git_commitish="git_commitish_value",
         )
@@ -15978,6 +23231,7 @@ def test_get_compilation_result_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CompilationResult)
     assert response.name == "name_value"
+    assert response.resolved_git_commit_sha == "resolved_git_commit_sha_value"
     assert response.dataform_core_version == "dataform_core_version_value"
 
 
@@ -16233,6 +23487,7 @@ def test_create_compilation_result_rest(request_type):
         "name": "name_value",
         "git_commitish": "git_commitish_value",
         "workspace": "workspace_value",
+        "release_config": "release_config_value",
         "code_compilation_config": {
             "default_database": "default_database_value",
             "default_schema": "default_schema_value",
@@ -16243,6 +23498,7 @@ def test_create_compilation_result_rest(request_type):
             "schema_suffix": "schema_suffix_value",
             "table_prefix": "table_prefix_value",
         },
+        "resolved_git_commit_sha": "resolved_git_commit_sha_value",
         "dataform_core_version": "dataform_core_version_value",
         "compilation_errors": [
             {
@@ -16333,6 +23589,7 @@ def test_create_compilation_result_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = dataform.CompilationResult(
             name="name_value",
+            resolved_git_commit_sha="resolved_git_commit_sha_value",
             dataform_core_version="dataform_core_version_value",
             git_commitish="git_commitish_value",
         )
@@ -16351,6 +23608,7 @@ def test_create_compilation_result_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.CompilationResult)
     assert response.name == "name_value"
+    assert response.resolved_git_commit_sha == "resolved_git_commit_sha_value"
     assert response.dataform_core_version == "dataform_core_version_value"
 
 
@@ -16899,6 +24157,1690 @@ def test_query_compilation_result_actions_rest_pager(transport: str = "rest"):
 @pytest.mark.parametrize(
     "request_type",
     [
+        dataform.ListWorkflowConfigsRequest,
+        dict,
+    ],
+)
+def test_list_workflow_configs_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ListWorkflowConfigsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ListWorkflowConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_workflow_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListWorkflowConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_workflow_configs_rest_required_fields(
+    request_type=dataform.ListWorkflowConfigsRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_workflow_configs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_workflow_configs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.ListWorkflowConfigsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.ListWorkflowConfigsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_workflow_configs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_workflow_configs_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_workflow_configs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_workflow_configs_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "post_list_workflow_configs"
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_list_workflow_configs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.ListWorkflowConfigsRequest.pb(
+            dataform.ListWorkflowConfigsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = dataform.ListWorkflowConfigsResponse.to_json(
+            dataform.ListWorkflowConfigsResponse()
+        )
+
+        request = dataform.ListWorkflowConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.ListWorkflowConfigsResponse()
+
+        client.list_workflow_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_workflow_configs_rest_bad_request(
+    transport: str = "rest", request_type=dataform.ListWorkflowConfigsRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_workflow_configs(request)
+
+
+def test_list_workflow_configs_rest_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.ListWorkflowConfigsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.ListWorkflowConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_workflow_configs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/repositories/*}/workflowConfigs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_workflow_configs_rest_flattened_error(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_workflow_configs(
+            dataform.ListWorkflowConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_workflow_configs_rest_pager(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[],
+                next_page_token="def",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            dataform.ListWorkflowConfigsResponse(
+                workflow_configs=[
+                    dataform.WorkflowConfig(),
+                    dataform.WorkflowConfig(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            dataform.ListWorkflowConfigsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        pager = client.list_workflow_configs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dataform.WorkflowConfig) for i in results)
+
+        pages = list(client.list_workflow_configs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.GetWorkflowConfigRequest,
+        dict,
+    ],
+)
+def test_get_workflow_config_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.WorkflowConfig(
+            name="name_value",
+            release_config="release_config_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.WorkflowConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_workflow_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.WorkflowConfig)
+    assert response.name == "name_value"
+    assert response.release_config == "release_config_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+
+
+def test_get_workflow_config_rest_required_fields(
+    request_type=dataform.GetWorkflowConfigRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_workflow_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_workflow_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.WorkflowConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.WorkflowConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_workflow_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_workflow_config_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_workflow_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_workflow_config_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "post_get_workflow_config"
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_get_workflow_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.GetWorkflowConfigRequest.pb(
+            dataform.GetWorkflowConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = dataform.WorkflowConfig.to_json(
+            dataform.WorkflowConfig()
+        )
+
+        request = dataform.GetWorkflowConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.WorkflowConfig()
+
+        client.get_workflow_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_workflow_config_rest_bad_request(
+    transport: str = "rest", request_type=dataform.GetWorkflowConfigRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_workflow_config(request)
+
+
+def test_get_workflow_config_rest_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.WorkflowConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.WorkflowConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_workflow_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/repositories/*/workflowConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_workflow_config_rest_flattened_error(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_workflow_config(
+            dataform.GetWorkflowConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_get_workflow_config_rest_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.CreateWorkflowConfigRequest,
+        dict,
+    ],
+)
+def test_create_workflow_config_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request_init["workflow_config"] = {
+        "name": "name_value",
+        "release_config": "release_config_value",
+        "invocation_config": {
+            "included_targets": [
+                {
+                    "database": "database_value",
+                    "schema": "schema_value",
+                    "name": "name_value",
+                }
+            ],
+            "included_tags": ["included_tags_value1", "included_tags_value2"],
+            "transitive_dependencies_included": True,
+            "transitive_dependents_included": True,
+            "fully_refresh_incremental_tables_enabled": True,
+            "service_account": "service_account_value",
+        },
+        "cron_schedule": "cron_schedule_value",
+        "time_zone": "time_zone_value",
+        "recent_scheduled_execution_records": [
+            {
+                "execution_time": {"seconds": 751, "nanos": 543},
+                "workflow_invocation": "workflow_invocation_value",
+                "error_status": {
+                    "code": 411,
+                    "message": "message_value",
+                    "details": [
+                        {
+                            "type_url": "type.googleapis.com/google.protobuf.Duration",
+                            "value": b"\x08\x0c\x10\xdb\x07",
+                        }
+                    ],
+                },
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = dataform.CreateWorkflowConfigRequest.meta.fields["workflow_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workflow_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workflow_config"][field])):
+                    del request_init["workflow_config"][field][i][subfield]
+            else:
+                del request_init["workflow_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.WorkflowConfig(
+            name="name_value",
+            release_config="release_config_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.WorkflowConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_workflow_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.WorkflowConfig)
+    assert response.name == "name_value"
+    assert response.release_config == "release_config_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+
+
+def test_create_workflow_config_rest_required_fields(
+    request_type=dataform.CreateWorkflowConfigRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["workflow_config_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "workflowConfigId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_workflow_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "workflowConfigId" in jsonified_request
+    assert jsonified_request["workflowConfigId"] == request_init["workflow_config_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["workflowConfigId"] = "workflow_config_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_workflow_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("workflow_config_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "workflowConfigId" in jsonified_request
+    assert jsonified_request["workflowConfigId"] == "workflow_config_id_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.WorkflowConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.WorkflowConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_workflow_config(request)
+
+            expected_params = [
+                (
+                    "workflowConfigId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_workflow_config_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_workflow_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("workflowConfigId",))
+        & set(
+            (
+                "parent",
+                "workflowConfig",
+                "workflowConfigId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_workflow_config_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "post_create_workflow_config"
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_create_workflow_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.CreateWorkflowConfigRequest.pb(
+            dataform.CreateWorkflowConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = dataform.WorkflowConfig.to_json(
+            dataform.WorkflowConfig()
+        )
+
+        request = dataform.CreateWorkflowConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.WorkflowConfig()
+
+        client.create_workflow_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_workflow_config_rest_bad_request(
+    transport: str = "rest", request_type=dataform.CreateWorkflowConfigRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/repositories/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_workflow_config(request)
+
+
+def test_create_workflow_config_rest_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.WorkflowConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            workflow_config_id="workflow_config_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.WorkflowConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_workflow_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/repositories/*}/workflowConfigs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_workflow_config_rest_flattened_error(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_workflow_config(
+            dataform.CreateWorkflowConfigRequest(),
+            parent="parent_value",
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            workflow_config_id="workflow_config_id_value",
+        )
+
+
+def test_create_workflow_config_rest_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.UpdateWorkflowConfigRequest,
+        dict,
+    ],
+)
+def test_update_workflow_config_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "workflow_config": {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4"
+        }
+    }
+    request_init["workflow_config"] = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4",
+        "release_config": "release_config_value",
+        "invocation_config": {
+            "included_targets": [
+                {
+                    "database": "database_value",
+                    "schema": "schema_value",
+                    "name": "name_value",
+                }
+            ],
+            "included_tags": ["included_tags_value1", "included_tags_value2"],
+            "transitive_dependencies_included": True,
+            "transitive_dependents_included": True,
+            "fully_refresh_incremental_tables_enabled": True,
+            "service_account": "service_account_value",
+        },
+        "cron_schedule": "cron_schedule_value",
+        "time_zone": "time_zone_value",
+        "recent_scheduled_execution_records": [
+            {
+                "execution_time": {"seconds": 751, "nanos": 543},
+                "workflow_invocation": "workflow_invocation_value",
+                "error_status": {
+                    "code": 411,
+                    "message": "message_value",
+                    "details": [
+                        {
+                            "type_url": "type.googleapis.com/google.protobuf.Duration",
+                            "value": b"\x08\x0c\x10\xdb\x07",
+                        }
+                    ],
+                },
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = dataform.UpdateWorkflowConfigRequest.meta.fields["workflow_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workflow_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workflow_config"][field])):
+                    del request_init["workflow_config"][field][i][subfield]
+            else:
+                del request_init["workflow_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.WorkflowConfig(
+            name="name_value",
+            release_config="release_config_value",
+            cron_schedule="cron_schedule_value",
+            time_zone="time_zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.WorkflowConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_workflow_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataform.WorkflowConfig)
+    assert response.name == "name_value"
+    assert response.release_config == "release_config_value"
+    assert response.cron_schedule == "cron_schedule_value"
+    assert response.time_zone == "time_zone_value"
+
+
+def test_update_workflow_config_rest_required_fields(
+    request_type=dataform.UpdateWorkflowConfigRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_workflow_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_workflow_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataform.WorkflowConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dataform.WorkflowConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_workflow_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_workflow_config_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_workflow_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("workflowConfig",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_workflow_config_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "post_update_workflow_config"
+    ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_update_workflow_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dataform.UpdateWorkflowConfigRequest.pb(
+            dataform.UpdateWorkflowConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = dataform.WorkflowConfig.to_json(
+            dataform.WorkflowConfig()
+        )
+
+        request = dataform.UpdateWorkflowConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataform.WorkflowConfig()
+
+        client.update_workflow_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_workflow_config_rest_bad_request(
+    transport: str = "rest", request_type=dataform.UpdateWorkflowConfigRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "workflow_config": {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_workflow_config(request)
+
+
+def test_update_workflow_config_rest_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataform.WorkflowConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "workflow_config": {
+                "name": "projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dataform.WorkflowConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_workflow_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{workflow_config.name=projects/*/locations/*/repositories/*/workflowConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_workflow_config_rest_flattened_error(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_workflow_config(
+            dataform.UpdateWorkflowConfigRequest(),
+            workflow_config=dataform.WorkflowConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_workflow_config_rest_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dataform.DeleteWorkflowConfigRequest,
+        dict,
+    ],
+)
+def test_delete_workflow_config_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_workflow_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_workflow_config_rest_required_fields(
+    request_type=dataform.DeleteWorkflowConfigRequest,
+):
+    transport_class = transports.DataformRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_workflow_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_workflow_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_workflow_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_workflow_config_rest_unset_required_fields():
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_workflow_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_workflow_config_rest_interceptors(null_interceptor):
+    transport = transports.DataformRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
+    )
+    client = DataformClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DataformRestInterceptor, "pre_delete_workflow_config"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dataform.DeleteWorkflowConfigRequest.pb(
+            dataform.DeleteWorkflowConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = dataform.DeleteWorkflowConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_workflow_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_workflow_config_rest_bad_request(
+    transport: str = "rest", request_type=dataform.DeleteWorkflowConfigRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_workflow_config(request)
+
+
+def test_delete_workflow_config_rest_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_workflow_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/repositories/*/workflowConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_workflow_config_rest_flattened_error(transport: str = "rest"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_workflow_config(
+            dataform.DeleteWorkflowConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_workflow_config_rest_error():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         dataform.ListWorkflowInvocationsRequest,
         dict,
     ],
@@ -16972,6 +25914,8 @@ def test_list_workflow_invocations_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
+            "order_by",
             "page_size",
             "page_token",
         )
@@ -17032,6 +25976,8 @@ def test_list_workflow_invocations_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
+                "orderBy",
                 "pageSize",
                 "pageToken",
             )
@@ -17267,8 +26213,8 @@ def test_get_workflow_invocation_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = dataform.WorkflowInvocation(
             name="name_value",
-            compilation_result="compilation_result_value",
             state=dataform.WorkflowInvocation.State.RUNNING,
+            compilation_result="compilation_result_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -17285,7 +26231,6 @@ def test_get_workflow_invocation_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowInvocation)
     assert response.name == "name_value"
-    assert response.compilation_result == "compilation_result_value"
     assert response.state == dataform.WorkflowInvocation.State.RUNNING
 
 
@@ -17540,6 +26485,7 @@ def test_create_workflow_invocation_rest(request_type):
     request_init["workflow_invocation"] = {
         "name": "name_value",
         "compilation_result": "compilation_result_value",
+        "workflow_config": "workflow_config_value",
         "invocation_config": {
             "included_targets": [
                 {
@@ -17552,6 +26498,7 @@ def test_create_workflow_invocation_rest(request_type):
             "transitive_dependencies_included": True,
             "transitive_dependents_included": True,
             "fully_refresh_incremental_tables_enabled": True,
+            "service_account": "service_account_value",
         },
         "state": 1,
         "invocation_timing": {
@@ -17635,8 +26582,8 @@ def test_create_workflow_invocation_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = dataform.WorkflowInvocation(
             name="name_value",
-            compilation_result="compilation_result_value",
             state=dataform.WorkflowInvocation.State.RUNNING,
+            compilation_result="compilation_result_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -17653,7 +26600,6 @@ def test_create_workflow_invocation_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataform.WorkflowInvocation)
     assert response.name == "name_value"
-    assert response.compilation_result == "compilation_result_value"
     assert response.state == dataform.WorkflowInvocation.State.RUNNING
 
 
@@ -18799,6 +27745,11 @@ def test_dataform_base_transport():
         "create_repository",
         "update_repository",
         "delete_repository",
+        "commit_repository_changes",
+        "read_repository_file",
+        "query_repository_directory_contents",
+        "fetch_repository_history",
+        "compute_repository_access_token_status",
         "fetch_remote_branches",
         "list_workspaces",
         "get_workspace",
@@ -18820,16 +27771,29 @@ def test_dataform_base_transport():
         "remove_file",
         "move_file",
         "write_file",
+        "list_release_configs",
+        "get_release_config",
+        "create_release_config",
+        "update_release_config",
+        "delete_release_config",
         "list_compilation_results",
         "get_compilation_result",
         "create_compilation_result",
         "query_compilation_result_actions",
+        "list_workflow_configs",
+        "get_workflow_config",
+        "create_workflow_config",
+        "update_workflow_config",
+        "delete_workflow_config",
         "list_workflow_invocations",
         "get_workflow_invocation",
         "create_workflow_invocation",
         "delete_workflow_invocation",
         "cancel_workflow_invocation",
         "query_workflow_invocation_actions",
+        "set_iam_policy",
+        "get_iam_policy",
+        "test_iam_permissions",
         "get_location",
         "list_locations",
     )
@@ -19102,6 +28066,21 @@ def test_dataform_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_repository._session
     session2 = client2.transport.delete_repository._session
     assert session1 != session2
+    session1 = client1.transport.commit_repository_changes._session
+    session2 = client2.transport.commit_repository_changes._session
+    assert session1 != session2
+    session1 = client1.transport.read_repository_file._session
+    session2 = client2.transport.read_repository_file._session
+    assert session1 != session2
+    session1 = client1.transport.query_repository_directory_contents._session
+    session2 = client2.transport.query_repository_directory_contents._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_repository_history._session
+    session2 = client2.transport.fetch_repository_history._session
+    assert session1 != session2
+    session1 = client1.transport.compute_repository_access_token_status._session
+    session2 = client2.transport.compute_repository_access_token_status._session
+    assert session1 != session2
     session1 = client1.transport.fetch_remote_branches._session
     session2 = client2.transport.fetch_remote_branches._session
     assert session1 != session2
@@ -19165,6 +28144,21 @@ def test_dataform_client_transport_session_collision(transport_name):
     session1 = client1.transport.write_file._session
     session2 = client2.transport.write_file._session
     assert session1 != session2
+    session1 = client1.transport.list_release_configs._session
+    session2 = client2.transport.list_release_configs._session
+    assert session1 != session2
+    session1 = client1.transport.get_release_config._session
+    session2 = client2.transport.get_release_config._session
+    assert session1 != session2
+    session1 = client1.transport.create_release_config._session
+    session2 = client2.transport.create_release_config._session
+    assert session1 != session2
+    session1 = client1.transport.update_release_config._session
+    session2 = client2.transport.update_release_config._session
+    assert session1 != session2
+    session1 = client1.transport.delete_release_config._session
+    session2 = client2.transport.delete_release_config._session
+    assert session1 != session2
     session1 = client1.transport.list_compilation_results._session
     session2 = client2.transport.list_compilation_results._session
     assert session1 != session2
@@ -19176,6 +28170,21 @@ def test_dataform_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.query_compilation_result_actions._session
     session2 = client2.transport.query_compilation_result_actions._session
+    assert session1 != session2
+    session1 = client1.transport.list_workflow_configs._session
+    session2 = client2.transport.list_workflow_configs._session
+    assert session1 != session2
+    session1 = client1.transport.get_workflow_config._session
+    session2 = client2.transport.get_workflow_config._session
+    assert session1 != session2
+    session1 = client1.transport.create_workflow_config._session
+    session2 = client2.transport.create_workflow_config._session
+    assert session1 != session2
+    session1 = client1.transport.update_workflow_config._session
+    session2 = client2.transport.update_workflow_config._session
+    assert session1 != session2
+    session1 = client1.transport.delete_workflow_config._session
+    session2 = client2.transport.delete_workflow_config._session
     assert session1 != session2
     session1 = client1.transport.list_workflow_invocations._session
     session2 = client2.transport.list_workflow_invocations._session
@@ -19346,10 +28355,41 @@ def test_parse_compilation_result_path():
     assert expected == actual
 
 
-def test_repository_path():
+def test_release_config_path():
     project = "winkle"
     location = "nautilus"
     repository = "scallop"
+    release_config = "abalone"
+    expected = "projects/{project}/locations/{location}/repositories/{repository}/releaseConfigs/{release_config}".format(
+        project=project,
+        location=location,
+        repository=repository,
+        release_config=release_config,
+    )
+    actual = DataformClient.release_config_path(
+        project, location, repository, release_config
+    )
+    assert expected == actual
+
+
+def test_parse_release_config_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "repository": "whelk",
+        "release_config": "octopus",
+    }
+    path = DataformClient.release_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataformClient.parse_release_config_path(path)
+    assert expected == actual
+
+
+def test_repository_path():
+    project = "oyster"
+    location = "nudibranch"
+    repository = "cuttlefish"
     expected = (
         "projects/{project}/locations/{location}/repositories/{repository}".format(
             project=project,
@@ -19363,9 +28403,9 @@ def test_repository_path():
 
 def test_parse_repository_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "repository": "clam",
+        "project": "mussel",
+        "location": "winkle",
+        "repository": "nautilus",
     }
     path = DataformClient.repository_path(**expected)
 
@@ -19375,9 +28415,9 @@ def test_parse_repository_path():
 
 
 def test_secret_version_path():
-    project = "whelk"
-    secret = "octopus"
-    version = "oyster"
+    project = "scallop"
+    secret = "abalone"
+    version = "squid"
     expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
         project=project,
         secret=secret,
@@ -19389,9 +28429,9 @@ def test_secret_version_path():
 
 def test_parse_secret_version_path():
     expected = {
-        "project": "nudibranch",
-        "secret": "cuttlefish",
-        "version": "mussel",
+        "project": "clam",
+        "secret": "whelk",
+        "version": "octopus",
     }
     path = DataformClient.secret_version_path(**expected)
 
@@ -19400,11 +28440,42 @@ def test_parse_secret_version_path():
     assert expected == actual
 
 
+def test_workflow_config_path():
+    project = "oyster"
+    location = "nudibranch"
+    repository = "cuttlefish"
+    workflow_config = "mussel"
+    expected = "projects/{project}/locations/{location}/repositories/{repository}/workflowConfigs/{workflow_config}".format(
+        project=project,
+        location=location,
+        repository=repository,
+        workflow_config=workflow_config,
+    )
+    actual = DataformClient.workflow_config_path(
+        project, location, repository, workflow_config
+    )
+    assert expected == actual
+
+
+def test_parse_workflow_config_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+        "repository": "scallop",
+        "workflow_config": "abalone",
+    }
+    path = DataformClient.workflow_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataformClient.parse_workflow_config_path(path)
+    assert expected == actual
+
+
 def test_workflow_invocation_path():
-    project = "winkle"
-    location = "nautilus"
-    repository = "scallop"
-    workflow_invocation = "abalone"
+    project = "squid"
+    location = "clam"
+    repository = "whelk"
+    workflow_invocation = "octopus"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/workflowInvocations/{workflow_invocation}".format(
         project=project,
         location=location,
@@ -19419,10 +28490,10 @@ def test_workflow_invocation_path():
 
 def test_parse_workflow_invocation_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "repository": "whelk",
-        "workflow_invocation": "octopus",
+        "project": "oyster",
+        "location": "nudibranch",
+        "repository": "cuttlefish",
+        "workflow_invocation": "mussel",
     }
     path = DataformClient.workflow_invocation_path(**expected)
 
@@ -19432,10 +28503,10 @@ def test_parse_workflow_invocation_path():
 
 
 def test_workspace_path():
-    project = "oyster"
-    location = "nudibranch"
-    repository = "cuttlefish"
-    workspace = "mussel"
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
+    workspace = "abalone"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}".format(
         project=project,
         location=location,
@@ -19448,10 +28519,10 @@ def test_workspace_path():
 
 def test_parse_workspace_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "repository": "scallop",
-        "workspace": "abalone",
+        "project": "squid",
+        "location": "clam",
+        "repository": "whelk",
+        "workspace": "octopus",
     }
     path = DataformClient.workspace_path(**expected)
 
@@ -19461,7 +28532,7 @@ def test_parse_workspace_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -19471,7 +28542,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nudibranch",
     }
     path = DataformClient.common_billing_account_path(**expected)
 
@@ -19481,7 +28552,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -19491,7 +28562,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "mussel",
     }
     path = DataformClient.common_folder_path(**expected)
 
@@ -19501,7 +28572,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -19511,7 +28582,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "nautilus",
     }
     path = DataformClient.common_organization_path(**expected)
 
@@ -19521,7 +28592,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -19531,7 +28602,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "abalone",
     }
     path = DataformClient.common_project_path(**expected)
 
@@ -19541,8 +28612,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -19553,8 +28624,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = DataformClient.common_location_path(**expected)
 
@@ -19712,6 +28783,186 @@ def test_list_locations_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/repositories/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/repositories/sample3"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/repositories/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/repositories/sample3"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_test_iam_permissions_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
+):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/repositories/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/repositories/sample3"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -19995,6 +29246,514 @@ async def test_get_location_from_dict_async():
         response = await client.get_location(
             request={
                 "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_set_iam_policy(transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+        response = client.set_iam_policy(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        response = await client.set_iam_policy(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+def test_set_iam_policy_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.SetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_set_iam_policy_from_dict():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        response = client.set_iam_policy(
+            request={
+                "resource": "resource_value",
+                "policy": policy_pb2.Policy(version=774),
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_from_dict_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        response = await client.set_iam_policy(
+            request={
+                "resource": "resource_value",
+                "policy": policy_pb2.Policy(version=774),
+            }
+        )
+        call.assert_called()
+
+
+def test_get_iam_policy(transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        response = client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+
+        response = await client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+    assert response.version == 774
+
+    assert response.etag == b"etag_blob"
+
+
+def test_get_iam_policy_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.GetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_get_iam_policy_from_dict():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        response = client.get_iam_policy(
+            request={
+                "resource": "resource_value",
+                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_from_dict_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        response = await client.get_iam_policy(
+            request={
+                "resource": "resource_value",
+                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
+            }
+        )
+        call.assert_called()
+
+
+def test_test_iam_permissions(transport: str = "grpc"):
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse(
+            permissions=["permissions_value"],
+        )
+
+        response = client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+    assert response.permissions == ["permissions_value"]
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse(
+                permissions=["permissions_value"],
+            )
+        )
+
+        response = await client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+    assert response.permissions == ["permissions_value"]
+
+
+def test_test_iam_permissions_field_headers():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_field_headers_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy_pb2.TestIamPermissionsRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
+
+
+def test_test_iam_permissions_from_dict():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        response = client.test_iam_permissions(
+            request={
+                "resource": "resource_value",
+                "permissions": ["permissions_value"],
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_from_dict_async():
+    client = DataformAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        response = await client.test_iam_permissions(
+            request={
+                "resource": "resource_value",
+                "permissions": ["permissions_value"],
             }
         )
         call.assert_called()
