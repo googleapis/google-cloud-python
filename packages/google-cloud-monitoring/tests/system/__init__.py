@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,17 +13,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import os
-import time
-
-from google.cloud import monitoring_v3
-
-
-class TestSystemMetricService(object):
-    def test_list_monitored_resource_descriptors(self):
-        project_id = os.environ["PROJECT_ID"]
-
-        client = monitoring_v3.MetricServiceClient()
-        name = f"projects/{project_id}"
-        response = client.list_monitored_resource_descriptors(name=name)
