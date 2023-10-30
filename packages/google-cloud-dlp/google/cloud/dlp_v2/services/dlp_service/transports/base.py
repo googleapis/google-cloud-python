@@ -374,6 +374,61 @@ class DlpServiceTransport(abc.ABC):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
+            self.create_discovery_config: gapic_v1.method.wrap_method(
+                self.create_discovery_config,
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.update_discovery_config: gapic_v1.method.wrap_method(
+                self.update_discovery_config,
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.get_discovery_config: gapic_v1.method.wrap_method(
+                self.get_discovery_config,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.list_discovery_configs: gapic_v1.method.wrap_method(
+                self.list_discovery_configs,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.delete_discovery_config: gapic_v1.method.wrap_method(
+                self.delete_discovery_config,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
             self.create_dlp_job: gapic_v1.method.wrap_method(
                 self.create_dlp_job,
                 default_timeout=300.0,
@@ -702,6 +757,54 @@ class DlpServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [dlp.ActivateJobTriggerRequest], Union[dlp.DlpJob, Awaitable[dlp.DlpJob]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_discovery_config(
+        self,
+    ) -> Callable[
+        [dlp.CreateDiscoveryConfigRequest],
+        Union[dlp.DiscoveryConfig, Awaitable[dlp.DiscoveryConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_discovery_config(
+        self,
+    ) -> Callable[
+        [dlp.UpdateDiscoveryConfigRequest],
+        Union[dlp.DiscoveryConfig, Awaitable[dlp.DiscoveryConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_discovery_config(
+        self,
+    ) -> Callable[
+        [dlp.GetDiscoveryConfigRequest],
+        Union[dlp.DiscoveryConfig, Awaitable[dlp.DiscoveryConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_discovery_configs(
+        self,
+    ) -> Callable[
+        [dlp.ListDiscoveryConfigsRequest],
+        Union[
+            dlp.ListDiscoveryConfigsResponse,
+            Awaitable[dlp.ListDiscoveryConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_discovery_config(
+        self,
+    ) -> Callable[
+        [dlp.DeleteDiscoveryConfigRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 
