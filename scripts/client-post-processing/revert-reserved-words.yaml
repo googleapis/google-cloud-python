@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-description: Revert reserved word defined in gapic-generator-python
+description: Contradicts reserved words defined in gapic-generator-python
 url: https://github.com/googleapis/google-cloud-python/issues/11924
 replacements:
   - paths: [
@@ -27,3 +27,15 @@ replacements:
     before: "format_"
     after: "format"
     count: 7
+  - paths: [
+      packages/google-cloud-dataflow-client/google/cloud/dataflow_v1beta3/types/metrics.py
+    ]
+    before: set \(google.protobuf.struct_pb2.Value\)
+    after: set_ (google.protobuf.struct_pb2.Value)
+    count: 1
+  - paths: [
+      packages/google-cloud-dataflow-client/google/cloud/dataflow_v1beta3/types/metrics.py
+    ]
+    before: "set: struct_pb2.Value = proto.Field"
+    after: "set_: struct_pb2.Value = proto.Field"
+    count: 1
