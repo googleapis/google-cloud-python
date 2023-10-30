@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    advisorynotifications_v1/services
-    advisorynotifications_v1/types
+    advisorynotifications_v1/services_
+    advisorynotifications_v1/types_
 
 
 Changelog

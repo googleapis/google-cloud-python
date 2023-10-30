@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    clouddms_v1/services
-    clouddms_v1/types
+    clouddms_v1/services_
+    clouddms_v1/types_
 
 
 Changelog

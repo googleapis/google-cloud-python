@@ -244,6 +244,11 @@ class ArtifactRegistryTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.batch_delete_versions: gapic_v1.method.wrap_method(
+                self.batch_delete_versions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_files: gapic_v1.method.wrap_method(
                 self.list_files,
                 default_timeout=None,
@@ -528,6 +533,15 @@ class ArtifactRegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [version.DeleteVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_delete_versions(
+        self,
+    ) -> Callable[
+        [version.BatchDeleteVersionsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
