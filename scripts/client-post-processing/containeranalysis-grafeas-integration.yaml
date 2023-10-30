@@ -52,9 +52,10 @@ replacements:
   - paths: [
       packages/google-cloud-containeranalysis/google/cloud/devtools/containeranalysis_v1/services/container_analysis/client.py,
     ]
-    before: \)\n\n    def set_iam_policy\(\n
+    before: api_audience,\n            \)\n\n    def set_iam_policy\(\n
     after: |
-      )\n
+      api_audience,
+                  )\n
           def get_grafeas_client(self) -> grafeas_v1.GrafeasClient:
               grafeas_transport = grafeas_v1.services.grafeas.transports.GrafeasGrpcTransport(
                   credentials=self.transport._credentials,
@@ -65,15 +66,16 @@ replacements:
                   host=self.transport._host,
                   scopes=self.transport.AUTH_SCOPES,
               )
-              return grafeas_v1.GrafeasClient(transport=grafeas_transport)\n\n
+              return grafeas_v1.GrafeasClient(transport=grafeas_transport)\n
           def set_iam_policy(
     count: 1
   - paths: [
       packages/google-cloud-containeranalysis/google/cloud/devtools/containeranalysis_v1/services/container_analysis/async_client.py,
     ]
-    before: \)\n\n    async def set_iam_policy\(\n
+    before: client_info,\n        \)\n\n    async def set_iam_policy\(\n
     after: |
-      )\n
+      client_info,
+              )\n
           def get_grafeas_client(self) -> grafeas_v1.GrafeasClient:
               grafeas_transport = grafeas_v1.services.grafeas.transports.GrafeasGrpcTransport(
                   credentials=self.transport._credentials,
@@ -84,7 +86,7 @@ replacements:
                   host=self.transport._host,
                   scopes=self.transport.AUTH_SCOPES,
               )
-              return grafeas_v1.GrafeasClient(transport=grafeas_transport)\n\n
+              return grafeas_v1.GrafeasClient(transport=grafeas_transport)\n
           async def set_iam_policy(
     count: 1
   - paths: [

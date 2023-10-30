@@ -243,7 +243,6 @@ class ContainerAnalysisAsyncClient:
         )
         return grafeas_v1.GrafeasClient(transport=grafeas_transport)
 
-
     async def set_iam_policy(
         self,
         request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
