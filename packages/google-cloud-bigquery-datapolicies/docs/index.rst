@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    bigquery_datapolicies_v1/services
-    bigquery_datapolicies_v1/types
+    bigquery_datapolicies_v1/services_
+    bigquery_datapolicies_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    bigquery_datapolicies_v1beta1/services
-    bigquery_datapolicies_v1beta1/types
+    bigquery_datapolicies_v1beta1/services_
+    bigquery_datapolicies_v1beta1/types_
 
 
 Changelog

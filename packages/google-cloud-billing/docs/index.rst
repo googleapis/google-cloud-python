@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    billing_v1/services
-    billing_v1/types
+    billing_v1/services_
+    billing_v1/types_
 
 
 Changelog

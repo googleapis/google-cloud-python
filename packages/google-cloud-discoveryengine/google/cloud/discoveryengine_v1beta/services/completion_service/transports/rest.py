@@ -367,7 +367,6 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
-
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -482,7 +481,6 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.ListOperationsResponse:
-
             r"""Call the list operations method over HTTP.
 
             Args:

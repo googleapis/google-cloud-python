@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    memcache_v1/services
-    memcache_v1/types
+    memcache_v1/services_
+    memcache_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    memcache_v1beta2/services
-    memcache_v1beta2/types
+    memcache_v1beta2/services_
+    memcache_v1beta2/types_
 
 
 Changelog

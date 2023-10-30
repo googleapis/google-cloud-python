@@ -77,6 +77,10 @@ class DlpServiceAsyncClient:
     parse_deidentify_template_path = staticmethod(
         DlpServiceClient.parse_deidentify_template_path
     )
+    discovery_config_path = staticmethod(DlpServiceClient.discovery_config_path)
+    parse_discovery_config_path = staticmethod(
+        DlpServiceClient.parse_discovery_config_path
+    )
     dlp_content_path = staticmethod(DlpServiceClient.dlp_content_path)
     parse_dlp_content_path = staticmethod(DlpServiceClient.parse_dlp_content_path)
     dlp_job_path = staticmethod(DlpServiceClient.dlp_job_path)
@@ -2836,6 +2840,624 @@ class DlpServiceAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def create_discovery_config(
+        self,
+        request: Optional[Union[dlp.CreateDiscoveryConfigRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        discovery_config: Optional[dlp.DiscoveryConfig] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dlp.DiscoveryConfig:
+        r"""Creates a config for discovery to scan and profile
+        storage.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_create_discovery_config():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                discovery_config = dlp_v2.DiscoveryConfig()
+                discovery_config.status = "PAUSED"
+
+                request = dlp_v2.CreateDiscoveryConfigRequest(
+                    parent="parent_value",
+                    discovery_config=discovery_config,
+                )
+
+                # Make the request
+                response = await client.create_discovery_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.CreateDiscoveryConfigRequest, dict]]):
+                The request object. Request message for
+                CreateDiscoveryConfig.
+            parent (:class:`str`):
+                Required. Parent resource name.
+
+                The format of this value is as follows:
+                ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            discovery_config (:class:`google.cloud.dlp_v2.types.DiscoveryConfig`):
+                Required. The DiscoveryConfig to
+                create.
+
+                This corresponds to the ``discovery_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.types.DiscoveryConfig:
+                Configuration for discovery to scan resources for profile generation.
+                   Only one discovery configuration may exist per
+                   organization, folder, or project.
+
+                   The generated data profiles are retained according to
+                   the [data retention policy]
+                   (https://cloud.google.com/dlp/docs/data-profiles#retention).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, discovery_config])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dlp.CreateDiscoveryConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if discovery_config is not None:
+            request.discovery_config = discovery_config
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_discovery_config,
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_discovery_config(
+        self,
+        request: Optional[Union[dlp.UpdateDiscoveryConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        discovery_config: Optional[dlp.DiscoveryConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dlp.DiscoveryConfig:
+        r"""Updates a discovery configuration.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_update_discovery_config():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                discovery_config = dlp_v2.DiscoveryConfig()
+                discovery_config.status = "PAUSED"
+
+                request = dlp_v2.UpdateDiscoveryConfigRequest(
+                    name="name_value",
+                    discovery_config=discovery_config,
+                )
+
+                # Make the request
+                response = await client.update_discovery_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.UpdateDiscoveryConfigRequest, dict]]):
+                The request object. Request message for
+                UpdateDiscoveryConfig.
+            name (:class:`str`):
+                Required. Resource name of the project and the
+                configuration, for example
+                ``projects/dlp-test-project/discoveryConfigs/53234423``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            discovery_config (:class:`google.cloud.dlp_v2.types.DiscoveryConfig`):
+                Required. New DiscoveryConfig value.
+                This corresponds to the ``discovery_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Mask to control which fields get
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.types.DiscoveryConfig:
+                Configuration for discovery to scan resources for profile generation.
+                   Only one discovery configuration may exist per
+                   organization, folder, or project.
+
+                   The generated data profiles are retained according to
+                   the [data retention policy]
+                   (https://cloud.google.com/dlp/docs/data-profiles#retention).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, discovery_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dlp.UpdateDiscoveryConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if discovery_config is not None:
+            request.discovery_config = discovery_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_discovery_config,
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_discovery_config(
+        self,
+        request: Optional[Union[dlp.GetDiscoveryConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dlp.DiscoveryConfig:
+        r"""Gets a discovery configuration.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_get_discovery_config():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.GetDiscoveryConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_discovery_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.GetDiscoveryConfigRequest, dict]]):
+                The request object. Request message for
+                GetDiscoveryConfig.
+            name (:class:`str`):
+                Required. Resource name of the project and the
+                configuration, for example
+                ``projects/dlp-test-project/discoveryConfigs/53234423``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.types.DiscoveryConfig:
+                Configuration for discovery to scan resources for profile generation.
+                   Only one discovery configuration may exist per
+                   organization, folder, or project.
+
+                   The generated data profiles are retained according to
+                   the [data retention policy]
+                   (https://cloud.google.com/dlp/docs/data-profiles#retention).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dlp.GetDiscoveryConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_discovery_config,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=300.0,
+            ),
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_discovery_configs(
+        self,
+        request: Optional[Union[dlp.ListDiscoveryConfigsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListDiscoveryConfigsAsyncPager:
+        r"""Lists discovery configurations.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_list_discovery_configs():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ListDiscoveryConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_discovery_configs(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.ListDiscoveryConfigsRequest, dict]]):
+                The request object. Request message for
+                ListDiscoveryConfigs.
+            parent (:class:`str`):
+                Required. Parent resource name.
+
+                The format of this value is as follows:
+                ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.services.dlp_service.pagers.ListDiscoveryConfigsAsyncPager:
+                Response message for
+                ListDiscoveryConfigs.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dlp.ListDiscoveryConfigsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_discovery_configs,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=300.0,
+            ),
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListDiscoveryConfigsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_discovery_config(
+        self,
+        request: Optional[Union[dlp.DeleteDiscoveryConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a discovery configuration.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_delete_discovery_config():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.DeleteDiscoveryConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_discovery_config(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.DeleteDiscoveryConfigRequest, dict]]):
+                The request object. Request message for
+                DeleteDiscoveryConfig.
+            name (:class:`str`):
+                Required. Resource name of the project and the config,
+                for example
+                ``projects/dlp-test-project/discoveryConfigs/53234423``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dlp.DeleteDiscoveryConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_discovery_config,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=300.0,
+            ),
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def create_dlp_job(
         self,

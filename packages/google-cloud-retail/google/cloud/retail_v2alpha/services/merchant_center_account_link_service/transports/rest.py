@@ -591,7 +591,9 @@ class MerchantCenterAccountLinkServiceRestTransport(
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse:
+        ) -> (
+            merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse
+        ):
             r"""Call the list merchant center
             account links method over HTTP.
 
@@ -719,7 +721,6 @@ class MerchantCenterAccountLinkServiceRestTransport(
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
-
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -802,7 +803,6 @@ class MerchantCenterAccountLinkServiceRestTransport(
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.ListOperationsResponse:
-
             r"""Call the list operations method over HTTP.
 
             Args:

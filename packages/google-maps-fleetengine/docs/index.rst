@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    fleetengine_v1/services
-    fleetengine_v1/types
+    fleetengine_v1/services_
+    fleetengine_v1/types_
 
 
 Changelog
