@@ -998,12 +998,18 @@ def test_df_multi_index_dot_not_supported():
     with pytest.raises(NotImplementedError, match="Multi-index input is not supported"):
         bf1.dot(bf2)
 
+    with pytest.raises(NotImplementedError, match="Multi-index input is not supported"):
+        bf1 @ bf2
+
     # right multi-index
     right_index = pandas.MultiIndex.from_tuples([("a", "aa"), ("a", "ab"), ("b", "bb")])
     bf1 = bpd.DataFrame(left_matrix)
     bf2 = bpd.DataFrame(right_matrix, index=right_index)
     with pytest.raises(NotImplementedError, match="Multi-index input is not supported"):
         bf1.dot(bf2)
+
+    with pytest.raises(NotImplementedError, match="Multi-index input is not supported"):
+        bf1 @ bf2
 
 
 def test_column_multi_index_dot_not_supported():
@@ -1022,6 +1028,11 @@ def test_column_multi_index_dot_not_supported():
     ):
         bf1.dot(bf2)
 
+    with pytest.raises(
+        NotImplementedError, match="Multi-level column input is not supported"
+    ):
+        bf1 @ bf2
+
     # right multi-columns
     bf1 = bpd.DataFrame(left_matrix)
     bf2 = bpd.DataFrame(right_matrix, columns=multi_level_columns)
@@ -1029,3 +1040,8 @@ def test_column_multi_index_dot_not_supported():
         NotImplementedError, match="Multi-level column input is not supported"
     ):
         bf1.dot(bf2)
+
+    with pytest.raises(
+        NotImplementedError, match="Multi-level column input is not supported"
+    ):
+        bf1 @ bf2

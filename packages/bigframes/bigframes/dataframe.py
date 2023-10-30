@@ -2707,3 +2707,5 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             result = result[other.name].rename()
 
         return result
+
+    __matmul__ = dot

@@ -3264,11 +3264,44 @@ def test_df_dot(
     )
 
 
+def test_df_dot_operator(
+    matrix_2by3_df, matrix_2by3_pandas_df, matrix_3by4_df, matrix_3by4_pandas_df
+):
+    bf_result = (matrix_2by3_df @ matrix_3by4_df).to_pandas()
+    pd_result = matrix_2by3_pandas_df @ matrix_3by4_pandas_df
+
+    # Patch pandas dtypes for testing parity
+    # Pandas result is object instead of Int64 (nullable) dtype.
+    for name in pd_result.columns:
+        pd_result[name] = pd_result[name].astype(pd.Int64Dtype())
+
+    pd.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+    )
+
+
 def test_df_dot_series(
     matrix_2by3_df, matrix_2by3_pandas_df, matrix_3by4_df, matrix_3by4_pandas_df
 ):
     bf_result = matrix_2by3_df.dot(matrix_3by4_df["x"]).to_pandas()
     pd_result = matrix_2by3_pandas_df.dot(matrix_3by4_pandas_df["x"])
+
+    # Patch pandas dtypes for testing parity
+    # Pandas result is object instead of Int64 (nullable) dtype.
+    pd_result = pd_result.astype(pd.Int64Dtype())
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+def test_df_dot_operator_series(
+    matrix_2by3_df, matrix_2by3_pandas_df, matrix_3by4_df, matrix_3by4_pandas_df
+):
+    bf_result = (matrix_2by3_df @ matrix_3by4_df["x"]).to_pandas()
+    pd_result = matrix_2by3_pandas_df @ matrix_3by4_pandas_df["x"]
 
     # Patch pandas dtypes for testing parity
     # Pandas result is object instead of Int64 (nullable) dtype.
