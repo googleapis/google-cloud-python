@@ -98,3 +98,38 @@ replacements:
 
           v2
     count: 1
+  - paths: [
+      packages/google-cloud-speech/google/cloud/speech_v1/__init__.py,
+    ]    
+    before: |
+      from .types.resource import CustomClass, PhraseSet, SpeechAdaptation\n
+      __all__ = \(
+    after: |
+      from .types.resource import CustomClass, PhraseSet, SpeechAdaptation\n
+      from google.cloud.speech_v1.helpers import SpeechHelpers\n\n
+      class SpeechClient(SpeechHelpers, SpeechClient):
+          __doc__ = SpeechClient.__doc__\n\n
+      __all__ = (
+    count: 1
+  - paths: [
+      packages/google-cloud-speech/google/cloud/speech_v1p1beta1/__init__.py,
+    ]    
+    before: |
+      \)\n
+      __all__ = \(
+    after: |
+      )\n
+      from google.cloud.speech_v1.helpers import SpeechHelpers
+      \n
+      class SpeechClient(SpeechHelpers, SpeechClient):
+          __doc__ = SpeechClient.__doc__\n\n
+      __all__ = (
+    count: 1
+  - paths: [
+      packages/google-cloud-speech/google/cloud/speech/__init__.py,
+    ]    
+    before: |
+      from google.cloud.speech_v1.services.speech.client import SpeechClient
+    after: |
+      from google.cloud.speech_v1 import SpeechClient
+    count: 1
