@@ -747,17 +747,13 @@ def _extract_type_name(annotation: Any) -> str:
     Returns:
         The extracted type hint in human-readable string format.
     """
-    type_name = ""
-    # Extract names for simple types.
-    try:
+
+    annotation_dir = dir(annotation)
+    if '__args__' not in annotation_dir:
         return annotation.__name__
-    except AttributeError:
-        pass
 
     # Try to extract names for more complicated types.
     type_name = str(annotation)
-    if not annotation.__args__:
-        return type_name
 
     # If ForwardRef references are found, recursively remove them.
     prefix_to_remove_start = "ForwardRef('"
