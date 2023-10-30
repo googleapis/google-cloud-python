@@ -352,7 +352,7 @@ class Session(
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 
-            Simple query input:
+        Simple query input:
 
             >>> df = bpd.read_gbq_query('''
             ...    SELECT
@@ -368,7 +368,7 @@ class Session(
             <BLANKLINE>
             [2 rows x 3 columns]
 
-            Preserve ordering in a query input.
+        Preserve ordering in a query input.
 
             >>> df = bpd.read_gbq_query('''
             ...    SELECT
