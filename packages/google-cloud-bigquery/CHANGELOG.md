@@ -5,6 +5,26 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.13.0](https://github.com/googleapis/python-bigquery/compare/v3.12.0...v3.13.0) (2023-10-30)
+
+
+### Features
+
+* Add `Model.transform_columns` property ([#1661](https://github.com/googleapis/python-bigquery/issues/1661)) ([5ceed05](https://github.com/googleapis/python-bigquery/commit/5ceed056482f6d1f2fc45e7e6b84382de45c85ed))
+* Add support for dataset.default_rounding_mode ([#1688](https://github.com/googleapis/python-bigquery/issues/1688)) ([83bc768](https://github.com/googleapis/python-bigquery/commit/83bc768b90a852d258a4805603020a296e02d2f9))
+
+
+### Bug Fixes
+
+* AccessEntry API representation parsing ([#1682](https://github.com/googleapis/python-bigquery/issues/1682)) ([a40d7ae](https://github.com/googleapis/python-bigquery/commit/a40d7ae03149708fc34c962b43a6ac198780b6aa))
+
+
+### Documentation
+
+* Remove redundant `bigquery_update_table_expiration` code sample ([#1673](https://github.com/googleapis/python-bigquery/issues/1673)) ([2dded33](https://github.com/googleapis/python-bigquery/commit/2dded33626b3de6c4ab5e1229eb4c85786b2ff53))
+* Revised `create_partitioned_table` sample ([#1447](https://github.com/googleapis/python-bigquery/issues/1447)) ([40ba859](https://github.com/googleapis/python-bigquery/commit/40ba859059c3e463e17ea7781bc5a9aff8244c5d))
+* Revised relax column mode sample ([#1467](https://github.com/googleapis/python-bigquery/issues/1467)) ([b8c9276](https://github.com/googleapis/python-bigquery/commit/b8c9276be011d971b941b583fd3d4417d438067f))
+
 ## [3.12.0](https://github.com/googleapis/python-bigquery/compare/v3.11.4...v3.12.0) (2023-10-02)
 
 
