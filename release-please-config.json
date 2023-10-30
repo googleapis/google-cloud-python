@@ -1207,6 +1207,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-kms": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-kms",
+            "extra-files": [
+                "google/cloud/kms/gapic_version.py",
+                "google/cloud/kms_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.kms.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-kms-inventory": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -2563,6 +2578,21 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.maps.routing.v2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/grafeas": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "grafeas",
+            "extra-files": [
+                "grafeas/grafeas/gapic_version.py",
+                "grafeas/grafeas_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_grafeas.v1.json",
                     "type": "json"
                 }
             ],
