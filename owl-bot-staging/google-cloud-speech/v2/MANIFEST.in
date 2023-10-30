@@ -1,2 +1,0 @@
-recursive-include google/cloud/speech *.py
-recursive-include google/cloud/speech_v2 *.py
