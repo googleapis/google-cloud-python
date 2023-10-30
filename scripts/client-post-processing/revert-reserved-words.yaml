@@ -20,3 +20,10 @@ replacements:
     before: "type_"
     after: "type"
     count: 4
+  - paths: [
+      packages/google-cloud-kms/google/cloud/kms_v1/types/resources.py,
+      packages/google-cloud-kms/tests/unit/gapic/kms_v1/test_key_management_service.py,
+    ]
+    before: "format_"
+    after: "format"
+    count: 7
