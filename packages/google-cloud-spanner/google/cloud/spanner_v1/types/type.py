@@ -137,10 +137,17 @@ class TypeAnnotationCode(proto.Enum):
             PostgreSQL JSONB values. Currently this annotation is always
             needed for [JSON][google.spanner.v1.TypeCode.JSON] when a
             client interacts with PostgreSQL-enabled Spanner databases.
+        PG_OID (4):
+            PostgreSQL compatible OID type. This
+            annotation can be used by a client interacting
+            with PostgreSQL-enabled Spanner database to
+            specify that a value should be treated using the
+            semantics of the OID type.
     """
     TYPE_ANNOTATION_CODE_UNSPECIFIED = 0
     PG_NUMERIC = 2
     PG_JSONB = 3
+    PG_OID = 4
 
 
 class Type(proto.Message):

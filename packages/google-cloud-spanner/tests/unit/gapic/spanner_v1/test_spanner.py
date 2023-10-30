@@ -4171,8 +4171,9 @@ def test_create_session_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.Session.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4247,8 +4248,9 @@ def test_create_session_rest_required_fields(request_type=spanner.CreateSessionR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = spanner.Session.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = spanner.Session.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4377,8 +4379,9 @@ def test_create_session_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.Session.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4441,8 +4444,9 @@ def test_batch_create_sessions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.BatchCreateSessionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.BatchCreateSessionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4521,8 +4525,9 @@ def test_batch_create_sessions_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = spanner.BatchCreateSessionsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = spanner.BatchCreateSessionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4656,8 +4661,9 @@ def test_batch_create_sessions_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.BatchCreateSessionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.BatchCreateSessionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4726,8 +4732,9 @@ def test_get_session_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.Session.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4801,8 +4808,9 @@ def test_get_session_rest_required_fields(request_type=spanner.GetSessionRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = spanner.Session.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = spanner.Session.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4925,8 +4933,9 @@ def test_get_session_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.Session.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4991,8 +5000,9 @@ def test_list_sessions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.ListSessionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.ListSessionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5073,8 +5083,9 @@ def test_list_sessions_rest_required_fields(request_type=spanner.ListSessionsReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = spanner.ListSessionsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = spanner.ListSessionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5206,8 +5217,9 @@ def test_list_sessions_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.ListSessionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.ListSessionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5582,8 +5594,9 @@ def test_execute_sql_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = result_set.ResultSet.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = result_set.ResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5660,8 +5673,9 @@ def test_execute_sql_rest_required_fields(request_type=spanner.ExecuteSqlRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = result_set.ResultSet.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = result_set.ResultSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5803,8 +5817,9 @@ def test_execute_streaming_sql_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = result_set.PartialResultSet.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = result_set.PartialResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         json_return_value = "[{}]".format(json_return_value)
 
@@ -5892,8 +5907,9 @@ def test_execute_streaming_sql_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = result_set.PartialResultSet.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = result_set.PartialResultSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
             json_return_value = "[{}]".format(json_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -6038,8 +6054,9 @@ def test_execute_batch_dml_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.ExecuteBatchDmlResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.ExecuteBatchDmlResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6118,8 +6135,9 @@ def test_execute_batch_dml_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = spanner.ExecuteBatchDmlResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = spanner.ExecuteBatchDmlResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6262,8 +6280,9 @@ def test_read_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = result_set.ResultSet.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = result_set.ResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6344,8 +6363,9 @@ def test_read_rest_required_fields(request_type=spanner.ReadRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = result_set.ResultSet.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = result_set.ResultSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6489,8 +6509,9 @@ def test_streaming_read_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = result_set.PartialResultSet.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = result_set.PartialResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         json_return_value = "[{}]".format(json_return_value)
 
@@ -6580,8 +6601,9 @@ def test_streaming_read_rest_required_fields(request_type=spanner.ReadRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = result_set.PartialResultSet.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = result_set.PartialResultSet.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
             json_return_value = "[{}]".format(json_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -6730,8 +6752,9 @@ def test_begin_transaction_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = transaction.Transaction.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = transaction.Transaction.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6807,8 +6830,9 @@ def test_begin_transaction_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = transaction.Transaction.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = transaction.Transaction.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6948,8 +6972,9 @@ def test_begin_transaction_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = transaction.Transaction.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = transaction.Transaction.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7019,8 +7044,9 @@ def test_commit_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = commit_response.CommitResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = commit_response.CommitResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7093,8 +7119,9 @@ def test_commit_rest_required_fields(request_type=spanner.CommitRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = commit_response.CommitResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = commit_response.CommitResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7222,8 +7249,9 @@ def test_commit_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = commit_response.CommitResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = commit_response.CommitResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7565,8 +7593,9 @@ def test_partition_query_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.PartitionResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.PartitionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7645,8 +7674,9 @@ def test_partition_query_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = spanner.PartitionResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = spanner.PartitionResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7787,8 +7817,9 @@ def test_partition_read_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.PartitionResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.PartitionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7865,8 +7896,9 @@ def test_partition_read_rest_required_fields(request_type=spanner.PartitionReadR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = spanner.PartitionResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = spanner.PartitionResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8010,8 +8042,9 @@ def test_batch_write_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.BatchWriteResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.BatchWriteResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         json_return_value = "[{}]".format(json_return_value)
 
@@ -8092,8 +8125,9 @@ def test_batch_write_rest_required_fields(request_type=spanner.BatchWriteRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = spanner.BatchWriteResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = spanner.BatchWriteResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
             json_return_value = "[{}]".format(json_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -8239,8 +8273,9 @@ def test_batch_write_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = spanner.BatchWriteResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = spanner.BatchWriteResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         json_return_value = "[{}]".format(json_return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
