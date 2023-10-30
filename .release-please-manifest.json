@@ -70,6 +70,7 @@
     "packages/google-cloud-iam-logging": "1.2.2",
     "packages/google-cloud-iap": "1.11.0",
     "packages/google-cloud-ids": "1.5.3",
+    "packages/google-cloud-kms": "0.0.0",
     "packages/google-cloud-kms-inventory": "0.2.1",
     "packages/google-cloud-language": "2.11.1",
     "packages/google-cloud-life-sciences": "0.9.4",
@@ -142,5 +143,6 @@
     "packages/google-maps-fleetengine-delivery": "0.1.0",
     "packages/google-maps-mapsplatformdatasets": "0.3.2",
     "packages/google-maps-places": "0.1.3",
-    "packages/google-maps-routing": "0.6.2"
+    "packages/google-maps-routing": "0.6.2",
+    "packages/grafeas": "0.0.0"
 }
