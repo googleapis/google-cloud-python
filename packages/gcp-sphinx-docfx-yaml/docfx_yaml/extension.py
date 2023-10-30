@@ -845,10 +845,15 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
                         # Find the index of the current default value argument
                         index = len(args) + count - offset_count
 
-                        # Only add defaultValue when str(default) doesn't contain object address string(object at 0x)
-                        # inspect.getargspec method will return wrong defaults which contain object address for some default values, like sys.stdout
-                        if 'object at 0x' not in str(default):
-                            args[index]['defaultValue'] = str(default)
+                        # Only add defaultValue when str(default) doesn't
+                        # contain object address string, for example:
+                        # (object at 0x) or <lambda> at 0x7fed4d57b5e0,
+                        # otherwise inspect.getargspec method will return wrong
+                        # defaults which contain object address for some,
+                        # like sys.stdout.
+                        default_string = str(default)
+                        if 'at 0x' not in default_string:
+                            args[index]['defaultValue'] = default_string
                 # If we cannot find the argument, it is missing a type and was taken out intentionally.
                 except IndexError:
                     pass
@@ -973,12 +978,23 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
             if arg['id'] in variables:
                 # Retrieve argument info from extracted map of variable info
                 arg_var = variables[arg['id']]
-                arg['var_type'] = arg_var.get('var_type')
                 arg['description'] = arg_var.get('description')
 
-            # Only add arguments with type and description.
-            if not (arg.get('var_type') and arg.get('description')):
+            # Ignore the entry if we're missing the description.
+            if not arg.get('description'):
                 incomplete_args.append(arg)
+                continue
+
+            if (arg_var_type := arg_var.get('var_type')):
+                arg['var_type'] = arg_var_type
+                continue
+
+            # If the type is not documented or missing from type_hint,
+            # ignore the entry.
+            if not arg.get('var_type'):
+                incomplete_args.append(arg)
+                continue
+
 
         # Remove any arguments with missing type or description from the YAML.
         for incomplete_arg in incomplete_args:

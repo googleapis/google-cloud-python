@@ -87,7 +87,13 @@ items:
     '
   syntax:
     content: "shutdown(\n    await_msg_callbacks: bool = False,\n) -> typing.List[pubsub_v1.subscriber.message.Message]"
-    parameters: []
+    parameters:
+    - defaultValue: 'False'
+      description: If <code>True</code>, the method will block until all currently
+        executing callbacks are done processing. If <code>False</code> (default),
+        the method will not wait for the currently running callbacks to complete.
+      id: await_msg_callbacks
+      var_type: bool
   type: method
   uid: google.cloud.pubsub_v1.subscriber.scheduler.Scheduler.shutdown
 references:

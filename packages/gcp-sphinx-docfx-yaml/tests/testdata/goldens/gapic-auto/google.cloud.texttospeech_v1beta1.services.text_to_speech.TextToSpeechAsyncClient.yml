@@ -349,7 +349,12 @@ items:
   syntax:
     content: "get_transport_class() -> typing.Type[\n    google.cloud.texttospeech_v1beta1.services.text_to_speech.transports.base.TextToSpeechTransport\n\
       ]"
-    parameters: []
+    parameters:
+    - defaultValue: None
+      description: The name of the desired transport. If none is provided, then the
+        first transport in the registry is used.
+      id: label
+      var_type: str
   type: method
   uid: google.cloud.texttospeech_v1beta1.services.text_to_speech.TextToSpeechAsyncClient.get_transport_class
 - attributes: []

@@ -673,7 +673,10 @@ items:
   syntax:
     content: "from_service_account_file(\n    filename: str, **kwargs: typing.Any\n\
       ) -> google.cloud.pubsub_v1.subscriber.client.Client"
-    parameters: []
+    parameters:
+    - description: The path to the service account private key json file.
+      id: filename
+      var_type: str
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.from_service_account_file
 - attributes: []
@@ -719,7 +722,10 @@ items:
   syntax:
     content: "from_service_account_json(\n    filename: str, **kwargs: typing.Any\n\
       ) -> google.cloud.pubsub_v1.subscriber.client.Client"
-    parameters: []
+    parameters:
+    - description: The path to the service account private key json file.
+      id: filename
+      var_type: str
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.from_service_account_json
 - attributes: []
@@ -1692,12 +1698,44 @@ items:
       \ = None,\n    use_legacy_flow_control: bool = False,\n    await_callbacks_on_shutdown:\
       \ bool = False,\n) -> google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture"
     parameters:
+    - description: The name of the subscription. The subscription should have already
+        been created (for example, by using <code>create_subscription</code>).
+      id: subscription
+      var_type: str
+    - description: The callback function. This function receives the message as its
+        only argument and will be called from a different thread/ process depending
+        on the scheduling strategy.
+      id: callback
+      var_type: typing.Callable[[subscriber.message.Message], typing.Any]
+    - defaultValue: ()
+      description: The flow control settings. Use this to prevent situations where
+        you are inundated with too many messages at once.
+      id: flow_control
+      var_type: typing.Union[<xref uid="google.cloud.pubsub_v1.types.FlowControl">google.cloud.pubsub_v1.types.FlowControl</xref>,
+        typing.Sequence]
+    - defaultValue: None
+      description: An optional *scheduler* to use when executing the callback. This
+        controls how callbacks are executed concurrently. This object must not be
+        shared across multiple <code>SubscriberClient</code> instances.
+      id: scheduler
+      var_type: typing.Optional[subscriber.scheduler.ThreadScheduler]
     - defaultValue: 'False'
       description: If set to <code>True</code>, flow control at the Cloud Pub/Sub
         server is disabled, though client-side flow control is still enabled. If set
         to <code>False</code> (default), both server-side and client-side flow control
         are enabled.
       id: use_legacy_flow_control
+      var_type: bool
+    - defaultValue: 'False'
+      description: If <code>True</code>, after canceling the returned future, the
+        latter's <code>result()</code> method will block until the background stream
+        and its helper threads have been terminated, and all currently executing message
+        callbacks are done processing. If <code>False</code> (default), the returned
+        future's <code>result()</code> method will not block after canceling the future.
+        The method will instead return immediately after the background stream and
+        its helper threads have been terminated, but some of the message callback
+        threads might still be running at that point.
+      id: await_callbacks_on_shutdown
       var_type: bool
   type: method
   uid: google.cloud.pubsub_v1.subscriber.client.Client.subscribe

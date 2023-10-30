@@ -69,7 +69,18 @@ items:
     content: 'Message(message: types.PubsubMessage._meta._pb, ack_id: str, delivery_attempt:
       int, request_queue: queue.Queue, exactly_once_delivery_enabled_func: typing.Callable[[],
       bool] = <function Message.<lambda>>)'
-    parameters: []
+    parameters:
+    - description: The ack_id received from Pub/Sub.
+      id: ack_id
+      var_type: str
+    - description: The delivery attempt counter received from Pub/Sub if a DeadLetterPolicy
+        is set on the subscription, and zero otherwise.
+      id: delivery_attempt
+      var_type: int
+    - description: A Callable that returns whether exactly-once delivery is currently-enabled.
+        Defaults to a lambda that always returns False.
+      id: exactly_once_delivery_enabled_func
+      var_type: typing.Callable[[], bool]
   type: method
   uid: google.cloud.pubsub_v1.subscriber.message.Message
 - attributes: []
@@ -369,7 +380,12 @@ items:
     '
   syntax:
     content: 'modify_ack_deadline(seconds: int) -> None'
-    parameters: []
+    parameters:
+    - description: The number of seconds to set the lease deadline to. This should
+        be between 0 and 600. Due to network latency, values below 10 are advised
+        against.
+      id: seconds
+      var_type: int
   type: method
   uid: google.cloud.pubsub_v1.subscriber.message.Message.modify_ack_deadline
 - attributes: []
@@ -435,7 +451,12 @@ items:
     '
   syntax:
     content: "modify_ack_deadline_with_response(\n    seconds: int,\n) -> google.cloud.pubsub_v1.subscriber.futures.Future"
-    parameters: []
+    parameters:
+    - description: The number of seconds to set the lease deadline to. This should
+        be between 0 and 600. Due to network latency, values below 10 are advised
+        against.
+      id: seconds
+      var_type: int
   type: method
   uid: google.cloud.pubsub_v1.subscriber.message.Message.modify_ack_deadline_with_response
 - attributes: []

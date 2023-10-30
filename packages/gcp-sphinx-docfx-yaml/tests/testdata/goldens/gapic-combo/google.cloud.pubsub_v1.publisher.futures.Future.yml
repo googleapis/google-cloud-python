@@ -77,7 +77,14 @@ items:
   syntax:
     content: "add_done_callback(\n    callback: typing.Callable[[pubsub_v1.publisher.futures.Future],\
       \ typing.Any]\n) -> None"
-    parameters: []
+    parameters:
+    - description: A callable that will be called with this future as its only argument
+        when the future completes or is cancelled. The callable will always be called
+        by a thread in the same process in which it was added. If the future has already
+        completed or been cancelled then the callable will be called immediately.
+        These callables are called in the order that they were added.
+      id: callback
+      var_type: typing.Callable[[pubsub_v1.publisher.futures.Future], typing.Any]
   type: method
   uid: google.cloud.pubsub_v1.publisher.futures.Future.add_done_callback
 - attributes: []
@@ -197,7 +204,11 @@ items:
       var_type: concurrent.futures.TimeoutError
     - description: For undefined exceptions in the underlying call execution.
       var_type: Exception
-    parameters: []
+    parameters:
+    - defaultValue: None
+      description: The number of seconds before this call times out and raises TimeoutError.
+      id: timeout
+      var_type: typing.Union[int, float]
   type: method
   uid: google.cloud.pubsub_v1.publisher.futures.Future.result
 - attributes: []

@@ -21,7 +21,12 @@ items:
   syntax:
     content: "ThreadScheduler(\n    executor: typing.Optional[concurrent.futures.thread.ThreadPoolExecutor]\
       \ = None,\n)"
-    parameters: []
+    parameters:
+    - defaultValue: None
+      description: An optional executor to use. If not specified, a default one will
+        be created.
+      id: executor
+      var_type: typing.Optional[concurrent.futures.thread.ThreadPoolExecutor]
   type: class
   uid: google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler
 - &id001
@@ -81,7 +86,13 @@ items:
     '
   syntax:
     content: "shutdown(\n    await_msg_callbacks: bool = False,\n) -> typing.List[pubsub_v1.subscriber.message.Message]"
-    parameters: []
+    parameters:
+    - defaultValue: 'False'
+      description: If <code>True</code>, the method will block until all currently
+        executing executor threads are done processing. If <code>False</code> (default),
+        the method will not wait for the currently running threads to complete.
+      id: await_msg_callbacks
+      var_type: bool
   type: method
   uid: google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler.shutdown
 references:

@@ -194,7 +194,11 @@ items:
       var_type: concurrent.futures.TimeoutError
     - description: If the operation did not succeed for another reason.
       var_type: AcknowledgeError
-    parameters: []
+    parameters:
+    - defaultValue: None
+      description: The number of seconds before this call times out and raises TimeoutError.
+      id: timeout
+      var_type: typing.Union[int, float]
   type: method
   uid: google.cloud.pubsub_v1.subscriber.futures.Future.result
 - attributes: []

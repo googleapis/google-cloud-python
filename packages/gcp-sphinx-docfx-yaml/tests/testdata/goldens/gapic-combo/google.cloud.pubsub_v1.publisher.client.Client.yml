@@ -68,7 +68,17 @@ items:
       \ typing.Sequence\n    ] = (),\n    publisher_options: typing.Union[\n     \
       \   google.cloud.pubsub_v1.types.PublisherOptions, typing.Sequence\n    ] =\
       \ (),\n    **kwargs: typing.Any\n)"
-    parameters: []
+    parameters:
+    - description: The settings for batch publishing.
+      id: batch_settings
+      var_type: typing.Union[<xref uid="google.cloud.pubsub_v1.types.BatchSettings">google.cloud.pubsub_v1.types.BatchSettings</xref>,
+        typing.Sequence]
+    - defaultValue: ()
+      description: The options for the publisher client. Note that enabling message
+        ordering will override the publish retry timeout to be infinite.
+      id: publisher_options
+      var_type: typing.Union[<xref uid="google.cloud.pubsub_v1.types.PublisherOptions">google.cloud.pubsub_v1.types.PublisherOptions</xref>,
+        typing.Sequence]
   type: class
   uid: google.cloud.pubsub_v1.publisher.client.Client
 - attributes: []
@@ -480,7 +490,14 @@ items:
     content: "from_service_account_file(\n    filename: str,\n    batch_settings:\
       \ typing.Union[\n        google.cloud.pubsub_v1.types.BatchSettings, typing.Sequence\n\
       \    ] = (),\n    **kwargs: typing.Any\n) -> google.cloud.pubsub_v1.publisher.client.Client"
-    parameters: []
+    parameters:
+    - description: The path to the service account private key JSON file.
+      id: filename
+      var_type: str
+    - description: The settings for batch publishing.
+      id: batch_settings
+      var_type: typing.Union[<xref uid="google.cloud.pubsub_v1.types.BatchSettings">google.cloud.pubsub_v1.types.BatchSettings</xref>,
+        typing.Sequence]
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.from_service_account_file
 - attributes: []
@@ -527,7 +544,14 @@ items:
     content: "from_service_account_json(\n    filename: str,\n    batch_settings:\
       \ typing.Union[\n        google.cloud.pubsub_v1.types.BatchSettings, typing.Sequence\n\
       \    ] = (),\n    **kwargs: typing.Any\n) -> google.cloud.pubsub_v1.publisher.client.Client"
-    parameters: []
+    parameters:
+    - description: The path to the service account private key JSON file.
+      id: filename
+      var_type: str
+    - description: The settings for batch publishing.
+      id: batch_settings
+      var_type: typing.Union[<xref uid="google.cloud.pubsub_v1.types.BatchSettings">google.cloud.pubsub_v1.types.BatchSettings</xref>,
+        typing.Sequence]
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.from_service_account_json
 - attributes: []
@@ -1087,7 +1111,20 @@ items:
     - description: If publishing the <code>message</code> would exceed the max size
         limit on the backend.
       var_type: pubsub_v1.publisher.exceptions.MessageTooLargeError
-    parameters: []
+    parameters:
+    - description: The topic to publish messages to.
+      id: topic
+      var_type: str
+    - defaultValue: ''
+      description: A bytestring representing the message body. This must be a bytestring.
+      id: data
+      var_type: bytes
+    - defaultValue: _MethodDefault._DEFAULT_VALUE
+      description: A string that identifies related messages for which publish order
+        should be respected. Message ordering must be enabled for this client to use
+        this feature.
+      id: ordering_key
+      var_type: str
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.publish
 - attributes: []
@@ -1113,7 +1150,14 @@ items:
     - description: If the topic/ordering key combination has not been seen before
         by this client.
       var_type: ValueError
-    parameters: []
+    parameters:
+    - description: The topic to publish messages to.
+      id: topic
+      var_type: str
+    - description: A string that identifies related messages for which publish order
+        should be respected.
+      id: ordering_key
+      var_type: str
   type: method
   uid: google.cloud.pubsub_v1.publisher.client.Client.resume_publish
 - attributes: []
