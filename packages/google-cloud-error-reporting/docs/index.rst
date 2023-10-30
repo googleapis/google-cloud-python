@@ -19,8 +19,8 @@ API Reference
 
    client
    util
-   errorreporting_v1beta1/services
-   errorreporting_v1beta1/types
+   errorreporting_v1beta1/services_
+   errorreporting_v1beta1/types_
 
 
 Changelog
