@@ -40,6 +40,7 @@ from sqlalchemy.sql.compiler import (
 )
 from sqlalchemy.sql.default_comparator import operator_lookup
 from sqlalchemy.sql.operators import json_getitem_op
+from sqlalchemy.sql import expression
 
 from google.cloud.spanner_v1.data_types import JsonObject
 from google.cloud import spanner_dbapi
@@ -172,6 +173,16 @@ class SpannerExecutionContext(DefaultExecutionContext):
         priority = self.execution_options.get("request_priority")
         if priority is not None:
             self._dbapi_connection.connection.request_priority = priority
+
+    def fire_sequence(self, seq, type_):
+        """Builds a statement for fetching next value of the sequence."""
+        return self._execute_scalar(
+            (
+                "SELECT GET_NEXT_SEQUENCE_VALUE(SEQUENCE %s)"
+                % self.identifier_preparer.format_sequence(seq)
+            ),
+            type_,
+        )
 
 
 class SpannerIdentifierPreparer(IdentifierPreparer):
@@ -343,6 +354,20 @@ class SpannerSQLCompiler(SQLCompiler):
             text += " OFFSET " + self.process(select._offset_clause, **kw)
         return text
 
+    def returning_clause(self, stmt, returning_cols, **kw):
+        columns = [
+            self._label_select_column(None, c, True, False, {})
+            for c in expression._select_iterables(returning_cols)
+        ]
+
+        return "THEN RETURN " + ", ".join(columns)
+
+    def visit_sequence(self, seq, **kw):
+        """Builds a statement for fetching next value of the sequence."""
+        return " GET_NEXT_SEQUENCE_VALUE(SEQUENCE %s)" % self.preparer.format_sequence(
+            seq
+        )
+
 
 class SpannerDDLCompiler(DDLCompiler):
     """Spanner DDL statements compiler."""
@@ -457,6 +482,24 @@ class SpannerDDLCompiler(DDLCompiler):
 
         return post_cmds
 
+    def get_identity_options(self, identity_options):
+        text = ["sequence_kind = 'bit_reversed_positive'"]
+        if identity_options.start is not None:
+            text.append("start_with_counter = %d" % identity_options.start)
+        return ", ".join(text)
+
+    def visit_create_sequence(self, create, prefix=None, **kw):
+        """Builds a ``CREATE SEQUENCE`` statement for the sequence."""
+        text = "CREATE SEQUENCE %s" % self.preparer.format_sequence(create.element)
+        options = self.get_identity_options(create.element)
+        if options:
+            text += " OPTIONS (" + options + ")"
+        return text
+
+    def visit_drop_sequence(self, drop, **kw):
+        """Builds a ``DROP SEQUENCE`` statement for the sequence."""
+        return "DROP SEQUENCE %s" % self.preparer.format_sequence(drop.element)
+
 
 class SpannerTypeCompiler(GenericTypeCompiler):
     """Spanner types compiler.
@@ -531,7 +574,8 @@ class SpannerDialect(DefaultDialect):
     supports_sane_rowcount = False
     supports_sane_multi_rowcount = False
     supports_default_values = False
-    supports_sequences = False
+    supports_sequences = True
+    sequences_optional = False
     supports_native_enum = True
     supports_native_boolean = True
     supports_native_decimal = True
@@ -693,6 +737,36 @@ class SpannerDialect(DefaultDialect):
                 all_views.append(view[0])
 
         return all_views
+
+    @engine_to_connection
+    def get_sequence_names(self, connection, schema=None, **kw):
+        """
+        Return a list of all sequence names available in the database.
+
+        The method is used by SQLAlchemy introspection systems.
+
+        Args:
+            connection (sqlalchemy.engine.base.Connection):
+                SQLAlchemy connection or engine object.
+            schema (str): Optional. Schema name
+
+        Returns:
+            list: List of sequence names.
+        """
+        sql = """
+            SELECT name
+            FROM information_schema.sequences
+            WHERE SCHEMA='{}'
+            """.format(
+            schema or ""
+        )
+        all_sequences = []
+        with connection.connection.database.snapshot() as snap:
+            rows = list(snap.execute_sql(sql))
+            for seq in rows:
+                all_sequences.append(seq[0])
+
+        return all_sequences
 
     @engine_to_connection
     def get_view_definition(self, connection, view_name, schema=None, **kw):
@@ -1286,6 +1360,32 @@ WHERE TABLE_NAME="{table_name}"
 LIMIT 1
 """.format(
                     table_name=table_name
+                )
+            )
+
+            for _ in rows:
+                return True
+
+        return False
+
+    @engine_to_connection
+    def has_sequence(self, connection, sequence_name, schema=None, **kw):
+        """Check the existence of a particular sequence in the database.
+
+        Given a :class:`_engine.Connection` object and a string
+        `sequence_name`, return True if the given sequence exists in
+        the database, False otherwise.
+        """
+
+        with connection.connection.database.snapshot() as snap:
+            rows = snap.execute_sql(
+                """
+                SELECT true
+                FROM INFORMATION_SCHEMA.SEQUENCES
+                WHERE NAME="{sequence_name}"
+                LIMIT 1
+                """.format(
+                    sequence_name=sequence_name
                 )
             )
 

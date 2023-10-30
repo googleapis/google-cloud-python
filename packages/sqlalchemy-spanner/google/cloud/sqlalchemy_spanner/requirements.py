@@ -81,7 +81,7 @@ class Requirements(SuiteRequirements):  # pragma: no cover
 
     @property
     def sequences(self):
-        return exclusions.closed()
+        return exclusions.open()
 
     @property
     def temporary_tables(self):
