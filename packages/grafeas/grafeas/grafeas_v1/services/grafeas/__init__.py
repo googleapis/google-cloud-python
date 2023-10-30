@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import GrafeasClient
 from .async_client import GrafeasAsyncClient
+from .client import GrafeasClient
 
 __all__ = (
     "GrafeasClient",

@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
+
 from grafeas.grafeas_v1.types import attestation as g_attestation
 from grafeas.grafeas_v1.types import build as g_build
 from grafeas.grafeas_v1.types import common
@@ -33,7 +33,6 @@ from grafeas.grafeas_v1.types import package as g_package
 from grafeas.grafeas_v1.types import upgrade as g_upgrade
 from grafeas.grafeas_v1.types import vex
 from grafeas.grafeas_v1.types import vulnerability as g_vulnerability
-
 
 __protobuf__ = proto.module(
     package="grafeas.v1",

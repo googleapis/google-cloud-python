@@ -22,59 +22,59 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 from collections.abc import Iterable
-from google.protobuf import json_format
 import json
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
-from google.protobuf import json_format
 
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-from grafeas.grafeas_v1.services.grafeas import GrafeasAsyncClient
-from grafeas.grafeas_v1.services.grafeas import GrafeasClient
-from grafeas.grafeas_v1.services.grafeas import pagers
-from grafeas.grafeas_v1.services.grafeas import transports
-from grafeas.grafeas_v1.types import attestation
-from grafeas.grafeas_v1.types import build
-from grafeas.grafeas_v1.types import common
-from grafeas.grafeas_v1.types import compliance
-from grafeas.grafeas_v1.types import cvss
-from grafeas.grafeas_v1.types import deployment
-from grafeas.grafeas_v1.types import discovery
-from grafeas.grafeas_v1.types import dsse_attestation
-from grafeas.grafeas_v1.types import grafeas
-from grafeas.grafeas_v1.types import image
-from grafeas.grafeas_v1.types import intoto_provenance
-from grafeas.grafeas_v1.types import intoto_statement
-from grafeas.grafeas_v1.types import package
-from grafeas.grafeas_v1.types import provenance
-from grafeas.grafeas_v1.types import severity
-from grafeas.grafeas_v1.types import slsa_provenance
-from grafeas.grafeas_v1.types import slsa_provenance_zero_two
-from grafeas.grafeas_v1.types import upgrade
-from grafeas.grafeas_v1.types import vex
-from grafeas.grafeas_v1.types import vulnerability
-import google.auth
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+from grafeas.grafeas_v1.services.grafeas import (
+    GrafeasAsyncClient,
+    GrafeasClient,
+    pagers,
+    transports,
+)
+from grafeas.grafeas_v1.types import (
+    attestation,
+    build,
+    common,
+    compliance,
+    cvss,
+    deployment,
+    discovery,
+    dsse_attestation,
+    grafeas,
+    image,
+    intoto_provenance,
+    intoto_statement,
+    package,
+    provenance,
+    severity,
+    slsa_provenance,
+    slsa_provenance_zero_two,
+    upgrade,
+    vex,
+    vulnerability,
+)
 
 
 def client_cert_source_callback():

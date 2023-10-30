@@ -19,12 +19,11 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from grafeas.grafeas_v1.types import intoto_provenance
-from grafeas.grafeas_v1.types import slsa_provenance as g_slsa_provenance
 from grafeas.grafeas_v1.types import (
     slsa_provenance_zero_two as g_slsa_provenance_zero_two,
 )
-
+from grafeas.grafeas_v1.types import intoto_provenance
+from grafeas.grafeas_v1.types import slsa_provenance as g_slsa_provenance
 
 __protobuf__ = proto.module(
     package="grafeas.v1",

@@ -16,28 +16,27 @@
 
 
 from __future__ import absolute_import
+
 import sys
 
 from google.api_core.protobuf_helpers import get_messages
-
-from google.protobuf import any_pb2
-from google.protobuf import empty_pb2
-from google.protobuf import field_mask_pb2
-from google.protobuf import timestamp_pb2
+from google.protobuf import any_pb2, empty_pb2, field_mask_pb2, timestamp_pb2
 from google.rpc import status_pb2
-from grafeas.grafeas_v1.proto import attestation_pb2
-from grafeas.grafeas_v1.proto import build_pb2
-from grafeas.grafeas_v1.proto import common_pb2
-from grafeas.grafeas_v1.proto import cvss_pb2
-from grafeas.grafeas_v1.proto import deployment_pb2
-from grafeas.grafeas_v1.proto import discovery_pb2
-from grafeas.grafeas_v1.proto import grafeas_pb2
-from grafeas.grafeas_v1.proto import image_pb2
-from grafeas.grafeas_v1.proto import package_pb2
-from grafeas.grafeas_v1.proto import provenance_pb2
-from grafeas.grafeas_v1.proto import upgrade_pb2
-from grafeas.grafeas_v1.proto import vulnerability_pb2
 
+from grafeas.grafeas_v1.proto import (
+    attestation_pb2,
+    build_pb2,
+    common_pb2,
+    cvss_pb2,
+    deployment_pb2,
+    discovery_pb2,
+    grafeas_pb2,
+    image_pb2,
+    package_pb2,
+    provenance_pb2,
+    upgrade_pb2,
+    vulnerability_pb2,
+)
 
 _shared_modules = [
     any_pb2,

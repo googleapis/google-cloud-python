@@ -21,7 +21,6 @@ import proto  # type: ignore
 
 from grafeas.grafeas_v1.types import common
 
-
 __protobuf__ = proto.module(
     package="grafeas.v1",
     manifest={

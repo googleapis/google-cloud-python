@@ -23,7 +23,6 @@ from grafeas.grafeas_v1.types import intoto_provenance as g_intoto_provenance
 from grafeas.grafeas_v1.types import intoto_statement as g_intoto_statement
 from grafeas.grafeas_v1.types import provenance as g_provenance
 
-
 __protobuf__ = proto.module(
     package="grafeas.v1",
     manifest={

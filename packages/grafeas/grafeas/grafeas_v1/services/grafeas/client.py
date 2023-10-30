@@ -29,17 +29,17 @@ from typing import (
     cast,
 )
 
-from grafeas.grafeas_v1 import gapic_version as package_version
-
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from grafeas.grafeas_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -48,21 +48,25 @@ except AttributeError:  # pragma: NO COVER
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+
 from grafeas.grafeas_v1.services.grafeas import pagers
-from grafeas.grafeas_v1.types import attestation
-from grafeas.grafeas_v1.types import build
-from grafeas.grafeas_v1.types import common
-from grafeas.grafeas_v1.types import compliance
-from grafeas.grafeas_v1.types import deployment
-from grafeas.grafeas_v1.types import discovery
-from grafeas.grafeas_v1.types import dsse_attestation
-from grafeas.grafeas_v1.types import grafeas
-from grafeas.grafeas_v1.types import image
-from grafeas.grafeas_v1.types import package
-from grafeas.grafeas_v1.types import upgrade
-from grafeas.grafeas_v1.types import vex
-from grafeas.grafeas_v1.types import vulnerability
-from .transports.base import GrafeasTransport, DEFAULT_CLIENT_INFO
+from grafeas.grafeas_v1.types import (
+    attestation,
+    build,
+    common,
+    compliance,
+    deployment,
+    discovery,
+    dsse_attestation,
+    grafeas,
+    image,
+    package,
+    upgrade,
+    vex,
+    vulnerability,
+)
+
+from .transports.base import DEFAULT_CLIENT_INFO, GrafeasTransport
 from .transports.grpc import GrafeasGrpcTransport
 from .transports.grpc_asyncio import GrafeasGrpcAsyncIOTransport
 from .transports.rest import GrafeasRestTransport

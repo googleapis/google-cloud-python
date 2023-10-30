@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-from grafeas.grafeas_v1.types import common
+import proto  # type: ignore
 
+from grafeas.grafeas_v1.types import common
 
 __protobuf__ = proto.module(
     package="grafeas.v1",

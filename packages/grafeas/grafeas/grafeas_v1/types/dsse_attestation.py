@@ -19,9 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from grafeas.grafeas_v1.types import common
-from grafeas.grafeas_v1.types import intoto_statement
-
+from grafeas.grafeas_v1.types import common, intoto_statement
 
 __protobuf__ = proto.module(
     package="grafeas.v1",
