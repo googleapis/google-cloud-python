@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
         "ExplicitDecodingConfig",
         "SpeakerDiarizationConfig",
         "RecognitionFeatures",
+        "TranscriptNormalization",
         "SpeechAdaptation",
         "RecognitionConfig",
         "RecognizeRequest",
@@ -56,6 +57,8 @@ __protobuf__ = proto.module(
         "RecognitionOutputConfig",
         "BatchRecognizeResponse",
         "BatchRecognizeResults",
+        "CloudStorageResult",
+        "InlineResult",
         "BatchRecognizeFileResult",
         "BatchRecognizeTranscriptionMetadata",
         "BatchRecognizeMetadata",
@@ -587,9 +590,14 @@ class Recognizer(proto.Message):
             User-settable, human-readable name for the
             Recognizer. Must be 63 characters or less.
         model (str):
-            Optional. Which model to use for recognition requests.
-            Select the model best suited to your domain to get best
-            results.
+            Optional. This field is now deprecated. Prefer the
+            [``model``][google.cloud.speech.v2.RecognitionConfig.model]
+            field in the
+            [``RecognitionConfig``][google.cloud.speech.v2.RecognitionConfig]
+            message.
+
+            Which model to use for recognition requests. Select the
+            model best suited to your domain to get best results.
 
             Guidance for choosing which model to use can be found in the
             `Transcription Models
@@ -598,7 +606,13 @@ class Recognizer(proto.Message):
             `Table Of Supported
             Models <https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>`__.
         language_codes (MutableSequence[str]):
-            Optional. The language of the supplied audio as a
+            Optional. This field is now deprecated. Prefer the
+            [``language_codes``][google.cloud.speech.v2.RecognitionConfig.language_codes]
+            field in the
+            [``RecognitionConfig``][google.cloud.speech.v2.RecognitionConfig]
+            message.
+
+            The language of the supplied audio as a
             `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
             language tag.
 
@@ -771,6 +785,8 @@ class AutoDetectDecodingConfig(proto.Message):
     -  OGG_OPUS: Opus audio frames in an Ogg container.
 
     -  WEBM_OPUS: Opus audio frames in a WebM container.
+
+    -  M4A: M4A audio format.
 
     """
 
@@ -991,6 +1007,56 @@ class RecognitionFeatures(proto.Message):
     )
 
 
+class TranscriptNormalization(proto.Message):
+    r"""Transcription normalization configuration. Use transcription
+    normalization to automatically replace parts of the transcript
+    with phrases of your choosing. For StreamingRecognize, this
+    normalization only applies to stable partial transcripts
+    (stability > 0.8) and final transcripts.
+
+    Attributes:
+        entries (MutableSequence[google.cloud.speech_v2.types.TranscriptNormalization.Entry]):
+            A list of replacement entries. We will perform replacement
+            with one entry at a time. For example, the second entry in
+            ["cat" => "dog", "mountain cat" => "mountain dog"] will
+            never be applied because we will always process the first
+            entry before it. At most 100 entries.
+    """
+
+    class Entry(proto.Message):
+        r"""A single replacement configuration.
+
+        Attributes:
+            search (str):
+                What to replace. Max length is 100
+                characters.
+            replace (str):
+                What to replace with. Max length is 100
+                characters.
+            case_sensitive (bool):
+                Whether the search is case sensitive.
+        """
+
+        search: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        replace: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        case_sensitive: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+
+    entries: MutableSequence[Entry] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Entry,
+    )
+
+
 class SpeechAdaptation(proto.Message):
     r"""Provides "hints" to the speech recognizer to favor specific
     words and phrases in the results. PhraseSets can be specified as
@@ -1109,6 +1175,13 @@ class RecognitionConfig(proto.Message):
             Speech adaptation context that weights
             recognizer predictions for specific words and
             phrases.
+        transcript_normalization (google.cloud.speech_v2.types.TranscriptNormalization):
+            Optional. Use transcription normalization to
+            automatically replace parts of the transcript
+            with phrases of your choosing. For
+            StreamingRecognize, this normalization only
+            applies to stable partial transcripts (stability
+            > 0.8) and final transcripts.
     """
 
     auto_decoding_config: "AutoDetectDecodingConfig" = proto.Field(
@@ -1140,6 +1213,11 @@ class RecognitionConfig(proto.Message):
         proto.MESSAGE,
         number=6,
         message="SpeechAdaptation",
+    )
+    transcript_normalization: "TranscriptNormalization" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="TranscriptNormalization",
     )
 
 
@@ -1820,29 +1898,73 @@ class BatchRecognizeResults(proto.Message):
     )
 
 
-class BatchRecognizeFileResult(proto.Message):
-    r"""Final results for a single file.
+class CloudStorageResult(proto.Message):
+    r"""Final results written to Cloud Storage.
 
     Attributes:
         uri (str):
             The Cloud Storage URI to which recognition
             results were written.
-        error (google.rpc.status_pb2.Status):
-            Error if one was encountered.
-        metadata (google.cloud.speech_v2.types.RecognitionResponseMetadata):
-
-        transcript (google.cloud.speech_v2.types.BatchRecognizeResults):
-            The transcript for the audio file. This is populated only
-            when
-            [InlineOutputConfig][google.cloud.speech.v2.InlineOutputConfig]
-            is set in the
-            [RecognitionOutputConfig][[google.cloud.speech.v2.RecognitionOutputConfig].
     """
 
     uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
+
+
+class InlineResult(proto.Message):
+    r"""Final results returned inline in the recognition response.
+
+    Attributes:
+        transcript (google.cloud.speech_v2.types.BatchRecognizeResults):
+            The transcript for the audio file.
+    """
+
+    transcript: "BatchRecognizeResults" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="BatchRecognizeResults",
+    )
+
+
+class BatchRecognizeFileResult(proto.Message):
+    r"""Final results for a single file.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        error (google.rpc.status_pb2.Status):
+            Error if one was encountered.
+        metadata (google.cloud.speech_v2.types.RecognitionResponseMetadata):
+
+        cloud_storage_result (google.cloud.speech_v2.types.CloudStorageResult):
+            Recognition results written to Cloud Storage. This is
+            populated only when
+            [GcsOutputConfig][google.cloud.speech.v2.GcsOutputConfig] is
+            set in the
+            [RecognitionOutputConfig][[google.cloud.speech.v2.RecognitionOutputConfig].
+
+            This field is a member of `oneof`_ ``result``.
+        inline_result (google.cloud.speech_v2.types.InlineResult):
+            Recognition results. This is populated only when
+            [InlineOutputConfig][google.cloud.speech.v2.InlineOutputConfig]
+            is set in the
+            [RecognitionOutputConfig][[google.cloud.speech.v2.RecognitionOutputConfig].
+
+            This field is a member of `oneof`_ ``result``.
+        uri (str):
+            Deprecated. Use ``cloud_storage_result.native_format_uri``
+            instead.
+        transcript (google.cloud.speech_v2.types.BatchRecognizeResults):
+            Deprecated. Use ``inline_result.transcript`` instead.
+    """
+
     error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -1852,6 +1974,22 @@ class BatchRecognizeFileResult(proto.Message):
         proto.MESSAGE,
         number=3,
         message="RecognitionResponseMetadata",
+    )
+    cloud_storage_result: "CloudStorageResult" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="result",
+        message="CloudStorageResult",
+    )
+    inline_result: "InlineResult" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="result",
+        message="InlineResult",
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
     transcript: "BatchRecognizeResults" = proto.Field(
         proto.MESSAGE,
