@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.0.6](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.5...v2.0.6) (2023-10-30)
+
+
+### Bug Fixes
+
+* Refactor type hint retrieval ([#312](https://github.com/googleapis/sphinx-docfx-yaml/issues/312)) ([0c91f60](https://github.com/googleapis/sphinx-docfx-yaml/commit/0c91f60fb2eab8b184b1228d5f3eb133be7ae201))
+* Support docstrings without type added ([#311](https://github.com/googleapis/sphinx-docfx-yaml/issues/311)) ([d214d64](https://github.com/googleapis/sphinx-docfx-yaml/commit/d214d64c54d06fa715535b14932ac1ad67fa0d09))
+* Update annotation name extraction logic and add unit tests ([#320](https://github.com/googleapis/sphinx-docfx-yaml/issues/320)) ([220951d](https://github.com/googleapis/sphinx-docfx-yaml/commit/220951d341c27d345679f64fb67968320168e428))
+
 ## [2.0.5](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.4...v2.0.5) (2023-06-27)
 
 
