@@ -19,17 +19,40 @@ __version__ = package_version.__version__
 
 
 from .services.places import PlacesAsyncClient, PlacesClient
+from .types.attribution import AuthorAttribution
+from .types.ev_charging import EVChargeOptions, EVConnectorType
+from .types.fuel_options import FuelOptions
 from .types.geometry import Circle
+from .types.photo import Photo
 from .types.place import Place, PriceLevel
-from .types.places_service import Int32Range, SearchTextRequest, SearchTextResponse
+from .types.places_service import (
+    GetPhotoMediaRequest,
+    GetPlaceRequest,
+    PhotoMedia,
+    SearchNearbyRequest,
+    SearchNearbyResponse,
+    SearchTextRequest,
+    SearchTextResponse,
+)
+from .types.review import Review
 
 __all__ = (
     "PlacesAsyncClient",
+    "AuthorAttribution",
     "Circle",
-    "Int32Range",
+    "EVChargeOptions",
+    "EVConnectorType",
+    "FuelOptions",
+    "GetPhotoMediaRequest",
+    "GetPlaceRequest",
+    "Photo",
+    "PhotoMedia",
     "Place",
     "PlacesClient",
     "PriceLevel",
+    "Review",
+    "SearchNearbyRequest",
+    "SearchNearbyResponse",
     "SearchTextRequest",
     "SearchTextResponse",
 )

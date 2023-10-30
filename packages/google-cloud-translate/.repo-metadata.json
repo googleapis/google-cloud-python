@@ -1,0 +1,18 @@
+{
+    "name": "translate",
+    "name_pretty": "Cloud Translation",
+    "product_documentation": "https://cloud.google.com/translate/docs/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/translate/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559749",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_COMBO",
+    "repo": "googleapis/python-translate",
+    "distribution_name": "google-cloud-translate",
+    "api_id": "translate.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v3",
+    "codeowner_team": "@googleapis/cdpe-cloudai",
+    "api_shortname": "translate",
+    "api_description": "can dynamically translate text between thousands of language pairs. Translation lets websites and programs programmatically integrate with the translation service."
+}

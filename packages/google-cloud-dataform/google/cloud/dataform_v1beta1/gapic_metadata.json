@@ -15,9 +15,19 @@
                 "cancel_workflow_invocation"
               ]
             },
+            "CommitRepositoryChanges": {
+              "methods": [
+                "commit_repository_changes"
+              ]
+            },
             "CommitWorkspaceChanges": {
               "methods": [
                 "commit_workspace_changes"
+              ]
+            },
+            "ComputeRepositoryAccessTokenStatus": {
+              "methods": [
+                "compute_repository_access_token_status"
               ]
             },
             "CreateCompilationResult": {
@@ -25,9 +35,19 @@
                 "create_compilation_result"
               ]
             },
+            "CreateReleaseConfig": {
+              "methods": [
+                "create_release_config"
+              ]
+            },
             "CreateRepository": {
               "methods": [
                 "create_repository"
+              ]
+            },
+            "CreateWorkflowConfig": {
+              "methods": [
+                "create_workflow_config"
               ]
             },
             "CreateWorkflowInvocation": {
@@ -40,9 +60,19 @@
                 "create_workspace"
               ]
             },
+            "DeleteReleaseConfig": {
+              "methods": [
+                "delete_release_config"
+              ]
+            },
             "DeleteRepository": {
               "methods": [
                 "delete_repository"
+              ]
+            },
+            "DeleteWorkflowConfig": {
+              "methods": [
+                "delete_workflow_config"
               ]
             },
             "DeleteWorkflowInvocation": {
@@ -75,14 +105,29 @@
                 "fetch_remote_branches"
               ]
             },
+            "FetchRepositoryHistory": {
+              "methods": [
+                "fetch_repository_history"
+              ]
+            },
             "GetCompilationResult": {
               "methods": [
                 "get_compilation_result"
               ]
             },
+            "GetReleaseConfig": {
+              "methods": [
+                "get_release_config"
+              ]
+            },
             "GetRepository": {
               "methods": [
                 "get_repository"
+              ]
+            },
+            "GetWorkflowConfig": {
+              "methods": [
+                "get_workflow_config"
               ]
             },
             "GetWorkflowInvocation": {
@@ -105,9 +150,19 @@
                 "list_compilation_results"
               ]
             },
+            "ListReleaseConfigs": {
+              "methods": [
+                "list_release_configs"
+              ]
+            },
             "ListRepositories": {
               "methods": [
                 "list_repositories"
+              ]
+            },
+            "ListWorkflowConfigs": {
+              "methods": [
+                "list_workflow_configs"
               ]
             },
             "ListWorkflowInvocations": {
@@ -155,6 +210,11 @@
                 "query_directory_contents"
               ]
             },
+            "QueryRepositoryDirectoryContents": {
+              "methods": [
+                "query_repository_directory_contents"
+              ]
+            },
             "QueryWorkflowInvocationActions": {
               "methods": [
                 "query_workflow_invocation_actions"
@@ -163,6 +223,11 @@
             "ReadFile": {
               "methods": [
                 "read_file"
+              ]
+            },
+            "ReadRepositoryFile": {
+              "methods": [
+                "read_repository_file"
               ]
             },
             "RemoveDirectory": {
@@ -180,9 +245,19 @@
                 "reset_workspace_changes"
               ]
             },
+            "UpdateReleaseConfig": {
+              "methods": [
+                "update_release_config"
+              ]
+            },
             "UpdateRepository": {
               "methods": [
                 "update_repository"
+              ]
+            },
+            "UpdateWorkflowConfig": {
+              "methods": [
+                "update_workflow_config"
               ]
             },
             "WriteFile": {
@@ -200,9 +275,19 @@
                 "cancel_workflow_invocation"
               ]
             },
+            "CommitRepositoryChanges": {
+              "methods": [
+                "commit_repository_changes"
+              ]
+            },
             "CommitWorkspaceChanges": {
               "methods": [
                 "commit_workspace_changes"
+              ]
+            },
+            "ComputeRepositoryAccessTokenStatus": {
+              "methods": [
+                "compute_repository_access_token_status"
               ]
             },
             "CreateCompilationResult": {
@@ -210,9 +295,19 @@
                 "create_compilation_result"
               ]
             },
+            "CreateReleaseConfig": {
+              "methods": [
+                "create_release_config"
+              ]
+            },
             "CreateRepository": {
               "methods": [
                 "create_repository"
+              ]
+            },
+            "CreateWorkflowConfig": {
+              "methods": [
+                "create_workflow_config"
               ]
             },
             "CreateWorkflowInvocation": {
@@ -225,9 +320,19 @@
                 "create_workspace"
               ]
             },
+            "DeleteReleaseConfig": {
+              "methods": [
+                "delete_release_config"
+              ]
+            },
             "DeleteRepository": {
               "methods": [
                 "delete_repository"
+              ]
+            },
+            "DeleteWorkflowConfig": {
+              "methods": [
+                "delete_workflow_config"
               ]
             },
             "DeleteWorkflowInvocation": {
@@ -260,14 +365,29 @@
                 "fetch_remote_branches"
               ]
             },
+            "FetchRepositoryHistory": {
+              "methods": [
+                "fetch_repository_history"
+              ]
+            },
             "GetCompilationResult": {
               "methods": [
                 "get_compilation_result"
               ]
             },
+            "GetReleaseConfig": {
+              "methods": [
+                "get_release_config"
+              ]
+            },
             "GetRepository": {
               "methods": [
                 "get_repository"
+              ]
+            },
+            "GetWorkflowConfig": {
+              "methods": [
+                "get_workflow_config"
               ]
             },
             "GetWorkflowInvocation": {
@@ -290,9 +410,19 @@
                 "list_compilation_results"
               ]
             },
+            "ListReleaseConfigs": {
+              "methods": [
+                "list_release_configs"
+              ]
+            },
             "ListRepositories": {
               "methods": [
                 "list_repositories"
+              ]
+            },
+            "ListWorkflowConfigs": {
+              "methods": [
+                "list_workflow_configs"
               ]
             },
             "ListWorkflowInvocations": {
@@ -340,6 +470,11 @@
                 "query_directory_contents"
               ]
             },
+            "QueryRepositoryDirectoryContents": {
+              "methods": [
+                "query_repository_directory_contents"
+              ]
+            },
             "QueryWorkflowInvocationActions": {
               "methods": [
                 "query_workflow_invocation_actions"
@@ -348,6 +483,11 @@
             "ReadFile": {
               "methods": [
                 "read_file"
+              ]
+            },
+            "ReadRepositoryFile": {
+              "methods": [
+                "read_repository_file"
               ]
             },
             "RemoveDirectory": {
@@ -365,9 +505,19 @@
                 "reset_workspace_changes"
               ]
             },
+            "UpdateReleaseConfig": {
+              "methods": [
+                "update_release_config"
+              ]
+            },
             "UpdateRepository": {
               "methods": [
                 "update_repository"
+              ]
+            },
+            "UpdateWorkflowConfig": {
+              "methods": [
+                "update_workflow_config"
               ]
             },
             "WriteFile": {
@@ -385,9 +535,19 @@
                 "cancel_workflow_invocation"
               ]
             },
+            "CommitRepositoryChanges": {
+              "methods": [
+                "commit_repository_changes"
+              ]
+            },
             "CommitWorkspaceChanges": {
               "methods": [
                 "commit_workspace_changes"
+              ]
+            },
+            "ComputeRepositoryAccessTokenStatus": {
+              "methods": [
+                "compute_repository_access_token_status"
               ]
             },
             "CreateCompilationResult": {
@@ -395,9 +555,19 @@
                 "create_compilation_result"
               ]
             },
+            "CreateReleaseConfig": {
+              "methods": [
+                "create_release_config"
+              ]
+            },
             "CreateRepository": {
               "methods": [
                 "create_repository"
+              ]
+            },
+            "CreateWorkflowConfig": {
+              "methods": [
+                "create_workflow_config"
               ]
             },
             "CreateWorkflowInvocation": {
@@ -410,9 +580,19 @@
                 "create_workspace"
               ]
             },
+            "DeleteReleaseConfig": {
+              "methods": [
+                "delete_release_config"
+              ]
+            },
             "DeleteRepository": {
               "methods": [
                 "delete_repository"
+              ]
+            },
+            "DeleteWorkflowConfig": {
+              "methods": [
+                "delete_workflow_config"
               ]
             },
             "DeleteWorkflowInvocation": {
@@ -445,14 +625,29 @@
                 "fetch_remote_branches"
               ]
             },
+            "FetchRepositoryHistory": {
+              "methods": [
+                "fetch_repository_history"
+              ]
+            },
             "GetCompilationResult": {
               "methods": [
                 "get_compilation_result"
               ]
             },
+            "GetReleaseConfig": {
+              "methods": [
+                "get_release_config"
+              ]
+            },
             "GetRepository": {
               "methods": [
                 "get_repository"
+              ]
+            },
+            "GetWorkflowConfig": {
+              "methods": [
+                "get_workflow_config"
               ]
             },
             "GetWorkflowInvocation": {
@@ -475,9 +670,19 @@
                 "list_compilation_results"
               ]
             },
+            "ListReleaseConfigs": {
+              "methods": [
+                "list_release_configs"
+              ]
+            },
             "ListRepositories": {
               "methods": [
                 "list_repositories"
+              ]
+            },
+            "ListWorkflowConfigs": {
+              "methods": [
+                "list_workflow_configs"
               ]
             },
             "ListWorkflowInvocations": {
@@ -525,6 +730,11 @@
                 "query_directory_contents"
               ]
             },
+            "QueryRepositoryDirectoryContents": {
+              "methods": [
+                "query_repository_directory_contents"
+              ]
+            },
             "QueryWorkflowInvocationActions": {
               "methods": [
                 "query_workflow_invocation_actions"
@@ -533,6 +743,11 @@
             "ReadFile": {
               "methods": [
                 "read_file"
+              ]
+            },
+            "ReadRepositoryFile": {
+              "methods": [
+                "read_repository_file"
               ]
             },
             "RemoveDirectory": {
@@ -550,9 +765,19 @@
                 "reset_workspace_changes"
               ]
             },
+            "UpdateReleaseConfig": {
+              "methods": [
+                "update_release_config"
+              ]
+            },
             "UpdateRepository": {
               "methods": [
                 "update_repository"
+              ]
+            },
+            "UpdateWorkflowConfig": {
+              "methods": [
+                "update_workflow_config"
               ]
             },
             "WriteFile": {

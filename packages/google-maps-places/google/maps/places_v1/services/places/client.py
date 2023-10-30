@@ -46,7 +46,18 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.maps.places_v1.types import place, places_service
+from google.geo.type.types import viewport
+from google.type import latlng_pb2  # type: ignore
+from google.type import localized_text_pb2  # type: ignore
+
+from google.maps.places_v1.types import (
+    ev_charging,
+    fuel_options,
+    photo,
+    place,
+    places_service,
+    review,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, PlacesTransport
 from .transports.grpc import PlacesGrpcTransport
@@ -90,7 +101,12 @@ class PlacesClientMeta(type):
 
 
 class PlacesClient(metaclass=PlacesClientMeta):
-    """Service definition for the Places API."""
+    """Service definition for the Places API. Note: every request actually
+    requires a field mask set outside of the request proto (all/'*' is
+    not assumed). That can be set via either a side channel
+    (SystemParameterContext) over RPC, or a header (X-Goog-FieldMask)
+    over HTTP. See: https://cloud.google.com/apis/docs/system-parameters
+    """
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -173,6 +189,74 @@ class PlacesClient(metaclass=PlacesClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def photo_path(
+        place: str,
+        photo: str,
+    ) -> str:
+        """Returns a fully-qualified photo string."""
+        return "places/{place}/photos/{photo}".format(
+            place=place,
+            photo=photo,
+        )
+
+    @staticmethod
+    def parse_photo_path(path: str) -> Dict[str, str]:
+        """Parses a photo path into its component segments."""
+        m = re.match(r"^places/(?P<place>.+?)/photos/(?P<photo>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def photo_media_path(
+        place_id: str,
+        photo_reference: str,
+    ) -> str:
+        """Returns a fully-qualified photo_media string."""
+        return "places/{place_id}/photos/{photo_reference}/media".format(
+            place_id=place_id,
+            photo_reference=photo_reference,
+        )
+
+    @staticmethod
+    def parse_photo_media_path(path: str) -> Dict[str, str]:
+        """Parses a photo_media path into its component segments."""
+        m = re.match(
+            r"^places/(?P<place_id>.+?)/photos/(?P<photo_reference>.+?)/media$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def place_path(
+        place_id: str,
+    ) -> str:
+        """Returns a fully-qualified place string."""
+        return "places/{place_id}".format(
+            place_id=place_id,
+        )
+
+    @staticmethod
+    def parse_place_path(path: str) -> Dict[str, str]:
+        """Parses a place path into its component segments."""
+        m = re.match(r"^places/(?P<place_id>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def review_path(
+        place: str,
+        review: str,
+    ) -> str:
+        """Returns a fully-qualified review string."""
+        return "places/{place}/reviews/{review}".format(
+            place=place,
+            review=review,
+        )
+
+    @staticmethod
+    def parse_review_path(path: str) -> Dict[str, str]:
+        """Parses a review path into its component segments."""
+        m = re.match(r"^places/(?P<place>.+?)/reviews/(?P<review>.+?)$", path)
+        return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(
@@ -418,6 +502,81 @@ class PlacesClient(metaclass=PlacesClientMeta):
                 api_audience=client_options.api_audience,
             )
 
+    def search_nearby(
+        self,
+        request: Optional[Union[places_service.SearchNearbyRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> places_service.SearchNearbyResponse:
+        r"""Search for places near locations.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.maps import places_v1
+
+            def sample_search_nearby():
+                # Create a client
+                client = places_v1.PlacesClient()
+
+                # Initialize request argument(s)
+                location_restriction = places_v1.LocationRestriction()
+                location_restriction.circle.radius = 0.648
+
+                request = places_v1.SearchNearbyRequest(
+                    location_restriction=location_restriction,
+                )
+
+                # Make the request
+                response = client.search_nearby(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.maps.places_v1.types.SearchNearbyRequest, dict]):
+                The request object. Request proto for Search Nearby.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.maps.places_v1.types.SearchNearbyResponse:
+                Response proto for Search Nearby.
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a places_service.SearchNearbyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, places_service.SearchNearbyRequest):
+            request = places_service.SearchNearbyRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.search_nearby]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def search_text(
         self,
         request: Optional[Union[places_service.SearchTextRequest, dict]] = None,
@@ -456,8 +615,7 @@ class PlacesClient(metaclass=PlacesClientMeta):
 
         Args:
             request (Union[google.maps.places_v1.types.SearchTextRequest, dict]):
-                The request object. Request data structure for
-                SearchText.
+                The request object. Request proto for SearchText.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -479,6 +637,210 @@ class PlacesClient(metaclass=PlacesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.search_text]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_photo_media(
+        self,
+        request: Optional[Union[places_service.GetPhotoMediaRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> places_service.PhotoMedia:
+        r"""Get a photo media with a photo reference string.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.maps import places_v1
+
+            def sample_get_photo_media():
+                # Create a client
+                client = places_v1.PlacesClient()
+
+                # Initialize request argument(s)
+                request = places_v1.GetPhotoMediaRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_photo_media(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.maps.places_v1.types.GetPhotoMediaRequest, dict]):
+                The request object. Request for fetching a photo of a
+                place using a photo resource name.
+            name (str):
+                Required. The resource name of a photo. It is returned
+                in Place's photos.name field. Format:
+                places/<place_id>/photos/<photo_reference>/media.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.maps.places_v1.types.PhotoMedia:
+                A photo media from Places API.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a places_service.GetPhotoMediaRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, places_service.GetPhotoMediaRequest):
+            request = places_service.GetPhotoMediaRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_photo_media]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_place(
+        self,
+        request: Optional[Union[places_service.GetPlaceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> place.Place:
+        r"""Get a Place with a place id (in a name) string.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.maps import places_v1
+
+            def sample_get_place():
+                # Create a client
+                client = places_v1.PlacesClient()
+
+                # Initialize request argument(s)
+                request = places_v1.GetPlaceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_place(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.maps.places_v1.types.GetPlaceRequest, dict]):
+                The request object. Request for fetching a Place with a
+                place id (in a name) string.
+            name (str):
+                Required. A place_id returned in a Place (with "places/"
+                prefix), or equivalently the name in the same Place.
+                Format: places/<place_id>.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.maps.places_v1.types.Place:
+                All the information representing a
+                Place.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a places_service.GetPlaceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, places_service.GetPlaceRequest):
+            request = places_service.GetPlaceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_place]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
 
         # Send the request.
         response = rpc(
