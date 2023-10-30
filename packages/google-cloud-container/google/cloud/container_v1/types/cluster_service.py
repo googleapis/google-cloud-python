@@ -189,6 +189,7 @@ __protobuf__ = proto.module(
         "Fleet",
         "LocalNvmeSsdBlockConfig",
         "EphemeralStorageLocalSsdConfig",
+        "ResourceManagerTags",
     },
 )
 
@@ -690,6 +691,9 @@ class NodeConfig(proto.Message):
         sole_tenant_config (google.cloud.container_v1.types.SoleTenantConfig):
             Parameters for node pools to be backed by
             shared sole tenant node groups.
+        resource_manager_tags (google.cloud.container_v1.types.ResourceManagerTags):
+            A map of resource manager tag keys and values
+            to be attached to the nodes.
     """
 
     machine_type: str = proto.Field(
@@ -849,6 +853,11 @@ class NodeConfig(proto.Message):
         proto.MESSAGE,
         number=42,
         message="SoleTenantConfig",
+    )
+    resource_manager_tags: "ResourceManagerTags" = proto.Field(
+        proto.MESSAGE,
+        number=45,
+        message="ResourceManagerTags",
     )
 
 
@@ -3105,12 +3114,22 @@ class NodePoolAutoConfig(proto.Message):
             specified by the client during cluster creation.
             Each tag within the list must comply with
             RFC1035.
+        resource_manager_tags (google.cloud.container_v1.types.ResourceManagerTags):
+            Resource manager tag keys and values to be
+            attached to the nodes for managing Compute
+            Engine firewalls using Network Firewall
+            Policies.
     """
 
     network_tags: "NetworkTags" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="NetworkTags",
+    )
+    resource_manager_tags: "ResourceManagerTags" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ResourceManagerTags",
     )
 
 
@@ -3371,6 +3390,11 @@ class ClusterUpdate(proto.Message):
             the autopilot cluster.
         desired_k8s_beta_apis (google.cloud.container_v1.types.K8sBetaAPIConfig):
             Desired Beta APIs to be enabled for cluster.
+        desired_node_pool_auto_config_resource_manager_tags (google.cloud.container_v1.types.ResourceManagerTags):
+            The desired resource manager tags that apply
+            to all auto-provisioned node pools in autopilot
+            clusters and node auto-provisioning enabled
+            clusters.
     """
 
     desired_node_version: str = proto.Field(
@@ -3611,6 +3635,13 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE,
         number=131,
         message="K8sBetaAPIConfig",
+    )
+    desired_node_pool_auto_config_resource_manager_tags: "ResourceManagerTags" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=136,
+            message="ResourceManagerTags",
+        )
     )
 
 
@@ -3866,6 +3897,11 @@ class Operation(proto.Message):
                 resources and is not typically an indication of issues. For
                 more details, see `documentation on
                 resizes <https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#repairs>`__.
+            FLEET_FEATURE_UPGRADE (19):
+                Fleet features of GKE Enterprise are being
+                upgraded. The cluster should be assumed to be
+                blocked for other upgrades until the operation
+                finishes.
         """
         TYPE_UNSPECIFIED = 0
         CREATE_CLUSTER = 1
@@ -3885,6 +3921,7 @@ class Operation(proto.Message):
         SET_NETWORK_POLICY = 15
         SET_MAINTENANCE_POLICY = 16
         RESIZE_CLUSTER = 18
+        FLEET_FEATURE_UPGRADE = 19
 
     name: str = proto.Field(
         proto.STRING,
@@ -4307,6 +4344,12 @@ class UpdateNodePoolRequest(proto.Message):
             allowed disk size is 10GB. Initiates an upgrade
             operation that migrates the nodes in the node
             pool to the specified disk size.
+        resource_manager_tags (google.cloud.container_v1.types.ResourceManagerTags):
+            Desired resource manager tag keys and values
+            to be attached to the nodes for managing Compute
+            Engine firewalls using Network Firewall
+            Policies. Existing tags will be replaced with
+            new values.
     """
 
     project_id: str = proto.Field(
@@ -4431,6 +4474,11 @@ class UpdateNodePoolRequest(proto.Message):
     disk_size_gb: int = proto.Field(
         proto.INT64,
         number=38,
+    )
+    resource_manager_tags: "ResourceManagerTags" = proto.Field(
+        proto.MESSAGE,
+        number=39,
+        message="ResourceManagerTags",
     )
 
 
@@ -9031,20 +9079,30 @@ class Fleet(proto.Message):
 
 class LocalNvmeSsdBlockConfig(proto.Message):
     r"""LocalNvmeSsdBlockConfig contains configuration for using
-    raw-block local NVMe SSD.
+    raw-block local NVMe SSDs
 
     Attributes:
         local_ssd_count (int):
-            The number of raw-block local NVMe SSD disks
-            to be attached to the node. Each local SSD is
-            375 GB in size. If zero, it means no raw-block
-            local NVMe SSD disks to be attached to the node.
-            The limit for this value is dependent upon the
-            maximum number of disks available on a machine
-            per zone. See:
+            Number of local NVMe SSDs to use. The limit for this value
+            is dependent upon the maximum number of disk available on a
+            machine per zone. See:
+            https://cloud.google.com/compute/docs/disks/local-ssd for
+            more information.
 
-            https://cloud.google.com/compute/docs/disks/local-ssd
-            for more information.
+            A zero (or unset) value has different meanings depending on
+            machine type being used:
+
+            1. For pre-Gen3 machines, which support flexible numbers of
+               local ssds, zero (or unset) means to disable using local
+               SSDs as ephemeral storage.
+            2. For Gen3 machines which dictate a specific number of
+               local ssds, zero (or unset) means to use the default
+               number of local ssds that goes with that machine type.
+               For example, for a c3-standard-8-lssd machine, 2 local
+               ssds would be provisioned. For c3-standard-8 (which
+               doesn't support local ssds), 0 will be provisioned. See
+               https://cloud.google.com/compute/docs/disks/local-ssd#choose_number_local_ssds
+               for more info.
     """
 
     local_ssd_count: int = proto.Field(
@@ -9055,24 +9113,60 @@ class LocalNvmeSsdBlockConfig(proto.Message):
 
 class EphemeralStorageLocalSsdConfig(proto.Message):
     r"""EphemeralStorageLocalSsdConfig contains configuration for the
-    node ephemeral storage using Local SSD.
+    node ephemeral storage using Local SSDs.
 
     Attributes:
         local_ssd_count (int):
-            Number of local SSDs to use to back ephemeral
-            storage. Uses NVMe interfaces. Each local SSD is
-            375 GB in size. If zero, it means to disable
-            using local SSDs as ephemeral storage. The limit
-            for this value is dependent upon the maximum
-            number of disks available on a machine per zone.
-            See:
+            Number of local SSDs to use to back ephemeral storage. Uses
+            NVMe interfaces.
 
-            https://cloud.google.com/compute/docs/disks/local-ssd
-            for more information.
+            A zero (or unset) value has different meanings depending on
+            machine type being used:
+
+            1. For pre-Gen3 machines, which support flexible numbers of
+               local ssds, zero (or unset) means to disable using local
+               SSDs as ephemeral storage. The limit for this value is
+               dependent upon the maximum number of disk available on a
+               machine per zone. See:
+               https://cloud.google.com/compute/docs/disks/local-ssd for
+               more information.
+            2. For Gen3 machines which dictate a specific number of
+               local ssds, zero (or unset) means to use the default
+               number of local ssds that goes with that machine type.
+               For example, for a c3-standard-8-lssd machine, 2 local
+               ssds would be provisioned. For c3-standard-8 (which
+               doesn't support local ssds), 0 will be provisioned. See
+               https://cloud.google.com/compute/docs/disks/local-ssd#choose_number_local_ssds
+               for more info.
     """
 
     local_ssd_count: int = proto.Field(
         proto.INT32,
+        number=1,
+    )
+
+
+class ResourceManagerTags(proto.Message):
+    r"""A map of resource manager tag keys and values to be attached
+    to the nodes for managing Compute Engine firewalls using Network
+    Firewall Policies. Tags must be according to specifications in
+    https://cloud.google.com/vpc/docs/tags-firewalls-overview#specifications.
+    A maximum of 5 tag key-value pairs can be specified. Existing
+    tags will be replaced with new values.
+
+    Attributes:
+        tags (MutableMapping[str, str]):
+            TagKeyValue must be in one of the following formats
+            ([KEY]=[VALUE])
+
+            1. ``tagKeys/{tag_key_id}=tagValues/{tag_value_id}``
+            2. ``{org_id}/{tag_key_name}={tag_value_name}``
+            3. ``{project_id}/{tag_key_name}={tag_value_name}``
+    """
+
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
         number=1,
     )
 
