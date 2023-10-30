@@ -25,6 +25,11 @@
                 "create_deidentify_template"
               ]
             },
+            "CreateDiscoveryConfig": {
+              "methods": [
+                "create_discovery_config"
+              ]
+            },
             "CreateDlpJob": {
               "methods": [
                 "create_dlp_job"
@@ -55,6 +60,11 @@
                 "delete_deidentify_template"
               ]
             },
+            "DeleteDiscoveryConfig": {
+              "methods": [
+                "delete_discovery_config"
+              ]
+            },
             "DeleteDlpJob": {
               "methods": [
                 "delete_dlp_job"
@@ -83,6 +93,11 @@
             "GetDeidentifyTemplate": {
               "methods": [
                 "get_deidentify_template"
+              ]
+            },
+            "GetDiscoveryConfig": {
+              "methods": [
+                "get_discovery_config"
               ]
             },
             "GetDlpJob": {
@@ -125,6 +140,11 @@
                 "list_deidentify_templates"
               ]
             },
+            "ListDiscoveryConfigs": {
+              "methods": [
+                "list_discovery_configs"
+              ]
+            },
             "ListDlpJobs": {
               "methods": [
                 "list_dlp_jobs"
@@ -163,6 +183,11 @@
             "UpdateDeidentifyTemplate": {
               "methods": [
                 "update_deidentify_template"
+              ]
+            },
+            "UpdateDiscoveryConfig": {
+              "methods": [
+                "update_discovery_config"
               ]
             },
             "UpdateInspectTemplate": {
@@ -200,6 +225,11 @@
                 "create_deidentify_template"
               ]
             },
+            "CreateDiscoveryConfig": {
+              "methods": [
+                "create_discovery_config"
+              ]
+            },
             "CreateDlpJob": {
               "methods": [
                 "create_dlp_job"
@@ -230,6 +260,11 @@
                 "delete_deidentify_template"
               ]
             },
+            "DeleteDiscoveryConfig": {
+              "methods": [
+                "delete_discovery_config"
+              ]
+            },
             "DeleteDlpJob": {
               "methods": [
                 "delete_dlp_job"
@@ -258,6 +293,11 @@
             "GetDeidentifyTemplate": {
               "methods": [
                 "get_deidentify_template"
+              ]
+            },
+            "GetDiscoveryConfig": {
+              "methods": [
+                "get_discovery_config"
               ]
             },
             "GetDlpJob": {
@@ -300,6 +340,11 @@
                 "list_deidentify_templates"
               ]
             },
+            "ListDiscoveryConfigs": {
+              "methods": [
+                "list_discovery_configs"
+              ]
+            },
             "ListDlpJobs": {
               "methods": [
                 "list_dlp_jobs"
@@ -338,6 +383,11 @@
             "UpdateDeidentifyTemplate": {
               "methods": [
                 "update_deidentify_template"
+              ]
+            },
+            "UpdateDiscoveryConfig": {
+              "methods": [
+                "update_discovery_config"
               ]
             },
             "UpdateInspectTemplate": {
@@ -375,6 +425,11 @@
                 "create_deidentify_template"
               ]
             },
+            "CreateDiscoveryConfig": {
+              "methods": [
+                "create_discovery_config"
+              ]
+            },
             "CreateDlpJob": {
               "methods": [
                 "create_dlp_job"
@@ -405,6 +460,11 @@
                 "delete_deidentify_template"
               ]
             },
+            "DeleteDiscoveryConfig": {
+              "methods": [
+                "delete_discovery_config"
+              ]
+            },
             "DeleteDlpJob": {
               "methods": [
                 "delete_dlp_job"
@@ -433,6 +493,11 @@
             "GetDeidentifyTemplate": {
               "methods": [
                 "get_deidentify_template"
+              ]
+            },
+            "GetDiscoveryConfig": {
+              "methods": [
+                "get_discovery_config"
               ]
             },
             "GetDlpJob": {
@@ -475,6 +540,11 @@
                 "list_deidentify_templates"
               ]
             },
+            "ListDiscoveryConfigs": {
+              "methods": [
+                "list_discovery_configs"
+              ]
+            },
             "ListDlpJobs": {
               "methods": [
                 "list_dlp_jobs"
@@ -513,6 +583,11 @@
             "UpdateDeidentifyTemplate": {
               "methods": [
                 "update_deidentify_template"
+              ]
+            },
+            "UpdateDiscoveryConfig": {
+              "methods": [
+                "update_discovery_config"
               ]
             },
             "UpdateInspectTemplate": {

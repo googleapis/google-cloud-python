@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    workstations_v1/services
-    workstations_v1/types
+    workstations_v1/services_
+    workstations_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    workstations_v1beta/services
-    workstations_v1beta/types
+    workstations_v1beta/services_
+    workstations_v1beta/types_
 
 
 Changelog

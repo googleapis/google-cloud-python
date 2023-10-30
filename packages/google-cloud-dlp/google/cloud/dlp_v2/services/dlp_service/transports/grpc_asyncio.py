@@ -916,6 +916,139 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["activate_job_trigger"]
 
     @property
+    def create_discovery_config(
+        self,
+    ) -> Callable[[dlp.CreateDiscoveryConfigRequest], Awaitable[dlp.DiscoveryConfig]]:
+        r"""Return a callable for the create discovery config method over gRPC.
+
+        Creates a config for discovery to scan and profile
+        storage.
+
+        Returns:
+            Callable[[~.CreateDiscoveryConfigRequest],
+                    Awaitable[~.DiscoveryConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_discovery_config" not in self._stubs:
+            self._stubs["create_discovery_config"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/CreateDiscoveryConfig",
+                request_serializer=dlp.CreateDiscoveryConfigRequest.serialize,
+                response_deserializer=dlp.DiscoveryConfig.deserialize,
+            )
+        return self._stubs["create_discovery_config"]
+
+    @property
+    def update_discovery_config(
+        self,
+    ) -> Callable[[dlp.UpdateDiscoveryConfigRequest], Awaitable[dlp.DiscoveryConfig]]:
+        r"""Return a callable for the update discovery config method over gRPC.
+
+        Updates a discovery configuration.
+
+        Returns:
+            Callable[[~.UpdateDiscoveryConfigRequest],
+                    Awaitable[~.DiscoveryConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_discovery_config" not in self._stubs:
+            self._stubs["update_discovery_config"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/UpdateDiscoveryConfig",
+                request_serializer=dlp.UpdateDiscoveryConfigRequest.serialize,
+                response_deserializer=dlp.DiscoveryConfig.deserialize,
+            )
+        return self._stubs["update_discovery_config"]
+
+    @property
+    def get_discovery_config(
+        self,
+    ) -> Callable[[dlp.GetDiscoveryConfigRequest], Awaitable[dlp.DiscoveryConfig]]:
+        r"""Return a callable for the get discovery config method over gRPC.
+
+        Gets a discovery configuration.
+
+        Returns:
+            Callable[[~.GetDiscoveryConfigRequest],
+                    Awaitable[~.DiscoveryConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_discovery_config" not in self._stubs:
+            self._stubs["get_discovery_config"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/GetDiscoveryConfig",
+                request_serializer=dlp.GetDiscoveryConfigRequest.serialize,
+                response_deserializer=dlp.DiscoveryConfig.deserialize,
+            )
+        return self._stubs["get_discovery_config"]
+
+    @property
+    def list_discovery_configs(
+        self,
+    ) -> Callable[
+        [dlp.ListDiscoveryConfigsRequest], Awaitable[dlp.ListDiscoveryConfigsResponse]
+    ]:
+        r"""Return a callable for the list discovery configs method over gRPC.
+
+        Lists discovery configurations.
+
+        Returns:
+            Callable[[~.ListDiscoveryConfigsRequest],
+                    Awaitable[~.ListDiscoveryConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_discovery_configs" not in self._stubs:
+            self._stubs["list_discovery_configs"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/ListDiscoveryConfigs",
+                request_serializer=dlp.ListDiscoveryConfigsRequest.serialize,
+                response_deserializer=dlp.ListDiscoveryConfigsResponse.deserialize,
+            )
+        return self._stubs["list_discovery_configs"]
+
+    @property
+    def delete_discovery_config(
+        self,
+    ) -> Callable[[dlp.DeleteDiscoveryConfigRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete discovery config method over gRPC.
+
+        Deletes a discovery configuration.
+
+        Returns:
+            Callable[[~.DeleteDiscoveryConfigRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_discovery_config" not in self._stubs:
+            self._stubs["delete_discovery_config"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/DeleteDiscoveryConfig",
+                request_serializer=dlp.DeleteDiscoveryConfigRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_discovery_config"]
+
+    @property
     def create_dlp_job(
         self,
     ) -> Callable[[dlp.CreateDlpJobRequest], Awaitable[dlp.DlpJob]]:

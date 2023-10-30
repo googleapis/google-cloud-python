@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    confidentialcomputing_v1/services
-    confidentialcomputing_v1/types
+    confidentialcomputing_v1/services_
+    confidentialcomputing_v1/types_
 
 
 Changelog

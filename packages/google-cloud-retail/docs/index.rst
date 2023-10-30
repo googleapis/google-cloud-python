@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    retail_v2/services
-    retail_v2/types
+    retail_v2/services_
+    retail_v2/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    retail_v2alpha/services
-    retail_v2alpha/types
+    retail_v2alpha/services_
+    retail_v2alpha/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    retail_v2beta/services
-    retail_v2beta/types
+    retail_v2beta/services_
+    retail_v2beta/types_
 
 
 Changelog
