@@ -131,9 +131,9 @@ greenlet==1.1.3.post0 \
     --hash=sha256:f7d20c3267385236b4ce54575cc8e9f43e7673fc761b069c820097092e318e3b \
     --hash=sha256:fe7c51f8a2ab616cb34bc33d810c887e89117771028e1e3d3b77ca25ddeace04
     # via sqlalchemy
-grpc-google-iam-v1==0.12.4 \
-    --hash=sha256:312801ae848aeb8408c099ea372b96d253077e7851aae1a9e745df984f81f20c \
-    --hash=sha256:3f0ac2c940b9a855d7ce7e31fde28bddb0d9ac362d32d07c67148306931a0e30
+grpc-google-iam-v1==0.12.6 \
+    --hash=sha256:2bc4b8fdf22115a65d751c9317329322602c39b7c86a289c9b72d228d960ef5f \
+    --hash=sha256:5c10f3d8dc2d88678ab1a9b0cb5482735c5efee71e6c0cd59f872eef22913f5c
     # via google-cloud-spanner
 grpcio==1.53.0 \
     --hash=sha256:0698c094688a2dd4c7c2f2c0e3e142cac439a64d1cef6904c97f6cde38ba422f \
