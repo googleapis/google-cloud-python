@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ package_root = os.path.abspath(os.path.dirname(__file__))
 name = "google-cloud-containeranalysis"
 
 
-description = "Google Cloud Devtools Containeranalysis API client library"
+description = "Google Cloud Containeranalysis API client library"
 
 version = {}
 with open(
@@ -41,11 +41,11 @@ else:
 
 dependencies = [
     "google-api-core[grpc] >= 1.34.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+    "grafeas >=1.4.1, <2.0dev",
     "proto-plus >= 1.22.0, <2.0.0dev",
     "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
     "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
-    "grpc-google-iam-v1 >= 0.12.4, < 1.0.0dev",
-    "grafeas >=1.4.1, <2.0dev",
+    "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
 ]
 url = "https://github.com/googleapis/google-cloud-python"
 
@@ -61,11 +61,7 @@ packages = [
     if package.startswith("google")
 ]
 
-namespaces = ["google"]
-if "google.cloud" in packages:
-    namespaces.append("google.cloud")
-if "google.cloud.devtools" in packages:
-    namespaces.append("google.cloud.devtools")
+namespaces = ["google", "google.cloud", "google.cloud.devtools"]
 
 setuptools.setup(
     name=name,

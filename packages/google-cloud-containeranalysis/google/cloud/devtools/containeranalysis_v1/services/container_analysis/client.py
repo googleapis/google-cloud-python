@@ -452,7 +452,6 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         )
         return grafeas_v1.GrafeasClient(transport=grafeas_transport)
 
-    # Service calls
 
     def set_iam_policy(
         self,

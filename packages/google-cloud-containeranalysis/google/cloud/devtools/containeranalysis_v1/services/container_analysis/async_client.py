@@ -243,7 +243,6 @@ class ContainerAnalysisAsyncClient:
         )
         return grafeas_v1.GrafeasClient(transport=grafeas_transport)
 
-    # Service calls
 
     async def set_iam_policy(
         self,
