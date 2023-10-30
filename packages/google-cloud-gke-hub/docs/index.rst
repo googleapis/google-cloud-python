@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    gkehub_v1/services
-    gkehub_v1/types
+    gkehub_v1/services_
+    gkehub_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    gkehub_v1beta1/services
-    gkehub_v1beta1/types
+    gkehub_v1beta1/services_
+    gkehub_v1beta1/types_
 
 
 Changelog

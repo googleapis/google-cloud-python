@@ -55,8 +55,6 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
-from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore
 from google.cloud.gkehub_v1.services.gke_hub import (
     GkeHubAsyncClient,
     GkeHubClient,
