@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.11.0](https://github.com/googleapis/python-oslogin/compare/v2.10.0...v2.11.0) (2023-10-25)
+
+
+### Features
+
+* Location-based HTTP binding for SignSshPublicKey ([9d5e2b7](https://github.com/googleapis/python-oslogin/commit/9d5e2b7bcaba55cd5a1c5486cb930dd4de97c67c))
+
+
+### Documentation
+
+* Minor formatting ([6a9d975](https://github.com/googleapis/python-oslogin/commit/6a9d975c9b37db1e7835ec58abcfe782944435ab))
+
 ## [2.10.0](https://github.com/googleapis/python-oslogin/compare/v2.9.1...v2.10.0) (2023-07-10)
 
 

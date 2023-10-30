@@ -7,8 +7,8 @@ Api Reference
 .. toctree::
     :maxdepth: 2
 
-    oslogin_v1/services
-    oslogin_v1/types
+    oslogin_v1/services_
+    oslogin_v1/types_
     oslogin_v1/common/types
 
     changelog
