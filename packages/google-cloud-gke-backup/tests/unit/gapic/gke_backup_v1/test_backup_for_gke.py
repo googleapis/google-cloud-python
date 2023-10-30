@@ -7951,6 +7951,73 @@ def test_create_backup_plan_rest(request_type):
         "state": 1,
         "state_reason": "state_reason_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gkebackup.CreateBackupPlanRequest.meta.fields["backup_plan"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["backup_plan"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backup_plan"][field])):
+                    del request_init["backup_plan"][field][i][subfield]
+            else:
+                del request_init["backup_plan"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8149,42 +8216,6 @@ def test_create_backup_plan_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["backup_plan"] = {
-        "name": "name_value",
-        "uid": "uid_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "cluster": "cluster_value",
-        "retention_policy": {
-            "backup_delete_lock_days": 2400,
-            "backup_retain_days": 1896,
-            "locked": True,
-        },
-        "labels": {},
-        "backup_schedule": {"cron_schedule": "cron_schedule_value", "paused": True},
-        "etag": "etag_value",
-        "deactivated": True,
-        "backup_config": {
-            "all_namespaces": True,
-            "selected_namespaces": {
-                "namespaces": ["namespaces_value1", "namespaces_value2"]
-            },
-            "selected_applications": {
-                "namespaced_names": [
-                    {"namespace": "namespace_value", "name": "name_value"}
-                ]
-            },
-            "include_volume_data": True,
-            "include_secrets": True,
-            "encryption_key": {
-                "gcp_kms_encryption_key": "gcp_kms_encryption_key_value"
-            },
-        },
-        "protected_pod_count": 2036,
-        "state": 1,
-        "state_reason": "state_reason_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8292,8 +8323,9 @@ def test_list_backup_plans_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListBackupPlansResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListBackupPlansResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8378,8 +8410,9 @@ def test_list_backup_plans_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gkebackup.ListBackupPlansResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gkebackup.ListBackupPlansResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8514,8 +8547,9 @@ def test_list_backup_plans_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListBackupPlansResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListBackupPlansResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8643,8 +8677,9 @@ def test_get_backup_plan_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = backup_plan.BackupPlan.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = backup_plan.BackupPlan.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8727,8 +8762,9 @@ def test_get_backup_plan_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = backup_plan.BackupPlan.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = backup_plan.BackupPlan.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8853,8 +8889,9 @@ def test_get_backup_plan_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = backup_plan.BackupPlan.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = backup_plan.BackupPlan.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8947,6 +8984,73 @@ def test_update_backup_plan_rest(request_type):
         "state": 1,
         "state_reason": "state_reason_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gkebackup.UpdateBackupPlanRequest.meta.fields["backup_plan"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["backup_plan"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backup_plan"][field])):
+                    del request_init["backup_plan"][field][i][subfield]
+            else:
+                del request_init["backup_plan"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9121,42 +9225,6 @@ def test_update_backup_plan_rest_bad_request(
         "backup_plan": {
             "name": "projects/sample1/locations/sample2/backupPlans/sample3"
         }
-    }
-    request_init["backup_plan"] = {
-        "name": "projects/sample1/locations/sample2/backupPlans/sample3",
-        "uid": "uid_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "cluster": "cluster_value",
-        "retention_policy": {
-            "backup_delete_lock_days": 2400,
-            "backup_retain_days": 1896,
-            "locked": True,
-        },
-        "labels": {},
-        "backup_schedule": {"cron_schedule": "cron_schedule_value", "paused": True},
-        "etag": "etag_value",
-        "deactivated": True,
-        "backup_config": {
-            "all_namespaces": True,
-            "selected_namespaces": {
-                "namespaces": ["namespaces_value1", "namespaces_value2"]
-            },
-            "selected_applications": {
-                "namespaced_names": [
-                    {"namespace": "namespace_value", "name": "name_value"}
-                ]
-            },
-            "include_volume_data": True,
-            "include_secrets": True,
-            "encryption_key": {
-                "gcp_kms_encryption_key": "gcp_kms_encryption_key_value"
-            },
-        },
-        "protected_pod_count": 2036,
-        "state": 1,
-        "state_reason": "state_reason_value",
     }
     request = request_type(**request_init)
 
@@ -9560,6 +9628,73 @@ def test_create_backup_rest(request_type):
         "pod_count": 971,
         "config_backup_size_bytes": 2539,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gkebackup.CreateBackupRequest.meta.fields["backup"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["backup"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backup"][field])):
+                    del request_init["backup"][field][i][subfield]
+            else:
+                del request_init["backup"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9732,45 +9867,6 @@ def test_create_backup_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/backupPlans/sample3"}
-    request_init["backup"] = {
-        "name": "name_value",
-        "uid": "uid_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "manual": True,
-        "labels": {},
-        "delete_lock_days": 1675,
-        "delete_lock_expire_time": {},
-        "retain_days": 1171,
-        "retain_expire_time": {},
-        "encryption_key": {"gcp_kms_encryption_key": "gcp_kms_encryption_key_value"},
-        "all_namespaces": True,
-        "selected_namespaces": {
-            "namespaces": ["namespaces_value1", "namespaces_value2"]
-        },
-        "selected_applications": {
-            "namespaced_names": [{"namespace": "namespace_value", "name": "name_value"}]
-        },
-        "contains_volume_data": True,
-        "contains_secrets": True,
-        "cluster_metadata": {
-            "cluster": "cluster_value",
-            "k8s_version": "k8s_version_value",
-            "backup_crd_versions": {},
-            "gke_version": "gke_version_value",
-            "anthos_version": "anthos_version_value",
-        },
-        "state": 1,
-        "state_reason": "state_reason_value",
-        "complete_time": {},
-        "resource_count": 1520,
-        "volume_count": 1312,
-        "size_bytes": 1089,
-        "etag": "etag_value",
-        "description": "description_value",
-        "pod_count": 971,
-        "config_backup_size_bytes": 2539,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9879,8 +9975,9 @@ def test_list_backups_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListBackupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9962,8 +10059,9 @@ def test_list_backups_rest_required_fields(request_type=gkebackup.ListBackupsReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gkebackup.ListBackupsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gkebackup.ListBackupsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10098,8 +10196,9 @@ def test_list_backups_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListBackupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10239,8 +10338,9 @@ def test_get_backup_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = backup.Backup.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = backup.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10328,8 +10428,9 @@ def test_get_backup_rest_required_fields(request_type=gkebackup.GetBackupRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = backup.Backup.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = backup.Backup.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10454,8 +10555,9 @@ def test_get_backup_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = backup.Backup.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = backup.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10551,6 +10653,73 @@ def test_update_backup_rest(request_type):
         "pod_count": 971,
         "config_backup_size_bytes": 2539,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gkebackup.UpdateBackupRequest.meta.fields["backup"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["backup"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backup"][field])):
+                    del request_init["backup"][field][i][subfield]
+            else:
+                del request_init["backup"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10721,45 +10890,6 @@ def test_update_backup_rest_bad_request(
         "backup": {
             "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4"
         }
-    }
-    request_init["backup"] = {
-        "name": "projects/sample1/locations/sample2/backupPlans/sample3/backups/sample4",
-        "uid": "uid_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "manual": True,
-        "labels": {},
-        "delete_lock_days": 1675,
-        "delete_lock_expire_time": {},
-        "retain_days": 1171,
-        "retain_expire_time": {},
-        "encryption_key": {"gcp_kms_encryption_key": "gcp_kms_encryption_key_value"},
-        "all_namespaces": True,
-        "selected_namespaces": {
-            "namespaces": ["namespaces_value1", "namespaces_value2"]
-        },
-        "selected_applications": {
-            "namespaced_names": [{"namespace": "namespace_value", "name": "name_value"}]
-        },
-        "contains_volume_data": True,
-        "contains_secrets": True,
-        "cluster_metadata": {
-            "cluster": "cluster_value",
-            "k8s_version": "k8s_version_value",
-            "backup_crd_versions": {},
-            "gke_version": "gke_version_value",
-            "anthos_version": "anthos_version_value",
-        },
-        "state": 1,
-        "state_reason": "state_reason_value",
-        "complete_time": {},
-        "resource_count": 1520,
-        "volume_count": 1312,
-        "size_bytes": 1089,
-        "etag": "etag_value",
-        "description": "description_value",
-        "pod_count": 971,
-        "config_backup_size_bytes": 2539,
     }
     request = request_type(**request_init)
 
@@ -11151,8 +11281,9 @@ def test_list_volume_backups_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListVolumeBackupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListVolumeBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11236,8 +11367,9 @@ def test_list_volume_backups_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gkebackup.ListVolumeBackupsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gkebackup.ListVolumeBackupsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11376,8 +11508,9 @@ def test_list_volume_backups_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListVolumeBackupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListVolumeBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11511,8 +11644,9 @@ def test_get_volume_backup_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume.VolumeBackup.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume.VolumeBackup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11597,8 +11731,9 @@ def test_get_volume_backup_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = volume.VolumeBackup.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = volume.VolumeBackup.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11725,8 +11860,9 @@ def test_get_volume_backup_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume.VolumeBackup.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume.VolumeBackup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11849,6 +11985,73 @@ def test_create_restore_plan_rest(request_type):
         "state": 1,
         "state_reason": "state_reason_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gkebackup.CreateRestorePlanRequest.meta.fields["restore_plan"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["restore_plan"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["restore_plan"][field])):
+                    del request_init["restore_plan"][field][i][subfield]
+            else:
+                del request_init["restore_plan"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12047,76 +12250,6 @@ def test_create_restore_plan_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["restore_plan"] = {
-        "name": "name_value",
-        "uid": "uid_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "backup_plan": "backup_plan_value",
-        "cluster": "cluster_value",
-        "restore_config": {
-            "volume_data_restore_policy": 1,
-            "cluster_resource_conflict_policy": 1,
-            "namespaced_resource_restore_mode": 1,
-            "cluster_resource_restore_scope": {
-                "selected_group_kinds": [
-                    {
-                        "resource_group": "resource_group_value",
-                        "resource_kind": "resource_kind_value",
-                    }
-                ],
-                "excluded_group_kinds": {},
-                "all_group_kinds": True,
-                "no_group_kinds": True,
-            },
-            "all_namespaces": True,
-            "selected_namespaces": {
-                "namespaces": ["namespaces_value1", "namespaces_value2"]
-            },
-            "selected_applications": {
-                "namespaced_names": [
-                    {"namespace": "namespace_value", "name": "name_value"}
-                ]
-            },
-            "no_namespaces": True,
-            "excluded_namespaces": {},
-            "substitution_rules": [
-                {
-                    "target_namespaces": [
-                        "target_namespaces_value1",
-                        "target_namespaces_value2",
-                    ],
-                    "target_group_kinds": {},
-                    "target_json_path": "target_json_path_value",
-                    "original_value_pattern": "original_value_pattern_value",
-                    "new_value": "new_value_value",
-                }
-            ],
-            "transformation_rules": [
-                {
-                    "field_actions": [
-                        {
-                            "op": 1,
-                            "from_path": "from_path_value",
-                            "path": "path_value",
-                            "value": "value_value",
-                        }
-                    ],
-                    "resource_filter": {
-                        "namespaces": ["namespaces_value1", "namespaces_value2"],
-                        "group_kinds": {},
-                        "json_path": "json_path_value",
-                    },
-                    "description": "description_value",
-                }
-            ],
-        },
-        "labels": {},
-        "etag": "etag_value",
-        "state": 1,
-        "state_reason": "state_reason_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -12224,8 +12357,9 @@ def test_list_restore_plans_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListRestorePlansResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListRestorePlansResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12310,8 +12444,9 @@ def test_list_restore_plans_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gkebackup.ListRestorePlansResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gkebackup.ListRestorePlansResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12446,8 +12581,9 @@ def test_list_restore_plans_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListRestorePlansResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListRestorePlansResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12576,8 +12712,9 @@ def test_get_restore_plan_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = restore_plan.RestorePlan.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = restore_plan.RestorePlan.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12659,8 +12796,9 @@ def test_get_restore_plan_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = restore_plan.RestorePlan.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = restore_plan.RestorePlan.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12787,8 +12925,9 @@ def test_get_restore_plan_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = restore_plan.RestorePlan.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = restore_plan.RestorePlan.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12915,6 +13054,73 @@ def test_update_restore_plan_rest(request_type):
         "state": 1,
         "state_reason": "state_reason_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gkebackup.UpdateRestorePlanRequest.meta.fields["restore_plan"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["restore_plan"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["restore_plan"][field])):
+                    del request_init["restore_plan"][field][i][subfield]
+            else:
+                del request_init["restore_plan"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -13089,76 +13295,6 @@ def test_update_restore_plan_rest_bad_request(
         "restore_plan": {
             "name": "projects/sample1/locations/sample2/restorePlans/sample3"
         }
-    }
-    request_init["restore_plan"] = {
-        "name": "projects/sample1/locations/sample2/restorePlans/sample3",
-        "uid": "uid_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "backup_plan": "backup_plan_value",
-        "cluster": "cluster_value",
-        "restore_config": {
-            "volume_data_restore_policy": 1,
-            "cluster_resource_conflict_policy": 1,
-            "namespaced_resource_restore_mode": 1,
-            "cluster_resource_restore_scope": {
-                "selected_group_kinds": [
-                    {
-                        "resource_group": "resource_group_value",
-                        "resource_kind": "resource_kind_value",
-                    }
-                ],
-                "excluded_group_kinds": {},
-                "all_group_kinds": True,
-                "no_group_kinds": True,
-            },
-            "all_namespaces": True,
-            "selected_namespaces": {
-                "namespaces": ["namespaces_value1", "namespaces_value2"]
-            },
-            "selected_applications": {
-                "namespaced_names": [
-                    {"namespace": "namespace_value", "name": "name_value"}
-                ]
-            },
-            "no_namespaces": True,
-            "excluded_namespaces": {},
-            "substitution_rules": [
-                {
-                    "target_namespaces": [
-                        "target_namespaces_value1",
-                        "target_namespaces_value2",
-                    ],
-                    "target_group_kinds": {},
-                    "target_json_path": "target_json_path_value",
-                    "original_value_pattern": "original_value_pattern_value",
-                    "new_value": "new_value_value",
-                }
-            ],
-            "transformation_rules": [
-                {
-                    "field_actions": [
-                        {
-                            "op": 1,
-                            "from_path": "from_path_value",
-                            "path": "path_value",
-                            "value": "value_value",
-                        }
-                    ],
-                    "resource_filter": {
-                        "namespaces": ["namespaces_value1", "namespaces_value2"],
-                        "group_kinds": {},
-                        "json_path": "json_path_value",
-                    },
-                    "description": "description_value",
-                }
-            ],
-        },
-        "labels": {},
-        "etag": "etag_value",
-        "state": 1,
-        "state_reason": "state_reason_value",
     }
     request = request_type(**request_init)
 
@@ -13611,6 +13747,73 @@ def test_create_restore_rest(request_type):
         "volumes_restored_count": 2394,
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gkebackup.CreateRestoreRequest.meta.fields["restore"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["restore"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["restore"][field])):
+                    del request_init["restore"][field][i][subfield]
+            else:
+                del request_init["restore"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -13807,81 +14010,6 @@ def test_create_restore_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/restorePlans/sample3"}
-    request_init["restore"] = {
-        "name": "name_value",
-        "uid": "uid_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "backup": "backup_value",
-        "cluster": "cluster_value",
-        "restore_config": {
-            "volume_data_restore_policy": 1,
-            "cluster_resource_conflict_policy": 1,
-            "namespaced_resource_restore_mode": 1,
-            "cluster_resource_restore_scope": {
-                "selected_group_kinds": [
-                    {
-                        "resource_group": "resource_group_value",
-                        "resource_kind": "resource_kind_value",
-                    }
-                ],
-                "excluded_group_kinds": {},
-                "all_group_kinds": True,
-                "no_group_kinds": True,
-            },
-            "all_namespaces": True,
-            "selected_namespaces": {
-                "namespaces": ["namespaces_value1", "namespaces_value2"]
-            },
-            "selected_applications": {
-                "namespaced_names": [
-                    {"namespace": "namespace_value", "name": "name_value"}
-                ]
-            },
-            "no_namespaces": True,
-            "excluded_namespaces": {},
-            "substitution_rules": [
-                {
-                    "target_namespaces": [
-                        "target_namespaces_value1",
-                        "target_namespaces_value2",
-                    ],
-                    "target_group_kinds": {},
-                    "target_json_path": "target_json_path_value",
-                    "original_value_pattern": "original_value_pattern_value",
-                    "new_value": "new_value_value",
-                }
-            ],
-            "transformation_rules": [
-                {
-                    "field_actions": [
-                        {
-                            "op": 1,
-                            "from_path": "from_path_value",
-                            "path": "path_value",
-                            "value": "value_value",
-                        }
-                    ],
-                    "resource_filter": {
-                        "namespaces": ["namespaces_value1", "namespaces_value2"],
-                        "group_kinds": {},
-                        "json_path": "json_path_value",
-                    },
-                    "description": "description_value",
-                }
-            ],
-        },
-        "labels": {},
-        "state": 1,
-        "state_reason": "state_reason_value",
-        "complete_time": {},
-        "resources_restored_count": 2602,
-        "resources_excluded_count": 2576,
-        "resources_failed_count": 2343,
-        "volumes_restored_count": 2394,
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -13991,8 +14119,9 @@ def test_list_restores_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListRestoresResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListRestoresResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14075,8 +14204,9 @@ def test_list_restores_rest_required_fields(request_type=gkebackup.ListRestoresR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gkebackup.ListRestoresResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gkebackup.ListRestoresResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14211,8 +14341,9 @@ def test_list_restores_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListRestoresResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListRestoresResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14347,8 +14478,9 @@ def test_get_restore_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = restore.Restore.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = restore.Restore.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14432,8 +14564,9 @@ def test_get_restore_rest_required_fields(request_type=gkebackup.GetRestoreReque
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = restore.Restore.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = restore.Restore.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14558,8 +14691,9 @@ def test_get_restore_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = restore.Restore.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = restore.Restore.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14691,6 +14825,73 @@ def test_update_restore_rest(request_type):
         "volumes_restored_count": 2394,
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gkebackup.UpdateRestoreRequest.meta.fields["restore"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["restore"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["restore"][field])):
+                    del request_init["restore"][field][i][subfield]
+            else:
+                del request_init["restore"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14863,81 +15064,6 @@ def test_update_restore_rest_bad_request(
         "restore": {
             "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4"
         }
-    }
-    request_init["restore"] = {
-        "name": "projects/sample1/locations/sample2/restorePlans/sample3/restores/sample4",
-        "uid": "uid_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "backup": "backup_value",
-        "cluster": "cluster_value",
-        "restore_config": {
-            "volume_data_restore_policy": 1,
-            "cluster_resource_conflict_policy": 1,
-            "namespaced_resource_restore_mode": 1,
-            "cluster_resource_restore_scope": {
-                "selected_group_kinds": [
-                    {
-                        "resource_group": "resource_group_value",
-                        "resource_kind": "resource_kind_value",
-                    }
-                ],
-                "excluded_group_kinds": {},
-                "all_group_kinds": True,
-                "no_group_kinds": True,
-            },
-            "all_namespaces": True,
-            "selected_namespaces": {
-                "namespaces": ["namespaces_value1", "namespaces_value2"]
-            },
-            "selected_applications": {
-                "namespaced_names": [
-                    {"namespace": "namespace_value", "name": "name_value"}
-                ]
-            },
-            "no_namespaces": True,
-            "excluded_namespaces": {},
-            "substitution_rules": [
-                {
-                    "target_namespaces": [
-                        "target_namespaces_value1",
-                        "target_namespaces_value2",
-                    ],
-                    "target_group_kinds": {},
-                    "target_json_path": "target_json_path_value",
-                    "original_value_pattern": "original_value_pattern_value",
-                    "new_value": "new_value_value",
-                }
-            ],
-            "transformation_rules": [
-                {
-                    "field_actions": [
-                        {
-                            "op": 1,
-                            "from_path": "from_path_value",
-                            "path": "path_value",
-                            "value": "value_value",
-                        }
-                    ],
-                    "resource_filter": {
-                        "namespaces": ["namespaces_value1", "namespaces_value2"],
-                        "group_kinds": {},
-                        "json_path": "json_path_value",
-                    },
-                    "description": "description_value",
-                }
-            ],
-        },
-        "labels": {},
-        "state": 1,
-        "state_reason": "state_reason_value",
-        "complete_time": {},
-        "resources_restored_count": 2602,
-        "resources_excluded_count": 2576,
-        "resources_failed_count": 2343,
-        "volumes_restored_count": 2394,
-        "etag": "etag_value",
     }
     request = request_type(**request_init)
 
@@ -15331,8 +15457,9 @@ def test_list_volume_restores_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListVolumeRestoresResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListVolumeRestoresResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15416,8 +15543,9 @@ def test_list_volume_restores_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gkebackup.ListVolumeRestoresResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gkebackup.ListVolumeRestoresResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15556,8 +15684,9 @@ def test_list_volume_restores_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gkebackup.ListVolumeRestoresResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gkebackup.ListVolumeRestoresResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15690,8 +15819,9 @@ def test_get_volume_restore_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume.VolumeRestore.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume.VolumeRestore.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15773,8 +15903,9 @@ def test_get_volume_restore_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = volume.VolumeRestore.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = volume.VolumeRestore.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15901,8 +16032,9 @@ def test_get_volume_restore_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume.VolumeRestore.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume.VolumeRestore.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

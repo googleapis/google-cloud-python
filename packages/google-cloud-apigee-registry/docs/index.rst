@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    apigee_registry_v1/services
-    apigee_registry_v1/types
+    apigee_registry_v1/services_
+    apigee_registry_v1/types_
 
 
 Changelog

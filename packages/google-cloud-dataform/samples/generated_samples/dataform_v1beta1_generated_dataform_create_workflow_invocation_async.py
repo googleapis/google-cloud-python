@@ -39,8 +39,12 @@ async def sample_create_workflow_invocation():
     client = dataform_v1beta1.DataformAsyncClient()
 
     # Initialize request argument(s)
+    workflow_invocation = dataform_v1beta1.WorkflowInvocation()
+    workflow_invocation.compilation_result = "compilation_result_value"
+
     request = dataform_v1beta1.CreateWorkflowInvocationRequest(
         parent="parent_value",
+        workflow_invocation=workflow_invocation,
     )
 
     # Make the request

@@ -1477,10 +1477,9 @@ def test_get_protected_resources_summary_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = key_tracking_service.ProtectedResourcesSummary.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = key_tracking_service.ProtectedResourcesSummary.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1557,10 +1556,11 @@ def test_get_protected_resources_summary_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = key_tracking_service.ProtectedResourcesSummary.pb(
+            # Convert return value to protobuf type
+            return_value = key_tracking_service.ProtectedResourcesSummary.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -1696,10 +1696,9 @@ def test_get_protected_resources_summary_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = key_tracking_service.ProtectedResourcesSummary.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = key_tracking_service.ProtectedResourcesSummary.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1764,10 +1763,11 @@ def test_search_protected_resources_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = key_tracking_service.SearchProtectedResourcesResponse.pb(
+        # Convert return value to protobuf type
+        return_value = key_tracking_service.SearchProtectedResourcesResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1858,10 +1858,11 @@ def test_search_protected_resources_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = key_tracking_service.SearchProtectedResourcesResponse.pb(
+            # Convert return value to protobuf type
+            return_value = key_tracking_service.SearchProtectedResourcesResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2011,10 +2012,11 @@ def test_search_protected_resources_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = key_tracking_service.SearchProtectedResourcesResponse.pb(
+        # Convert return value to protobuf type
+        return_value = key_tracking_service.SearchProtectedResourcesResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

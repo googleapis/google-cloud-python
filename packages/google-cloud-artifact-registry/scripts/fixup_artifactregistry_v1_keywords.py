@@ -39,6 +39,7 @@ def partition(
 class artifactregistryCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'batch_delete_versions': ('names', 'parent', 'validate_only', ),
         'create_repository': ('parent', 'repository_id', 'repository', ),
         'create_tag': ('parent', 'tag_id', 'tag', ),
         'delete_package': ('name', ),
