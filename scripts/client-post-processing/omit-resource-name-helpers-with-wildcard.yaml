@@ -1,0 +1,78 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+description: Omit resource name helpers with wildcards which are not supported
+url: https://github.com/googleapis/gapic-generator-python/issues/1815
+replacements:
+  - paths: [
+      packages/google-cloud-monitoring/google/cloud/monitoring_v3/services/metric_service/client.py
+    ]
+    # Use backslashes to preserve leading spaces
+    before: |
+      \    @staticmethod
+      \    def metric_descriptor_path\(
+      \        project: str,
+      \        metric_descriptor: str,
+      \    \) -> str:
+      \        """Returns a fully-qualified metric_descriptor string."""
+      \        return "projects/{project}/metricDescriptors/{metric_descriptor=\*\*}".format\(
+      \            project=project,
+      \            metric_descriptor=metric_descriptor,
+      \        \)\n
+      \    @staticmethod
+      \    def parse_metric_descriptor_path\(path: str\) -> Dict\[str, str\]:
+      \        """Parses a metric_descriptor path into its component segments."""
+      \        m = re.match\(
+      \            r"\^projects/\(\?P<project>.\+\?\)/metricDescriptors/\(\?P<metric_descriptor>.\+\?\)\$",
+      \            path,
+      \        \)
+      \        return m.groupdict\(\) if m else \{\}\n
+    after: ""
+    count: 1
+  - paths: [
+      packages/google-cloud-monitoring/google/cloud/monitoring_v3/services/metric_service/async_client.py
+    ]
+    # Use backslashes to preserve leading spaces
+    before: |
+      \    metric_descriptor_path = staticmethod\(MetricServiceClient.metric_descriptor_path\)
+      \    parse_metric_descriptor_path = staticmethod\(
+      \        MetricServiceClient.parse_metric_descriptor_path
+      \    \)
+    after: ""
+    count: 1
+  - paths: [
+      packages/google-cloud-monitoring/tests/unit/gapic/monitoring_v3/test_metric_service.py
+    ]
+    # Use backslashes to preserve leading spaces
+    before: |
+      def test_metric_descriptor_path\(\):
+          project = "squid"
+          metric_descriptor = "clam"
+          expected = "projects/{project}/metricDescriptors/{metric_descriptor=\*\*}".format\(
+              project=project,
+              metric_descriptor=metric_descriptor,
+          \)
+          actual = MetricServiceClient.metric_descriptor_path\(project, metric_descriptor\)
+          assert expected == actual\n\n
+      def test_parse_metric_descriptor_path\(\):
+          expected = {
+              "project": "whelk",
+              "metric_descriptor": "octopus",
+          }
+          path = MetricServiceClient.metric_descriptor_path\(\*\*expected\)
+
+          # Check that the path construction is reversible.
+          actual = MetricServiceClient.parse_metric_descriptor_path\(path\)
+          assert expected == actual\n\n
+    after: ""
+    count: 1
