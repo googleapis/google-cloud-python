@@ -1047,7 +1047,9 @@ def test_new_bucket_with_autoclass(
     storage_client,
     buckets_to_delete,
 ):
-    # Autoclass can be enabled/disabled via bucket create
+    from google.cloud.storage import constants
+
+    # Autoclass can be enabled via bucket create
     bucket_name = _helpers.unique_name("new-w-autoclass")
     bucket_obj = storage_client.bucket(bucket_name)
     bucket_obj.autoclass_enabled = True
@@ -1055,7 +1057,9 @@ def test_new_bucket_with_autoclass(
     previous_toggle_time = bucket.autoclass_toggle_time
     buckets_to_delete.append(bucket)
 
+    # Autoclass terminal_storage_class is defaulted to NEARLINE if not specified
     assert bucket.autoclass_enabled is True
+    assert bucket.autoclass_terminal_storage_class == constants.NEARLINE_STORAGE_CLASS
 
     # Autoclass can be enabled/disabled via bucket patch
     bucket.autoclass_enabled = False
@@ -1063,3 +1067,35 @@ def test_new_bucket_with_autoclass(
 
     assert bucket.autoclass_enabled is False
     assert bucket.autoclass_toggle_time != previous_toggle_time
+
+
+def test_config_autoclass_w_existing_bucket(
+    storage_client,
+    buckets_to_delete,
+):
+    from google.cloud.storage import constants
+
+    bucket_name = _helpers.unique_name("for-autoclass")
+    bucket = storage_client.create_bucket(bucket_name)
+    buckets_to_delete.append(bucket)
+    assert bucket.autoclass_enabled is False
+    assert bucket.autoclass_toggle_time is None
+    assert bucket.autoclass_terminal_storage_class is None
+    assert bucket.autoclass_terminal_storage_class_update_time is None
+
+    # Enable Autoclass on existing buckets with terminal_storage_class set to ARCHIVE
+    bucket.autoclass_enabled = True
+    bucket.autoclass_terminal_storage_class = constants.ARCHIVE_STORAGE_CLASS
+    bucket.patch(if_metageneration_match=bucket.metageneration)
+    previous_tsc_update_time = bucket.autoclass_terminal_storage_class_update_time
+    assert bucket.autoclass_enabled is True
+    assert bucket.autoclass_terminal_storage_class == constants.ARCHIVE_STORAGE_CLASS
+
+    # Configure Autoclass terminal_storage_class to NEARLINE
+    bucket.autoclass_terminal_storage_class = constants.NEARLINE_STORAGE_CLASS
+    bucket.patch(if_metageneration_match=bucket.metageneration)
+    assert bucket.autoclass_enabled is True
+    assert bucket.autoclass_terminal_storage_class == constants.NEARLINE_STORAGE_CLASS
+    assert (
+        bucket.autoclass_terminal_storage_class_update_time != previous_tsc_update_time
+    )

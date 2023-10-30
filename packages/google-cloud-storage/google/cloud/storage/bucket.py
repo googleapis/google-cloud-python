@@ -2689,13 +2689,10 @@ class Bucket(_PropertyMixin):
         :type value: convertible to boolean
         :param value: If true, enable Autoclass for this bucket.
                       If false, disable Autoclass for this bucket.
-
-        .. note::
-          To enable autoclass, you must set it at bucket creation time.
-          Currently, only patch requests that disable autoclass are supported.
-
         """
-        self._patch_property("autoclass", {"enabled": bool(value)})
+        autoclass = self._properties.get("autoclass", {})
+        autoclass["enabled"] = bool(value)
+        self._patch_property("autoclass", autoclass)
 
     @property
     def autoclass_toggle_time(self):
@@ -2706,6 +2703,48 @@ class Bucket(_PropertyMixin):
         autoclass = self._properties.get("autoclass")
         if autoclass is not None:
             timestamp = autoclass.get("toggleTime")
+            if timestamp is not None:
+                return _rfc3339_nanos_to_datetime(timestamp)
+
+    @property
+    def autoclass_terminal_storage_class(self):
+        """The storage class that objects in an Autoclass bucket eventually transition to if
+        they are not read for a certain length of time. Valid values are NEARLINE and ARCHIVE.
+
+        See https://cloud.google.com/storage/docs/using-autoclass for details.
+
+        :setter: Set the terminal storage class for Autoclass configuration.
+        :getter: Get the terminal storage class for Autoclass configuration.
+
+        :rtype: str
+        :returns: The terminal storage class if Autoclass is enabled, else ``None``.
+        """
+        autoclass = self._properties.get("autoclass", {})
+        return autoclass.get("terminalStorageClass", None)
+
+    @autoclass_terminal_storage_class.setter
+    def autoclass_terminal_storage_class(self, value):
+        """The storage class that objects in an Autoclass bucket eventually transition to if
+        they are not read for a certain length of time. Valid values are NEARLINE and ARCHIVE.
+
+        See https://cloud.google.com/storage/docs/using-autoclass for details.
+
+        :type value: str
+        :param value: The only valid values are `"NEARLINE"` and `"ARCHIVE"`.
+        """
+        autoclass = self._properties.get("autoclass", {})
+        autoclass["terminalStorageClass"] = value
+        self._patch_property("autoclass", autoclass)
+
+    @property
+    def autoclass_terminal_storage_class_update_time(self):
+        """The time at which the Autoclass terminal_storage_class field was last updated for this bucket
+        :rtype: datetime.datetime or ``NoneType``
+        :returns: point-in time at which the bucket's terminal_storage_class is last updated, or ``None`` if the property is not set locally.
+        """
+        autoclass = self._properties.get("autoclass")
+        if autoclass is not None:
+            timestamp = autoclass.get("terminalStorageClassUpdateTime")
             if timestamp is not None:
                 return _rfc3339_nanos_to_datetime(timestamp)
 

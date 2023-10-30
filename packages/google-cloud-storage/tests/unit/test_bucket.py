@@ -2659,15 +2659,19 @@ class Test_Bucket(unittest.TestCase):
         self.assertIn("autoclass", bucket._changes)
         self.assertFalse(bucket.autoclass_enabled)
 
-    def test_autoclass_toggle_time_missing(self):
+    def test_autoclass_config_unset(self):
         bucket = self._make_one()
         self.assertIsNone(bucket.autoclass_toggle_time)
+        self.assertIsNone(bucket.autoclass_terminal_storage_class)
+        self.assertIsNone(bucket.autoclass_terminal_storage_class_update_time)
 
         properties = {"autoclass": {}}
         bucket = self._make_one(properties=properties)
         self.assertIsNone(bucket.autoclass_toggle_time)
+        self.assertIsNone(bucket.autoclass_terminal_storage_class)
+        self.assertIsNone(bucket.autoclass_terminal_storage_class_update_time)
 
-    def test_autoclass_toggle_time(self):
+    def test_autoclass_toggle_and_tsc_update_time(self):
         import datetime
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._helpers import UTC
@@ -2677,10 +2681,31 @@ class Test_Bucket(unittest.TestCase):
             "autoclass": {
                 "enabled": True,
                 "toggleTime": _datetime_to_rfc3339(effective_time),
+                "terminalStorageClass": "NEARLINE",
+                "terminalStorageClassUpdateTime": _datetime_to_rfc3339(effective_time),
             }
         }
         bucket = self._make_one(properties=properties)
         self.assertEqual(bucket.autoclass_toggle_time, effective_time)
+        self.assertEqual(
+            bucket.autoclass_terminal_storage_class_update_time, effective_time
+        )
+
+    def test_autoclass_tsc_getter_and_setter(self):
+        from google.cloud.storage import constants
+
+        properties = {
+            "autoclass": {"terminalStorageClass": constants.ARCHIVE_STORAGE_CLASS}
+        }
+        bucket = self._make_one(properties=properties)
+        self.assertEqual(
+            bucket.autoclass_terminal_storage_class, constants.ARCHIVE_STORAGE_CLASS
+        )
+        bucket.autoclass_terminal_storage_class = constants.NEARLINE_STORAGE_CLASS
+        self.assertIn("autoclass", bucket._changes)
+        self.assertEqual(
+            bucket.autoclass_terminal_storage_class, constants.NEARLINE_STORAGE_CLASS
+        )
 
     def test_get_logging_w_prefix(self):
         NAME = "name"
