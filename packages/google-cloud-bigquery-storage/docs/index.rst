@@ -19,11 +19,11 @@ API Reference
     :maxdepth: 2
 
     bigquery_storage_v1/library
-    bigquery_storage_v1/services
-    bigquery_storage_v1/types
+    bigquery_storage_v1/services_
+    bigquery_storage_v1/types_
     bigquery_storage_v1beta2/library
-    bigquery_storage_v1beta2/services
-    bigquery_storage_v1beta2/types
+    bigquery_storage_v1beta2/services_
+    bigquery_storage_v1beta2/types_
 
 
 Migration Guide
