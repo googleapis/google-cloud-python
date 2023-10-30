@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 description: Grafeas client is unique and requires customizations as described in PR 8186 below
-url: https://github.com/googleapis/google-cloud-python/pull/8186/
+url: https://github.com/googleapis/gapic-generator-python/issues/1830
 replacements:
   - paths: [
       packages/grafeas/grafeas/grafeas_v1/services/grafeas/async_client.py
