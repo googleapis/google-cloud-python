@@ -108,6 +108,16 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-alloydb-connectors": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-alloydb-connectors",
+            "extra-files": [
+                "google/cloud/alloydb/connectors/gapic_version.py",
+                "google/cloud/alloydb/connectors_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-api-gateway": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -713,6 +723,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-dataflow-client": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-dataflow-client",
+            "extra-files": [
+                "google/cloud/dataflow/gapic_version.py",
+                "google/cloud/dataflow_v1beta3/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.dataflow.v1beta3.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-dataform": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -1058,6 +1083,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-filestore": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-filestore",
+            "extra-files": [
+                "google/cloud/filestore/gapic_version.py",
+                "google/cloud/filestore_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.filestore.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-functions": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -1104,6 +1144,24 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.gkeconnect.gateway.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-gke-hub": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-gke-hub",
+            "extra-files": [
+                "google/cloud/gkehub/gapic_version.py",
+                "google/cloud/gkehub_v1/configmanagement_v1/gapic_version.py",
+                "google/cloud/gkehub_v1/gapic_version.py",
+                "google/cloud/gkehub_v1/multiclusteringress_v1/gapic_version.py",
+                "google/cloud/gkehub_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gkehub.v1.json",
                     "type": "json"
                 }
             ],
