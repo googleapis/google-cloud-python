@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.datacatalog.lineage_v1.types import lineage
+from google.cloud.datacatalog_lineage_v1.types import lineage
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import LineageTransport

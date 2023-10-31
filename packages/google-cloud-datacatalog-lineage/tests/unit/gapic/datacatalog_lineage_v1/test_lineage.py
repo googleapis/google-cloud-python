@@ -56,13 +56,13 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.cloud.datacatalog.lineage_v1.services.lineage import (
+from google.cloud.datacatalog_lineage_v1.services.lineage import (
     LineageAsyncClient,
     LineageClient,
     pagers,
     transports,
 )
-from google.cloud.datacatalog.lineage_v1.types import lineage
+from google.cloud.datacatalog_lineage_v1.types import lineage
 
 
 def client_cert_source_callback():
@@ -593,7 +593,7 @@ def test_lineage_client_client_options_credentials_file(
 
 def test_lineage_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.datacatalog.lineage_v1.services.lineage.transports.LineageGrpcTransport.__init__"
+        "google.cloud.datacatalog_lineage_v1.services.lineage.transports.LineageGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = LineageClient(client_options={"api_endpoint": "squid.clam.whelk"})
@@ -10362,7 +10362,7 @@ def test_lineage_base_transport_error():
 def test_lineage_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.datacatalog.lineage_v1.services.lineage.transports.LineageTransport.__init__"
+        "google.cloud.datacatalog_lineage_v1.services.lineage.transports.LineageTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.LineageTransport(
@@ -10419,7 +10419,7 @@ def test_lineage_base_transport_with_credentials_file():
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.datacatalog.lineage_v1.services.lineage.transports.LineageTransport._prep_wrapped_messages"
+        "google.cloud.datacatalog_lineage_v1.services.lineage.transports.LineageTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -10438,7 +10438,7 @@ def test_lineage_base_transport_with_credentials_file():
 def test_lineage_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.datacatalog.lineage_v1.services.lineage.transports.LineageTransport._prep_wrapped_messages"
+        "google.cloud.datacatalog_lineage_v1.services.lineage.transports.LineageTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)

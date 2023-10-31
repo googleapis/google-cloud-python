@@ -24,14 +24,14 @@ from typing import (
     Tuple,
 )
 
-from google.cloud.datacatalog.lineage_v1.types import lineage
+from google.cloud.datacatalog_lineage_v1.types import lineage
 
 
 class ListProcessesPager:
     """A pager for iterating through ``list_processes`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.datacatalog.lineage_v1.types.ListProcessesResponse` object, and
+    :class:`google.cloud.datacatalog_lineage_v1.types.ListProcessesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``processes`` field.
 
@@ -40,7 +40,7 @@ class ListProcessesPager:
     through the ``processes`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.datacatalog.lineage_v1.types.ListProcessesResponse`
+    All the usual :class:`google.cloud.datacatalog_lineage_v1.types.ListProcessesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -58,9 +58,9 @@ class ListProcessesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.datacatalog.lineage_v1.types.ListProcessesRequest):
+            request (google.cloud.datacatalog_lineage_v1.types.ListProcessesRequest):
                 The initial request object.
-            response (google.cloud.datacatalog.lineage_v1.types.ListProcessesResponse):
+            response (google.cloud.datacatalog_lineage_v1.types.ListProcessesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -93,7 +93,7 @@ class ListProcessesAsyncPager:
     """A pager for iterating through ``list_processes`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.datacatalog.lineage_v1.types.ListProcessesResponse` object, and
+    :class:`google.cloud.datacatalog_lineage_v1.types.ListProcessesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``processes`` field.
 
@@ -102,7 +102,7 @@ class ListProcessesAsyncPager:
     through the ``processes`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.datacatalog.lineage_v1.types.ListProcessesResponse`
+    All the usual :class:`google.cloud.datacatalog_lineage_v1.types.ListProcessesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -120,9 +120,9 @@ class ListProcessesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.datacatalog.lineage_v1.types.ListProcessesRequest):
+            request (google.cloud.datacatalog_lineage_v1.types.ListProcessesRequest):
                 The initial request object.
-            response (google.cloud.datacatalog.lineage_v1.types.ListProcessesResponse):
+            response (google.cloud.datacatalog_lineage_v1.types.ListProcessesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -159,7 +159,7 @@ class ListRunsPager:
     """A pager for iterating through ``list_runs`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.datacatalog.lineage_v1.types.ListRunsResponse` object, and
+    :class:`google.cloud.datacatalog_lineage_v1.types.ListRunsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``runs`` field.
 
@@ -168,7 +168,7 @@ class ListRunsPager:
     through the ``runs`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.datacatalog.lineage_v1.types.ListRunsResponse`
+    All the usual :class:`google.cloud.datacatalog_lineage_v1.types.ListRunsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -186,9 +186,9 @@ class ListRunsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.datacatalog.lineage_v1.types.ListRunsRequest):
+            request (google.cloud.datacatalog_lineage_v1.types.ListRunsRequest):
                 The initial request object.
-            response (google.cloud.datacatalog.lineage_v1.types.ListRunsResponse):
+            response (google.cloud.datacatalog_lineage_v1.types.ListRunsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -221,7 +221,7 @@ class ListRunsAsyncPager:
     """A pager for iterating through ``list_runs`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.datacatalog.lineage_v1.types.ListRunsResponse` object, and
+    :class:`google.cloud.datacatalog_lineage_v1.types.ListRunsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``runs`` field.
 
@@ -230,7 +230,7 @@ class ListRunsAsyncPager:
     through the ``runs`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.datacatalog.lineage_v1.types.ListRunsResponse`
+    All the usual :class:`google.cloud.datacatalog_lineage_v1.types.ListRunsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -248,9 +248,9 @@ class ListRunsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.datacatalog.lineage_v1.types.ListRunsRequest):
+            request (google.cloud.datacatalog_lineage_v1.types.ListRunsRequest):
                 The initial request object.
-            response (google.cloud.datacatalog.lineage_v1.types.ListRunsResponse):
+            response (google.cloud.datacatalog_lineage_v1.types.ListRunsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -287,7 +287,7 @@ class ListLineageEventsPager:
     """A pager for iterating through ``list_lineage_events`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.datacatalog.lineage_v1.types.ListLineageEventsResponse` object, and
+    :class:`google.cloud.datacatalog_lineage_v1.types.ListLineageEventsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``lineage_events`` field.
 
@@ -296,7 +296,7 @@ class ListLineageEventsPager:
     through the ``lineage_events`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.datacatalog.lineage_v1.types.ListLineageEventsResponse`
+    All the usual :class:`google.cloud.datacatalog_lineage_v1.types.ListLineageEventsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -314,9 +314,9 @@ class ListLineageEventsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.datacatalog.lineage_v1.types.ListLineageEventsRequest):
+            request (google.cloud.datacatalog_lineage_v1.types.ListLineageEventsRequest):
                 The initial request object.
-            response (google.cloud.datacatalog.lineage_v1.types.ListLineageEventsResponse):
+            response (google.cloud.datacatalog_lineage_v1.types.ListLineageEventsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -349,7 +349,7 @@ class ListLineageEventsAsyncPager:
     """A pager for iterating through ``list_lineage_events`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.datacatalog.lineage_v1.types.ListLineageEventsResponse` object, and
+    :class:`google.cloud.datacatalog_lineage_v1.types.ListLineageEventsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``lineage_events`` field.
 
@@ -358,7 +358,7 @@ class ListLineageEventsAsyncPager:
     through the ``lineage_events`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.datacatalog.lineage_v1.types.ListLineageEventsResponse`
+    All the usual :class:`google.cloud.datacatalog_lineage_v1.types.ListLineageEventsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -376,9 +376,9 @@ class ListLineageEventsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.datacatalog.lineage_v1.types.ListLineageEventsRequest):
+            request (google.cloud.datacatalog_lineage_v1.types.ListLineageEventsRequest):
                 The initial request object.
-            response (google.cloud.datacatalog.lineage_v1.types.ListLineageEventsResponse):
+            response (google.cloud.datacatalog_lineage_v1.types.ListLineageEventsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -415,7 +415,7 @@ class SearchLinksPager:
     """A pager for iterating through ``search_links`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.datacatalog.lineage_v1.types.SearchLinksResponse` object, and
+    :class:`google.cloud.datacatalog_lineage_v1.types.SearchLinksResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``links`` field.
 
@@ -424,7 +424,7 @@ class SearchLinksPager:
     through the ``links`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.datacatalog.lineage_v1.types.SearchLinksResponse`
+    All the usual :class:`google.cloud.datacatalog_lineage_v1.types.SearchLinksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -442,9 +442,9 @@ class SearchLinksPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.datacatalog.lineage_v1.types.SearchLinksRequest):
+            request (google.cloud.datacatalog_lineage_v1.types.SearchLinksRequest):
                 The initial request object.
-            response (google.cloud.datacatalog.lineage_v1.types.SearchLinksResponse):
+            response (google.cloud.datacatalog_lineage_v1.types.SearchLinksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -477,7 +477,7 @@ class SearchLinksAsyncPager:
     """A pager for iterating through ``search_links`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.datacatalog.lineage_v1.types.SearchLinksResponse` object, and
+    :class:`google.cloud.datacatalog_lineage_v1.types.SearchLinksResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``links`` field.
 
@@ -486,7 +486,7 @@ class SearchLinksAsyncPager:
     through the ``links`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.datacatalog.lineage_v1.types.SearchLinksResponse`
+    All the usual :class:`google.cloud.datacatalog_lineage_v1.types.SearchLinksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -504,9 +504,9 @@ class SearchLinksAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.datacatalog.lineage_v1.types.SearchLinksRequest):
+            request (google.cloud.datacatalog_lineage_v1.types.SearchLinksRequest):
                 The initial request object.
-            response (google.cloud.datacatalog.lineage_v1.types.SearchLinksResponse):
+            response (google.cloud.datacatalog_lineage_v1.types.SearchLinksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -543,7 +543,7 @@ class BatchSearchLinkProcessesPager:
     """A pager for iterating through ``batch_search_link_processes`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.datacatalog.lineage_v1.types.BatchSearchLinkProcessesResponse` object, and
+    :class:`google.cloud.datacatalog_lineage_v1.types.BatchSearchLinkProcessesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``process_links`` field.
 
@@ -552,7 +552,7 @@ class BatchSearchLinkProcessesPager:
     through the ``process_links`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.datacatalog.lineage_v1.types.BatchSearchLinkProcessesResponse`
+    All the usual :class:`google.cloud.datacatalog_lineage_v1.types.BatchSearchLinkProcessesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -570,9 +570,9 @@ class BatchSearchLinkProcessesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.datacatalog.lineage_v1.types.BatchSearchLinkProcessesRequest):
+            request (google.cloud.datacatalog_lineage_v1.types.BatchSearchLinkProcessesRequest):
                 The initial request object.
-            response (google.cloud.datacatalog.lineage_v1.types.BatchSearchLinkProcessesResponse):
+            response (google.cloud.datacatalog_lineage_v1.types.BatchSearchLinkProcessesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -605,7 +605,7 @@ class BatchSearchLinkProcessesAsyncPager:
     """A pager for iterating through ``batch_search_link_processes`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.datacatalog.lineage_v1.types.BatchSearchLinkProcessesResponse` object, and
+    :class:`google.cloud.datacatalog_lineage_v1.types.BatchSearchLinkProcessesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``process_links`` field.
 
@@ -614,7 +614,7 @@ class BatchSearchLinkProcessesAsyncPager:
     through the ``process_links`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.datacatalog.lineage_v1.types.BatchSearchLinkProcessesResponse`
+    All the usual :class:`google.cloud.datacatalog_lineage_v1.types.BatchSearchLinkProcessesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -632,9 +632,9 @@ class BatchSearchLinkProcessesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.datacatalog.lineage_v1.types.BatchSearchLinkProcessesRequest):
+            request (google.cloud.datacatalog_lineage_v1.types.BatchSearchLinkProcessesRequest):
                 The initial request object.
-            response (google.cloud.datacatalog.lineage_v1.types.BatchSearchLinkProcessesResponse):
+            response (google.cloud.datacatalog_lineage_v1.types.BatchSearchLinkProcessesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

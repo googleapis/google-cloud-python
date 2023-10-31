@@ -24,7 +24,7 @@ from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.datacatalog.lineage_v1.types import lineage
+from google.cloud.datacatalog_lineage_v1.types import lineage
 
 from .base import DEFAULT_CLIENT_INFO, LineageTransport
 from .grpc import LineageGrpcTransport
