@@ -41,7 +41,7 @@
     "packages/google-cloud-certificate-manager": "1.4.4",
     "packages/google-cloud-channel": "1.16.0",
     "packages/google-cloud-commerce-consumer-procurement": "0.1.0",
-    "packages/google-cloud-common": "0.0.0",
+    "packages/google-cloud-common": "1.2.0",
     "packages/google-cloud-compute": "0.0.0",
     "packages/google-cloud-confidentialcomputing": "0.4.1",
     "packages/google-cloud-config": "0.1.1",
