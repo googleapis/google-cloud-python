@@ -26,9 +26,14 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-analytics-admin",
             "extra-files": [
+                "google/analytics/admin_v1beta/gapic_version.py",
                 "google/analytics/admin/gapic_version.py",
                 "google/analytics/admin_v1alpha/gapic_version.py",
-                "google/analytics/admin_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.analytics.admin.v1alpha.json",
+                    "type": "json"
+                },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.analytics.admin.v1beta.json",
@@ -42,9 +47,9 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-analytics-data",
             "extra-files": [
-                "google/analytics/data/gapic_version.py",
-                "google/analytics/data_v1alpha/gapic_version.py",
                 "google/analytics/data_v1beta/gapic_version.py",
+                "google/analytics/data_v1alpha/gapic_version.py",
+                "google/analytics/data/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.analytics.data.v1alpha.json",
@@ -266,12 +271,12 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-asset",
             "extra-files": [
-                "google/cloud/asset/gapic_version.py",
-                "google/cloud/asset_v1/gapic_version.py",
-                "google/cloud/asset_v1p1beta1/gapic_version.py",
                 "google/cloud/asset_v1p2beta1/gapic_version.py",
-                "google/cloud/asset_v1p4beta1/gapic_version.py",
+                "google/cloud/asset_v1p1beta1/gapic_version.py",
                 "google/cloud/asset_v1p5beta1/gapic_version.py",
+                "google/cloud/asset_v1/gapic_version.py",
+                "google/cloud/asset/gapic_version.py",
+                "google/cloud/asset_v1p4beta1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.asset.v1.json",
@@ -279,7 +284,7 @@
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.asset.v1p1beta1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.asset.v1p5beta1.json",
                     "type": "json"
                 },
                 {
@@ -289,7 +294,7 @@
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.asset.v1p5beta1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.asset.v1p1beta1.json",
                     "type": "json"
                 }
             ],
@@ -322,8 +327,8 @@
             "component": "google-cloud-automl",
             "extra-files": [
                 "google/cloud/automl/gapic_version.py",
-                "google/cloud/automl_v1/gapic_version.py",
                 "google/cloud/automl_v1beta1/gapic_version.py",
+                "google/cloud/automl_v1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.automl.v1.json",
@@ -740,12 +745,7 @@
             "component": "google-cloud-compute",
             "extra-files": [
                 "google/cloud/compute/gapic_version.py",
-                "google/cloud/compute_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.compute.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/compute_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -916,8 +916,8 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-dataflow-client",
             "extra-files": [
-                "google/cloud/dataflow/gapic_version.py",
                 "google/cloud/dataflow_v1beta3/gapic_version.py",
+                "google/cloud/dataflow/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.dataflow.v1beta3.json",
@@ -1342,14 +1342,19 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-gke-hub",
             "extra-files": [
+                "google/cloud/gkehub_v1beta1/gapic_version.py",
                 "google/cloud/gkehub/gapic_version.py",
                 "google/cloud/gkehub_v1/configmanagement_v1/gapic_version.py",
                 "google/cloud/gkehub_v1/gapic_version.py",
                 "google/cloud/gkehub_v1/multiclusteringress_v1/gapic_version.py",
-                "google/cloud/gkehub_v1beta1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.gkehub.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gkehub.v1beta1.json",
                     "type": "json"
                 }
             ],
@@ -1458,8 +1463,8 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-kms",
             "extra-files": [
-                "google/cloud/kms/gapic_version.py",
                 "google/cloud/kms_v1/gapic_version.py",
+                "google/cloud/kms/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.kms.v1.json",
@@ -2052,8 +2057,8 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-run",
             "extra-files": [
-                "google/cloud/run/gapic_version.py",
                 "google/cloud/run_v2/gapic_version.py",
+                "google/cloud/run/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.run.v2.json",
@@ -2193,8 +2198,8 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-service-management",
             "extra-files": [
-                "google/cloud/servicemanagement/gapic_version.py",
                 "google/cloud/servicemanagement_v1/gapic_version.py",
+                "google/cloud/servicemanagement/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.api.servicemanagement.v1.json",
@@ -2248,15 +2253,10 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-speech",
             "extra-files": [
-                "google/cloud/speech/gapic_version.py",
+                "google/cloud/speech_v2/gapic_version.py",
                 "google/cloud/speech_v1/gapic_version.py",
                 "google/cloud/speech_v1p1beta1/gapic_version.py",
-                "google/cloud/speech_v2/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.speech.v1.json",
-                    "type": "json"
-                },
+                "google/cloud/speech/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.speech.v1p1beta1.json",
@@ -2265,6 +2265,11 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.speech.v2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.speech.v1.json",
                     "type": "json"
                 }
             ],
@@ -2416,9 +2421,9 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-trace",
             "extra-files": [
-                "google/cloud/trace/gapic_version.py",
-                "google/cloud/trace_v1/gapic_version.py",
                 "google/cloud/trace_v2/gapic_version.py",
+                "google/cloud/trace_v1/gapic_version.py",
+                "google/cloud/trace/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.devtools.cloudtrace.v1.json",
@@ -2437,17 +2442,12 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-translate",
             "extra-files": [
-                "google/cloud/translate/gapic_version.py",
                 "google/cloud/translate_v3/gapic_version.py",
                 "google/cloud/translate_v3beta1/gapic_version.py",
+                "google/cloud/translate/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.translation.v3.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.translation.v3beta1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.accessapproval.v1.json",
                     "type": "json"
                 }
             ],

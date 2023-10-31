@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-binary-authorization",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-binary-authorization",
     "api_id": "binaryauthorization.googleapis.com",
     "codeowner_team": "@googleapis/aap-dpes",
