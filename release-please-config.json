@@ -2442,17 +2442,12 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-translate",
             "extra-files": [
-                "google/cloud/translate/gapic_version.py",
                 "google/cloud/translate_v3/gapic_version.py",
                 "google/cloud/translate_v3beta1/gapic_version.py",
+                "google/cloud/translate/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.translation.v3.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.translation.v3beta1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.accessapproval.v1.json",
                     "type": "json"
                 }
             ],
