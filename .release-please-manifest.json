@@ -93,7 +93,7 @@
     "packages/google-cloud-memcache": "1.7.3",
     "packages/google-cloud-migrationcenter": "0.1.2",
     "packages/google-cloud-monitoring": "0.0.0",
-    "packages/google-cloud-monitoring-dashboards": "0.0.0",
+    "packages/google-cloud-monitoring-dashboards": "2.12.2",
     "packages/google-cloud-monitoring-metrics-scopes": "1.4.4",
     "packages/google-cloud-netapp": "0.3.1",
     "packages/google-cloud-network-connectivity": "2.2.0",
