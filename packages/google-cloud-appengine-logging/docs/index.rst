@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    appengine_logging_v1/services
-    appengine_logging_v1/types
+    appengine_logging_v1/services_
+    appengine_logging_v1/types_
 
 
 Changelog

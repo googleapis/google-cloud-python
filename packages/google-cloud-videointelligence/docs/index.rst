@@ -11,40 +11,40 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    videointelligence_v1/services
-    videointelligence_v1/types
+    videointelligence_v1/services_
+    videointelligence_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    videointelligence_v1beta2/services
-    videointelligence_v1beta2/types
+    videointelligence_v1beta2/services_
+    videointelligence_v1beta2/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    videointelligence_v1p1beta1/services
-    videointelligence_v1p1beta1/types
+    videointelligence_v1p1beta1/services_
+    videointelligence_v1p1beta1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    videointelligence_v1p2beta1/services
-    videointelligence_v1p2beta1/types
+    videointelligence_v1p2beta1/services_
+    videointelligence_v1p2beta1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    videointelligence_v1p3beta1/services
-    videointelligence_v1p3beta1/types
+    videointelligence_v1p3beta1/services_
+    videointelligence_v1p3beta1/types_
 
 
 Changelog

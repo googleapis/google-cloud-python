@@ -57,13 +57,19 @@ from .types.package import (
     Package,
 )
 from .types.repository import (
+    CleanupPolicy,
+    CleanupPolicyCondition,
+    CleanupPolicyMostRecentVersions,
     CreateRepositoryRequest,
     DeleteRepositoryRequest,
     GetRepositoryRequest,
     ListRepositoriesRequest,
     ListRepositoriesResponse,
+    RemoteRepositoryConfig,
     Repository,
     UpdateRepositoryRequest,
+    UpstreamPolicy,
+    VirtualRepositoryConfig,
 )
 from .types.service import OperationMetadata
 from .types.settings import (
@@ -82,6 +88,7 @@ from .types.tag import (
 )
 from .types.version import (
     BatchDeleteVersionsMetadata,
+    BatchDeleteVersionsRequest,
     DeleteVersionRequest,
     GetVersionRequest,
     ListVersionsRequest,
@@ -108,6 +115,10 @@ __all__ = (
     "AptArtifact",
     "ArtifactRegistryClient",
     "BatchDeleteVersionsMetadata",
+    "BatchDeleteVersionsRequest",
+    "CleanupPolicy",
+    "CleanupPolicyCondition",
+    "CleanupPolicyMostRecentVersions",
     "CreateRepositoryRequest",
     "CreateTagRequest",
     "DeletePackageRequest",
@@ -162,14 +173,17 @@ __all__ = (
     "Package",
     "ProjectSettings",
     "PythonPackage",
+    "RemoteRepositoryConfig",
     "Repository",
     "Tag",
     "UpdateProjectSettingsRequest",
     "UpdateRepositoryRequest",
     "UpdateTagRequest",
     "UpdateVPCSCConfigRequest",
+    "UpstreamPolicy",
     "VPCSCConfig",
     "Version",
     "VersionView",
+    "VirtualRepositoryConfig",
     "YumArtifact",
 )

@@ -90,6 +90,7 @@ from .types.logs import (
     DataQualityScanRuleResult,
     DataScanEvent,
     DiscoveryEvent,
+    GovernanceEvent,
     JobEvent,
     SessionEvent,
 )
@@ -236,6 +237,7 @@ __all__ = (
     "GetPartitionRequest",
     "GetTaskRequest",
     "GetZoneRequest",
+    "GovernanceEvent",
     "Job",
     "JobEvent",
     "Lake",

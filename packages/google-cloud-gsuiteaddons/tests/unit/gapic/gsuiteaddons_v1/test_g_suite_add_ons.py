@@ -3124,8 +3124,9 @@ def test_get_authorization_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.Authorization.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.Authorization.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3202,8 +3203,9 @@ def test_get_authorization_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gsuiteaddons.Authorization.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gsuiteaddons.Authorization.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3328,8 +3330,9 @@ def test_get_authorization_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.Authorization.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.Authorization.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3479,6 +3482,73 @@ def test_create_deployment_rest(request_type):
         },
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gsuiteaddons.CreateDeploymentRequest.meta.fields["deployment"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["deployment"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["deployment"][field])):
+                    del request_init["deployment"][field][i][subfield]
+            else:
+                del request_init["deployment"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3493,8 +3563,9 @@ def test_create_deployment_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3581,8 +3652,9 @@ def test_create_deployment_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gsuiteaddons.Deployment.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gsuiteaddons.Deployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3685,105 +3757,6 @@ def test_create_deployment_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1"}
-    request_init["deployment"] = {
-        "name": "name_value",
-        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
-        "add_ons": {
-            "common": {
-                "name": "name_value",
-                "logo_url": "logo_url_value",
-                "layout_properties": {
-                    "primary_color": "primary_color_value",
-                    "secondary_color": "secondary_color_value",
-                },
-                "add_on_widget_set": {"used_widgets": [1]},
-                "use_locale_from_app": True,
-                "homepage_trigger": {
-                    "run_function": "run_function_value",
-                    "enabled": {"value": True},
-                },
-                "universal_actions": [
-                    {
-                        "label": "label_value",
-                        "open_link": "open_link_value",
-                        "run_function": "run_function_value",
-                    }
-                ],
-                "open_link_url_prefixes": {
-                    "values": [
-                        {
-                            "null_value": 0,
-                            "number_value": 0.1285,
-                            "string_value": "string_value_value",
-                            "bool_value": True,
-                            "struct_value": {"fields": {}},
-                            "list_value": {},
-                        }
-                    ]
-                },
-            },
-            "gmail": {
-                "homepage_trigger": {},
-                "contextual_triggers": [
-                    {
-                        "unconditional": {},
-                        "on_trigger_function": "on_trigger_function_value",
-                    }
-                ],
-                "universal_actions": [
-                    {
-                        "text": "text_value",
-                        "open_link": "open_link_value",
-                        "run_function": "run_function_value",
-                    }
-                ],
-                "compose_trigger": {
-                    "actions": [
-                        {
-                            "run_function": "run_function_value",
-                            "label": "label_value",
-                            "logo_url": "logo_url_value",
-                        }
-                    ],
-                    "draft_access": 1,
-                },
-                "authorization_check_function": "authorization_check_function_value",
-            },
-            "drive": {
-                "homepage_trigger": {},
-                "on_items_selected_trigger": {"run_function": "run_function_value"},
-            },
-            "calendar": {
-                "homepage_trigger": {},
-                "conference_solution": [
-                    {
-                        "on_create_function": "on_create_function_value",
-                        "id": "id_value",
-                        "name": "name_value",
-                        "logo_url": "logo_url_value",
-                    }
-                ],
-                "create_settings_url_function": "create_settings_url_function_value",
-                "event_open_trigger": {"run_function": "run_function_value"},
-                "event_update_trigger": {},
-                "current_event_access": 1,
-            },
-            "docs": {
-                "homepage_trigger": {},
-                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
-            },
-            "sheets": {
-                "homepage_trigger": {},
-                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
-            },
-            "slides": {
-                "homepage_trigger": {},
-                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
-            },
-            "http_options": {"authorization_header": 1},
-        },
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3823,8 +3796,9 @@ def test_create_deployment_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3976,6 +3950,73 @@ def test_replace_deployment_rest(request_type):
         },
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gsuiteaddons.ReplaceDeploymentRequest.meta.fields["deployment"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["deployment"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["deployment"][field])):
+                    del request_init["deployment"][field][i][subfield]
+            else:
+                del request_init["deployment"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3990,8 +4031,9 @@ def test_replace_deployment_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4064,8 +4106,9 @@ def test_replace_deployment_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gsuiteaddons.Deployment.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gsuiteaddons.Deployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4153,105 +4196,6 @@ def test_replace_deployment_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"deployment": {"name": "projects/sample1/deployments/sample2"}}
-    request_init["deployment"] = {
-        "name": "projects/sample1/deployments/sample2",
-        "oauth_scopes": ["oauth_scopes_value1", "oauth_scopes_value2"],
-        "add_ons": {
-            "common": {
-                "name": "name_value",
-                "logo_url": "logo_url_value",
-                "layout_properties": {
-                    "primary_color": "primary_color_value",
-                    "secondary_color": "secondary_color_value",
-                },
-                "add_on_widget_set": {"used_widgets": [1]},
-                "use_locale_from_app": True,
-                "homepage_trigger": {
-                    "run_function": "run_function_value",
-                    "enabled": {"value": True},
-                },
-                "universal_actions": [
-                    {
-                        "label": "label_value",
-                        "open_link": "open_link_value",
-                        "run_function": "run_function_value",
-                    }
-                ],
-                "open_link_url_prefixes": {
-                    "values": [
-                        {
-                            "null_value": 0,
-                            "number_value": 0.1285,
-                            "string_value": "string_value_value",
-                            "bool_value": True,
-                            "struct_value": {"fields": {}},
-                            "list_value": {},
-                        }
-                    ]
-                },
-            },
-            "gmail": {
-                "homepage_trigger": {},
-                "contextual_triggers": [
-                    {
-                        "unconditional": {},
-                        "on_trigger_function": "on_trigger_function_value",
-                    }
-                ],
-                "universal_actions": [
-                    {
-                        "text": "text_value",
-                        "open_link": "open_link_value",
-                        "run_function": "run_function_value",
-                    }
-                ],
-                "compose_trigger": {
-                    "actions": [
-                        {
-                            "run_function": "run_function_value",
-                            "label": "label_value",
-                            "logo_url": "logo_url_value",
-                        }
-                    ],
-                    "draft_access": 1,
-                },
-                "authorization_check_function": "authorization_check_function_value",
-            },
-            "drive": {
-                "homepage_trigger": {},
-                "on_items_selected_trigger": {"run_function": "run_function_value"},
-            },
-            "calendar": {
-                "homepage_trigger": {},
-                "conference_solution": [
-                    {
-                        "on_create_function": "on_create_function_value",
-                        "id": "id_value",
-                        "name": "name_value",
-                        "logo_url": "logo_url_value",
-                    }
-                ],
-                "create_settings_url_function": "create_settings_url_function_value",
-                "event_open_trigger": {"run_function": "run_function_value"},
-                "event_update_trigger": {},
-                "current_event_access": 1,
-            },
-            "docs": {
-                "homepage_trigger": {},
-                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
-            },
-            "sheets": {
-                "homepage_trigger": {},
-                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
-            },
-            "slides": {
-                "homepage_trigger": {},
-                "on_file_scope_granted_trigger": {"run_function": "run_function_value"},
-            },
-            "http_options": {"authorization_header": 1},
-        },
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4291,8 +4235,9 @@ def test_replace_deployment_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4358,8 +4303,9 @@ def test_get_deployment_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4436,8 +4382,9 @@ def test_get_deployment_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gsuiteaddons.Deployment.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gsuiteaddons.Deployment.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4562,8 +4509,9 @@ def test_get_deployment_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4626,8 +4574,9 @@ def test_list_deployments_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.ListDeploymentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.ListDeploymentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4709,8 +4658,9 @@ def test_list_deployments_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gsuiteaddons.ListDeploymentsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gsuiteaddons.ListDeploymentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4843,8 +4793,9 @@ def test_list_deployments_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.ListDeploymentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.ListDeploymentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5723,8 +5674,9 @@ def test_get_install_status_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.InstallStatus.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.InstallStatus.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5799,8 +5751,9 @@ def test_get_install_status_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gsuiteaddons.InstallStatus.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gsuiteaddons.InstallStatus.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5925,8 +5878,9 @@ def test_get_install_status_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gsuiteaddons.InstallStatus.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gsuiteaddons.InstallStatus.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
