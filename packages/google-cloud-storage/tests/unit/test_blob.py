@@ -5819,13 +5819,21 @@ class Test_Blob(unittest.TestCase):
         from google.cloud.storage.blob import Blob
 
         client = self._make_client()
-        uri = "gs://BUCKET_NAME/b"
-        blob = Blob.from_string(uri, client)
+        basic_uri = "gs://bucket_name/b"
+        blob = Blob.from_string(basic_uri, client)
 
         self.assertIsInstance(blob, Blob)
         self.assertIs(blob.client, client)
         self.assertEqual(blob.name, "b")
-        self.assertEqual(blob.bucket.name, "BUCKET_NAME")
+        self.assertEqual(blob.bucket.name, "bucket_name")
+
+        nested_uri = "gs://bucket_name/path1/path2/b#name"
+        blob = Blob.from_string(nested_uri, client)
+
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.client, client)
+        self.assertEqual(blob.name, "path1/path2/b#name")
+        self.assertEqual(blob.bucket.name, "bucket_name")
 
     def test_from_string_w_invalid_uri(self):
         from google.cloud.storage.blob import Blob

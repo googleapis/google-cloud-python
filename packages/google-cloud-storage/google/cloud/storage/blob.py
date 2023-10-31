@@ -134,7 +134,9 @@ _DOWNLOAD_AS_STRING_DEPRECATED = (
     "Blob.download_as_string() is deprecated and will be removed in future. "
     "Use Blob.download_as_bytes() instead."
 )
-
+_GS_URL_REGEX_PATTERN = re.compile(
+    r"(?P<scheme>gs)://(?P<bucket_name>[a-z0-9_.-]+)/(?P<object_name>.+)"
+)
 
 _DEFAULT_CHUNKSIZE = 104857600  # 1024 * 1024 B * 100 = 100 MB
 _MAX_MULTIPART_SIZE = 8388608  # 8 MB
@@ -403,12 +405,11 @@ class Blob(_PropertyMixin):
         """
         from google.cloud.storage.bucket import Bucket
 
-        scheme, netloc, path, query, frag = urlsplit(uri)
-        if scheme != "gs":
+        match = _GS_URL_REGEX_PATTERN.match(uri)
+        if not match:
             raise ValueError("URI scheme must be gs")
-
-        bucket = Bucket(client, name=netloc)
-        return cls(path[1:], bucket)
+        bucket = Bucket(client, name=match.group("bucket_name"))
+        return cls(match.group("object_name"), bucket)
 
     def generate_signed_url(
         self,
