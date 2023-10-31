@@ -80,7 +80,7 @@ class Process(proto.Message):
             Optional. The attributes of the process. Can
             be anything, for example, "author". Up to 100
             attributes are allowed.
-        origin (google.cloud.datacatalog.lineage_v1.types.Origin):
+        origin (google.cloud.datacatalog_lineage_v1.types.Origin):
             Optional. The origin of this process and its
             runs and lineage events.
     """
@@ -132,7 +132,7 @@ class Run(proto.Message):
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The timestamp of the end of the
             run.
-        state (google.cloud.datacatalog.lineage_v1.types.Run.State):
+        state (google.cloud.datacatalog_lineage_v1.types.Run.State):
             Required. The state of the run.
     """
 
@@ -202,7 +202,7 @@ class LineageEvent(proto.Message):
             Can be specified or auto-assigned. {lineage_event} must be
             not longer than 200 characters and only contain characters
             in a set: ``a-zA-Z0-9_-:.``
-        links (MutableSequence[google.cloud.datacatalog.lineage_v1.types.EventLink]):
+        links (MutableSequence[google.cloud.datacatalog_lineage_v1.types.EventLink]):
             Optional. List of source-target pairs. Can't
             contain more than 100 tuples.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -243,9 +243,9 @@ class EventLink(proto.Message):
     r"""A lineage between source and target entities.
 
     Attributes:
-        source (google.cloud.datacatalog.lineage_v1.types.EntityReference):
+        source (google.cloud.datacatalog_lineage_v1.types.EntityReference):
             Required. Reference to the source entity
-        target (google.cloud.datacatalog.lineage_v1.types.EntityReference):
+        target (google.cloud.datacatalog_lineage_v1.types.EntityReference):
             Required. Reference to the target entity
     """
 
@@ -289,9 +289,9 @@ class OperationMetadata(proto.Message):
     r"""Metadata describing the operation.
 
     Attributes:
-        state (google.cloud.datacatalog.lineage_v1.types.OperationMetadata.State):
+        state (google.cloud.datacatalog_lineage_v1.types.OperationMetadata.State):
             Output only. The current operation state.
-        operation_type (google.cloud.datacatalog.lineage_v1.types.OperationMetadata.Type):
+        operation_type (google.cloud.datacatalog_lineage_v1.types.OperationMetadata.Type):
             Output only. The type of the operation being
             performed.
         resource (str):
@@ -384,7 +384,7 @@ class CreateProcessRequest(proto.Message):
         parent (str):
             Required. The name of the project and its
             location that should own the process.
-        process (google.cloud.datacatalog.lineage_v1.types.Process):
+        process (google.cloud.datacatalog_lineage_v1.types.Process):
             Required. The process to create.
         request_id (str):
             A unique identifier for this request. Restricted to 36 ASCII
@@ -412,7 +412,7 @@ class UpdateProcessRequest(proto.Message):
     [UpdateProcess][google.cloud.datacatalog.lineage.v1.UpdateProcess].
 
     Attributes:
-        process (google.cloud.datacatalog.lineage_v1.types.Process):
+        process (google.cloud.datacatalog_lineage_v1.types.Process):
             Required. The lineage process to update.
 
             The process's ``name`` field is used to identify the process
@@ -498,7 +498,7 @@ class ListProcessesResponse(proto.Message):
     [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
 
     Attributes:
-        processes (MutableSequence[google.cloud.datacatalog.lineage_v1.types.Process]):
+        processes (MutableSequence[google.cloud.datacatalog_lineage_v1.types.Process]):
             The processes from the specified project and
             location.
         next_page_token (str):
@@ -553,7 +553,7 @@ class CreateRunRequest(proto.Message):
         parent (str):
             Required. The name of the process that should
             own the run.
-        run (google.cloud.datacatalog.lineage_v1.types.Run):
+        run (google.cloud.datacatalog_lineage_v1.types.Run):
             Required. The run to create.
         request_id (str):
             A unique identifier for this request. Restricted to 36 ASCII
@@ -581,7 +581,7 @@ class UpdateRunRequest(proto.Message):
     [UpdateRun][google.cloud.datacatalog.lineage.v1.UpdateRun].
 
     Attributes:
-        run (google.cloud.datacatalog.lineage_v1.types.Run):
+        run (google.cloud.datacatalog_lineage_v1.types.Run):
             Required. The lineage run to update.
 
             The run's ``name`` field is used to identify the run to
@@ -663,7 +663,7 @@ class ListRunsResponse(proto.Message):
     [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
 
     Attributes:
-        runs (MutableSequence[google.cloud.datacatalog.lineage_v1.types.Run]):
+        runs (MutableSequence[google.cloud.datacatalog_lineage_v1.types.Run]):
             The runs from the specified project and
             location.
         next_page_token (str):
@@ -718,7 +718,7 @@ class CreateLineageEventRequest(proto.Message):
         parent (str):
             Required. The name of the run that should own
             the lineage event.
-        lineage_event (google.cloud.datacatalog.lineage_v1.types.LineageEvent):
+        lineage_event (google.cloud.datacatalog_lineage_v1.types.LineageEvent):
             Required. The lineage event to create.
         request_id (str):
             A unique identifier for this request. Restricted to 36 ASCII
@@ -800,7 +800,7 @@ class ListLineageEventsResponse(proto.Message):
     [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
 
     Attributes:
-        lineage_events (MutableSequence[google.cloud.datacatalog.lineage_v1.types.LineageEvent]):
+        lineage_events (MutableSequence[google.cloud.datacatalog_lineage_v1.types.LineageEvent]):
             Lineage events from the specified project and
             location.
         next_page_token (str):
@@ -863,13 +863,13 @@ class SearchLinksRequest(proto.Message):
         parent (str):
             Required. The project and location you want search in the
             format ``projects/*/locations/*``
-        source (google.cloud.datacatalog.lineage_v1.types.EntityReference):
+        source (google.cloud.datacatalog_lineage_v1.types.EntityReference):
             Optional. Send asset information in the **source** field to
             retrieve all links that lead from the specified asset to
             downstream assets.
 
             This field is a member of `oneof`_ ``criteria``.
-        target (google.cloud.datacatalog.lineage_v1.types.EntityReference):
+        target (google.cloud.datacatalog_lineage_v1.types.EntityReference):
             Optional. Send asset information in the **target** field to
             retrieve all links that lead from upstream assets to the
             specified asset.
@@ -923,7 +923,7 @@ class SearchLinksResponse(proto.Message):
     [SearchLinks][google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks].
 
     Attributes:
-        links (MutableSequence[google.cloud.datacatalog.lineage_v1.types.Link]):
+        links (MutableSequence[google.cloud.datacatalog_lineage_v1.types.Link]):
             The list of links for a given asset. Can be
             empty if the asset has no relations of requested
             type (source or target).
@@ -959,10 +959,10 @@ class Link(proto.Message):
         name (str):
             Output only. Immutable. The name of the link. Format:
             ``projects/{project}/locations/{location}/links/{link}``.
-        source (google.cloud.datacatalog.lineage_v1.types.EntityReference):
+        source (google.cloud.datacatalog_lineage_v1.types.EntityReference):
             The pointer to the entity that is the **source** of this
             link.
-        target (google.cloud.datacatalog.lineage_v1.types.EntityReference):
+        target (google.cloud.datacatalog_lineage_v1.types.EntityReference):
             The pointer to the entity that is the **target** of this
             link.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1054,7 +1054,7 @@ class BatchSearchLinkProcessesResponse(proto.Message):
     [BatchSearchLinkProcesses][google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses].
 
     Attributes:
-        process_links (MutableSequence[google.cloud.datacatalog.lineage_v1.types.ProcessLinks]):
+        process_links (MutableSequence[google.cloud.datacatalog_lineage_v1.types.ProcessLinks]):
             An array of processes associated with the
             specified links.
         next_page_token (str):
@@ -1085,7 +1085,7 @@ class ProcessLinks(proto.Message):
         process (str):
             The process name in the format of
             ``projects/{project}/locations/{location}/processes/{process}``.
-        links (MutableSequence[google.cloud.datacatalog.lineage_v1.types.ProcessLinkInfo]):
+        links (MutableSequence[google.cloud.datacatalog_lineage_v1.types.ProcessLinkInfo]):
             An array containing link details objects of
             the links provided in the original request.
 
@@ -1141,7 +1141,7 @@ class Origin(proto.Message):
     r"""Origin of a process.
 
     Attributes:
-        source_type (google.cloud.datacatalog.lineage_v1.types.Origin.SourceType):
+        source_type (google.cloud.datacatalog_lineage_v1.types.Origin.SourceType):
             Type of the source.
         name (str):
             If the source_type isn't CUSTOM, the value of this field

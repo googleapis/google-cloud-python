@@ -39,7 +39,7 @@ from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.datacatalog.lineage_v1 import gapic_version as package_version
+from google.cloud.datacatalog_lineage_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -53,8 +53,8 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.datacatalog.lineage_v1.services.lineage import pagers
-from google.cloud.datacatalog.lineage_v1.types import lineage
+from google.cloud.datacatalog_lineage_v1.services.lineage import pagers
+from google.cloud.datacatalog_lineage_v1.types import lineage
 
 from .transports.base import DEFAULT_CLIENT_INFO, LineageTransport
 from .transports.grpc import LineageGrpcTransport
@@ -524,14 +524,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_create_process():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.CreateProcessRequest(
+                request = datacatalog_lineage_v1.CreateProcessRequest(
                     parent="parent_value",
                 )
 
@@ -542,7 +542,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.CreateProcessRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.CreateProcessRequest, dict]):
                 The request object. Request message for
                 [CreateProcess][google.cloud.datacatalog.lineage.v1.CreateProcess].
             parent (str):
@@ -553,7 +553,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            process (google.cloud.datacatalog.lineage_v1.types.Process):
+            process (google.cloud.datacatalog_lineage_v1.types.Process):
                 Required. The process to create.
                 This corresponds to the ``process`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -565,7 +565,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.types.Process:
+            google.cloud.datacatalog_lineage_v1.types.Process:
                 A process is the definition of a data
                 transformation operation.
 
@@ -635,14 +635,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_update_process():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.UpdateProcessRequest(
+                request = datacatalog_lineage_v1.UpdateProcessRequest(
                 )
 
                 # Make the request
@@ -652,10 +652,10 @@ class LineageClient(metaclass=LineageClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.UpdateProcessRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.UpdateProcessRequest, dict]):
                 The request object. Request message for
                 [UpdateProcess][google.cloud.datacatalog.lineage.v1.UpdateProcess].
-            process (google.cloud.datacatalog.lineage_v1.types.Process):
+            process (google.cloud.datacatalog_lineage_v1.types.Process):
                 Required. The lineage process to update.
 
                 The process's ``name`` field is used to identify the
@@ -679,7 +679,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.types.Process:
+            google.cloud.datacatalog_lineage_v1.types.Process:
                 A process is the definition of a data
                 transformation operation.
 
@@ -750,14 +750,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_get_process():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.GetProcessRequest(
+                request = datacatalog_lineage_v1.GetProcessRequest(
                     name="name_value",
                 )
 
@@ -768,7 +768,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.GetProcessRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.GetProcessRequest, dict]):
                 The request object. Request message for
                 [GetProcess][google.cloud.datacatalog.lineage.v1.GetProcess].
             name (str):
@@ -785,7 +785,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.types.Process:
+            google.cloud.datacatalog_lineage_v1.types.Process:
                 A process is the definition of a data
                 transformation operation.
 
@@ -853,14 +853,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_list_processes():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.ListProcessesRequest(
+                request = datacatalog_lineage_v1.ListProcessesRequest(
                     parent="parent_value",
                 )
 
@@ -872,7 +872,7 @@ class LineageClient(metaclass=LineageClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.ListProcessesRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.ListProcessesRequest, dict]):
                 The request object. Request message for
                 [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
             parent (str):
@@ -890,7 +890,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.services.lineage.pagers.ListProcessesPager:
+            google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListProcessesPager:
                 Response message for
                    [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
 
@@ -969,14 +969,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_delete_process():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.DeleteProcessRequest(
+                request = datacatalog_lineage_v1.DeleteProcessRequest(
                     name="name_value",
                 )
 
@@ -991,7 +991,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.DeleteProcessRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.DeleteProcessRequest, dict]):
                 The request object. Request message for
                 [DeleteProcess][google.cloud.datacatalog.lineage.v1.DeleteProcess].
             name (str):
@@ -1094,17 +1094,17 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_create_run():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                run = lineage_v1.Run()
+                run = datacatalog_lineage_v1.Run()
                 run.state = "ABORTED"
 
-                request = lineage_v1.CreateRunRequest(
+                request = datacatalog_lineage_v1.CreateRunRequest(
                     parent="parent_value",
                     run=run,
                 )
@@ -1116,7 +1116,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.CreateRunRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.CreateRunRequest, dict]):
                 The request object. Request message for
                 [CreateRun][google.cloud.datacatalog.lineage.v1.CreateRun].
             parent (str):
@@ -1126,7 +1126,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            run (google.cloud.datacatalog.lineage_v1.types.Run):
+            run (google.cloud.datacatalog_lineage_v1.types.Run):
                 Required. The run to create.
                 This corresponds to the ``run`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1138,7 +1138,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.types.Run:
+            google.cloud.datacatalog_lineage_v1.types.Run:
                 A lineage run represents an execution
                 of a process that creates lineage
                 events.
@@ -1209,17 +1209,17 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_update_run():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                run = lineage_v1.Run()
+                run = datacatalog_lineage_v1.Run()
                 run.state = "ABORTED"
 
-                request = lineage_v1.UpdateRunRequest(
+                request = datacatalog_lineage_v1.UpdateRunRequest(
                     run=run,
                 )
 
@@ -1230,10 +1230,10 @@ class LineageClient(metaclass=LineageClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.UpdateRunRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.UpdateRunRequest, dict]):
                 The request object. Request message for
                 [UpdateRun][google.cloud.datacatalog.lineage.v1.UpdateRun].
-            run (google.cloud.datacatalog.lineage_v1.types.Run):
+            run (google.cloud.datacatalog_lineage_v1.types.Run):
                 Required. The lineage run to update.
 
                 The run's ``name`` field is used to identify the run to
@@ -1260,7 +1260,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.types.Run:
+            google.cloud.datacatalog_lineage_v1.types.Run:
                 A lineage run represents an execution
                 of a process that creates lineage
                 events.
@@ -1330,14 +1330,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_get_run():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.GetRunRequest(
+                request = datacatalog_lineage_v1.GetRunRequest(
                     name="name_value",
                 )
 
@@ -1348,7 +1348,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.GetRunRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.GetRunRequest, dict]):
                 The request object. Request message for
                 [GetRun][google.cloud.datacatalog.lineage.v1.GetRun].
             name (str):
@@ -1363,7 +1363,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.types.Run:
+            google.cloud.datacatalog_lineage_v1.types.Run:
                 A lineage run represents an execution
                 of a process that creates lineage
                 events.
@@ -1432,14 +1432,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_list_runs():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.ListRunsRequest(
+                request = datacatalog_lineage_v1.ListRunsRequest(
                     parent="parent_value",
                 )
 
@@ -1451,7 +1451,7 @@ class LineageClient(metaclass=LineageClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.ListRunsRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.ListRunsRequest, dict]):
                 The request object. Request message for
                 [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
             parent (str):
@@ -1468,7 +1468,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.services.lineage.pagers.ListRunsPager:
+            google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListRunsPager:
                 Response message for
                    [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
 
@@ -1547,14 +1547,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_delete_run():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.DeleteRunRequest(
+                request = datacatalog_lineage_v1.DeleteRunRequest(
                     name="name_value",
                 )
 
@@ -1569,7 +1569,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.DeleteRunRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.DeleteRunRequest, dict]):
                 The request object. Request message for
                 [DeleteRun][google.cloud.datacatalog.lineage.v1.DeleteRun].
             name (str):
@@ -1672,14 +1672,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_create_lineage_event():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.CreateLineageEventRequest(
+                request = datacatalog_lineage_v1.CreateLineageEventRequest(
                     parent="parent_value",
                 )
 
@@ -1690,7 +1690,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.CreateLineageEventRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.CreateLineageEventRequest, dict]):
                 The request object. Request message for
                 [CreateLineageEvent][google.cloud.datacatalog.lineage.v1.CreateLineageEvent].
             parent (str):
@@ -1700,7 +1700,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            lineage_event (google.cloud.datacatalog.lineage_v1.types.LineageEvent):
+            lineage_event (google.cloud.datacatalog_lineage_v1.types.LineageEvent):
                 Required. The lineage event to
                 create.
 
@@ -1714,7 +1714,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.types.LineageEvent:
+            google.cloud.datacatalog_lineage_v1.types.LineageEvent:
                 A lineage event represents an
                 operation on assets. Within the
                 operation, the data flows from the
@@ -1786,14 +1786,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_get_lineage_event():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.GetLineageEventRequest(
+                request = datacatalog_lineage_v1.GetLineageEventRequest(
                     name="name_value",
                 )
 
@@ -1804,7 +1804,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.GetLineageEventRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.GetLineageEventRequest, dict]):
                 The request object. Request message for
                 [GetLineageEvent][google.cloud.datacatalog.lineage.v1.GetLineageEvent].
             name (str):
@@ -1821,7 +1821,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.types.LineageEvent:
+            google.cloud.datacatalog_lineage_v1.types.LineageEvent:
                 A lineage event represents an
                 operation on assets. Within the
                 operation, the data flows from the
@@ -1892,14 +1892,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_list_lineage_events():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.ListLineageEventsRequest(
+                request = datacatalog_lineage_v1.ListLineageEventsRequest(
                     parent="parent_value",
                 )
 
@@ -1911,7 +1911,7 @@ class LineageClient(metaclass=LineageClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.ListLineageEventsRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.ListLineageEventsRequest, dict]):
                 The request object. Request message for
                 [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
             parent (str):
@@ -1929,7 +1929,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.services.lineage.pagers.ListLineageEventsPager:
+            google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListLineageEventsPager:
                 Response message for
                    [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
 
@@ -2008,14 +2008,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_delete_lineage_event():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.DeleteLineageEventRequest(
+                request = datacatalog_lineage_v1.DeleteLineageEventRequest(
                     name="name_value",
                 )
 
@@ -2023,7 +2023,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 client.delete_lineage_event(request=request)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.DeleteLineageEventRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.DeleteLineageEventRequest, dict]):
                 The request object. Request message for
                 [DeleteLineageEvent][google.cloud.datacatalog.lineage.v1.DeleteLineageEvent].
             name (str):
@@ -2105,17 +2105,17 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_search_links():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                source = lineage_v1.EntityReference()
+                source = datacatalog_lineage_v1.EntityReference()
                 source.fully_qualified_name = "fully_qualified_name_value"
 
-                request = lineage_v1.SearchLinksRequest(
+                request = datacatalog_lineage_v1.SearchLinksRequest(
                     source=source,
                     parent="parent_value",
                 )
@@ -2128,7 +2128,7 @@ class LineageClient(metaclass=LineageClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.SearchLinksRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.SearchLinksRequest, dict]):
                 The request object. Request message for
                 [SearchLinks][google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2138,7 +2138,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.services.lineage.pagers.SearchLinksPager:
+            google.cloud.datacatalog_lineage_v1.services.lineage.pagers.SearchLinksPager:
                 Response message for
                    [SearchLinks][google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks].
 
@@ -2216,14 +2216,14 @@ class LineageClient(metaclass=LineageClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud.datacatalog import lineage_v1
+            from google.cloud import datacatalog_lineage_v1
 
             def sample_batch_search_link_processes():
                 # Create a client
-                client = lineage_v1.LineageClient()
+                client = datacatalog_lineage_v1.LineageClient()
 
                 # Initialize request argument(s)
-                request = lineage_v1.BatchSearchLinkProcessesRequest(
+                request = datacatalog_lineage_v1.BatchSearchLinkProcessesRequest(
                     parent="parent_value",
                     links=['links_value1', 'links_value2'],
                 )
@@ -2236,7 +2236,7 @@ class LineageClient(metaclass=LineageClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.datacatalog.lineage_v1.types.BatchSearchLinkProcessesRequest, dict]):
+            request (Union[google.cloud.datacatalog_lineage_v1.types.BatchSearchLinkProcessesRequest, dict]):
                 The request object. Request message for
                 [BatchSearchLinkProcesses][google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2246,7 +2246,7 @@ class LineageClient(metaclass=LineageClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datacatalog.lineage_v1.services.lineage.pagers.BatchSearchLinkProcessesPager:
+            google.cloud.datacatalog_lineage_v1.services.lineage.pagers.BatchSearchLinkProcessesPager:
                 Response message for
                    [BatchSearchLinkProcesses][google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses].
 
