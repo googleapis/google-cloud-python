@@ -1,2 +1,0 @@
-recursive-include google/cloud/dataflow *.py
-recursive-include google/cloud/dataflow_v1beta3 *.py
