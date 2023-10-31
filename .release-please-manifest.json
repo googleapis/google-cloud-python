@@ -36,7 +36,7 @@
     "packages/google-cloud-bigquery-reservation": "1.11.3",
     "packages/google-cloud-billing": "1.11.5",
     "packages/google-cloud-billing-budgets": "1.12.1",
-    "packages/google-cloud-binary-authorization": "0.0.0",
+    "packages/google-cloud-binary-authorization": "1.7.0",
     "packages/google-cloud-build": "0.0.0",
     "packages/google-cloud-certificate-manager": "1.4.4",
     "packages/google-cloud-channel": "1.16.0",
