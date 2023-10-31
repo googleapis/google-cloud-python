@@ -1,0 +1,24 @@
+{
+    "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+    "packages": {
+      ".": {
+        "release-type": "python",
+        "extra-files": [
+          "grafeas/grafeas/gapic_version.py",
+          "grafeas/grafeas_v1/gapic_version.py",
+          {
+            "type": "json",
+            "path": "samples/generated_samples/snippet_metadata_grafeas.v1.json",
+            "jsonpath": "$.clientLibrary.version"
+          }
+        ]
+      }
+    },
+    "release-type": "python",
+    "plugins": [
+      {
+        "type": "sentence-case"
+      }
+    ],
+    "initial-version": "0.1.0"
+}

@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    transcoder_v1/services
-    transcoder_v1/types
+    transcoder_v1/services_
+    transcoder_v1/types_
 
 
 Changelog

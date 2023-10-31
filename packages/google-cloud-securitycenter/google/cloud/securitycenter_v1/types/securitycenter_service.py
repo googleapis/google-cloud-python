@@ -17,10 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import (
@@ -34,6 +37,7 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
 )
+from google.cloud.securitycenter_v1.types import security_health_analytics_custom_config
 from google.cloud.securitycenter_v1.types import (
     security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
 )
@@ -88,6 +92,8 @@ __protobuf__ = proto.module(
         "SetFindingStateRequest",
         "SetMuteRequest",
         "RunAssetDiscoveryRequest",
+        "SimulateSecurityHealthAnalyticsCustomModuleRequest",
+        "SimulateSecurityHealthAnalyticsCustomModuleResponse",
         "UpdateExternalSystemRequest",
         "UpdateFindingRequest",
         "UpdateMuteConfigRequest",
@@ -2113,6 +2119,135 @@ class RunAssetDiscoveryRequest(proto.Message):
     parent: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class SimulateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
+    r"""Request message to simulate a CustomConfig against a given
+    test resource. Maximum size of the request is 4 MB by default.
+
+    Attributes:
+        parent (str):
+            Required. The relative resource name of the organization,
+            project, or folder. See:
+            https://cloud.google.com/apis/design/resource_names#relative_resource_name
+            An example is: "organizations/{organization_id}".
+        custom_config (google.cloud.securitycenter_v1.types.CustomConfig):
+            Required. The user specified custom
+            configuration to test.
+        resource (google.cloud.securitycenter_v1.types.SimulateSecurityHealthAnalyticsCustomModuleRequest.SimulatedResource):
+            Required. Resource data to simulate custom
+            module against.
+    """
+
+    class SimulatedResource(proto.Message):
+        r"""Manually constructed resource. If the custom module only evaluates
+        against the resource data, the iam_policy_data field can be omitted,
+        and vice versa.
+
+        Attributes:
+            resource_type (str):
+                Required. The type of the resource, e.g.
+                ``compute.googleapis.com/Disk``.
+            resource_data (google.protobuf.struct_pb2.Struct):
+                Optional. A representation of the GCP
+                resource. Should match the GCP resource JSON
+                format.
+            iam_policy_data (google.iam.v1.policy_pb2.Policy):
+                Optional. A representation of the IAM policy.
+        """
+
+        resource_type: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        resource_data: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=struct_pb2.Struct,
+        )
+        iam_policy_data: policy_pb2.Policy = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=policy_pb2.Policy,
+        )
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    custom_config: security_health_analytics_custom_config.CustomConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=security_health_analytics_custom_config.CustomConfig,
+    )
+    resource: SimulatedResource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=SimulatedResource,
+    )
+
+
+class SimulateSecurityHealthAnalyticsCustomModuleResponse(proto.Message):
+    r"""Response message for simulating a
+    SecurityHealthAnalyticsCustomModule against a given resource.
+
+    Attributes:
+        result (google.cloud.securitycenter_v1.types.SimulateSecurityHealthAnalyticsCustomModuleResponse.SimulatedResult):
+            Result for test case in the corresponding
+            request.
+    """
+
+    class SimulatedResult(proto.Message):
+        r"""Possible test result.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            finding (google.cloud.securitycenter_v1.types.Finding):
+                Finding that would be published for the test
+                case, if a violation is detected.
+
+                This field is a member of `oneof`_ ``result``.
+            no_violation (google.protobuf.empty_pb2.Empty):
+                Indicates that the test case does not trigger
+                any violation.
+
+                This field is a member of `oneof`_ ``result``.
+            error (google.rpc.status_pb2.Status):
+                Error encountered during the test.
+
+                This field is a member of `oneof`_ ``result``.
+        """
+
+        finding: gcs_finding.Finding = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="result",
+            message=gcs_finding.Finding,
+        )
+        no_violation: empty_pb2.Empty = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="result",
+            message=empty_pb2.Empty,
+        )
+        error: status_pb2.Status = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="result",
+            message=status_pb2.Status,
+        )
+
+    result: SimulatedResult = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=SimulatedResult,
     )
 
 
