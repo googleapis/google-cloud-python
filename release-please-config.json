@@ -271,12 +271,12 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-asset",
             "extra-files": [
-                "google/cloud/asset/gapic_version.py",
-                "google/cloud/asset_v1/gapic_version.py",
-                "google/cloud/asset_v1p1beta1/gapic_version.py",
                 "google/cloud/asset_v1p2beta1/gapic_version.py",
-                "google/cloud/asset_v1p4beta1/gapic_version.py",
+                "google/cloud/asset_v1p1beta1/gapic_version.py",
                 "google/cloud/asset_v1p5beta1/gapic_version.py",
+                "google/cloud/asset_v1/gapic_version.py",
+                "google/cloud/asset/gapic_version.py",
+                "google/cloud/asset_v1p4beta1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.asset.v1.json",
@@ -284,7 +284,7 @@
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.asset.v1p1beta1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.asset.v1p5beta1.json",
                     "type": "json"
                 },
                 {
@@ -294,7 +294,7 @@
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.asset.v1p5beta1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.asset.v1p1beta1.json",
                     "type": "json"
                 }
             ],
