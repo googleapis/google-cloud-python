@@ -2253,15 +2253,10 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-speech",
             "extra-files": [
-                "google/cloud/speech/gapic_version.py",
+                "google/cloud/speech_v2/gapic_version.py",
                 "google/cloud/speech_v1/gapic_version.py",
                 "google/cloud/speech_v1p1beta1/gapic_version.py",
-                "google/cloud/speech_v2/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.speech.v1.json",
-                    "type": "json"
-                },
+                "google/cloud/speech/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.speech.v1p1beta1.json",
@@ -2270,6 +2265,11 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.speech.v2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.speech.v1.json",
                     "type": "json"
                 }
             ],
