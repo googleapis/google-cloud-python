@@ -1008,6 +1008,40 @@ def test_receive_synchronously(
     subscriber_client.delete_subscription(request={"subscription": subscription_path})
 
 
+def test_receive_messages_with_concurrency_control(
+    subscriber_client: pubsub_v1.SubscriberClient,
+    publisher_client: pubsub_v1.PublisherClient,
+    topic: str,
+    capsys: CaptureFixture[str],
+) -> None:
+    subscription_async_receive_messages_with_concurrency_control_name = f"subscription-test-subscription-async-receive-messages-with-concurrency-control-{PY_VERSION}-{UUID}"
+
+    subscription_path = subscriber_client.subscription_path(
+        PROJECT_ID, subscription_async_receive_messages_with_concurrency_control_name
+    )
+
+    try:
+        subscriber_client.get_subscription(request={"subscription": subscription_path})
+    except NotFound:
+        subscriber_client.create_subscription(
+            request={"name": subscription_path, "topic": topic}
+        )
+
+    _ = _publish_messages(publisher_client, topic)
+
+    subscriber.receive_messages_with_flow_control(
+        PROJECT_ID, subscription_async_receive_messages_with_concurrency_control_name, 5
+    )
+
+    out, _ = capsys.readouterr()
+    assert "Listening" in out
+    assert subscription_async_receive_messages_with_concurrency_control_name in out
+    assert "message" in out
+
+    # Clean up.
+    subscriber_client.delete_subscription(request={"subscription": subscription_path})
+
+
 @typed_flaky
 def test_receive_synchronously_with_lease(
     subscriber_client: pubsub_v1.SubscriberClient,

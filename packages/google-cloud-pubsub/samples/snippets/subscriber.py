@@ -1003,6 +1003,49 @@ def receive_messages_with_delivery_attempts(
     # [END pubsub_dead_letter_delivery_attempt]
 
 
+def receive_messages_with_concurrency_control(
+    project_id: str, subscription_id: str, timeout: Optional[float] = None
+) -> None:
+    # [START pubsub_subscriber_concurrency_control]
+    from concurrent import futures
+    from google.cloud import pubsub_v1
+
+    # TODO(developer)
+    # project_id = "your-project-id"
+    # subscription_id = "your-subscription-id"
+    # Number of seconds the subscriber should listen for messages
+    # timeout = 5.0
+
+    # An optional executor to use. If not specified, a default one with maximum 10
+    # threads will be created.
+    executor = futures.ThreadPoolExecutor(max_workers=5)
+    # A thread pool-based scheduler. It must not be shared across SubscriberClients.
+    scheduler = pubsub_v1.subscriber.scheduler.ThreadScheduler(executor)
+
+    subscriber = pubsub_v1.SubscriberClient()
+    subscription_path = subscriber.subscription_path(project_id, subscription_id)
+
+    def callback(message: pubsub_v1.subscriber.message.Message) -> None:
+        print(f"Received {message.data!r}.")
+        message.ack()
+
+    streaming_pull_future = subscriber.subscribe(
+        subscription_path, callback=callback, scheduler=scheduler
+    )
+    print(f"Listening for messages on {subscription_path}..\n")
+
+    # Wrap subscriber in a 'with' block to automatically call close() when done.
+    with subscriber:
+        try:
+            # When `timeout` is not set, result() will block indefinitely,
+            # unless an exception is encountered first.
+            streaming_pull_future.result(timeout=timeout)
+        except TimeoutError:
+            streaming_pull_future.cancel()  # Trigger the shutdown.
+            streaming_pull_future.result()  # Block until the shutdown is complete.
+    # [END pubsub_subscriber_concurrency_control]
+
+
 if __name__ == "__main__":  # noqa
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -1183,6 +1226,15 @@ if __name__ == "__main__":  # noqa
         "timeout", default=None, type=float, nargs="?"
     )
 
+    receive_messages_with_concurrency_control_parser = subparsers.add_parser(
+        "receive-messages-with-concurrency-control",
+        help=receive_messages_with_concurrency_control.__doc__,
+    )
+    receive_messages_with_concurrency_control_parser.add_argument("subscription_id")
+    receive_messages_with_concurrency_control_parser.add_argument(
+        "timeout", default=None, type=float, nargs="?"
+    )
+
     args = parser.parse_args()
 
     if args.command == "list-in-topic":
@@ -1273,5 +1325,9 @@ if __name__ == "__main__":  # noqa
         listen_for_errors(args.project_id, args.subscription_id, args.timeout)
     elif args.command == "receive-messages-with-delivery-attempts":
         receive_messages_with_delivery_attempts(
+            args.project_id, args.subscription_id, args.timeout
+        )
+    elif args.command == "receive-messages-with-concurrency-control":
+        receive_messages_with_concurrency_control(
             args.project_id, args.subscription_id, args.timeout
         )
