@@ -525,6 +525,7 @@ class Dataset(object):
         "friendly_name": "friendlyName",
         "default_encryption_configuration": "defaultEncryptionConfiguration",
         "storage_billing_model": "storageBillingModel",
+        "max_time_travel_hours": "maxTimeTravelHours",
         "default_rounding_mode": "defaultRoundingMode",
     }
 
@@ -532,6 +533,28 @@ class Dataset(object):
         if isinstance(dataset_ref, str):
             dataset_ref = DatasetReference.from_string(dataset_ref)
         self._properties = {"datasetReference": dataset_ref.to_api_repr(), "labels": {}}
+
+    @property
+    def max_time_travel_hours(self):
+        """
+        Optional[int]: Defines the time travel window in hours. The value can
+        be from 48 to 168 hours (2 to 7 days), and in multiple of 24 hours
+        (48, 72, 96, 120, 144, 168).
+        The default value is 168 hours if this is not set.
+        """
+        return self._properties.get("maxTimeTravelHours")
+
+    @max_time_travel_hours.setter
+    def max_time_travel_hours(self, hours):
+        if not isinstance(hours, int):
+            raise ValueError(f"max_time_travel_hours must be an integer. Got {hours}")
+        if hours < 2 * 24 or hours > 7 * 24:
+            raise ValueError(
+                "Time Travel Window should be from 48 to 168 hours (2 to 7 days)"
+            )
+        if hours % 24 != 0:
+            raise ValueError("Time Travel Window should be multiple of 24")
+        self._properties["maxTimeTravelHours"] = hours
 
     @property
     def default_rounding_mode(self):

@@ -466,3 +466,82 @@ def test_create_dataset_with_default_rounding_mode_if_value_is_in_possible_value
         },
         timeout=DEFAULT_TIMEOUT,
     )
+
+
+def test_create_dataset_with_max_time_travel_hours(PROJECT, DS_ID, LOCATION):
+    path = "/projects/%s/datasets" % PROJECT
+    max_time_travel_hours = 24 * 3
+
+    resource = {
+        "datasetReference": {"projectId": PROJECT, "datasetId": DS_ID},
+        "etag": "etag",
+        "id": "{}:{}".format(PROJECT, DS_ID),
+        "location": LOCATION,
+        "maxTimeTravelHours": max_time_travel_hours,
+    }
+    client = make_client(location=LOCATION)
+    conn = client._connection = make_connection(resource)
+
+    ds_ref = DatasetReference(PROJECT, DS_ID)
+    before = Dataset(ds_ref)
+    before.max_time_travel_hours = max_time_travel_hours
+    after = client.create_dataset(before)
+    assert after.dataset_id == DS_ID
+    assert after.project == PROJECT
+    assert after.max_time_travel_hours == max_time_travel_hours
+
+    conn.api_request.assert_called_once_with(
+        method="POST",
+        path=path,
+        data={
+            "datasetReference": {"projectId": PROJECT, "datasetId": DS_ID},
+            "labels": {},
+            "location": LOCATION,
+            "maxTimeTravelHours": max_time_travel_hours,
+        },
+        timeout=DEFAULT_TIMEOUT,
+    )
+
+
+def test_create_dataset_with_max_time_travel_hours_not_multiple_of_24(
+    PROJECT, DS_ID, LOCATION
+):
+    ds_ref = DatasetReference(PROJECT, DS_ID)
+    dataset = Dataset(ds_ref)
+    with pytest.raises(ValueError) as e:
+        dataset.max_time_travel_hours = 50
+    assert str(e.value) == "Time Travel Window should be multiple of 24"
+
+
+def test_create_dataset_with_max_time_travel_hours_is_less_than_2_days(
+    PROJECT, DS_ID, LOCATION
+):
+    ds_ref = DatasetReference(PROJECT, DS_ID)
+    dataset = Dataset(ds_ref)
+    with pytest.raises(ValueError) as e:
+        dataset.max_time_travel_hours = 24
+    assert (
+        str(e.value)
+        == "Time Travel Window should be from 48 to 168 hours (2 to 7 days)"
+    )
+
+
+def test_create_dataset_with_max_time_travel_hours_is_greater_than_7_days(
+    PROJECT, DS_ID, LOCATION
+):
+    ds_ref = DatasetReference(PROJECT, DS_ID)
+    dataset = Dataset(ds_ref)
+    with pytest.raises(ValueError) as e:
+        dataset.max_time_travel_hours = 192
+    assert (
+        str(e.value)
+        == "Time Travel Window should be from 48 to 168 hours (2 to 7 days)"
+    )
+
+
+def test_create_dataset_with_max_time_travel_hours_is_not_int(PROJECT, DS_ID, LOCATION):
+    ds_ref = DatasetReference(PROJECT, DS_ID)
+    dataset = Dataset(ds_ref)
+    with pytest.raises(ValueError) as e:
+        dataset.max_time_travel_hours = "50"
+    assert str(e.value) == "max_time_travel_hours must be an integer. Got 50"

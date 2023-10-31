@@ -238,6 +238,11 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(dataset.dataset_id, DATASET_ID)
         self.assertEqual(dataset.project, Config.CLIENT.project)
 
+    def test_create_dataset_max_time_travel_hours(self):
+        DATASET_ID = _make_dataset_id("create_ci_dataset")
+        dataset = self.temp_dataset(DATASET_ID, max_time_travel_hours=24 * 2)
+        self.assertEqual(int(dataset.max_time_travel_hours), 24 * 2)
+
     def test_get_dataset(self):
         dataset_id = _make_dataset_id("get_dataset")
         client = Config.CLIENT
@@ -2299,6 +2304,8 @@ class TestBigQuery(unittest.TestCase):
         dataset = Dataset(dataset_ref)
         if kwargs.get("location"):
             dataset.location = kwargs.get("location")
+        if kwargs.get("max_time_travel_hours"):
+            dataset.max_time_travel_hours = kwargs.get("max_time_travel_hours")
         if kwargs.get("default_rounding_mode"):
             dataset.default_rounding_mode = kwargs.get("default_rounding_mode")
 
