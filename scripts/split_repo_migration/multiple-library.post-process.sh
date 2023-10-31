@@ -99,9 +99,6 @@ do
 EOF
   ./scripts/split_repo_migration/single-library.post-process.common-files.sh "${MONOREPO_PATH_PACKAGE}"
 
-  # we need the following directory present so OwlBot will include it in its
-  # processing below.
-  mkdir -p owl-bot-staging/${MONOREPO_PACKAGE_NAME}
 done
 
 
