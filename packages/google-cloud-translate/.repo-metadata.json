@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_COMBO",
-    "repo": "googleapis/python-translate",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-translate",
     "api_id": "translate.googleapis.com",
     "requires_billing": true,
