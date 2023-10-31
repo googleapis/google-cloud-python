@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-trace",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-trace",
     "api_id": "cloudtrace.googleapis.com",
     "requires_billing": false,
