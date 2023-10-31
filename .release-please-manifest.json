@@ -17,7 +17,7 @@
     "packages/google-cloud-artifact-registry": "1.8.4",
     "packages/google-cloud-asset": "3.20.0",
     "packages/google-cloud-assured-workloads": "1.10.3",
-    "packages/google-cloud-automl": "0.0.0",
+    "packages/google-cloud-automl": "2.11.3",
     "packages/google-cloud-bare-metal-solution": "1.5.1",
     "packages/google-cloud-batch": "0.17.2",
     "packages/google-cloud-beyondcorp-appconnections": "0.4.4",
