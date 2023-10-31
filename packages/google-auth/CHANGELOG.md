@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.23.4](https://github.com/googleapis/google-auth-library-python/compare/v2.23.3...v2.23.4) (2023-10-31)
+
+
+### Bug Fixes
+
+* Export detect_gce_residency_linux function ([#1403](https://github.com/googleapis/google-auth-library-python/issues/1403)) ([809da13](https://github.com/googleapis/google-auth-library-python/commit/809da13cedcc2945b7e81f9c5b86b84f75e9113c))
+
 ## [2.23.3](https://github.com/googleapis/google-auth-library-python/compare/v2.23.2...v2.23.3) (2023-10-05)
 
 
