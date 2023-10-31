@@ -2057,8 +2057,8 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-run",
             "extra-files": [
-                "google/cloud/run/gapic_version.py",
                 "google/cloud/run_v2/gapic_version.py",
+                "google/cloud/run/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.run.v2.json",
