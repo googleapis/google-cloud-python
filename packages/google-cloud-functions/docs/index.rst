@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    functions_v1/services
-    functions_v1/types
+    functions_v1/services_
+    functions_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    functions_v2/services
-    functions_v2/types
+    functions_v2/services_
+    functions_v2/types_
 
 
 Changelog

@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    dialogflow_v2/services
-    dialogflow_v2/types
+    dialogflow_v2/services_
+    dialogflow_v2/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    dialogflow_v2beta1/services
-    dialogflow_v2beta1/types
+    dialogflow_v2beta1/services_
+    dialogflow_v2beta1/types_
 
 
 Changelog
