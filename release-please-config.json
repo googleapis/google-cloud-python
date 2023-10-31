@@ -47,9 +47,9 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-analytics-data",
             "extra-files": [
-                "google/analytics/data/gapic_version.py",
-                "google/analytics/data_v1alpha/gapic_version.py",
                 "google/analytics/data_v1beta/gapic_version.py",
+                "google/analytics/data_v1alpha/gapic_version.py",
+                "google/analytics/data/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.analytics.data.v1alpha.json",

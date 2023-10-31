@@ -7,7 +7,7 @@
     "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-analytics-data",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-analytics-data",
     "api_id": "analyticsdata.googleapis.com",
     "requires_billing": true,
