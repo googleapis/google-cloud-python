@@ -916,8 +916,8 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-dataflow-client",
             "extra-files": [
-                "google/cloud/dataflow/gapic_version.py",
                 "google/cloud/dataflow_v1beta3/gapic_version.py",
+                "google/cloud/dataflow/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.dataflow.v1beta3.json",
