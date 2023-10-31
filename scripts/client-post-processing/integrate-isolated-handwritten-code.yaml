@@ -274,3 +274,11 @@ replacements:
     after:
           install_requires=dependencies,\n    extras_require=extras,\n    include_package_data=True,
     count: 1
+  - paths: [
+      packages/google-cloud-automl/noxfile.py,
+    ]
+    before: |
+      UNIT_TEST_EXTRAS: List\[str\] = \[\]
+    after: |
+      UNIT_TEST_EXTRAS: List[str] = ["pandas", "storage"]
+    count: 1
