@@ -26,9 +26,14 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-analytics-admin",
             "extra-files": [
+                "google/analytics/admin_v1beta/gapic_version.py",
                 "google/analytics/admin/gapic_version.py",
                 "google/analytics/admin_v1alpha/gapic_version.py",
-                "google/analytics/admin_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.analytics.admin.v1alpha.json",
+                    "type": "json"
+                },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.analytics.admin.v1beta.json",

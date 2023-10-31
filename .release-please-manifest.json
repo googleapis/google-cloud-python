@@ -1,6 +1,6 @@
 {
     "packages/google-ai-generativelanguage": "0.3.4",
-    "packages/google-analytics-admin": "0.0.0",
+    "packages/google-analytics-admin": "0.22.0",
     "packages/google-analytics-data": "0.0.0",
     "packages/google-apps-script-type": "0.3.4",
     "packages/google-area120-tables": "0.11.4",
