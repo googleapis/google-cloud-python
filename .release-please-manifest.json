@@ -104,6 +104,7 @@
     "packages/google-cloud-optimization": "1.6.0",
     "packages/google-cloud-orchestration-airflow": "1.9.2",
     "packages/google-cloud-os-config": "1.15.3",
+    "packages/google-cloud-os-login": "0.0.0",
     "packages/google-cloud-phishing-protection": "1.9.2",
     "packages/google-cloud-policy-troubleshooter": "1.9.1",
     "packages/google-cloud-policysimulator": "0.1.1",
