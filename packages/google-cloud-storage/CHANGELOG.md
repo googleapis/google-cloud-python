@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.13.0](https://github.com/googleapis/python-storage/compare/v2.12.0...v2.13.0) (2023-10-31)
+
+
+### Features
+
+* Add Autoclass v2.1 support ([#1117](https://github.com/googleapis/python-storage/issues/1117)) ([d38adb6](https://github.com/googleapis/python-storage/commit/d38adb6a3136152ad68ad8a9c4583d06509307b2))
+* Add support for custom headers ([#1121](https://github.com/googleapis/python-storage/issues/1121)) ([2f92c3a](https://github.com/googleapis/python-storage/commit/2f92c3a2a3a1585d0f77be8fe3c2c5324140b71a))
+
+
+### Bug Fixes
+
+* Blob.from_string parse storage uri with regex ([#1170](https://github.com/googleapis/python-storage/issues/1170)) ([0a243fa](https://github.com/googleapis/python-storage/commit/0a243faf5d6ca89b977ea1cf543356e0dd04df95))
+* Bucket.delete(force=True) now works with version-enabled buckets ([#1172](https://github.com/googleapis/python-storage/issues/1172)) ([0de09d3](https://github.com/googleapis/python-storage/commit/0de09d30ea6083d962be1c1f5341ea14a2456dc7))
+* Fix typo in Bucket.clear_lifecycle_rules() ([#1169](https://github.com/googleapis/python-storage/issues/1169)) ([eae9ebe](https://github.com/googleapis/python-storage/commit/eae9ebed12d26832405c2f29fbdb14b4babf080d))
+
+
+### Documentation
+
+* Fix exception field in tm reference docs ([#1164](https://github.com/googleapis/python-storage/issues/1164)) ([eac91cb](https://github.com/googleapis/python-storage/commit/eac91cb6ffb0066248f824fc1f307140dd7c85da))
+
 ## [2.12.0](https://github.com/googleapis/python-storage/compare/v2.11.0...v2.12.0) (2023-10-12)
 
 
