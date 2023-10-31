@@ -1539,6 +1539,7 @@ class Bucket(_PropertyMixin):
                     client=client,
                     timeout=timeout,
                     retry=retry,
+                    versions=True,
                 )
             )
             if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
@@ -1557,6 +1558,7 @@ class Bucket(_PropertyMixin):
                 client=client,
                 timeout=timeout,
                 retry=retry,
+                preserve_generation=True,
             )
 
         # We intentionally pass `_target_object=None` since a DELETE

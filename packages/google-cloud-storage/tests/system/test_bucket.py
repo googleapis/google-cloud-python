@@ -1069,6 +1069,48 @@ def test_new_bucket_with_autoclass(
     assert bucket.autoclass_toggle_time != previous_toggle_time
 
 
+def test_bucket_delete_force(storage_client):
+    bucket_name = _helpers.unique_name("version-disabled")
+    bucket_obj = storage_client.bucket(bucket_name)
+    bucket = storage_client.create_bucket(bucket_obj)
+
+    BLOB_NAME = "my_object"
+    blob = bucket.blob(BLOB_NAME)
+    blob.upload_from_string("abcd")
+    blob.upload_from_string("efgh")
+
+    blobs = bucket.list_blobs(versions=True)
+    counter = 0
+    for blob in blobs:
+        counter += 1
+        assert blob.name == BLOB_NAME
+    assert counter == 1
+
+    bucket.delete(force=True)  # Will fail with 409 if blobs aren't deleted
+
+
+def test_bucket_delete_force_works_with_versions(storage_client):
+    bucket_name = _helpers.unique_name("version-enabled")
+    bucket_obj = storage_client.bucket(bucket_name)
+    bucket_obj.versioning_enabled = True
+    bucket = storage_client.create_bucket(bucket_obj)
+    assert bucket.versioning_enabled
+
+    BLOB_NAME = "my_versioned_object"
+    blob = bucket.blob(BLOB_NAME)
+    blob.upload_from_string("abcd")
+    blob.upload_from_string("efgh")
+
+    blobs = bucket.list_blobs(versions=True)
+    counter = 0
+    for blob in blobs:
+        counter += 1
+        assert blob.name == BLOB_NAME
+    assert counter == 2
+
+    bucket.delete(force=True)  # Will fail with 409 if versions aren't deleted
+
+
 def test_config_autoclass_w_existing_bucket(
     storage_client,
     buckets_to_delete,

@@ -1419,6 +1419,7 @@ class Test_Bucket(unittest.TestCase):
             client=client,
             timeout=timeout,
             retry=retry,
+            versions=True,
         )
 
         bucket.delete_blobs.assert_called_once_with(
@@ -1427,6 +1428,7 @@ class Test_Bucket(unittest.TestCase):
             client=client,
             timeout=timeout,
             retry=retry,
+            preserve_generation=True,
         )
 
         expected_query_params = {"userProject": user_project}
@@ -1456,6 +1458,7 @@ class Test_Bucket(unittest.TestCase):
             client=client,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
+            versions=True,
         )
 
         bucket.delete_blobs.assert_called_once_with(
@@ -1464,6 +1467,7 @@ class Test_Bucket(unittest.TestCase):
             client=client,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
+            preserve_generation=True,
         )
 
         expected_query_params = {}
@@ -1483,8 +1487,10 @@ class Test_Bucket(unittest.TestCase):
         client = mock.Mock(spec=["_delete_resource"])
         client._delete_resource.return_value = None
         bucket = self._make_one(client=client, name=name)
-        blob = mock.Mock(spec=["name"])
+        blob = mock.Mock(spec=["name", "generation"])
         blob.name = blob_name
+        GEN = 1234
+        blob.generation = GEN
         blobs = [blob]
         bucket.list_blobs = mock.Mock(return_value=iter(blobs))
         bucket.delete_blob = mock.Mock(side_effect=NotFound("testing"))
@@ -1496,7 +1502,7 @@ class Test_Bucket(unittest.TestCase):
         bucket.delete_blob.assert_called_once_with(
             blob_name,
             client=client,
-            generation=None,
+            generation=GEN,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
