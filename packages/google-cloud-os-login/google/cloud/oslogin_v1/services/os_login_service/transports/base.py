@@ -25,8 +25,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.oslogin_v1 import gapic_version as package_version
 from google.cloud.oslogin_v1.common.types import common
+from google.cloud.oslogin_v1 import gapic_version as package_version
 from google.cloud.oslogin_v1.types import oslogin
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

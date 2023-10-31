@@ -10,6 +10,7 @@ API Reference
 
     oslogin_v1/services_
     oslogin_v1/types_
+    oslogin_v1/common/types
 
 
 Changelog
