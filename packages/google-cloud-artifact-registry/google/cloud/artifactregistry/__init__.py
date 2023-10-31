@@ -65,13 +65,19 @@ from google.cloud.artifactregistry_v1.types.package import (
     Package,
 )
 from google.cloud.artifactregistry_v1.types.repository import (
+    CleanupPolicy,
+    CleanupPolicyCondition,
+    CleanupPolicyMostRecentVersions,
     CreateRepositoryRequest,
     DeleteRepositoryRequest,
     GetRepositoryRequest,
     ListRepositoriesRequest,
     ListRepositoriesResponse,
+    RemoteRepositoryConfig,
     Repository,
     UpdateRepositoryRequest,
+    UpstreamPolicy,
+    VirtualRepositoryConfig,
 )
 from google.cloud.artifactregistry_v1.types.service import OperationMetadata
 from google.cloud.artifactregistry_v1.types.settings import (
@@ -90,6 +96,7 @@ from google.cloud.artifactregistry_v1.types.tag import (
 )
 from google.cloud.artifactregistry_v1.types.version import (
     BatchDeleteVersionsMetadata,
+    BatchDeleteVersionsRequest,
     DeleteVersionRequest,
     GetVersionRequest,
     ListVersionsRequest,
@@ -146,13 +153,19 @@ __all__ = (
     "ListPackagesRequest",
     "ListPackagesResponse",
     "Package",
+    "CleanupPolicy",
+    "CleanupPolicyCondition",
+    "CleanupPolicyMostRecentVersions",
     "CreateRepositoryRequest",
     "DeleteRepositoryRequest",
     "GetRepositoryRequest",
     "ListRepositoriesRequest",
     "ListRepositoriesResponse",
+    "RemoteRepositoryConfig",
     "Repository",
     "UpdateRepositoryRequest",
+    "UpstreamPolicy",
+    "VirtualRepositoryConfig",
     "OperationMetadata",
     "GetProjectSettingsRequest",
     "ProjectSettings",
@@ -165,6 +178,7 @@ __all__ = (
     "Tag",
     "UpdateTagRequest",
     "BatchDeleteVersionsMetadata",
+    "BatchDeleteVersionsRequest",
     "DeleteVersionRequest",
     "GetVersionRequest",
     "ListVersionsRequest",

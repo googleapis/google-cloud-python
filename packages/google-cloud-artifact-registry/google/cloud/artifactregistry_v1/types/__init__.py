@@ -48,13 +48,19 @@ from .package import (
     Package,
 )
 from .repository import (
+    CleanupPolicy,
+    CleanupPolicyCondition,
+    CleanupPolicyMostRecentVersions,
     CreateRepositoryRequest,
     DeleteRepositoryRequest,
     GetRepositoryRequest,
     ListRepositoriesRequest,
     ListRepositoriesResponse,
+    RemoteRepositoryConfig,
     Repository,
     UpdateRepositoryRequest,
+    UpstreamPolicy,
+    VirtualRepositoryConfig,
 )
 from .service import OperationMetadata
 from .settings import (
@@ -73,6 +79,7 @@ from .tag import (
 )
 from .version import (
     BatchDeleteVersionsMetadata,
+    BatchDeleteVersionsRequest,
     DeleteVersionRequest,
     GetVersionRequest,
     ListVersionsRequest,
@@ -123,13 +130,19 @@ __all__ = (
     "ListPackagesRequest",
     "ListPackagesResponse",
     "Package",
+    "CleanupPolicy",
+    "CleanupPolicyCondition",
+    "CleanupPolicyMostRecentVersions",
     "CreateRepositoryRequest",
     "DeleteRepositoryRequest",
     "GetRepositoryRequest",
     "ListRepositoriesRequest",
     "ListRepositoriesResponse",
+    "RemoteRepositoryConfig",
     "Repository",
     "UpdateRepositoryRequest",
+    "UpstreamPolicy",
+    "VirtualRepositoryConfig",
     "OperationMetadata",
     "GetProjectSettingsRequest",
     "ProjectSettings",
@@ -142,6 +155,7 @@ __all__ = (
     "Tag",
     "UpdateTagRequest",
     "BatchDeleteVersionsMetadata",
+    "BatchDeleteVersionsRequest",
     "DeleteVersionRequest",
     "GetVersionRequest",
     "ListVersionsRequest",
