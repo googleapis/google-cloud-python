@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    securitycenter_v1/services
-    securitycenter_v1/types
+    securitycenter_v1/services_
+    securitycenter_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    securitycenter_v1beta1/services
-    securitycenter_v1beta1/types
+    securitycenter_v1beta1/services_
+    securitycenter_v1beta1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    securitycenter_v1p1beta1/services
-    securitycenter_v1p1beta1/types
+    securitycenter_v1p1beta1/services_
+    securitycenter_v1p1beta1/types_
 
 
 Changelog

@@ -837,6 +837,34 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["delete_version"]
 
     @property
+    def batch_delete_versions(
+        self,
+    ) -> Callable[[version.BatchDeleteVersionsRequest], operations_pb2.Operation]:
+        r"""Return a callable for the batch delete versions method over gRPC.
+
+        Deletes multiple versions across a repository. The
+        returned operation will complete once the versions have
+        been deleted.
+
+        Returns:
+            Callable[[~.BatchDeleteVersionsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_delete_versions" not in self._stubs:
+            self._stubs["batch_delete_versions"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1.ArtifactRegistry/BatchDeleteVersions",
+                request_serializer=version.BatchDeleteVersionsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["batch_delete_versions"]
+
+    @property
     def list_files(self) -> Callable[[file.ListFilesRequest], file.ListFilesResponse]:
         r"""Return a callable for the list files method over gRPC.
 

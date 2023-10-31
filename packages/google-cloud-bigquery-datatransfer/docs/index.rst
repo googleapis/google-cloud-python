@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    bigquery_datatransfer_v1/services
-    bigquery_datatransfer_v1/types
+    bigquery_datatransfer_v1/services_
+    bigquery_datatransfer_v1/types_
 
 
 Changelog

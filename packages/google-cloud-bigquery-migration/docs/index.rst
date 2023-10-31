@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    bigquery_migration_v2/services
-    bigquery_migration_v2/types
+    bigquery_migration_v2/services_
+    bigquery_migration_v2/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    bigquery_migration_v2alpha/services
-    bigquery_migration_v2alpha/types
+    bigquery_migration_v2alpha/services_
+    bigquery_migration_v2alpha/types_
 
 
 Changelog

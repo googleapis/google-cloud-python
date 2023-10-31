@@ -22,7 +22,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
-from google.maps.places_v1.types import places_service
+from google.maps.places_v1.types import place, places_service
 
 from .base import DEFAULT_CLIENT_INFO, PlacesTransport
 
@@ -30,7 +30,11 @@ from .base import DEFAULT_CLIENT_INFO, PlacesTransport
 class PlacesGrpcTransport(PlacesTransport):
     """gRPC backend transport for Places.
 
-    Service definition for the Places API.
+    Service definition for the Places API. Note: every request actually
+    requires a field mask set outside of the request proto (all/'*' is
+    not assumed). That can be set via either a side channel
+    (SystemParameterContext) over RPC, or a header (X-Goog-FieldMask)
+    over HTTP. See: https://cloud.google.com/apis/docs/system-parameters
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -229,6 +233,34 @@ class PlacesGrpcTransport(PlacesTransport):
         return self._grpc_channel
 
     @property
+    def search_nearby(
+        self,
+    ) -> Callable[
+        [places_service.SearchNearbyRequest], places_service.SearchNearbyResponse
+    ]:
+        r"""Return a callable for the search nearby method over gRPC.
+
+        Search for places near locations.
+
+        Returns:
+            Callable[[~.SearchNearbyRequest],
+                    ~.SearchNearbyResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_nearby" not in self._stubs:
+            self._stubs["search_nearby"] = self.grpc_channel.unary_unary(
+                "/google.maps.places.v1.Places/SearchNearby",
+                request_serializer=places_service.SearchNearbyRequest.serialize,
+                response_deserializer=places_service.SearchNearbyResponse.deserialize,
+            )
+        return self._stubs["search_nearby"]
+
+    @property
     def search_text(
         self,
     ) -> Callable[
@@ -255,6 +287,56 @@ class PlacesGrpcTransport(PlacesTransport):
                 response_deserializer=places_service.SearchTextResponse.deserialize,
             )
         return self._stubs["search_text"]
+
+    @property
+    def get_photo_media(
+        self,
+    ) -> Callable[[places_service.GetPhotoMediaRequest], places_service.PhotoMedia]:
+        r"""Return a callable for the get photo media method over gRPC.
+
+        Get a photo media with a photo reference string.
+
+        Returns:
+            Callable[[~.GetPhotoMediaRequest],
+                    ~.PhotoMedia]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_photo_media" not in self._stubs:
+            self._stubs["get_photo_media"] = self.grpc_channel.unary_unary(
+                "/google.maps.places.v1.Places/GetPhotoMedia",
+                request_serializer=places_service.GetPhotoMediaRequest.serialize,
+                response_deserializer=places_service.PhotoMedia.deserialize,
+            )
+        return self._stubs["get_photo_media"]
+
+    @property
+    def get_place(self) -> Callable[[places_service.GetPlaceRequest], place.Place]:
+        r"""Return a callable for the get place method over gRPC.
+
+        Get a Place with a place id (in a name) string.
+
+        Returns:
+            Callable[[~.GetPlaceRequest],
+                    ~.Place]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_place" not in self._stubs:
+            self._stubs["get_place"] = self.grpc_channel.unary_unary(
+                "/google.maps.places.v1.Places/GetPlace",
+                request_serializer=places_service.GetPlaceRequest.serialize,
+                response_deserializer=place.Place.deserialize,
+            )
+        return self._stubs["get_place"]
 
     def close(self):
         self.grpc_channel.close()
