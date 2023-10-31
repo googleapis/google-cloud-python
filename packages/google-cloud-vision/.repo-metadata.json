@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_COMBO",
-    "repo": "googleapis/python-vision",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-vision",
     "api_id": "vision.googleapis.com",
     "requires_billing": false,
