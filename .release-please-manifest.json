@@ -118,7 +118,7 @@
     "packages/google-cloud-resource-manager": "1.10.4",
     "packages/google-cloud-resource-settings": "1.7.2",
     "packages/google-cloud-retail": "1.16.3",
-    "packages/google-cloud-run": "0.0.0",
+    "packages/google-cloud-run": "0.10.0",
     "packages/google-cloud-scheduler": "2.11.2",
     "packages/google-cloud-secret-manager": "2.16.4",
     "packages/google-cloud-securesourcemanager": "0.1.0",
