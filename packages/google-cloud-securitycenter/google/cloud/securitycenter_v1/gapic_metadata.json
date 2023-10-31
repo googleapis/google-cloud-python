@@ -180,6 +180,11 @@
                 "set_mute"
               ]
             },
+            "SimulateSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "simulate_security_health_analytics_custom_module"
+              ]
+            },
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
@@ -405,6 +410,11 @@
                 "set_mute"
               ]
             },
+            "SimulateSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "simulate_security_health_analytics_custom_module"
+              ]
+            },
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
@@ -628,6 +638,11 @@
             "SetMute": {
               "methods": [
                 "set_mute"
+              ]
+            },
+            "SimulateSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "simulate_security_health_analytics_custom_module"
               ]
             },
             "TestIamPermissions": {

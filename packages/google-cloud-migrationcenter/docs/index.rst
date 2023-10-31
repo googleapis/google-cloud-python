@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    migrationcenter_v1/services
-    migrationcenter_v1/types
+    migrationcenter_v1/services_
+    migrationcenter_v1/types_
 
 
 Changelog

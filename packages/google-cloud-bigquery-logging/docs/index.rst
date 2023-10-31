@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    bigquery_logging_v1/services
-    bigquery_logging_v1/types
+    bigquery_logging_v1/services_
+    bigquery_logging_v1/types_
 
 
 Changelog

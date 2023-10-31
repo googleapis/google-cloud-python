@@ -10,6 +10,21 @@
         "grpc": {
           "libraryClient": "PlacesClient",
           "rpcs": {
+            "GetPhotoMedia": {
+              "methods": [
+                "get_photo_media"
+              ]
+            },
+            "GetPlace": {
+              "methods": [
+                "get_place"
+              ]
+            },
+            "SearchNearby": {
+              "methods": [
+                "search_nearby"
+              ]
+            },
             "SearchText": {
               "methods": [
                 "search_text"
@@ -20,6 +35,21 @@
         "grpc-async": {
           "libraryClient": "PlacesAsyncClient",
           "rpcs": {
+            "GetPhotoMedia": {
+              "methods": [
+                "get_photo_media"
+              ]
+            },
+            "GetPlace": {
+              "methods": [
+                "get_place"
+              ]
+            },
+            "SearchNearby": {
+              "methods": [
+                "search_nearby"
+              ]
+            },
             "SearchText": {
               "methods": [
                 "search_text"
@@ -30,6 +60,21 @@
         "rest": {
           "libraryClient": "PlacesClient",
           "rpcs": {
+            "GetPhotoMedia": {
+              "methods": [
+                "get_photo_media"
+              ]
+            },
+            "GetPlace": {
+              "methods": [
+                "get_place"
+              ]
+            },
+            "SearchNearby": {
+              "methods": [
+                "search_nearby"
+              ]
+            },
             "SearchText": {
               "methods": [
                 "search_text"

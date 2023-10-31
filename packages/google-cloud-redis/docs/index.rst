@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    redis_v1/services
-    redis_v1/types
+    redis_v1/services_
+    redis_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    redis_v1beta1/services
-    redis_v1beta1/types
+    redis_v1beta1/services_
+    redis_v1beta1/types_
 
 
 Changelog

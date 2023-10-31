@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "NodePoolUpdateStrategy",
         "DatapathProvider",
         "StackType",
+        "InTransitEncryptionConfig",
         "LinuxNodeConfig",
         "WindowsNodeConfig",
         "NodeKubeletConfig",
@@ -205,6 +206,7 @@ __protobuf__ = proto.module(
         "LoggingVariantConfig",
         "MonitoringComponentConfig",
         "Fleet",
+        "ResourceManagerTags",
     },
 )
 
@@ -305,6 +307,24 @@ class StackType(proto.Enum):
     STACK_TYPE_UNSPECIFIED = 0
     IPV4 = 1
     IPV4_IPV6 = 2
+
+
+class InTransitEncryptionConfig(proto.Enum):
+    r"""Options for in-transit encryption.
+
+    Values:
+        IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED (0):
+            Unspecified, will be inferred as default -
+            IN_TRANSIT_ENCRYPTION_UNSPECIFIED.
+        IN_TRANSIT_ENCRYPTION_DISABLED (1):
+            In-transit encryption is disabled.
+        IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT (2):
+            Data in-transit is encrypted using inter-node
+            transparent encryption.
+    """
+    IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED = 0
+    IN_TRANSIT_ENCRYPTION_DISABLED = 1
+    IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT = 2
 
 
 class LinuxNodeConfig(proto.Message):
@@ -696,6 +716,9 @@ class NodeConfig(proto.Message):
             HostMaintenancePolicy contains the desired
             maintenance policy for the Google Compute Engine
             hosts.
+        resource_manager_tags (google.cloud.container_v1beta1.types.ResourceManagerTags):
+            A map of resource manager tag keys and values
+            to be attached to the nodes.
         enable_confidential_storage (bool):
             Optional. Enable confidential storage on Hyperdisk.
             boot_disk_kms_key is required when
@@ -870,6 +893,11 @@ class NodeConfig(proto.Message):
         proto.MESSAGE,
         number=44,
         message="HostMaintenancePolicy",
+    )
+    resource_manager_tags: "ResourceManagerTags" = proto.Field(
+        proto.MESSAGE,
+        number=45,
+        message="ResourceManagerTags",
     )
     enable_confidential_storage: bool = proto.Field(
         proto.BOOL,
@@ -1218,10 +1246,26 @@ class EphemeralStorageConfig(proto.Message):
 
     Attributes:
         local_ssd_count (int):
-            Number of local SSDs to use to back ephemeral
-            storage. Uses NVMe interfaces. Each local SSD is
-            375 GB in size. If zero, it means to disable
-            using local SSDs as ephemeral storage.
+            Number of local SSDs to use to back ephemeral storage. Uses
+            NVMe interfaces. The limit for this value is dependent upon
+            the maximum number of disk available on a machine per zone.
+            See: https://cloud.google.com/compute/docs/disks/local-ssd
+            for more information.
+
+            A zero (or unset) value has different meanings depending on
+            machine type being used:
+
+            1. For pre-Gen3 machines, which support flexible numbers of
+               local ssds, zero (or unset) means to disable using local
+               SSDs as ephemeral storage.
+            2. For Gen3 machines which dictate a specific number of
+               local ssds, zero (or unset) means to use the default
+               number of local ssds that goes with that machine type.
+               For example, for a c3-standard-8-lssd machine, 2 local
+               ssds would be provisioned. For c3-standard-8 (which
+               doesn't support local ssds), 0 will be provisioned. See
+               https://cloud.google.com/compute/docs/disks/local-ssd#choose_number_local_ssds
+               for more info.
     """
 
     local_ssd_count: int = proto.Field(
@@ -1236,16 +1280,26 @@ class LocalNvmeSsdBlockConfig(proto.Message):
 
     Attributes:
         local_ssd_count (int):
-            The number of raw-block local NVMe SSD disks
-            to be attached to the node. Each local SSD is
-            375 GB in size. If zero, it means no raw-block
-            local NVMe SSD disks to be attached to the node.
-            The limit for this value is dependent upon the
-            maximum number of disks available on a machine
-            per zone. See:
+            Number of local NVMe SSDs to use. The limit for this value
+            is dependent upon the maximum number of disk available on a
+            machine per zone. See:
+            https://cloud.google.com/compute/docs/disks/local-ssd for
+            more information.
 
-            https://cloud.google.com/compute/docs/disks/local-ssd
-            for more information.
+            A zero (or unset) value has different meanings depending on
+            machine type being used:
+
+            1. For pre-Gen3 machines, which support flexible numbers of
+               local ssds, zero (or unset) means to disable using local
+               SSDs as ephemeral storage.
+            2. For Gen3 machines which dictate a specific number of
+               local ssds, zero (or unset) means to use the default
+               number of local ssds that goes with that machine type.
+               For example, for a c3-standard-8-lssd machine, 2 local
+               ssds would be provisioned. For c3-standard-8 (which
+               doesn't support local ssds), 0 will be provisioned. See
+               https://cloud.google.com/compute/docs/disks/local-ssd#choose_number_local_ssds
+               for more info.
     """
 
     local_ssd_count: int = proto.Field(
@@ -1260,16 +1314,27 @@ class EphemeralStorageLocalSsdConfig(proto.Message):
 
     Attributes:
         local_ssd_count (int):
-            Number of local SSDs to use to back ephemeral
-            storage. Uses NVMe interfaces. Each local SSD is
-            375 GB in size. If zero, it means to disable
-            using local SSDs as ephemeral storage. The limit
-            for this value is dependent upon the maximum
-            number of disks available on a machine per zone.
-            See:
+            Number of local SSDs to use to back ephemeral storage. Uses
+            NVMe interfaces.
 
-            https://cloud.google.com/compute/docs/disks/local-ssd
-            for more information.
+            A zero (or unset) value has different meanings depending on
+            machine type being used:
+
+            1. For pre-Gen3 machines, which support flexible numbers of
+               local ssds, zero (or unset) means to disable using local
+               SSDs as ephemeral storage. The limit for this value is
+               dependent upon the maximum number of disk available on a
+               machine per zone. See:
+               https://cloud.google.com/compute/docs/disks/local-ssd for
+               more information.
+            2. For Gen3 machines which dictate a specific number of
+               local ssds, zero (or unset) means to use the default
+               number of local ssds that goes with that machine type.
+               For example, for a c3-standard-8-lssd machine, 2 local
+               ssds would be provisioned. For c3-standard-8 (which
+               doesn't support local ssds), 0 will be provisioned. See
+               https://cloud.google.com/compute/docs/disks/local-ssd#choose_number_local_ssds
+               for more info.
     """
 
     local_ssd_count: int = proto.Field(
@@ -1422,6 +1487,11 @@ class HostMaintenancePolicy(proto.Message):
             maintenance events.
 
             This field is a member of `oneof`_ ``_maintenance_interval``.
+        opportunistic_maintenance_strategy (google.cloud.container_v1beta1.types.HostMaintenancePolicy.OpportunisticMaintenanceStrategy):
+            Strategy that will trigger maintenance on
+            behalf of the customer.
+
+            This field is a member of `oneof`_ ``maintenance_strategy``.
     """
 
     class MaintenanceInterval(proto.Enum):
@@ -1451,11 +1521,67 @@ class HostMaintenancePolicy(proto.Message):
         AS_NEEDED = 1
         PERIODIC = 2
 
+    class OpportunisticMaintenanceStrategy(proto.Message):
+        r"""Strategy that will trigger maintenance on behalf of the
+        customer.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            node_idle_time_window (google.protobuf.duration_pb2.Duration):
+                The amount of time that a node can remain
+                idle (no customer owned workloads running),
+                before triggering maintenance.
+
+                This field is a member of `oneof`_ ``_node_idle_time_window``.
+            maintenance_availability_window (google.protobuf.duration_pb2.Duration):
+                The window of time that opportunistic maintenance can run.
+                Example: A setting of 14 days implies that opportunistic
+                maintenance can only be ran in the 2 weeks leading up to the
+                scheduled maintenance date. Setting 28 days allows
+                opportunistic maintenance to run at any time in the
+                scheduled maintenance window (all ``PERIODIC`` maintenance
+                is set 28 days in advance).
+
+                This field is a member of `oneof`_ ``_maintenance_availability_window``.
+            min_nodes_per_pool (int):
+                The minimum nodes required to be available in
+                a pool. Blocks maintenance if it would cause the
+                number of running nodes to dip below this value.
+
+                This field is a member of `oneof`_ ``_min_nodes_per_pool``.
+        """
+
+        node_idle_time_window: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            optional=True,
+            message=duration_pb2.Duration,
+        )
+        maintenance_availability_window: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            optional=True,
+            message=duration_pb2.Duration,
+        )
+        min_nodes_per_pool: int = proto.Field(
+            proto.INT64,
+            number=3,
+            optional=True,
+        )
+
     maintenance_interval: MaintenanceInterval = proto.Field(
         proto.ENUM,
         number=1,
         optional=True,
         enum=MaintenanceInterval,
+    )
+    opportunistic_maintenance_strategy: OpportunisticMaintenanceStrategy = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="maintenance_strategy",
+        message=OpportunisticMaintenanceStrategy,
     )
 
 
@@ -3709,12 +3835,22 @@ class NodePoolAutoConfig(proto.Message):
             specified by the client during cluster creation.
             Each tag within the list must comply with
             RFC1035.
+        resource_manager_tags (google.cloud.container_v1beta1.types.ResourceManagerTags):
+            Resource manager tag keys and values to be
+            attached to the nodes for managing Compute
+            Engine firewalls using Network Firewall
+            Policies.
     """
 
     network_tags: "NetworkTags" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="NetworkTags",
+    )
+    resource_manager_tags: "ResourceManagerTags" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ResourceManagerTags",
     )
 
 
@@ -3965,6 +4101,15 @@ class ClusterUpdate(proto.Message):
             HostMaintenancePolicy contains the desired
             maintenance policy for the Google Compute Engine
             hosts.
+        desired_node_pool_auto_config_resource_manager_tags (google.cloud.container_v1beta1.types.ResourceManagerTags):
+            The desired resource manager tags that apply
+            to all auto-provisioned node pools in autopilot
+            clusters and node auto-provisioning enabled
+            clusters.
+        desired_in_transit_encryption_config (google.cloud.container_v1beta1.types.InTransitEncryptionConfig):
+            Specify the details of in-transit encryption.
+
+            This field is a member of `oneof`_ ``_desired_in_transit_encryption_config``.
     """
 
     desired_node_version: str = proto.Field(
@@ -4247,6 +4392,19 @@ class ClusterUpdate(proto.Message):
         number=132,
         message="HostMaintenancePolicy",
     )
+    desired_node_pool_auto_config_resource_manager_tags: "ResourceManagerTags" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=136,
+            message="ResourceManagerTags",
+        )
+    )
+    desired_in_transit_encryption_config: "InTransitEncryptionConfig" = proto.Field(
+        proto.ENUM,
+        number=137,
+        optional=True,
+        enum="InTransitEncryptionConfig",
+    )
 
 
 class AdditionalPodRangesConfig(proto.Message):
@@ -4501,6 +4659,11 @@ class Operation(proto.Message):
                 resources and is not typically an indication of issues. For
                 more details, see `documentation on
                 resizes <https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#repairs>`__.
+            FLEET_FEATURE_UPGRADE (19):
+                Fleet features of GKE Enterprise are being
+                upgraded. The cluster should be assumed to be
+                blocked for other upgrades until the operation
+                finishes.
         """
         TYPE_UNSPECIFIED = 0
         CREATE_CLUSTER = 1
@@ -4520,6 +4683,7 @@ class Operation(proto.Message):
         SET_NETWORK_POLICY = 15
         SET_MAINTENANCE_POLICY = 16
         RESIZE_CLUSTER = 18
+        FLEET_FEATURE_UPGRADE = 19
 
     name: str = proto.Field(
         proto.STRING,
@@ -4938,6 +5102,12 @@ class UpdateNodePoolRequest(proto.Message):
             the node pool. Initiates an upgrade operation
             that migrates the nodes in the node pool to the
             specified disk size.
+        resource_manager_tags (google.cloud.container_v1beta1.types.ResourceManagerTags):
+            Desired resource manager tag keys and values
+            to be attached to the nodes for managing Compute
+            Engine firewalls using Network Firewall
+            Policies. Existing tags will be replaced with
+            new values.
     """
 
     project_id: str = proto.Field(
@@ -5062,6 +5232,11 @@ class UpdateNodePoolRequest(proto.Message):
     disk_size_gb: int = proto.Field(
         proto.INT64,
         number=38,
+    )
+    resource_manager_tags: "ResourceManagerTags" = proto.Field(
+        proto.MESSAGE,
+        number=39,
+        message="ResourceManagerTags",
     )
 
 
@@ -6503,6 +6678,9 @@ class NodePool(proto.Message):
                         Start creating green pool nodes.
                     CORDONING_BLUE_POOL (3):
                         Start cordoning blue pool nodes.
+                    WAITING_TO_DRAIN_BLUE_POOL (8):
+                        Start waiting after cordoning the blue pool
+                        and before draining it.
                     DRAINING_BLUE_POOL (4):
                         Start draining blue pool nodes.
                     NODE_POOL_SOAKING (5):
@@ -6517,6 +6695,7 @@ class NodePool(proto.Message):
                 UPDATE_STARTED = 1
                 CREATING_GREEN_POOL = 2
                 CORDONING_BLUE_POOL = 3
+                WAITING_TO_DRAIN_BLUE_POOL = 8
                 DRAINING_BLUE_POOL = 4
                 NODE_POOL_SOAKING = 5
                 DELETING_BLUE_POOL = 6
@@ -8275,6 +8454,10 @@ class NetworkConfig(proto.Message):
             this cluster.
 
             This field is a member of `oneof`_ ``_enable_fqdn_network_policy``.
+        in_transit_encryption_config (google.cloud.container_v1beta1.types.InTransitEncryptionConfig):
+            Specify the details of in-transit encryption.
+
+            This field is a member of `oneof`_ ``_in_transit_encryption_config``.
     """
 
     class ClusterNetworkPerformanceConfig(proto.Message):
@@ -8369,6 +8552,12 @@ class NetworkConfig(proto.Message):
         proto.BOOL,
         number=19,
         optional=True,
+    )
+    in_transit_encryption_config: "InTransitEncryptionConfig" = proto.Field(
+        proto.ENUM,
+        number=20,
+        optional=True,
+        enum="InTransitEncryptionConfig",
     )
 
 
@@ -9993,6 +10182,30 @@ class Fleet(proto.Message):
     pre_registered: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class ResourceManagerTags(proto.Message):
+    r"""A map of resource manager tag keys and values to be attached
+    to the nodes for managing Compute Engine firewalls using Network
+    Firewall Policies. Tags must be according to specifications in
+    https://cloud.google.com/vpc/docs/tags-firewalls-overview#specifications.
+    A maximum of 5 tag key-value pairs can be specified. Existing
+    tags will be replaced with new values.
+
+    Attributes:
+        tags (MutableMapping[str, str]):
+            Tags must be in one of the following formats ([KEY]=[VALUE])
+
+            1. ``tagKeys/{tag_key_id}=tagValues/{tag_value_id}``
+            2. ``{org_id}/{tag_key_name}={tag_value_name}``
+            3. ``{project_id}/{tag_key_name}={tag_value_name}``
+    """
+
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=1,
     )
 
 
