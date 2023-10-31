@@ -8,7 +8,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_COMBO",
-    "repo": "googleapis/python-grafeas",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "grafeas",
     "api_id": "containeranalysis.googleapis.com",
     "codeowner_team": "@googleapis/aap-dpes",
