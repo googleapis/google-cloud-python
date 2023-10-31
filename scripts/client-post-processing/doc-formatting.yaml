@@ -23,3 +23,21 @@ replacements:
       \                    {
     after: "                ::\n\n                    {\n"
     count: 2
+  - paths: [
+      packages/google-cloud-compute/google/cloud/compute_v1/types/compute.py,
+    ]
+    before: /\[a-zA-Z0-9-_\]/
+    after: "`[a-zA-Z0-9-_]`"
+    count: 1
+  - paths: [
+      packages/google-cloud-compute/google/cloud/compute_v1/types/compute.py,
+    ]
+    before: \"IT_\"
+    after: "`IT_`"
+    count: 2
+  - paths: [
+      packages/google-cloud-compute/google/cloud/compute_v1/types/compute.py,
+    ]
+    before: \"NS_\"
+    after: "`NS_`"
+    count: 2

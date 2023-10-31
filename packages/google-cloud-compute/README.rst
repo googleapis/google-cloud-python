@@ -47,6 +47,15 @@ dependencies.
 
 .. _`venv`: https://docs.python.org/3/library/venv.html
 
+PyCharm/JetBrains IDEs
+~~~~~~~~~~~~~~~~~~~~~~
+This library has now grown in size past the `JetBrains default size limit of ~2.5Mb`_.
+As a result, code completion in JetBrains products can fail to work with the classes from our library. To
+fix this, you need to update the ``idea.max.intellisense.filesize`` setting in custom properties
+(Help -> Edit custom properties...). Just add the line ``idea.max.intellisense.filesize = 10000`` to change this
+limit to ~10Mb.
+
+.. _JetBrains default size limit of ~2.5Mb: https://www.jetbrains.com/help/pycharm/file-idea-properties.html
 
 Code samples and snippets
 ~~~~~~~~~~~~~~~~~~~~~~~~~
