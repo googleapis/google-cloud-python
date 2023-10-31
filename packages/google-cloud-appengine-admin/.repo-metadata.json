@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-appengine-admin",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-appengine-admin",
     "api_id": "appengine.googleapis.com",
     "default_version": "v1",
