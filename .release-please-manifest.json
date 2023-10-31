@@ -125,7 +125,7 @@
     "packages/google-cloud-securitycenter": "1.23.3",
     "packages/google-cloud-service-control": "1.9.2",
     "packages/google-cloud-service-directory": "1.9.2",
-    "packages/google-cloud-service-management": "0.0.0",
+    "packages/google-cloud-service-management": "1.6.1",
     "packages/google-cloud-service-usage": "1.8.0",
     "packages/google-cloud-shell": "1.7.3",
     "packages/google-cloud-source-context": "1.4.3",
