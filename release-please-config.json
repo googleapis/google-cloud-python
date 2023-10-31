@@ -1342,14 +1342,19 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-gke-hub",
             "extra-files": [
+                "google/cloud/gkehub_v1beta1/gapic_version.py",
                 "google/cloud/gkehub/gapic_version.py",
                 "google/cloud/gkehub_v1/configmanagement_v1/gapic_version.py",
                 "google/cloud/gkehub_v1/gapic_version.py",
                 "google/cloud/gkehub_v1/multiclusteringress_v1/gapic_version.py",
-                "google/cloud/gkehub_v1beta1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.gkehub.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gkehub.v1beta1.json",
                     "type": "json"
                 }
             ],

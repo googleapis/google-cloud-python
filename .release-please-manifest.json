@@ -77,7 +77,7 @@
     "packages/google-cloud-functions": "1.13.3",
     "packages/google-cloud-gke-backup": "0.5.2",
     "packages/google-cloud-gke-connect-gateway": "0.8.4",
-    "packages/google-cloud-gke-hub": "0.0.0",
+    "packages/google-cloud-gke-hub": "1.10.2",
     "packages/google-cloud-gke-multicloud": "0.6.3",
     "packages/google-cloud-gsuiteaddons": "0.3.3",
     "packages/google-cloud-iam": "2.12.2",
