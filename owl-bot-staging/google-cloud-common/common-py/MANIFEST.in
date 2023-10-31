@@ -1,2 +1,0 @@
-recursive-include google/cloud/common *.py
-recursive-include google/cloud/common *.py
