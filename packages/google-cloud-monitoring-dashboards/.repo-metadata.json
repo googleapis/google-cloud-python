@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-monitoring-dashboards",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-monitoring-dashboards",
     "api_id": "monitoring.googleapis.com",
     "requires_billing": true,
