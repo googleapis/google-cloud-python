@@ -1467,13 +1467,13 @@ class Session(
 
         **Examples:**
 
-        >>> import bigframes.pandas as bpd
-        >>> bpd.options.display.progress_bar = None
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
 
-        >>> function_name = "bqutil.fn.cw_lower_case_ascii_only"
-        >>> func = bpd.read_gbq_function(function_name=function_name)
-        >>> func.bigframes_remote_function
-        'bqutil.fn.cw_lower_case_ascii_only'
+            >>> function_name = "bqutil.fn.cw_lower_case_ascii_only"
+            >>> func = bpd.read_gbq_function(function_name=function_name)
+            >>> func.bigframes_remote_function
+            'bqutil.fn.cw_lower_case_ascii_only'
 
         Args:
             function_name (str):
