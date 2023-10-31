@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    metastore_v1/services
-    metastore_v1/types
+    metastore_v1/services_
+    metastore_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    metastore_v1alpha/services
-    metastore_v1alpha/types
+    metastore_v1alpha/services_
+    metastore_v1alpha/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    metastore_v1beta/services
-    metastore_v1beta/types
+    metastore_v1beta/services_
+    metastore_v1beta/types_
 
 
 Changelog

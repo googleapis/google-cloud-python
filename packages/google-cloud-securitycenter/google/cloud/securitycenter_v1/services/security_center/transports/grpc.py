@@ -1240,6 +1240,39 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["test_iam_permissions"]
 
     @property
+    def simulate_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest],
+        securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse,
+    ]:
+        r"""Return a callable for the simulate security health
+        analytics custom module method over gRPC.
+
+        Simulates a given SecurityHealthAnalyticsCustomModule
+        and Resource.
+
+        Returns:
+            Callable[[~.SimulateSecurityHealthAnalyticsCustomModuleRequest],
+                    ~.SimulateSecurityHealthAnalyticsCustomModuleResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "simulate_security_health_analytics_custom_module" not in self._stubs:
+            self._stubs[
+                "simulate_security_health_analytics_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/SimulateSecurityHealthAnalyticsCustomModule",
+                request_serializer=securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                response_deserializer=securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse.deserialize,
+            )
+        return self._stubs["simulate_security_health_analytics_custom_module"]
+
+    @property
     def update_external_system(
         self,
     ) -> Callable[

@@ -463,7 +463,7 @@ class VehicleLocation(proto.Message):
         raw_location_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp associated with the raw location.
         raw_location_sensor (google.maps.fleetengine_v1.types.LocationSensor):
-            Source of the raw location.
+            Source of the raw location. Defaults to ``GPS``.
         raw_location_accuracy (google.protobuf.wrappers_pb2.DoubleValue):
             Accuracy of ``raw_location`` as a radius, in meters.
         supplemental_location (google.type.latlng_pb2.LatLng):
@@ -473,7 +473,8 @@ class VehicleLocation(proto.Message):
             Timestamp associated with the supplemental
             location.
         supplemental_location_sensor (google.maps.fleetengine_v1.types.LocationSensor):
-            Source of the supplemental location.
+            Source of the supplemental location. Defaults to
+            ``CUSTOMER_SUPPLIED_LOCATION``.
         supplemental_location_accuracy (google.protobuf.wrappers_pb2.DoubleValue):
             Accuracy of ``supplemental_location`` as a radius, in
             meters.

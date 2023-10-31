@@ -907,8 +907,10 @@ class TaskGroup(proto.Message):
             Default is 1.
         parallelism (int):
             Max number of tasks that can run in parallel. Default to
-            min(task_count, 1000). Field parallelism must be 1 if the
-            scheduling_policy is IN_ORDER.
+            min(task_count, parallel tasks per job limit). See: `Job
+            Limits <https://cloud.google.com/batch/quotas#job_limits>`__.
+            Field parallelism must be 1 if the scheduling_policy is
+            IN_ORDER.
         scheduling_policy (google.cloud.batch_v1.types.TaskGroup.SchedulingPolicy):
             Scheduling policy for Tasks in the TaskGroup. The default
             value is AS_SOON_AS_POSSIBLE.
