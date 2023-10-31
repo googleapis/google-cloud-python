@@ -135,12 +135,11 @@ def test_query_job_repr(penguins_df_default_index: bf.dataframe.DataFrame):
         assert string in query_job_repr
 
 
-def test_query_job_dry_run(
-    penguins_df_default_index: bf.dataframe.DataFrame, capsys, deferred_repr
-):
-    repr(penguins_df_default_index)
-    repr(penguins_df_default_index["body_mass_g"])
-    lines = capsys.readouterr().out.split("\n")
-    lines = filter(None, lines)
-    for line in lines:
-        assert "Computation deferred. Computation will process" in line
+def test_query_job_dry_run(penguins_df_default_index: bf.dataframe.DataFrame, capsys):
+    with bf.option_context("display.repr_mode", "deferred"):
+        repr(penguins_df_default_index)
+        repr(penguins_df_default_index["body_mass_g"])
+        lines = capsys.readouterr().out.split("\n")
+        lines = filter(None, lines)
+        for line in lines:
+            assert "Computation deferred. Computation will process" in line

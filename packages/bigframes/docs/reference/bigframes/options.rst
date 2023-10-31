@@ -12,3 +12,5 @@ Options and settings
 .. autoclass:: bigframes._config.display_options.DisplayOptions
 
 .. autoclass:: bigframes._config.sampling_options.SamplingOptions
+
+.. autoclass:: bigframes._config.compute_options.ComputeOptions

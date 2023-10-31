@@ -40,17 +40,12 @@ def pandas_repr(display_options: DisplayOptions):
     This context manager makes sure we reset the pandas options when we're done
     so that we don't override pandas behavior.
     """
-    original_max_cols = pd.options.display.max_columns
-    original_max_rows = pd.options.display.max_rows
-    original_show_dimensions = pd.options.display.show_dimensions
-
-    pd.options.display.max_columns = display_options.max_columns
-    pd.options.display.max_rows = display_options.max_rows
-    pd.options.display.show_dimensions = True  # type: ignore
-
-    try:
-        yield
-    finally:
-        pd.options.display.max_columns = original_max_cols
-        pd.options.display.max_rows = original_max_rows
-        pd.options.display.show_dimensions = original_show_dimensions
+    with pd.option_context(
+        "display.max_columns",
+        display_options.max_columns,
+        "display.max_rows",
+        display_options.max_rows,
+        "display.show_dimensions",
+        True,
+    ) as pandas_context:
+        yield (pandas_context)

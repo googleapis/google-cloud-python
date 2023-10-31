@@ -13,6 +13,8 @@
         uid: bigframes._config.display_options.DisplayOptions
       - name: SamplingOptions
         uid: bigframes._config.sampling_options.SamplingOptions
+      - name: ComputeOptions
+        uid: bigframes._config.compute_options.ComputeOptions
       name: Options and settings
     - items:
       - name: Session

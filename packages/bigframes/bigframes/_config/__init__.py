@@ -18,8 +18,10 @@ DataFrames from this package.
 """
 
 import bigframes._config.bigquery_options as bigquery_options
+import bigframes._config.compute_options as compute_options
 import bigframes._config.display_options as display_options
 import bigframes._config.sampling_options as sampling_options
+import third_party.bigframes_vendored.pandas._config.config as pandas_config
 
 
 class Options:
@@ -29,6 +31,7 @@ class Options:
         self._bigquery_options = bigquery_options.BigQueryOptions()
         self._display_options = display_options.DisplayOptions()
         self._sampling_options = sampling_options.SamplingOptions()
+        self._compute_options = compute_options.ComputeOptions()
 
     @property
     def bigquery(self) -> bigquery_options.BigQueryOptions:
@@ -49,6 +52,11 @@ class Options:
         parameters in specific functions."""
         return self._sampling_options
 
+    @property
+    def compute(self) -> compute_options.ComputeOptions:
+        """Options controlling object computation."""
+        return self._compute_options
+
 
 options = Options()
 """Global options for default session."""
@@ -58,3 +66,6 @@ __all__ = (
     "Options",
     "options",
 )
+
+
+option_context = pandas_config.option_context

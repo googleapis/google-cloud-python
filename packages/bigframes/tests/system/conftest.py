@@ -899,13 +899,6 @@ def usa_names_grouped_table(
 
 
 @pytest.fixture()
-def deferred_repr():
-    bigframes.options.display.repr_mode = "deferred"
-    yield
-    bigframes.options.display.repr_mode = "head"
-
-
-@pytest.fixture()
 def restore_sampling_settings():
     enable_downsampling = bigframes.options.sampling.enable_downsampling
     max_download_size = bigframes.options.sampling.max_download_size
