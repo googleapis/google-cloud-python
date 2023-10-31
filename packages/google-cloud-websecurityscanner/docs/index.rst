@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    websecurityscanner_v1/services
-    websecurityscanner_v1/types
+    websecurityscanner_v1/services_
+    websecurityscanner_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    websecurityscanner_v1alpha/services
-    websecurityscanner_v1alpha/types
+    websecurityscanner_v1alpha/services_
+    websecurityscanner_v1alpha/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    websecurityscanner_v1beta/services
-    websecurityscanner_v1beta/types
+    websecurityscanner_v1beta/services_
+    websecurityscanner_v1beta/types_
 
 
 Changelog

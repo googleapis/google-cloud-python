@@ -72,9 +72,21 @@ class DataformRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_commit_repository_changes(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_commit_workspace_changes(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def pre_compute_repository_access_token_status(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_compute_repository_access_token_status(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_create_compilation_result(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -84,11 +96,27 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_release_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_release_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_repository(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_create_repository(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_workflow_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_workflow_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -108,7 +136,15 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_release_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_repository(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_workflow_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -152,6 +188,14 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_fetch_repository_history(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_repository_history(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_compilation_result(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -160,11 +204,27 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_release_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_release_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_repository(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_repository(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_workflow_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_workflow_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -200,11 +260,27 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_release_configs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_release_configs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_repositories(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_repositories(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_workflow_configs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_workflow_configs(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -272,6 +348,14 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_query_repository_directory_contents(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_query_repository_directory_contents(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_query_workflow_invocation_actions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -288,6 +372,14 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_read_repository_file(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_read_repository_file(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_remove_directory(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -300,11 +392,27 @@ class DataformRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_update_release_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_release_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_repository(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_update_repository(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_workflow_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_workflow_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -334,6 +442,18 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
+    def pre_commit_repository_changes(
+        self,
+        request: dataform.CommitRepositoryChangesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.CommitRepositoryChangesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for commit_repository_changes
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
     def pre_commit_workspace_changes(
         self,
         request: dataform.CommitWorkspaceChangesRequest,
@@ -345,6 +465,31 @@ class DataformRestInterceptor:
         before they are sent to the Dataform server.
         """
         return request, metadata
+
+    def pre_compute_repository_access_token_status(
+        self,
+        request: dataform.ComputeRepositoryAccessTokenStatusRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        dataform.ComputeRepositoryAccessTokenStatusRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for compute_repository_access_token_status
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_compute_repository_access_token_status(
+        self, response: dataform.ComputeRepositoryAccessTokenStatusResponse
+    ) -> dataform.ComputeRepositoryAccessTokenStatusResponse:
+        """Post-rpc interceptor for compute_repository_access_token_status
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_create_compilation_result(
         self,
@@ -369,6 +514,29 @@ class DataformRestInterceptor:
         """
         return response
 
+    def pre_create_release_config(
+        self,
+        request: dataform.CreateReleaseConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.CreateReleaseConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_release_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_create_release_config(
+        self, response: dataform.ReleaseConfig
+    ) -> dataform.ReleaseConfig:
+        """Post-rpc interceptor for create_release_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_repository(
         self,
         request: dataform.CreateRepositoryRequest,
@@ -385,6 +553,29 @@ class DataformRestInterceptor:
         self, response: dataform.Repository
     ) -> dataform.Repository:
         """Post-rpc interceptor for create_repository
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_workflow_config(
+        self,
+        request: dataform.CreateWorkflowConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.CreateWorkflowConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_workflow_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_create_workflow_config(
+        self, response: dataform.WorkflowConfig
+    ) -> dataform.WorkflowConfig:
+        """Post-rpc interceptor for create_workflow_config
 
         Override in a subclass to manipulate the response
         after it is returned by the Dataform server but before
@@ -436,12 +627,36 @@ class DataformRestInterceptor:
         """
         return response
 
+    def pre_delete_release_config(
+        self,
+        request: dataform.DeleteReleaseConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.DeleteReleaseConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_release_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
     def pre_delete_repository(
         self,
         request: dataform.DeleteRepositoryRequest,
         metadata: Sequence[Tuple[str, str]],
     ) -> Tuple[dataform.DeleteRepositoryRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_repository
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def pre_delete_workflow_config(
+        self,
+        request: dataform.DeleteWorkflowConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.DeleteWorkflowConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_workflow_config
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the Dataform server.
@@ -564,6 +779,29 @@ class DataformRestInterceptor:
         """
         return response
 
+    def pre_fetch_repository_history(
+        self,
+        request: dataform.FetchRepositoryHistoryRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.FetchRepositoryHistoryRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for fetch_repository_history
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_fetch_repository_history(
+        self, response: dataform.FetchRepositoryHistoryResponse
+    ) -> dataform.FetchRepositoryHistoryResponse:
+        """Post-rpc interceptor for fetch_repository_history
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_compilation_result(
         self,
         request: dataform.GetCompilationResultRequest,
@@ -587,6 +825,29 @@ class DataformRestInterceptor:
         """
         return response
 
+    def pre_get_release_config(
+        self,
+        request: dataform.GetReleaseConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.GetReleaseConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_release_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_get_release_config(
+        self, response: dataform.ReleaseConfig
+    ) -> dataform.ReleaseConfig:
+        """Post-rpc interceptor for get_release_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_repository(
         self,
         request: dataform.GetRepositoryRequest,
@@ -601,6 +862,29 @@ class DataformRestInterceptor:
 
     def post_get_repository(self, response: dataform.Repository) -> dataform.Repository:
         """Post-rpc interceptor for get_repository
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_workflow_config(
+        self,
+        request: dataform.GetWorkflowConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.GetWorkflowConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_workflow_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_get_workflow_config(
+        self, response: dataform.WorkflowConfig
+    ) -> dataform.WorkflowConfig:
+        """Post-rpc interceptor for get_workflow_config
 
         Override in a subclass to manipulate the response
         after it is returned by the Dataform server but before
@@ -696,6 +980,29 @@ class DataformRestInterceptor:
         """
         return response
 
+    def pre_list_release_configs(
+        self,
+        request: dataform.ListReleaseConfigsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.ListReleaseConfigsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_release_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_list_release_configs(
+        self, response: dataform.ListReleaseConfigsResponse
+    ) -> dataform.ListReleaseConfigsResponse:
+        """Post-rpc interceptor for list_release_configs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_repositories(
         self,
         request: dataform.ListRepositoriesRequest,
@@ -712,6 +1019,29 @@ class DataformRestInterceptor:
         self, response: dataform.ListRepositoriesResponse
     ) -> dataform.ListRepositoriesResponse:
         """Post-rpc interceptor for list_repositories
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_workflow_configs(
+        self,
+        request: dataform.ListWorkflowConfigsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.ListWorkflowConfigsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_workflow_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_list_workflow_configs(
+        self, response: dataform.ListWorkflowConfigsResponse
+    ) -> dataform.ListWorkflowConfigsResponse:
+        """Post-rpc interceptor for list_workflow_configs
 
         Override in a subclass to manipulate the response
         after it is returned by the Dataform server but before
@@ -904,6 +1234,31 @@ class DataformRestInterceptor:
         """
         return response
 
+    def pre_query_repository_directory_contents(
+        self,
+        request: dataform.QueryRepositoryDirectoryContentsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        dataform.QueryRepositoryDirectoryContentsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for query_repository_directory_contents
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_query_repository_directory_contents(
+        self, response: dataform.QueryRepositoryDirectoryContentsResponse
+    ) -> dataform.QueryRepositoryDirectoryContentsResponse:
+        """Post-rpc interceptor for query_repository_directory_contents
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_query_workflow_invocation_actions(
         self,
         request: dataform.QueryWorkflowInvocationActionsRequest,
@@ -950,6 +1305,29 @@ class DataformRestInterceptor:
         """
         return response
 
+    def pre_read_repository_file(
+        self,
+        request: dataform.ReadRepositoryFileRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.ReadRepositoryFileRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for read_repository_file
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_read_repository_file(
+        self, response: dataform.ReadRepositoryFileResponse
+    ) -> dataform.ReadRepositoryFileResponse:
+        """Post-rpc interceptor for read_repository_file
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_remove_directory(
         self,
         request: dataform.RemoveDirectoryRequest,
@@ -984,6 +1362,29 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
+    def pre_update_release_config(
+        self,
+        request: dataform.UpdateReleaseConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.UpdateReleaseConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_release_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_update_release_config(
+        self, response: dataform.ReleaseConfig
+    ) -> dataform.ReleaseConfig:
+        """Post-rpc interceptor for update_release_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_update_repository(
         self,
         request: dataform.UpdateRepositoryRequest,
@@ -1000,6 +1401,29 @@ class DataformRestInterceptor:
         self, response: dataform.Repository
     ) -> dataform.Repository:
         """Post-rpc interceptor for update_repository
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_workflow_config(
+        self,
+        request: dataform.UpdateWorkflowConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dataform.UpdateWorkflowConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_workflow_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_update_workflow_config(
+        self, response: dataform.WorkflowConfig
+    ) -> dataform.WorkflowConfig:
+        """Post-rpc interceptor for update_workflow_config
 
         Override in a subclass to manipulate the response
         after it is returned by the Dataform server but before
@@ -1067,6 +1491,71 @@ class DataformRestInterceptor:
         self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_iam_policy(
+        self,
+        request: iam_policy_pb2.GetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_iam_policy(
+        self,
+        request: iam_policy_pb2.SetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_test_iam_permissions(
+        self,
+        request: iam_policy_pb2.TestIamPermissionsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_test_iam_permissions(
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
         after it is returned by the Dataform server but before
@@ -1258,6 +1747,91 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _CommitRepositoryChanges(DataformRestStub):
+        def __hash__(self):
+            return hash("CommitRepositoryChanges")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.CommitRepositoryChangesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the commit repository changes method over HTTP.
+
+            Args:
+                request (~.dataform.CommitRepositoryChangesRequest):
+                    The request object. ``CommitRepositoryChanges`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}:commit",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_commit_repository_changes(
+                request, metadata
+            )
+            pb_request = dataform.CommitRepositoryChangesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _CommitWorkspaceChanges(DataformRestStub):
         def __hash__(self):
             return hash("CommitWorkspaceChanges")
@@ -1342,6 +1916,98 @@ class DataformRestTransport(DataformTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _ComputeRepositoryAccessTokenStatus(DataformRestStub):
+        def __hash__(self):
+            return hash("ComputeRepositoryAccessTokenStatus")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.ComputeRepositoryAccessTokenStatusRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.ComputeRepositoryAccessTokenStatusResponse:
+            r"""Call the compute repository access
+            token status method over HTTP.
+
+                Args:
+                    request (~.dataform.ComputeRepositoryAccessTokenStatusRequest):
+                        The request object. ``ComputeRepositoryAccessTokenStatus`` request message.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.dataform.ComputeRepositoryAccessTokenStatusResponse:
+                        ``ComputeRepositoryAccessTokenStatus`` response message.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}:computeAccessTokenStatus",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_compute_repository_access_token_status(
+                request, metadata
+            )
+            pb_request = dataform.ComputeRepositoryAccessTokenStatusRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.ComputeRepositoryAccessTokenStatusResponse()
+            pb_resp = dataform.ComputeRepositoryAccessTokenStatusResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_compute_repository_access_token_status(resp)
+            return resp
 
     class _CreateCompilationResult(DataformRestStub):
         def __hash__(self):
@@ -1442,6 +2108,107 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_create_compilation_result(resp)
             return resp
 
+    class _CreateReleaseConfig(DataformRestStub):
+        def __hash__(self):
+            return hash("CreateReleaseConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "releaseConfigId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.CreateReleaseConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.ReleaseConfig:
+            r"""Call the create release config method over HTTP.
+
+            Args:
+                request (~.dataform.CreateReleaseConfigRequest):
+                    The request object. ``CreateReleaseConfig`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dataform.ReleaseConfig:
+                    Represents a Dataform release
+                configuration.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/releaseConfigs",
+                    "body": "release_config",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_release_config(
+                request, metadata
+            )
+            pb_request = dataform.CreateReleaseConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.ReleaseConfig()
+            pb_resp = dataform.ReleaseConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_release_config(resp)
+            return resp
+
     class _CreateRepository(DataformRestStub):
         def __hash__(self):
             return hash("CreateRepository")
@@ -1539,6 +2306,107 @@ class DataformRestTransport(DataformTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_repository(resp)
+            return resp
+
+    class _CreateWorkflowConfig(DataformRestStub):
+        def __hash__(self):
+            return hash("CreateWorkflowConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "workflowConfigId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.CreateWorkflowConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.WorkflowConfig:
+            r"""Call the create workflow config method over HTTP.
+
+            Args:
+                request (~.dataform.CreateWorkflowConfigRequest):
+                    The request object. ``CreateWorkflowConfig`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dataform.WorkflowConfig:
+                    Represents a Dataform workflow
+                configuration.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/workflowConfigs",
+                    "body": "workflow_config",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_workflow_config(
+                request, metadata
+            )
+            pb_request = dataform.CreateWorkflowConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.WorkflowConfig()
+            pb_resp = dataform.WorkflowConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_workflow_config(resp)
             return resp
 
     class _CreateWorkflowInvocation(DataformRestStub):
@@ -1740,6 +2608,82 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_create_workspace(resp)
             return resp
 
+    class _DeleteReleaseConfig(DataformRestStub):
+        def __hash__(self):
+            return hash("DeleteReleaseConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.DeleteReleaseConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete release config method over HTTP.
+
+            Args:
+                request (~.dataform.DeleteReleaseConfigRequest):
+                    The request object. ``DeleteReleaseConfig`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/releaseConfigs/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_release_config(
+                request, metadata
+            )
+            pb_request = dataform.DeleteReleaseConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteRepository(DataformRestStub):
         def __hash__(self):
             return hash("DeleteRepository")
@@ -1784,6 +2728,82 @@ class DataformRestTransport(DataformTransport):
                 request, metadata
             )
             pb_request = dataform.DeleteRepositoryRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteWorkflowConfig(DataformRestStub):
+        def __hash__(self):
+            return hash("DeleteWorkflowConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.DeleteWorkflowConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete workflow config method over HTTP.
+
+            Args:
+                request (~.dataform.DeleteWorkflowConfigRequest):
+                    The request object. ``DeleteWorkflowConfig`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workflowConfigs/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_workflow_config(
+                request, metadata
+            )
+            pb_request = dataform.DeleteWorkflowConfigRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -2321,6 +3341,94 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_fetch_remote_branches(resp)
             return resp
 
+    class _FetchRepositoryHistory(DataformRestStub):
+        def __hash__(self):
+            return hash("FetchRepositoryHistory")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.FetchRepositoryHistoryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.FetchRepositoryHistoryResponse:
+            r"""Call the fetch repository history method over HTTP.
+
+            Args:
+                request (~.dataform.FetchRepositoryHistoryRequest):
+                    The request object. ``FetchRepositoryHistory`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dataform.FetchRepositoryHistoryResponse:
+                    ``FetchRepositoryHistory`` response message.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}:fetchHistory",
+                },
+            ]
+            request, metadata = self._interceptor.pre_fetch_repository_history(
+                request, metadata
+            )
+            pb_request = dataform.FetchRepositoryHistoryRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.FetchRepositoryHistoryResponse()
+            pb_resp = dataform.FetchRepositoryHistoryResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_fetch_repository_history(resp)
+            return resp
+
     class _GetCompilationResult(DataformRestStub):
         def __hash__(self):
             return hash("GetCompilationResult")
@@ -2411,6 +3519,96 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_get_compilation_result(resp)
             return resp
 
+    class _GetReleaseConfig(DataformRestStub):
+        def __hash__(self):
+            return hash("GetReleaseConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.GetReleaseConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.ReleaseConfig:
+            r"""Call the get release config method over HTTP.
+
+            Args:
+                request (~.dataform.GetReleaseConfigRequest):
+                    The request object. ``GetReleaseConfig`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dataform.ReleaseConfig:
+                    Represents a Dataform release
+                configuration.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/releaseConfigs/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_release_config(
+                request, metadata
+            )
+            pb_request = dataform.GetReleaseConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.ReleaseConfig()
+            pb_resp = dataform.ReleaseConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_release_config(resp)
+            return resp
+
     class _GetRepository(DataformRestStub):
         def __hash__(self):
             return hash("GetRepository")
@@ -2495,6 +3693,96 @@ class DataformRestTransport(DataformTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_repository(resp)
+            return resp
+
+    class _GetWorkflowConfig(DataformRestStub):
+        def __hash__(self):
+            return hash("GetWorkflowConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.GetWorkflowConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.WorkflowConfig:
+            r"""Call the get workflow config method over HTTP.
+
+            Args:
+                request (~.dataform.GetWorkflowConfigRequest):
+                    The request object. ``GetWorkflowConfig`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dataform.WorkflowConfig:
+                    Represents a Dataform workflow
+                configuration.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*/workflowConfigs/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_workflow_config(
+                request, metadata
+            )
+            pb_request = dataform.GetWorkflowConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.WorkflowConfig()
+            pb_resp = dataform.WorkflowConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_workflow_config(resp)
             return resp
 
     class _GetWorkflowInvocation(DataformRestStub):
@@ -2858,6 +4146,94 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_list_compilation_results(resp)
             return resp
 
+    class _ListReleaseConfigs(DataformRestStub):
+        def __hash__(self):
+            return hash("ListReleaseConfigs")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.ListReleaseConfigsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.ListReleaseConfigsResponse:
+            r"""Call the list release configs method over HTTP.
+
+            Args:
+                request (~.dataform.ListReleaseConfigsRequest):
+                    The request object. ``ListReleaseConfigs`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dataform.ListReleaseConfigsResponse:
+                    ``ListReleaseConfigs`` response message.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/releaseConfigs",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_release_configs(
+                request, metadata
+            )
+            pb_request = dataform.ListReleaseConfigsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.ListReleaseConfigsResponse()
+            pb_resp = dataform.ListReleaseConfigsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_release_configs(resp)
+            return resp
+
     class _ListRepositories(DataformRestStub):
         def __hash__(self):
             return hash("ListRepositories")
@@ -2944,6 +4320,94 @@ class DataformRestTransport(DataformTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_repositories(resp)
+            return resp
+
+    class _ListWorkflowConfigs(DataformRestStub):
+        def __hash__(self):
+            return hash("ListWorkflowConfigs")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.ListWorkflowConfigsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.ListWorkflowConfigsResponse:
+            r"""Call the list workflow configs method over HTTP.
+
+            Args:
+                request (~.dataform.ListWorkflowConfigsRequest):
+                    The request object. ``ListWorkflowConfigs`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dataform.ListWorkflowConfigsResponse:
+                    ``ListWorkflowConfigs`` response message.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{parent=projects/*/locations/*/repositories/*}/workflowConfigs",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_workflow_configs(
+                request, metadata
+            )
+            pb_request = dataform.ListWorkflowConfigsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.ListWorkflowConfigsResponse()
+            pb_resp = dataform.ListWorkflowConfigsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_workflow_configs(resp)
             return resp
 
     class _ListWorkflowInvocations(DataformRestStub):
@@ -3752,6 +5216,98 @@ class DataformRestTransport(DataformTransport):
             resp = self._interceptor.post_query_directory_contents(resp)
             return resp
 
+    class _QueryRepositoryDirectoryContents(DataformRestStub):
+        def __hash__(self):
+            return hash("QueryRepositoryDirectoryContents")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.QueryRepositoryDirectoryContentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.QueryRepositoryDirectoryContentsResponse:
+            r"""Call the query repository
+            directory contents method over HTTP.
+
+                Args:
+                    request (~.dataform.QueryRepositoryDirectoryContentsRequest):
+                        The request object. ``QueryRepositoryDirectoryContents`` request message.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.dataform.QueryRepositoryDirectoryContentsResponse:
+                        ``QueryRepositoryDirectoryContents`` response message.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}:queryDirectoryContents",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_query_repository_directory_contents(
+                request, metadata
+            )
+            pb_request = dataform.QueryRepositoryDirectoryContentsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.QueryRepositoryDirectoryContentsResponse()
+            pb_resp = dataform.QueryRepositoryDirectoryContentsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_query_repository_directory_contents(resp)
+            return resp
+
     class _QueryWorkflowInvocationActions(DataformRestStub):
         def __hash__(self):
             return hash("QueryWorkflowInvocationActions")
@@ -3927,6 +5483,96 @@ class DataformRestTransport(DataformTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_read_file(resp)
+            return resp
+
+    class _ReadRepositoryFile(DataformRestStub):
+        def __hash__(self):
+            return hash("ReadRepositoryFile")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "path": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.ReadRepositoryFileRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.ReadRepositoryFileResponse:
+            r"""Call the read repository file method over HTTP.
+
+            Args:
+                request (~.dataform.ReadRepositoryFileRequest):
+                    The request object. ``ReadRepositoryFile`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dataform.ReadRepositoryFileResponse:
+                    ``ReadRepositoryFile`` response message.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{name=projects/*/locations/*/repositories/*}:readFile",
+                },
+            ]
+            request, metadata = self._interceptor.pre_read_repository_file(
+                request, metadata
+            )
+            pb_request = dataform.ReadRepositoryFileRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.ReadRepositoryFileResponse()
+            pb_resp = dataform.ReadRepositoryFileResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_read_repository_file(resp)
             return resp
 
     class _RemoveDirectory(DataformRestStub):
@@ -4182,6 +5828,105 @@ class DataformRestTransport(DataformTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _UpdateReleaseConfig(DataformRestStub):
+        def __hash__(self):
+            return hash("UpdateReleaseConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.UpdateReleaseConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.ReleaseConfig:
+            r"""Call the update release config method over HTTP.
+
+            Args:
+                request (~.dataform.UpdateReleaseConfigRequest):
+                    The request object. ``UpdateReleaseConfig`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dataform.ReleaseConfig:
+                    Represents a Dataform release
+                configuration.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1beta1/{release_config.name=projects/*/locations/*/repositories/*/releaseConfigs/*}",
+                    "body": "release_config",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_release_config(
+                request, metadata
+            )
+            pb_request = dataform.UpdateReleaseConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.ReleaseConfig()
+            pb_resp = dataform.ReleaseConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_release_config(resp)
+            return resp
+
     class _UpdateRepository(DataformRestStub):
         def __hash__(self):
             return hash("UpdateRepository")
@@ -4277,6 +6022,105 @@ class DataformRestTransport(DataformTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_repository(resp)
+            return resp
+
+    class _UpdateWorkflowConfig(DataformRestStub):
+        def __hash__(self):
+            return hash("UpdateWorkflowConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dataform.UpdateWorkflowConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dataform.WorkflowConfig:
+            r"""Call the update workflow config method over HTTP.
+
+            Args:
+                request (~.dataform.UpdateWorkflowConfigRequest):
+                    The request object. ``UpdateWorkflowConfig`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dataform.WorkflowConfig:
+                    Represents a Dataform workflow
+                configuration.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1beta1/{workflow_config.name=projects/*/locations/*/repositories/*/workflowConfigs/*}",
+                    "body": "workflow_config",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_workflow_config(
+                request, metadata
+            )
+            pb_request = dataform.UpdateWorkflowConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.WorkflowConfig()
+            pb_resp = dataform.WorkflowConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_workflow_config(resp)
             return resp
 
     class _WriteFile(DataformRestStub):
@@ -4383,12 +6227,31 @@ class DataformRestTransport(DataformTransport):
         return self._CancelWorkflowInvocation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def commit_repository_changes(
+        self,
+    ) -> Callable[[dataform.CommitRepositoryChangesRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CommitRepositoryChanges(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def commit_workspace_changes(
         self,
     ) -> Callable[[dataform.CommitWorkspaceChangesRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CommitWorkspaceChanges(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def compute_repository_access_token_status(
+        self,
+    ) -> Callable[
+        [dataform.ComputeRepositoryAccessTokenStatusRequest],
+        dataform.ComputeRepositoryAccessTokenStatusResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ComputeRepositoryAccessTokenStatus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_compilation_result(
@@ -4401,12 +6264,28 @@ class DataformRestTransport(DataformTransport):
         return self._CreateCompilationResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_release_config(
+        self,
+    ) -> Callable[[dataform.CreateReleaseConfigRequest], dataform.ReleaseConfig]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateReleaseConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_repository(
         self,
     ) -> Callable[[dataform.CreateRepositoryRequest], dataform.Repository]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRepository(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_workflow_config(
+        self,
+    ) -> Callable[[dataform.CreateWorkflowConfigRequest], dataform.WorkflowConfig]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateWorkflowConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_workflow_invocation(
@@ -4427,12 +6306,28 @@ class DataformRestTransport(DataformTransport):
         return self._CreateWorkspace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_release_config(
+        self,
+    ) -> Callable[[dataform.DeleteReleaseConfigRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteReleaseConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_repository(
         self,
     ) -> Callable[[dataform.DeleteRepositoryRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRepository(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_workflow_config(
+        self,
+    ) -> Callable[[dataform.DeleteWorkflowConfigRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteWorkflowConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_workflow_invocation(
@@ -4489,6 +6384,17 @@ class DataformRestTransport(DataformTransport):
         return self._FetchRemoteBranches(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def fetch_repository_history(
+        self,
+    ) -> Callable[
+        [dataform.FetchRepositoryHistoryRequest],
+        dataform.FetchRepositoryHistoryResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchRepositoryHistory(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_compilation_result(
         self,
     ) -> Callable[[dataform.GetCompilationResultRequest], dataform.CompilationResult]:
@@ -4497,12 +6403,28 @@ class DataformRestTransport(DataformTransport):
         return self._GetCompilationResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_release_config(
+        self,
+    ) -> Callable[[dataform.GetReleaseConfigRequest], dataform.ReleaseConfig]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetReleaseConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_repository(
         self,
     ) -> Callable[[dataform.GetRepositoryRequest], dataform.Repository]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRepository(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_workflow_config(
+        self,
+    ) -> Callable[[dataform.GetWorkflowConfigRequest], dataform.WorkflowConfig]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetWorkflowConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_workflow_invocation(
@@ -4542,6 +6464,16 @@ class DataformRestTransport(DataformTransport):
         return self._ListCompilationResults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_release_configs(
+        self,
+    ) -> Callable[
+        [dataform.ListReleaseConfigsRequest], dataform.ListReleaseConfigsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListReleaseConfigs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_repositories(
         self,
     ) -> Callable[
@@ -4550,6 +6482,16 @@ class DataformRestTransport(DataformTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRepositories(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_workflow_configs(
+        self,
+    ) -> Callable[
+        [dataform.ListWorkflowConfigsRequest], dataform.ListWorkflowConfigsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListWorkflowConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_workflow_invocations(
@@ -4633,6 +6575,17 @@ class DataformRestTransport(DataformTransport):
         return self._QueryDirectoryContents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def query_repository_directory_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryRepositoryDirectoryContentsRequest],
+        dataform.QueryRepositoryDirectoryContentsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._QueryRepositoryDirectoryContents(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def query_workflow_invocation_actions(
         self,
     ) -> Callable[
@@ -4650,6 +6603,16 @@ class DataformRestTransport(DataformTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReadFile(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def read_repository_file(
+        self,
+    ) -> Callable[
+        [dataform.ReadRepositoryFileRequest], dataform.ReadRepositoryFileResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ReadRepositoryFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def remove_directory(
@@ -4674,12 +6637,28 @@ class DataformRestTransport(DataformTransport):
         return self._ResetWorkspaceChanges(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def update_release_config(
+        self,
+    ) -> Callable[[dataform.UpdateReleaseConfigRequest], dataform.ReleaseConfig]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateReleaseConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_repository(
         self,
     ) -> Callable[[dataform.UpdateRepositoryRequest], dataform.Repository]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRepository(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_workflow_config(
+        self,
+    ) -> Callable[[dataform.UpdateWorkflowConfigRequest], dataform.WorkflowConfig]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateWorkflowConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def write_file(
@@ -4702,7 +6681,6 @@ class DataformRestTransport(DataformTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> locations_pb2.Location:
-
             r"""Call the get location method over HTTP.
 
             Args:
@@ -4769,7 +6747,6 @@ class DataformRestTransport(DataformTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> locations_pb2.ListLocationsResponse:
-
             r"""Call the list locations method over HTTP.
 
             Args:
@@ -4821,6 +6798,240 @@ class DataformRestTransport(DataformTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_list_locations(resp)
+            return resp
+
+    @property
+    def get_iam_policy(self):
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetIamPolicy(DataformRestStub):
+        def __call__(
+            self,
+            request: iam_policy_pb2.GetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the get iam policy method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.GetIamPolicyRequest):
+                    The request object for GetIamPolicy method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                policy_pb2.Policy: Response from GetIamPolicy method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*}:getIamPolicy",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/collections/*}:getIamPolicy",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*/workspaces/*}:getIamPolicy",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = policy_pb2.Policy()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_get_iam_policy(resp)
+            return resp
+
+    @property
+    def set_iam_policy(self):
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _SetIamPolicy(DataformRestStub):
+        def __call__(
+            self,
+            request: iam_policy_pb2.SetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the set iam policy method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.SetIamPolicyRequest):
+                    The request object for SetIamPolicy method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                policy_pb2.Policy: Response from SetIamPolicy method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*/workspaces/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/collections/*}:setIamPolicy",
+                    "body": "*",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            body = json.dumps(transcoded_request["body"])
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = policy_pb2.Policy()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_set_iam_policy(resp)
+            return resp
+
+    @property
+    def test_iam_permissions(self):
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _TestIamPermissions(DataformRestStub):
+        def __call__(
+            self,
+            request: iam_policy_pb2.TestIamPermissionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> iam_policy_pb2.TestIamPermissionsResponse:
+            r"""Call the test iam permissions method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.TestIamPermissionsRequest):
+                    The request object for TestIamPermissions method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/collections/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{resource=projects/*/locations/*/repositories/*/workspaces/*}:testIamPermissions",
+                    "body": "*",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            body = json.dumps(transcoded_request["body"])
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = iam_policy_pb2.TestIamPermissionsResponse()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
     @property
