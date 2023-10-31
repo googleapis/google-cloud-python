@@ -137,7 +137,7 @@
     "packages/google-cloud-tasks": "2.14.2",
     "packages/google-cloud-texttospeech": "2.14.2",
     "packages/google-cloud-tpu": "1.16.0",
-    "packages/google-cloud-trace": "0.0.0",
+    "packages/google-cloud-trace": "1.11.3",
     "packages/google-cloud-translate": "0.0.0",
     "packages/google-cloud-video-live-stream": "1.5.2",
     "packages/google-cloud-video-stitcher": "0.7.4",
