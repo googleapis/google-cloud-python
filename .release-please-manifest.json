@@ -84,7 +84,7 @@
     "packages/google-cloud-iam-logging": "1.2.2",
     "packages/google-cloud-iap": "1.11.0",
     "packages/google-cloud-ids": "1.5.3",
-    "packages/google-cloud-kms": "0.0.0",
+    "packages/google-cloud-kms": "2.19.2",
     "packages/google-cloud-kms-inventory": "0.2.1",
     "packages/google-cloud-language": "2.11.1",
     "packages/google-cloud-life-sciences": "0.9.4",
