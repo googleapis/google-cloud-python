@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_COMBO",
-    "repo": "googleapis/python-speech",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-speech",
     "api_id": "speech.googleapis.com",
     "requires_billing": false,
