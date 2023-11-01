@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.7](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.6...v2.0.7) (2023-11-01)
+
+
+### Bug Fixes
+
+* Ignore cross reference conversion in examples ([#332](https://github.com/googleapis/sphinx-docfx-yaml/issues/332)) ([bbfa011](https://github.com/googleapis/sphinx-docfx-yaml/commit/bbfa01175d1b1cb4ccd670cbaa1ebfa511e61e8b))
+
 ## [2.0.6](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.5...v2.0.6) (2023-10-30)
 
 
