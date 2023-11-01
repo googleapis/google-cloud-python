@@ -119,7 +119,7 @@ for i in range(10):
         [
             "google.iam.v1.iam_policy_pb2.GetIamPolicyRequest",
             "<a href=\"http://github.com/googleapis/python-grpc-google-iam-v1/blob/8e73b45993f030f521c0169b380d0fbafe66630b/google/iam/v1/iam_policy_pb2_grpc.py#L111-L118\">google.iam.v1.iam_policy_pb2.GetIamPolicyRequest</a>"
-        ]
+        ],
     ]
     @parameterized.expand(cross_references_testdata)
     def test_convert_cross_references(self, content, content_want):
@@ -133,6 +133,29 @@ for i in range(10):
         content_got = extension.convert_cross_references(content, current_object_name, keyword_map)
         self.assertEqual(content_got, content_want)
 
+    cross_references_test_data = [
+        [
+            """
+            Examples:
+              google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse: test content.
+            """,
+            """
+            Examples:
+              google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse: test content.
+            """,
+        ],
+    ]
+    @parameterized.expand(cross_references_testdata)
+    def test_does_not_convert_for_examples(self, content, content_want):
+        # Check that entries correctly turns into cross references.
+        keyword_map = [
+            "google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse",
+            "google.cloud.bigquery_storage_v1.types.SplitResponse"
+        ]
+        current_object_name = "google.cloud.bigquery_storage_v1.types.SplitResponse"
+
+        content_got = extension.convert_cross_references(content, current_object_name, keyword_map, ignore_examples=True)
+        self.assertEqual(content_got, content_want)
 
     # Test data used to test for processing already-processed cross references.
     cross_references_short_testdata = [
