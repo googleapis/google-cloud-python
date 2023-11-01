@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    osconfig_v1/services
-    osconfig_v1/types
+    osconfig_v1/services_
+    osconfig_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    osconfig_v1alpha/services
-    osconfig_v1alpha/types
+    osconfig_v1alpha/services_
+    osconfig_v1alpha/types_
 
 
 Changelog

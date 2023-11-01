@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    vpcaccess_v1/services
-    vpcaccess_v1/types
+    vpcaccess_v1/services_
+    vpcaccess_v1/types_
 
 
 Changelog

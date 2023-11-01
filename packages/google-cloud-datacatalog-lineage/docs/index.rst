@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    lineage_v1/services
-    lineage_v1/types
+    datacatalog_lineage_v1/services_
+    datacatalog_lineage_v1/types_
 
 
 Changelog

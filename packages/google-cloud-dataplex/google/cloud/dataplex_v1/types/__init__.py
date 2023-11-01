@@ -24,6 +24,7 @@ from .content import (
 )
 from .data_profile import DataProfileResult, DataProfileSpec
 from .data_quality import (
+    DataQualityDimension,
     DataQualityDimensionResult,
     DataQualityResult,
     DataQualityRule,
@@ -73,6 +74,7 @@ from .logs import (
     DataQualityScanRuleResult,
     DataScanEvent,
     DiscoveryEvent,
+    GovernanceEvent,
     JobEvent,
     SessionEvent,
 )
@@ -157,6 +159,7 @@ __all__ = (
     "UpdateContentRequest",
     "DataProfileResult",
     "DataProfileSpec",
+    "DataQualityDimension",
     "DataQualityDimensionResult",
     "DataQualityResult",
     "DataQualityRule",
@@ -200,6 +203,7 @@ __all__ = (
     "DataQualityScanRuleResult",
     "DataScanEvent",
     "DiscoveryEvent",
+    "GovernanceEvent",
     "JobEvent",
     "SessionEvent",
     "CreateEntityRequest",

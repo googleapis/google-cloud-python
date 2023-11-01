@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    talent_v4/services
-    talent_v4/types
+    talent_v4/services_
+    talent_v4/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    talent_v4beta1/services
-    talent_v4beta1/types
+    talent_v4beta1/services_
+    talent_v4beta1/types_
 
 
 Changelog

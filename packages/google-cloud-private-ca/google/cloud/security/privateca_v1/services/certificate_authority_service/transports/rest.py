@@ -4403,7 +4403,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> locations_pb2.Location:
-
             r"""Call the get location method over HTTP.
 
             Args:
@@ -4470,7 +4469,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> locations_pb2.ListLocationsResponse:
-
             r"""Call the list locations method over HTTP.
 
             Args:
@@ -4537,7 +4535,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> policy_pb2.Policy:
-
             r"""Call the get iam policy method over HTTP.
 
             Args:
@@ -4612,7 +4609,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> policy_pb2.Policy:
-
             r"""Call the set iam policy method over HTTP.
 
             Args:
@@ -4692,7 +4688,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
-
             r"""Call the test iam permissions method over HTTP.
 
             Args:
@@ -4774,7 +4769,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> None:
-
             r"""Call the cancel operation method over HTTP.
 
             Args:
@@ -4840,7 +4834,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> None:
-
             r"""Call the delete operation method over HTTP.
 
             Args:
@@ -4903,7 +4896,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
-
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -4970,7 +4962,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.ListOperationsResponse:
-
             r"""Call the list operations method over HTTP.
 
             Args:

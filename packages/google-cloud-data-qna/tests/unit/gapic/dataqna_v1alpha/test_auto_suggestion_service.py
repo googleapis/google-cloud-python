@@ -917,10 +917,9 @@ def test_suggest_queries_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = auto_suggestion_service.SuggestQueriesResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = auto_suggestion_service.SuggestQueriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -995,10 +994,11 @@ def test_suggest_queries_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = auto_suggestion_service.SuggestQueriesResponse.pb(
+            # Convert return value to protobuf type
+            return_value = auto_suggestion_service.SuggestQueriesResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value

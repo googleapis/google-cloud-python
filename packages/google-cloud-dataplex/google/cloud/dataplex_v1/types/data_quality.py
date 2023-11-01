@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "DataQualityResult",
         "DataQualityRuleResult",
         "DataQualityDimensionResult",
+        "DataQualityDimension",
         "DataQualityRule",
     },
 )
@@ -295,13 +296,38 @@ class DataQualityDimensionResult(proto.Message):
     per-dimension view of the results.
 
     Attributes:
+        dimension (google.cloud.dataplex_v1.types.DataQualityDimension):
+            Output only. The dimension config specified
+            in the DataQualitySpec, as is.
         passed (bool):
             Whether the dimension passed or failed.
     """
 
+    dimension: "DataQualityDimension" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="DataQualityDimension",
+    )
     passed: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class DataQualityDimension(proto.Message):
+    r"""A dimension captures data quality intent about a defined
+    subset of the rules specified.
+
+    Attributes:
+        name (str):
+            The dimension name a rule belongs to. Supported dimensions
+            are ["COMPLETENESS", "ACCURACY", "CONSISTENCY", "VALIDITY",
+            "UNIQUENESS", "INTEGRITY"]
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

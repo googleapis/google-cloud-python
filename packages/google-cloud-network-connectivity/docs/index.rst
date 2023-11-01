@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    networkconnectivity_v1/services
-    networkconnectivity_v1/types
+    networkconnectivity_v1/services_
+    networkconnectivity_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    networkconnectivity_v1alpha1/services
-    networkconnectivity_v1alpha1/types
+    networkconnectivity_v1alpha1/services_
+    networkconnectivity_v1alpha1/types_
 
 
 Changelog

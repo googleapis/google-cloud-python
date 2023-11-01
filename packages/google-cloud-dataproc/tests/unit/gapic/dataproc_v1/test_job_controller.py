@@ -2656,8 +2656,9 @@ def test_submit_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2738,8 +2739,9 @@ def test_submit_job_rest_required_fields(request_type=jobs.SubmitJobRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = jobs.Job.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = jobs.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2871,8 +2873,9 @@ def test_submit_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3221,8 +3224,9 @@ def test_get_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3306,8 +3310,9 @@ def test_get_job_rest_required_fields(request_type=jobs.GetJobRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = jobs.Job.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = jobs.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3443,8 +3448,9 @@ def test_get_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3511,8 +3517,9 @@ def test_list_jobs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.ListJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3599,8 +3606,9 @@ def test_list_jobs_rest_required_fields(request_type=jobs.ListJobsRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = jobs.ListJobsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = jobs.ListJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3741,8 +3749,9 @@ def test_list_jobs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.ListJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3963,6 +3972,73 @@ def test_update_job_rest(request_type):
         "done": True,
         "driver_scheduling_config": {"memory_mb": 967, "vcores": 658},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = jobs.UpdateJobRequest.meta.fields["job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["job"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["job"][field])):
+                    del request_init["job"][field][i][subfield]
+            else:
+                del request_init["job"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3978,8 +4054,9 @@ def test_update_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4066,8 +4143,9 @@ def test_update_job_rest_required_fields(request_type=jobs.UpdateJobRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = jobs.Job.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = jobs.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4162,117 +4240,6 @@ def test_update_job_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project_id": "sample1", "region": "sample2", "job_id": "sample3"}
-    request_init["job"] = {
-        "reference": {"project_id": "project_id_value", "job_id": "job_id_value"},
-        "placement": {
-            "cluster_name": "cluster_name_value",
-            "cluster_uuid": "cluster_uuid_value",
-            "cluster_labels": {},
-        },
-        "hadoop_job": {
-            "main_jar_file_uri": "main_jar_file_uri_value",
-            "main_class": "main_class_value",
-            "args": ["args_value1", "args_value2"],
-            "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
-            "file_uris": ["file_uris_value1", "file_uris_value2"],
-            "archive_uris": ["archive_uris_value1", "archive_uris_value2"],
-            "properties": {},
-            "logging_config": {"driver_log_levels": {}},
-        },
-        "spark_job": {
-            "main_jar_file_uri": "main_jar_file_uri_value",
-            "main_class": "main_class_value",
-            "args": ["args_value1", "args_value2"],
-            "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
-            "file_uris": ["file_uris_value1", "file_uris_value2"],
-            "archive_uris": ["archive_uris_value1", "archive_uris_value2"],
-            "properties": {},
-            "logging_config": {},
-        },
-        "pyspark_job": {
-            "main_python_file_uri": "main_python_file_uri_value",
-            "args": ["args_value1", "args_value2"],
-            "python_file_uris": ["python_file_uris_value1", "python_file_uris_value2"],
-            "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
-            "file_uris": ["file_uris_value1", "file_uris_value2"],
-            "archive_uris": ["archive_uris_value1", "archive_uris_value2"],
-            "properties": {},
-            "logging_config": {},
-        },
-        "hive_job": {
-            "query_file_uri": "query_file_uri_value",
-            "query_list": {"queries": ["queries_value1", "queries_value2"]},
-            "continue_on_failure": True,
-            "script_variables": {},
-            "properties": {},
-            "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
-        },
-        "pig_job": {
-            "query_file_uri": "query_file_uri_value",
-            "query_list": {},
-            "continue_on_failure": True,
-            "script_variables": {},
-            "properties": {},
-            "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
-            "logging_config": {},
-        },
-        "spark_r_job": {
-            "main_r_file_uri": "main_r_file_uri_value",
-            "args": ["args_value1", "args_value2"],
-            "file_uris": ["file_uris_value1", "file_uris_value2"],
-            "archive_uris": ["archive_uris_value1", "archive_uris_value2"],
-            "properties": {},
-            "logging_config": {},
-        },
-        "spark_sql_job": {
-            "query_file_uri": "query_file_uri_value",
-            "query_list": {},
-            "script_variables": {},
-            "properties": {},
-            "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
-            "logging_config": {},
-        },
-        "presto_job": {
-            "query_file_uri": "query_file_uri_value",
-            "query_list": {},
-            "continue_on_failure": True,
-            "output_format": "output_format_value",
-            "client_tags": ["client_tags_value1", "client_tags_value2"],
-            "properties": {},
-            "logging_config": {},
-        },
-        "trino_job": {
-            "query_file_uri": "query_file_uri_value",
-            "query_list": {},
-            "continue_on_failure": True,
-            "output_format": "output_format_value",
-            "client_tags": ["client_tags_value1", "client_tags_value2"],
-            "properties": {},
-            "logging_config": {},
-        },
-        "status": {
-            "state": 1,
-            "details": "details_value",
-            "state_start_time": {"seconds": 751, "nanos": 543},
-            "substate": 1,
-        },
-        "status_history": {},
-        "yarn_applications": [
-            {
-                "name": "name_value",
-                "state": 1,
-                "progress": 0.885,
-                "tracking_url": "tracking_url_value",
-            }
-        ],
-        "driver_output_resource_uri": "driver_output_resource_uri_value",
-        "driver_control_files_uri": "driver_control_files_uri_value",
-        "labels": {},
-        "scheduling": {"max_failures_per_hour": 2243, "max_failures_total": 1923},
-        "job_uuid": "job_uuid_value",
-        "done": True,
-        "driver_scheduling_config": {"memory_mb": 967, "vcores": 658},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4323,8 +4290,9 @@ def test_cancel_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4409,8 +4377,9 @@ def test_cancel_job_rest_required_fields(request_type=jobs.CancelJobRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = jobs.Job.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = jobs.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4546,8 +4515,9 @@ def test_cancel_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = jobs.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

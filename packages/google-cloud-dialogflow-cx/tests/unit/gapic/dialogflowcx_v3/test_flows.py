@@ -3115,6 +3115,73 @@ def test_create_flow_rest(request_type):
             ],
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcdc_flow.CreateFlowRequest.meta.fields["flow"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["flow"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["flow"][field])):
+                    del request_init["flow"][field][i][subfield]
+            else:
+                del request_init["flow"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3130,8 +3197,9 @@ def test_create_flow_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_flow.Flow.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_flow.Flow.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3210,8 +3278,9 @@ def test_create_flow_rest_required_fields(request_type=gcdc_flow.CreateFlowReque
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcdc_flow.Flow.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcdc_flow.Flow.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3301,128 +3370,6 @@ def test_create_flow_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request_init["flow"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "transition_routes": [
-            {
-                "name": "name_value",
-                "description": "description_value",
-                "intent": "intent_value",
-                "condition": "condition_value",
-                "trigger_fulfillment": {
-                    "messages": [
-                        {
-                            "text": {
-                                "text": ["text_value1", "text_value2"],
-                                "allow_playback_interruption": True,
-                            },
-                            "payload": {"fields": {}},
-                            "conversation_success": {"metadata": {}},
-                            "output_audio_text": {
-                                "text": "text_value",
-                                "ssml": "ssml_value",
-                                "allow_playback_interruption": True,
-                            },
-                            "live_agent_handoff": {"metadata": {}},
-                            "end_interaction": {},
-                            "play_audio": {
-                                "audio_uri": "audio_uri_value",
-                                "allow_playback_interruption": True,
-                            },
-                            "mixed_audio": {
-                                "segments": [
-                                    {
-                                        "audio": b"audio_blob",
-                                        "uri": "uri_value",
-                                        "allow_playback_interruption": True,
-                                    }
-                                ]
-                            },
-                            "telephony_transfer_call": {
-                                "phone_number": "phone_number_value"
-                            },
-                            "knowledge_info_card": {},
-                            "response_type": 1,
-                            "channel": "channel_value",
-                        }
-                    ],
-                    "webhook": "webhook_value",
-                    "return_partial_responses": True,
-                    "tag": "tag_value",
-                    "set_parameter_actions": [
-                        {
-                            "parameter": "parameter_value",
-                            "value": {
-                                "null_value": 0,
-                                "number_value": 0.1285,
-                                "string_value": "string_value_value",
-                                "bool_value": True,
-                                "struct_value": {},
-                                "list_value": {"values": {}},
-                            },
-                        }
-                    ],
-                    "conditional_cases": [
-                        {
-                            "cases": [
-                                {
-                                    "condition": "condition_value",
-                                    "case_content": [
-                                        {"message": {}, "additional_cases": {}}
-                                    ],
-                                }
-                            ]
-                        }
-                    ],
-                    "advanced_settings": {
-                        "audio_export_gcs_destination": {"uri": "uri_value"},
-                        "dtmf_settings": {
-                            "enabled": True,
-                            "max_digits": 1065,
-                            "finish_digit": "finish_digit_value",
-                        },
-                        "logging_settings": {
-                            "enable_stackdriver_logging": True,
-                            "enable_interaction_logging": True,
-                        },
-                    },
-                    "enable_generative_fallback": True,
-                },
-                "target_page": "target_page_value",
-                "target_flow": "target_flow_value",
-            }
-        ],
-        "event_handlers": [
-            {
-                "name": "name_value",
-                "event": "event_value",
-                "trigger_fulfillment": {},
-                "target_page": "target_page_value",
-                "target_flow": "target_flow_value",
-            }
-        ],
-        "transition_route_groups": [
-            "transition_route_groups_value1",
-            "transition_route_groups_value2",
-        ],
-        "nlu_settings": {
-            "model_type": 1,
-            "classification_threshold": 0.25520000000000004,
-            "model_training_mode": 1,
-        },
-        "advanced_settings": {},
-        "knowledge_connector_settings": {
-            "enabled": True,
-            "trigger_fulfillment": {},
-            "target_page": "target_page_value",
-            "target_flow": "target_flow_value",
-            "data_store_connections": [
-                {"data_store_type": 1, "data_store": "data_store_value"}
-            ],
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3461,8 +3408,9 @@ def test_create_flow_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_flow.Flow.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_flow.Flow.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3783,8 +3731,9 @@ def test_list_flows_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = flow.ListFlowsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = flow.ListFlowsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3865,8 +3814,9 @@ def test_list_flows_rest_required_fields(request_type=flow.ListFlowsRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = flow.ListFlowsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = flow.ListFlowsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3996,8 +3946,9 @@ def test_list_flows_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = flow.ListFlowsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = flow.ListFlowsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4122,8 +4073,9 @@ def test_get_flow_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = flow.Flow.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = flow.Flow.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4201,8 +4153,9 @@ def test_get_flow_rest_required_fields(request_type=flow.GetFlowRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = flow.Flow.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = flow.Flow.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4325,8 +4278,9 @@ def test_get_flow_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = flow.Flow.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = flow.Flow.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4505,6 +4459,73 @@ def test_update_flow_rest(request_type):
             ],
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcdc_flow.UpdateFlowRequest.meta.fields["flow"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["flow"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["flow"][field])):
+                    del request_init["flow"][field][i][subfield]
+            else:
+                del request_init["flow"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4520,8 +4541,9 @@ def test_update_flow_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_flow.Flow.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_flow.Flow.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4600,8 +4622,9 @@ def test_update_flow_rest_required_fields(request_type=gcdc_flow.UpdateFlowReque
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcdc_flow.Flow.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcdc_flow.Flow.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4695,128 +4718,6 @@ def test_update_flow_rest_bad_request(
             "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
         }
     }
-    request_init["flow"] = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "transition_routes": [
-            {
-                "name": "name_value",
-                "description": "description_value",
-                "intent": "intent_value",
-                "condition": "condition_value",
-                "trigger_fulfillment": {
-                    "messages": [
-                        {
-                            "text": {
-                                "text": ["text_value1", "text_value2"],
-                                "allow_playback_interruption": True,
-                            },
-                            "payload": {"fields": {}},
-                            "conversation_success": {"metadata": {}},
-                            "output_audio_text": {
-                                "text": "text_value",
-                                "ssml": "ssml_value",
-                                "allow_playback_interruption": True,
-                            },
-                            "live_agent_handoff": {"metadata": {}},
-                            "end_interaction": {},
-                            "play_audio": {
-                                "audio_uri": "audio_uri_value",
-                                "allow_playback_interruption": True,
-                            },
-                            "mixed_audio": {
-                                "segments": [
-                                    {
-                                        "audio": b"audio_blob",
-                                        "uri": "uri_value",
-                                        "allow_playback_interruption": True,
-                                    }
-                                ]
-                            },
-                            "telephony_transfer_call": {
-                                "phone_number": "phone_number_value"
-                            },
-                            "knowledge_info_card": {},
-                            "response_type": 1,
-                            "channel": "channel_value",
-                        }
-                    ],
-                    "webhook": "webhook_value",
-                    "return_partial_responses": True,
-                    "tag": "tag_value",
-                    "set_parameter_actions": [
-                        {
-                            "parameter": "parameter_value",
-                            "value": {
-                                "null_value": 0,
-                                "number_value": 0.1285,
-                                "string_value": "string_value_value",
-                                "bool_value": True,
-                                "struct_value": {},
-                                "list_value": {"values": {}},
-                            },
-                        }
-                    ],
-                    "conditional_cases": [
-                        {
-                            "cases": [
-                                {
-                                    "condition": "condition_value",
-                                    "case_content": [
-                                        {"message": {}, "additional_cases": {}}
-                                    ],
-                                }
-                            ]
-                        }
-                    ],
-                    "advanced_settings": {
-                        "audio_export_gcs_destination": {"uri": "uri_value"},
-                        "dtmf_settings": {
-                            "enabled": True,
-                            "max_digits": 1065,
-                            "finish_digit": "finish_digit_value",
-                        },
-                        "logging_settings": {
-                            "enable_stackdriver_logging": True,
-                            "enable_interaction_logging": True,
-                        },
-                    },
-                    "enable_generative_fallback": True,
-                },
-                "target_page": "target_page_value",
-                "target_flow": "target_flow_value",
-            }
-        ],
-        "event_handlers": [
-            {
-                "name": "name_value",
-                "event": "event_value",
-                "trigger_fulfillment": {},
-                "target_page": "target_page_value",
-                "target_flow": "target_flow_value",
-            }
-        ],
-        "transition_route_groups": [
-            "transition_route_groups_value1",
-            "transition_route_groups_value2",
-        ],
-        "nlu_settings": {
-            "model_type": 1,
-            "classification_threshold": 0.25520000000000004,
-            "model_training_mode": 1,
-        },
-        "advanced_settings": {},
-        "knowledge_connector_settings": {
-            "enabled": True,
-            "trigger_fulfillment": {},
-            "target_page": "target_page_value",
-            "target_flow": "target_flow_value",
-            "data_store_connections": [
-                {"data_store_type": 1, "data_store": "data_store_value"}
-            ],
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4859,8 +4760,9 @@ def test_update_flow_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_flow.Flow.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_flow.Flow.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5192,8 +5094,9 @@ def test_validate_flow_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = flow.FlowValidationResult.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = flow.FlowValidationResult.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5267,8 +5170,9 @@ def test_validate_flow_rest_required_fields(request_type=flow.ValidateFlowReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = flow.FlowValidationResult.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = flow.FlowValidationResult.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5403,8 +5307,9 @@ def test_get_flow_validation_result_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = flow.FlowValidationResult.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = flow.FlowValidationResult.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5481,8 +5386,9 @@ def test_get_flow_validation_result_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = flow.FlowValidationResult.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = flow.FlowValidationResult.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5609,8 +5515,9 @@ def test_get_flow_validation_result_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = flow.FlowValidationResult.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = flow.FlowValidationResult.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

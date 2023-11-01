@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-optimization-v1.5.0...google-cloud-optimization-v1.6.0) (2023-10-12)
+
+
+### Features
+
+* added the route modifiers ([#11804](https://github.com/googleapis/google-cloud-python/issues/11804)) ([b9a5027](https://github.com/googleapis/google-cloud-python/commit/b9a5027da9154ce538a629bb772d5e4e071ae684))
+
 ## [1.5.0](https://github.com/googleapis/python-optimization/compare/v1.4.3...v1.5.0) (2023-09-13)
 
 

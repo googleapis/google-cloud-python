@@ -2806,8 +2806,9 @@ def test_list_intents_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = intent.ListIntentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = intent.ListIntentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2889,8 +2890,9 @@ def test_list_intents_rest_required_fields(request_type=intent.ListIntentsReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = intent.ListIntentsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = intent.ListIntentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3022,8 +3024,9 @@ def test_list_intents_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = intent.ListIntentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = intent.ListIntentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3158,8 +3161,9 @@ def test_get_intent_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = intent.Intent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = intent.Intent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3256,8 +3260,9 @@ def test_get_intent_rest_required_fields(request_type=intent.GetIntentRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = intent.Intent.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = intent.Intent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3385,8 +3390,9 @@ def test_get_intent_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = intent.Intent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = intent.Intent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3643,6 +3649,73 @@ def test_create_intent_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcd_intent.CreateIntentRequest.meta.fields["intent"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["intent"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["intent"][field])):
+                    del request_init["intent"][field][i][subfield]
+            else:
+                del request_init["intent"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3670,8 +3743,9 @@ def test_create_intent_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_intent.Intent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_intent.Intent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3773,8 +3847,9 @@ def test_create_intent_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcd_intent.Intent.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcd_intent.Intent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3869,210 +3944,6 @@ def test_create_intent_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/agent"}
-    request_init["intent"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "webhook_state": 1,
-        "priority": 898,
-        "is_fallback": True,
-        "ml_enabled": True,
-        "ml_disabled": True,
-        "live_agent_handoff": True,
-        "end_interaction": True,
-        "input_context_names": [
-            "input_context_names_value1",
-            "input_context_names_value2",
-        ],
-        "events": ["events_value1", "events_value2"],
-        "training_phrases": [
-            {
-                "name": "name_value",
-                "type_": 1,
-                "parts": [
-                    {
-                        "text": "text_value",
-                        "entity_type": "entity_type_value",
-                        "alias": "alias_value",
-                        "user_defined": True,
-                    }
-                ],
-                "times_added_count": 1787,
-            }
-        ],
-        "action": "action_value",
-        "output_contexts": [
-            {"name": "name_value", "lifespan_count": 1498, "parameters": {"fields": {}}}
-        ],
-        "reset_contexts": True,
-        "parameters": [
-            {
-                "name": "name_value",
-                "display_name": "display_name_value",
-                "value": "value_value",
-                "default_value": "default_value_value",
-                "entity_type_display_name": "entity_type_display_name_value",
-                "mandatory": True,
-                "prompts": ["prompts_value1", "prompts_value2"],
-                "is_list": True,
-            }
-        ],
-        "messages": [
-            {
-                "text": {"text": ["text_value1", "text_value2"]},
-                "image": {
-                    "image_uri": "image_uri_value",
-                    "accessibility_text": "accessibility_text_value",
-                },
-                "quick_replies": {
-                    "title": "title_value",
-                    "quick_replies": ["quick_replies_value1", "quick_replies_value2"],
-                },
-                "card": {
-                    "title": "title_value",
-                    "subtitle": "subtitle_value",
-                    "image_uri": "image_uri_value",
-                    "buttons": [{"text": "text_value", "postback": "postback_value"}],
-                },
-                "payload": {},
-                "simple_responses": {
-                    "simple_responses": [
-                        {
-                            "text_to_speech": "text_to_speech_value",
-                            "ssml": "ssml_value",
-                            "display_text": "display_text_value",
-                        }
-                    ]
-                },
-                "basic_card": {
-                    "title": "title_value",
-                    "subtitle": "subtitle_value",
-                    "formatted_text": "formatted_text_value",
-                    "image": {},
-                    "buttons": [
-                        {
-                            "title": "title_value",
-                            "open_uri_action": {"uri": "uri_value"},
-                        }
-                    ],
-                },
-                "suggestions": {"suggestions": [{"title": "title_value"}]},
-                "link_out_suggestion": {
-                    "destination_name": "destination_name_value",
-                    "uri": "uri_value",
-                },
-                "list_select": {
-                    "title": "title_value",
-                    "items": [
-                        {
-                            "info": {
-                                "key": "key_value",
-                                "synonyms": ["synonyms_value1", "synonyms_value2"],
-                            },
-                            "title": "title_value",
-                            "description": "description_value",
-                            "image": {},
-                        }
-                    ],
-                    "subtitle": "subtitle_value",
-                },
-                "carousel_select": {
-                    "items": [
-                        {
-                            "info": {},
-                            "title": "title_value",
-                            "description": "description_value",
-                            "image": {},
-                        }
-                    ]
-                },
-                "telephony_play_audio": {"audio_uri": "audio_uri_value"},
-                "telephony_synthesize_speech": {
-                    "text": "text_value",
-                    "ssml": "ssml_value",
-                },
-                "telephony_transfer_call": {"phone_number": "phone_number_value"},
-                "rbm_text": {
-                    "text": "text_value",
-                    "rbm_suggestion": [
-                        {
-                            "reply": {
-                                "text": "text_value",
-                                "postback_data": "postback_data_value",
-                            },
-                            "action": {
-                                "text": "text_value",
-                                "postback_data": "postback_data_value",
-                                "dial": {"phone_number": "phone_number_value"},
-                                "open_url": {"uri": "uri_value"},
-                                "share_location": {},
-                            },
-                        }
-                    ],
-                },
-                "rbm_standalone_rich_card": {
-                    "card_orientation": 1,
-                    "thumbnail_image_alignment": 1,
-                    "card_content": {
-                        "title": "title_value",
-                        "description": "description_value",
-                        "media": {
-                            "file_uri": "file_uri_value",
-                            "thumbnail_uri": "thumbnail_uri_value",
-                            "height": 1,
-                        },
-                        "suggestions": {},
-                    },
-                },
-                "rbm_carousel_rich_card": {"card_width": 1, "card_contents": {}},
-                "browse_carousel_card": {
-                    "items": [
-                        {
-                            "open_uri_action": {"url": "url_value", "url_type_hint": 1},
-                            "title": "title_value",
-                            "description": "description_value",
-                            "image": {},
-                            "footer": "footer_value",
-                        }
-                    ],
-                    "image_display_options": 1,
-                },
-                "table_card": {
-                    "title": "title_value",
-                    "subtitle": "subtitle_value",
-                    "image": {},
-                    "column_properties": [
-                        {"header": "header_value", "horizontal_alignment": 1}
-                    ],
-                    "rows": [
-                        {"cells": [{"text": "text_value"}], "divider_after": True}
-                    ],
-                    "buttons": {},
-                },
-                "media_content": {
-                    "media_type": 1,
-                    "media_objects": [
-                        {
-                            "name": "name_value",
-                            "description": "description_value",
-                            "large_image": {},
-                            "icon": {},
-                            "content_url": "content_url_value",
-                        }
-                    ],
-                },
-                "platform": 1,
-            }
-        ],
-        "default_response_platforms": [1],
-        "root_followup_intent_name": "root_followup_intent_name_value",
-        "parent_followup_intent_name": "parent_followup_intent_name_value",
-        "followup_intent_info": [
-            {
-                "followup_intent_name": "followup_intent_name_value",
-                "parent_followup_intent_name": "parent_followup_intent_name_value",
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4112,8 +3983,9 @@ def test_create_intent_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_intent.Intent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_intent.Intent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4371,6 +4243,73 @@ def test_update_intent_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcd_intent.UpdateIntentRequest.meta.fields["intent"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["intent"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["intent"][field])):
+                    del request_init["intent"][field][i][subfield]
+            else:
+                del request_init["intent"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4398,8 +4337,9 @@ def test_update_intent_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_intent.Intent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_intent.Intent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4497,8 +4437,9 @@ def test_update_intent_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcd_intent.Intent.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcd_intent.Intent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4589,210 +4530,6 @@ def test_update_intent_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"intent": {"name": "projects/sample1/agent/intents/sample2"}}
-    request_init["intent"] = {
-        "name": "projects/sample1/agent/intents/sample2",
-        "display_name": "display_name_value",
-        "webhook_state": 1,
-        "priority": 898,
-        "is_fallback": True,
-        "ml_enabled": True,
-        "ml_disabled": True,
-        "live_agent_handoff": True,
-        "end_interaction": True,
-        "input_context_names": [
-            "input_context_names_value1",
-            "input_context_names_value2",
-        ],
-        "events": ["events_value1", "events_value2"],
-        "training_phrases": [
-            {
-                "name": "name_value",
-                "type_": 1,
-                "parts": [
-                    {
-                        "text": "text_value",
-                        "entity_type": "entity_type_value",
-                        "alias": "alias_value",
-                        "user_defined": True,
-                    }
-                ],
-                "times_added_count": 1787,
-            }
-        ],
-        "action": "action_value",
-        "output_contexts": [
-            {"name": "name_value", "lifespan_count": 1498, "parameters": {"fields": {}}}
-        ],
-        "reset_contexts": True,
-        "parameters": [
-            {
-                "name": "name_value",
-                "display_name": "display_name_value",
-                "value": "value_value",
-                "default_value": "default_value_value",
-                "entity_type_display_name": "entity_type_display_name_value",
-                "mandatory": True,
-                "prompts": ["prompts_value1", "prompts_value2"],
-                "is_list": True,
-            }
-        ],
-        "messages": [
-            {
-                "text": {"text": ["text_value1", "text_value2"]},
-                "image": {
-                    "image_uri": "image_uri_value",
-                    "accessibility_text": "accessibility_text_value",
-                },
-                "quick_replies": {
-                    "title": "title_value",
-                    "quick_replies": ["quick_replies_value1", "quick_replies_value2"],
-                },
-                "card": {
-                    "title": "title_value",
-                    "subtitle": "subtitle_value",
-                    "image_uri": "image_uri_value",
-                    "buttons": [{"text": "text_value", "postback": "postback_value"}],
-                },
-                "payload": {},
-                "simple_responses": {
-                    "simple_responses": [
-                        {
-                            "text_to_speech": "text_to_speech_value",
-                            "ssml": "ssml_value",
-                            "display_text": "display_text_value",
-                        }
-                    ]
-                },
-                "basic_card": {
-                    "title": "title_value",
-                    "subtitle": "subtitle_value",
-                    "formatted_text": "formatted_text_value",
-                    "image": {},
-                    "buttons": [
-                        {
-                            "title": "title_value",
-                            "open_uri_action": {"uri": "uri_value"},
-                        }
-                    ],
-                },
-                "suggestions": {"suggestions": [{"title": "title_value"}]},
-                "link_out_suggestion": {
-                    "destination_name": "destination_name_value",
-                    "uri": "uri_value",
-                },
-                "list_select": {
-                    "title": "title_value",
-                    "items": [
-                        {
-                            "info": {
-                                "key": "key_value",
-                                "synonyms": ["synonyms_value1", "synonyms_value2"],
-                            },
-                            "title": "title_value",
-                            "description": "description_value",
-                            "image": {},
-                        }
-                    ],
-                    "subtitle": "subtitle_value",
-                },
-                "carousel_select": {
-                    "items": [
-                        {
-                            "info": {},
-                            "title": "title_value",
-                            "description": "description_value",
-                            "image": {},
-                        }
-                    ]
-                },
-                "telephony_play_audio": {"audio_uri": "audio_uri_value"},
-                "telephony_synthesize_speech": {
-                    "text": "text_value",
-                    "ssml": "ssml_value",
-                },
-                "telephony_transfer_call": {"phone_number": "phone_number_value"},
-                "rbm_text": {
-                    "text": "text_value",
-                    "rbm_suggestion": [
-                        {
-                            "reply": {
-                                "text": "text_value",
-                                "postback_data": "postback_data_value",
-                            },
-                            "action": {
-                                "text": "text_value",
-                                "postback_data": "postback_data_value",
-                                "dial": {"phone_number": "phone_number_value"},
-                                "open_url": {"uri": "uri_value"},
-                                "share_location": {},
-                            },
-                        }
-                    ],
-                },
-                "rbm_standalone_rich_card": {
-                    "card_orientation": 1,
-                    "thumbnail_image_alignment": 1,
-                    "card_content": {
-                        "title": "title_value",
-                        "description": "description_value",
-                        "media": {
-                            "file_uri": "file_uri_value",
-                            "thumbnail_uri": "thumbnail_uri_value",
-                            "height": 1,
-                        },
-                        "suggestions": {},
-                    },
-                },
-                "rbm_carousel_rich_card": {"card_width": 1, "card_contents": {}},
-                "browse_carousel_card": {
-                    "items": [
-                        {
-                            "open_uri_action": {"url": "url_value", "url_type_hint": 1},
-                            "title": "title_value",
-                            "description": "description_value",
-                            "image": {},
-                            "footer": "footer_value",
-                        }
-                    ],
-                    "image_display_options": 1,
-                },
-                "table_card": {
-                    "title": "title_value",
-                    "subtitle": "subtitle_value",
-                    "image": {},
-                    "column_properties": [
-                        {"header": "header_value", "horizontal_alignment": 1}
-                    ],
-                    "rows": [
-                        {"cells": [{"text": "text_value"}], "divider_after": True}
-                    ],
-                    "buttons": {},
-                },
-                "media_content": {
-                    "media_type": 1,
-                    "media_objects": [
-                        {
-                            "name": "name_value",
-                            "description": "description_value",
-                            "large_image": {},
-                            "icon": {},
-                            "content_url": "content_url_value",
-                        }
-                    ],
-                },
-                "platform": 1,
-            }
-        ],
-        "default_response_platforms": [1],
-        "root_followup_intent_name": "root_followup_intent_name_value",
-        "parent_followup_intent_name": "parent_followup_intent_name_value",
-        "followup_intent_info": [
-            {
-                "followup_intent_name": "followup_intent_name_value",
-                "parent_followup_intent_name": "parent_followup_intent_name_value",
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4832,8 +4569,9 @@ def test_update_intent_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_intent.Intent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_intent.Intent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

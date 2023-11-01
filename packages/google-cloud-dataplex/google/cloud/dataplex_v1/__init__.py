@@ -40,6 +40,7 @@ from .types.content import (
 )
 from .types.data_profile import DataProfileResult, DataProfileSpec
 from .types.data_quality import (
+    DataQualityDimension,
     DataQualityDimensionResult,
     DataQualityResult,
     DataQualityRule,
@@ -89,6 +90,7 @@ from .types.logs import (
     DataQualityScanRuleResult,
     DataScanEvent,
     DiscoveryEvent,
+    GovernanceEvent,
     JobEvent,
     SessionEvent,
 )
@@ -190,6 +192,7 @@ __all__ = (
     "DataAttributeBinding",
     "DataProfileResult",
     "DataProfileSpec",
+    "DataQualityDimension",
     "DataQualityDimensionResult",
     "DataQualityResult",
     "DataQualityRule",
@@ -234,6 +237,7 @@ __all__ = (
     "GetPartitionRequest",
     "GetTaskRequest",
     "GetZoneRequest",
+    "GovernanceEvent",
     "Job",
     "JobEvent",
     "Lake",

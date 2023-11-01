@@ -11,20 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    workflows_v1/services
-    executions_v1/services
-    workflows_v1/types
-    executions_v1/types
+    workflows_v1/services_
+    workflows_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    workflows_v1beta/services
-    executions_v1beta/services
-    workflows_v1beta/types
-    executions_v1beta/types
+    workflows_v1beta/services_
+    workflows_v1beta/types_
 
 
 Changelog

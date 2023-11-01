@@ -241,6 +241,13 @@ class Runnable(proto.Message):
             Barrier runnable.
 
             This field is a member of `oneof`_ ``executable``.
+        display_name (str):
+            Optional. DisplayName is an optional field
+            that can be provided by the caller. If provided,
+            it will be used in logs and other outputs to
+            identify the script, making it easier for users
+            to understand the logs. If not provided the
+            index of the runnable will be used for outputs.
         ignore_exit_status (bool):
             Normally, a non-zero exit status causes the
             Task to fail. This flag allows execution of
@@ -435,6 +442,10 @@ class Runnable(proto.Message):
         number=6,
         oneof="executable",
         message=Barrier,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
     ignore_exit_status: bool = proto.Field(
         proto.BOOL,

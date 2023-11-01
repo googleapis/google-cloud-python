@@ -1,0 +1,209 @@
+# -*- coding: utf-8 -*-
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
+
+__version__ = package_version.__version__
+
+
+from .services.completion_service import (
+    CompletionServiceAsyncClient,
+    CompletionServiceClient,
+)
+from .services.conversational_search_service import (
+    ConversationalSearchServiceAsyncClient,
+    ConversationalSearchServiceClient,
+)
+from .services.document_service import DocumentServiceAsyncClient, DocumentServiceClient
+from .services.recommendation_service import (
+    RecommendationServiceAsyncClient,
+    RecommendationServiceClient,
+)
+from .services.schema_service import SchemaServiceAsyncClient, SchemaServiceClient
+from .services.search_service import SearchServiceAsyncClient, SearchServiceClient
+from .services.site_search_engine_service import (
+    SiteSearchEngineServiceAsyncClient,
+    SiteSearchEngineServiceClient,
+)
+from .services.user_event_service import (
+    UserEventServiceAsyncClient,
+    UserEventServiceClient,
+)
+from .types.common import CustomAttribute, DoubleList, Interval, SolutionType, UserInfo
+from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
+from .types.conversation import (
+    Conversation,
+    ConversationContext,
+    ConversationMessage,
+    Reply,
+    TextInput,
+)
+from .types.conversational_search_service import (
+    ConverseConversationRequest,
+    ConverseConversationResponse,
+    CreateConversationRequest,
+    DeleteConversationRequest,
+    GetConversationRequest,
+    ListConversationsRequest,
+    ListConversationsResponse,
+    UpdateConversationRequest,
+)
+from .types.document import Document
+from .types.document_service import (
+    CreateDocumentRequest,
+    DeleteDocumentRequest,
+    GetDocumentRequest,
+    ListDocumentsRequest,
+    ListDocumentsResponse,
+    UpdateDocumentRequest,
+)
+from .types.import_config import (
+    BigQuerySource,
+    GcsSource,
+    ImportDocumentsMetadata,
+    ImportDocumentsRequest,
+    ImportDocumentsResponse,
+    ImportErrorConfig,
+    ImportUserEventsMetadata,
+    ImportUserEventsRequest,
+    ImportUserEventsResponse,
+)
+from .types.purge_config import (
+    PurgeDocumentsMetadata,
+    PurgeDocumentsRequest,
+    PurgeDocumentsResponse,
+    PurgeUserEventsMetadata,
+    PurgeUserEventsRequest,
+    PurgeUserEventsResponse,
+)
+from .types.recommendation_service import RecommendRequest, RecommendResponse
+from .types.schema import FieldConfig, Schema
+from .types.schema_service import (
+    CreateSchemaMetadata,
+    CreateSchemaRequest,
+    DeleteSchemaMetadata,
+    DeleteSchemaRequest,
+    GetSchemaRequest,
+    ListSchemasRequest,
+    ListSchemasResponse,
+    UpdateSchemaMetadata,
+    UpdateSchemaRequest,
+)
+from .types.search_service import SearchRequest, SearchResponse
+from .types.site_search_engine_service import (
+    RecrawlUrisMetadata,
+    RecrawlUrisRequest,
+    RecrawlUrisResponse,
+)
+from .types.user_event import (
+    CompletionInfo,
+    DocumentInfo,
+    MediaInfo,
+    PageInfo,
+    PanelInfo,
+    SearchInfo,
+    TransactionInfo,
+    UserEvent,
+)
+from .types.user_event_service import CollectUserEventRequest, WriteUserEventRequest
+
+__all__ = (
+    "CompletionServiceAsyncClient",
+    "ConversationalSearchServiceAsyncClient",
+    "DocumentServiceAsyncClient",
+    "RecommendationServiceAsyncClient",
+    "SchemaServiceAsyncClient",
+    "SearchServiceAsyncClient",
+    "SiteSearchEngineServiceAsyncClient",
+    "UserEventServiceAsyncClient",
+    "BigQuerySource",
+    "CollectUserEventRequest",
+    "CompleteQueryRequest",
+    "CompleteQueryResponse",
+    "CompletionInfo",
+    "CompletionServiceClient",
+    "Conversation",
+    "ConversationContext",
+    "ConversationMessage",
+    "ConversationalSearchServiceClient",
+    "ConverseConversationRequest",
+    "ConverseConversationResponse",
+    "CreateConversationRequest",
+    "CreateDocumentRequest",
+    "CreateSchemaMetadata",
+    "CreateSchemaRequest",
+    "CustomAttribute",
+    "DeleteConversationRequest",
+    "DeleteDocumentRequest",
+    "DeleteSchemaMetadata",
+    "DeleteSchemaRequest",
+    "Document",
+    "DocumentInfo",
+    "DocumentServiceClient",
+    "DoubleList",
+    "FieldConfig",
+    "GcsSource",
+    "GetConversationRequest",
+    "GetDocumentRequest",
+    "GetSchemaRequest",
+    "ImportDocumentsMetadata",
+    "ImportDocumentsRequest",
+    "ImportDocumentsResponse",
+    "ImportErrorConfig",
+    "ImportUserEventsMetadata",
+    "ImportUserEventsRequest",
+    "ImportUserEventsResponse",
+    "Interval",
+    "ListConversationsRequest",
+    "ListConversationsResponse",
+    "ListDocumentsRequest",
+    "ListDocumentsResponse",
+    "ListSchemasRequest",
+    "ListSchemasResponse",
+    "MediaInfo",
+    "PageInfo",
+    "PanelInfo",
+    "PurgeDocumentsMetadata",
+    "PurgeDocumentsRequest",
+    "PurgeDocumentsResponse",
+    "PurgeUserEventsMetadata",
+    "PurgeUserEventsRequest",
+    "PurgeUserEventsResponse",
+    "RecommendRequest",
+    "RecommendResponse",
+    "RecommendationServiceClient",
+    "RecrawlUrisMetadata",
+    "RecrawlUrisRequest",
+    "RecrawlUrisResponse",
+    "Reply",
+    "Schema",
+    "SchemaServiceClient",
+    "SearchInfo",
+    "SearchRequest",
+    "SearchResponse",
+    "SearchServiceClient",
+    "SiteSearchEngineServiceClient",
+    "SolutionType",
+    "TextInput",
+    "TransactionInfo",
+    "UpdateConversationRequest",
+    "UpdateDocumentRequest",
+    "UpdateSchemaMetadata",
+    "UpdateSchemaRequest",
+    "UserEvent",
+    "UserEventServiceClient",
+    "UserInfo",
+    "WriteUserEventRequest",
+)

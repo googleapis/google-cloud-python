@@ -267,7 +267,7 @@ class OcrConfig(proto.Message):
         disable_character_boxes_detection (bool):
             Turn off character box detector in OCR
             engine. Character box detection is enabled by
-            default in OCR 2.0+ processors.
+            default in OCR 2.0 (and later) processors.
         premium_features (google.cloud.documentai_v1.types.OcrConfig.PremiumFeatures):
             Configurations for premium OCR features.
     """
@@ -299,7 +299,8 @@ class OcrConfig(proto.Message):
         Attributes:
             enable_selection_mark_detection (bool):
                 Turn on selection mark detector in OCR
-                engine. Only available in OCR 2.0+ processors.
+                engine. Only available in OCR 2.0 (and later)
+                processors.
             compute_style_info (bool):
                 Turn on font identification model and return
                 font style information.
