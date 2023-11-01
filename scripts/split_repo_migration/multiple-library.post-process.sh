@@ -102,6 +102,7 @@ EOF
   # we need the following directory present so OwlBot will include it in its
   # processing below.
   mkdir -p owl-bot-staging/${MONOREPO_PACKAGE_NAME}
+  docker run --rm --user $(id -u):$(id -g)   -v $(pwd):/repo   -v $HOME/git/googleapis/bazel-bin:/bazel-bin   gcr.io/cloud-devrel-public-resources/owlbot-cli:latest copy-bazel-bin   --source-dir /bazel-bin --dest /repo   --config-file=/${MONOREPO_PATH_PACKAGE}/.OwlBot.yaml 
 done
 
 
