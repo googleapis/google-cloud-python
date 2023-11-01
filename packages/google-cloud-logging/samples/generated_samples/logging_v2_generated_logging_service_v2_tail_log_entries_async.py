@@ -36,15 +36,15 @@ from google.cloud import logging_v2
 
 async def sample_tail_log_entries():
     # Create a client
-    client = logging_v2.LoggingServiceV2AsyncClient()
+    client = logging_v2.services.logging_service_v2.LoggingServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    request = logging_v2.TailLogEntriesRequest(
+    request = logging_v2.types.TailLogEntriesRequest(
         resource_names=['resource_names_value1', 'resource_names_value2'],
     )
 
     # This method expects an iterator which contains
-    # 'logging_v2.TailLogEntriesRequest' objects
+    # 'logging_v2.types.TailLogEntriesRequest' objects
     # Here we create a generator that yields a single `request` for
     # demonstrative purposes.
     requests = [request]

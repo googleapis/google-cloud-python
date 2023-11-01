@@ -36,10 +36,10 @@ from google.cloud import logging_v2
 
 def sample_create_link():
     # Create a client
-    client = logging_v2.ConfigServiceV2Client()
+    client = logging_v2.services.config_service_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
-    request = logging_v2.CreateLinkRequest(
+    request = logging_v2.types.CreateLinkRequest(
         parent="parent_value",
         link_id="link_id_value",
     )
