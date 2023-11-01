@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.12.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.11.0...v0.12.0) (2023-11-01)
+
+
+### Features
+
+* Add `DataFrame.melt` ([#113](https://github.com/googleapis/python-bigquery-dataframes/issues/113)) ([4e4409c](https://github.com/googleapis/python-bigquery-dataframes/commit/4e4409c5b235171f3770aec852193026519948fd))
+* Add `DataFrame.to_pandas_batches()` to download large `DataFrame` objects ([#136](https://github.com/googleapis/python-bigquery-dataframes/issues/136)) ([3afd4a3](https://github.com/googleapis/python-bigquery-dataframes/commit/3afd4a35f4c38dad86dab17ff62444cd418cab88))
+* Add bigframes.options.compute.maximum_bytes_billed option that sets maximum bytes billed on query jobs ([#133](https://github.com/googleapis/python-bigquery-dataframes/issues/133)) ([63c7919](https://github.com/googleapis/python-bigquery-dataframes/commit/63c7919e28d2e0b864142320b47374d807f07c03))
+* Add pandas.qcut ([#104](https://github.com/googleapis/python-bigquery-dataframes/issues/104)) ([8e44518](https://github.com/googleapis/python-bigquery-dataframes/commit/8e4451841ba09099b0ed5433f9102511741dfbed))
+* Add pd.get_dummies ([#149](https://github.com/googleapis/python-bigquery-dataframes/issues/149)) ([d8baad5](https://github.com/googleapis/python-bigquery-dataframes/commit/d8baad5b71ec67a35a0fb6132ee16e4c7418c456))
+* Add unstack to series, add level param ([#115](https://github.com/googleapis/python-bigquery-dataframes/issues/115)) ([5edcd19](https://github.com/googleapis/python-bigquery-dataframes/commit/5edcd19e6200db9b9ebe3d4945816b3ebf1f7bcd))
+* Implement operator `@` for `DataFrame.dot` ([#139](https://github.com/googleapis/python-bigquery-dataframes/issues/139)) ([79a638e](https://github.com/googleapis/python-bigquery-dataframes/commit/79a638eda80c482b640b523426ffd95c42747edc))
+* Populate ibis version in user agent ([#140](https://github.com/googleapis/python-bigquery-dataframes/issues/140)) ([c639a36](https://github.com/googleapis/python-bigquery-dataframes/commit/c639a3657465e2b68a3b93c363bd3ae1e969d2cc))
+
+
+### Bug Fixes
+
+* Don't override the global logging config ([#138](https://github.com/googleapis/python-bigquery-dataframes/issues/138)) ([2ddbf74](https://github.com/googleapis/python-bigquery-dataframes/commit/2ddbf743efc2fd8ffb61ae8d3333fc4b98ce4b55))
+* Fix bug with column names under repeated column assignment ([#150](https://github.com/googleapis/python-bigquery-dataframes/issues/150)) ([29032d0](https://github.com/googleapis/python-bigquery-dataframes/commit/29032d06811569121f7be2a7de915740df7daf6e))
+* Resolve plotly rendering issue by using ipython html for job pro… ([#134](https://github.com/googleapis/python-bigquery-dataframes/issues/134)) ([39df43e](https://github.com/googleapis/python-bigquery-dataframes/commit/39df43e243ac0374d1a1eb2a75779324825afbe9))
+* Use indexee's session for loc listlike cases ([#152](https://github.com/googleapis/python-bigquery-dataframes/issues/152)) ([27c5725](https://github.com/googleapis/python-bigquery-dataframes/commit/27c57255c7fe11e1ef9b9826d988d80fc17442a6))
+
+
+### Documentation
+
+* Add artithmetic df sample code ([#153](https://github.com/googleapis/python-bigquery-dataframes/issues/153)) ([ac44ccd](https://github.com/googleapis/python-bigquery-dataframes/commit/ac44ccd3936cdb28755d2bbe16377d489f08d5e5))
+* Fix indentation on `read_gbq_function` code sample ([#163](https://github.com/googleapis/python-bigquery-dataframes/issues/163)) ([0801d96](https://github.com/googleapis/python-bigquery-dataframes/commit/0801d96830dab467232277dea9fd2dacee41055c))
+* Link to ML.EVALUATE BQML page for score() methods ([#137](https://github.com/googleapis/python-bigquery-dataframes/issues/137)) ([45c617f](https://github.com/googleapis/python-bigquery-dataframes/commit/45c617fee7becc42f1c129246ffdc32f3a963f12))
+
 ## [0.11.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.10.0...v0.11.0) (2023-10-26)
 
 
