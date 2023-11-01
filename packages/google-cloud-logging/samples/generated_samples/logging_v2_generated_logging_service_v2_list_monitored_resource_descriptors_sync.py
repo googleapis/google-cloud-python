@@ -36,10 +36,10 @@ from google.cloud import logging_v2
 
 def sample_list_monitored_resource_descriptors():
     # Create a client
-    client = logging_v2.LoggingServiceV2Client()
+    client = logging_v2.services.logging_service_v2.LoggingServiceV2Client()
 
     # Initialize request argument(s)
-    request = logging_v2.ListMonitoredResourceDescriptorsRequest(
+    request = logging_v2.types.ListMonitoredResourceDescriptorsRequest(
     )
 
     # Make the request

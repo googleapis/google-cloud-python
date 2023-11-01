@@ -36,10 +36,10 @@ from google.cloud import logging_v2
 
 async def sample_list_log_metrics():
     # Create a client
-    client = logging_v2.MetricsServiceV2AsyncClient()
+    client = logging_v2.services.metrics_service_v2.MetricsServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    request = logging_v2.ListLogMetricsRequest(
+    request = logging_v2.types.ListLogMetricsRequest(
         parent="parent_value",
     )
 

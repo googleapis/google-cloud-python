@@ -36,14 +36,14 @@ from google.cloud import logging_v2
 
 async def sample_update_exclusion():
     # Create a client
-    client = logging_v2.ConfigServiceV2AsyncClient()
+    client = logging_v2.services.config_service_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    exclusion = logging_v2.LogExclusion()
+    exclusion = logging_v2.types.LogExclusion()
     exclusion.name = "name_value"
     exclusion.filter = "filter_value"
 
-    request = logging_v2.UpdateExclusionRequest(
+    request = logging_v2.types.UpdateExclusionRequest(
         name="name_value",
         exclusion=exclusion,
     )

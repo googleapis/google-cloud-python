@@ -36,10 +36,10 @@ from google.cloud import logging_v2
 
 async def sample_undelete_bucket():
     # Create a client
-    client = logging_v2.ConfigServiceV2AsyncClient()
+    client = logging_v2.services.config_service_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    request = logging_v2.UndeleteBucketRequest(
+    request = logging_v2.types.UndeleteBucketRequest(
         name="name_value",
     )
 

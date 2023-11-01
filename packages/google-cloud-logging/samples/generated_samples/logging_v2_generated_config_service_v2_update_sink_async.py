@@ -36,14 +36,14 @@ from google.cloud import logging_v2
 
 async def sample_update_sink():
     # Create a client
-    client = logging_v2.ConfigServiceV2AsyncClient()
+    client = logging_v2.services.config_service_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    sink = logging_v2.LogSink()
+    sink = logging_v2.types.LogSink()
     sink.name = "name_value"
     sink.destination = "destination_value"
 
-    request = logging_v2.UpdateSinkRequest(
+    request = logging_v2.types.UpdateSinkRequest(
         sink_name="sink_name_value",
         sink=sink,
     )

@@ -36,14 +36,14 @@ from google.cloud import logging_v2
 
 def sample_create_exclusion():
     # Create a client
-    client = logging_v2.ConfigServiceV2Client()
+    client = logging_v2.services.config_service_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
-    exclusion = logging_v2.LogExclusion()
+    exclusion = logging_v2.types.LogExclusion()
     exclusion.name = "name_value"
     exclusion.filter = "filter_value"
 
-    request = logging_v2.CreateExclusionRequest(
+    request = logging_v2.types.CreateExclusionRequest(
         parent="parent_value",
         exclusion=exclusion,
     )

@@ -36,10 +36,10 @@ from google.cloud import logging_v2
 
 async def sample_delete_log():
     # Create a client
-    client = logging_v2.LoggingServiceV2AsyncClient()
+    client = logging_v2.services.logging_service_v2.LoggingServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    request = logging_v2.DeleteLogRequest(
+    request = logging_v2.types.DeleteLogRequest(
         log_name="log_name_value",
     )
 

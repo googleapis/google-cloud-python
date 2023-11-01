@@ -36,13 +36,13 @@ from google.cloud import logging_v2
 
 async def sample_write_log_entries():
     # Create a client
-    client = logging_v2.LoggingServiceV2AsyncClient()
+    client = logging_v2.services.logging_service_v2.LoggingServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    entries = logging_v2.LogEntry()
+    entries = logging_v2.types.LogEntry()
     entries.log_name = "log_name_value"
 
-    request = logging_v2.WriteLogEntriesRequest(
+    request = logging_v2.types.WriteLogEntriesRequest(
         entries=entries,
     )
 

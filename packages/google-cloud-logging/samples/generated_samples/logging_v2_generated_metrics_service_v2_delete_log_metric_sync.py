@@ -36,10 +36,10 @@ from google.cloud import logging_v2
 
 def sample_delete_log_metric():
     # Create a client
-    client = logging_v2.MetricsServiceV2Client()
+    client = logging_v2.services.metrics_service_v2.MetricsServiceV2Client()
 
     # Initialize request argument(s)
-    request = logging_v2.DeleteLogMetricRequest(
+    request = logging_v2.types.DeleteLogMetricRequest(
         metric_name="metric_name_value",
     )
 
