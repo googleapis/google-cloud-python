@@ -3,7 +3,7 @@
     "name_pretty": "apiPrettyName",
     "api_description": "",
     "product_documentation": "apiProductDocumentation",
-    "client_documentation": "https://cloud.google.com/python/docs/reference/apiPackage/latest",
+    "client_documentation": "clientDocumentation",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
     "language": "python",
