@@ -154,6 +154,7 @@ def test_from_api_repr(target_class):
                 "foo": "bar",
             },
         },
+        "dataGovernanceType": "DATA_MASKING",
     }
     actual_routine = target_class.from_api_repr(resource)
 
@@ -192,6 +193,7 @@ def test_from_api_repr(target_class):
     assert actual_routine.remote_function_options.connection == "connection_string"
     assert actual_routine.remote_function_options.max_batching_rows == 50
     assert actual_routine.remote_function_options.user_defined_context == {"foo": "bar"}
+    assert actual_routine.data_governance_type == "DATA_MASKING"
 
 
 def test_from_api_repr_tvf_function(target_class):
@@ -294,6 +296,7 @@ def test_from_api_repr_w_minimal_resource(target_class):
     assert actual_routine.description is None
     assert actual_routine.determinism_level is None
     assert actual_routine.remote_function_options is None
+    assert actual_routine.data_governance_type is None
 
 
 def test_from_api_repr_w_unknown_fields(target_class):
@@ -429,6 +432,20 @@ def test_from_api_repr_w_unknown_fields(target_class):
             },
         ),
         (
+            {
+                "arguments": [{"name": "x", "dataType": {"typeKind": "INT64"}}],
+                "definitionBody": "x * 3",
+                "language": "SQL",
+                "returnType": {"typeKind": "INT64"},
+                "routineType": "SCALAR_FUNCTION",
+                "description": "A routine description.",
+                "determinismLevel": bigquery.DeterminismLevel.DETERMINISM_LEVEL_UNSPECIFIED,
+                "dataGovernanceType": "DATA_MASKING",
+            },
+            ["data_governance_type"],
+            {"dataGovernanceType": "DATA_MASKING"},
+        ),
+        (
             {},
             [
                 "arguments",
@@ -552,6 +569,36 @@ def test_set_remote_function_options_w_none(object_under_test):
     object_under_test.remote_function_options = None
     assert object_under_test.remote_function_options is None
     assert object_under_test._properties["remoteFunctionOptions"] is None
+
+
+def test_set_data_governance_type_w_none(object_under_test):
+    object_under_test.data_governance_type = None
+    assert object_under_test.data_governance_type is None
+    assert object_under_test._properties["dataGovernanceType"] is None
+
+
+def test_set_data_governance_type_valid(object_under_test):
+    object_under_test.data_governance_type = "DATA_MASKING"
+    assert object_under_test.data_governance_type == "DATA_MASKING"
+    assert object_under_test._properties["dataGovernanceType"] == "DATA_MASKING"
+
+
+def test_set_data_governance_type_wrong_type(object_under_test):
+    with pytest.raises(ValueError) as exp:
+        object_under_test.data_governance_type = 1
+    assert "invalid data_governance_type" in str(exp)
+    assert object_under_test.data_governance_type is None
+    assert object_under_test._properties.get("dataGovernanceType") is None
+
+
+def test_set_data_governance_type_wrong_str(object_under_test):
+    """Client does not verify the content of data_governance_type string to be
+    compatible with future upgrades. If the value is not supported, BigQuery
+    itself will report an error.
+    """
+    object_under_test.data_governance_type = "RANDOM_STRING"
+    assert object_under_test.data_governance_type == "RANDOM_STRING"
+    assert object_under_test._properties["dataGovernanceType"] == "RANDOM_STRING"
 
 
 def test_repr(target_class):

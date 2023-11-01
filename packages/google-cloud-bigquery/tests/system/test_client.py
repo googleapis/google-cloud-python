@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import base64
+import copy
 import csv
 import datetime
 import decimal
@@ -2235,6 +2236,41 @@ class TestBigQuery(unittest.TestCase):
             (3, "two"),
         ]
         assert result_rows == expected
+
+    def test_create_routine_w_data_governance(self):
+        routine_name = "routine_with_data_governance"
+        dataset = self.temp_dataset(_make_dataset_id("create_routine"))
+
+        routine = bigquery.Routine(
+            dataset.routine(routine_name),
+            type_="SCALAR_FUNCTION",
+            language="SQL",
+            body="x",
+            arguments=[
+                bigquery.RoutineArgument(
+                    name="x",
+                    data_type=bigquery.StandardSqlDataType(
+                        type_kind=bigquery.StandardSqlTypeNames.INT64
+                    ),
+                )
+            ],
+            data_governance_type="DATA_MASKING",
+            return_type=bigquery.StandardSqlDataType(
+                type_kind=bigquery.StandardSqlTypeNames.INT64
+            ),
+        )
+        routine_original = copy.deepcopy(routine)
+
+        client = Config.CLIENT
+        routine_new = client.create_routine(routine)
+
+        assert routine_new.reference == routine_original.reference
+        assert routine_new.type_ == routine_original.type_
+        assert routine_new.language == routine_original.language
+        assert routine_new.body == routine_original.body
+        assert routine_new.arguments == routine_original.arguments
+        assert routine_new.return_type == routine_original.return_type
+        assert routine_new.data_governance_type == routine_original.data_governance_type
 
     def test_create_table_rows_fetch_nested_schema(self):
         table_name = "test_table"
