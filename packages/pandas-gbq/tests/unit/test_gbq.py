@@ -650,6 +650,59 @@ def test_load_does_not_modify_schema_arg(mock_bigquery_client):
     assert original_schema == original_schema_cp
 
 
+def test_load_modifies_schema(mock_bigquery_client):
+    """Test of https://github.com/googleapis/python-bigquery-pandas/issues/670"""
+    from google.api_core.exceptions import NotFound
+
+    # Create table with new schema.
+    mock_bigquery_client.get_table.side_effect = NotFound("nope")
+    df = DataFrame(
+        {
+            "field1": ["a", "b"],
+            "field2": [1, 2],
+            "field3": [datetime.date(2019, 1, 1), datetime.date(2019, 5, 1)],
+        }
+    )
+    original_schema = [
+        {"name": "field1", "type": "STRING", "mode": "REQUIRED"},
+        {"name": "field2", "type": "INTEGER"},
+        {"name": "field3", "type": "DATE"},
+    ]
+    original_schema_cp = copy.deepcopy(original_schema)
+    gbq.to_gbq(
+        df,
+        "dataset.schematest",
+        project_id="my-project",
+        table_schema=original_schema,
+        if_exists="fail",
+    )
+    assert original_schema == original_schema_cp
+
+    # Test that when if_exists == "replace", the new table schema updates
+    # according to the local schema.
+    new_df = DataFrame(
+        {
+            "field1": ["a", "b"],
+            "field2": ["c", "d"],
+            "field3": [datetime.date(2019, 1, 1), datetime.date(2019, 5, 1)],
+        }
+    )
+    new_schema = [
+        {"name": "field1", "type": "STRING", "mode": "REQUIRED"},
+        {"name": "field2", "type": "STRING"},
+        {"name": "field3", "type": "DATE"},
+    ]
+    new_schema_cp = copy.deepcopy(new_schema)
+    gbq.to_gbq(
+        new_df,
+        "dataset.schematest",
+        project_id="my-project",
+        table_schema=new_schema,
+        if_exists="replace",
+    )
+    assert new_schema == new_schema_cp
+
+
 def test_read_gbq_passes_dtypes(mock_bigquery_client, mock_service_account_credentials):
     mock_service_account_credentials.project_id = "service_account_project_id"
     df = gbq.read_gbq(

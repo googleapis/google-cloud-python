@@ -1205,12 +1205,15 @@ def to_gbq(
         )
         table_connector.create(table_id, table_schema)
     else:
-        # Convert original schema (the schema that already exists) to pandas-gbq API format
-        original_schema = pandas_gbq.schema.to_pandas_gbq(table.schema)
+        if if_exists == "append":
+            # Convert original schema (the schema that already exists) to pandas-gbq API format
+            original_schema = pandas_gbq.schema.to_pandas_gbq(table.schema)
 
-        # Update the local `table_schema` so mode (NULLABLE/REQUIRED)
-        # matches. See: https://github.com/pydata/pandas-gbq/issues/315
-        table_schema = pandas_gbq.schema.update_schema(table_schema, original_schema)
+            # Update the local `table_schema` so mode (NULLABLE/REQUIRED)
+            # matches. See: https://github.com/pydata/pandas-gbq/issues/315
+            table_schema = pandas_gbq.schema.update_schema(
+                table_schema, original_schema
+            )
 
     if dataframe.empty:
         # Create the table (if needed), but don't try to run a load job with an

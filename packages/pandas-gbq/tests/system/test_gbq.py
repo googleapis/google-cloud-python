@@ -788,6 +788,7 @@ class TestToGBQIntegration(object):
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
         df_different_schema = make_mixed_dataframe_v1()
+        schema_new = gbq.generate_bq_schema(df_different_schema)
 
         # Initialize table with sample data
         gbq.to_gbq(
@@ -798,7 +799,7 @@ class TestToGBQIntegration(object):
             credentials=self.credentials,
         )
 
-        # Test the if_exists parameter with the value 'replace'.
+        # When if_exists == 'replace', table schema should change too.
         gbq.to_gbq(
             df_different_schema,
             self.destination_table + test_id,
@@ -807,15 +808,16 @@ class TestToGBQIntegration(object):
             credentials=self.credentials,
         )
 
-        result = gbq.read_gbq(
-            "SELECT COUNT(*) AS num_rows FROM {0}".format(
-                self.destination_table + test_id
-            ),
+        df_new = gbq.read_gbq(
+            "SELECT * FROM {0}".format(self.destination_table + test_id),
             project_id=project_id,
             credentials=self.credentials,
             dialect="legacy",
         )
-        assert result["num_rows"][0] == 5
+
+        schema_returned = gbq.generate_bq_schema(df_new)
+        assert schema_new == schema_returned
+        assert df_new.shape[0] == 5
 
     def test_upload_data_if_table_exists_raises_value_error(self, project_id):
         test_id = "4"
