@@ -101,13 +101,24 @@ DOCS_ROOT_URL=$(jq --arg API_SHORTNAME "$API_SHORTNAME" -r '.apis | to_entries[]
 # Build the docs URL if DOCS_ROOT_URL is not empty
 # If API_VERSION is empty
 if [[ -n $DOCS_ROOT_URL ]]; then
-    DOCS_URL="$(echo https://$DOCS_ROOT_URL)"
+    PRODUCT_DOCS_URL="$(echo https://$DOCS_ROOT_URL)"
 else
-    DOCS_URL=""
+    PRODUCT_DOCS_URL=""
 fi
 
 # Update apiProductDocumentation in .repo-metadata.json
-sed -i -e "s|apiProductDocumentation|$DOCS_URL|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
+sed -i -e "s|apiProductDocumentation|$PRODUCT_DOCS_URL|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
+
+# If the API is `cloud`, the docs will be published to `cloud.google.com`.
+# For non-cloud, the docs will be published to `googleapis.dev`.
+if [[ $FOLDER_NAME =~ "cloud" ]]; then
+    CLIENT_DOCS_URL="$(echo https://cloud.google.com/python/docs/reference/$FOLDER_NAME/latest)"
+else
+    CLIENT_DOCS_URL="$(echo https://googleapis.dev/python/$FOLDER_NAME/latest)"
+fi
+
+# Update clientDocumentation in .repo-metadata.json
+sed -i -e "s|clientDocumentation|$CLIENT_DOCS_URL|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
 
 # Update apiPackage in .repo-metadata.json
 sed -i -e "s|apiPackage|$FOLDER_NAME|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
