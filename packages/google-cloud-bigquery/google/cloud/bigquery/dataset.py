@@ -524,6 +524,7 @@ class Dataset(object):
         "default_table_expiration_ms": "defaultTableExpirationMs",
         "friendly_name": "friendlyName",
         "default_encryption_configuration": "defaultEncryptionConfiguration",
+        "is_case_insensitive": "isCaseInsensitive",
         "storage_billing_model": "storageBillingModel",
         "max_time_travel_hours": "maxTimeTravelHours",
         "default_rounding_mode": "defaultRoundingMode",
@@ -821,6 +822,25 @@ class Dataset(object):
         if value:
             api_repr = value.to_api_repr()
         self._properties["defaultEncryptionConfiguration"] = api_repr
+
+    @property
+    def is_case_insensitive(self):
+        """Optional[bool]: True if the dataset and its table names are case-insensitive, otherwise False.
+        By default, this is False, which means the dataset and its table names are case-sensitive.
+        This field does not affect routine references.
+
+        Raises:
+            ValueError: for invalid value types.
+        """
+        return self._properties.get("isCaseInsensitive") or False
+
+    @is_case_insensitive.setter
+    def is_case_insensitive(self, value):
+        if not isinstance(value, bool) and value is not None:
+            raise ValueError("Pass a boolean value, or None")
+        if value is None:
+            value = False
+        self._properties["isCaseInsensitive"] = value
 
     @property
     def storage_billing_model(self):
