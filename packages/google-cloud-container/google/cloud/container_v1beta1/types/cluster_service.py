@@ -207,6 +207,7 @@ __protobuf__ = proto.module(
         "MonitoringComponentConfig",
         "Fleet",
         "ResourceManagerTags",
+        "EnterpriseConfig",
     },
 )
 
@@ -3196,6 +3197,8 @@ class Cluster(proto.Message):
         security_posture_config (google.cloud.container_v1beta1.types.SecurityPostureConfig):
             Enable/Disable Security Posture API features
             for the cluster.
+        enterprise_config (google.cloud.container_v1beta1.types.EnterpriseConfig):
+            GKE Enterprise Configuration.
     """
 
     class Status(proto.Enum):
@@ -3579,6 +3582,11 @@ class Cluster(proto.Message):
         proto.MESSAGE,
         number=145,
         message="SecurityPostureConfig",
+    )
+    enterprise_config: "EnterpriseConfig" = proto.Field(
+        proto.MESSAGE,
+        number=149,
+        message="EnterpriseConfig",
     )
 
 
@@ -10206,6 +10214,38 @@ class ResourceManagerTags(proto.Message):
         proto.STRING,
         proto.STRING,
         number=1,
+    )
+
+
+class EnterpriseConfig(proto.Message):
+    r"""EnterpriseConfig is the cluster enterprise configuration.
+
+    Attributes:
+        cluster_tier (google.cloud.container_v1beta1.types.EnterpriseConfig.ClusterTier):
+            Output only. [Output only] cluster_tier specifies the
+            premium tier of the cluster.
+    """
+
+    class ClusterTier(proto.Enum):
+        r"""Premium tiers for GKE Cluster.
+
+        Values:
+            CLUSTER_TIER_UNSPECIFIED (0):
+                CLUSTER_TIER_UNSPECIFIED is when cluster_tier is not set.
+            STANDARD (1):
+                STANDARD indicates a standard GKE cluster.
+            ENTERPRISE (2):
+                ENTERPRISE indicates a GKE Enterprise
+                cluster.
+        """
+        CLUSTER_TIER_UNSPECIFIED = 0
+        STANDARD = 1
+        ENTERPRISE = 2
+
+    cluster_tier: ClusterTier = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ClusterTier,
     )
 
 
