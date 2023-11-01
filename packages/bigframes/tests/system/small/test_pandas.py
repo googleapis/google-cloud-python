@@ -46,6 +46,118 @@ def test_concat_series(scalars_dfs):
 
 
 @pytest.mark.parametrize(
+    ("kwargs"),
+    [
+        {
+            "prefix": ["prefix1", "prefix2"],
+            "prefix_sep": "_",
+            "dummy_na": None,
+            "columns": ["bool_col", "int64_col"],
+            "drop_first": False,
+        },
+        {
+            "prefix": "prefix",
+            "prefix_sep": ["_", ","],
+            "dummy_na": False,
+            "columns": ["int64_too", "string_col"],
+            "drop_first": False,
+        },
+        {
+            "prefix": None,
+            "prefix_sep": ".",
+            "dummy_na": True,
+            "columns": ["time_col", "float64_col"],
+            "drop_first": True,
+        },
+    ],
+)
+def test_get_dummies_dataframe(scalars_dfs, kwargs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = bpd.get_dummies(scalars_df, **kwargs, dtype=bool)
+    pd_result = pd.get_dummies(scalars_pandas_df, **kwargs, dtype=bool)
+    # dtype argument above is needed for pandas v1 only
+
+    # adjust for expected dtype differences
+    for (column_name, type_name) in zip(pd_result.columns, pd_result.dtypes):
+        if type_name == "bool":
+            pd_result[column_name] = pd_result[column_name].astype("boolean")
+
+    pd.testing.assert_frame_equal(bf_result.to_pandas(), pd_result)
+
+
+def test_get_dummies_dataframe_duplicate_labels(scalars_dfs):
+    if pd.__version__.startswith("1."):
+        pytest.skip("pandas has different behavior in 1.x")
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    scalars_renamed_df = scalars_df.rename(
+        columns={"int64_too": "int64_col", "float64_col": None, "string_col": None}
+    )
+    scalars_renamed_pandas_df = scalars_pandas_df.rename(
+        columns={"int64_too": "int64_col", "float64_col": None, "string_col": None}
+    )
+
+    bf_result = bpd.get_dummies(
+        scalars_renamed_df, columns=["int64_col", None], dtype=bool
+    )
+    pd_result = pd.get_dummies(
+        scalars_renamed_pandas_df, columns=["int64_col", None], dtype=bool
+    )
+    # dtype argument above is needed for pandas v1 only
+
+    # adjust for expected dtype differences
+    for (column_name, type_name) in zip(pd_result.columns, pd_result.dtypes):
+        if type_name == "bool":
+            pd_result[column_name] = pd_result[column_name].astype("boolean")
+
+    pd.testing.assert_frame_equal(bf_result.to_pandas(), pd_result)
+
+
+def test_get_dummies_series(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series = scalars_df.date_col
+    pd_series = scalars_pandas_df.date_col
+
+    bf_result = bpd.get_dummies(bf_series, dtype=bool)
+    pd_result = pd.get_dummies(pd_series, dtype=bool)
+    # dtype argument above is needed for pandas v1 only
+
+    # adjust for expected dtype differences
+    for (column_name, type_name) in zip(pd_result.columns, pd_result.dtypes):
+        if type_name == "bool":
+            pd_result[column_name] = pd_result[column_name].astype("boolean")
+    pd_result.columns = pd_result.columns.astype(object)
+
+    pd.testing.assert_frame_equal(
+        bf_result.to_pandas(),
+        pd_result,
+    )
+
+
+def test_get_dummies_series_nameless(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series = scalars_df.date_col.rename(None)
+    pd_series = scalars_pandas_df.date_col.rename(None)
+
+    bf_result = bpd.get_dummies(bf_series, dtype=bool)
+    pd_result = pd.get_dummies(pd_series, dtype=bool)
+    # dtype argument above is needed for pandas v1 only
+
+    # adjust for expected dtype differences
+    for (column_name, type_name) in zip(pd_result.columns, pd_result.dtypes):
+        if type_name == "bool":
+            pd_result[column_name] = pd_result[column_name].astype("boolean")
+    pd_result.columns = pd_result.columns.astype(object)
+
+    pd.testing.assert_frame_equal(
+        bf_result.to_pandas(),
+        pd_result,
+    )
+
+
+@pytest.mark.parametrize(
     ("how"),
     [
         ("inner"),

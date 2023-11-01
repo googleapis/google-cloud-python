@@ -1,6 +1,6 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/reshape/tile.py
 """
-Quantilization functions and related stuff
+Quantilization functions and related routines
 """
 from __future__ import annotations
 

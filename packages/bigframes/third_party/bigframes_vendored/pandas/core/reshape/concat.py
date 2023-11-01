@@ -1,6 +1,6 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/reshape/concat.py
 """
-Concat routines.
+Concat routines
 """
 from __future__ import annotations
 

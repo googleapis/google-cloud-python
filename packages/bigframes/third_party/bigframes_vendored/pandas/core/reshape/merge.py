@@ -16,7 +16,6 @@ def merge(
     sort=False,
     suffixes=("_x", "_y"),
 ):
-
     """
     Merge DataFrame objects with a database-style join.
 
