@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.12.1...google-cloud-deploy-v1.13.0) (2023-11-02)
+
+
+### Features
+
+* added platform log RolloutUpdateEvent ([#11853](https://github.com/googleapis/google-cloud-python/issues/11853)) ([b709075](https://github.com/googleapis/google-cloud-python/commit/b70907511e7e2dc8932d3d97ce02791281456ea5))
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.12.0...google-cloud-deploy-v1.12.1) (2023-09-19)
 
 

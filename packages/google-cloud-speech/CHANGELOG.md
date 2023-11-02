@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.21.1...google-cloud-speech-v2.22.0) (2023-11-02)
+
+
+### Features
+
+* add transcript normalization + m4a audio format support ([8536b20](https://github.com/googleapis/google-cloud-python/commit/8536b207765435a4e5c5243b01251306197cc68f))
+* Support MP3, TranscriptNormalization and SpeakerLabels in STT V1 API ([#11967](https://github.com/googleapis/google-cloud-python/issues/11967)) ([6a96691](https://github.com/googleapis/google-cloud-python/commit/6a966918532762a1794e47cf57964219ab28b062))
+
+
+### Documentation
+
+* clarify alternatives for deprecated fields ([8536b20](https://github.com/googleapis/google-cloud-python/commit/8536b207765435a4e5c5243b01251306197cc68f))
+* deprecate `BatchRecognizeFileResult.transcript` in favor of `inline_result.transcript` ([8536b20](https://github.com/googleapis/google-cloud-python/commit/8536b207765435a4e5c5243b01251306197cc68f))
+* deprecate `BatchRecognizeFileResult.uri` in favor of `cloud_storage_result.native_format_uri` ([8536b20](https://github.com/googleapis/google-cloud-python/commit/8536b207765435a4e5c5243b01251306197cc68f))
+
 ## [2.21.1](https://github.com/googleapis/python-speech/compare/v2.21.0...v2.21.1) (2023-10-09)
 
 

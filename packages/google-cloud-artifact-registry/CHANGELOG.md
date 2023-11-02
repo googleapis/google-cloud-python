@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.8.4...google-cloud-artifact-registry-v1.9.0) (2023-11-02)
+
+
+### Features
+
+* add support for cleanup policies ([b9fa436](https://github.com/googleapis/google-cloud-python/commit/b9fa436ee5250bad0d0f1aafd2941e7b576fae14))
+* add support for Docker immutable tags ([b9fa436](https://github.com/googleapis/google-cloud-python/commit/b9fa436ee5250bad0d0f1aafd2941e7b576fae14))
+* add support for Go and KFP repositories ([b9fa436](https://github.com/googleapis/google-cloud-python/commit/b9fa436ee5250bad0d0f1aafd2941e7b576fae14))
+* add support for Physical Zone Separation ([b9fa436](https://github.com/googleapis/google-cloud-python/commit/b9fa436ee5250bad0d0f1aafd2941e7b576fae14))
+* add support for virtual and remote repositories ([b9fa436](https://github.com/googleapis/google-cloud-python/commit/b9fa436ee5250bad0d0f1aafd2941e7b576fae14))
+* expose the size of the Repository resource ([b9fa436](https://github.com/googleapis/google-cloud-python/commit/b9fa436ee5250bad0d0f1aafd2941e7b576fae14))
+
+
+### Documentation
+
+* mark the create_time and update_time in the Repository resource as output only fields ([b9fa436](https://github.com/googleapis/google-cloud-python/commit/b9fa436ee5250bad0d0f1aafd2941e7b576fae14))
+* mark the repository_id and repository fields in the CreateRepository request as required fields ([b9fa436](https://github.com/googleapis/google-cloud-python/commit/b9fa436ee5250bad0d0f1aafd2941e7b576fae14))
+* use code font for resource name references ([b9fa436](https://github.com/googleapis/google-cloud-python/commit/b9fa436ee5250bad0d0f1aafd2941e7b576fae14))
+
 ## [1.8.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.8.3...google-cloud-artifact-registry-v1.8.4) (2023-09-30)
 
 

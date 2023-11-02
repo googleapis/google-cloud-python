@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.1.0...google-maps-fleetengine-delivery-v0.1.1) (2023-11-02)
+
+
+### Features
+
+* add default sensors for RawLocation & SupplementalLocation ([#11934](https://github.com/googleapis/google-cloud-python/issues/11934)) ([c503005](https://github.com/googleapis/google-cloud-python/commit/c503005e2cfe25cc96625506991d60ade327e213))
+
 ## 0.1.0 (2023-10-19)
 
 

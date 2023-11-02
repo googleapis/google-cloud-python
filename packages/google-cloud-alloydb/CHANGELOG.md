@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.3...google-cloud-alloydb-v0.3.4) (2023-11-02)
+
+
+### Features
+
+* Add new field in `GenerateClientCertificate` v1 API to allow AlloyDB connectors request client certs with metadata exchange support ([c915e94](https://github.com/googleapis/google-cloud-python/commit/c915e94f26dbbacafed1256fe9c35a7b0590c166))
+
+
+### Documentation
+
+* Clarify that `readPoolConfig` is required under certain circumstances, and fix doc formatting on `allocatedIpRange`. ([c915e94](https://github.com/googleapis/google-cloud-python/commit/c915e94f26dbbacafed1256fe9c35a7b0590c166))
+
 ## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.2...google-cloud-alloydb-v0.3.3) (2023-09-30)
 
 
