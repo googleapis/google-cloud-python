@@ -21,26 +21,34 @@ import proto  # type: ignore
 
 from google.cloud.deploy_v1.types import log_enums
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.deploy.v1',
+    package="google.cloud.deploy.v1",
     manifest={
-        'TargetNotificationEvent',
+        "AutomationRunEvent",
     },
 )
 
 
-class TargetNotificationEvent(proto.Message):
-    r"""Payload proto for "clouddeploy.googleapis.com/target_notification"
-    Platform Log event that describes the failure to send target status
-    change Pub/Sub notification.
+class AutomationRunEvent(proto.Message):
+    r"""Payload proto for "clouddeploy.googleapis.com/automation_run"
+    Platform Log event that describes the AutomationRun related events.
 
     Attributes:
         message (str):
-            Debug message for when a notification fails
-            to send.
-        target (str):
-            The name of the ``Target``.
+            Debug message for when there is an update on
+            the AutomationRun. Provides further details
+            about the resource creation or state change.
+        automation_run (str):
+            The name of the ``AutomationRun``.
+        pipeline_uid (str):
+            Unique identifier of the ``DeliveryPipeline``.
+        automation_id (str):
+            Identifier of the ``Automation``.
+        rule_id (str):
+            Identifier of the ``Automation`` rule.
+        destination_target_id (str):
+            ID of the ``Target`` to which the ``AutomationRun`` is
+            created.
         type_ (google.cloud.deploy_v1.types.Type):
             Type of this notification, e.g. for a Pub/Sub
             failure.
@@ -50,13 +58,29 @@ class TargetNotificationEvent(proto.Message):
         proto.STRING,
         number=1,
     )
-    target: str = proto.Field(
+    automation_run: str = proto.Field(
         proto.STRING,
         number=2,
     )
+    pipeline_uid: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    automation_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    rule_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    destination_target_id: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
     type_: log_enums.Type = proto.Field(
         proto.ENUM,
-        number=3,
+        number=7,
         enum=log_enums.Type,
     )
 

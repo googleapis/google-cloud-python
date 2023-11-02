@@ -71,6 +71,12 @@ class CloudDeployAsyncClient:
     DEFAULT_ENDPOINT = CloudDeployClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = CloudDeployClient.DEFAULT_MTLS_ENDPOINT
 
+    automation_path = staticmethod(CloudDeployClient.automation_path)
+    parse_automation_path = staticmethod(CloudDeployClient.parse_automation_path)
+    automation_run_path = staticmethod(CloudDeployClient.automation_run_path)
+    parse_automation_run_path = staticmethod(
+        CloudDeployClient.parse_automation_run_path
+    )
     build_path = staticmethod(CloudDeployClient.build_path)
     parse_build_path = staticmethod(CloudDeployClient.parse_build_path)
     cluster_path = staticmethod(CloudDeployClient.cluster_path)
@@ -81,6 +87,8 @@ class CloudDeployAsyncClient:
     parse_delivery_pipeline_path = staticmethod(
         CloudDeployClient.parse_delivery_pipeline_path
     )
+    job_path = staticmethod(CloudDeployClient.job_path)
+    parse_job_path = staticmethod(CloudDeployClient.parse_job_path)
     job_run_path = staticmethod(CloudDeployClient.job_run_path)
     parse_job_run_path = staticmethod(CloudDeployClient.parse_job_run_path)
     membership_path = staticmethod(CloudDeployClient.membership_path)
@@ -292,7 +300,7 @@ class CloudDeployAsyncClient:
             parent (:class:`str`):
                 Required. The parent, which owns this collection of
                 pipelines. Format must be
-                projects/{project_id}/locations/{location_name}.
+                ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -414,7 +422,7 @@ class CloudDeployAsyncClient:
             name (:class:`str`):
                 Required. Name of the ``DeliveryPipeline``. Format must
                 be
-                projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}.
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -537,7 +545,7 @@ class CloudDeployAsyncClient:
             parent (:class:`str`):
                 Required. The parent collection in which the
                 ``DeliveryPipeline`` should be created. Format should be
-                projects/{project_id}/locations/{location_name}.
+                ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -808,7 +816,7 @@ class CloudDeployAsyncClient:
             name (:class:`str`):
                 Required. The name of the ``DeliveryPipeline`` to
                 delete. Format should be
-                projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}.
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -929,7 +937,7 @@ class CloudDeployAsyncClient:
             parent (:class:`str`):
                 Required. The parent, which owns this collection of
                 targets. Format must be
-                projects/{project_id}/locations/{location_name}.
+                ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1008,6 +1016,126 @@ class CloudDeployAsyncClient:
         # Done; return the response.
         return response
 
+    async def rollback_target(
+        self,
+        request: Optional[Union[cloud_deploy.RollbackTargetRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        target_id: Optional[str] = None,
+        rollout_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_deploy.RollbackTargetResponse:
+        r"""Creates a ``Rollout`` to roll back the specified target.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_rollback_target():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.RollbackTargetRequest(
+                    name="name_value",
+                    target_id="target_id_value",
+                    rollout_id="rollout_id_value",
+                )
+
+                # Make the request
+                response = await client.rollback_target(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.RollbackTargetRequest, dict]]):
+                The request object. The request object for ``RollbackTarget``.
+            name (:class:`str`):
+                Required. The ``DeliveryPipeline`` for which the
+                rollback ``Rollout`` should be created. Format should be
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_id (:class:`str`):
+                Required. ID of the ``Target`` that is being rolled
+                back.
+
+                This corresponds to the ``target_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            rollout_id (:class:`str`):
+                Required. ID of the rollback ``Rollout`` to create.
+                This corresponds to the ``rollout_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.deploy_v1.types.RollbackTargetResponse:
+                The response object from RollbackTarget.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, target_id, rollout_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.RollbackTargetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if target_id is not None:
+            request.target_id = target_id
+        if rollout_id is not None:
+            request.rollout_id = rollout_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.rollback_target,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_target(
         self,
         request: Optional[Union[cloud_deploy.GetTargetRequest, dict]] = None,
@@ -1050,7 +1178,7 @@ class CloudDeployAsyncClient:
                 The request object. The request object for ``GetTarget``.
             name (:class:`str`):
                 Required. Name of the ``Target``. Format must be
-                projects/{project_id}/locations/{location_name}/targets/{target_name}.
+                ``projects/{project_id}/locations/{location_name}/targets/{target_name}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1170,7 +1298,7 @@ class CloudDeployAsyncClient:
             parent (:class:`str`):
                 Required. The parent collection in which the ``Target``
                 should be created. Format should be
-                projects/{project_id}/locations/{location_name}.
+                ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1436,7 +1564,7 @@ class CloudDeployAsyncClient:
             name (:class:`str`):
                 Required. The name of the ``Target`` to delete. Format
                 should be
-                projects/{project_id}/locations/{location_name}/targets/{target_name}.
+                ``projects/{project_id}/locations/{location_name}/targets/{target_name}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1677,7 +1805,7 @@ class CloudDeployAsyncClient:
                 The request object. The request object for ``GetRelease``.
             name (:class:`str`):
                 Required. Name of the ``Release``. Format must be
-                projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}.
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1798,7 +1926,7 @@ class CloudDeployAsyncClient:
             parent (:class:`str`):
                 Required. The parent collection in which the ``Release``
                 should be created. Format should be
-                projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}.
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1926,10 +2054,8 @@ class CloudDeployAsyncClient:
             request (Optional[Union[google.cloud.deploy_v1.types.AbandonReleaseRequest, dict]]):
                 The request object. The request object used by ``AbandonRelease``.
             name (:class:`str`):
-                Required. Name of the Release. Format
-                is
-                projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
-                releases/{release}.
+                Required. Name of the Release. Format is
+                ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2028,10 +2154,8 @@ class CloudDeployAsyncClient:
             request (Optional[Union[google.cloud.deploy_v1.types.ApproveRolloutRequest, dict]]):
                 The request object. The request object used by ``ApproveRollout``.
             name (:class:`str`):
-                Required. Name of the Rollout. Format
-                is
-                projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
-                releases/{release}/rollouts/{rollout}.
+                Required. Name of the Rollout. Format is
+                ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2131,10 +2255,8 @@ class CloudDeployAsyncClient:
             request (Optional[Union[google.cloud.deploy_v1.types.AdvanceRolloutRequest, dict]]):
                 The request object. The request object used by ``AdvanceRollout``.
             name (:class:`str`):
-                Required. Name of the Rollout. Format
-                is
-                projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
-                releases/{release}/rollouts/{rollout}.
+                Required. Name of the Rollout. Format is
+                ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2239,10 +2361,8 @@ class CloudDeployAsyncClient:
             request (Optional[Union[google.cloud.deploy_v1.types.CancelRolloutRequest, dict]]):
                 The request object. The request object used by ``CancelRollout``.
             name (:class:`str`):
-                Required. Name of the Rollout. Format
-                is
-                projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
-                releases/{release}/rollouts/{rollout}.
+                Required. Name of the Rollout. Format is
+                ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2466,7 +2586,7 @@ class CloudDeployAsyncClient:
                 ``GetRollout``.
             name (:class:`str`):
                 Required. Name of the ``Rollout``. Format must be
-                projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}/rollouts/{rollout_name}.
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}/rollouts/{rollout_name}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2592,7 +2712,7 @@ class CloudDeployAsyncClient:
             parent (:class:`str`):
                 Required. The parent collection in which the ``Rollout``
                 should be created. Format should be
-                projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}.
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2724,10 +2844,8 @@ class CloudDeployAsyncClient:
             request (Optional[Union[google.cloud.deploy_v1.types.IgnoreJobRequest, dict]]):
                 The request object. The request object used by ``IgnoreJob``.
             rollout (:class:`str`):
-                Required. Name of the Rollout. Format
-                is
-                projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
-                releases/{release}/rollouts/{rollout}.
+                Required. Name of the Rollout. Format is
+                ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}``.
 
                 This corresponds to the ``rollout`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2848,10 +2966,8 @@ class CloudDeployAsyncClient:
                 The request object. RetryJobRequest is the request object used by
                 ``RetryJob``.
             rollout (:class:`str`):
-                Required. Name of the Rollout. Format
-                is
-                projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
-                releases/{release}/rollouts/{rollout}.
+                Required. Name of the Rollout. Format is
+                ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}``.
 
                 This corresponds to the ``rollout`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3093,7 +3209,7 @@ class CloudDeployAsyncClient:
                 ``GetJobRun``.
             name (:class:`str`):
                 Required. Name of the ``JobRun``. Format must be
-                projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}/rollouts/{rollout_name}/jobRuns/{job_run_name}.
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}/rollouts/{rollout_name}/jobRuns/{job_run_name}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3205,8 +3321,7 @@ class CloudDeployAsyncClient:
                 The request object. The request object used by ``TerminateJobRun``.
             name (:class:`str`):
                 Required. Name of the ``JobRun``. Format must be
-                projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
-                releases/{release}/rollouts/{rollout}/jobRuns/{jobRun}.
+                ``projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}/jobRuns/{jobRun}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3350,6 +3465,997 @@ class CloudDeployAsyncClient:
                 ),
                 deadline=60.0,
             ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_automation(
+        self,
+        request: Optional[Union[cloud_deploy.CreateAutomationRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        automation: Optional[cloud_deploy.Automation] = None,
+        automation_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new Automation in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_create_automation():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                automation = deploy_v1.Automation()
+                automation.service_account = "service_account_value"
+                automation.rules.promote_release_rule.id = "id_value"
+
+                request = deploy_v1.CreateAutomationRequest(
+                    parent="parent_value",
+                    automation_id="automation_id_value",
+                    automation=automation,
+                )
+
+                # Make the request
+                operation = client.create_automation(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.CreateAutomationRequest, dict]]):
+                The request object. The request object for ``CreateAutomation``.
+            parent (:class:`str`):
+                Required. The parent collection in which the
+                ``Automation`` should be created. Format should be
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            automation (:class:`google.cloud.deploy_v1.types.Automation`):
+                Required. The ``Automation`` to create.
+                This corresponds to the ``automation`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            automation_id (:class:`str`):
+                Required. ID of the ``Automation``.
+                This corresponds to the ``automation_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.deploy_v1.types.Automation` An
+                Automation resource in the Cloud Deploy API.
+
+                   An Automation enables the automation of manually
+                   driven actions for a Delivery Pipeline, which
+                   includes Release promotion amongst Targets, Rollout
+                   repair and Rollout deployment strategy advancement.
+                   The intention of Automation is to reduce manual
+                   intervention in the continuous delivery process.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, automation, automation_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.CreateAutomationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if automation is not None:
+            request.automation = automation
+        if automation_id is not None:
+            request.automation_id = automation_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_automation,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            cloud_deploy.Automation,
+            metadata_type=cloud_deploy.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_automation(
+        self,
+        request: Optional[Union[cloud_deploy.UpdateAutomationRequest, dict]] = None,
+        *,
+        automation: Optional[cloud_deploy.Automation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates the parameters of a single Automation
+        resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_update_automation():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                automation = deploy_v1.Automation()
+                automation.service_account = "service_account_value"
+                automation.rules.promote_release_rule.id = "id_value"
+
+                request = deploy_v1.UpdateAutomationRequest(
+                    automation=automation,
+                )
+
+                # Make the request
+                operation = client.update_automation(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.UpdateAutomationRequest, dict]]):
+                The request object. The request object for ``UpdateAutomation``.
+            automation (:class:`google.cloud.deploy_v1.types.Automation`):
+                Required. The ``Automation`` to update.
+                This corresponds to the ``automation`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. Field mask is used to specify the fields to be
+                overwritten in the ``Automation`` resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask then all fields will be
+                overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.deploy_v1.types.Automation` An
+                Automation resource in the Cloud Deploy API.
+
+                   An Automation enables the automation of manually
+                   driven actions for a Delivery Pipeline, which
+                   includes Release promotion amongst Targets, Rollout
+                   repair and Rollout deployment strategy advancement.
+                   The intention of Automation is to reduce manual
+                   intervention in the continuous delivery process.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([automation, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.UpdateAutomationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if automation is not None:
+            request.automation = automation
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_automation,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("automation.name", request.automation.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            cloud_deploy.Automation,
+            metadata_type=cloud_deploy.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_automation(
+        self,
+        request: Optional[Union[cloud_deploy.DeleteAutomationRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a single Automation resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_delete_automation():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.DeleteAutomationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_automation(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.DeleteAutomationRequest, dict]]):
+                The request object. The request object for ``DeleteAutomation``.
+            name (:class:`str`):
+                Required. The name of the ``Automation`` to delete.
+                Format should be
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/automations/{automation_name}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.DeleteAutomationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_automation,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=cloud_deploy.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_automation(
+        self,
+        request: Optional[Union[cloud_deploy.GetAutomationRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_deploy.Automation:
+        r"""Gets details of a single Automation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_get_automation():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.GetAutomationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_automation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.GetAutomationRequest, dict]]):
+                The request object. The request object for ``GetAutomation``
+            name (:class:`str`):
+                Required. Name of the ``Automation``. Format must be
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/automations/{automation_name}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.deploy_v1.types.Automation:
+                An Automation resource in the Cloud Deploy API.
+
+                   An Automation enables the automation of manually
+                   driven actions for a Delivery Pipeline, which
+                   includes Release promotion amongst Targets, Rollout
+                   repair and Rollout deployment strategy advancement.
+                   The intention of Automation is to reduce manual
+                   intervention in the continuous delivery process.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.GetAutomationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_automation,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_automations(
+        self,
+        request: Optional[Union[cloud_deploy.ListAutomationsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAutomationsAsyncPager:
+        r"""Lists Automations in a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_list_automations():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.ListAutomationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_automations(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.ListAutomationsRequest, dict]]):
+                The request object. The request object for ``ListAutomations``.
+            parent (:class:`str`):
+                Required. The parent, which owns this collection of
+                automations. Format must be
+                ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.deploy_v1.services.cloud_deploy.pagers.ListAutomationsAsyncPager:
+                The response object from ListAutomations.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.ListAutomationsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_automations,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAutomationsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_automation_run(
+        self,
+        request: Optional[Union[cloud_deploy.GetAutomationRunRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_deploy.AutomationRun:
+        r"""Gets details of a single AutomationRun.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_get_automation_run():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.GetAutomationRunRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_automation_run(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.GetAutomationRunRequest, dict]]):
+                The request object. The request object for ``GetAutomationRun``
+            name (:class:`str`):
+                Required. Name of the ``AutomationRun``. Format must be
+                ``projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/automationRuns/{automation_run}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.deploy_v1.types.AutomationRun:
+                An AutomationRun resource in the Cloud Deploy API.
+
+                   An AutomationRun represents an automation execution
+                   instance of an automation rule.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.GetAutomationRunRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_automation_run,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_automation_runs(
+        self,
+        request: Optional[Union[cloud_deploy.ListAutomationRunsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAutomationRunsAsyncPager:
+        r"""Lists AutomationRuns in a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_list_automation_runs():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.ListAutomationRunsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_automation_runs(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.ListAutomationRunsRequest, dict]]):
+                The request object. The request object for ``ListAutomationRuns``.
+            parent (:class:`str`):
+                Required. The parent, which owns this collection of
+                automationRuns. Format must be
+                ``projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.deploy_v1.services.cloud_deploy.pagers.ListAutomationRunsAsyncPager:
+                The response object from ListAutomationRuns.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.ListAutomationRunsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_automation_runs,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAutomationRunsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def cancel_automation_run(
+        self,
+        request: Optional[Union[cloud_deploy.CancelAutomationRunRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_deploy.CancelAutomationRunResponse:
+        r"""Cancels an AutomationRun. The ``state`` of the ``AutomationRun``
+        after cancelling is ``CANCELLED``. ``CancelAutomationRun`` can
+        be called on AutomationRun in the state ``IN_PROGRESS`` and
+        ``PENDING``; AutomationRun in a different state returns an
+        ``FAILED_PRECONDITION`` error.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_cancel_automation_run():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.CancelAutomationRunRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.cancel_automation_run(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.CancelAutomationRunRequest, dict]]):
+                The request object. The request object used by ``CancelAutomationRun``.
+            name (:class:`str`):
+                Required. Name of the ``AutomationRun``. Format is
+                ``projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/automationRuns/{automation_run}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.deploy_v1.types.CancelAutomationRunResponse:
+                The response object from CancelAutomationRun.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.CancelAutomationRunRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.cancel_automation_run,
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )

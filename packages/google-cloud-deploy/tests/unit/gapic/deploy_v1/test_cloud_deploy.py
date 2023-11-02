@@ -2591,6 +2591,252 @@ async def test_list_targets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloud_deploy.RollbackTargetRequest,
+        dict,
+    ],
+)
+def test_rollback_target(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_target), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.RollbackTargetResponse()
+        response = client.rollback_target(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.RollbackTargetRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.RollbackTargetResponse)
+
+
+def test_rollback_target_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_target), "__call__") as call:
+        client.rollback_target()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.RollbackTargetRequest()
+
+
+@pytest.mark.asyncio
+async def test_rollback_target_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.RollbackTargetRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_target), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.RollbackTargetResponse()
+        )
+        response = await client.rollback_target(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.RollbackTargetRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.RollbackTargetResponse)
+
+
+@pytest.mark.asyncio
+async def test_rollback_target_async_from_dict():
+    await test_rollback_target_async(request_type=dict)
+
+
+def test_rollback_target_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.RollbackTargetRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_target), "__call__") as call:
+        call.return_value = cloud_deploy.RollbackTargetResponse()
+        client.rollback_target(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_rollback_target_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.RollbackTargetRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_target), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.RollbackTargetResponse()
+        )
+        await client.rollback_target(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_rollback_target_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_target), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.RollbackTargetResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.rollback_target(
+            name="name_value",
+            target_id="target_id_value",
+            rollout_id="rollout_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].target_id
+        mock_val = "target_id_value"
+        assert arg == mock_val
+        arg = args[0].rollout_id
+        mock_val = "rollout_id_value"
+        assert arg == mock_val
+
+
+def test_rollback_target_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rollback_target(
+            cloud_deploy.RollbackTargetRequest(),
+            name="name_value",
+            target_id="target_id_value",
+            rollout_id="rollout_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rollback_target_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback_target), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.RollbackTargetResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.RollbackTargetResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.rollback_target(
+            name="name_value",
+            target_id="target_id_value",
+            rollout_id="rollout_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].target_id
+        mock_val = "target_id_value"
+        assert arg == mock_val
+        arg = args[0].rollout_id
+        mock_val = "rollout_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_rollback_target_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.rollback_target(
+            cloud_deploy.RollbackTargetRequest(),
+            name="name_value",
+            target_id="target_id_value",
+            rollout_id="rollout_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloud_deploy.GetTargetRequest,
         dict,
     ],
@@ -5852,6 +6098,8 @@ def test_get_rollout(request_type, transport: str = "grpc"):
             etag="etag_value",
             deploy_failure_cause=cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE,
             controller_rollout="controller_rollout_value",
+            rollback_of_rollout="rollback_of_rollout_value",
+            rolled_back_by_rollouts=["rolled_back_by_rollouts_value"],
         )
         response = client.get_rollout(request)
 
@@ -5876,6 +6124,8 @@ def test_get_rollout(request_type, transport: str = "grpc"):
         == cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE
     )
     assert response.controller_rollout == "controller_rollout_value"
+    assert response.rollback_of_rollout == "rollback_of_rollout_value"
+    assert response.rolled_back_by_rollouts == ["rolled_back_by_rollouts_value"]
 
 
 def test_get_rollout_empty_call():
@@ -5923,6 +6173,8 @@ async def test_get_rollout_async(
                 etag="etag_value",
                 deploy_failure_cause=cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE,
                 controller_rollout="controller_rollout_value",
+                rollback_of_rollout="rollback_of_rollout_value",
+                rolled_back_by_rollouts=["rolled_back_by_rollouts_value"],
             )
         )
         response = await client.get_rollout(request)
@@ -5948,6 +6200,8 @@ async def test_get_rollout_async(
         == cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE
     )
     assert response.controller_rollout == "controller_rollout_value"
+    assert response.rollback_of_rollout == "rollback_of_rollout_value"
+    assert response.rolled_back_by_rollouts == ["rolled_back_by_rollouts_value"]
 
 
 @pytest.mark.asyncio
@@ -7978,6 +8232,2397 @@ async def test_get_config_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_config(
             cloud_deploy.GetConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateAutomationRequest,
+        dict,
+    ],
+)
+def test_create_automation(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CreateAutomationRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_automation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_automation), "__call__"
+    ) as call:
+        client.create_automation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CreateAutomationRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_automation_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.CreateAutomationRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CreateAutomationRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_automation_async_from_dict():
+    await test_create_automation_async(request_type=dict)
+
+
+def test_create_automation_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.CreateAutomationRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_automation), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_automation_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.CreateAutomationRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_automation), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_automation_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_automation(
+            parent="parent_value",
+            automation=cloud_deploy.Automation(name="name_value"),
+            automation_id="automation_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].automation
+        mock_val = cloud_deploy.Automation(name="name_value")
+        assert arg == mock_val
+        arg = args[0].automation_id
+        mock_val = "automation_id_value"
+        assert arg == mock_val
+
+
+def test_create_automation_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_automation(
+            cloud_deploy.CreateAutomationRequest(),
+            parent="parent_value",
+            automation=cloud_deploy.Automation(name="name_value"),
+            automation_id="automation_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_automation_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_automation(
+            parent="parent_value",
+            automation=cloud_deploy.Automation(name="name_value"),
+            automation_id="automation_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].automation
+        mock_val = cloud_deploy.Automation(name="name_value")
+        assert arg == mock_val
+        arg = args[0].automation_id
+        mock_val = "automation_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_automation_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_automation(
+            cloud_deploy.CreateAutomationRequest(),
+            parent="parent_value",
+            automation=cloud_deploy.Automation(name="name_value"),
+            automation_id="automation_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.UpdateAutomationRequest,
+        dict,
+    ],
+)
+def test_update_automation(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.UpdateAutomationRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_automation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_automation), "__call__"
+    ) as call:
+        client.update_automation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.UpdateAutomationRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_automation_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.UpdateAutomationRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.UpdateAutomationRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_automation_async_from_dict():
+    await test_update_automation_async(request_type=dict)
+
+
+def test_update_automation_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.UpdateAutomationRequest()
+
+    request.automation.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_automation), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "automation.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_automation_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.UpdateAutomationRequest()
+
+    request.automation.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_automation), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "automation.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_automation_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_automation(
+            automation=cloud_deploy.Automation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].automation
+        mock_val = cloud_deploy.Automation(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_automation_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_automation(
+            cloud_deploy.UpdateAutomationRequest(),
+            automation=cloud_deploy.Automation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_automation_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_automation(
+            automation=cloud_deploy.Automation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].automation
+        mock_val = cloud_deploy.Automation(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_automation_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_automation(
+            cloud_deploy.UpdateAutomationRequest(),
+            automation=cloud_deploy.Automation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.DeleteAutomationRequest,
+        dict,
+    ],
+)
+def test_delete_automation(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.DeleteAutomationRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_automation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_automation), "__call__"
+    ) as call:
+        client.delete_automation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.DeleteAutomationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_automation_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.DeleteAutomationRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.DeleteAutomationRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_automation_async_from_dict():
+    await test_delete_automation_async(request_type=dict)
+
+
+def test_delete_automation_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.DeleteAutomationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_automation), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_automation_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.DeleteAutomationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_automation), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_automation_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_automation(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_automation_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_automation(
+            cloud_deploy.DeleteAutomationRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_automation_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_automation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_automation(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_automation_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_automation(
+            cloud_deploy.DeleteAutomationRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetAutomationRequest,
+        dict,
+    ],
+)
+def test_get_automation(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_automation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.Automation(
+            name="name_value",
+            uid="uid_value",
+            description="description_value",
+            etag="etag_value",
+            suspended=True,
+            service_account="service_account_value",
+        )
+        response = client.get_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.GetAutomationRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.Automation)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.etag == "etag_value"
+    assert response.suspended is True
+    assert response.service_account == "service_account_value"
+
+
+def test_get_automation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_automation), "__call__") as call:
+        client.get_automation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.GetAutomationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_automation_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.GetAutomationRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_automation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.Automation(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                etag="etag_value",
+                suspended=True,
+                service_account="service_account_value",
+            )
+        )
+        response = await client.get_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.GetAutomationRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.Automation)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.etag == "etag_value"
+    assert response.suspended is True
+    assert response.service_account == "service_account_value"
+
+
+@pytest.mark.asyncio
+async def test_get_automation_async_from_dict():
+    await test_get_automation_async(request_type=dict)
+
+
+def test_get_automation_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.GetAutomationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_automation), "__call__") as call:
+        call.return_value = cloud_deploy.Automation()
+        client.get_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_automation_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.GetAutomationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_automation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.Automation()
+        )
+        await client.get_automation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_automation_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_automation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.Automation()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_automation(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_automation_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_automation(
+            cloud_deploy.GetAutomationRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_automation_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_automation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.Automation()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.Automation()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_automation(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_automation_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_automation(
+            cloud_deploy.GetAutomationRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListAutomationsRequest,
+        dict,
+    ],
+)
+def test_list_automations(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_automations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.ListAutomationsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_automations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.ListAutomationsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAutomationsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_automations_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_automations), "__call__") as call:
+        client.list_automations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.ListAutomationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_automations_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.ListAutomationsRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_automations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.ListAutomationsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_automations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.ListAutomationsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAutomationsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_automations_async_from_dict():
+    await test_list_automations_async(request_type=dict)
+
+
+def test_list_automations_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.ListAutomationsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_automations), "__call__") as call:
+        call.return_value = cloud_deploy.ListAutomationsResponse()
+        client.list_automations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_automations_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.ListAutomationsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_automations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.ListAutomationsResponse()
+        )
+        await client.list_automations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_automations_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_automations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.ListAutomationsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_automations(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_automations_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_automations(
+            cloud_deploy.ListAutomationsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_automations_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_automations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.ListAutomationsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.ListAutomationsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_automations(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_automations_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_automations(
+            cloud_deploy.ListAutomationsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_automations_pager(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_automations), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_automations(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_deploy.Automation) for i in results)
+
+
+def test_list_automations_pages(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_automations), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_automations(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_automations_async_pager():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automations), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_automations(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, cloud_deploy.Automation) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_automations_async_pages():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automations), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_automations(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetAutomationRunRequest,
+        dict,
+    ],
+)
+def test_get_automation_run(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_automation_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.AutomationRun(
+            name="name_value",
+            etag="etag_value",
+            service_account="service_account_value",
+            target_id="target_id_value",
+            state=cloud_deploy.AutomationRun.State.SUCCEEDED,
+            state_description="state_description_value",
+            rule_id="rule_id_value",
+            automation_id="automation_id_value",
+        )
+        response = client.get_automation_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.GetAutomationRunRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.AutomationRun)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.service_account == "service_account_value"
+    assert response.target_id == "target_id_value"
+    assert response.state == cloud_deploy.AutomationRun.State.SUCCEEDED
+    assert response.state_description == "state_description_value"
+    assert response.rule_id == "rule_id_value"
+    assert response.automation_id == "automation_id_value"
+
+
+def test_get_automation_run_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_automation_run), "__call__"
+    ) as call:
+        client.get_automation_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.GetAutomationRunRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_automation_run_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.GetAutomationRunRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_automation_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.AutomationRun(
+                name="name_value",
+                etag="etag_value",
+                service_account="service_account_value",
+                target_id="target_id_value",
+                state=cloud_deploy.AutomationRun.State.SUCCEEDED,
+                state_description="state_description_value",
+                rule_id="rule_id_value",
+                automation_id="automation_id_value",
+            )
+        )
+        response = await client.get_automation_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.GetAutomationRunRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.AutomationRun)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.service_account == "service_account_value"
+    assert response.target_id == "target_id_value"
+    assert response.state == cloud_deploy.AutomationRun.State.SUCCEEDED
+    assert response.state_description == "state_description_value"
+    assert response.rule_id == "rule_id_value"
+    assert response.automation_id == "automation_id_value"
+
+
+@pytest.mark.asyncio
+async def test_get_automation_run_async_from_dict():
+    await test_get_automation_run_async(request_type=dict)
+
+
+def test_get_automation_run_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.GetAutomationRunRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_automation_run), "__call__"
+    ) as call:
+        call.return_value = cloud_deploy.AutomationRun()
+        client.get_automation_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_automation_run_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.GetAutomationRunRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_automation_run), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.AutomationRun()
+        )
+        await client.get_automation_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_automation_run_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_automation_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.AutomationRun()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_automation_run(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_automation_run_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_automation_run(
+            cloud_deploy.GetAutomationRunRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_automation_run_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_automation_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.AutomationRun()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.AutomationRun()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_automation_run(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_automation_run_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_automation_run(
+            cloud_deploy.GetAutomationRunRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListAutomationRunsRequest,
+        dict,
+    ],
+)
+def test_list_automation_runs(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automation_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.ListAutomationRunsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_automation_runs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.ListAutomationRunsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAutomationRunsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_automation_runs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automation_runs), "__call__"
+    ) as call:
+        client.list_automation_runs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.ListAutomationRunsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_automation_runs_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.ListAutomationRunsRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automation_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.ListAutomationRunsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_automation_runs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.ListAutomationRunsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAutomationRunsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_automation_runs_async_from_dict():
+    await test_list_automation_runs_async(request_type=dict)
+
+
+def test_list_automation_runs_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.ListAutomationRunsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automation_runs), "__call__"
+    ) as call:
+        call.return_value = cloud_deploy.ListAutomationRunsResponse()
+        client.list_automation_runs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_automation_runs_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.ListAutomationRunsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automation_runs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.ListAutomationRunsResponse()
+        )
+        await client.list_automation_runs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_automation_runs_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automation_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.ListAutomationRunsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_automation_runs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_automation_runs_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_automation_runs(
+            cloud_deploy.ListAutomationRunsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_automation_runs_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automation_runs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.ListAutomationRunsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.ListAutomationRunsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_automation_runs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_automation_runs_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_automation_runs(
+            cloud_deploy.ListAutomationRunsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_automation_runs_pager(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automation_runs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_automation_runs(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_deploy.AutomationRun) for i in results)
+
+
+def test_list_automation_runs_pages(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automation_runs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_automation_runs(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_automation_runs_async_pager():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automation_runs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_automation_runs(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, cloud_deploy.AutomationRun) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_automation_runs_async_pages():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_automation_runs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_automation_runs(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CancelAutomationRunRequest,
+        dict,
+    ],
+)
+def test_cancel_automation_run(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_automation_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.CancelAutomationRunResponse()
+        response = client.cancel_automation_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CancelAutomationRunRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.CancelAutomationRunResponse)
+
+
+def test_cancel_automation_run_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_automation_run), "__call__"
+    ) as call:
+        client.cancel_automation_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CancelAutomationRunRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_automation_run_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_deploy.CancelAutomationRunRequest,
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_automation_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.CancelAutomationRunResponse()
+        )
+        response = await client.cancel_automation_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CancelAutomationRunRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.CancelAutomationRunResponse)
+
+
+@pytest.mark.asyncio
+async def test_cancel_automation_run_async_from_dict():
+    await test_cancel_automation_run_async(request_type=dict)
+
+
+def test_cancel_automation_run_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.CancelAutomationRunRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_automation_run), "__call__"
+    ) as call:
+        call.return_value = cloud_deploy.CancelAutomationRunResponse()
+        client.cancel_automation_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_cancel_automation_run_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.CancelAutomationRunRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_automation_run), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.CancelAutomationRunResponse()
+        )
+        await client.cancel_automation_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_cancel_automation_run_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_automation_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.CancelAutomationRunResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.cancel_automation_run(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_cancel_automation_run_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.cancel_automation_run(
+            cloud_deploy.CancelAutomationRunRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_cancel_automation_run_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_automation_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.CancelAutomationRunResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.CancelAutomationRunResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.cancel_automation_run(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_cancel_automation_run_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.cancel_automation_run(
+            cloud_deploy.CancelAutomationRunRequest(),
             name="name_value",
         )
 
@@ -10161,6 +12806,302 @@ def test_list_targets_rest_pager(transport: str = "rest"):
         pages = list(client.list_targets(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.RollbackTargetRequest,
+        dict,
+    ],
+)
+def test_rollback_target_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.RollbackTargetResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.RollbackTargetResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rollback_target(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.RollbackTargetResponse)
+
+
+def test_rollback_target_rest_required_fields(
+    request_type=cloud_deploy.RollbackTargetRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["target_id"] = ""
+    request_init["rollout_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rollback_target._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["targetId"] = "target_id_value"
+    jsonified_request["rolloutId"] = "rollout_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rollback_target._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "targetId" in jsonified_request
+    assert jsonified_request["targetId"] == "target_id_value"
+    assert "rolloutId" in jsonified_request
+    assert jsonified_request["rolloutId"] == "rollout_id_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.RollbackTargetResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.RollbackTargetResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.rollback_target(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_rollback_target_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rollback_target._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "targetId",
+                "rolloutId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rollback_target_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_rollback_target"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_rollback_target"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.RollbackTargetRequest.pb(
+            cloud_deploy.RollbackTargetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.RollbackTargetResponse.to_json(
+            cloud_deploy.RollbackTargetResponse()
+        )
+
+        request = cloud_deploy.RollbackTargetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.RollbackTargetResponse()
+
+        client.rollback_target(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rollback_target_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.RollbackTargetRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.rollback_target(request)
+
+
+def test_rollback_target_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.RollbackTargetResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            target_id="target_id_value",
+            rollout_id="rollout_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.RollbackTargetResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.rollback_target(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*}:rollbackTarget"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_rollback_target_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rollback_target(
+            cloud_deploy.RollbackTargetRequest(),
+            name="name_value",
+            target_id="target_id_value",
+            rollout_id="rollout_id_value",
+        )
+
+
+def test_rollback_target_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
 
 
 @pytest.mark.parametrize(
@@ -14208,6 +17149,8 @@ def test_get_rollout_rest(request_type):
             etag="etag_value",
             deploy_failure_cause=cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE,
             controller_rollout="controller_rollout_value",
+            rollback_of_rollout="rollback_of_rollout_value",
+            rolled_back_by_rollouts=["rolled_back_by_rollouts_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -14237,6 +17180,8 @@ def test_get_rollout_rest(request_type):
         == cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE
     )
     assert response.controller_rollout == "controller_rollout_value"
+    assert response.rollback_of_rollout == "rollback_of_rollout_value"
+    assert response.rolled_back_by_rollouts == ["rolled_back_by_rollouts_value"]
 
 
 def test_get_rollout_rest_required_fields(request_type=cloud_deploy.GetRolloutRequest):
@@ -14540,9 +17485,26 @@ def test_create_rollout_rest(request_type):
                 "service": "service_value",
                 "service_urls": ["service_urls_value1", "service_urls_value2"],
                 "revision": "revision_value",
-            }
+                "job": "job_value",
+            },
+            "automation": {
+                "promote_automation_run": "promote_automation_run_value",
+                "advance_automation_runs": [
+                    "advance_automation_runs_value1",
+                    "advance_automation_runs_value2",
+                ],
+                "repair_automation_runs": [
+                    "repair_automation_runs_value1",
+                    "repair_automation_runs_value2",
+                ],
+            },
         },
         "controller_rollout": "controller_rollout_value",
+        "rollback_of_rollout": "rollback_of_rollout_value",
+        "rolled_back_by_rollouts": [
+            "rolled_back_by_rollouts_value1",
+            "rolled_back_by_rollouts_value2",
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -16667,6 +19629,2708 @@ def test_get_config_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateAutomationRequest,
+        dict,
+    ],
+)
+def test_create_automation_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request_init["automation"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "annotations": {},
+        "labels": {},
+        "etag": "etag_value",
+        "suspended": True,
+        "service_account": "service_account_value",
+        "selector": {"targets": [{"id": "id_value", "labels": {}}]},
+        "rules": [
+            {
+                "promote_release_rule": {
+                    "id": "id_value",
+                    "wait": {"seconds": 751, "nanos": 543},
+                    "destination_target_id": "destination_target_id_value",
+                    "condition": {
+                        "targets_present_condition": {
+                            "status": True,
+                            "missing_targets": [
+                                "missing_targets_value1",
+                                "missing_targets_value2",
+                            ],
+                            "update_time": {},
+                        }
+                    },
+                    "destination_phase": "destination_phase_value",
+                },
+                "advance_rollout_rule": {
+                    "id": "id_value",
+                    "source_phases": ["source_phases_value1", "source_phases_value2"],
+                    "wait": {},
+                    "condition": {},
+                },
+                "repair_rollout_rule": {
+                    "id": "id_value",
+                    "source_phases": ["source_phases_value1", "source_phases_value2"],
+                    "jobs": ["jobs_value1", "jobs_value2"],
+                    "repair_modes": [
+                        {
+                            "retry": {"attempts": 882, "wait": {}, "backoff_mode": 1},
+                            "rollback": {
+                                "destination_phase": "destination_phase_value"
+                            },
+                        }
+                    ],
+                    "condition": {},
+                },
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_deploy.CreateAutomationRequest.meta.fields["automation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["automation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["automation"][field])):
+                    del request_init["automation"][field][i][subfield]
+            else:
+                del request_init["automation"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_automation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_automation_rest_required_fields(
+    request_type=cloud_deploy.CreateAutomationRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["automation_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "automationId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_automation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "automationId" in jsonified_request
+    assert jsonified_request["automationId"] == request_init["automation_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["automationId"] = "automation_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_automation._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "automation_id",
+            "request_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "automationId" in jsonified_request
+    assert jsonified_request["automationId"] == "automation_id_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_automation(request)
+
+            expected_params = [
+                (
+                    "automationId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_automation_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_automation._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "automationId",
+                "requestId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "automationId",
+                "automation",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_automation_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_create_automation"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_create_automation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.CreateAutomationRequest.pb(
+            cloud_deploy.CreateAutomationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.CreateAutomationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_automation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_automation_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.CreateAutomationRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_automation(request)
+
+
+def test_create_automation_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            automation=cloud_deploy.Automation(name="name_value"),
+            automation_id="automation_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_automation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/deliveryPipelines/*}/automations"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_automation_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_automation(
+            cloud_deploy.CreateAutomationRequest(),
+            parent="parent_value",
+            automation=cloud_deploy.Automation(name="name_value"),
+            automation_id="automation_id_value",
+        )
+
+
+def test_create_automation_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.UpdateAutomationRequest,
+        dict,
+    ],
+)
+def test_update_automation_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "automation": {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automations/sample4"
+        }
+    }
+    request_init["automation"] = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automations/sample4",
+        "uid": "uid_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "annotations": {},
+        "labels": {},
+        "etag": "etag_value",
+        "suspended": True,
+        "service_account": "service_account_value",
+        "selector": {"targets": [{"id": "id_value", "labels": {}}]},
+        "rules": [
+            {
+                "promote_release_rule": {
+                    "id": "id_value",
+                    "wait": {"seconds": 751, "nanos": 543},
+                    "destination_target_id": "destination_target_id_value",
+                    "condition": {
+                        "targets_present_condition": {
+                            "status": True,
+                            "missing_targets": [
+                                "missing_targets_value1",
+                                "missing_targets_value2",
+                            ],
+                            "update_time": {},
+                        }
+                    },
+                    "destination_phase": "destination_phase_value",
+                },
+                "advance_rollout_rule": {
+                    "id": "id_value",
+                    "source_phases": ["source_phases_value1", "source_phases_value2"],
+                    "wait": {},
+                    "condition": {},
+                },
+                "repair_rollout_rule": {
+                    "id": "id_value",
+                    "source_phases": ["source_phases_value1", "source_phases_value2"],
+                    "jobs": ["jobs_value1", "jobs_value2"],
+                    "repair_modes": [
+                        {
+                            "retry": {"attempts": 882, "wait": {}, "backoff_mode": 1},
+                            "rollback": {
+                                "destination_phase": "destination_phase_value"
+                            },
+                        }
+                    ],
+                    "condition": {},
+                },
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_deploy.UpdateAutomationRequest.meta.fields["automation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["automation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["automation"][field])):
+                    del request_init["automation"][field][i][subfield]
+            else:
+                del request_init["automation"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_automation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_automation_rest_required_fields(
+    request_type=cloud_deploy.UpdateAutomationRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_automation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_automation._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "request_id",
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_automation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_automation_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_automation._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "requestId",
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "automation",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_automation_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_update_automation"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_update_automation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.UpdateAutomationRequest.pb(
+            cloud_deploy.UpdateAutomationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.UpdateAutomationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_automation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_automation_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.UpdateAutomationRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "automation": {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automations/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_automation(request)
+
+
+def test_update_automation_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "automation": {
+                "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automations/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            automation=cloud_deploy.Automation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_automation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{automation.name=projects/*/locations/*/deliveryPipelines/*/automations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_automation_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_automation(
+            cloud_deploy.UpdateAutomationRequest(),
+            automation=cloud_deploy.Automation(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_automation_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.DeleteAutomationRequest,
+        dict,
+    ],
+)
+def test_delete_automation_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_automation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_automation_rest_required_fields(
+    request_type=cloud_deploy.DeleteAutomationRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_automation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_automation._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "etag",
+            "request_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_automation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_automation_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_automation._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "etag",
+                "requestId",
+                "validateOnly",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_automation_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_delete_automation"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_delete_automation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.DeleteAutomationRequest.pb(
+            cloud_deploy.DeleteAutomationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.DeleteAutomationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_automation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_automation_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.DeleteAutomationRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_automation(request)
+
+
+def test_delete_automation_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automations/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_automation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/automations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_automation_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_automation(
+            cloud_deploy.DeleteAutomationRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_automation_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetAutomationRequest,
+        dict,
+    ],
+)
+def test_get_automation_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.Automation(
+            name="name_value",
+            uid="uid_value",
+            description="description_value",
+            etag="etag_value",
+            suspended=True,
+            service_account="service_account_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.Automation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_automation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.Automation)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.etag == "etag_value"
+    assert response.suspended is True
+    assert response.service_account == "service_account_value"
+
+
+def test_get_automation_rest_required_fields(
+    request_type=cloud_deploy.GetAutomationRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_automation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_automation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.Automation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.Automation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_automation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_automation_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_automation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_automation_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_get_automation"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_get_automation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.GetAutomationRequest.pb(
+            cloud_deploy.GetAutomationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.Automation.to_json(
+            cloud_deploy.Automation()
+        )
+
+        request = cloud_deploy.GetAutomationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.Automation()
+
+        client.get_automation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_automation_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.GetAutomationRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_automation(request)
+
+
+def test_get_automation_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.Automation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automations/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.Automation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_automation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/automations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_automation_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_automation(
+            cloud_deploy.GetAutomationRequest(),
+            name="name_value",
+        )
+
+
+def test_get_automation_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListAutomationsRequest,
+        dict,
+    ],
+)
+def test_list_automations_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListAutomationsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListAutomationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_automations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAutomationsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_automations_rest_required_fields(
+    request_type=cloud_deploy.ListAutomationsRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_automations._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_automations._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.ListAutomationsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.ListAutomationsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_automations(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_automations_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_automations._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_automations_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_list_automations"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_list_automations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.ListAutomationsRequest.pb(
+            cloud_deploy.ListAutomationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.ListAutomationsResponse.to_json(
+            cloud_deploy.ListAutomationsResponse()
+        )
+
+        request = cloud_deploy.ListAutomationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.ListAutomationsResponse()
+
+        client.list_automations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_automations_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.ListAutomationsRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_automations(request)
+
+
+def test_list_automations_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListAutomationsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListAutomationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_automations(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/deliveryPipelines/*}/automations"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_automations_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_automations(
+            cloud_deploy.ListAutomationsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_automations_rest_pager(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListAutomationsResponse(
+                automations=[
+                    cloud_deploy.Automation(),
+                    cloud_deploy.Automation(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cloud_deploy.ListAutomationsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+
+        pager = client.list_automations(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_deploy.Automation) for i in results)
+
+        pages = list(client.list_automations(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetAutomationRunRequest,
+        dict,
+    ],
+)
+def test_get_automation_run_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automationRuns/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.AutomationRun(
+            name="name_value",
+            etag="etag_value",
+            service_account="service_account_value",
+            target_id="target_id_value",
+            state=cloud_deploy.AutomationRun.State.SUCCEEDED,
+            state_description="state_description_value",
+            rule_id="rule_id_value",
+            automation_id="automation_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.AutomationRun.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_automation_run(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.AutomationRun)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.service_account == "service_account_value"
+    assert response.target_id == "target_id_value"
+    assert response.state == cloud_deploy.AutomationRun.State.SUCCEEDED
+    assert response.state_description == "state_description_value"
+    assert response.rule_id == "rule_id_value"
+    assert response.automation_id == "automation_id_value"
+
+
+def test_get_automation_run_rest_required_fields(
+    request_type=cloud_deploy.GetAutomationRunRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_automation_run._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_automation_run._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.AutomationRun()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.AutomationRun.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_automation_run(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_automation_run_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_automation_run._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_automation_run_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_get_automation_run"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_get_automation_run"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.GetAutomationRunRequest.pb(
+            cloud_deploy.GetAutomationRunRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.AutomationRun.to_json(
+            cloud_deploy.AutomationRun()
+        )
+
+        request = cloud_deploy.GetAutomationRunRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.AutomationRun()
+
+        client.get_automation_run(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_automation_run_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.GetAutomationRunRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automationRuns/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_automation_run(request)
+
+
+def test_get_automation_run_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.AutomationRun()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automationRuns/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.AutomationRun.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_automation_run(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/automationRuns/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_automation_run_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_automation_run(
+            cloud_deploy.GetAutomationRunRequest(),
+            name="name_value",
+        )
+
+
+def test_get_automation_run_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListAutomationRunsRequest,
+        dict,
+    ],
+)
+def test_list_automation_runs_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListAutomationRunsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListAutomationRunsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_automation_runs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAutomationRunsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_automation_runs_rest_required_fields(
+    request_type=cloud_deploy.ListAutomationRunsRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_automation_runs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_automation_runs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.ListAutomationRunsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.ListAutomationRunsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_automation_runs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_automation_runs_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_automation_runs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_automation_runs_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_list_automation_runs"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_list_automation_runs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.ListAutomationRunsRequest.pb(
+            cloud_deploy.ListAutomationRunsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.ListAutomationRunsResponse.to_json(
+            cloud_deploy.ListAutomationRunsResponse()
+        )
+
+        request = cloud_deploy.ListAutomationRunsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.ListAutomationRunsResponse()
+
+        client.list_automation_runs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_automation_runs_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.ListAutomationRunsRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_automation_runs(request)
+
+
+def test_list_automation_runs_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListAutomationRunsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListAutomationRunsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_automation_runs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/deliveryPipelines/*}/automationRuns"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_automation_runs_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_automation_runs(
+            cloud_deploy.ListAutomationRunsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_automation_runs_rest_pager(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListAutomationRunsResponse(
+                automation_runs=[
+                    cloud_deploy.AutomationRun(),
+                    cloud_deploy.AutomationRun(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cloud_deploy.ListAutomationRunsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
+        }
+
+        pager = client.list_automation_runs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_deploy.AutomationRun) for i in results)
+
+        pages = list(client.list_automation_runs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CancelAutomationRunRequest,
+        dict,
+    ],
+)
+def test_cancel_automation_run_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automationRuns/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.CancelAutomationRunResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.CancelAutomationRunResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.cancel_automation_run(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.CancelAutomationRunResponse)
+
+
+def test_cancel_automation_run_rest_required_fields(
+    request_type=cloud_deploy.CancelAutomationRunRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_automation_run._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_automation_run._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.CancelAutomationRunResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.CancelAutomationRunResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.cancel_automation_run(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_cancel_automation_run_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.cancel_automation_run._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_cancel_automation_run_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_cancel_automation_run"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_cancel_automation_run"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.CancelAutomationRunRequest.pb(
+            cloud_deploy.CancelAutomationRunRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.CancelAutomationRunResponse.to_json(
+            cloud_deploy.CancelAutomationRunResponse()
+        )
+
+        request = cloud_deploy.CancelAutomationRunRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.CancelAutomationRunResponse()
+
+        client.cancel_automation_run(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_cancel_automation_run_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.CancelAutomationRunRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automationRuns/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_automation_run(request)
+
+
+def test_cancel_automation_run_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.CancelAutomationRunResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/automationRuns/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.CancelAutomationRunResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.cancel_automation_run(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/automationRuns/*}:cancel"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_cancel_automation_run_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.cancel_automation_run(
+            cloud_deploy.CancelAutomationRunRequest(),
+            name="name_value",
+        )
+
+
+def test_cancel_automation_run_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudDeployGrpcTransport(
@@ -16812,6 +22476,7 @@ def test_cloud_deploy_base_transport():
         "update_delivery_pipeline",
         "delete_delivery_pipeline",
         "list_targets",
+        "rollback_target",
         "get_target",
         "create_target",
         "update_target",
@@ -16832,6 +22497,14 @@ def test_cloud_deploy_base_transport():
         "get_job_run",
         "terminate_job_run",
         "get_config",
+        "create_automation",
+        "update_automation",
+        "delete_automation",
+        "get_automation",
+        "list_automations",
+        "get_automation_run",
+        "list_automation_runs",
+        "cancel_automation_run",
         "set_iam_policy",
         "get_iam_policy",
         "test_iam_permissions",
@@ -17136,6 +22809,9 @@ def test_cloud_deploy_client_transport_session_collision(transport_name):
     session1 = client1.transport.list_targets._session
     session2 = client2.transport.list_targets._session
     assert session1 != session2
+    session1 = client1.transport.rollback_target._session
+    session2 = client2.transport.rollback_target._session
+    assert session1 != session2
     session1 = client1.transport.get_target._session
     session2 = client2.transport.get_target._session
     assert session1 != session2
@@ -17195,6 +22871,30 @@ def test_cloud_deploy_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.get_config._session
     session2 = client2.transport.get_config._session
+    assert session1 != session2
+    session1 = client1.transport.create_automation._session
+    session2 = client2.transport.create_automation._session
+    assert session1 != session2
+    session1 = client1.transport.update_automation._session
+    session2 = client2.transport.update_automation._session
+    assert session1 != session2
+    session1 = client1.transport.delete_automation._session
+    session2 = client2.transport.delete_automation._session
+    assert session1 != session2
+    session1 = client1.transport.get_automation._session
+    session2 = client2.transport.get_automation._session
+    assert session1 != session2
+    session1 = client1.transport.list_automations._session
+    session2 = client2.transport.list_automations._session
+    assert session1 != session2
+    session1 = client1.transport.get_automation_run._session
+    session2 = client2.transport.get_automation_run._session
+    assert session1 != session2
+    session1 = client1.transport.list_automation_runs._session
+    session2 = client2.transport.list_automation_runs._session
+    assert session1 != session2
+    session1 = client1.transport.cancel_automation_run._session
+    session2 = client2.transport.cancel_automation_run._session
     assert session1 != session2
 
 
@@ -17350,10 +23050,72 @@ def test_cloud_deploy_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_build_path():
+def test_automation_path():
     project = "squid"
     location = "clam"
-    build = "whelk"
+    delivery_pipeline = "whelk"
+    automation = "octopus"
+    expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/automations/{automation}".format(
+        project=project,
+        location=location,
+        delivery_pipeline=delivery_pipeline,
+        automation=automation,
+    )
+    actual = CloudDeployClient.automation_path(
+        project, location, delivery_pipeline, automation
+    )
+    assert expected == actual
+
+
+def test_parse_automation_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "delivery_pipeline": "cuttlefish",
+        "automation": "mussel",
+    }
+    path = CloudDeployClient.automation_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudDeployClient.parse_automation_path(path)
+    assert expected == actual
+
+
+def test_automation_run_path():
+    project = "winkle"
+    location = "nautilus"
+    delivery_pipeline = "scallop"
+    automation_run = "abalone"
+    expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/automationRuns/{automation_run}".format(
+        project=project,
+        location=location,
+        delivery_pipeline=delivery_pipeline,
+        automation_run=automation_run,
+    )
+    actual = CloudDeployClient.automation_run_path(
+        project, location, delivery_pipeline, automation_run
+    )
+    assert expected == actual
+
+
+def test_parse_automation_run_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "delivery_pipeline": "whelk",
+        "automation_run": "octopus",
+    }
+    path = CloudDeployClient.automation_run_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudDeployClient.parse_automation_run_path(path)
+    assert expected == actual
+
+
+def test_build_path():
+    project = "oyster"
+    location = "nudibranch"
+    build = "cuttlefish"
     expected = "projects/{project}/locations/{location}/builds/{build}".format(
         project=project,
         location=location,
@@ -17365,9 +23127,9 @@ def test_build_path():
 
 def test_parse_build_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "build": "nudibranch",
+        "project": "mussel",
+        "location": "winkle",
+        "build": "nautilus",
     }
     path = CloudDeployClient.build_path(**expected)
 
@@ -17377,9 +23139,9 @@ def test_parse_build_path():
 
 
 def test_cluster_path():
-    project = "cuttlefish"
-    location = "mussel"
-    cluster = "winkle"
+    project = "scallop"
+    location = "abalone"
+    cluster = "squid"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}".format(
         project=project,
         location=location,
@@ -17391,9 +23153,9 @@ def test_cluster_path():
 
 def test_parse_cluster_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "cluster": "abalone",
+        "project": "clam",
+        "location": "whelk",
+        "cluster": "octopus",
     }
     path = CloudDeployClient.cluster_path(**expected)
 
@@ -17403,8 +23165,8 @@ def test_parse_cluster_path():
 
 
 def test_config_path():
-    project = "squid"
-    location = "clam"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}/config".format(
         project=project,
         location=location,
@@ -17415,8 +23177,8 @@ def test_config_path():
 
 def test_parse_config_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = CloudDeployClient.config_path(**expected)
 
@@ -17426,9 +23188,9 @@ def test_parse_config_path():
 
 
 def test_delivery_pipeline_path():
-    project = "oyster"
-    location = "nudibranch"
-    delivery_pipeline = "cuttlefish"
+    project = "winkle"
+    location = "nautilus"
+    delivery_pipeline = "scallop"
     expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}".format(
         project=project,
         location=location,
@@ -17442,9 +23204,9 @@ def test_delivery_pipeline_path():
 
 def test_parse_delivery_pipeline_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "delivery_pipeline": "nautilus",
+        "project": "abalone",
+        "location": "squid",
+        "delivery_pipeline": "clam",
     }
     path = CloudDeployClient.delivery_pipeline_path(**expected)
 
@@ -17453,13 +23215,39 @@ def test_parse_delivery_pipeline_path():
     assert expected == actual
 
 
+def test_job_path():
+    project = "whelk"
+    location = "octopus"
+    job = "oyster"
+    expected = "projects/{project}/locations/{location}/jobs/{job}".format(
+        project=project,
+        location=location,
+        job=job,
+    )
+    actual = CloudDeployClient.job_path(project, location, job)
+    assert expected == actual
+
+
+def test_parse_job_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "job": "mussel",
+    }
+    path = CloudDeployClient.job_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudDeployClient.parse_job_path(path)
+    assert expected == actual
+
+
 def test_job_run_path():
-    project = "scallop"
-    location = "abalone"
-    delivery_pipeline = "squid"
-    release = "clam"
-    rollout = "whelk"
-    job_run = "octopus"
+    project = "winkle"
+    location = "nautilus"
+    delivery_pipeline = "scallop"
+    release = "abalone"
+    rollout = "squid"
+    job_run = "clam"
     expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}/rollouts/{rollout}/jobRuns/{job_run}".format(
         project=project,
         location=location,
@@ -17476,12 +23264,12 @@ def test_job_run_path():
 
 def test_parse_job_run_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "delivery_pipeline": "cuttlefish",
-        "release": "mussel",
-        "rollout": "winkle",
-        "job_run": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
+        "delivery_pipeline": "oyster",
+        "release": "nudibranch",
+        "rollout": "cuttlefish",
+        "job_run": "mussel",
     }
     path = CloudDeployClient.job_run_path(**expected)
 
@@ -17491,9 +23279,9 @@ def test_parse_job_run_path():
 
 
 def test_membership_path():
-    project = "scallop"
-    location = "abalone"
-    membership = "squid"
+    project = "winkle"
+    location = "nautilus"
+    membership = "scallop"
     expected = (
         "projects/{project}/locations/{location}/memberships/{membership}".format(
             project=project,
@@ -17507,9 +23295,9 @@ def test_membership_path():
 
 def test_parse_membership_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "membership": "octopus",
+        "project": "abalone",
+        "location": "squid",
+        "membership": "clam",
     }
     path = CloudDeployClient.membership_path(**expected)
 
@@ -17519,10 +23307,10 @@ def test_parse_membership_path():
 
 
 def test_release_path():
-    project = "oyster"
-    location = "nudibranch"
-    delivery_pipeline = "cuttlefish"
-    release = "mussel"
+    project = "whelk"
+    location = "octopus"
+    delivery_pipeline = "oyster"
+    release = "nudibranch"
     expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}".format(
         project=project,
         location=location,
@@ -17537,10 +23325,10 @@ def test_release_path():
 
 def test_parse_release_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "delivery_pipeline": "scallop",
-        "release": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "delivery_pipeline": "winkle",
+        "release": "nautilus",
     }
     path = CloudDeployClient.release_path(**expected)
 
@@ -17550,11 +23338,11 @@ def test_parse_release_path():
 
 
 def test_rollout_path():
-    project = "squid"
-    location = "clam"
-    delivery_pipeline = "whelk"
-    release = "octopus"
-    rollout = "oyster"
+    project = "scallop"
+    location = "abalone"
+    delivery_pipeline = "squid"
+    release = "clam"
+    rollout = "whelk"
     expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}/rollouts/{rollout}".format(
         project=project,
         location=location,
@@ -17570,11 +23358,11 @@ def test_rollout_path():
 
 def test_parse_rollout_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "delivery_pipeline": "mussel",
-        "release": "winkle",
-        "rollout": "nautilus",
+        "project": "octopus",
+        "location": "oyster",
+        "delivery_pipeline": "nudibranch",
+        "release": "cuttlefish",
+        "rollout": "mussel",
     }
     path = CloudDeployClient.rollout_path(**expected)
 
@@ -17584,9 +23372,9 @@ def test_parse_rollout_path():
 
 
 def test_service_path():
-    project = "scallop"
-    location = "abalone"
-    service = "squid"
+    project = "winkle"
+    location = "nautilus"
+    service = "scallop"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project,
         location=location,
@@ -17598,9 +23386,9 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "service": "octopus",
+        "project": "abalone",
+        "location": "squid",
+        "service": "clam",
     }
     path = CloudDeployClient.service_path(**expected)
 
@@ -17610,9 +23398,9 @@ def test_parse_service_path():
 
 
 def test_target_path():
-    project = "oyster"
-    location = "nudibranch"
-    target = "cuttlefish"
+    project = "whelk"
+    location = "octopus"
+    target = "oyster"
     expected = "projects/{project}/locations/{location}/targets/{target}".format(
         project=project,
         location=location,
@@ -17624,9 +23412,9 @@ def test_target_path():
 
 def test_parse_target_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "target": "nautilus",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "target": "mussel",
     }
     path = CloudDeployClient.target_path(**expected)
 
@@ -17636,9 +23424,9 @@ def test_parse_target_path():
 
 
 def test_worker_pool_path():
-    project = "scallop"
-    location = "abalone"
-    worker_pool = "squid"
+    project = "winkle"
+    location = "nautilus"
+    worker_pool = "scallop"
     expected = (
         "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
             project=project,
@@ -17652,9 +23440,9 @@ def test_worker_pool_path():
 
 def test_parse_worker_pool_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "worker_pool": "octopus",
+        "project": "abalone",
+        "location": "squid",
+        "worker_pool": "clam",
     }
     path = CloudDeployClient.worker_pool_path(**expected)
 
@@ -17664,7 +23452,7 @@ def test_parse_worker_pool_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -17674,7 +23462,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "octopus",
     }
     path = CloudDeployClient.common_billing_account_path(**expected)
 
@@ -17684,7 +23472,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -17694,7 +23482,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nudibranch",
     }
     path = CloudDeployClient.common_folder_path(**expected)
 
@@ -17704,7 +23492,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -17714,7 +23502,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "mussel",
     }
     path = CloudDeployClient.common_organization_path(**expected)
 
@@ -17724,7 +23512,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -17734,7 +23522,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nautilus",
     }
     path = CloudDeployClient.common_project_path(**expected)
 
@@ -17744,8 +23532,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -17756,8 +23544,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "squid",
+        "location": "clam",
     }
     path = CloudDeployClient.common_location_path(**expected)
 

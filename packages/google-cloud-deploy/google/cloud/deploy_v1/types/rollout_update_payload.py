@@ -21,11 +21,10 @@ import proto  # type: ignore
 
 from google.cloud.deploy_v1.types import log_enums
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.deploy.v1',
+    package="google.cloud.deploy.v1",
     manifest={
-        'RolloutUpdateEvent',
+        "RolloutUpdateEvent",
     },
 )
 
@@ -52,6 +51,7 @@ class RolloutUpdateEvent(proto.Message):
             Type of this notification, e.g. for a rollout
             update event.
     """
+
     class RolloutUpdateType(proto.Enum):
         r"""RolloutUpdateType indicates the type of the rollout update.
 

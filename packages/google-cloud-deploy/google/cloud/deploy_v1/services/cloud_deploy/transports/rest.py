@@ -98,11 +98,27 @@ class CloudDeployRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_cancel_automation_run(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_cancel_automation_run(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_cancel_rollout(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_cancel_rollout(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_automation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_automation(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -138,6 +154,14 @@ class CloudDeployRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_automation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_automation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_delivery_pipeline(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -151,6 +175,22 @@ class CloudDeployRestInterceptor:
                 return request, metadata
 
             def post_delete_target(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_automation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_automation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_automation_run(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_automation_run(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -210,6 +250,22 @@ class CloudDeployRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_automation_runs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_automation_runs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_automations(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_automations(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_delivery_pipelines(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -258,11 +314,27 @@ class CloudDeployRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_rollback_target(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_rollback_target(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_terminate_job_run(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_terminate_job_run(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_automation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_automation(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -357,6 +429,29 @@ class CloudDeployRestInterceptor:
         """
         return response
 
+    def pre_cancel_automation_run(
+        self,
+        request: cloud_deploy.CancelAutomationRunRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.CancelAutomationRunRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for cancel_automation_run
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_cancel_automation_run(
+        self, response: cloud_deploy.CancelAutomationRunResponse
+    ) -> cloud_deploy.CancelAutomationRunResponse:
+        """Post-rpc interceptor for cancel_automation_run
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_cancel_rollout(
         self,
         request: cloud_deploy.CancelRolloutRequest,
@@ -373,6 +468,29 @@ class CloudDeployRestInterceptor:
         self, response: cloud_deploy.CancelRolloutResponse
     ) -> cloud_deploy.CancelRolloutResponse:
         """Post-rpc interceptor for cancel_rollout
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_automation(
+        self,
+        request: cloud_deploy.CreateAutomationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.CreateAutomationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_automation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_create_automation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_automation
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudDeploy server but before
@@ -472,6 +590,29 @@ class CloudDeployRestInterceptor:
         """
         return response
 
+    def pre_delete_automation(
+        self,
+        request: cloud_deploy.DeleteAutomationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.DeleteAutomationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_automation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_delete_automation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_automation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_delivery_pipeline(
         self,
         request: cloud_deploy.DeleteDeliveryPipelineRequest,
@@ -511,6 +652,52 @@ class CloudDeployRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_target
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_automation(
+        self,
+        request: cloud_deploy.GetAutomationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.GetAutomationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_automation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_get_automation(
+        self, response: cloud_deploy.Automation
+    ) -> cloud_deploy.Automation:
+        """Post-rpc interceptor for get_automation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_automation_run(
+        self,
+        request: cloud_deploy.GetAutomationRunRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.GetAutomationRunRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_automation_run
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_get_automation_run(
+        self, response: cloud_deploy.AutomationRun
+    ) -> cloud_deploy.AutomationRun:
+        """Post-rpc interceptor for get_automation_run
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudDeploy server but before
@@ -669,6 +856,52 @@ class CloudDeployRestInterceptor:
         """
         return response
 
+    def pre_list_automation_runs(
+        self,
+        request: cloud_deploy.ListAutomationRunsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.ListAutomationRunsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_automation_runs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_list_automation_runs(
+        self, response: cloud_deploy.ListAutomationRunsResponse
+    ) -> cloud_deploy.ListAutomationRunsResponse:
+        """Post-rpc interceptor for list_automation_runs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_automations(
+        self,
+        request: cloud_deploy.ListAutomationsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.ListAutomationsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_automations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_list_automations(
+        self, response: cloud_deploy.ListAutomationsResponse
+    ) -> cloud_deploy.ListAutomationsResponse:
+        """Post-rpc interceptor for list_automations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_delivery_pipelines(
         self,
         request: cloud_deploy.ListDeliveryPipelinesRequest,
@@ -805,6 +1038,29 @@ class CloudDeployRestInterceptor:
         """
         return response
 
+    def pre_rollback_target(
+        self,
+        request: cloud_deploy.RollbackTargetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.RollbackTargetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for rollback_target
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_rollback_target(
+        self, response: cloud_deploy.RollbackTargetResponse
+    ) -> cloud_deploy.RollbackTargetResponse:
+        """Post-rpc interceptor for rollback_target
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_terminate_job_run(
         self,
         request: cloud_deploy.TerminateJobRunRequest,
@@ -821,6 +1077,29 @@ class CloudDeployRestInterceptor:
         self, response: cloud_deploy.TerminateJobRunResponse
     ) -> cloud_deploy.TerminateJobRunResponse:
         """Post-rpc interceptor for terminate_job_run
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_automation(
+        self,
+        request: cloud_deploy.UpdateAutomationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.UpdateAutomationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_automation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_update_automation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_automation
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudDeploy server but before
@@ -1511,6 +1790,103 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_approve_rollout(resp)
             return resp
 
+    class _CancelAutomationRun(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("CancelAutomationRun")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.CancelAutomationRunRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.CancelAutomationRunResponse:
+            r"""Call the cancel automation run method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.CancelAutomationRunRequest):
+                    The request object. The request object used by ``CancelAutomationRun``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.CancelAutomationRunResponse:
+                    The response object from ``CancelAutomationRun``.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/deliveryPipelines/*/automationRuns/*}:cancel",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_cancel_automation_run(
+                request, metadata
+            )
+            pb_request = cloud_deploy.CancelAutomationRunRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.CancelAutomationRunResponse()
+            pb_resp = cloud_deploy.CancelAutomationRunResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_cancel_automation_run(resp)
+            return resp
+
     class _CancelRollout(CloudDeployRestStub):
         def __hash__(self):
             return hash("CancelRollout")
@@ -1604,6 +1980,106 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_cancel_rollout(resp)
+            return resp
+
+    class _CreateAutomation(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("CreateAutomation")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "automationId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.CreateAutomationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create automation method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.CreateAutomationRequest):
+                    The request object. The request object for ``CreateAutomation``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/deliveryPipelines/*}/automations",
+                    "body": "automation",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_automation(
+                request, metadata
+            )
+            pb_request = cloud_deploy.CreateAutomationRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_automation(resp)
             return resp
 
     class _CreateDeliveryPipeline(CloudDeployRestStub):
@@ -2001,6 +2477,95 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_create_target(resp)
             return resp
 
+    class _DeleteAutomation(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("DeleteAutomation")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.DeleteAutomationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete automation method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.DeleteAutomationRequest):
+                    The request object. The request object for ``DeleteAutomation``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/deliveryPipelines/*/automations/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_automation(
+                request, metadata
+            )
+            pb_request = cloud_deploy.DeleteAutomationRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_automation(resp)
+            return resp
+
     class _DeleteDeliveryPipeline(CloudDeployRestStub):
         def __hash__(self):
             return hash("DeleteDeliveryPipeline")
@@ -2175,6 +2740,192 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_target(resp)
+            return resp
+
+    class _GetAutomation(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("GetAutomation")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.GetAutomationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.Automation:
+            r"""Call the get automation method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.GetAutomationRequest):
+                    The request object. The request object for ``GetAutomation``
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.Automation:
+                    An ``Automation`` resource in the Cloud Deploy API.
+
+                An ``Automation`` enables the automation of manually
+                driven actions for a Delivery Pipeline, which includes
+                Release promotion amongst Targets, Rollout repair and
+                Rollout deployment strategy advancement. The intention
+                of Automation is to reduce manual intervention in the
+                continuous delivery process.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/deliveryPipelines/*/automations/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_automation(request, metadata)
+            pb_request = cloud_deploy.GetAutomationRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.Automation()
+            pb_resp = cloud_deploy.Automation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_automation(resp)
+            return resp
+
+    class _GetAutomationRun(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("GetAutomationRun")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.GetAutomationRunRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.AutomationRun:
+            r"""Call the get automation run method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.GetAutomationRunRequest):
+                    The request object. The request object for ``GetAutomationRun``
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.AutomationRun:
+                    An ``AutomationRun`` resource in the Cloud Deploy API.
+
+                An ``AutomationRun`` represents an automation execution
+                instance of an automation rule.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/deliveryPipelines/*/automationRuns/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_automation_run(
+                request, metadata
+            )
+            pb_request = cloud_deploy.GetAutomationRunRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.AutomationRun()
+            pb_resp = cloud_deploy.AutomationRun.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_automation_run(resp)
             return resp
 
     class _GetConfig(CloudDeployRestStub):
@@ -2812,6 +3563,182 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_ignore_job(resp)
             return resp
 
+    class _ListAutomationRuns(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("ListAutomationRuns")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.ListAutomationRunsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.ListAutomationRunsResponse:
+            r"""Call the list automation runs method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.ListAutomationRunsRequest):
+                    The request object. The request object for ``ListAutomationRuns``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.ListAutomationRunsResponse:
+                    The response object from ``ListAutomationRuns``.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/deliveryPipelines/*}/automationRuns",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_automation_runs(
+                request, metadata
+            )
+            pb_request = cloud_deploy.ListAutomationRunsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.ListAutomationRunsResponse()
+            pb_resp = cloud_deploy.ListAutomationRunsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_automation_runs(resp)
+            return resp
+
+    class _ListAutomations(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("ListAutomations")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.ListAutomationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.ListAutomationsResponse:
+            r"""Call the list automations method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.ListAutomationsRequest):
+                    The request object. The request object for ``ListAutomations``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.ListAutomationsResponse:
+                    The response object from ``ListAutomations``.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/deliveryPipelines/*}/automations",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_automations(
+                request, metadata
+            )
+            pb_request = cloud_deploy.ListAutomationsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.ListAutomationsResponse()
+            pb_resp = cloud_deploy.ListAutomationsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_automations(resp)
+            return resp
+
     class _ListDeliveryPipelines(CloudDeployRestStub):
         def __hash__(self):
             return hash("ListDeliveryPipelines")
@@ -3346,6 +4273,101 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_retry_job(resp)
             return resp
 
+    class _RollbackTarget(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("RollbackTarget")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.RollbackTargetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.RollbackTargetResponse:
+            r"""Call the rollback target method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.RollbackTargetRequest):
+                    The request object. The request object for ``RollbackTarget``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.RollbackTargetResponse:
+                    The response object from ``RollbackTarget``.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/deliveryPipelines/*}:rollbackTarget",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_rollback_target(request, metadata)
+            pb_request = cloud_deploy.RollbackTargetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.RollbackTargetResponse()
+            pb_resp = cloud_deploy.RollbackTargetResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_rollback_target(resp)
+            return resp
+
     class _TerminateJobRun(CloudDeployRestStub):
         def __hash__(self):
             return hash("TerminateJobRun")
@@ -3441,6 +4463,106 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_terminate_job_run(resp)
+            return resp
+
+    class _UpdateAutomation(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("UpdateAutomation")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.UpdateAutomationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update automation method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.UpdateAutomationRequest):
+                    The request object. The request object for ``UpdateAutomation``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{automation.name=projects/*/locations/*/deliveryPipelines/*/automations/*}",
+                    "body": "automation",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_automation(
+                request, metadata
+            )
+            pb_request = cloud_deploy.UpdateAutomationRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_automation(resp)
             return resp
 
     class _UpdateDeliveryPipeline(CloudDeployRestStub):
@@ -3672,6 +4794,17 @@ class CloudDeployRestTransport(CloudDeployTransport):
         return self._ApproveRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def cancel_automation_run(
+        self,
+    ) -> Callable[
+        [cloud_deploy.CancelAutomationRunRequest],
+        cloud_deploy.CancelAutomationRunResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CancelAutomationRun(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def cancel_rollout(
         self,
     ) -> Callable[
@@ -3680,6 +4813,14 @@ class CloudDeployRestTransport(CloudDeployTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelRollout(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_automation(
+        self,
+    ) -> Callable[[cloud_deploy.CreateAutomationRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAutomation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_delivery_pipeline(
@@ -3716,6 +4857,14 @@ class CloudDeployRestTransport(CloudDeployTransport):
         return self._CreateTarget(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_automation(
+        self,
+    ) -> Callable[[cloud_deploy.DeleteAutomationRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAutomation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_delivery_pipeline(
         self,
     ) -> Callable[
@@ -3732,6 +4881,22 @@ class CloudDeployRestTransport(CloudDeployTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTarget(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_automation(
+        self,
+    ) -> Callable[[cloud_deploy.GetAutomationRequest], cloud_deploy.Automation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAutomation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_automation_run(
+        self,
+    ) -> Callable[[cloud_deploy.GetAutomationRunRequest], cloud_deploy.AutomationRun]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAutomationRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_config(
@@ -3792,6 +4957,27 @@ class CloudDeployRestTransport(CloudDeployTransport):
         return self._IgnoreJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_automation_runs(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListAutomationRunsRequest],
+        cloud_deploy.ListAutomationRunsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAutomationRuns(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_automations(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListAutomationsRequest], cloud_deploy.ListAutomationsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAutomations(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_delivery_pipelines(
         self,
     ) -> Callable[
@@ -3847,6 +5033,16 @@ class CloudDeployRestTransport(CloudDeployTransport):
         return self._RetryJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def rollback_target(
+        self,
+    ) -> Callable[
+        [cloud_deploy.RollbackTargetRequest], cloud_deploy.RollbackTargetResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RollbackTarget(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def terminate_job_run(
         self,
     ) -> Callable[
@@ -3855,6 +5051,14 @@ class CloudDeployRestTransport(CloudDeployTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TerminateJobRun(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_automation(
+        self,
+    ) -> Callable[[cloud_deploy.UpdateAutomationRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAutomation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_delivery_pipeline(
