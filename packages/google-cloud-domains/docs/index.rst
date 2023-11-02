@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    domains_v1/services
-    domains_v1/types
+    domains_v1/services_
+    domains_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    domains_v1beta1/services
-    domains_v1beta1/types
+    domains_v1beta1/services_
+    domains_v1beta1/types_
 
 
 Changelog

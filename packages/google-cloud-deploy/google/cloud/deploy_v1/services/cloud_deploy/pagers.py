@@ -665,3 +665,259 @@ class ListJobRunsAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAutomationsPager:
+    """A pager for iterating through ``list_automations`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.deploy_v1.types.ListAutomationsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``automations`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAutomations`` requests and continue to iterate
+    through the ``automations`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.deploy_v1.types.ListAutomationsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., cloud_deploy.ListAutomationsResponse],
+        request: cloud_deploy.ListAutomationsRequest,
+        response: cloud_deploy.ListAutomationsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.deploy_v1.types.ListAutomationsRequest):
+                The initial request object.
+            response (google.cloud.deploy_v1.types.ListAutomationsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = cloud_deploy.ListAutomationsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[cloud_deploy.ListAutomationsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[cloud_deploy.Automation]:
+        for page in self.pages:
+            yield from page.automations
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAutomationsAsyncPager:
+    """A pager for iterating through ``list_automations`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.deploy_v1.types.ListAutomationsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``automations`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAutomations`` requests and continue to iterate
+    through the ``automations`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.deploy_v1.types.ListAutomationsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[cloud_deploy.ListAutomationsResponse]],
+        request: cloud_deploy.ListAutomationsRequest,
+        response: cloud_deploy.ListAutomationsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.deploy_v1.types.ListAutomationsRequest):
+                The initial request object.
+            response (google.cloud.deploy_v1.types.ListAutomationsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = cloud_deploy.ListAutomationsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[cloud_deploy.ListAutomationsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[cloud_deploy.Automation]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.automations:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAutomationRunsPager:
+    """A pager for iterating through ``list_automation_runs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.deploy_v1.types.ListAutomationRunsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``automation_runs`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAutomationRuns`` requests and continue to iterate
+    through the ``automation_runs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.deploy_v1.types.ListAutomationRunsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., cloud_deploy.ListAutomationRunsResponse],
+        request: cloud_deploy.ListAutomationRunsRequest,
+        response: cloud_deploy.ListAutomationRunsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.deploy_v1.types.ListAutomationRunsRequest):
+                The initial request object.
+            response (google.cloud.deploy_v1.types.ListAutomationRunsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = cloud_deploy.ListAutomationRunsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[cloud_deploy.ListAutomationRunsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[cloud_deploy.AutomationRun]:
+        for page in self.pages:
+            yield from page.automation_runs
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAutomationRunsAsyncPager:
+    """A pager for iterating through ``list_automation_runs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.deploy_v1.types.ListAutomationRunsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``automation_runs`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAutomationRuns`` requests and continue to iterate
+    through the ``automation_runs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.deploy_v1.types.ListAutomationRunsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[cloud_deploy.ListAutomationRunsResponse]],
+        request: cloud_deploy.ListAutomationRunsRequest,
+        response: cloud_deploy.ListAutomationRunsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.deploy_v1.types.ListAutomationRunsRequest):
+                The initial request object.
+            response (google.cloud.deploy_v1.types.ListAutomationRunsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = cloud_deploy.ListAutomationRunsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[cloud_deploy.ListAutomationRunsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[cloud_deploy.AutomationRun]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.automation_runs:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud.datacatalog import lineage_v1
+from google.cloud import datacatalog_lineage_v1
 
 
 def sample_batch_search_link_processes():
     # Create a client
-    client = lineage_v1.LineageClient()
+    client = datacatalog_lineage_v1.LineageClient()
 
     # Initialize request argument(s)
-    request = lineage_v1.BatchSearchLinkProcessesRequest(
+    request = datacatalog_lineage_v1.BatchSearchLinkProcessesRequest(
         parent="parent_value",
         links=['links_value1', 'links_value2'],
     )

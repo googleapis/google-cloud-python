@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud.datacatalog import lineage_v1
+from google.cloud import datacatalog_lineage_v1
 
 
 async def sample_get_lineage_event():
     # Create a client
-    client = lineage_v1.LineageAsyncClient()
+    client = datacatalog_lineage_v1.LineageAsyncClient()
 
     # Initialize request argument(s)
-    request = lineage_v1.GetLineageEventRequest(
+    request = datacatalog_lineage_v1.GetLineageEventRequest(
         name="name_value",
     )
 

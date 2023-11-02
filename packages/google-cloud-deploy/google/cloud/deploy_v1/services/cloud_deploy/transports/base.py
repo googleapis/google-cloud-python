@@ -183,6 +183,11 @@ class CloudDeployTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.rollback_target: gapic_v1.method.wrap_method(
+                self.rollback_target,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_target: gapic_v1.method.wrap_method(
                 self.get_target,
                 default_retry=retries.Retry(
@@ -355,6 +360,82 @@ class CloudDeployTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_automation: gapic_v1.method.wrap_method(
+                self.create_automation,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_automation: gapic_v1.method.wrap_method(
+                self.update_automation,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_automation: gapic_v1.method.wrap_method(
+                self.delete_automation,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_automation: gapic_v1.method.wrap_method(
+                self.get_automation,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_automations: gapic_v1.method.wrap_method(
+                self.list_automations,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_automation_run: gapic_v1.method.wrap_method(
+                self.get_automation_run,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_automation_runs: gapic_v1.method.wrap_method(
+                self.list_automation_runs,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.cancel_automation_run: gapic_v1.method.wrap_method(
+                self.cancel_automation_run,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -427,6 +508,18 @@ class CloudDeployTransport(abc.ABC):
         Union[
             cloud_deploy.ListTargetsResponse,
             Awaitable[cloud_deploy.ListTargetsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def rollback_target(
+        self,
+    ) -> Callable[
+        [cloud_deploy.RollbackTargetRequest],
+        Union[
+            cloud_deploy.RollbackTargetResponse,
+            Awaitable[cloud_deploy.RollbackTargetResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -634,6 +727,87 @@ class CloudDeployTransport(abc.ABC):
     ) -> Callable[
         [cloud_deploy.GetConfigRequest],
         Union[cloud_deploy.Config, Awaitable[cloud_deploy.Config]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_automation(
+        self,
+    ) -> Callable[
+        [cloud_deploy.CreateAutomationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_automation(
+        self,
+    ) -> Callable[
+        [cloud_deploy.UpdateAutomationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_automation(
+        self,
+    ) -> Callable[
+        [cloud_deploy.DeleteAutomationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_automation(
+        self,
+    ) -> Callable[
+        [cloud_deploy.GetAutomationRequest],
+        Union[cloud_deploy.Automation, Awaitable[cloud_deploy.Automation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_automations(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListAutomationsRequest],
+        Union[
+            cloud_deploy.ListAutomationsResponse,
+            Awaitable[cloud_deploy.ListAutomationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_automation_run(
+        self,
+    ) -> Callable[
+        [cloud_deploy.GetAutomationRunRequest],
+        Union[cloud_deploy.AutomationRun, Awaitable[cloud_deploy.AutomationRun]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_automation_runs(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListAutomationRunsRequest],
+        Union[
+            cloud_deploy.ListAutomationRunsResponse,
+            Awaitable[cloud_deploy.ListAutomationRunsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_automation_run(
+        self,
+    ) -> Callable[
+        [cloud_deploy.CancelAutomationRunRequest],
+        Union[
+            cloud_deploy.CancelAutomationRunResponse,
+            Awaitable[cloud_deploy.CancelAutomationRunResponse],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -44,6 +44,8 @@ class Type(proto.Enum):
             Restriction check failed.
         TYPE_RESOURCE_DELETED (6):
             Resource deleted.
+        TYPE_ROLLOUT_UPDATE (7):
+            Rollout updated.
         TYPE_RENDER_STATUES_CHANGE (2):
             Deprecated: This field is never used. Use release_render log
             type instead.
@@ -54,6 +56,7 @@ class Type(proto.Enum):
     TYPE_PROCESS_ABORTED = 4
     TYPE_RESTRICTION_VIOLATED = 5
     TYPE_RESOURCE_DELETED = 6
+    TYPE_ROLLOUT_UPDATE = 7
     TYPE_RENDER_STATUES_CHANGE = 2
 
 

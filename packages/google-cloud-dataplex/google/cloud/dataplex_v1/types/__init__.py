@@ -74,6 +74,7 @@ from .logs import (
     DataQualityScanRuleResult,
     DataScanEvent,
     DiscoveryEvent,
+    GovernanceEvent,
     JobEvent,
     SessionEvent,
 )
@@ -202,6 +203,7 @@ __all__ = (
     "DataQualityScanRuleResult",
     "DataScanEvent",
     "DiscoveryEvent",
+    "GovernanceEvent",
     "JobEvent",
     "SessionEvent",
     "CreateEntityRequest",

@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    documentai_v1/services
-    documentai_v1/types
+    documentai_v1/services_
+    documentai_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    documentai_v1beta2/services
-    documentai_v1beta2/types
+    documentai_v1beta2/services_
+    documentai_v1beta2/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    documentai_v1beta3/services
-    documentai_v1beta3/types
+    documentai_v1beta3/services_
+    documentai_v1beta3/types_
 
 
 Changelog

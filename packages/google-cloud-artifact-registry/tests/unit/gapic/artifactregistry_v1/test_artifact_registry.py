@@ -47,6 +47,7 @@ from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
@@ -4324,6 +4325,10 @@ def test_get_repository(request_type, transport: str = "grpc"):
             format_=repository.Repository.Format.DOCKER,
             description="description_value",
             kms_key_name="kms_key_name_value",
+            mode=repository.Repository.Mode.STANDARD_REPOSITORY,
+            size_bytes=1089,
+            satisfies_pzs=True,
+            cleanup_policy_dry_run=True,
         )
         response = client.get_repository(request)
 
@@ -4338,6 +4343,10 @@ def test_get_repository(request_type, transport: str = "grpc"):
     assert response.format_ == repository.Repository.Format.DOCKER
     assert response.description == "description_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.mode == repository.Repository.Mode.STANDARD_REPOSITORY
+    assert response.size_bytes == 1089
+    assert response.satisfies_pzs is True
+    assert response.cleanup_policy_dry_run is True
 
 
 def test_get_repository_empty_call():
@@ -4378,6 +4387,10 @@ async def test_get_repository_async(
                 format_=repository.Repository.Format.DOCKER,
                 description="description_value",
                 kms_key_name="kms_key_name_value",
+                mode=repository.Repository.Mode.STANDARD_REPOSITORY,
+                size_bytes=1089,
+                satisfies_pzs=True,
+                cleanup_policy_dry_run=True,
             )
         )
         response = await client.get_repository(request)
@@ -4393,6 +4406,10 @@ async def test_get_repository_async(
     assert response.format_ == repository.Repository.Format.DOCKER
     assert response.description == "description_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.mode == repository.Repository.Mode.STANDARD_REPOSITORY
+    assert response.size_bytes == 1089
+    assert response.satisfies_pzs is True
+    assert response.cleanup_policy_dry_run is True
 
 
 @pytest.mark.asyncio
@@ -4854,6 +4871,10 @@ def test_update_repository(request_type, transport: str = "grpc"):
             format_=gda_repository.Repository.Format.DOCKER,
             description="description_value",
             kms_key_name="kms_key_name_value",
+            mode=gda_repository.Repository.Mode.STANDARD_REPOSITORY,
+            size_bytes=1089,
+            satisfies_pzs=True,
+            cleanup_policy_dry_run=True,
         )
         response = client.update_repository(request)
 
@@ -4868,6 +4889,10 @@ def test_update_repository(request_type, transport: str = "grpc"):
     assert response.format_ == gda_repository.Repository.Format.DOCKER
     assert response.description == "description_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.mode == gda_repository.Repository.Mode.STANDARD_REPOSITORY
+    assert response.size_bytes == 1089
+    assert response.satisfies_pzs is True
+    assert response.cleanup_policy_dry_run is True
 
 
 def test_update_repository_empty_call():
@@ -4912,6 +4937,10 @@ async def test_update_repository_async(
                 format_=gda_repository.Repository.Format.DOCKER,
                 description="description_value",
                 kms_key_name="kms_key_name_value",
+                mode=gda_repository.Repository.Mode.STANDARD_REPOSITORY,
+                size_bytes=1089,
+                satisfies_pzs=True,
+                cleanup_policy_dry_run=True,
             )
         )
         response = await client.update_repository(request)
@@ -4927,6 +4956,10 @@ async def test_update_repository_async(
     assert response.format_ == gda_repository.Repository.Format.DOCKER
     assert response.description == "description_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.mode == gda_repository.Repository.Mode.STANDARD_REPOSITORY
+    assert response.size_bytes == 1089
+    assert response.satisfies_pzs is True
+    assert response.cleanup_policy_dry_run is True
 
 
 @pytest.mark.asyncio
@@ -7116,6 +7149,256 @@ async def test_delete_version_flattened_error_async():
         await client.delete_version(
             version.DeleteVersionRequest(),
             name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        version.BatchDeleteVersionsRequest,
+        dict,
+    ],
+)
+def test_batch_delete_versions(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_versions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.batch_delete_versions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == version.BatchDeleteVersionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_batch_delete_versions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_versions), "__call__"
+    ) as call:
+        client.batch_delete_versions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == version.BatchDeleteVersionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_batch_delete_versions_async(
+    transport: str = "grpc_asyncio", request_type=version.BatchDeleteVersionsRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_versions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.batch_delete_versions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == version.BatchDeleteVersionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_batch_delete_versions_async_from_dict():
+    await test_batch_delete_versions_async(request_type=dict)
+
+
+def test_batch_delete_versions_field_headers():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = version.BatchDeleteVersionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_versions), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.batch_delete_versions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_batch_delete_versions_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = version.BatchDeleteVersionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_versions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.batch_delete_versions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_batch_delete_versions_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_versions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.batch_delete_versions(
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].names
+        mock_val = ["names_value"]
+        assert arg == mock_val
+
+
+def test_batch_delete_versions_flattened_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_delete_versions(
+            version.BatchDeleteVersionsRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_delete_versions_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_versions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.batch_delete_versions(
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].names
+        mock_val = ["names_value"]
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_batch_delete_versions_flattened_error_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.batch_delete_versions(
+            version.BatchDeleteVersionsRequest(),
+            parent="parent_value",
+            names=["names_value"],
         )
 
 
@@ -10710,8 +10993,9 @@ def test_list_docker_images_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.ListDockerImagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.ListDockerImagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10794,8 +11078,9 @@ def test_list_docker_images_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = artifact.ListDockerImagesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = artifact.ListDockerImagesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10931,8 +11216,9 @@ def test_list_docker_images_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.ListDockerImagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.ListDockerImagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11060,8 +11346,9 @@ def test_get_docker_image_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.DockerImage.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.DockerImage.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11140,8 +11427,9 @@ def test_get_docker_image_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = artifact.DockerImage.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = artifact.DockerImage.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11266,8 +11554,9 @@ def test_get_docker_image_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.DockerImage.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.DockerImage.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11332,8 +11621,9 @@ def test_list_maven_artifacts_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.ListMavenArtifactsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.ListMavenArtifactsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11415,8 +11705,9 @@ def test_list_maven_artifacts_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = artifact.ListMavenArtifactsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = artifact.ListMavenArtifactsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11551,8 +11842,9 @@ def test_list_maven_artifacts_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.ListMavenArtifactsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.ListMavenArtifactsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11682,8 +11974,9 @@ def test_get_maven_artifact_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.MavenArtifact.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.MavenArtifact.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11762,8 +12055,9 @@ def test_get_maven_artifact_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = artifact.MavenArtifact.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = artifact.MavenArtifact.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11892,8 +12186,9 @@ def test_get_maven_artifact_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.MavenArtifact.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.MavenArtifact.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11958,8 +12253,9 @@ def test_list_npm_packages_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.ListNpmPackagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.ListNpmPackagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12041,8 +12337,9 @@ def test_list_npm_packages_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = artifact.ListNpmPackagesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = artifact.ListNpmPackagesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12177,8 +12474,9 @@ def test_list_npm_packages_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.ListNpmPackagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.ListNpmPackagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12305,8 +12603,9 @@ def test_get_npm_package_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.NpmPackage.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.NpmPackage.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12384,8 +12683,9 @@ def test_get_npm_package_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = artifact.NpmPackage.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = artifact.NpmPackage.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12510,8 +12810,9 @@ def test_get_npm_package_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.NpmPackage.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.NpmPackage.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12576,8 +12877,9 @@ def test_list_python_packages_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.ListPythonPackagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.ListPythonPackagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12659,8 +12961,9 @@ def test_list_python_packages_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = artifact.ListPythonPackagesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = artifact.ListPythonPackagesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12795,8 +13098,9 @@ def test_list_python_packages_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.ListPythonPackagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.ListPythonPackagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12925,8 +13229,9 @@ def test_get_python_package_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.PythonPackage.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.PythonPackage.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13004,8 +13309,9 @@ def test_get_python_package_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = artifact.PythonPackage.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = artifact.PythonPackage.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13134,8 +13440,9 @@ def test_get_python_package_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = artifact.PythonPackage.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = artifact.PythonPackage.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13448,8 +13755,9 @@ def test_list_repositories_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repository.ListRepositoriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repository.ListRepositoriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13531,8 +13839,9 @@ def test_list_repositories_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = repository.ListRepositoriesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = repository.ListRepositoriesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13665,8 +13974,9 @@ def test_list_repositories_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repository.ListRepositoriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repository.ListRepositoriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13786,13 +14096,18 @@ def test_get_repository_rest(request_type):
             format_=repository.Repository.Format.DOCKER,
             description="description_value",
             kms_key_name="kms_key_name_value",
+            mode=repository.Repository.Mode.STANDARD_REPOSITORY,
+            size_bytes=1089,
+            satisfies_pzs=True,
+            cleanup_policy_dry_run=True,
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repository.Repository.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repository.Repository.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13804,6 +14119,10 @@ def test_get_repository_rest(request_type):
     assert response.format_ == repository.Repository.Format.DOCKER
     assert response.description == "description_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.mode == repository.Repository.Mode.STANDARD_REPOSITORY
+    assert response.size_bytes == 1089
+    assert response.satisfies_pzs is True
+    assert response.cleanup_policy_dry_run is True
 
 
 def test_get_repository_rest_required_fields(
@@ -13870,8 +14189,9 @@ def test_get_repository_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = repository.Repository.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = repository.Repository.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13998,8 +14318,9 @@ def test_get_repository_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = repository.Repository.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = repository.Repository.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14054,6 +14375,37 @@ def test_create_repository_rest(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["repository"] = {
         "maven_config": {"allow_snapshot_overwrites": True, "version_policy": 1},
+        "docker_config": {"immutable_tags": True},
+        "virtual_repository_config": {
+            "upstream_policies": [
+                {"id": "id_value", "repository": "repository_value", "priority": 898}
+            ]
+        },
+        "remote_repository_config": {
+            "docker_repository": {"public_repository": 1},
+            "maven_repository": {"public_repository": 1},
+            "npm_repository": {"public_repository": 1},
+            "python_repository": {"public_repository": 1},
+            "apt_repository": {
+                "public_repository": {
+                    "repository_base": 1,
+                    "repository_path": "repository_path_value",
+                }
+            },
+            "yum_repository": {
+                "public_repository": {
+                    "repository_base": 1,
+                    "repository_path": "repository_path_value",
+                }
+            },
+            "description": "description_value",
+            "upstream_credentials": {
+                "username_password_credentials": {
+                    "username": "username_value",
+                    "password_secret_version": "password_secret_version_value",
+                }
+            },
+        },
         "name": "name_value",
         "format_": 1,
         "description": "description_value",
@@ -14061,7 +14413,79 @@ def test_create_repository_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "kms_key_name": "kms_key_name_value",
+        "mode": 1,
+        "cleanup_policies": {},
+        "size_bytes": 1089,
+        "satisfies_pzs": True,
+        "cleanup_policy_dry_run": True,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gda_repository.CreateRepositoryRequest.meta.fields["repository"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["repository"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["repository"][field])):
+                    del request_init["repository"][field][i][subfield]
+            else:
+                del request_init["repository"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14260,16 +14684,6 @@ def test_create_repository_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["repository"] = {
-        "maven_config": {"allow_snapshot_overwrites": True, "version_policy": 1},
-        "name": "name_value",
-        "format_": 1,
-        "description": "description_value",
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "kms_key_name": "kms_key_name_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -14378,6 +14792,37 @@ def test_update_repository_rest(request_type):
     }
     request_init["repository"] = {
         "maven_config": {"allow_snapshot_overwrites": True, "version_policy": 1},
+        "docker_config": {"immutable_tags": True},
+        "virtual_repository_config": {
+            "upstream_policies": [
+                {"id": "id_value", "repository": "repository_value", "priority": 898}
+            ]
+        },
+        "remote_repository_config": {
+            "docker_repository": {"public_repository": 1},
+            "maven_repository": {"public_repository": 1},
+            "npm_repository": {"public_repository": 1},
+            "python_repository": {"public_repository": 1},
+            "apt_repository": {
+                "public_repository": {
+                    "repository_base": 1,
+                    "repository_path": "repository_path_value",
+                }
+            },
+            "yum_repository": {
+                "public_repository": {
+                    "repository_base": 1,
+                    "repository_path": "repository_path_value",
+                }
+            },
+            "description": "description_value",
+            "upstream_credentials": {
+                "username_password_credentials": {
+                    "username": "username_value",
+                    "password_secret_version": "password_secret_version_value",
+                }
+            },
+        },
         "name": "projects/sample1/locations/sample2/repositories/sample3",
         "format_": 1,
         "description": "description_value",
@@ -14385,7 +14830,79 @@ def test_update_repository_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "kms_key_name": "kms_key_name_value",
+        "mode": 1,
+        "cleanup_policies": {},
+        "size_bytes": 1089,
+        "satisfies_pzs": True,
+        "cleanup_policy_dry_run": True,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gda_repository.UpdateRepositoryRequest.meta.fields["repository"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["repository"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["repository"][field])):
+                    del request_init["repository"][field][i][subfield]
+            else:
+                del request_init["repository"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14396,13 +14913,18 @@ def test_update_repository_rest(request_type):
             format_=gda_repository.Repository.Format.DOCKER,
             description="description_value",
             kms_key_name="kms_key_name_value",
+            mode=gda_repository.Repository.Mode.STANDARD_REPOSITORY,
+            size_bytes=1089,
+            satisfies_pzs=True,
+            cleanup_policy_dry_run=True,
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gda_repository.Repository.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gda_repository.Repository.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14414,6 +14936,10 @@ def test_update_repository_rest(request_type):
     assert response.format_ == gda_repository.Repository.Format.DOCKER
     assert response.description == "description_value"
     assert response.kms_key_name == "kms_key_name_value"
+    assert response.mode == gda_repository.Repository.Mode.STANDARD_REPOSITORY
+    assert response.size_bytes == 1089
+    assert response.satisfies_pzs is True
+    assert response.cleanup_policy_dry_run is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -14487,16 +15013,6 @@ def test_update_repository_rest_bad_request(
             "name": "projects/sample1/locations/sample2/repositories/sample3"
         }
     }
-    request_init["repository"] = {
-        "maven_config": {"allow_snapshot_overwrites": True, "version_policy": 1},
-        "name": "projects/sample1/locations/sample2/repositories/sample3",
-        "format_": 1,
-        "description": "description_value",
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "kms_key_name": "kms_key_name_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -14543,8 +15059,9 @@ def test_update_repository_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gda_repository.Repository.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gda_repository.Repository.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14879,8 +15396,9 @@ def test_list_packages_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = package.ListPackagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = package.ListPackagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14960,8 +15478,9 @@ def test_list_packages_rest_required_fields(request_type=package.ListPackagesReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = package.ListPackagesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = package.ListPackagesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15094,8 +15613,9 @@ def test_list_packages_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = package.ListPackagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = package.ListPackagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15220,8 +15740,9 @@ def test_get_package_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = package.Package.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = package.Package.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15295,8 +15816,9 @@ def test_get_package_rest_required_fields(request_type=package.GetPackageRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = package.Package.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = package.Package.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15421,8 +15943,9 @@ def test_get_package_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = package.Package.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = package.Package.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15754,8 +16277,9 @@ def test_list_versions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = version.ListVersionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = version.ListVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15872,8 +16396,9 @@ def test_list_versions_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = version.ListVersionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = version.ListVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15998,8 +16523,9 @@ def test_get_version_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = version.Version.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = version.Version.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16115,8 +16641,9 @@ def test_get_version_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = version.Version.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = version.Version.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16340,6 +16867,278 @@ def test_delete_version_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        version.BatchDeleteVersionsRequest,
+        dict,
+    ],
+)
+def test_batch_delete_versions_rest(request_type):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_delete_versions(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_batch_delete_versions_rest_required_fields(
+    request_type=version.BatchDeleteVersionsRequest,
+):
+    transport_class = transports.ArtifactRegistryRestTransport
+
+    request_init = {}
+    request_init["names"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_delete_versions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["names"] = "names_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_delete_versions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "names" in jsonified_request
+    assert jsonified_request["names"] == "names_value"
+
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_delete_versions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_delete_versions_rest_unset_required_fields():
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_delete_versions._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("names",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_delete_versions_rest_interceptors(null_interceptor):
+    transport = transports.ArtifactRegistryRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ArtifactRegistryRestInterceptor(),
+    )
+    client = ArtifactRegistryClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "post_batch_delete_versions"
+    ) as post, mock.patch.object(
+        transports.ArtifactRegistryRestInterceptor, "pre_batch_delete_versions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = version.BatchDeleteVersionsRequest.pb(
+            version.BatchDeleteVersionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = version.BatchDeleteVersionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_delete_versions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_delete_versions_rest_bad_request(
+    transport: str = "rest", request_type=version.BatchDeleteVersionsRequest
+):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_delete_versions(request)
+
+
+def test_batch_delete_versions_rest_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            names=["names_value"],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.batch_delete_versions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/repositories/*/packages/*}/versions:batchDelete"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_batch_delete_versions_rest_flattened_error(transport: str = "rest"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.batch_delete_versions(
+            version.BatchDeleteVersionsRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+def test_batch_delete_versions_rest_error():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         file.ListFilesRequest,
         dict,
     ],
@@ -16364,8 +17163,9 @@ def test_list_files_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = file.ListFilesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = file.ListFilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16447,8 +17247,9 @@ def test_list_files_rest_required_fields(request_type=file.ListFilesRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = file.ListFilesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = file.ListFilesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16583,8 +17384,9 @@ def test_list_files_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = file.ListFilesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = file.ListFilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16710,8 +17512,9 @@ def test_get_file_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = file.File.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = file.File.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16786,8 +17589,9 @@ def test_get_file_rest_required_fields(request_type=file.GetFileRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = file.File.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = file.File.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16912,8 +17716,9 @@ def test_get_file_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = file.File.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = file.File.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16980,8 +17785,9 @@ def test_list_tags_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tag.ListTagsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tag.ListTagsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17096,8 +17902,9 @@ def test_list_tags_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tag.ListTagsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tag.ListTagsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17222,8 +18029,9 @@ def test_get_tag_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tag.Tag.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17339,8 +18147,9 @@ def test_get_tag_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tag.Tag.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17396,6 +18205,73 @@ def test_create_tag_rest(request_type):
         "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
     }
     request_init["tag"] = {"name": "name_value", "version": "version_value"}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gda_tag.CreateTagRequest.meta.fields["tag"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["tag"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["tag"][field])):
+                    del request_init["tag"][field][i][subfield]
+            else:
+                del request_init["tag"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17409,8 +18285,9 @@ def test_create_tag_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gda_tag.Tag.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gda_tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17487,7 +18364,6 @@ def test_create_tag_rest_bad_request(
     request_init = {
         "parent": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4"
     }
-    request_init["tag"] = {"name": "name_value", "version": "version_value"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -17529,8 +18405,9 @@ def test_create_tag_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gda_tag.Tag.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gda_tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17593,6 +18470,73 @@ def test_update_tag_rest(request_type):
         "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5",
         "version": "version_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gda_tag.UpdateTagRequest.meta.fields["tag"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["tag"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["tag"][field])):
+                    del request_init["tag"][field][i][subfield]
+            else:
+                del request_init["tag"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17606,8 +18550,9 @@ def test_update_tag_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gda_tag.Tag.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gda_tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17686,10 +18631,6 @@ def test_update_tag_rest_bad_request(
             "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5"
         }
     }
-    request_init["tag"] = {
-        "name": "projects/sample1/locations/sample2/repositories/sample3/packages/sample4/tags/sample5",
-        "version": "version_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -17732,8 +18673,9 @@ def test_update_tag_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gda_tag.Tag.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gda_tag.Tag.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17975,8 +18917,7 @@ def test_set_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18053,8 +18994,7 @@ def test_set_iam_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = return_value
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18198,8 +19138,7 @@ def test_get_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18277,8 +19216,7 @@ def test_get_iam_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = return_value
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18413,8 +19351,7 @@ def test_test_iam_permissions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18494,8 +19431,7 @@ def test_test_iam_permissions_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = return_value
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18639,8 +19575,9 @@ def test_get_project_settings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = settings.ProjectSettings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = settings.ProjectSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18719,8 +19656,9 @@ def test_get_project_settings_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = settings.ProjectSettings.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = settings.ProjectSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18845,8 +19783,9 @@ def test_get_project_settings_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = settings.ProjectSettings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = settings.ProjectSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -18901,6 +19840,73 @@ def test_update_project_settings_rest(request_type):
         "name": "projects/sample1/projectSettings",
         "legacy_redirection_state": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = settings.UpdateProjectSettingsRequest.meta.fields["project_settings"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["project_settings"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["project_settings"][field])):
+                    del request_init["project_settings"][field][i][subfield]
+            else:
+                del request_init["project_settings"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18914,8 +19920,9 @@ def test_update_project_settings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = settings.ProjectSettings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = settings.ProjectSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18997,10 +20004,6 @@ def test_update_project_settings_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project_settings": {"name": "projects/sample1/projectSettings"}}
-    request_init["project_settings"] = {
-        "name": "projects/sample1/projectSettings",
-        "legacy_redirection_state": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -19041,8 +20044,9 @@ def test_update_project_settings_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = settings.ProjectSettings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = settings.ProjectSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19109,8 +20113,9 @@ def test_get_vpcsc_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vpcsc_config.VPCSCConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vpcsc_config.VPCSCConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19186,8 +20191,9 @@ def test_get_vpcsc_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vpcsc_config.VPCSCConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vpcsc_config.VPCSCConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19312,8 +20318,9 @@ def test_get_vpcsc_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vpcsc_config.VPCSCConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vpcsc_config.VPCSCConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19371,6 +20378,73 @@ def test_update_vpcsc_config_rest(request_type):
         "name": "projects/sample1/locations/sample2/vpcscConfig",
         "vpcsc_policy": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gda_vpcsc_config.UpdateVPCSCConfigRequest.meta.fields["vpcsc_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["vpcsc_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["vpcsc_config"][field])):
+                    del request_init["vpcsc_config"][field][i][subfield]
+            else:
+                del request_init["vpcsc_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19384,8 +20458,9 @@ def test_update_vpcsc_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gda_vpcsc_config.VPCSCConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gda_vpcsc_config.VPCSCConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19466,10 +20541,6 @@ def test_update_vpcsc_config_rest_bad_request(
     request_init = {
         "vpcsc_config": {"name": "projects/sample1/locations/sample2/vpcscConfig"}
     }
-    request_init["vpcsc_config"] = {
-        "name": "projects/sample1/locations/sample2/vpcscConfig",
-        "vpcsc_policy": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -19510,8 +20581,9 @@ def test_update_vpcsc_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gda_vpcsc_config.VPCSCConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gda_vpcsc_config.VPCSCConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19710,6 +20782,7 @@ def test_artifact_registry_base_transport():
         "list_versions",
         "get_version",
         "delete_version",
+        "batch_delete_versions",
         "list_files",
         "get_file",
         "list_tags",
@@ -20081,6 +21154,9 @@ def test_artifact_registry_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.delete_version._session
     session2 = client2.transport.delete_version._session
+    assert session1 != session2
+    session1 = client1.transport.batch_delete_versions._session
+    session2 = client2.transport.batch_delete_versions._session
     assert session1 != session2
     session1 = client1.transport.list_files._session
     session2 = client2.transport.list_files._session
@@ -20547,12 +21623,38 @@ def test_parse_repository_path():
     assert expected == actual
 
 
-def test_tag_path():
+def test_secret_version_path():
     project = "oyster"
-    location = "nudibranch"
-    repository = "cuttlefish"
-    package = "mussel"
-    tag = "winkle"
+    secret = "nudibranch"
+    secret_version = "cuttlefish"
+    expected = "projects/{project}/secrets/{secret}/versions/{secret_version}".format(
+        project=project,
+        secret=secret,
+        secret_version=secret_version,
+    )
+    actual = ArtifactRegistryClient.secret_version_path(project, secret, secret_version)
+    assert expected == actual
+
+
+def test_parse_secret_version_path():
+    expected = {
+        "project": "mussel",
+        "secret": "winkle",
+        "secret_version": "nautilus",
+    }
+    path = ArtifactRegistryClient.secret_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ArtifactRegistryClient.parse_secret_version_path(path)
+    assert expected == actual
+
+
+def test_tag_path():
+    project = "scallop"
+    location = "abalone"
+    repository = "squid"
+    package = "clam"
+    tag = "whelk"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/packages/{package}/tags/{tag}".format(
         project=project,
         location=location,
@@ -20568,11 +21670,11 @@ def test_tag_path():
 
 def test_parse_tag_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "repository": "abalone",
-        "package": "squid",
-        "tag": "clam",
+        "project": "octopus",
+        "location": "oyster",
+        "repository": "nudibranch",
+        "package": "cuttlefish",
+        "tag": "mussel",
     }
     path = ArtifactRegistryClient.tag_path(**expected)
 
@@ -20582,11 +21684,11 @@ def test_parse_tag_path():
 
 
 def test_version_path():
-    project = "whelk"
-    location = "octopus"
-    repository = "oyster"
-    package = "nudibranch"
-    version = "cuttlefish"
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
+    package = "abalone"
+    version = "squid"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/packages/{package}/versions/{version}".format(
         project=project,
         location=location,
@@ -20602,11 +21704,11 @@ def test_version_path():
 
 def test_parse_version_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "repository": "nautilus",
-        "package": "scallop",
-        "version": "abalone",
+        "project": "clam",
+        "location": "whelk",
+        "repository": "octopus",
+        "package": "oyster",
+        "version": "nudibranch",
     }
     path = ArtifactRegistryClient.version_path(**expected)
 
@@ -20616,8 +21718,8 @@ def test_parse_version_path():
 
 
 def test_vpcsc_config_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}/vpcscConfig".format(
         project=project,
         location=location,
@@ -20628,8 +21730,8 @@ def test_vpcsc_config_path():
 
 def test_parse_vpcsc_config_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = ArtifactRegistryClient.vpcsc_config_path(**expected)
 
@@ -20639,10 +21741,10 @@ def test_parse_vpcsc_config_path():
 
 
 def test_yum_artifact_path():
-    project = "oyster"
-    location = "nudibranch"
-    repository = "cuttlefish"
-    yum_artifact = "mussel"
+    project = "scallop"
+    location = "abalone"
+    repository = "squid"
+    yum_artifact = "clam"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/yumArtifacts/{yum_artifact}".format(
         project=project,
         location=location,
@@ -20657,10 +21759,10 @@ def test_yum_artifact_path():
 
 def test_parse_yum_artifact_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "repository": "scallop",
-        "yum_artifact": "abalone",
+        "project": "whelk",
+        "location": "octopus",
+        "repository": "oyster",
+        "yum_artifact": "nudibranch",
     }
     path = ArtifactRegistryClient.yum_artifact_path(**expected)
 
@@ -20670,7 +21772,7 @@ def test_parse_yum_artifact_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -20680,7 +21782,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "mussel",
     }
     path = ArtifactRegistryClient.common_billing_account_path(**expected)
 
@@ -20690,7 +21792,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -20700,7 +21802,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nautilus",
     }
     path = ArtifactRegistryClient.common_folder_path(**expected)
 
@@ -20710,7 +21812,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -20720,7 +21822,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "abalone",
     }
     path = ArtifactRegistryClient.common_organization_path(**expected)
 
@@ -20730,7 +21832,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -20740,7 +21842,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "clam",
     }
     path = ArtifactRegistryClient.common_project_path(**expected)
 
@@ -20750,8 +21852,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -20762,8 +21864,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = ArtifactRegistryClient.common_location_path(**expected)
 

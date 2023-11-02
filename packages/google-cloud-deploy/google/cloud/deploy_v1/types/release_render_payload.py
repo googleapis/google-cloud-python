@@ -19,6 +19,8 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.cloud.deploy_v1.types import cloud_deploy
+
 __protobuf__ = proto.module(
     package="google.cloud.deploy.v1",
     manifest={
@@ -37,7 +39,9 @@ class ReleaseRenderEvent(proto.Message):
             occurs. Provides further details as rendering
             progresses through render states.
         release (str):
-            The name of the ``Release``.
+            The name of the release.
+        release_render_state (google.cloud.deploy_v1.types.Release.RenderState):
+            The state of the release render.
     """
 
     message: str = proto.Field(
@@ -47,6 +51,11 @@ class ReleaseRenderEvent(proto.Message):
     release: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    release_render_state: cloud_deploy.Release.RenderState = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=cloud_deploy.Release.RenderState,
     )
 
 

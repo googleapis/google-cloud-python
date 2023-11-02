@@ -27,7 +27,7 @@ description = "Google Cloud Datacatalog Lineage API client library"
 
 version = {}
 with open(
-    os.path.join(package_root, "google/cloud/datacatalog/lineage/gapic_version.py")
+    os.path.join(package_root, "google/cloud/datacatalog_lineage/gapic_version.py")
 ) as fp:
     exec(fp.read(), version)
 version = version["__version__"]
@@ -57,7 +57,7 @@ packages = [
     if package.startswith("google")
 ]
 
-namespaces = ["google", "google.cloud", "google.cloud.datacatalog"]
+namespaces = ["google", "google.cloud"]
 
 setuptools.setup(
     name=name,

@@ -86,6 +86,14 @@ class DlpServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_discovery_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_discovery_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_dlp_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -130,6 +138,10 @@ class DlpServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_discovery_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_dlp_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -155,6 +167,14 @@ class DlpServiceRestInterceptor:
                 return request, metadata
 
             def post_get_deidentify_template(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_discovery_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_discovery_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -222,6 +242,14 @@ class DlpServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_discovery_configs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_discovery_configs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_dlp_jobs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -283,6 +311,14 @@ class DlpServiceRestInterceptor:
                 return request, metadata
 
             def post_update_deidentify_template(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_discovery_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_discovery_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -363,6 +399,29 @@ class DlpServiceRestInterceptor:
         self, response: dlp.DeidentifyTemplate
     ) -> dlp.DeidentifyTemplate:
         """Post-rpc interceptor for create_deidentify_template
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_discovery_config(
+        self,
+        request: dlp.CreateDiscoveryConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.CreateDiscoveryConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_discovery_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_create_discovery_config(
+        self, response: dlp.DiscoveryConfig
+    ) -> dlp.DiscoveryConfig:
+        """Post-rpc interceptor for create_discovery_config
 
         Override in a subclass to manipulate the response
         after it is returned by the DlpService server but before
@@ -487,6 +546,18 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_discovery_config(
+        self,
+        request: dlp.DeleteDiscoveryConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.DeleteDiscoveryConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_discovery_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
     def pre_delete_dlp_job(
         self, request: dlp.DeleteDlpJobRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[dlp.DeleteDlpJobRequest, Sequence[Tuple[str, str]]]:
@@ -557,6 +628,29 @@ class DlpServiceRestInterceptor:
         self, response: dlp.DeidentifyTemplate
     ) -> dlp.DeidentifyTemplate:
         """Post-rpc interceptor for get_deidentify_template
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_discovery_config(
+        self,
+        request: dlp.GetDiscoveryConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.GetDiscoveryConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_discovery_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_get_discovery_config(
+        self, response: dlp.DiscoveryConfig
+    ) -> dlp.DiscoveryConfig:
+        """Post-rpc interceptor for get_discovery_config
 
         Override in a subclass to manipulate the response
         after it is returned by the DlpService server but before
@@ -736,6 +830,29 @@ class DlpServiceRestInterceptor:
         """
         return response
 
+    def pre_list_discovery_configs(
+        self,
+        request: dlp.ListDiscoveryConfigsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.ListDiscoveryConfigsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_discovery_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_list_discovery_configs(
+        self, response: dlp.ListDiscoveryConfigsResponse
+    ) -> dlp.ListDiscoveryConfigsResponse:
+        """Post-rpc interceptor for list_discovery_configs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_dlp_jobs(
         self, request: dlp.ListDlpJobsRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[dlp.ListDlpJobsRequest, Sequence[Tuple[str, str]]]:
@@ -903,6 +1020,29 @@ class DlpServiceRestInterceptor:
         self, response: dlp.DeidentifyTemplate
     ) -> dlp.DeidentifyTemplate:
         """Post-rpc interceptor for update_deidentify_template
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_discovery_config(
+        self,
+        request: dlp.UpdateDiscoveryConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.UpdateDiscoveryConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_discovery_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_update_discovery_config(
+        self, response: dlp.DiscoveryConfig
+    ) -> dlp.DiscoveryConfig:
+        """Post-rpc interceptor for update_discovery_config
 
         Override in a subclass to manipulate the response
         after it is returned by the DlpService server but before
@@ -1393,6 +1533,116 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_deidentify_template(resp)
+            return resp
+
+    class _CreateDiscoveryConfig(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("CreateDiscoveryConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.CreateDiscoveryConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.DiscoveryConfig:
+            r"""Call the create discovery config method over HTTP.
+
+            Args:
+                request (~.dlp.CreateDiscoveryConfigRequest):
+                    The request object. Request message for
+                CreateDiscoveryConfig.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.DiscoveryConfig:
+                    Configuration for discovery to scan resources for
+                profile generation. Only one discovery configuration may
+                exist per organization, folder, or project.
+
+                The generated data profiles are retained according to
+                the [data retention policy]
+                (https://cloud.google.com/dlp/docs/data-profiles#retention).
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=projects/*/locations/*}/discoveryConfigs",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/discoveryConfigs",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_discovery_config(
+                request, metadata
+            )
+            pb_request = dlp.CreateDiscoveryConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.DiscoveryConfig()
+            pb_resp = dlp.DiscoveryConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_discovery_config(resp)
             return resp
 
     class _CreateDlpJob(DlpServiceRestStub):
@@ -2031,6 +2281,87 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteDiscoveryConfig(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteDiscoveryConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.DeleteDiscoveryConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete discovery config method over HTTP.
+
+            Args:
+                request (~.dlp.DeleteDiscoveryConfigRequest):
+                    The request object. Request message for
+                DeleteDiscoveryConfig.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=projects/*/locations/*/discoveryConfigs/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=organizations/*/locations/*/discoveryConfigs/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_discovery_config(
+                request, metadata
+            )
+            pb_request = dlp.DeleteDiscoveryConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteDlpJob(DlpServiceRestStub):
         def __hash__(self):
             return hash("DeleteDlpJob")
@@ -2560,6 +2891,106 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_deidentify_template(resp)
+            return resp
+
+    class _GetDiscoveryConfig(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("GetDiscoveryConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.GetDiscoveryConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.DiscoveryConfig:
+            r"""Call the get discovery config method over HTTP.
+
+            Args:
+                request (~.dlp.GetDiscoveryConfigRequest):
+                    The request object. Request message for
+                GetDiscoveryConfig.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.DiscoveryConfig:
+                    Configuration for discovery to scan resources for
+                profile generation. Only one discovery configuration may
+                exist per organization, folder, or project.
+
+                The generated data profiles are retained according to
+                the [data retention policy]
+                (https://cloud.google.com/dlp/docs/data-profiles#retention).
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=projects/*/locations/*/discoveryConfigs/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=organizations/*/locations/*/discoveryConfigs/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_discovery_config(
+                request, metadata
+            )
+            pb_request = dlp.GetDiscoveryConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.DiscoveryConfig()
+            pb_resp = dlp.DiscoveryConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_discovery_config(resp)
             return resp
 
     class _GetDlpJob(DlpServiceRestStub):
@@ -3358,6 +3789,101 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_deidentify_templates(resp)
             return resp
 
+    class _ListDiscoveryConfigs(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("ListDiscoveryConfigs")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.ListDiscoveryConfigsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.ListDiscoveryConfigsResponse:
+            r"""Call the list discovery configs method over HTTP.
+
+            Args:
+                request (~.dlp.ListDiscoveryConfigsRequest):
+                    The request object. Request message for
+                ListDiscoveryConfigs.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.ListDiscoveryConfigsResponse:
+                    Response message for
+                ListDiscoveryConfigs.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/discoveryConfigs",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/discoveryConfigs",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_discovery_configs(
+                request, metadata
+            )
+            pb_request = dlp.ListDiscoveryConfigsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.ListDiscoveryConfigsResponse()
+            pb_resp = dlp.ListDiscoveryConfigsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_discovery_configs(resp)
+            return resp
+
     class _ListDlpJobs(DlpServiceRestStub):
         def __hash__(self):
             return hash("ListDlpJobs")
@@ -4150,6 +4676,116 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_update_deidentify_template(resp)
             return resp
 
+    class _UpdateDiscoveryConfig(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateDiscoveryConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.UpdateDiscoveryConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.DiscoveryConfig:
+            r"""Call the update discovery config method over HTTP.
+
+            Args:
+                request (~.dlp.UpdateDiscoveryConfigRequest):
+                    The request object. Request message for
+                UpdateDiscoveryConfig.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.DiscoveryConfig:
+                    Configuration for discovery to scan resources for
+                profile generation. Only one discovery configuration may
+                exist per organization, folder, or project.
+
+                The generated data profiles are retained according to
+                the [data retention policy]
+                (https://cloud.google.com/dlp/docs/data-profiles#retention).
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v2/{name=projects/*/locations/*/discoveryConfigs/*}",
+                    "body": "*",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v2/{name=organizations/*/locations/*/discoveryConfigs/*}",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_discovery_config(
+                request, metadata
+            )
+            pb_request = dlp.UpdateDiscoveryConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.DiscoveryConfig()
+            pb_resp = dlp.DiscoveryConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_discovery_config(resp)
+            return resp
+
     class _UpdateInspectTemplate(DlpServiceRestStub):
         def __hash__(self):
             return hash("UpdateInspectTemplate")
@@ -4520,6 +5156,14 @@ class DlpServiceRestTransport(DlpServiceTransport):
         return self._CreateDeidentifyTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_discovery_config(
+        self,
+    ) -> Callable[[dlp.CreateDiscoveryConfigRequest], dlp.DiscoveryConfig]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateDiscoveryConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_dlp_job(self) -> Callable[[dlp.CreateDlpJobRequest], dlp.DlpJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -4566,6 +5210,14 @@ class DlpServiceRestTransport(DlpServiceTransport):
         return self._DeleteDeidentifyTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_discovery_config(
+        self,
+    ) -> Callable[[dlp.DeleteDiscoveryConfigRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteDiscoveryConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_dlp_job(self) -> Callable[[dlp.DeleteDlpJobRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -4608,6 +5260,14 @@ class DlpServiceRestTransport(DlpServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeidentifyTemplate(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_discovery_config(
+        self,
+    ) -> Callable[[dlp.GetDiscoveryConfigRequest], dlp.DiscoveryConfig]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetDiscoveryConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_dlp_job(self) -> Callable[[dlp.GetDlpJobRequest], dlp.DlpJob]:
@@ -4672,6 +5332,14 @@ class DlpServiceRestTransport(DlpServiceTransport):
         return self._ListDeidentifyTemplates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_discovery_configs(
+        self,
+    ) -> Callable[[dlp.ListDiscoveryConfigsRequest], dlp.ListDiscoveryConfigsResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListDiscoveryConfigs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_dlp_jobs(
         self,
     ) -> Callable[[dlp.ListDlpJobsRequest], dlp.ListDlpJobsResponse]:
@@ -4734,6 +5402,14 @@ class DlpServiceRestTransport(DlpServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDeidentifyTemplate(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_discovery_config(
+        self,
+    ) -> Callable[[dlp.UpdateDiscoveryConfigRequest], dlp.DiscoveryConfig]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateDiscoveryConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_inspect_template(
