@@ -5251,6 +5251,7 @@ def test_create_build_rest(request_type):
                 "bucket": "bucket_value",
                 "object_": "object__value",
                 "generation": 1068,
+                "source_fetcher": 1,
             },
             "repo_source": {
                 "project_id": "project_id_value",
@@ -7277,6 +7278,7 @@ def test_create_build_trigger_rest(request_type):
                     "bucket": "bucket_value",
                     "object_": "object__value",
                     "generation": 1068,
+                    "source_fetcher": 1,
                 },
                 "repo_source": {},
                 "git_source": {
@@ -8798,6 +8800,7 @@ def test_update_build_trigger_rest(request_type):
                     "bucket": "bucket_value",
                     "object_": "object__value",
                     "generation": 1068,
+                    "source_fetcher": 1,
                 },
                 "repo_source": {},
                 "git_source": {
