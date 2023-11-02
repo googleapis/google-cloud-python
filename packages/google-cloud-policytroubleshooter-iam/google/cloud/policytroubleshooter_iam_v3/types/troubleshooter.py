@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.iam.v2 import policy_pb2  # type: ignore
+from google.cloud.iam_v2 import Policy  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -954,7 +954,7 @@ class ExplainedDenyPolicy(proto.Message):
             whether the principal actually has the permission, use the
             ``overall_access_state`` field in the
             [TroubleshootIamPolicyResponse][google.cloud.policytroubleshooter.iam.v3.TroubleshootIamPolicyResponse].
-        policy (google.iam.v2.policy_pb2.Policy):
+        policy (google.cloud.iam_v2.Policy):
             The IAM deny policy attached to the resource.
 
             If the sender of the request does not have
@@ -982,10 +982,10 @@ class ExplainedDenyPolicy(proto.Message):
         number=1,
         enum="DenyAccessState",
     )
-    policy: policy_pb2.Policy = proto.Field(
+    policy: Policy = proto.Field(
         proto.MESSAGE,
         number=2,
-        message=policy_pb2.Policy,
+        message=Policy,
     )
     rule_explanations: MutableSequence["DenyRuleExplanation"] = proto.RepeatedField(
         proto.MESSAGE,
