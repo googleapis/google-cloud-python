@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.13.0...google-cloud-deploy-v1.14.0) (2023-11-02)
+
+
+### Features
+
+* add Automation API and Rollback API  ([9748909](https://github.com/googleapis/google-cloud-python/commit/9748909247547bdb1e71d1e35ba0b23788f8f40c))
+
+
+### Documentation
+
+* small documentation updates ([9748909](https://github.com/googleapis/google-cloud-python/commit/9748909247547bdb1e71d1e35ba0b23788f8f40c))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.12.1...google-cloud-deploy-v1.13.0) (2023-11-02)
 
 

@@ -60,7 +60,7 @@
     "packages/google-cloud-dataproc": "5.7.0",
     "packages/google-cloud-dataproc-metastore": "1.13.0",
     "packages/google-cloud-datastream": "1.7.1",
-    "packages/google-cloud-deploy": "1.13.0",
+    "packages/google-cloud-deploy": "1.14.0",
     "packages/google-cloud-dialogflow": "2.25.0",
     "packages/google-cloud-dialogflow-cx": "1.28.0",
     "packages/google-cloud-discoveryengine": "0.11.2",
