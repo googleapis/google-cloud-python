@@ -108,7 +108,7 @@
     "packages/google-cloud-phishing-protection": "1.9.2",
     "packages/google-cloud-policy-troubleshooter": "1.9.1",
     "packages/google-cloud-policysimulator": "0.1.1",
-    "packages/google-cloud-policytroubleshooter-iam": "0.0.0",
+    "packages/google-cloud-policytroubleshooter-iam": "0.1.0",
     "packages/google-cloud-private-ca": "1.8.2",
     "packages/google-cloud-private-catalog": "0.9.4",
     "packages/google-cloud-public-ca": "0.3.4",
@@ -160,6 +160,6 @@
     "packages/google-maps-mapsplatformdatasets": "0.3.2",
     "packages/google-maps-places": "0.1.4",
     "packages/google-maps-routing": "0.6.2",
-    "packages/google-shopping-type": "0.0.0",
+    "packages/google-shopping-type": "0.1.0",
     "packages/grafeas": "1.8.1"
 }
