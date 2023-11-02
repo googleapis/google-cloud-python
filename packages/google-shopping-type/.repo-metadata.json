@@ -1,8 +1,8 @@
 {
     "name": "google-shopping-type",
-    "name_pretty": "",
+    "name_pretty": "Shopping Type Protos",
     "api_description": "",
-    "product_documentation": "",
+    "product_documentation": "https://developers.google.com/merchant/api",
     "client_documentation": "https://googleapis.dev/python/google-shopping-type/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",

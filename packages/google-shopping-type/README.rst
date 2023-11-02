@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Shopping Type Protos
+======================================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Shopping Type Protos`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-shopping-type/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-shopping-type.svg
    :target: https://pypi.org/project/google-shopping-type/
-.. _: 
+.. _Shopping Type Protos: https://developers.google.com/merchant/api
 .. _Client Library Documentation: https://googleapis.dev/python/google-shopping-type/latest
-.. _Product Documentation:  
+.. _Product Documentation:  https://developers.google.com/merchant/api
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Shopping Type Protos.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Shopping Type Protos.:  https://developers.google.com/merchant/api
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Shopping Type Protos
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Shopping Type Protos Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Shopping Type Protos Product documentation:  https://developers.google.com/merchant/api
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
