@@ -102,10 +102,12 @@ replacements:
       packages/google-cloud-speech/google/cloud/speech_v1/__init__.py,
     ]    
     before: |
-      from .types.resource import CustomClass, PhraseSet, SpeechAdaptation\n
+      \)
+
       __all__ = \(
     after: |
-      from .types.resource import CustomClass, PhraseSet, SpeechAdaptation\n
+      )
+
       from google.cloud.speech_v1.helpers import SpeechHelpers\n\n
       class SpeechClient(SpeechHelpers, SpeechClient):
           __doc__ = SpeechClient.__doc__\n\n
