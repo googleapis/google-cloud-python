@@ -468,6 +468,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             )
             return Series(block.select_column(result_col))
 
+    def interpolate(self, method: str = "linear") -> Series:
+        result = block_ops.interpolate(self._block, method)
+        return Series(result)
+
     def dropna(
         self,
         *,

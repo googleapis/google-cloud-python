@@ -273,6 +273,32 @@ def test_series_replace_list_scalar(scalars_dfs):
 
 
 @pytest.mark.parametrize(
+    ("values",),
+    (
+        ([None, 1, 2, None, None, 16, None],),
+        ([None, None, 3.6, None],),
+        ([403.2, None, 352.1, None, None, 111.9],),
+    ),
+)
+def test_series_interpolate(values):
+    pd_series = pd.Series(values)
+    bf_series = series.Series(pd_series)
+
+    # Pandas can only interpolate on "float64" columns
+    # https://github.com/pandas-dev/pandas/issues/40252
+    pd_result = pd_series.astype("float64").interpolate()
+    bf_result = bf_series.interpolate().to_pandas()
+
+    # pd uses non-null types, while bf uses nullable types
+    pd.testing.assert_series_equal(
+        pd_result,
+        bf_result,
+        check_index_type=False,
+        check_dtype=False,
+    )
+
+
+@pytest.mark.parametrize(
     ("ignore_index",),
     (
         (True,),

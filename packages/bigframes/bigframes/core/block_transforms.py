@@ -105,6 +105,97 @@ def indicate_duplicates(
     )
 
 
+def interpolate(block: blocks.Block, method: str = "linear") -> blocks.Block:
+    if method != "linear":
+        raise NotImplementedError(
+            f"Only 'linear' interpolate method supported. {constants.FEEDBACK_LINK}"
+        )
+    backwards_window = windows.WindowSpec(following=0)
+    forwards_window = windows.WindowSpec(preceding=0)
+
+    output_column_ids = []
+
+    original_columns = block.value_columns
+    original_labels = block.column_labels
+    block, offsets = block.promote_offsets()
+    for column in original_columns:
+        # null in same places column is null
+        should_interpolate = block._column_type(column) in [
+            pd.Float64Dtype(),
+            pd.Int64Dtype(),
+        ]
+        if should_interpolate:
+            block, notnull = block.apply_unary_op(column, ops.notnull_op)
+            block, masked_offsets = block.apply_binary_op(
+                offsets, notnull, ops.partial_arg3(ops.where_op, None)
+            )
+
+            block, previous_value = block.apply_window_op(
+                column, agg_ops.LastNonNullOp(), backwards_window
+            )
+            block, next_value = block.apply_window_op(
+                column, agg_ops.FirstNonNullOp(), forwards_window
+            )
+            block, previous_value_offset = block.apply_window_op(
+                masked_offsets,
+                agg_ops.LastNonNullOp(),
+                backwards_window,
+                skip_reproject_unsafe=True,
+            )
+            block, next_value_offset = block.apply_window_op(
+                masked_offsets,
+                agg_ops.FirstNonNullOp(),
+                forwards_window,
+                skip_reproject_unsafe=True,
+            )
+
+            block, prediction_id = _interpolate(
+                block,
+                previous_value_offset,
+                previous_value,
+                next_value_offset,
+                next_value,
+                offsets,
+            )
+
+            block, interpolated_column = block.apply_binary_op(
+                column, prediction_id, ops.fillna_op
+            )
+            # Pandas performs ffill-like behavior to extrapolate forwards
+            block, interpolated_and_ffilled = block.apply_binary_op(
+                interpolated_column, previous_value, ops.fillna_op
+            )
+
+            output_column_ids.append(interpolated_and_ffilled)
+        else:
+            output_column_ids.append(column)
+
+    # Force reproject since used `skip_project_unsafe` perviously
+    block = block.select_columns(output_column_ids)._force_reproject()
+    return block.with_column_labels(original_labels)
+
+
+def _interpolate(
+    block: blocks.Block,
+    x0_id: str,
+    y0_id: str,
+    x1_id: str,
+    y1_id: str,
+    xpredict_id: str,
+) -> typing.Tuple[blocks.Block, str]:
+    """Applies linear interpolation equation to predict y values for xpredict."""
+    block, x1x0diff = block.apply_binary_op(x1_id, x0_id, ops.sub_op)
+    block, y1y0diff = block.apply_binary_op(y1_id, y0_id, ops.sub_op)
+    block, xpredictx0diff = block.apply_binary_op(xpredict_id, x0_id, ops.sub_op)
+
+    block, y1_weight = block.apply_binary_op(y1y0diff, x1x0diff, ops.div_op)
+    block, y1_part = block.apply_binary_op(xpredictx0diff, y1_weight, ops.mul_op)
+
+    block, prediction_id = block.apply_binary_op(y0_id, y1_part, ops.add_op)
+    block = block.drop_columns([x1x0diff, y1y0diff, xpredictx0diff, y1_weight, y1_part])
+    return block, prediction_id
+
+
 def drop_duplicates(
     block: blocks.Block, columns: typing.Sequence[str], keep: str = "first"
 ) -> blocks.Block:

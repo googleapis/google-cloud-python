@@ -711,6 +711,22 @@ def test_df_dropna(scalars_dfs, axis, how, ignore_index):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_df_interpolate(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    columns = ["int64_col", "int64_too", "float64_col"]
+    bf_result = scalars_df[columns].interpolate().to_pandas()
+    # Pandas can only interpolate on "float64" columns
+    # https://github.com/pandas-dev/pandas/issues/40252
+    pd_result = scalars_pandas_df[columns].astype("float64").interpolate()
+
+    pandas.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+        check_index_type=False,
+        check_dtype=False,
+    )
+
+
 def test_df_fillna(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     df = scalars_df[["int64_col", "float64_col"]].fillna(3)

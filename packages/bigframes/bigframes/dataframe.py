@@ -1434,6 +1434,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def reindex_like(self, other: DataFrame, *, validate: typing.Optional[bool] = None):
         return self.reindex(index=other.index, columns=other.columns, validate=validate)
 
+    def interpolate(self, method: str = "linear") -> DataFrame:
+        result = block_ops.interpolate(self._block, method)
+        return DataFrame(result)
+
     def fillna(self, value=None) -> DataFrame:
         return self._apply_binop(value, ops.fillna_op, how="left")
 

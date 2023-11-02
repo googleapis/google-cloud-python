@@ -916,6 +916,38 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def interpolate(self, method: str = "linear"):
+        """
+        Fill NaN values using an interpolation method.
+
+        Args:
+            method (str, default 'linear'):
+                Interpolation technique to use. Only 'linear' supported.
+                'linear': Ignore the index and treat the values as equally spaced.
+                This is the only method supported on MultiIndexes.
+
+        Returns:
+            Series:
+                Returns the same object type as the caller, interpolated at
+                some or all ``NaN`` values
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> series = bpd.Series([1, 2, 3, None, None, 6])
+            >>> series.interpolate()
+            0    1.0
+            1    2.0
+            2    3.0
+            3    4.0
+            4    5.0
+            5    6.0
+            dtype: Float64
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def fillna(
         self,
         value=None,
