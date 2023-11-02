@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.11.11](https://github.com/googleapis/gapic-generator-python/compare/v1.11.10...v1.11.11) (2023-11-02)
+
+
+### Bug Fixes
+
+* Add missing dependency google-shopping-type ([#1842](https://github.com/googleapis/gapic-generator-python/issues/1842)) ([b1eabd7](https://github.com/googleapis/gapic-generator-python/commit/b1eabd7f439d032edd3fb6d0b65415a2c6b737ab))
+
 ## [1.11.10](https://github.com/googleapis/gapic-generator-python/compare/v1.11.9...v1.11.10) (2023-10-26)
 
 
