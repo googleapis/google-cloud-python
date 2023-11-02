@@ -213,6 +213,13 @@ def palm2_text_generator_model(session, bq_connection) -> llm.PaLM2TextGenerator
     return llm.PaLM2TextGenerator(session=session, connection_name=bq_connection)
 
 
+@pytest.fixture(scope="session")
+def palm2_text_generator_32k_model(session, bq_connection) -> llm.PaLM2TextGenerator:
+    return llm.PaLM2TextGenerator(
+        model_name="text-bison-32k", session=session, connection_name=bq_connection
+    )
+
+
 @pytest.fixture(scope="function")
 def ephemera_palm2_text_generator_model(
     session, bq_connection
@@ -226,6 +233,17 @@ def palm2_embedding_generator_model(
 ) -> llm.PaLM2TextEmbeddingGenerator:
     return llm.PaLM2TextEmbeddingGenerator(
         session=session, connection_name=bq_connection
+    )
+
+
+@pytest.fixture(scope="session")
+def palm2_embedding_generator_multilingual_model(
+    session, bq_connection
+) -> llm.PaLM2TextEmbeddingGenerator:
+    return llm.PaLM2TextEmbeddingGenerator(
+        model_name="textembedding-gecko-multilingual",
+        session=session,
+        connection_name=bq_connection,
     )
 
 
