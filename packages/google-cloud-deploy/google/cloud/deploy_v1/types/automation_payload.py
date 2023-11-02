@@ -19,43 +19,50 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.deploy_v1.types import cloud_deploy
+from google.cloud.deploy_v1.types import log_enums
 
 __protobuf__ = proto.module(
     package="google.cloud.deploy.v1",
     manifest={
-        "ReleaseRenderEvent",
+        "AutomationEvent",
     },
 )
 
 
-class ReleaseRenderEvent(proto.Message):
-    r"""Payload proto for "clouddeploy.googleapis.com/release_render"
-    Platform Log event that describes the render status change.
+class AutomationEvent(proto.Message):
+    r"""Payload proto for "clouddeploy.googleapis.com/automation"
+    Platform Log event that describes the Automation related events.
 
     Attributes:
         message (str):
-            Debug message for when a render transition
-            occurs. Provides further details as rendering
-            progresses through render states.
-        release (str):
-            The name of the release.
-        release_render_state (google.cloud.deploy_v1.types.Release.RenderState):
-            The state of the release render.
+            Debug message for when there is an update on
+            the AutomationRun. Provides further details
+            about the resource creation or state change.
+        automation (str):
+            The name of the ``AutomationRun``.
+        pipeline_uid (str):
+            Unique identifier of the ``DeliveryPipeline``.
+        type_ (google.cloud.deploy_v1.types.Type):
+            Type of this notification, e.g. for a Pub/Sub
+            failure.
     """
 
     message: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    release: str = proto.Field(
+    automation: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    release_render_state: cloud_deploy.Release.RenderState = proto.Field(
-        proto.ENUM,
+    pipeline_uid: str = proto.Field(
+        proto.STRING,
         number=3,
-        enum=cloud_deploy.Release.RenderState,
+    )
+    type_: log_enums.Type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=log_enums.Type,
     )
 
 

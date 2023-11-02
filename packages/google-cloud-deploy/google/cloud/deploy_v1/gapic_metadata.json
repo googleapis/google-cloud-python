@@ -25,9 +25,19 @@
                 "approve_rollout"
               ]
             },
+            "CancelAutomationRun": {
+              "methods": [
+                "cancel_automation_run"
+              ]
+            },
             "CancelRollout": {
               "methods": [
                 "cancel_rollout"
+              ]
+            },
+            "CreateAutomation": {
+              "methods": [
+                "create_automation"
               ]
             },
             "CreateDeliveryPipeline": {
@@ -50,6 +60,11 @@
                 "create_target"
               ]
             },
+            "DeleteAutomation": {
+              "methods": [
+                "delete_automation"
+              ]
+            },
             "DeleteDeliveryPipeline": {
               "methods": [
                 "delete_delivery_pipeline"
@@ -58,6 +73,16 @@
             "DeleteTarget": {
               "methods": [
                 "delete_target"
+              ]
+            },
+            "GetAutomation": {
+              "methods": [
+                "get_automation"
+              ]
+            },
+            "GetAutomationRun": {
+              "methods": [
+                "get_automation_run"
               ]
             },
             "GetConfig": {
@@ -95,6 +120,16 @@
                 "ignore_job"
               ]
             },
+            "ListAutomationRuns": {
+              "methods": [
+                "list_automation_runs"
+              ]
+            },
+            "ListAutomations": {
+              "methods": [
+                "list_automations"
+              ]
+            },
             "ListDeliveryPipelines": {
               "methods": [
                 "list_delivery_pipelines"
@@ -125,9 +160,19 @@
                 "retry_job"
               ]
             },
+            "RollbackTarget": {
+              "methods": [
+                "rollback_target"
+              ]
+            },
             "TerminateJobRun": {
               "methods": [
                 "terminate_job_run"
+              ]
+            },
+            "UpdateAutomation": {
+              "methods": [
+                "update_automation"
               ]
             },
             "UpdateDeliveryPipeline": {
@@ -160,9 +205,19 @@
                 "approve_rollout"
               ]
             },
+            "CancelAutomationRun": {
+              "methods": [
+                "cancel_automation_run"
+              ]
+            },
             "CancelRollout": {
               "methods": [
                 "cancel_rollout"
+              ]
+            },
+            "CreateAutomation": {
+              "methods": [
+                "create_automation"
               ]
             },
             "CreateDeliveryPipeline": {
@@ -185,6 +240,11 @@
                 "create_target"
               ]
             },
+            "DeleteAutomation": {
+              "methods": [
+                "delete_automation"
+              ]
+            },
             "DeleteDeliveryPipeline": {
               "methods": [
                 "delete_delivery_pipeline"
@@ -193,6 +253,16 @@
             "DeleteTarget": {
               "methods": [
                 "delete_target"
+              ]
+            },
+            "GetAutomation": {
+              "methods": [
+                "get_automation"
+              ]
+            },
+            "GetAutomationRun": {
+              "methods": [
+                "get_automation_run"
               ]
             },
             "GetConfig": {
@@ -230,6 +300,16 @@
                 "ignore_job"
               ]
             },
+            "ListAutomationRuns": {
+              "methods": [
+                "list_automation_runs"
+              ]
+            },
+            "ListAutomations": {
+              "methods": [
+                "list_automations"
+              ]
+            },
             "ListDeliveryPipelines": {
               "methods": [
                 "list_delivery_pipelines"
@@ -260,9 +340,19 @@
                 "retry_job"
               ]
             },
+            "RollbackTarget": {
+              "methods": [
+                "rollback_target"
+              ]
+            },
             "TerminateJobRun": {
               "methods": [
                 "terminate_job_run"
+              ]
+            },
+            "UpdateAutomation": {
+              "methods": [
+                "update_automation"
               ]
             },
             "UpdateDeliveryPipeline": {
@@ -295,9 +385,19 @@
                 "approve_rollout"
               ]
             },
+            "CancelAutomationRun": {
+              "methods": [
+                "cancel_automation_run"
+              ]
+            },
             "CancelRollout": {
               "methods": [
                 "cancel_rollout"
+              ]
+            },
+            "CreateAutomation": {
+              "methods": [
+                "create_automation"
               ]
             },
             "CreateDeliveryPipeline": {
@@ -320,6 +420,11 @@
                 "create_target"
               ]
             },
+            "DeleteAutomation": {
+              "methods": [
+                "delete_automation"
+              ]
+            },
             "DeleteDeliveryPipeline": {
               "methods": [
                 "delete_delivery_pipeline"
@@ -328,6 +433,16 @@
             "DeleteTarget": {
               "methods": [
                 "delete_target"
+              ]
+            },
+            "GetAutomation": {
+              "methods": [
+                "get_automation"
+              ]
+            },
+            "GetAutomationRun": {
+              "methods": [
+                "get_automation_run"
               ]
             },
             "GetConfig": {
@@ -365,6 +480,16 @@
                 "ignore_job"
               ]
             },
+            "ListAutomationRuns": {
+              "methods": [
+                "list_automation_runs"
+              ]
+            },
+            "ListAutomations": {
+              "methods": [
+                "list_automations"
+              ]
+            },
             "ListDeliveryPipelines": {
               "methods": [
                 "list_delivery_pipelines"
@@ -395,9 +520,19 @@
                 "retry_job"
               ]
             },
+            "RollbackTarget": {
+              "methods": [
+                "rollback_target"
+              ]
+            },
             "TerminateJobRun": {
               "methods": [
                 "terminate_job_run"
+              ]
+            },
+            "UpdateAutomation": {
+              "methods": [
+                "update_automation"
               ]
             },
             "UpdateDeliveryPipeline": {

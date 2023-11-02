@@ -419,6 +419,34 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["list_targets"]
 
     @property
+    def rollback_target(
+        self,
+    ) -> Callable[
+        [cloud_deploy.RollbackTargetRequest], cloud_deploy.RollbackTargetResponse
+    ]:
+        r"""Return a callable for the rollback target method over gRPC.
+
+        Creates a ``Rollout`` to roll back the specified target.
+
+        Returns:
+            Callable[[~.RollbackTargetRequest],
+                    ~.RollbackTargetResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "rollback_target" not in self._stubs:
+            self._stubs["rollback_target"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/RollbackTarget",
+                request_serializer=cloud_deploy.RollbackTargetRequest.serialize,
+                response_deserializer=cloud_deploy.RollbackTargetResponse.deserialize,
+            )
+        return self._stubs["rollback_target"]
+
+    @property
     def get_target(
         self,
     ) -> Callable[[cloud_deploy.GetTargetRequest], cloud_deploy.Target]:
@@ -953,6 +981,228 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
                 response_deserializer=cloud_deploy.Config.deserialize,
             )
         return self._stubs["get_config"]
+
+    @property
+    def create_automation(
+        self,
+    ) -> Callable[[cloud_deploy.CreateAutomationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create automation method over gRPC.
+
+        Creates a new Automation in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateAutomationRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_automation" not in self._stubs:
+            self._stubs["create_automation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/CreateAutomation",
+                request_serializer=cloud_deploy.CreateAutomationRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_automation"]
+
+    @property
+    def update_automation(
+        self,
+    ) -> Callable[[cloud_deploy.UpdateAutomationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update automation method over gRPC.
+
+        Updates the parameters of a single Automation
+        resource.
+
+        Returns:
+            Callable[[~.UpdateAutomationRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_automation" not in self._stubs:
+            self._stubs["update_automation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/UpdateAutomation",
+                request_serializer=cloud_deploy.UpdateAutomationRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_automation"]
+
+    @property
+    def delete_automation(
+        self,
+    ) -> Callable[[cloud_deploy.DeleteAutomationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete automation method over gRPC.
+
+        Deletes a single Automation resource.
+
+        Returns:
+            Callable[[~.DeleteAutomationRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_automation" not in self._stubs:
+            self._stubs["delete_automation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/DeleteAutomation",
+                request_serializer=cloud_deploy.DeleteAutomationRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_automation"]
+
+    @property
+    def get_automation(
+        self,
+    ) -> Callable[[cloud_deploy.GetAutomationRequest], cloud_deploy.Automation]:
+        r"""Return a callable for the get automation method over gRPC.
+
+        Gets details of a single Automation.
+
+        Returns:
+            Callable[[~.GetAutomationRequest],
+                    ~.Automation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_automation" not in self._stubs:
+            self._stubs["get_automation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/GetAutomation",
+                request_serializer=cloud_deploy.GetAutomationRequest.serialize,
+                response_deserializer=cloud_deploy.Automation.deserialize,
+            )
+        return self._stubs["get_automation"]
+
+    @property
+    def list_automations(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListAutomationsRequest], cloud_deploy.ListAutomationsResponse
+    ]:
+        r"""Return a callable for the list automations method over gRPC.
+
+        Lists Automations in a given project and location.
+
+        Returns:
+            Callable[[~.ListAutomationsRequest],
+                    ~.ListAutomationsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_automations" not in self._stubs:
+            self._stubs["list_automations"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/ListAutomations",
+                request_serializer=cloud_deploy.ListAutomationsRequest.serialize,
+                response_deserializer=cloud_deploy.ListAutomationsResponse.deserialize,
+            )
+        return self._stubs["list_automations"]
+
+    @property
+    def get_automation_run(
+        self,
+    ) -> Callable[[cloud_deploy.GetAutomationRunRequest], cloud_deploy.AutomationRun]:
+        r"""Return a callable for the get automation run method over gRPC.
+
+        Gets details of a single AutomationRun.
+
+        Returns:
+            Callable[[~.GetAutomationRunRequest],
+                    ~.AutomationRun]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_automation_run" not in self._stubs:
+            self._stubs["get_automation_run"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/GetAutomationRun",
+                request_serializer=cloud_deploy.GetAutomationRunRequest.serialize,
+                response_deserializer=cloud_deploy.AutomationRun.deserialize,
+            )
+        return self._stubs["get_automation_run"]
+
+    @property
+    def list_automation_runs(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListAutomationRunsRequest],
+        cloud_deploy.ListAutomationRunsResponse,
+    ]:
+        r"""Return a callable for the list automation runs method over gRPC.
+
+        Lists AutomationRuns in a given project and location.
+
+        Returns:
+            Callable[[~.ListAutomationRunsRequest],
+                    ~.ListAutomationRunsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_automation_runs" not in self._stubs:
+            self._stubs["list_automation_runs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/ListAutomationRuns",
+                request_serializer=cloud_deploy.ListAutomationRunsRequest.serialize,
+                response_deserializer=cloud_deploy.ListAutomationRunsResponse.deserialize,
+            )
+        return self._stubs["list_automation_runs"]
+
+    @property
+    def cancel_automation_run(
+        self,
+    ) -> Callable[
+        [cloud_deploy.CancelAutomationRunRequest],
+        cloud_deploy.CancelAutomationRunResponse,
+    ]:
+        r"""Return a callable for the cancel automation run method over gRPC.
+
+        Cancels an AutomationRun. The ``state`` of the ``AutomationRun``
+        after cancelling is ``CANCELLED``. ``CancelAutomationRun`` can
+        be called on AutomationRun in the state ``IN_PROGRESS`` and
+        ``PENDING``; AutomationRun in a different state returns an
+        ``FAILED_PRECONDITION`` error.
+
+        Returns:
+            Callable[[~.CancelAutomationRunRequest],
+                    ~.CancelAutomationRunResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_automation_run" not in self._stubs:
+            self._stubs["cancel_automation_run"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/CancelAutomationRun",
+                request_serializer=cloud_deploy.CancelAutomationRunRequest.serialize,
+                response_deserializer=cloud_deploy.CancelAutomationRunResponse.deserialize,
+            )
+        return self._stubs["cancel_automation_run"]
 
     def close(self):
         self.grpc_channel.close()
