@@ -1867,6 +1867,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-policytroubleshooter-iam": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-policytroubleshooter-iam",
+            "extra-files": [
+                "google/cloud/policytroubleshooter_iam/gapic_version.py",
+                "google/cloud/policytroubleshooter_iam_v3/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.policytroubleshooter.iam.v3.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-private-ca": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

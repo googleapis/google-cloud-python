@@ -108,6 +108,7 @@
     "packages/google-cloud-phishing-protection": "1.9.2",
     "packages/google-cloud-policy-troubleshooter": "1.9.1",
     "packages/google-cloud-policysimulator": "0.1.1",
+    "packages/google-cloud-policytroubleshooter-iam": "0.0.0",
     "packages/google-cloud-private-ca": "1.8.2",
     "packages/google-cloud-private-catalog": "0.9.4",
     "packages/google-cloud-public-ca": "0.3.4",
