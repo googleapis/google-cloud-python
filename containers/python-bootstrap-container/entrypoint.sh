@@ -112,9 +112,9 @@ sed -i -e "s|apiProductDocumentation|$PRODUCT_DOCS_URL|" "${WORKSPACE_DIR}/${MON
 # If the API is `cloud`, the docs will be published to `cloud.google.com`.
 # For non-cloud, the docs will be published to `googleapis.dev`.
 if [[ $FOLDER_NAME =~ "cloud" ]]; then
-    CLIENT_DOCS_URL="$(echo https://cloud.google.com/python/docs/reference/$FOLDER_NAME/latest)"
+    CLIENT_DOCS_URL="https://cloud.google.com/python/docs/reference/$FOLDER_NAME/latest"
 else
-    CLIENT_DOCS_URL="$(echo https://googleapis.dev/python/$FOLDER_NAME/latest)"
+    CLIENT_DOCS_URL="https://googleapis.dev/python/$FOLDER_NAME/latest"
 fi
 
 # Update clientDocumentation in .repo-metadata.json

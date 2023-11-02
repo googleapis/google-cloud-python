@@ -359,6 +359,13 @@ class RecognitionConfig(proto.Message):
             adaptation <https://cloud.google.com/speech-to-text/docs/adaptation>`__
             documentation. When speech adaptation is set it supersedes
             the ``speech_contexts`` field.
+        transcript_normalization (google.cloud.speech_v1.types.TranscriptNormalization):
+            Optional. Use transcription normalization to
+            automatically replace parts of the transcript
+            with phrases of your choosing. For
+            StreamingRecognize, this normalization only
+            applies to stable partial transcripts (stability
+            > 0.8) and final transcripts.
         speech_contexts (MutableSequence[google.cloud.speech_v1.types.SpeechContext]):
             Array of
             [SpeechContext][google.cloud.speech.v1.SpeechContext]. A
@@ -551,6 +558,12 @@ class RecognitionConfig(proto.Message):
                 5574. In other words, each RTP header is replaced with a
                 single byte containing the block length. Only Speex wideband
                 is supported. ``sample_rate_hertz`` must be 16000.
+            MP3 (8):
+                MP3 audio. MP3 encoding is a Beta feature and only available
+                in v1p1beta1. Support all standard MP3 bitrates (which range
+                from 32-320 kbps). When using this encoding,
+                ``sample_rate_hertz`` has to match the sample rate of the
+                file being used.
             WEBM_OPUS (9):
                 Opus encoded audio frames in WebM container
                 (`OggOpus <https://wiki.xiph.org/OggOpus>`__).
@@ -565,6 +578,7 @@ class RecognitionConfig(proto.Message):
         AMR_WB = 5
         OGG_OPUS = 6
         SPEEX_WITH_HEADER_BYTE = 7
+        MP3 = 8
         WEBM_OPUS = 9
 
     encoding: AudioEncoding = proto.Field(
@@ -604,6 +618,11 @@ class RecognitionConfig(proto.Message):
         proto.MESSAGE,
         number=20,
         message=resource.SpeechAdaptation,
+    )
+    transcript_normalization: resource.TranscriptNormalization = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message=resource.TranscriptNormalization,
     )
     speech_contexts: MutableSequence["SpeechContext"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -659,7 +678,7 @@ class SpeakerDiarizationConfig(proto.Message):
         enable_speaker_diarization (bool):
             If 'true', enables speaker detection for each recognized
             word in the top alternative of the recognition result using
-            a speaker_tag provided in the WordInfo.
+            a speaker_label provided in the WordInfo.
         min_speaker_count (int):
             Minimum number of speakers in the
             conversation. This range gives you more
@@ -1469,8 +1488,17 @@ class WordInfo(proto.Message):
             speaker within the audio. This field specifies which one of
             those speakers was detected to have spoken this word. Value
             ranges from '1' to diarization_speaker_count. speaker_tag is
-            set if enable_speaker_diarization = 'true' and only in the
-            top alternative.
+            set if enable_speaker_diarization = 'true' and only for the
+            top alternative. Note: Use speaker_label instead.
+        speaker_label (str):
+            Output only. A label value assigned for every unique speaker
+            within the audio. This field specifies which speaker was
+            detected to have spoken this word. For some models, like
+            medical_conversation this can be actual speaker role, for
+            example "patient" or "provider", but generally this would be
+            a number identifying a speaker. This field is only set if
+            enable_speaker_diarization = 'true' and only for the top
+            alternative.
     """
 
     start_time: duration_pb2.Duration = proto.Field(
@@ -1494,6 +1522,10 @@ class WordInfo(proto.Message):
     speaker_tag: int = proto.Field(
         proto.INT32,
         number=5,
+    )
+    speaker_label: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
