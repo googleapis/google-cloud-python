@@ -11,16 +11,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    privateca_v1/services
-    privateca_v1/types
+    privateca_v1/services_
+    privateca_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    privateca_v1beta1/services
-    privateca_v1beta1/types
+    privateca_v1beta1/services_
+    privateca_v1beta1/types_
 
 
 Changelog

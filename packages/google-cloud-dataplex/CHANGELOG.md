@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.7.0...google-cloud-dataplex-v1.8.0) (2023-11-02)
+
+
+### Features
+
+* Add GovernanceEvent message ([#11939](https://github.com/googleapis/google-cloud-python/issues/11939)) ([a8e7269](https://github.com/googleapis/google-cloud-python/commit/a8e7269f87a31f57284420d575aa994f8268df92))
+
 ## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.6.3...google-cloud-dataplex-v1.7.0) (2023-10-10)
 
 

@@ -31,18 +31,18 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud.datacatalog import lineage_v1
+from google.cloud import datacatalog_lineage_v1
 
 
 def sample_search_links():
     # Create a client
-    client = lineage_v1.LineageClient()
+    client = datacatalog_lineage_v1.LineageClient()
 
     # Initialize request argument(s)
-    source = lineage_v1.EntityReference()
+    source = datacatalog_lineage_v1.EntityReference()
     source.fully_qualified_name = "fully_qualified_name_value"
 
-    request = lineage_v1.SearchLinksRequest(
+    request = datacatalog_lineage_v1.SearchLinksRequest(
         source=source,
         parent="parent_value",
     )

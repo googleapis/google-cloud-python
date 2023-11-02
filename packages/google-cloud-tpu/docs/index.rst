@@ -11,24 +11,24 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    tpu_v1/services
-    tpu_v1/types
+    tpu_v1/services_
+    tpu_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    tpu_v2/services
-    tpu_v2/types
+    tpu_v2/services_
+    tpu_v2/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    tpu_v2alpha1/services
-    tpu_v2alpha1/types
+    tpu_v2alpha1/services_
+    tpu_v2alpha1/types_
 
 
 Changelog

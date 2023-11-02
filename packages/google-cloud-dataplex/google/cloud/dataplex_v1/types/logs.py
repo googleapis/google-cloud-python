@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "DiscoveryEvent",
         "JobEvent",
         "SessionEvent",
+        "GovernanceEvent",
         "DataScanEvent",
         "DataQualityScanRuleResult",
     },
@@ -562,6 +563,123 @@ class SessionEvent(proto.Message):
         proto.MESSAGE,
         number=8,
         message=duration_pb2.Duration,
+    )
+
+
+class GovernanceEvent(proto.Message):
+    r"""Payload associated with Governance related log events.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        message (str):
+            The log message.
+        event_type (google.cloud.dataplex_v1.types.GovernanceEvent.EventType):
+            The type of the event.
+        entity (google.cloud.dataplex_v1.types.GovernanceEvent.Entity):
+            Entity resource information if the log event
+            is associated with a specific entity.
+
+            This field is a member of `oneof`_ ``_entity``.
+    """
+
+    class EventType(proto.Enum):
+        r"""Type of governance log event.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                An unspecified event type.
+            RESOURCE_IAM_POLICY_UPDATE (1):
+                Resource IAM policy update event.
+            BIGQUERY_TABLE_CREATE (2):
+                BigQuery table create event.
+            BIGQUERY_TABLE_UPDATE (3):
+                BigQuery table update event.
+            BIGQUERY_TABLE_DELETE (4):
+                BigQuery table delete event.
+            BIGQUERY_CONNECTION_CREATE (5):
+                BigQuery connection create event.
+            BIGQUERY_CONNECTION_UPDATE (6):
+                BigQuery connection update event.
+            BIGQUERY_CONNECTION_DELETE (7):
+                BigQuery connection delete event.
+            BIGQUERY_TAXONOMY_CREATE (10):
+                BigQuery taxonomy created.
+            BIGQUERY_POLICY_TAG_CREATE (11):
+                BigQuery policy tag created.
+            BIGQUERY_POLICY_TAG_DELETE (12):
+                BigQuery policy tag deleted.
+            BIGQUERY_POLICY_TAG_SET_IAM_POLICY (13):
+                BigQuery set iam policy for policy tag.
+            ACCESS_POLICY_UPDATE (14):
+                Access policy update event.
+        """
+        EVENT_TYPE_UNSPECIFIED = 0
+        RESOURCE_IAM_POLICY_UPDATE = 1
+        BIGQUERY_TABLE_CREATE = 2
+        BIGQUERY_TABLE_UPDATE = 3
+        BIGQUERY_TABLE_DELETE = 4
+        BIGQUERY_CONNECTION_CREATE = 5
+        BIGQUERY_CONNECTION_UPDATE = 6
+        BIGQUERY_CONNECTION_DELETE = 7
+        BIGQUERY_TAXONOMY_CREATE = 10
+        BIGQUERY_POLICY_TAG_CREATE = 11
+        BIGQUERY_POLICY_TAG_DELETE = 12
+        BIGQUERY_POLICY_TAG_SET_IAM_POLICY = 13
+        ACCESS_POLICY_UPDATE = 14
+
+    class Entity(proto.Message):
+        r"""Information about Entity resource that the log event is
+        associated with.
+
+        Attributes:
+            entity (str):
+                The Entity resource the log event is associated with.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}``
+            entity_type (google.cloud.dataplex_v1.types.GovernanceEvent.Entity.EntityType):
+                Type of entity.
+        """
+
+        class EntityType(proto.Enum):
+            r"""Type of entity.
+
+            Values:
+                ENTITY_TYPE_UNSPECIFIED (0):
+                    An unspecified Entity type.
+                TABLE (1):
+                    Table entity type.
+                FILESET (2):
+                    Fileset entity type.
+            """
+            ENTITY_TYPE_UNSPECIFIED = 0
+            TABLE = 1
+            FILESET = 2
+
+        entity: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        entity_type: "GovernanceEvent.Entity.EntityType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="GovernanceEvent.Entity.EntityType",
+        )
+
+    message: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_type: EventType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=EventType,
+    )
+    entity: Entity = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message=Entity,
     )
 
 

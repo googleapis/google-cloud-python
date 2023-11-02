@@ -10987,6 +10987,329 @@ async def test_test_iam_permissions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_simulate_security_health_analytics_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.simulate_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+        response = client.simulate_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse,
+    )
+
+
+def test_simulate_security_health_analytics_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.simulate_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        client.simulate_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_simulate_security_health_analytics_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.simulate_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+        response = await client.simulate_security_health_analytics_custom_module(
+            request
+        )
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse,
+    )
+
+
+@pytest.mark.asyncio
+async def test_simulate_security_health_analytics_custom_module_async_from_dict():
+    await test_simulate_security_health_analytics_custom_module_async(request_type=dict)
+
+
+def test_simulate_security_health_analytics_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest()
+    )
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.simulate_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = (
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+        client.simulate_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_simulate_security_health_analytics_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest()
+    )
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.simulate_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+        await client.simulate_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_simulate_security_health_analytics_custom_module_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.simulate_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.simulate_security_health_analytics_custom_module(
+            parent="parent_value",
+            custom_config=security_health_analytics_custom_config.CustomConfig(
+                predicate=expr_pb2.Expr(expression="expression_value")
+            ),
+            resource=securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.SimulatedResource(
+                resource_type="resource_type_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].custom_config
+        mock_val = security_health_analytics_custom_config.CustomConfig(
+            predicate=expr_pb2.Expr(expression="expression_value")
+        )
+        assert arg == mock_val
+        arg = args[0].resource
+        mock_val = securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.SimulatedResource(
+            resource_type="resource_type_value"
+        )
+        assert arg == mock_val
+
+
+def test_simulate_security_health_analytics_custom_module_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.simulate_security_health_analytics_custom_module(
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest(),
+            parent="parent_value",
+            custom_config=security_health_analytics_custom_config.CustomConfig(
+                predicate=expr_pb2.Expr(expression="expression_value")
+            ),
+            resource=securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.SimulatedResource(
+                resource_type="resource_type_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_simulate_security_health_analytics_custom_module_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.simulate_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.simulate_security_health_analytics_custom_module(
+            parent="parent_value",
+            custom_config=security_health_analytics_custom_config.CustomConfig(
+                predicate=expr_pb2.Expr(expression="expression_value")
+            ),
+            resource=securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.SimulatedResource(
+                resource_type="resource_type_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].custom_config
+        mock_val = security_health_analytics_custom_config.CustomConfig(
+            predicate=expr_pb2.Expr(expression="expression_value")
+        )
+        assert arg == mock_val
+        arg = args[0].resource
+        mock_val = securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.SimulatedResource(
+            resource_type="resource_type_value"
+        )
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_simulate_security_health_analytics_custom_module_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.simulate_security_health_analytics_custom_module(
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest(),
+            parent="parent_value",
+            custom_config=security_health_analytics_custom_config.CustomConfig(
+                predicate=expr_pb2.Expr(expression="expression_value")
+            ),
+            resource=securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.SimulatedResource(
+                resource_type="resource_type_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         securitycenter_service.UpdateExternalSystemRequest,
         dict,
     ],
@@ -14707,6 +15030,84 @@ def test_create_security_health_analytics_custom_module_rest(request_type):
             "recommendation": "recommendation_value",
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest.meta.fields[
+        "security_health_analytics_custom_module"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "security_health_analytics_custom_module"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0,
+                    len(request_init["security_health_analytics_custom_module"][field]),
+                ):
+                    del request_init["security_health_analytics_custom_module"][field][
+                        i
+                    ][subfield]
+            else:
+                del request_init["security_health_analytics_custom_module"][field][
+                    subfield
+                ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14723,10 +15124,11 @@ def test_create_security_health_analytics_custom_module_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+        # Convert return value to protobuf type
+        return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14818,10 +15220,11 @@ def test_create_security_health_analytics_custom_module_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+            # Convert return value to protobuf type
+            return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14928,31 +15331,6 @@ def test_create_security_health_analytics_custom_module_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "organizations/sample1/securityHealthAnalyticsSettings"}
-    request_init["security_health_analytics_custom_module"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "enablement_state": 1,
-        "update_time": {"seconds": 751, "nanos": 543},
-        "last_editor": "last_editor_value",
-        "ancestor_module": "ancestor_module_value",
-        "custom_config": {
-            "predicate": {
-                "expression": "expression_value",
-                "title": "title_value",
-                "description": "description_value",
-                "location": "location_value",
-            },
-            "custom_output": {
-                "properties": [{"name": "name_value", "value_expression": {}}]
-            },
-            "resource_selector": {
-                "resource_types": ["resource_types_value1", "resource_types_value2"]
-            },
-            "severity": 1,
-            "description": "description_value",
-            "recommendation": "recommendation_value",
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -14997,10 +15375,11 @@ def test_create_security_health_analytics_custom_module_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+        # Convert return value to protobuf type
+        return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15064,6 +15443,73 @@ def test_create_source_rest(request_type):
         "description": "description_value",
         "canonical_name": "canonical_name_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.CreateSourceRequest.meta.fields["source"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["source"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["source"][field])):
+                    del request_init["source"][field][i][subfield]
+            else:
+                del request_init["source"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -15079,8 +15525,9 @@ def test_create_source_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_source.Source.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_source.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15159,8 +15606,9 @@ def test_create_source_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_source.Source.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcs_source.Source.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15254,12 +15702,6 @@ def test_create_source_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "organizations/sample1"}
-    request_init["source"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "canonical_name": "canonical_name_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -15298,8 +15740,9 @@ def test_create_source_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_source.Source.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_source.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15549,6 +15992,73 @@ def test_create_finding_rest(request_type):
             "unexpected_processes_in_runqueue": True,
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.CreateFindingRequest.meta.fields["finding"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["finding"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["finding"][field])):
+                    del request_init["finding"][field][i][subfield]
+            else:
+                del request_init["finding"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -15575,8 +16085,9 @@ def test_create_finding_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_finding.Finding.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_finding.Finding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15675,8 +16186,9 @@ def test_create_finding_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_finding.Finding.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcs_finding.Finding.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15777,204 +16289,6 @@ def test_create_finding_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "organizations/sample1/sources/sample2"}
-    request_init["finding"] = {
-        "name": "name_value",
-        "parent": "parent_value",
-        "resource_name": "resource_name_value",
-        "state": 1,
-        "category": "category_value",
-        "external_uri": "external_uri_value",
-        "source_properties": {},
-        "security_marks": {
-            "name": "name_value",
-            "marks": {},
-            "canonical_name": "canonical_name_value",
-        },
-        "event_time": {"seconds": 751, "nanos": 543},
-        "create_time": {},
-        "severity": 1,
-        "canonical_name": "canonical_name_value",
-        "mute": 1,
-        "finding_class": 1,
-        "indicator": {
-            "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
-            "domains": ["domains_value1", "domains_value2"],
-            "signatures": [
-                {
-                    "memory_hash_signature": {
-                        "binary_family": "binary_family_value",
-                        "detections": [
-                            {"binary": "binary_value", "percent_pages_matched": 0.2197}
-                        ],
-                    },
-                    "yara_rule_signature": {"yara_rule": "yara_rule_value"},
-                }
-            ],
-            "uris": ["uris_value1", "uris_value2"],
-        },
-        "vulnerability": {
-            "cve": {
-                "id": "id_value",
-                "references": [{"source": "source_value", "uri": "uri_value"}],
-                "cvssv3": {
-                    "base_score": 0.1046,
-                    "attack_vector": 1,
-                    "attack_complexity": 1,
-                    "privileges_required": 1,
-                    "user_interaction": 1,
-                    "scope": 1,
-                    "confidentiality_impact": 1,
-                    "integrity_impact": 1,
-                    "availability_impact": 1,
-                },
-                "upstream_fix_available": True,
-            }
-        },
-        "mute_update_time": {},
-        "external_systems": {},
-        "mitre_attack": {
-            "primary_tactic": 1,
-            "primary_techniques": [1],
-            "additional_tactics": [1],
-            "additional_techniques": [1],
-            "version": "version_value",
-        },
-        "access": {
-            "principal_email": "principal_email_value",
-            "caller_ip": "caller_ip_value",
-            "caller_ip_geo": {"region_code": "region_code_value"},
-            "user_agent_family": "user_agent_family_value",
-            "user_agent": "user_agent_value",
-            "service_name": "service_name_value",
-            "method_name": "method_name_value",
-            "principal_subject": "principal_subject_value",
-            "service_account_key_name": "service_account_key_name_value",
-            "service_account_delegation_info": [
-                {
-                    "principal_email": "principal_email_value",
-                    "principal_subject": "principal_subject_value",
-                }
-            ],
-            "user_name": "user_name_value",
-        },
-        "connections": [
-            {
-                "destination_ip": "destination_ip_value",
-                "destination_port": 1734,
-                "source_ip": "source_ip_value",
-                "source_port": 1205,
-                "protocol": 1,
-            }
-        ],
-        "mute_initiator": "mute_initiator_value",
-        "processes": [
-            {
-                "name": "name_value",
-                "binary": {
-                    "path": "path_value",
-                    "size": 443,
-                    "sha256": "sha256_value",
-                    "hashed_size": 1159,
-                    "partially_hashed": True,
-                    "contents": "contents_value",
-                },
-                "libraries": {},
-                "script": {},
-                "args": ["args_value1", "args_value2"],
-                "arguments_truncated": True,
-                "env_variables": [{"name": "name_value", "val": "val_value"}],
-                "env_variables_truncated": True,
-                "pid": 317,
-                "parent_pid": 1062,
-            }
-        ],
-        "contacts": {},
-        "compliances": [
-            {
-                "standard": "standard_value",
-                "version": "version_value",
-                "ids": ["ids_value1", "ids_value2"],
-            }
-        ],
-        "parent_display_name": "parent_display_name_value",
-        "description": "description_value",
-        "exfiltration": {
-            "sources": [
-                {
-                    "name": "name_value",
-                    "components": ["components_value1", "components_value2"],
-                }
-            ],
-            "targets": {},
-        },
-        "iam_bindings": [{"action": 1, "role": "role_value", "member": "member_value"}],
-        "next_steps": "next_steps_value",
-        "module_name": "module_name_value",
-        "containers": [
-            {
-                "name": "name_value",
-                "uri": "uri_value",
-                "image_id": "image_id_value",
-                "labels": [{"name": "name_value", "value": "value_value"}],
-            }
-        ],
-        "kubernetes": {
-            "pods": [
-                {"ns": "ns_value", "name": "name_value", "labels": {}, "containers": {}}
-            ],
-            "nodes": [{"name": "name_value"}],
-            "node_pools": [{"name": "name_value", "nodes": {}}],
-            "roles": [{"kind": 1, "ns": "ns_value", "name": "name_value"}],
-            "bindings": [
-                {
-                    "ns": "ns_value",
-                    "name": "name_value",
-                    "role": {},
-                    "subjects": [{"kind": 1, "ns": "ns_value", "name": "name_value"}],
-                }
-            ],
-            "access_reviews": [
-                {
-                    "group": "group_value",
-                    "ns": "ns_value",
-                    "name": "name_value",
-                    "resource": "resource_value",
-                    "subresource": "subresource_value",
-                    "verb": "verb_value",
-                    "version": "version_value",
-                }
-            ],
-        },
-        "database": {
-            "name": "name_value",
-            "display_name": "display_name_value",
-            "user_name": "user_name_value",
-            "query": "query_value",
-            "grantees": ["grantees_value1", "grantees_value2"],
-        },
-        "files": {},
-        "cloud_dlp_inspection": {
-            "inspect_job": "inspect_job_value",
-            "info_type": "info_type_value",
-            "info_type_count": 1621,
-            "full_scan": True,
-        },
-        "cloud_dlp_data_profile": {
-            "data_profile": "data_profile_value",
-            "parent_type": 1,
-        },
-        "kernel_rootkit": {
-            "name": "name_value",
-            "unexpected_code_modification": True,
-            "unexpected_read_only_data_modification": True,
-            "unexpected_ftrace_handler": True,
-            "unexpected_kprobe_handler": True,
-            "unexpected_kernel_code_pages": True,
-            "unexpected_system_call_handler": True,
-            "unexpected_interrupt_handler": True,
-            "unexpected_processes_in_runqueue": True,
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -16014,8 +16328,9 @@ def test_create_finding_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_finding.Finding.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_finding.Finding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16079,6 +16394,75 @@ def test_create_mute_config_rest(request_type):
         "update_time": {},
         "most_recent_editor": "most_recent_editor_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.CreateMuteConfigRequest.meta.fields[
+        "mute_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["mute_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["mute_config"][field])):
+                    del request_init["mute_config"][field][i][subfield]
+            else:
+                del request_init["mute_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -16095,8 +16479,9 @@ def test_create_mute_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_mute_config.MuteConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_mute_config.MuteConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16185,8 +16570,9 @@ def test_create_mute_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_mute_config.MuteConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcs_mute_config.MuteConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16289,15 +16675,6 @@ def test_create_mute_config_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "organizations/sample1"}
-    request_init["mute_config"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "filter": "filter_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "most_recent_editor": "most_recent_editor_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -16337,8 +16714,9 @@ def test_create_mute_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_mute_config.MuteConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_mute_config.MuteConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16399,6 +16777,75 @@ def test_create_notification_config_rest(request_type):
         "service_account": "service_account_value",
         "streaming_config": {"filter": "filter_value"},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.CreateNotificationConfigRequest.meta.fields[
+        "notification_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["notification_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["notification_config"][field])):
+                    del request_init["notification_config"][field][i][subfield]
+            else:
+                del request_init["notification_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -16414,8 +16861,9 @@ def test_create_notification_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_notification_config.NotificationConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_notification_config.NotificationConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16503,10 +16951,9 @@ def test_create_notification_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_notification_config.NotificationConfig.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcs_notification_config.NotificationConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16610,13 +17057,6 @@ def test_create_notification_config_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "organizations/sample1"}
-    request_init["notification_config"] = {
-        "name": "name_value",
-        "description": "description_value",
-        "pubsub_topic": "pubsub_topic_value",
-        "service_account": "service_account_value",
-        "streaming_config": {"filter": "filter_value"},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -16658,8 +17098,9 @@ def test_create_notification_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_notification_config.NotificationConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_notification_config.NotificationConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17512,8 +17953,9 @@ def test_get_big_query_export_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigquery_export.BigQueryExport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigquery_export.BigQueryExport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17593,8 +18035,9 @@ def test_get_big_query_export_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigquery_export.BigQueryExport.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = bigquery_export.BigQueryExport.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -17720,8 +18163,9 @@ def test_get_big_query_export_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigquery_export.BigQueryExport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigquery_export.BigQueryExport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17786,8 +18230,7 @@ def test_get_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17864,8 +18307,7 @@ def test_get_iam_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = return_value
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -17986,8 +18428,7 @@ def test_get_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -18056,8 +18497,9 @@ def test_get_mute_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = mute_config.MuteConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = mute_config.MuteConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18136,8 +18578,9 @@ def test_get_mute_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = mute_config.MuteConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = mute_config.MuteConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18262,8 +18705,9 @@ def test_get_mute_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = mute_config.MuteConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = mute_config.MuteConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -18330,8 +18774,9 @@ def test_get_notification_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = notification_config.NotificationConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = notification_config.NotificationConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18409,8 +18854,9 @@ def test_get_notification_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = notification_config.NotificationConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = notification_config.NotificationConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18536,8 +18982,9 @@ def test_get_notification_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = notification_config.NotificationConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = notification_config.NotificationConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -18603,8 +19050,9 @@ def test_get_organization_settings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = organization_settings.OrganizationSettings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = organization_settings.OrganizationSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18680,10 +19128,9 @@ def test_get_organization_settings_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = organization_settings.OrganizationSettings.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = organization_settings.OrganizationSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18809,8 +19256,9 @@ def test_get_organization_settings_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = organization_settings.OrganizationSettings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = organization_settings.OrganizationSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -18879,10 +19327,11 @@ def test_get_effective_security_health_analytics_custom_module_rest(request_type
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.pb(
+        # Convert return value to protobuf type
+        return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18971,10 +19420,11 @@ def test_get_effective_security_health_analytics_custom_module_rest_required_fie
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.pb(
+            # Convert return value to protobuf type
+            return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19118,10 +19568,11 @@ def test_get_effective_security_health_analytics_custom_module_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.pb(
+        # Convert return value to protobuf type
+        return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19194,10 +19645,11 @@ def test_get_security_health_analytics_custom_module_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+        # Convert return value to protobuf type
+        return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19288,10 +19740,11 @@ def test_get_security_health_analytics_custom_module_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+            # Convert return value to protobuf type
+            return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19433,10 +19886,11 @@ def test_get_security_health_analytics_custom_module_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+        # Convert return value to protobuf type
+        return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19506,8 +19960,9 @@ def test_get_source_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = source.Source.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = source.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19585,8 +20040,9 @@ def test_get_source_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = source.Source.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = source.Source.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19709,8 +20165,9 @@ def test_get_source_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = source.Source.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = source.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19774,8 +20231,9 @@ def test_group_assets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.GroupAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.GroupAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19856,10 +20314,9 @@ def test_group_assets_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = securitycenter_service.GroupAssetsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.GroupAssetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20060,8 +20517,9 @@ def test_group_findings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.GroupFindingsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.GroupFindingsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -20142,10 +20600,9 @@ def test_group_findings_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = securitycenter_service.GroupFindingsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.GroupFindingsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20281,8 +20738,9 @@ def test_group_findings_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.GroupFindingsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.GroupFindingsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -20406,8 +20864,9 @@ def test_list_assets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -20495,8 +20954,9 @@ def test_list_assets_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = securitycenter_service.ListAssetsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListAssetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20704,10 +21164,11 @@ def test_list_descendant_security_health_analytics_custom_modules_rest(request_t
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -20799,10 +21260,11 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_required_
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20952,10 +21414,11 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_flattened
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -21099,8 +21562,9 @@ def test_list_findings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListFindingsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListFindingsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -21188,10 +21652,9 @@ def test_list_findings_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = securitycenter_service.ListFindingsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListFindingsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -21401,10 +21864,9 @@ def test_list_mute_configs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListMuteConfigsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListMuteConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -21486,10 +21948,11 @@ def test_list_mute_configs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = securitycenter_service.ListMuteConfigsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListMuteConfigsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -21624,10 +22087,9 @@ def test_list_mute_configs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListMuteConfigsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListMuteConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -21748,10 +22210,11 @@ def test_list_notification_configs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListNotificationConfigsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListNotificationConfigsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -21833,10 +22296,11 @@ def test_list_notification_configs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = securitycenter_service.ListNotificationConfigsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListNotificationConfigsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -21972,10 +22436,11 @@ def test_list_notification_configs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListNotificationConfigsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListNotificationConfigsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -22100,10 +22565,11 @@ def test_list_effective_security_health_analytics_custom_modules_rest(request_ty
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -22195,10 +22661,11 @@ def test_list_effective_security_health_analytics_custom_modules_rest_required_f
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -22348,10 +22815,11 @@ def test_list_effective_security_health_analytics_custom_modules_rest_flattened(
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -22496,12 +22964,13 @@ def test_list_security_health_analytics_custom_modules_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
+        # Convert return value to protobuf type
+        return_value = (
             securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse.pb(
                 return_value
             )
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -22589,10 +23058,11 @@ def test_list_security_health_analytics_custom_modules_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse.pb(
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -22742,12 +23212,13 @@ def test_list_security_health_analytics_custom_modules_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
+        # Convert return value to protobuf type
+        return_value = (
             securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse.pb(
                 return_value
             )
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -22890,8 +23361,9 @@ def test_list_sources_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListSourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListSourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -22973,10 +23445,9 @@ def test_list_sources_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = securitycenter_service.ListSourcesResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListSourcesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -23109,8 +23580,9 @@ def test_list_sources_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListSourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListSourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -23509,8 +23981,9 @@ def test_set_finding_state_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = finding.Finding.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = finding.Finding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -23600,8 +24073,9 @@ def test_set_finding_state_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = finding.Finding.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = finding.Finding.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -23737,8 +24211,9 @@ def test_set_finding_state_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = finding.Finding.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = finding.Finding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -23819,8 +24294,9 @@ def test_set_mute_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = finding.Finding.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = finding.Finding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -23910,8 +24386,9 @@ def test_set_mute_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = finding.Finding.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = finding.Finding.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -24045,8 +24522,9 @@ def test_set_mute_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = finding.Finding.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = finding.Finding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -24113,8 +24591,7 @@ def test_set_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -24191,8 +24668,7 @@ def test_set_iam_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = return_value
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -24321,8 +24797,7 @@ def test_set_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -24387,8 +24862,7 @@ def test_test_iam_permissions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -24468,8 +24942,7 @@ def test_test_iam_permissions_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = return_value
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -24601,8 +25074,7 @@ def test_test_iam_permissions_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = return_value
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -24644,6 +25116,330 @@ def test_test_iam_permissions_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_simulate_security_health_analytics_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/securityHealthAnalyticsSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.simulate_security_health_analytics_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse,
+    )
+
+
+def test_simulate_security_health_analytics_custom_module_rest_required_fields(
+    request_type=securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).simulate_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).simulate_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.simulate_security_health_analytics_custom_module(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_simulate_security_health_analytics_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.simulate_security_health_analytics_custom_module._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "customConfig",
+                "resource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_simulate_security_health_analytics_custom_module_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_simulate_security_health_analytics_custom_module",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_simulate_security_health_analytics_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.pb(
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse.to_json(
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+
+        request = (
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+
+        client.simulate_security_health_analytics_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_simulate_security_health_analytics_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/securityHealthAnalyticsSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.simulate_security_health_analytics_custom_module(request)
+
+
+def test_simulate_security_health_analytics_custom_module_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "organizations/sample1/securityHealthAnalyticsSettings"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            custom_config=security_health_analytics_custom_config.CustomConfig(
+                predicate=expr_pb2.Expr(expression="expression_value")
+            ),
+            resource=securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.SimulatedResource(
+                resource_type="resource_type_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.simulate_security_health_analytics_custom_module(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules:simulate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_simulate_security_health_analytics_custom_module_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.simulate_security_health_analytics_custom_module(
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest(),
+            parent="parent_value",
+            custom_config=security_health_analytics_custom_config.CustomConfig(
+                predicate=expr_pb2.Expr(expression="expression_value")
+            ),
+            resource=securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.SimulatedResource(
+                resource_type="resource_type_value"
+            ),
+        )
+
+
+def test_simulate_security_health_analytics_custom_module_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         securitycenter_service.UpdateExternalSystemRequest,
         dict,
     ],
@@ -24667,6 +25463,75 @@ def test_update_external_system_rest(request_type):
         "status": "status_value",
         "external_system_update_time": {"seconds": 751, "nanos": 543},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.UpdateExternalSystemRequest.meta.fields[
+        "external_system"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["external_system"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["external_system"][field])):
+                    del request_init["external_system"][field][i][subfield]
+            else:
+                del request_init["external_system"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -24682,8 +25547,9 @@ def test_update_external_system_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_external_system.ExternalSystem.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_external_system.ExternalSystem.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -24759,8 +25625,9 @@ def test_update_external_system_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_external_system.ExternalSystem.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcs_external_system.ExternalSystem.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -24853,13 +25720,6 @@ def test_update_external_system_rest_bad_request(
             "name": "organizations/sample1/sources/sample2/findings/sample3/externalSystems/sample4"
         }
     }
-    request_init["external_system"] = {
-        "name": "organizations/sample1/sources/sample2/findings/sample3/externalSystems/sample4",
-        "assignees": ["assignees_value1", "assignees_value2"],
-        "external_uid": "external_uid_value",
-        "status": "status_value",
-        "external_system_update_time": {"seconds": 751, "nanos": 543},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -24902,8 +25762,9 @@ def test_update_external_system_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_external_system.ExternalSystem.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_external_system.ExternalSystem.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -25157,6 +26018,73 @@ def test_update_finding_rest(request_type):
             "unexpected_processes_in_runqueue": True,
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.UpdateFindingRequest.meta.fields["finding"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["finding"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["finding"][field])):
+                    del request_init["finding"][field][i][subfield]
+            else:
+                del request_init["finding"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -25183,8 +26111,9 @@ def test_update_finding_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_finding.Finding.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_finding.Finding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -25271,8 +26200,9 @@ def test_update_finding_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_finding.Finding.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcs_finding.Finding.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -25360,204 +26290,6 @@ def test_update_finding_rest_bad_request(
     request_init = {
         "finding": {"name": "organizations/sample1/sources/sample2/findings/sample3"}
     }
-    request_init["finding"] = {
-        "name": "organizations/sample1/sources/sample2/findings/sample3",
-        "parent": "parent_value",
-        "resource_name": "resource_name_value",
-        "state": 1,
-        "category": "category_value",
-        "external_uri": "external_uri_value",
-        "source_properties": {},
-        "security_marks": {
-            "name": "name_value",
-            "marks": {},
-            "canonical_name": "canonical_name_value",
-        },
-        "event_time": {"seconds": 751, "nanos": 543},
-        "create_time": {},
-        "severity": 1,
-        "canonical_name": "canonical_name_value",
-        "mute": 1,
-        "finding_class": 1,
-        "indicator": {
-            "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
-            "domains": ["domains_value1", "domains_value2"],
-            "signatures": [
-                {
-                    "memory_hash_signature": {
-                        "binary_family": "binary_family_value",
-                        "detections": [
-                            {"binary": "binary_value", "percent_pages_matched": 0.2197}
-                        ],
-                    },
-                    "yara_rule_signature": {"yara_rule": "yara_rule_value"},
-                }
-            ],
-            "uris": ["uris_value1", "uris_value2"],
-        },
-        "vulnerability": {
-            "cve": {
-                "id": "id_value",
-                "references": [{"source": "source_value", "uri": "uri_value"}],
-                "cvssv3": {
-                    "base_score": 0.1046,
-                    "attack_vector": 1,
-                    "attack_complexity": 1,
-                    "privileges_required": 1,
-                    "user_interaction": 1,
-                    "scope": 1,
-                    "confidentiality_impact": 1,
-                    "integrity_impact": 1,
-                    "availability_impact": 1,
-                },
-                "upstream_fix_available": True,
-            }
-        },
-        "mute_update_time": {},
-        "external_systems": {},
-        "mitre_attack": {
-            "primary_tactic": 1,
-            "primary_techniques": [1],
-            "additional_tactics": [1],
-            "additional_techniques": [1],
-            "version": "version_value",
-        },
-        "access": {
-            "principal_email": "principal_email_value",
-            "caller_ip": "caller_ip_value",
-            "caller_ip_geo": {"region_code": "region_code_value"},
-            "user_agent_family": "user_agent_family_value",
-            "user_agent": "user_agent_value",
-            "service_name": "service_name_value",
-            "method_name": "method_name_value",
-            "principal_subject": "principal_subject_value",
-            "service_account_key_name": "service_account_key_name_value",
-            "service_account_delegation_info": [
-                {
-                    "principal_email": "principal_email_value",
-                    "principal_subject": "principal_subject_value",
-                }
-            ],
-            "user_name": "user_name_value",
-        },
-        "connections": [
-            {
-                "destination_ip": "destination_ip_value",
-                "destination_port": 1734,
-                "source_ip": "source_ip_value",
-                "source_port": 1205,
-                "protocol": 1,
-            }
-        ],
-        "mute_initiator": "mute_initiator_value",
-        "processes": [
-            {
-                "name": "name_value",
-                "binary": {
-                    "path": "path_value",
-                    "size": 443,
-                    "sha256": "sha256_value",
-                    "hashed_size": 1159,
-                    "partially_hashed": True,
-                    "contents": "contents_value",
-                },
-                "libraries": {},
-                "script": {},
-                "args": ["args_value1", "args_value2"],
-                "arguments_truncated": True,
-                "env_variables": [{"name": "name_value", "val": "val_value"}],
-                "env_variables_truncated": True,
-                "pid": 317,
-                "parent_pid": 1062,
-            }
-        ],
-        "contacts": {},
-        "compliances": [
-            {
-                "standard": "standard_value",
-                "version": "version_value",
-                "ids": ["ids_value1", "ids_value2"],
-            }
-        ],
-        "parent_display_name": "parent_display_name_value",
-        "description": "description_value",
-        "exfiltration": {
-            "sources": [
-                {
-                    "name": "name_value",
-                    "components": ["components_value1", "components_value2"],
-                }
-            ],
-            "targets": {},
-        },
-        "iam_bindings": [{"action": 1, "role": "role_value", "member": "member_value"}],
-        "next_steps": "next_steps_value",
-        "module_name": "module_name_value",
-        "containers": [
-            {
-                "name": "name_value",
-                "uri": "uri_value",
-                "image_id": "image_id_value",
-                "labels": [{"name": "name_value", "value": "value_value"}],
-            }
-        ],
-        "kubernetes": {
-            "pods": [
-                {"ns": "ns_value", "name": "name_value", "labels": {}, "containers": {}}
-            ],
-            "nodes": [{"name": "name_value"}],
-            "node_pools": [{"name": "name_value", "nodes": {}}],
-            "roles": [{"kind": 1, "ns": "ns_value", "name": "name_value"}],
-            "bindings": [
-                {
-                    "ns": "ns_value",
-                    "name": "name_value",
-                    "role": {},
-                    "subjects": [{"kind": 1, "ns": "ns_value", "name": "name_value"}],
-                }
-            ],
-            "access_reviews": [
-                {
-                    "group": "group_value",
-                    "ns": "ns_value",
-                    "name": "name_value",
-                    "resource": "resource_value",
-                    "subresource": "subresource_value",
-                    "verb": "verb_value",
-                    "version": "version_value",
-                }
-            ],
-        },
-        "database": {
-            "name": "name_value",
-            "display_name": "display_name_value",
-            "user_name": "user_name_value",
-            "query": "query_value",
-            "grantees": ["grantees_value1", "grantees_value2"],
-        },
-        "files": {},
-        "cloud_dlp_inspection": {
-            "inspect_job": "inspect_job_value",
-            "info_type": "info_type_value",
-            "info_type_count": 1621,
-            "full_scan": True,
-        },
-        "cloud_dlp_data_profile": {
-            "data_profile": "data_profile_value",
-            "parent_type": 1,
-        },
-        "kernel_rootkit": {
-            "name": "name_value",
-            "unexpected_code_modification": True,
-            "unexpected_read_only_data_modification": True,
-            "unexpected_ftrace_handler": True,
-            "unexpected_kprobe_handler": True,
-            "unexpected_kernel_code_pages": True,
-            "unexpected_system_call_handler": True,
-            "unexpected_interrupt_handler": True,
-            "unexpected_processes_in_runqueue": True,
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -25599,8 +26331,9 @@ def test_update_finding_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_finding.Finding.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_finding.Finding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -25664,6 +26397,75 @@ def test_update_mute_config_rest(request_type):
         "update_time": {},
         "most_recent_editor": "most_recent_editor_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.UpdateMuteConfigRequest.meta.fields[
+        "mute_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["mute_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["mute_config"][field])):
+                    del request_init["mute_config"][field][i][subfield]
+            else:
+                del request_init["mute_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -25680,8 +26482,9 @@ def test_update_mute_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_mute_config.MuteConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_mute_config.MuteConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -25758,8 +26561,9 @@ def test_update_mute_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_mute_config.MuteConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcs_mute_config.MuteConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -25849,15 +26653,6 @@ def test_update_mute_config_rest_bad_request(
     request_init = {
         "mute_config": {"name": "organizations/sample1/muteConfigs/sample2"}
     }
-    request_init["mute_config"] = {
-        "name": "organizations/sample1/muteConfigs/sample2",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "filter": "filter_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "most_recent_editor": "most_recent_editor_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -25898,8 +26693,9 @@ def test_update_mute_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_mute_config.MuteConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_mute_config.MuteConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -25964,6 +26760,75 @@ def test_update_notification_config_rest(request_type):
         "service_account": "service_account_value",
         "streaming_config": {"filter": "filter_value"},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.UpdateNotificationConfigRequest.meta.fields[
+        "notification_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["notification_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["notification_config"][field])):
+                    del request_init["notification_config"][field][i][subfield]
+            else:
+                del request_init["notification_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -25979,8 +26844,9 @@ def test_update_notification_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_notification_config.NotificationConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_notification_config.NotificationConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -26056,10 +26922,9 @@ def test_update_notification_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_notification_config.NotificationConfig.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcs_notification_config.NotificationConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -26152,13 +27017,6 @@ def test_update_notification_config_rest_bad_request(
             "name": "organizations/sample1/notificationConfigs/sample2"
         }
     }
-    request_init["notification_config"] = {
-        "name": "organizations/sample1/notificationConfigs/sample2",
-        "description": "description_value",
-        "pubsub_topic": "pubsub_topic_value",
-        "service_account": "service_account_value",
-        "streaming_config": {"filter": "filter_value"},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -26203,8 +27061,9 @@ def test_update_notification_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_notification_config.NotificationConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_notification_config.NotificationConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -26271,6 +27130,77 @@ def test_update_organization_settings_rest(request_type):
             "folder_ids": ["folder_ids_value1", "folder_ids_value2"],
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.UpdateOrganizationSettingsRequest.meta.fields[
+        "organization_settings"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "organization_settings"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["organization_settings"][field])):
+                    del request_init["organization_settings"][field][i][subfield]
+            else:
+                del request_init["organization_settings"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -26284,10 +27214,9 @@ def test_update_organization_settings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_organization_settings.OrganizationSettings.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_organization_settings.OrganizationSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -26361,10 +27290,11 @@ def test_update_organization_settings_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_organization_settings.OrganizationSettings.pb(
+            # Convert return value to protobuf type
+            return_value = gcs_organization_settings.OrganizationSettings.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -26457,15 +27387,6 @@ def test_update_organization_settings_rest_bad_request(
     request_init = {
         "organization_settings": {"name": "organizations/sample1/organizationSettings"}
     }
-    request_init["organization_settings"] = {
-        "name": "organizations/sample1/organizationSettings",
-        "enable_asset_discovery": True,
-        "asset_discovery_config": {
-            "project_ids": ["project_ids_value1", "project_ids_value2"],
-            "inclusion_mode": 1,
-            "folder_ids": ["folder_ids_value1", "folder_ids_value2"],
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -26509,10 +27430,9 @@ def test_update_organization_settings_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_organization_settings.OrganizationSettings.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_organization_settings.OrganizationSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -26596,6 +27516,84 @@ def test_update_security_health_analytics_custom_module_rest(request_type):
             "recommendation": "recommendation_value",
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest.meta.fields[
+        "security_health_analytics_custom_module"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "security_health_analytics_custom_module"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0,
+                    len(request_init["security_health_analytics_custom_module"][field]),
+                ):
+                    del request_init["security_health_analytics_custom_module"][field][
+                        i
+                    ][subfield]
+            else:
+                del request_init["security_health_analytics_custom_module"][field][
+                    subfield
+                ]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -26612,10 +27610,11 @@ def test_update_security_health_analytics_custom_module_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+        # Convert return value to protobuf type
+        return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -26704,10 +27703,11 @@ def test_update_security_health_analytics_custom_module_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+            # Convert return value to protobuf type
+            return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -26812,31 +27812,6 @@ def test_update_security_health_analytics_custom_module_rest_bad_request(
             "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2"
         }
     }
-    request_init["security_health_analytics_custom_module"] = {
-        "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2",
-        "display_name": "display_name_value",
-        "enablement_state": 1,
-        "update_time": {"seconds": 751, "nanos": 543},
-        "last_editor": "last_editor_value",
-        "ancestor_module": "ancestor_module_value",
-        "custom_config": {
-            "predicate": {
-                "expression": "expression_value",
-                "title": "title_value",
-                "description": "description_value",
-                "location": "location_value",
-            },
-            "custom_output": {
-                "properties": [{"name": "name_value", "value_expression": {}}]
-            },
-            "resource_selector": {
-                "resource_types": ["resource_types_value1", "resource_types_value2"]
-            },
-            "severity": 1,
-            "description": "description_value",
-            "recommendation": "recommendation_value",
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -26883,10 +27858,11 @@ def test_update_security_health_analytics_custom_module_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+        # Convert return value to protobuf type
+        return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -26950,6 +27926,73 @@ def test_update_source_rest(request_type):
         "description": "description_value",
         "canonical_name": "canonical_name_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.UpdateSourceRequest.meta.fields["source"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["source"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["source"][field])):
+                    del request_init["source"][field][i][subfield]
+            else:
+                del request_init["source"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -26965,8 +28008,9 @@ def test_update_source_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_source.Source.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_source.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -27042,8 +28086,9 @@ def test_update_source_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_source.Source.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcs_source.Source.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -27129,12 +28174,6 @@ def test_update_source_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"source": {"name": "organizations/sample1/sources/sample2"}}
-    request_init["source"] = {
-        "name": "organizations/sample1/sources/sample2",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "canonical_name": "canonical_name_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -27172,8 +28211,9 @@ def test_update_source_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_source.Source.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_source.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -27232,6 +28272,75 @@ def test_update_security_marks_rest(request_type):
         "marks": {},
         "canonical_name": "canonical_name_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.UpdateSecurityMarksRequest.meta.fields[
+        "security_marks"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["security_marks"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["security_marks"][field])):
+                    del request_init["security_marks"][field][i][subfield]
+            else:
+                del request_init["security_marks"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -27245,8 +28354,9 @@ def test_update_security_marks_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_security_marks.SecurityMarks.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_security_marks.SecurityMarks.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -27325,8 +28435,9 @@ def test_update_security_marks_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcs_security_marks.SecurityMarks.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcs_security_marks.SecurityMarks.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -27425,11 +28536,6 @@ def test_update_security_marks_rest_bad_request(
     request_init = {
         "security_marks": {"name": "organizations/sample1/assets/sample2/securityMarks"}
     }
-    request_init["security_marks"] = {
-        "name": "organizations/sample1/assets/sample2/securityMarks",
-        "marks": {},
-        "canonical_name": "canonical_name_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -27471,8 +28577,9 @@ def test_update_security_marks_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcs_security_marks.SecurityMarks.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcs_security_marks.SecurityMarks.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -27535,6 +28642,75 @@ def test_create_big_query_export_rest(request_type):
         "most_recent_editor": "most_recent_editor_value",
         "principal": "principal_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.CreateBigQueryExportRequest.meta.fields[
+        "big_query_export"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["big_query_export"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["big_query_export"][field])):
+                    del request_init["big_query_export"][field][i][subfield]
+            else:
+                del request_init["big_query_export"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -27552,8 +28728,9 @@ def test_create_big_query_export_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigquery_export.BigQueryExport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigquery_export.BigQueryExport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -27643,8 +28820,9 @@ def test_create_big_query_export_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigquery_export.BigQueryExport.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = bigquery_export.BigQueryExport.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -27748,16 +28926,6 @@ def test_create_big_query_export_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "organizations/sample1"}
-    request_init["big_query_export"] = {
-        "name": "name_value",
-        "description": "description_value",
-        "filter": "filter_value",
-        "dataset": "dataset_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "most_recent_editor": "most_recent_editor_value",
-        "principal": "principal_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -27797,8 +28965,9 @@ def test_create_big_query_export_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigquery_export.BigQueryExport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigquery_export.BigQueryExport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -28117,6 +29286,75 @@ def test_update_big_query_export_rest(request_type):
         "most_recent_editor": "most_recent_editor_value",
         "principal": "principal_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = securitycenter_service.UpdateBigQueryExportRequest.meta.fields[
+        "big_query_export"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["big_query_export"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["big_query_export"][field])):
+                    del request_init["big_query_export"][field][i][subfield]
+            else:
+                del request_init["big_query_export"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -28134,8 +29372,9 @@ def test_update_big_query_export_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigquery_export.BigQueryExport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigquery_export.BigQueryExport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -28213,8 +29452,9 @@ def test_update_big_query_export_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = bigquery_export.BigQueryExport.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = bigquery_export.BigQueryExport.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -28305,16 +29545,6 @@ def test_update_big_query_export_rest_bad_request(
     request_init = {
         "big_query_export": {"name": "organizations/sample1/bigQueryExports/sample2"}
     }
-    request_init["big_query_export"] = {
-        "name": "organizations/sample1/bigQueryExports/sample2",
-        "description": "description_value",
-        "filter": "filter_value",
-        "dataset": "dataset_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "most_recent_editor": "most_recent_editor_value",
-        "principal": "principal_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -28357,8 +29587,9 @@ def test_update_big_query_export_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = bigquery_export.BigQueryExport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = bigquery_export.BigQueryExport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -28424,10 +29655,11 @@ def test_list_big_query_exports_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListBigQueryExportsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListBigQueryExportsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -28509,10 +29741,11 @@ def test_list_big_query_exports_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = securitycenter_service.ListBigQueryExportsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = securitycenter_service.ListBigQueryExportsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -28648,10 +29881,11 @@ def test_list_big_query_exports_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = securitycenter_service.ListBigQueryExportsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = securitycenter_service.ListBigQueryExportsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -28917,6 +30151,7 @@ def test_security_center_base_transport():
         "set_mute",
         "set_iam_policy",
         "test_iam_permissions",
+        "simulate_security_health_analytics_custom_module",
         "update_external_system",
         "update_finding",
         "update_mute_config",
@@ -29320,6 +30555,13 @@ def test_security_center_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.test_iam_permissions._session
     session2 = client2.transport.test_iam_permissions._session
+    assert session1 != session2
+    session1 = (
+        client1.transport.simulate_security_health_analytics_custom_module._session
+    )
+    session2 = (
+        client2.transport.simulate_security_health_analytics_custom_module._session
+    )
     assert session1 != session2
     session1 = client1.transport.update_external_system._session
     session2 = client2.transport.update_external_system._session

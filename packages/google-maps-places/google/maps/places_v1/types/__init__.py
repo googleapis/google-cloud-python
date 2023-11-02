@@ -13,15 +13,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .attribution import AuthorAttribution
+from .ev_charging import EVChargeOptions, EVConnectorType
+from .fuel_options import FuelOptions
 from .geometry import Circle
+from .photo import Photo
 from .place import Place, PriceLevel
-from .places_service import Int32Range, SearchTextRequest, SearchTextResponse
+from .places_service import (
+    GetPhotoMediaRequest,
+    GetPlaceRequest,
+    PhotoMedia,
+    SearchNearbyRequest,
+    SearchNearbyResponse,
+    SearchTextRequest,
+    SearchTextResponse,
+)
+from .review import Review
 
 __all__ = (
+    "AuthorAttribution",
+    "EVChargeOptions",
+    "EVConnectorType",
+    "FuelOptions",
     "Circle",
+    "Photo",
     "Place",
     "PriceLevel",
-    "Int32Range",
+    "GetPhotoMediaRequest",
+    "GetPlaceRequest",
+    "PhotoMedia",
+    "SearchNearbyRequest",
+    "SearchNearbyResponse",
     "SearchTextRequest",
     "SearchTextResponse",
+    "Review",
 )

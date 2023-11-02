@@ -53,23 +53,36 @@ __protobuf__ = proto.module(
 
 
 class Likelihood(proto.Enum):
-    r"""Categorization of results based on how likely they are to
-    represent a match, based on the number of elements they contain
-    which imply a match.
+    r"""Coarse-grained confidence level of how well a particular finding
+    satisfies the criteria to match a particular infoType.
+
+    Likelihood is calculated based on the number of signals a finding
+    has that implies that the finding matches the infoType. For example,
+    a string that has an '@' and a '.com' is more likely to be a match
+    for an email address than a string that only has an '@'.
+
+    In general, the highest likelihood level has the strongest signals
+    that indicate a match. That is, a finding with a high likelihood has
+    a low chance of being a false positive.
+
+    For more information about each likelihood level and how likelihood
+    works, see `Match
+    likelihood <https://cloud.google.com/dlp/docs/likelihood>`__.
 
     Values:
         LIKELIHOOD_UNSPECIFIED (0):
             Default value; same as POSSIBLE.
         VERY_UNLIKELY (1):
-            Few matching elements.
+            Highest chance of a false positive.
         UNLIKELY (2):
-            No description available.
+            High chance of a false positive.
         POSSIBLE (3):
-            Some matching elements.
+            Some matching signals. The default value.
         LIKELY (4):
-            No description available.
+            Low chance of a false positive.
         VERY_LIKELY (5):
-            Many matching elements.
+            Confidence level is high. Lowest chance of a
+            false positive.
     """
     LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
@@ -90,7 +103,7 @@ class FileType(proto.Enum):
             Includes all file extensions not covered by another entry.
             Binary scanning attempts to convert the content of the file
             to utf_8 to scan the file. If you wish to avoid this fall
-            back, specify one or more of the other FileType's in your
+            back, specify one or more of the other file types in your
             storage scan.
         TEXT_FILE (2):
             Included file extensions:
@@ -107,19 +120,23 @@ class FileType(proto.Enum):
             xsl, xsd, yml, yaml.
         IMAGE (3):
             Included file extensions: bmp, gif, jpg, jpeg, jpe, png.
-            bytes_limit_per_file has no effect on image files. Image
-            inspection is restricted to 'global', 'us', 'asia', and
-            'europe'.
+            Setting
+            [bytes_limit_per_file][google.privacy.dlp.v2.CloudStorageOptions.bytes_limit_per_file]
+            or
+            [bytes_limit_per_file_percent][google.privacy.dlp.v2.CloudStorageOptions.bytes_limit_per_file]
+            has no effect on image files. Image inspection is restricted
+            to the ``global``, ``us``, ``asia``, and ``europe`` regions.
         WORD (5):
-            Word files >30 MB will be scanned as binary
-            files. Included file extensions:
-
-              docx, dotx, docm, dotm
+            Microsoft Word files larger than 30 MB will be scanned as
+            binary files. Included file extensions: docx, dotx, docm,
+            dotm. Setting ``bytes_limit_per_file`` or
+            ``bytes_limit_per_file_percent`` has no effect on Word
+            files.
         PDF (6):
-            PDF files >30 MB will be scanned as binary
-            files. Included file extensions:
-
-              pdf
+            PDF files larger than 30 MB will be scanned as binary files.
+            Included file extensions: pdf. Setting
+            ``bytes_limit_per_file`` or ``bytes_limit_per_file_percent``
+            has no effect on PDF files.
         AVRO (7):
             Included file extensions:
 
@@ -133,15 +150,17 @@ class FileType(proto.Enum):
 
             tsv
         POWERPOINT (11):
-            Powerpoint files >30 MB will be scanned as
-            binary files. Included file extensions:
-
-              pptx, pptm, potx, potm, pot
+            Microsoft PowerPoint files larger than 30 MB will be scanned
+            as binary files. Included file extensions: pptx, pptm, potx,
+            potm, pot. Setting ``bytes_limit_per_file`` or
+            ``bytes_limit_per_file_percent`` has no effect on PowerPoint
+            files.
         EXCEL (12):
-            Excel files >30 MB will be scanned as binary
-            files. Included file extensions:
-
-              xlsx, xlsm, xltx, xltm
+            Microsoft Excel files larger than 30 MB will be scanned as
+            binary files. Included file extensions: xlsx, xlsm, xltx,
+            xltm. Setting ``bytes_limit_per_file`` or
+            ``bytes_limit_per_file_percent`` has no effect on Excel
+            files.
     """
     FILE_TYPE_UNSPECIFIED = 0
     BINARY_FILE = 1
@@ -169,6 +188,9 @@ class InfoType(proto.Message):
             the pattern ``[A-Za-z0-9$_-]{1,64}``.
         version (str):
             Optional version name for this InfoType.
+        sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
+            Optional custom sensitivity for this
+            InfoType. This only applies to data profiling.
     """
 
     name: str = proto.Field(
@@ -179,35 +201,43 @@ class InfoType(proto.Message):
         proto.STRING,
         number=2,
     )
+    sensitivity_score: "SensitivityScore" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="SensitivityScore",
+    )
 
 
 class SensitivityScore(proto.Message):
-    r"""Score is a summary of all elements in the data profile.
-    A higher number means more sensitive.
+    r"""Score is calculated from of all elements in the data profile.
+    A higher level means the data is more sensitive.
 
     Attributes:
         score (google.cloud.dlp_v2.types.SensitivityScore.SensitivityScoreLevel):
-            The score applied to the resource.
+            The sensitivity score applied to the
+            resource.
     """
 
     class SensitivityScoreLevel(proto.Enum):
-        r"""Various score levels for resources.
+        r"""Various sensitivity score levels for resources.
 
         Values:
             SENSITIVITY_SCORE_UNSPECIFIED (0):
                 Unused.
             SENSITIVITY_LOW (10):
-                No sensitive information detected. Limited
-                access.
+                No sensitive information detected. The
+                resource isn't publicly accessible.
             SENSITIVITY_MODERATE (20):
-                Medium risk - PII, potentially sensitive
-                data, or fields with free-text data that are at
+                Medium risk. Contains personally identifiable
+                information (PII), potentially sensitive data,
+                or fields with free-text data that are at a
                 higher risk of having intermittent sensitive
                 data. Consider limiting access.
             SENSITIVITY_HIGH (30):
-                High risk – SPII may be present. Exfiltration
-                of data may lead to user data loss.
-                Re-identification of users may be possible.
+                High risk. Sensitive personally identifiable
+                information (SPII) can be present. Exfiltration
+                of data can lead to user data loss.
+                Re-identification of users might be possible.
                 Consider limiting usage and or removing SPII.
         """
         SENSITIVITY_SCORE_UNSPECIFIED = 0
@@ -304,6 +334,13 @@ class CustomInfoType(proto.Message):
             If set to EXCLUSION_TYPE_EXCLUDE this infoType will not
             cause a finding to be returned. It still can be used for
             rules matching.
+        sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
+            Sensitivity for this CustomInfoType. If this
+            CustomInfoType extends an existing InfoType, the
+            sensitivity here will take precedence over that
+            of the original InfoType. If unset for a
+            CustomInfoType, it will default to HIGH.
+            This only applies to data profiling.
     """
 
     class ExclusionType(proto.Enum):
@@ -612,6 +649,11 @@ class CustomInfoType(proto.Message):
         number=8,
         enum=ExclusionType,
     )
+    sensitivity_score: "SensitivityScore" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="SensitivityScore",
+    )
 
 
 class FieldId(proto.Message):
@@ -782,16 +824,22 @@ class CloudStorageOptions(proto.Message):
         bytes_limit_per_file (int):
             Max number of bytes to scan from a file. If a scanned file's
             size is bigger than this value then the rest of the bytes
-            are omitted. Only one of bytes_limit_per_file and
-            bytes_limit_per_file_percent can be specified. Cannot be set
-            if de-identification is requested.
+            are omitted. Only one of ``bytes_limit_per_file`` and
+            ``bytes_limit_per_file_percent`` can be specified. This
+            field can't be set if de-identification is requested. For
+            certain file types, setting this field has no effect. For
+            more information, see `Limits on bytes scanned per
+            file <https://cloud.google.com/dlp/docs/supported-file-types#max-byte-size-per-file>`__.
         bytes_limit_per_file_percent (int):
             Max percentage of bytes to scan from a file. The rest are
             omitted. The number of bytes scanned is rounded down. Must
             be between 0 and 100, inclusively. Both 0 and 100 means no
             limit. Defaults to 0. Only one of bytes_limit_per_file and
-            bytes_limit_per_file_percent can be specified. Cannot be set
-            if de-identification is requested.
+            bytes_limit_per_file_percent can be specified. This field
+            can't be set if de-identification is requested. For certain
+            file types, setting this field has no effect. For more
+            information, see `Limits on bytes scanned per
+            file <https://cloud.google.com/dlp/docs/supported-file-types#max-byte-size-per-file>`__.
         file_types (MutableSequence[google.cloud.dlp_v2.types.FileType]):
             List of file type groups to include in the scan. If empty,
             all files are scanned and available data format processors
@@ -952,9 +1000,17 @@ class BigQueryOptions(proto.Message):
         excluded_fields (MutableSequence[google.cloud.dlp_v2.types.FieldId]):
             References to fields excluded from scanning.
             This allows you to skip inspection of entire
-            columns which you know have no findings.
+            columns which you know have no findings. When
+            inspecting a table, we recommend that you
+            inspect all columns. Otherwise, findings might
+            be affected because hints from excluded columns
+            will not be used.
         included_fields (MutableSequence[google.cloud.dlp_v2.types.FieldId]):
             Limit scanning only to these fields.
+            When inspecting a table, we recommend that you
+            inspect all columns. Otherwise, findings might
+            be affected because hints from excluded columns
+            will not be used.
     """
 
     class SampleMethod(proto.Enum):

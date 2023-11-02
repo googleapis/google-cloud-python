@@ -103,8 +103,8 @@ class ProcessOptions(proto.Message):
 
             This field is a member of `oneof`_ ``page_range``.
         from_start (int):
-            Only process certain pages from the start,
-            process all if the document has less pages.
+            Only process certain pages from the start.
+            Process all if the document has fewer pages.
 
             This field is a member of `oneof`_ ``page_range``.
         from_end (int):

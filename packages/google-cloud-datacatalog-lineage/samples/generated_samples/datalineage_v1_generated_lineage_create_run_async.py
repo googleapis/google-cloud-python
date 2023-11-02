@@ -31,18 +31,18 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud.datacatalog import lineage_v1
+from google.cloud import datacatalog_lineage_v1
 
 
 async def sample_create_run():
     # Create a client
-    client = lineage_v1.LineageAsyncClient()
+    client = datacatalog_lineage_v1.LineageAsyncClient()
 
     # Initialize request argument(s)
-    run = lineage_v1.Run()
+    run = datacatalog_lineage_v1.Run()
     run.state = "ABORTED"
 
-    request = lineage_v1.CreateRunRequest(
+    request = datacatalog_lineage_v1.CreateRunRequest(
         parent="parent_value",
         run=run,
     )

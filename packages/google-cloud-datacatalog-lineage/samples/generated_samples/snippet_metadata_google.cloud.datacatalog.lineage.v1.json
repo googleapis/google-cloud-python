@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-datacatalog-lineage",
-    "version": "0.2.4"
+    "version": "0.3.0"
   },
   "snippets": [
     {
@@ -16,10 +16,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.batch_search_link_processes",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.batch_search_link_processes",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses",
           "service": {
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.BatchSearchLinkProcessesRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.BatchSearchLinkProcessesRequest"
           },
           {
             "name": "retry",
@@ -46,7 +46,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.services.lineage.pagers.BatchSearchLinkProcessesAsyncPager",
+        "resultType": "google.cloud.datacatalog_lineage_v1.services.lineage.pagers.BatchSearchLinkProcessesAsyncPager",
         "shortName": "batch_search_link_processes"
       },
       "description": "Sample for BatchSearchLinkProcesses",
@@ -92,10 +92,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.batch_search_link_processes",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.batch_search_link_processes",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses",
           "service": {
@@ -107,7 +107,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.BatchSearchLinkProcessesRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.BatchSearchLinkProcessesRequest"
           },
           {
             "name": "retry",
@@ -122,7 +122,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.services.lineage.pagers.BatchSearchLinkProcessesPager",
+        "resultType": "google.cloud.datacatalog_lineage_v1.services.lineage.pagers.BatchSearchLinkProcessesPager",
         "shortName": "batch_search_link_processes"
       },
       "description": "Sample for BatchSearchLinkProcesses",
@@ -169,10 +169,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.create_lineage_event",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.create_lineage_event",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.CreateLineageEvent",
           "service": {
@@ -184,7 +184,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.CreateLineageEventRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.CreateLineageEventRequest"
           },
           {
             "name": "parent",
@@ -192,7 +192,7 @@
           },
           {
             "name": "lineage_event",
-            "type": "google.cloud.datacatalog.lineage_v1.types.LineageEvent"
+            "type": "google.cloud.datacatalog_lineage_v1.types.LineageEvent"
           },
           {
             "name": "retry",
@@ -207,7 +207,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.LineageEvent",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.LineageEvent",
         "shortName": "create_lineage_event"
       },
       "description": "Sample for CreateLineageEvent",
@@ -253,10 +253,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.create_lineage_event",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.create_lineage_event",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.CreateLineageEvent",
           "service": {
@@ -268,7 +268,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.CreateLineageEventRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.CreateLineageEventRequest"
           },
           {
             "name": "parent",
@@ -276,7 +276,7 @@
           },
           {
             "name": "lineage_event",
-            "type": "google.cloud.datacatalog.lineage_v1.types.LineageEvent"
+            "type": "google.cloud.datacatalog_lineage_v1.types.LineageEvent"
           },
           {
             "name": "retry",
@@ -291,7 +291,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.LineageEvent",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.LineageEvent",
         "shortName": "create_lineage_event"
       },
       "description": "Sample for CreateLineageEvent",
@@ -338,10 +338,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.create_process",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.create_process",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.CreateProcess",
           "service": {
@@ -353,7 +353,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.CreateProcessRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.CreateProcessRequest"
           },
           {
             "name": "parent",
@@ -361,7 +361,7 @@
           },
           {
             "name": "process",
-            "type": "google.cloud.datacatalog.lineage_v1.types.Process"
+            "type": "google.cloud.datacatalog_lineage_v1.types.Process"
           },
           {
             "name": "retry",
@@ -376,7 +376,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Process",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Process",
         "shortName": "create_process"
       },
       "description": "Sample for CreateProcess",
@@ -422,10 +422,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.create_process",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.create_process",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.CreateProcess",
           "service": {
@@ -437,7 +437,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.CreateProcessRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.CreateProcessRequest"
           },
           {
             "name": "parent",
@@ -445,7 +445,7 @@
           },
           {
             "name": "process",
-            "type": "google.cloud.datacatalog.lineage_v1.types.Process"
+            "type": "google.cloud.datacatalog_lineage_v1.types.Process"
           },
           {
             "name": "retry",
@@ -460,7 +460,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Process",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Process",
         "shortName": "create_process"
       },
       "description": "Sample for CreateProcess",
@@ -507,10 +507,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.create_run",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.create_run",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.CreateRun",
           "service": {
@@ -522,7 +522,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.CreateRunRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.CreateRunRequest"
           },
           {
             "name": "parent",
@@ -530,7 +530,7 @@
           },
           {
             "name": "run",
-            "type": "google.cloud.datacatalog.lineage_v1.types.Run"
+            "type": "google.cloud.datacatalog_lineage_v1.types.Run"
           },
           {
             "name": "retry",
@@ -545,7 +545,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Run",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Run",
         "shortName": "create_run"
       },
       "description": "Sample for CreateRun",
@@ -591,10 +591,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.create_run",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.create_run",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.CreateRun",
           "service": {
@@ -606,7 +606,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.CreateRunRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.CreateRunRequest"
           },
           {
             "name": "parent",
@@ -614,7 +614,7 @@
           },
           {
             "name": "run",
-            "type": "google.cloud.datacatalog.lineage_v1.types.Run"
+            "type": "google.cloud.datacatalog_lineage_v1.types.Run"
           },
           {
             "name": "retry",
@@ -629,7 +629,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Run",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Run",
         "shortName": "create_run"
       },
       "description": "Sample for CreateRun",
@@ -676,10 +676,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.delete_lineage_event",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.delete_lineage_event",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.DeleteLineageEvent",
           "service": {
@@ -691,7 +691,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.DeleteLineageEventRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.DeleteLineageEventRequest"
           },
           {
             "name": "name",
@@ -753,10 +753,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.delete_lineage_event",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.delete_lineage_event",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.DeleteLineageEvent",
           "service": {
@@ -768,7 +768,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.DeleteLineageEventRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.DeleteLineageEventRequest"
           },
           {
             "name": "name",
@@ -831,10 +831,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.delete_process",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.delete_process",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.DeleteProcess",
           "service": {
@@ -846,7 +846,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.DeleteProcessRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.DeleteProcessRequest"
           },
           {
             "name": "name",
@@ -911,10 +911,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.delete_process",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.delete_process",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.DeleteProcess",
           "service": {
@@ -926,7 +926,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.DeleteProcessRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.DeleteProcessRequest"
           },
           {
             "name": "name",
@@ -992,10 +992,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.delete_run",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.delete_run",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.DeleteRun",
           "service": {
@@ -1007,7 +1007,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.DeleteRunRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.DeleteRunRequest"
           },
           {
             "name": "name",
@@ -1072,10 +1072,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.delete_run",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.delete_run",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.DeleteRun",
           "service": {
@@ -1087,7 +1087,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.DeleteRunRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.DeleteRunRequest"
           },
           {
             "name": "name",
@@ -1153,10 +1153,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.get_lineage_event",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.get_lineage_event",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.GetLineageEvent",
           "service": {
@@ -1168,7 +1168,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.GetLineageEventRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.GetLineageEventRequest"
           },
           {
             "name": "name",
@@ -1187,7 +1187,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.LineageEvent",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.LineageEvent",
         "shortName": "get_lineage_event"
       },
       "description": "Sample for GetLineageEvent",
@@ -1233,10 +1233,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.get_lineage_event",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.get_lineage_event",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.GetLineageEvent",
           "service": {
@@ -1248,7 +1248,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.GetLineageEventRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.GetLineageEventRequest"
           },
           {
             "name": "name",
@@ -1267,7 +1267,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.LineageEvent",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.LineageEvent",
         "shortName": "get_lineage_event"
       },
       "description": "Sample for GetLineageEvent",
@@ -1314,10 +1314,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.get_process",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.get_process",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.GetProcess",
           "service": {
@@ -1329,7 +1329,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.GetProcessRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.GetProcessRequest"
           },
           {
             "name": "name",
@@ -1348,7 +1348,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Process",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Process",
         "shortName": "get_process"
       },
       "description": "Sample for GetProcess",
@@ -1394,10 +1394,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.get_process",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.get_process",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.GetProcess",
           "service": {
@@ -1409,7 +1409,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.GetProcessRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.GetProcessRequest"
           },
           {
             "name": "name",
@@ -1428,7 +1428,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Process",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Process",
         "shortName": "get_process"
       },
       "description": "Sample for GetProcess",
@@ -1475,10 +1475,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.get_run",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.get_run",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.GetRun",
           "service": {
@@ -1490,7 +1490,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.GetRunRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.GetRunRequest"
           },
           {
             "name": "name",
@@ -1509,7 +1509,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Run",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Run",
         "shortName": "get_run"
       },
       "description": "Sample for GetRun",
@@ -1555,10 +1555,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.get_run",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.get_run",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.GetRun",
           "service": {
@@ -1570,7 +1570,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.GetRunRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.GetRunRequest"
           },
           {
             "name": "name",
@@ -1589,7 +1589,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Run",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Run",
         "shortName": "get_run"
       },
       "description": "Sample for GetRun",
@@ -1636,10 +1636,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.list_lineage_events",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.list_lineage_events",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.ListLineageEvents",
           "service": {
@@ -1651,7 +1651,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.ListLineageEventsRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.ListLineageEventsRequest"
           },
           {
             "name": "parent",
@@ -1670,7 +1670,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.services.lineage.pagers.ListLineageEventsAsyncPager",
+        "resultType": "google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListLineageEventsAsyncPager",
         "shortName": "list_lineage_events"
       },
       "description": "Sample for ListLineageEvents",
@@ -1716,10 +1716,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.list_lineage_events",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.list_lineage_events",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.ListLineageEvents",
           "service": {
@@ -1731,7 +1731,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.ListLineageEventsRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.ListLineageEventsRequest"
           },
           {
             "name": "parent",
@@ -1750,7 +1750,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.services.lineage.pagers.ListLineageEventsPager",
+        "resultType": "google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListLineageEventsPager",
         "shortName": "list_lineage_events"
       },
       "description": "Sample for ListLineageEvents",
@@ -1797,10 +1797,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.list_processes",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.list_processes",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.ListProcesses",
           "service": {
@@ -1812,7 +1812,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.ListProcessesRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.ListProcessesRequest"
           },
           {
             "name": "parent",
@@ -1831,7 +1831,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.services.lineage.pagers.ListProcessesAsyncPager",
+        "resultType": "google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListProcessesAsyncPager",
         "shortName": "list_processes"
       },
       "description": "Sample for ListProcesses",
@@ -1877,10 +1877,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.list_processes",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.list_processes",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.ListProcesses",
           "service": {
@@ -1892,7 +1892,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.ListProcessesRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.ListProcessesRequest"
           },
           {
             "name": "parent",
@@ -1911,7 +1911,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.services.lineage.pagers.ListProcessesPager",
+        "resultType": "google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListProcessesPager",
         "shortName": "list_processes"
       },
       "description": "Sample for ListProcesses",
@@ -1958,10 +1958,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.list_runs",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.list_runs",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.ListRuns",
           "service": {
@@ -1973,7 +1973,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.ListRunsRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.ListRunsRequest"
           },
           {
             "name": "parent",
@@ -1992,7 +1992,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.services.lineage.pagers.ListRunsAsyncPager",
+        "resultType": "google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListRunsAsyncPager",
         "shortName": "list_runs"
       },
       "description": "Sample for ListRuns",
@@ -2038,10 +2038,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.list_runs",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.list_runs",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.ListRuns",
           "service": {
@@ -2053,7 +2053,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.ListRunsRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.ListRunsRequest"
           },
           {
             "name": "parent",
@@ -2072,7 +2072,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.services.lineage.pagers.ListRunsPager",
+        "resultType": "google.cloud.datacatalog_lineage_v1.services.lineage.pagers.ListRunsPager",
         "shortName": "list_runs"
       },
       "description": "Sample for ListRuns",
@@ -2119,10 +2119,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.search_links",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.search_links",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks",
           "service": {
@@ -2134,7 +2134,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.SearchLinksRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.SearchLinksRequest"
           },
           {
             "name": "retry",
@@ -2149,7 +2149,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.services.lineage.pagers.SearchLinksAsyncPager",
+        "resultType": "google.cloud.datacatalog_lineage_v1.services.lineage.pagers.SearchLinksAsyncPager",
         "shortName": "search_links"
       },
       "description": "Sample for SearchLinks",
@@ -2195,10 +2195,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.search_links",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.search_links",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks",
           "service": {
@@ -2210,7 +2210,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.SearchLinksRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.SearchLinksRequest"
           },
           {
             "name": "retry",
@@ -2225,7 +2225,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.services.lineage.pagers.SearchLinksPager",
+        "resultType": "google.cloud.datacatalog_lineage_v1.services.lineage.pagers.SearchLinksPager",
         "shortName": "search_links"
       },
       "description": "Sample for SearchLinks",
@@ -2272,10 +2272,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.update_process",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.update_process",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.UpdateProcess",
           "service": {
@@ -2287,11 +2287,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.UpdateProcessRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.UpdateProcessRequest"
           },
           {
             "name": "process",
-            "type": "google.cloud.datacatalog.lineage_v1.types.Process"
+            "type": "google.cloud.datacatalog_lineage_v1.types.Process"
           },
           {
             "name": "update_mask",
@@ -2310,7 +2310,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Process",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Process",
         "shortName": "update_process"
       },
       "description": "Sample for UpdateProcess",
@@ -2356,10 +2356,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.update_process",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.update_process",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.UpdateProcess",
           "service": {
@@ -2371,11 +2371,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.UpdateProcessRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.UpdateProcessRequest"
           },
           {
             "name": "process",
-            "type": "google.cloud.datacatalog.lineage_v1.types.Process"
+            "type": "google.cloud.datacatalog_lineage_v1.types.Process"
           },
           {
             "name": "update_mask",
@@ -2394,7 +2394,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Process",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Process",
         "shortName": "update_process"
       },
       "description": "Sample for UpdateProcess",
@@ -2441,10 +2441,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient",
           "shortName": "LineageAsyncClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageAsyncClient.update_run",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageAsyncClient.update_run",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.UpdateRun",
           "service": {
@@ -2456,11 +2456,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.UpdateRunRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.UpdateRunRequest"
           },
           {
             "name": "run",
-            "type": "google.cloud.datacatalog.lineage_v1.types.Run"
+            "type": "google.cloud.datacatalog_lineage_v1.types.Run"
           },
           {
             "name": "update_mask",
@@ -2479,7 +2479,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Run",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Run",
         "shortName": "update_run"
       },
       "description": "Sample for UpdateRun",
@@ -2525,10 +2525,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient",
+          "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient",
           "shortName": "LineageClient"
         },
-        "fullName": "google.cloud.datacatalog.lineage_v1.LineageClient.update_run",
+        "fullName": "google.cloud.datacatalog_lineage_v1.LineageClient.update_run",
         "method": {
           "fullName": "google.cloud.datacatalog.lineage.v1.Lineage.UpdateRun",
           "service": {
@@ -2540,11 +2540,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.datacatalog.lineage_v1.types.UpdateRunRequest"
+            "type": "google.cloud.datacatalog_lineage_v1.types.UpdateRunRequest"
           },
           {
             "name": "run",
-            "type": "google.cloud.datacatalog.lineage_v1.types.Run"
+            "type": "google.cloud.datacatalog_lineage_v1.types.Run"
           },
           {
             "name": "update_mask",
@@ -2563,7 +2563,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.datacatalog.lineage_v1.types.Run",
+        "resultType": "google.cloud.datacatalog_lineage_v1.types.Run",
         "shortName": "update_run"
       },
       "description": "Sample for UpdateRun",

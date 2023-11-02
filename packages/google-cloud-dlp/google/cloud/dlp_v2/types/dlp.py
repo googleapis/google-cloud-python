@@ -35,6 +35,11 @@ __protobuf__ = proto.module(
         "TransformationResultStatusType",
         "TransformationContainerType",
         "TransformationType",
+        "BigQueryTableTypeCollection",
+        "BigQueryTableType",
+        "DataProfileUpdateFrequency",
+        "BigQueryTableModification",
+        "BigQuerySchemaModification",
         "RelationalOperator",
         "MatchingType",
         "ContentOption",
@@ -44,6 +49,8 @@ __protobuf__ = proto.module(
         "StoredInfoTypeState",
         "ResourceVisibility",
         "EncryptionStatus",
+        "NullPercentageLevel",
+        "UniquenessScoreLevel",
         "ExcludeInfoTypes",
         "ExcludeByHotword",
         "ExclusionRule",
@@ -78,7 +85,11 @@ __protobuf__ = proto.module(
         "OutputStorageConfig",
         "InfoTypeStats",
         "InspectDataSourceDetails",
+        "DataProfileBigQueryRowSchema",
         "HybridInspectStatistics",
+        "ActionDetails",
+        "DeidentifyDataSourceStats",
+        "DeidentifyDataSourceDetails",
         "InfoTypeDescription",
         "InfoTypeCategory",
         "VersionDescription",
@@ -145,6 +156,12 @@ __protobuf__ = proto.module(
         "ActivateJobTriggerRequest",
         "UpdateJobTriggerRequest",
         "GetJobTriggerRequest",
+        "CreateDiscoveryConfigRequest",
+        "UpdateDiscoveryConfigRequest",
+        "GetDiscoveryConfigRequest",
+        "ListDiscoveryConfigsRequest",
+        "ListDiscoveryConfigsResponse",
+        "DeleteDiscoveryConfigRequest",
         "CreateDlpJobRequest",
         "ListJobTriggersRequest",
         "ListJobTriggersResponse",
@@ -152,7 +169,21 @@ __protobuf__ = proto.module(
         "InspectJobConfig",
         "DataProfileAction",
         "DataProfileJobConfig",
+        "BigQueryRegex",
+        "BigQueryRegexes",
+        "BigQueryTableTypes",
+        "Disabled",
         "DataProfileLocation",
+        "DiscoveryConfig",
+        "DiscoveryTarget",
+        "BigQueryDiscoveryTarget",
+        "DiscoveryBigQueryFilter",
+        "BigQueryTableCollection",
+        "DiscoveryBigQueryConditions",
+        "DiscoveryGenerationCadence",
+        "DiscoveryTableModifiedCadence",
+        "DiscoverySchemaModifiedCadence",
+        "DiscoveryStartingLocation",
         "DlpJob",
         "GetDlpJobRequest",
         "ListDlpJobsRequest",
@@ -189,6 +220,7 @@ __protobuf__ = proto.module(
         "ProfileStatus",
         "InfoTypeSummary",
         "OtherInfoTypeSummary",
+        "ColumnDataProfile",
         "DataProfilePubSubCondition",
         "DataProfilePubSubMessage",
     },
@@ -300,6 +332,108 @@ class TransformationType(proto.Enum):
     DATE_SHIFT = 12
     CRYPTO_DETERMINISTIC_CONFIG = 13
     REDACT_IMAGE = 14
+
+
+class BigQueryTableTypeCollection(proto.Enum):
+    r"""Over time new types may be added. Currently VIEW, MATERIALIZED_VIEW,
+    and SNAPSHOT are not supported.
+
+    Values:
+        BIG_QUERY_COLLECTION_UNSPECIFIED (0):
+            Unused.
+        BIG_QUERY_COLLECTION_ALL_TYPES (1):
+            Automatically generate profiles for all
+            tables, even if the table type is not yet fully
+            supported for analysis. Profiles for unsupported
+            tables will be generated with errors to indicate
+            their partial support. When full support is
+            added, the tables will automatically be profiled
+            during the next scheduled run.
+        BIG_QUERY_COLLECTION_ONLY_SUPPORTED_TYPES (2):
+            Only those types fully supported will be
+            profiled. Will expand automatically as Cloud DLP
+            adds support for new table types. Unsupported
+            table types will not have partial profiles
+            generated.
+    """
+    BIG_QUERY_COLLECTION_UNSPECIFIED = 0
+    BIG_QUERY_COLLECTION_ALL_TYPES = 1
+    BIG_QUERY_COLLECTION_ONLY_SUPPORTED_TYPES = 2
+
+
+class BigQueryTableType(proto.Enum):
+    r"""Over time new types may be added. Currently VIEW, MATERIALIZED_VIEW,
+    SNAPSHOT, and non-BigLake external tables are not supported.
+
+    Values:
+        BIG_QUERY_TABLE_TYPE_UNSPECIFIED (0):
+            Unused.
+        BIG_QUERY_TABLE_TYPE_TABLE (1):
+            A normal BigQuery table.
+        BIG_QUERY_TABLE_TYPE_EXTERNAL_BIG_LAKE (2):
+            A table that references data stored in Cloud
+            Storage.
+    """
+    BIG_QUERY_TABLE_TYPE_UNSPECIFIED = 0
+    BIG_QUERY_TABLE_TYPE_TABLE = 1
+    BIG_QUERY_TABLE_TYPE_EXTERNAL_BIG_LAKE = 2
+
+
+class DataProfileUpdateFrequency(proto.Enum):
+    r"""How frequently data profiles can be updated. New options can
+    be added at a later time.
+
+    Values:
+        UPDATE_FREQUENCY_UNSPECIFIED (0):
+            Unspecified.
+        UPDATE_FREQUENCY_NEVER (1):
+            After the data profile is created, it will
+            never be updated.
+        UPDATE_FREQUENCY_DAILY (2):
+            The data profile can be updated up to once
+            every 24 hours.
+        UPDATE_FREQUENCY_MONTHLY (4):
+            The data profile can be updated up to once
+            every 30 days. Default.
+    """
+    UPDATE_FREQUENCY_UNSPECIFIED = 0
+    UPDATE_FREQUENCY_NEVER = 1
+    UPDATE_FREQUENCY_DAILY = 2
+    UPDATE_FREQUENCY_MONTHLY = 4
+
+
+class BigQueryTableModification(proto.Enum):
+    r"""Attributes evaluated to determine if a table has been
+    modified. New values may be added at a later time.
+
+    Values:
+        TABLE_MODIFICATION_UNSPECIFIED (0):
+            Unused.
+        TABLE_MODIFIED_TIMESTAMP (1):
+            A table will be considered modified when the
+            last_modified_time from BigQuery has been updated.
+    """
+    TABLE_MODIFICATION_UNSPECIFIED = 0
+    TABLE_MODIFIED_TIMESTAMP = 1
+
+
+class BigQuerySchemaModification(proto.Enum):
+    r"""Attributes evaluated to determine if a schema has been
+    modified. New values may be added at a later time.
+
+    Values:
+        SCHEMA_MODIFICATION_UNSPECIFIED (0):
+            Unused
+        SCHEMA_NEW_COLUMNS (1):
+            Profiles should be regenerated when new
+            columns are added to the table. Default.
+        SCHEMA_REMOVED_COLUMNS (2):
+            Profiles should be regenerated when columns
+            are removed from the table.
+    """
+    SCHEMA_MODIFICATION_UNSPECIFIED = 0
+    SCHEMA_NEW_COLUMNS = 1
+    SCHEMA_REMOVED_COLUMNS = 2
 
 
 class RelationalOperator(proto.Enum):
@@ -500,6 +634,55 @@ class EncryptionStatus(proto.Enum):
     ENCRYPTION_CUSTOMER_MANAGED = 2
 
 
+class NullPercentageLevel(proto.Enum):
+    r"""Bucketized nullness percentage levels. A higher level means a
+    higher percentage of the column is null.
+
+    Values:
+        NULL_PERCENTAGE_LEVEL_UNSPECIFIED (0):
+            Unused.
+        NULL_PERCENTAGE_VERY_LOW (1):
+            Very few null entries.
+        NULL_PERCENTAGE_LOW (2):
+            Some null entries.
+        NULL_PERCENTAGE_MEDIUM (3):
+            No description available.
+        NULL_PERCENTAGE_HIGH (4):
+            A lot of null entries.
+    """
+    NULL_PERCENTAGE_LEVEL_UNSPECIFIED = 0
+    NULL_PERCENTAGE_VERY_LOW = 1
+    NULL_PERCENTAGE_LOW = 2
+    NULL_PERCENTAGE_MEDIUM = 3
+    NULL_PERCENTAGE_HIGH = 4
+
+
+class UniquenessScoreLevel(proto.Enum):
+    r"""Bucketized uniqueness score levels. A higher uniqueness score
+    is a strong signal that the column may contain a unique
+    identifier like user id. A low value indicates that the column
+    contains few unique values like booleans or other classifiers.
+
+    Values:
+        UNIQUENESS_SCORE_LEVEL_UNSPECIFIED (0):
+            Some columns do not have estimated
+            uniqueness. Possible reasons include having too
+            few values.
+        UNIQUENESS_SCORE_LOW (1):
+            Low uniqueness, possibly a boolean, enum or
+            similiarly typed column.
+        UNIQUENESS_SCORE_MEDIUM (2):
+            Medium uniqueness.
+        UNIQUENESS_SCORE_HIGH (3):
+            High uniqueness, possibly a column of free
+            text or unique identifiers.
+    """
+    UNIQUENESS_SCORE_LEVEL_UNSPECIFIED = 0
+    UNIQUENESS_SCORE_LOW = 1
+    UNIQUENESS_SCORE_MEDIUM = 2
+    UNIQUENESS_SCORE_HIGH = 3
+
+
 class ExcludeInfoTypes(proto.Message):
     r"""List of excluded infoTypes.
 
@@ -526,8 +709,8 @@ class ExcludeInfoTypes(proto.Message):
 class ExcludeByHotword(proto.Message):
     r"""The rule to exclude findings based on a hotword. For record
     inspection of tables, column names are considered hotwords. An
-    example of this is to exclude a finding if a BigQuery column
-    matches a specific pattern.
+    example of this is to exclude a finding if it belongs to a
+    BigQuery column that matches a specific pattern.
 
     Attributes:
         hotword_regex (google.cloud.dlp_v2.types.CustomInfoType.Regex):
@@ -695,19 +878,27 @@ class InspectConfig(proto.Message):
             https://cloud.google.com/dlp/docs/infotypes-reference.
 
             When no InfoTypes or CustomInfoTypes are specified in a
-            request, the system may automatically choose what detectors
-            to run. By default this may be all types, but may change
-            over time as detectors are updated.
+            request, the system may automatically choose a default list
+            of detectors to run, which may change over time.
 
             If you need precise control and predictability as to what
             detectors are run you should specify specific InfoTypes
             listed in the reference, otherwise a default list will be
             used, which may change over time.
         min_likelihood (google.cloud.dlp_v2.types.Likelihood):
-            Only returns findings equal or above this
-            threshold. The default is POSSIBLE.
-            See https://cloud.google.com/dlp/docs/likelihood
-            to learn more.
+            Only returns findings equal to or above this threshold. The
+            default is POSSIBLE.
+
+            In general, the highest likelihood setting yields the fewest
+            findings in results and the lowest chance of a false
+            positive. For more information, see `Match
+            likelihood <https://cloud.google.com/dlp/docs/likelihood>`__.
+        min_likelihood_per_info_type (MutableSequence[google.cloud.dlp_v2.types.InspectConfig.InfoTypeLikelihood]):
+            Minimum likelihood per infotype. For each infotype, a user
+            can specify a minimum likelihood. The system only returns a
+            finding if its likelihood is above this threshold. If this
+            field is not set, the system uses the InspectConfig
+            min_likelihood.
         limits (google.cloud.dlp_v2.types.InspectConfig.FindingLimits):
             Configuration to control the number of findings returned.
             This is not used for data profiling.
@@ -718,6 +909,14 @@ class InspectConfig(proto.Message):
             finding limits in
             [RedactImage][google.privacy.dlp.v2.DlpService.RedactImage]
             requests. Otherwise, Cloud DLP returns an error.
+
+            When set within an
+            [InspectJobConfig][google.privacy.dlp.v2.InspectJobConfig],
+            the specified maximum values aren't hard limits. If an
+            inspection job reaches these limits, the job ends gradually,
+            not abruptly. Therefore, the actual number of findings that
+            Cloud DLP returns can be multiple times higher than these
+            maximum values.
         include_quote (bool):
             When true, a contextual quote from the data that triggered a
             finding is included in the response; see
@@ -740,6 +939,36 @@ class InspectConfig(proto.Message):
             each info type.
     """
 
+    class InfoTypeLikelihood(proto.Message):
+        r"""Configuration for setting a minimum likelihood per infotype. Used to
+        customize the minimum likelihood level for specific infotypes in the
+        request. For example, use this if you want to lower the precision
+        for PERSON_NAME without lowering the precision for the other
+        infotypes in the request.
+
+        Attributes:
+            info_type (google.cloud.dlp_v2.types.InfoType):
+                Type of information the likelihood threshold applies to.
+                Only one likelihood per info_type should be provided. If
+                InfoTypeLikelihood does not have an info_type, the
+                configuration fails.
+            min_likelihood (google.cloud.dlp_v2.types.Likelihood):
+                Only returns findings equal to or above this
+                threshold. This field is required or else the
+                configuration fails.
+        """
+
+        info_type: storage.InfoType = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=storage.InfoType,
+        )
+        min_likelihood: storage.Likelihood = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum=storage.Likelihood,
+        )
+
     class FindingLimits(proto.Message):
         r"""Configuration to control the number of findings returned for
         inspection. This is not used for de-identification or data
@@ -753,14 +982,30 @@ class InspectConfig(proto.Message):
 
         Attributes:
             max_findings_per_item (int):
-                Max number of findings that will be returned for each item
-                scanned. When set within ``InspectJobConfig``, the maximum
-                returned is 2000 regardless if this is set higher. When set
-                within ``InspectContentRequest``, this field is ignored.
+                Max number of findings that are returned for each item
+                scanned.
+
+                When set within an
+                [InspectContentRequest][google.privacy.dlp.v2.InspectContentRequest],
+                this field is ignored.
+
+                This value isn't a hard limit. If the number of findings for
+                an item reaches this limit, the inspection of that item ends
+                gradually, not abruptly. Therefore, the actual number of
+                findings that Cloud DLP returns for the item can be multiple
+                times higher than this value.
             max_findings_per_request (int):
-                Max number of findings that will be returned per
-                request/job. When set within ``InspectContentRequest``, the
-                maximum returned is 2000 regardless if this is set higher.
+                Max number of findings that are returned per request or job.
+
+                If you set this field in an
+                [InspectContentRequest][google.privacy.dlp.v2.InspectContentRequest],
+                the resulting maximum value is the value that you set or
+                3,000, whichever is lower.
+
+                This value isn't a hard limit. If an inspection reaches this
+                limit, the inspection ends gradually, not abruptly.
+                Therefore, the actual number of findings that Cloud DLP
+                returns can be multiple times higher than this value.
             max_findings_per_info_type (MutableSequence[google.cloud.dlp_v2.types.InspectConfig.FindingLimits.InfoTypeLimit]):
                 Configuration of findings limit given for
                 specified infoTypes.
@@ -816,6 +1061,13 @@ class InspectConfig(proto.Message):
         proto.ENUM,
         number=2,
         enum=storage.Likelihood,
+    )
+    min_likelihood_per_info_type: MutableSequence[
+        InfoTypeLikelihood
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message=InfoTypeLikelihood,
     )
     limits: FindingLimits = proto.Field(
         proto.MESSAGE,
@@ -2222,6 +2474,42 @@ class InspectDataSourceDetails(proto.Message):
     )
 
 
+class DataProfileBigQueryRowSchema(proto.Message):
+    r"""The schema of data to be saved to the BigQuery table when the
+    ``DataProfileAction`` is enabled.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        table_profile (google.cloud.dlp_v2.types.TableDataProfile):
+            Table data profile column
+
+            This field is a member of `oneof`_ ``data_profile``.
+        column_profile (google.cloud.dlp_v2.types.ColumnDataProfile):
+            Column data profile column
+
+            This field is a member of `oneof`_ ``data_profile``.
+    """
+
+    table_profile: "TableDataProfile" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="data_profile",
+        message="TableDataProfile",
+    )
+    column_profile: "ColumnDataProfile" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="data_profile",
+        message="ColumnDataProfile",
+    )
+
+
 class HybridInspectStatistics(proto.Message):
     r"""Statistics related to processing hybrid inspect requests.
 
@@ -2256,6 +2544,114 @@ class HybridInspectStatistics(proto.Message):
     )
 
 
+class ActionDetails(proto.Message):
+    r"""The results of an [Action][google.privacy.dlp.v2.Action].
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        deidentify_details (google.cloud.dlp_v2.types.DeidentifyDataSourceDetails):
+            Outcome of a de-identification action.
+
+            This field is a member of `oneof`_ ``details``.
+    """
+
+    deidentify_details: "DeidentifyDataSourceDetails" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="details",
+        message="DeidentifyDataSourceDetails",
+    )
+
+
+class DeidentifyDataSourceStats(proto.Message):
+    r"""Summary of what was modified during a transformation.
+
+    Attributes:
+        transformed_bytes (int):
+            Total size in bytes that were transformed in
+            some way.
+        transformation_count (int):
+            Number of successfully applied
+            transformations.
+        transformation_error_count (int):
+            Number of errors encountered while trying to
+            apply transformations.
+    """
+
+    transformed_bytes: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    transformation_count: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    transformation_error_count: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+
+
+class DeidentifyDataSourceDetails(proto.Message):
+    r"""The results of a
+    [Deidentify][google.privacy.dlp.v2.Action.Deidentify] action from an
+    inspect job.
+
+    Attributes:
+        requested_options (google.cloud.dlp_v2.types.DeidentifyDataSourceDetails.RequestedDeidentifyOptions):
+            De-identification config used for the
+            request.
+        deidentify_stats (google.cloud.dlp_v2.types.DeidentifyDataSourceStats):
+            Stats about the de-identification operation.
+    """
+
+    class RequestedDeidentifyOptions(proto.Message):
+        r"""De-identification options.
+
+        Attributes:
+            snapshot_deidentify_template (google.cloud.dlp_v2.types.DeidentifyTemplate):
+                Snapshot of the state of the ``DeidentifyTemplate`` from the
+                [Deidentify][google.privacy.dlp.v2.Action.Deidentify] action
+                at the time this job was run.
+            snapshot_structured_deidentify_template (google.cloud.dlp_v2.types.DeidentifyTemplate):
+                Snapshot of the state of the structured
+                ``DeidentifyTemplate`` from the ``Deidentify`` action at the
+                time this job was run.
+            snapshot_image_redact_template (google.cloud.dlp_v2.types.DeidentifyTemplate):
+                Snapshot of the state of the image transformation
+                ``DeidentifyTemplate`` from the ``Deidentify`` action at the
+                time this job was run.
+        """
+
+        snapshot_deidentify_template: "DeidentifyTemplate" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="DeidentifyTemplate",
+        )
+        snapshot_structured_deidentify_template: "DeidentifyTemplate" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="DeidentifyTemplate",
+        )
+        snapshot_image_redact_template: "DeidentifyTemplate" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="DeidentifyTemplate",
+        )
+
+    requested_options: RequestedDeidentifyOptions = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=RequestedDeidentifyOptions,
+    )
+    deidentify_stats: "DeidentifyDataSourceStats" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DeidentifyDataSourceStats",
+    )
+
+
 class InfoTypeDescription(proto.Message):
     r"""InfoType description.
 
@@ -2275,6 +2671,8 @@ class InfoTypeDescription(proto.Message):
             infotype.
         categories (MutableSequence[google.cloud.dlp_v2.types.InfoTypeCategory]):
             The category of the infoType.
+        sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
+            The default sensitivity of the infoType.
     """
 
     name: str = proto.Field(
@@ -2303,6 +2701,11 @@ class InfoTypeDescription(proto.Message):
         proto.MESSAGE,
         number=10,
         message="InfoTypeCategory",
+    )
+    sensitivity_score: storage.SensitivityScore = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=storage.SensitivityScore,
     )
 
 
@@ -2361,6 +2764,8 @@ class InfoTypeCategory(proto.Message):
                 The infoType is typically used in China.
             COLOMBIA (9):
                 The infoType is typically used in Colombia.
+            CROATIA (42):
+                The infoType is typically used in Croatia.
             DENMARK (10):
                 The infoType is typically used in Denmark.
             FRANCE (11):
@@ -2390,6 +2795,9 @@ class InfoTypeCategory(proto.Message):
             THE_NETHERLANDS (23):
                 The infoType is typically used in the
                 Netherlands.
+            NEW_ZEALAND (41):
+                The infoType is typically used in New
+                Zealand.
             NORWAY (24):
                 The infoType is typically used in Norway.
             PARAGUAY (25):
@@ -2409,6 +2817,9 @@ class InfoTypeCategory(proto.Message):
                 The infoType is typically used in Spain.
             SWEDEN (32):
                 The infoType is typically used in Sweden.
+            SWITZERLAND (43):
+                The infoType is typically used in
+                Switzerland.
             TAIWAN (33):
                 The infoType is typically used in Taiwan.
             THAILAND (34):
@@ -2428,9 +2839,6 @@ class InfoTypeCategory(proto.Message):
             INTERNAL (40):
                 The infoType is typically used in Google
                 internally.
-            NEW_ZEALAND (41):
-                The infoType is typically used in New
-                Zealand.
         """
         LOCATION_UNSPECIFIED = 0
         GLOBAL = 1
@@ -2442,6 +2850,7 @@ class InfoTypeCategory(proto.Message):
         CHILE = 7
         CHINA = 8
         COLOMBIA = 9
+        CROATIA = 42
         DENMARK = 10
         FRANCE = 11
         FINLAND = 12
@@ -2456,6 +2865,7 @@ class InfoTypeCategory(proto.Message):
         KOREA = 21
         MEXICO = 22
         THE_NETHERLANDS = 23
+        NEW_ZEALAND = 41
         NORWAY = 24
         PARAGUAY = 25
         PERU = 26
@@ -2465,6 +2875,7 @@ class InfoTypeCategory(proto.Message):
         SOUTH_AFRICA = 30
         SPAIN = 31
         SWEDEN = 32
+        SWITZERLAND = 43
         TAIWAN = 33
         THAILAND = 34
         TURKEY = 35
@@ -2473,7 +2884,6 @@ class InfoTypeCategory(proto.Message):
         URUGUAY = 38
         VENEZUELA = 39
         INTERNAL = 40
-        NEW_ZEALAND = 41
 
     class IndustryCategory(proto.Enum):
         r"""Enum of the current industries in the category.
@@ -5891,7 +6301,8 @@ class Error(proto.Message):
         details (google.rpc.status_pb2.Status):
             Detailed error codes and messages.
         timestamps (MutableSequence[google.protobuf.timestamp_pb2.Timestamp]):
-            The times the error occurred.
+            The times the error occurred. List includes
+            the oldest timestamp and the last 9 timestamps.
     """
 
     details: status_pb2.Status = proto.Field(
@@ -6151,16 +6562,15 @@ class Action(proto.Message):
         )
 
     class PublishSummaryToCscc(proto.Message):
-        r"""Publish the result summary of a DlpJob to the Cloud Security
-        Command Center (CSCC Alpha).
-        This action is only available for projects which are parts of an
-        organization and whitelisted for the alpha Cloud Security
-        Command Center.
-        The action will publish the count of finding instances and their
-        info types. The summary of findings will be persisted in CSCC
-        and are governed by CSCC service-specific policy, see
-        https://cloud.google.com/terms/service-terms Only a single
-        instance of this action can be specified. Compatible with:
+        r"""Publish the result summary of a DlpJob to `Security Command
+        Center <https://cloud.google.com/security-command-center>`__. This
+        action is available for only projects that belong to an
+        organization. This action publishes the count of finding instances
+        and their infoTypes. The summary of findings are persisted in
+        Security Command Center and are governed by `service-specific
+        policies for Security Command
+        Center <https://cloud.google.com/terms/service-terms>`__. Only a
+        single instance of this action can be specified. Compatible with:
         Inspect
 
         """
@@ -6513,16 +6923,16 @@ class ListInspectTemplatesRequest(proto.Message):
 
                 parent=projects/example-project/locations/europe-west3
         page_token (str):
-            Page token to continue retrieval. Comes from previous call
-            to ``ListInspectTemplates``.
+            Page token to continue retrieval. Comes from the previous
+            call to ``ListInspectTemplates``.
         page_size (int):
-            Size of the page, can be limited by the
-            server. If zero server returns a page of max
-            size 100.
+            Size of the page. This value can be limited
+            by the server. If zero server returns a page of
+            max size 100.
         order_by (str):
             Comma separated list of fields to order by, followed by
-            ``asc`` or ``desc`` postfix. This list is case-insensitive,
-            default sorting order is ascending, redundant space
+            ``asc`` or ``desc`` postfix. This list is case insensitive.
+            The default sorting order is ascending. Redundant space
             characters are insignificant.
 
             Example: ``name asc,update_time, create_time desc``
@@ -6571,7 +6981,7 @@ class ListInspectTemplatesResponse(proto.Message):
             ListInspectTemplatesRequest.
         next_page_token (str):
             If the next page is available then the next
-            page token to be used in following
+            page token to be used in the following
             ListInspectTemplates request.
     """
 
@@ -6722,6 +7132,196 @@ class GetJobTriggerRequest(proto.Message):
     )
 
 
+class CreateDiscoveryConfigRequest(proto.Message):
+    r"""Request message for CreateDiscoveryConfig.
+
+    Attributes:
+        parent (str):
+            Required. Parent resource name.
+
+            The format of this value is as follows:
+            ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
+        discovery_config (google.cloud.dlp_v2.types.DiscoveryConfig):
+            Required. The DiscoveryConfig to create.
+        config_id (str):
+            The config ID can contain uppercase and lowercase letters,
+            numbers, and hyphens; that is, it must match the regular
+            expression: ``[a-zA-Z\d-_]+``. The maximum length is 100
+            characters. Can be empty to allow the system to generate
+            one.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    discovery_config: "DiscoveryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DiscoveryConfig",
+    )
+    config_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateDiscoveryConfigRequest(proto.Message):
+    r"""Request message for UpdateDiscoveryConfig.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the project and the
+            configuration, for example
+            ``projects/dlp-test-project/discoveryConfigs/53234423``.
+        discovery_config (google.cloud.dlp_v2.types.DiscoveryConfig):
+            Required. New DiscoveryConfig value.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Mask to control which fields get updated.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    discovery_config: "DiscoveryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DiscoveryConfig",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetDiscoveryConfigRequest(proto.Message):
+    r"""Request message for GetDiscoveryConfig.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the project and the
+            configuration, for example
+            ``projects/dlp-test-project/discoveryConfigs/53234423``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListDiscoveryConfigsRequest(proto.Message):
+    r"""Request message for ListDiscoveryConfigs.
+
+    Attributes:
+        parent (str):
+            Required. Parent resource name.
+
+            The format of this value is as follows:
+            ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
+        page_token (str):
+            Page token to continue retrieval. Comes from the previous
+            call to ListDiscoveryConfigs. ``order_by`` field must not
+            change for subsequent calls.
+        page_size (int):
+            Size of the page. This value can be limited
+            by a server.
+        order_by (str):
+            Comma separated list of config fields to order by, followed
+            by ``asc`` or ``desc`` postfix. This list is case
+            insensitive. The default sorting order is ascending.
+            Redundant space characters are insignificant.
+
+            Example: ``name asc,update_time, create_time desc``
+
+            Supported fields are:
+
+            -  ``last_run_time``: corresponds to the last time the
+               DiscoveryConfig ran.
+            -  ``name``: corresponds to the DiscoveryConfig's name.
+            -  ``status``: corresponds to DiscoveryConfig's status.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListDiscoveryConfigsResponse(proto.Message):
+    r"""Response message for ListDiscoveryConfigs.
+
+    Attributes:
+        discovery_configs (MutableSequence[google.cloud.dlp_v2.types.DiscoveryConfig]):
+            List of configs, up to page_size in
+            ListDiscoveryConfigsRequest.
+        next_page_token (str):
+            If the next page is available then this value
+            is the next page token to be used in the
+            following ListDiscoveryConfigs request.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    discovery_configs: MutableSequence["DiscoveryConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DiscoveryConfig",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DeleteDiscoveryConfigRequest(proto.Message):
+    r"""Request message for DeleteDiscoveryConfig.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the project and the config, for
+            example
+            ``projects/dlp-test-project/discoveryConfigs/53234423``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class CreateDlpJobRequest(proto.Message):
     r"""Request message for CreateDlpJobRequest. Used to initiate
     long running jobs such as calculating risk metrics or inspecting
@@ -6825,16 +7425,17 @@ class ListJobTriggersRequest(proto.Message):
 
                 parent=projects/example-project/locations/europe-west3
         page_token (str):
-            Page token to continue retrieval. Comes from previous call
-            to ListJobTriggers. ``order_by`` field must not change for
-            subsequent calls.
+            Page token to continue retrieval. Comes from the previous
+            call to ListJobTriggers. ``order_by`` field must not change
+            for subsequent calls.
         page_size (int):
-            Size of the page, can be limited by a server.
+            Size of the page. This value can be limited
+            by a server.
         order_by (str):
             Comma separated list of triggeredJob fields to order by,
-            followed by ``asc`` or ``desc`` postfix. This list is
-            case-insensitive, default sorting order is ascending,
-            redundant space characters are insignificant.
+            followed by ``asc`` or ``desc`` postfix. This list is case
+            insensitive. The default sorting order is ascending.
+            Redundant space characters are insignificant.
 
             Example: ``name asc,update_time, create_time desc``
 
@@ -6933,9 +7534,9 @@ class ListJobTriggersResponse(proto.Message):
             List of triggeredJobs, up to page_size in
             ListJobTriggersRequest.
         next_page_token (str):
-            If the next page is available then the next
-            page token to be used in following
-            ListJobTriggers request.
+            If the next page is available then this value
+            is the next page token to be used in the
+            following ListJobTriggers request.
     """
 
     @property
@@ -7184,7 +7785,7 @@ class DataProfileJobConfig(proto.Message):
             with data, that region's data will not be scanned.
 
             For more information, see
-            https://cloud.google.com/dlp/docs/data-profiles#data_residency.
+            https://cloud.google.com/dlp/docs/data-profiles#data-residency.
         data_profile_actions (MutableSequence[google.cloud.dlp_v2.types.DataProfileAction]):
             Actions to execute at the completion of the
             job.
@@ -7210,8 +7811,585 @@ class DataProfileJobConfig(proto.Message):
     )
 
 
+class BigQueryRegex(proto.Message):
+    r"""A pattern to match against one or more tables, datasets, or projects
+    that contain BigQuery tables. At least one pattern must be
+    specified. Regular expressions use RE2
+    `syntax <https://github.com/google/re2/wiki/Syntax>`__; a guide can
+    be found under the google/re2 repository on GitHub.
+
+    Attributes:
+        project_id_regex (str):
+            For organizations, if unset, will match all
+            projects. Has no effect for data profile
+            configurations created within a project.
+        dataset_id_regex (str):
+            If unset, this property matches all datasets.
+        table_id_regex (str):
+            If unset, this property matches all tables.
+    """
+
+    project_id_regex: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dataset_id_regex: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    table_id_regex: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class BigQueryRegexes(proto.Message):
+    r"""A collection of regular expressions to determine what tables
+    to match against.
+
+    Attributes:
+        patterns (MutableSequence[google.cloud.dlp_v2.types.BigQueryRegex]):
+            A single BigQuery regular expression pattern
+            to match against one or more tables, datasets,
+            or projects that contain BigQuery tables.
+    """
+
+    patterns: MutableSequence["BigQueryRegex"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="BigQueryRegex",
+    )
+
+
+class BigQueryTableTypes(proto.Message):
+    r"""The types of BigQuery tables supported by Cloud DLP.
+
+    Attributes:
+        types (MutableSequence[google.cloud.dlp_v2.types.BigQueryTableType]):
+            A set of BigQuery table types.
+    """
+
+    types: MutableSequence["BigQueryTableType"] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum="BigQueryTableType",
+    )
+
+
+class Disabled(proto.Message):
+    r"""Do not profile the tables."""
+
+
 class DataProfileLocation(proto.Message):
     r"""The data that will be profiled.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        organization_id (int):
+            The ID of an organization to scan.
+
+            This field is a member of `oneof`_ ``location``.
+        folder_id (int):
+            The ID of the Folder within an organization
+            to scan.
+
+            This field is a member of `oneof`_ ``location``.
+    """
+
+    organization_id: int = proto.Field(
+        proto.INT64,
+        number=1,
+        oneof="location",
+    )
+    folder_id: int = proto.Field(
+        proto.INT64,
+        number=2,
+        oneof="location",
+    )
+
+
+class DiscoveryConfig(proto.Message):
+    r"""Configuration for discovery to scan resources for profile
+    generation. Only one discovery configuration may exist per
+    organization, folder, or project.
+
+    The generated data profiles are retained according to the [data
+    retention policy]
+    (https://cloud.google.com/dlp/docs/data-profiles#retention).
+
+    Attributes:
+        name (str):
+            Unique resource name for the DiscoveryConfig, assigned by
+            the service when the DiscoveryConfig is created, for example
+            ``projects/dlp-test-project/locations/global/discoveryConfigs/53234423``.
+        display_name (str):
+            Display name (max 100 chars)
+        org_config (google.cloud.dlp_v2.types.DiscoveryConfig.OrgConfig):
+            Only set when the parent is an org.
+        inspect_templates (MutableSequence[str]):
+            Detection logic for profile generation.
+
+            Not all template features are used by Discovery.
+            FindingLimits, include_quote and exclude_info_types have no
+            impact on Discovery.
+
+            Multiple templates may be provided if there is data in
+            multiple regions. At most one template must be specified
+            per-region (including "global"). Each region is scanned
+            using the applicable template. If no region-specific
+            template is specified, but a "global" template is specified,
+            it will be copied to that region and used instead. If no
+            global or region-specific template is provided for a region
+            with data, that region's data will not be scanned.
+
+            For more information, see
+            https://cloud.google.com/dlp/docs/data-profiles#data-residency.
+        actions (MutableSequence[google.cloud.dlp_v2.types.DataProfileAction]):
+            Actions to execute at the completion of
+            scanning.
+        targets (MutableSequence[google.cloud.dlp_v2.types.DiscoveryTarget]):
+            Target to match against for determining what
+            to scan and how frequently.
+        errors (MutableSequence[google.cloud.dlp_v2.types.Error]):
+            Output only. A stream of errors encountered
+            when the config was activated. Repeated errors
+            may result in the config automatically being
+            paused. Output only field. Will return the last
+            100 errors. Whenever the config is modified this
+            list will be cleared.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The creation timestamp of a
+            DiscoveryConfig.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last update timestamp of a
+            DiscoveryConfig.
+        last_run_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp of the last time
+            this config was executed.
+        status (google.cloud.dlp_v2.types.DiscoveryConfig.Status):
+            Required. A status for this configuration.
+    """
+
+    class Status(proto.Enum):
+        r"""Whether the discovery config is currently active. New options
+        may be added at a later time.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Unused
+            RUNNING (1):
+                The discovery config is currently active.
+            PAUSED (2):
+                The discovery config is paused temporarily.
+        """
+        STATUS_UNSPECIFIED = 0
+        RUNNING = 1
+        PAUSED = 2
+
+    class OrgConfig(proto.Message):
+        r"""Project and scan location information. Only set when the
+        parent is an org.
+
+        Attributes:
+            location (google.cloud.dlp_v2.types.DiscoveryStartingLocation):
+                The data to scan: folder, org, or project
+            project_id (str):
+                The project that will run the scan. The DLP
+                service account that exists within this project
+                must have access to all resources that are
+                profiled, and the Cloud DLP API must be enabled.
+        """
+
+        location: "DiscoveryStartingLocation" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="DiscoveryStartingLocation",
+        )
+        project_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    org_config: OrgConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=OrgConfig,
+    )
+    inspect_templates: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    actions: MutableSequence["DataProfileAction"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="DataProfileAction",
+    )
+    targets: MutableSequence["DiscoveryTarget"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="DiscoveryTarget",
+    )
+    errors: MutableSequence["Error"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="Error",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    last_run_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
+    status: Status = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=Status,
+    )
+
+
+class DiscoveryTarget(proto.Message):
+    r"""Target used to match against for Discovery.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        big_query_target (google.cloud.dlp_v2.types.BigQueryDiscoveryTarget):
+            BigQuery target for Discovery. The first
+            target to match a table will be the one applied.
+
+            This field is a member of `oneof`_ ``target``.
+    """
+
+    big_query_target: "BigQueryDiscoveryTarget" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="target",
+        message="BigQueryDiscoveryTarget",
+    )
+
+
+class BigQueryDiscoveryTarget(proto.Message):
+    r"""Target used to match against for discovery with BigQuery
+    tables
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (google.cloud.dlp_v2.types.DiscoveryBigQueryFilter):
+            Required. The tables the discovery cadence
+            applies to. The first target with a matching
+            filter will be the one to apply to a table.
+        conditions (google.cloud.dlp_v2.types.DiscoveryBigQueryConditions):
+            In addition to matching the filter, these
+            conditions must be true before a profile is
+            generated.
+        cadence (google.cloud.dlp_v2.types.DiscoveryGenerationCadence):
+            How often and when to update profiles. New
+            tables that match both the filter and conditions
+            are scanned as quickly as possible depending on
+            system capacity.
+
+            This field is a member of `oneof`_ ``frequency``.
+        disabled (google.cloud.dlp_v2.types.Disabled):
+            Tables that match this filter will not have
+            profiles created.
+
+            This field is a member of `oneof`_ ``frequency``.
+    """
+
+    filter: "DiscoveryBigQueryFilter" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="DiscoveryBigQueryFilter",
+    )
+    conditions: "DiscoveryBigQueryConditions" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DiscoveryBigQueryConditions",
+    )
+    cadence: "DiscoveryGenerationCadence" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="frequency",
+        message="DiscoveryGenerationCadence",
+    )
+    disabled: "Disabled" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="frequency",
+        message="Disabled",
+    )
+
+
+class DiscoveryBigQueryFilter(proto.Message):
+    r"""Determines what tables will have profiles generated within an
+    organization or project. Includes the ability to filter by
+    regular expression patterns on project ID, dataset ID, and table
+    ID.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        tables (google.cloud.dlp_v2.types.BigQueryTableCollection):
+            A specific set of tables for this filter to
+            apply to. A table collection must be specified
+            in only one filter per config. If a table id or
+            dataset is empty, Cloud DLP assumes all tables
+            in that collection must be profiled. Must
+            specify a project ID.
+
+            This field is a member of `oneof`_ ``filter``.
+        other_tables (google.cloud.dlp_v2.types.DiscoveryBigQueryFilter.AllOtherBigQueryTables):
+            Catch-all. This should always be the last
+            filter in the list because anything above it
+            will apply first. Should only appear once in a
+            configuration. If none is specified, a default
+            one will be added automatically.
+
+            This field is a member of `oneof`_ ``filter``.
+    """
+
+    class AllOtherBigQueryTables(proto.Message):
+        r"""Catch-all for all other tables not specified by other
+        filters. Should always be last, except for single-table
+        configurations, which will only have a TableReference target.
+
+        """
+
+    tables: "BigQueryTableCollection" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="filter",
+        message="BigQueryTableCollection",
+    )
+    other_tables: AllOtherBigQueryTables = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="filter",
+        message=AllOtherBigQueryTables,
+    )
+
+
+class BigQueryTableCollection(proto.Message):
+    r"""Specifies a collection of BigQuery tables. Used for
+    Discovery.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        include_regexes (google.cloud.dlp_v2.types.BigQueryRegexes):
+            A collection of regular expressions to match
+            a BigQuery table against.
+
+            This field is a member of `oneof`_ ``pattern``.
+    """
+
+    include_regexes: "BigQueryRegexes" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="pattern",
+        message="BigQueryRegexes",
+    )
+
+
+class DiscoveryBigQueryConditions(proto.Message):
+    r"""Requirements that must be true before a table is scanned in
+    discovery for the first time. There is an AND relationship
+    between the top-level attributes. Additionally, minimum
+    conditions with an OR relationship that must be met before Cloud
+    DLP scans a table can be set (like a minimum row count or a
+    minimum table age).
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        created_after (google.protobuf.timestamp_pb2.Timestamp):
+            BigQuery table must have been created after
+            this date. Used to avoid backfilling.
+        types (google.cloud.dlp_v2.types.BigQueryTableTypes):
+            Restrict discovery to specific table types.
+
+            This field is a member of `oneof`_ ``included_types``.
+        type_collection (google.cloud.dlp_v2.types.BigQueryTableTypeCollection):
+            Restrict discovery to categories of table
+            types.
+
+            This field is a member of `oneof`_ ``included_types``.
+        or_conditions (google.cloud.dlp_v2.types.DiscoveryBigQueryConditions.OrConditions):
+            At least one of the conditions must be true
+            for a table to be scanned.
+    """
+
+    class OrConditions(proto.Message):
+        r"""There is an OR relationship between these attributes. They
+        are used to determine if a table should be scanned or not in
+        Discovery.
+
+        Attributes:
+            min_row_count (int):
+                Minimum number of rows that should be present
+                before Cloud DLP profiles a table
+            min_age (google.protobuf.duration_pb2.Duration):
+                Minimum age a table must have before Cloud
+                DLP can profile it. Value must be 1 hour or
+                greater.
+        """
+
+        min_row_count: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        min_age: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
+        )
+
+    created_after: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    types: "BigQueryTableTypes" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="included_types",
+        message="BigQueryTableTypes",
+    )
+    type_collection: "BigQueryTableTypeCollection" = proto.Field(
+        proto.ENUM,
+        number=3,
+        oneof="included_types",
+        enum="BigQueryTableTypeCollection",
+    )
+    or_conditions: OrConditions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=OrConditions,
+    )
+
+
+class DiscoveryGenerationCadence(proto.Message):
+    r"""What must take place for a profile to be updated and how
+    frequently it should occur.
+    New tables are scanned as quickly as possible depending on
+    system capacity.
+
+    Attributes:
+        schema_modified_cadence (google.cloud.dlp_v2.types.DiscoverySchemaModifiedCadence):
+            Governs when to update data profiles when a
+            schema is modified.
+        table_modified_cadence (google.cloud.dlp_v2.types.DiscoveryTableModifiedCadence):
+            Governs when to update data profiles when a
+            table is modified.
+    """
+
+    schema_modified_cadence: "DiscoverySchemaModifiedCadence" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="DiscoverySchemaModifiedCadence",
+    )
+    table_modified_cadence: "DiscoveryTableModifiedCadence" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DiscoveryTableModifiedCadence",
+    )
+
+
+class DiscoveryTableModifiedCadence(proto.Message):
+    r"""The cadence at which to update data profiles when a table is
+    modified.
+
+    Attributes:
+        types (MutableSequence[google.cloud.dlp_v2.types.BigQueryTableModification]):
+            The type of events to consider when deciding if the table
+            has been modified and should have the profile updated.
+            Defaults to MODIFIED_TIMESTAMP.
+        frequency (google.cloud.dlp_v2.types.DataProfileUpdateFrequency):
+            How frequently data profiles can be updated
+            when tables are modified. Defaults to never.
+    """
+
+    types: MutableSequence["BigQueryTableModification"] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum="BigQueryTableModification",
+    )
+    frequency: "DataProfileUpdateFrequency" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="DataProfileUpdateFrequency",
+    )
+
+
+class DiscoverySchemaModifiedCadence(proto.Message):
+    r"""The cadence at which to update data profiles when a schema is
+    modified.
+
+    Attributes:
+        types (MutableSequence[google.cloud.dlp_v2.types.BigQuerySchemaModification]):
+            The type of events to consider when deciding if the table's
+            schema has been modified and should have the profile
+            updated. Defaults to NEW_COLUMNS.
+        frequency (google.cloud.dlp_v2.types.DataProfileUpdateFrequency):
+            How frequently profiles may be updated when
+            schemas are modified. Defaults to monthly.
+    """
+
+    types: MutableSequence["BigQuerySchemaModification"] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum="BigQuerySchemaModification",
+    )
+    frequency: "DataProfileUpdateFrequency" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="DataProfileUpdateFrequency",
+    )
+
+
+class DiscoveryStartingLocation(proto.Message):
+    r"""The location to begin a discovery scan. Denotes an
+    organization ID or folder ID within an organization.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -7275,12 +8453,18 @@ class DlpJob(proto.Message):
             Time when the job started.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the job finished.
+        last_modified (google.protobuf.timestamp_pb2.Timestamp):
+            Time when the job was last modified by the
+            system.
         job_trigger_name (str):
             If created by a job trigger, the resource
             name of the trigger that instantiated the job.
         errors (MutableSequence[google.cloud.dlp_v2.types.Error]):
             A stream of errors encountered running the
             job.
+        action_details (MutableSequence[google.cloud.dlp_v2.types.ActionDetails]):
+            Events that should occur after the job has
+            completed.
     """
 
     class JobState(proto.Enum):
@@ -7358,6 +8542,11 @@ class DlpJob(proto.Message):
         number=8,
         message=timestamp_pb2.Timestamp,
     )
+    last_modified: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=timestamp_pb2.Timestamp,
+    )
     job_trigger_name: str = proto.Field(
         proto.STRING,
         number=10,
@@ -7366,6 +8555,11 @@ class DlpJob(proto.Message):
         proto.MESSAGE,
         number=11,
         message="Error",
+    )
+    action_details: MutableSequence["ActionDetails"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message="ActionDetails",
     )
 
 
@@ -7459,8 +8653,8 @@ class ListDlpJobsRequest(proto.Message):
             The type of job. Defaults to ``DlpJobType.INSPECT``
         order_by (str):
             Comma separated list of fields to order by, followed by
-            ``asc`` or ``desc`` postfix. This list is case-insensitive,
-            default sorting order is ascending, redundant space
+            ``asc`` or ``desc`` postfix. This list is case insensitive.
+            The default sorting order is ascending. Redundant space
             characters are insignificant.
 
             Example: ``name asc, end_time asc, create_time desc``
@@ -7714,16 +8908,16 @@ class ListDeidentifyTemplatesRequest(proto.Message):
 
                 parent=projects/example-project/locations/europe-west3
         page_token (str):
-            Page token to continue retrieval. Comes from previous call
-            to ``ListDeidentifyTemplates``.
+            Page token to continue retrieval. Comes from the previous
+            call to ``ListDeidentifyTemplates``.
         page_size (int):
-            Size of the page, can be limited by the
-            server. If zero server returns a page of max
-            size 100.
+            Size of the page. This value can be limited
+            by the server. If zero server returns a page of
+            max size 100.
         order_by (str):
             Comma separated list of fields to order by, followed by
-            ``asc`` or ``desc`` postfix. This list is case-insensitive,
-            default sorting order is ascending, redundant space
+            ``asc`` or ``desc`` postfix. This list is case insensitive.
+            The default sorting order is ascending. Redundant space
             characters are insignificant.
 
             Example: ``name asc,update_time, create_time desc``
@@ -7772,7 +8966,7 @@ class ListDeidentifyTemplatesResponse(proto.Message):
             ListDeidentifyTemplatesRequest.
         next_page_token (str):
             If the next page is available then the next
-            page token to be used in following
+            page token to be used in the following
             ListDeidentifyTemplates request.
     """
 
@@ -8190,16 +9384,16 @@ class ListStoredInfoTypesRequest(proto.Message):
 
                 parent=projects/example-project/locations/europe-west3
         page_token (str):
-            Page token to continue retrieval. Comes from previous call
-            to ``ListStoredInfoTypes``.
+            Page token to continue retrieval. Comes from the previous
+            call to ``ListStoredInfoTypes``.
         page_size (int):
-            Size of the page, can be limited by the
-            server. If zero server returns a page of max
-            size 100.
+            Size of the page. This value can be limited
+            by the server. If zero server returns a page of
+            max size 100.
         order_by (str):
             Comma separated list of fields to order by, followed by
-            ``asc`` or ``desc`` postfix. This list is case-insensitive,
-            default sorting order is ascending, redundant space
+            ``asc`` or ``desc`` postfix. This list is case insensitive.
+            The default sorting order is ascending. Redundant space
             characters are insignificant.
 
             Example: ``name asc, display_name, create_time desc``
@@ -8247,7 +9441,7 @@ class ListStoredInfoTypesResponse(proto.Message):
             ListStoredInfoTypesRequest.
         next_page_token (str):
             If the next page is available then the next
-            page token to be used in following
+            page token to be used in the following
             ListStoredInfoTypes request.
     """
 
@@ -8513,8 +9707,8 @@ class TableDataProfile(proto.Message):
             The resource name to the project data profile
             for this table.
         dataset_project_id (str):
-            The GCP project ID that owns the BigQuery
-            dataset.
+            The Google Cloud project ID that owns the
+            BigQuery dataset.
         dataset_location (str):
             The BigQuery location where the dataset's
             data is stored. See
@@ -8713,7 +9907,8 @@ class ProfileStatus(proto.Message):
 
     Attributes:
         status (google.rpc.status_pb2.Status):
-            Profiling status code and optional message
+            Profiling status code and optional message. The
+            ``status.code`` value is 0 (default value) for OK.
         timestamp (google.protobuf.timestamp_pb2.Timestamp):
             Time when the profile generation status was
             updated
@@ -8761,6 +9956,10 @@ class OtherInfoTypeSummary(proto.Message):
         estimated_prevalence (int):
             Approximate percentage of non-null rows that
             contained data detected by this infotype.
+        excluded_from_analysis (bool):
+            Whether this infoType was excluded from
+            sensitivity and risk analysis due to factors
+            such as low prevalence (subject to change).
     """
 
     info_type: storage.InfoType = proto.Field(
@@ -8771,6 +9970,256 @@ class OtherInfoTypeSummary(proto.Message):
     estimated_prevalence: int = proto.Field(
         proto.INT32,
         number=2,
+    )
+    excluded_from_analysis: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class ColumnDataProfile(proto.Message):
+    r"""The profile for a scanned column within a table.
+
+    Attributes:
+        name (str):
+            The name of the profile.
+        profile_status (google.cloud.dlp_v2.types.ProfileStatus):
+            Success or error status from the most recent
+            profile generation attempt. May be empty if the
+            profile is still being generated.
+        state (google.cloud.dlp_v2.types.ColumnDataProfile.State):
+            State of a profile.
+        profile_last_generated (google.protobuf.timestamp_pb2.Timestamp):
+            The last time the profile was generated.
+        table_data_profile (str):
+            The resource name of the table data profile.
+        table_full_resource (str):
+            The resource name of the table this column is
+            within.
+        dataset_project_id (str):
+            The Google Cloud project ID that owns the
+            BigQuery dataset.
+        dataset_location (str):
+            The BigQuery location where the dataset's
+            data is stored. See
+            https://cloud.google.com/bigquery/docs/locations
+            for supported locations.
+        dataset_id (str):
+            The BigQuery dataset ID.
+        table_id (str):
+            The BigQuery table ID.
+        column (str):
+            The name of the column.
+        sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
+            The sensitivity of this column.
+        data_risk_level (google.cloud.dlp_v2.types.DataRiskLevel):
+            The data risk level for this column.
+        column_info_type (google.cloud.dlp_v2.types.InfoTypeSummary):
+            If it's been determined this column can be
+            identified as a single type, this will be set.
+            Otherwise the column either has unidentifiable
+            content or mixed types.
+        other_matches (MutableSequence[google.cloud.dlp_v2.types.OtherInfoTypeSummary]):
+            Other types found within this column. List
+            will be unordered.
+        estimated_null_percentage (google.cloud.dlp_v2.types.NullPercentageLevel):
+            Approximate percentage of entries being null
+            in the column.
+        estimated_uniqueness_score (google.cloud.dlp_v2.types.UniquenessScoreLevel):
+            Approximate uniqueness of the column.
+        free_text_score (float):
+            The likelihood that this column contains
+            free-form text. A value close to 1 may indicate
+            the column is likely to contain free-form or
+            natural language text.
+            Range in 0-1.
+        column_type (google.cloud.dlp_v2.types.ColumnDataProfile.ColumnDataType):
+            The data type of a given column.
+        policy_state (google.cloud.dlp_v2.types.ColumnDataProfile.ColumnPolicyState):
+            Indicates if a policy tag has been applied to
+            the column.
+    """
+
+    class State(proto.Enum):
+        r"""Possible states of a profile. New items may be added.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unused.
+            RUNNING (1):
+                The profile is currently running. Once a
+                profile has finished it will transition to DONE.
+            DONE (2):
+                The profile is no longer generating. If
+                profile_status.status.code is 0, the profile succeeded,
+                otherwise, it failed.
+        """
+        STATE_UNSPECIFIED = 0
+        RUNNING = 1
+        DONE = 2
+
+    class ColumnDataType(proto.Enum):
+        r"""Data types of the data in a column. Types may be added over
+        time.
+
+        Values:
+            COLUMN_DATA_TYPE_UNSPECIFIED (0):
+                Invalid type.
+            TYPE_INT64 (1):
+                Encoded as a string in decimal format.
+            TYPE_BOOL (2):
+                Encoded as a boolean "false" or "true".
+            TYPE_FLOAT64 (3):
+                Encoded as a number, or string "NaN",
+                "Infinity" or "-Infinity".
+            TYPE_STRING (4):
+                Encoded as a string value.
+            TYPE_BYTES (5):
+                Encoded as a base64 string per RFC 4648,
+                section 4.
+            TYPE_TIMESTAMP (6):
+                Encoded as an RFC 3339 timestamp with
+                mandatory "Z" time zone string:
+                1985-04-12T23:20:50.52Z
+            TYPE_DATE (7):
+                Encoded as RFC 3339 full-date format string:
+                1985-04-12
+            TYPE_TIME (8):
+                Encoded as RFC 3339 partial-time format
+                string: 23:20:50.52
+            TYPE_DATETIME (9):
+                Encoded as RFC 3339 full-date "T"
+                partial-time: 1985-04-12T23:20:50.52
+            TYPE_GEOGRAPHY (10):
+                Encoded as WKT
+            TYPE_NUMERIC (11):
+                Encoded as a decimal string.
+            TYPE_RECORD (12):
+                Container of ordered fields, each with a type
+                and field name.
+            TYPE_BIGNUMERIC (13):
+                Decimal type.
+            TYPE_JSON (14):
+                Json type.
+        """
+        COLUMN_DATA_TYPE_UNSPECIFIED = 0
+        TYPE_INT64 = 1
+        TYPE_BOOL = 2
+        TYPE_FLOAT64 = 3
+        TYPE_STRING = 4
+        TYPE_BYTES = 5
+        TYPE_TIMESTAMP = 6
+        TYPE_DATE = 7
+        TYPE_TIME = 8
+        TYPE_DATETIME = 9
+        TYPE_GEOGRAPHY = 10
+        TYPE_NUMERIC = 11
+        TYPE_RECORD = 12
+        TYPE_BIGNUMERIC = 13
+        TYPE_JSON = 14
+
+    class ColumnPolicyState(proto.Enum):
+        r"""The possible policy states for a column.
+
+        Values:
+            COLUMN_POLICY_STATE_UNSPECIFIED (0):
+                No policy tags.
+            COLUMN_POLICY_TAGGED (1):
+                Column has policy tag applied.
+        """
+        COLUMN_POLICY_STATE_UNSPECIFIED = 0
+        COLUMN_POLICY_TAGGED = 1
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    profile_status: "ProfileStatus" = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message="ProfileStatus",
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=18,
+        enum=State,
+    )
+    profile_last_generated: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    table_data_profile: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    table_full_resource: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    dataset_project_id: str = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    dataset_location: str = proto.Field(
+        proto.STRING,
+        number=20,
+    )
+    dataset_id: str = proto.Field(
+        proto.STRING,
+        number=21,
+    )
+    table_id: str = proto.Field(
+        proto.STRING,
+        number=22,
+    )
+    column: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    sensitivity_score: storage.SensitivityScore = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=storage.SensitivityScore,
+    )
+    data_risk_level: "DataRiskLevel" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="DataRiskLevel",
+    )
+    column_info_type: "InfoTypeSummary" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="InfoTypeSummary",
+    )
+    other_matches: MutableSequence["OtherInfoTypeSummary"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="OtherInfoTypeSummary",
+    )
+    estimated_null_percentage: "NullPercentageLevel" = proto.Field(
+        proto.ENUM,
+        number=23,
+        enum="NullPercentageLevel",
+    )
+    estimated_uniqueness_score: "UniquenessScoreLevel" = proto.Field(
+        proto.ENUM,
+        number=24,
+        enum="UniquenessScoreLevel",
+    )
+    free_text_score: float = proto.Field(
+        proto.DOUBLE,
+        number=13,
+    )
+    column_type: ColumnDataType = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=ColumnDataType,
+    )
+    policy_state: ColumnPolicyState = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum=ColumnPolicyState,
     )
 
 

@@ -40,6 +40,7 @@ __protobuf__ = proto.module(
         "ShieldedInstanceConfig",
         "ConfidentialInstanceConfig",
         "InstanceGroupConfig",
+        "StartupConfig",
         "InstanceReference",
         "ManagedGroupConfig",
         "InstanceFlexibilityPolicy",
@@ -856,6 +857,10 @@ class InstanceGroupConfig(proto.Message):
             Optional. Instance flexibility Policy
             allowing a mixture of VM shapes and provisioning
             models.
+        startup_config (google.cloud.dataproc_v1.types.StartupConfig):
+            Optional. Configuration to handle the startup
+            of instances during cluster create and update
+            process.
     """
 
     class Preemptibility(proto.Enum):
@@ -951,6 +956,39 @@ class InstanceGroupConfig(proto.Message):
         proto.MESSAGE,
         number=13,
         message="InstanceFlexibilityPolicy",
+    )
+    startup_config: "StartupConfig" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="StartupConfig",
+    )
+
+
+class StartupConfig(proto.Message):
+    r"""Configuration to handle the startup of instances during
+    cluster create and update process.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        required_registration_fraction (float):
+            Optional. The config setting to enable cluster creation/
+            updation to be successful only after
+            required_registration_fraction of instances are up and
+            running. This configuration is applicable to only secondary
+            workers for now. The cluster will fail if
+            required_registration_fraction of instances are not
+            available. This will include instance creation, agent
+            registration, and service registration (if enabled).
+
+            This field is a member of `oneof`_ ``_required_registration_fraction``.
+    """
+
+    required_registration_fraction: float = proto.Field(
+        proto.DOUBLE,
+        number=1,
+        optional=True,
     )
 
 
