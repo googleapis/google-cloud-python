@@ -175,7 +175,27 @@ class StorageSource(proto.Message):
             Cloud Storage generation for the object. If
             the generation is omitted, the latest generation
             will be used.
+        source_fetcher (google.cloud.devtools.cloudbuild_v1.types.StorageSource.SourceFetcher):
+            Option to specify the tool to fetch the
+            source file for the build.
     """
+
+    class SourceFetcher(proto.Enum):
+        r"""Specifies the tool to fetch the source file for the build.
+
+        Values:
+            SOURCE_FETCHER_UNSPECIFIED (0):
+                Unspecified. Defaults to GSUTIL.
+            GSUTIL (1):
+                Use the "gsutil" tool to download the source
+                file.
+            GCS_FETCHER (2):
+                Use the Cloud Storage Fetcher tool to
+                download the source file.
+        """
+        SOURCE_FETCHER_UNSPECIFIED = 0
+        GSUTIL = 1
+        GCS_FETCHER = 2
 
     bucket: str = proto.Field(
         proto.STRING,
@@ -188,6 +208,11 @@ class StorageSource(proto.Message):
     generation: int = proto.Field(
         proto.INT64,
         number=3,
+    )
+    source_fetcher: SourceFetcher = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=SourceFetcher,
     )
 
 
