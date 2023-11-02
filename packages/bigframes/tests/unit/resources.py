@@ -19,17 +19,21 @@ import google.auth.credentials
 import google.cloud.bigquery
 import ibis
 import pandas
+import pytest
 
 import bigframes
 import bigframes.core as core
 import bigframes.core.ordering
+import bigframes.dataframe
 import bigframes.session.clients
 
 """Utilities for creating test resources."""
 
 
 def create_bigquery_session(
-    bqclient: Optional[google.cloud.bigquery.Client] = None, session_id: str = "abcxyz"
+    bqclient: Optional[mock.Mock] = None,
+    session_id: str = "abcxyz",
+    anonymous_dataset: Optional[google.cloud.bigquery.DatasetReference] = None,
 ) -> bigframes.Session:
     credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
@@ -38,6 +42,21 @@ def create_bigquery_session(
     if bqclient is None:
         bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
         bqclient.project = "test-project"
+
+    if anonymous_dataset is None:
+        anonymous_dataset = google.cloud.bigquery.DatasetReference(
+            "test-project",
+            "test_dataset",
+        )
+
+    query_job = mock.create_autospec(google.cloud.bigquery.QueryJob)
+    type(query_job).destination = mock.PropertyMock(
+        return_value=anonymous_dataset.table("test_table"),
+    )
+    type(query_job).session_info = google.cloud.bigquery.SessionInfo(
+        {"sessionInfo": {"sessionId": session_id}},
+    )
+    bqclient.query.return_value = query_job
 
     clients_provider = mock.create_autospec(bigframes.session.clients.ClientsProvider)
     type(clients_provider).bqclient = mock.PropertyMock(return_value=bqclient)
@@ -49,6 +68,19 @@ def create_bigquery_session(
     session = bigframes.Session(context=bqoptions, clients_provider=clients_provider)
     session._session_id = session_id
     return session
+
+
+def create_dataframe(
+    monkeypatch: pytest.MonkeyPatch, session: Optional[bigframes.Session] = None
+) -> bigframes.dataframe.DataFrame:
+    if session is None:
+        session = create_bigquery_session()
+
+    # Since this may create a ReadLocalNode, the session we explicitly pass in
+    # might not actually be used. Mock out the global session, too.
+    monkeypatch.setattr(bigframes.core.global_session, "_global_session", session)
+    bigframes.options.bigquery._session_started = True
+    return bigframes.dataframe.DataFrame({}, session=session)
 
 
 def create_pandas_session(tables: Dict[str, pandas.DataFrame]) -> bigframes.Session:

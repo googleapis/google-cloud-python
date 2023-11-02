@@ -2289,25 +2289,51 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     def to_gbq(
         self,
-        destination_table: str,
+        destination_table: Optional[str] = None,
         *,
-        if_exists: Optional[Literal["fail", "replace", "append"]] = "fail",
+        if_exists: Optional[Literal["fail", "replace", "append"]] = None,
         index: bool = True,
         ordering_id: Optional[str] = None,
-    ) -> None:
-        if "." not in destination_table:
-            raise ValueError(
-                "Invalid Table Name. Should be of the form 'datasetId.tableId' or "
-                "'projectId.datasetId.tableId'"
-            )
-
+    ) -> str:
         dispositions = {
             "fail": bigquery.WriteDisposition.WRITE_EMPTY,
             "replace": bigquery.WriteDisposition.WRITE_TRUNCATE,
             "append": bigquery.WriteDisposition.WRITE_APPEND,
         }
+
+        if destination_table is None:
+            # TODO(swast): If there have been no modifications to the DataFrame
+            # since the last time it was written (cached), then return that.
+            # For `read_gbq` nodes, return the underlying table clone.
+            destination_table = bigframes.session._io.bigquery.create_temp_table(
+                self._session.bqclient,
+                self._session._anonymous_dataset,
+                # TODO(swast): allow custom expiration times, probably via session configuration.
+                constants.DEFAULT_EXPIRATION,
+            )
+
+            if if_exists is not None and if_exists != "replace":
+                raise ValueError(
+                    f"Got invalid value {repr(if_exists)} for if_exists. "
+                    "When no destination table is specified, a new table is always created. "
+                    "None or 'replace' are the only valid options in this case."
+                )
+            if_exists = "replace"
+
+        if "." not in destination_table:
+            raise ValueError(
+                f"Got invalid value for destination_table {repr(destination_table)}. "
+                "Should be of the form 'datasetId.tableId' or 'projectId.datasetId.tableId'."
+            )
+
+        if if_exists is None:
+            if_exists = "fail"
+
         if if_exists not in dispositions:
-            raise ValueError("'{0}' is not valid for if_exists".format(if_exists))
+            raise ValueError(
+                f"Got invalid value {repr(if_exists)} for if_exists. "
+                f"Valid options include None or one of {dispositions.keys()}."
+            )
 
         job_config = bigquery.QueryJobConfig(
             write_disposition=dispositions[if_exists],
@@ -2318,6 +2344,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
 
         self._run_io_query(index=index, ordering_id=ordering_id, job_config=job_config)
+        return destination_table
 
     def to_numpy(
         self, dtype=None, copy=False, na_value=None, **kwargs

@@ -125,12 +125,12 @@ class DataFrame(NDFrame):
 
     def to_gbq(
         self,
-        destination_table: str,
+        destination_table: Optional[str],
         *,
-        if_exists: Optional[Literal["fail", "replace", "append"]] = "fail",
+        if_exists: Optional[Literal["fail", "replace", "append"]] = None,
         index: bool = True,
         ordering_id: Optional[str] = None,
-    ) -> None:
+    ) -> str:
         """Write a DataFrame to a BigQuery table.
 
         **Examples:**
@@ -138,17 +138,40 @@ class DataFrame(NDFrame):
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 
+        Write a DataFrame to a BigQuery table.
+
             >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
             >>> # destination_table = PROJECT_ID + "." + DATASET_ID + "." + TABLE_NAME
             >>> df.to_gbq("bigframes-dev.birds.test-numbers", if_exists="replace")
+            'bigframes-dev.birds.test-numbers'
+
+        Write a DataFrame to a temporary BigQuery table in the anonymous dataset.
+
+            >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
+            >>> destination = df.to_gbq(ordering_id="ordering_id")
+            >>> # The table created can be read outside of the current session.
+            >>> bpd.close_session()  # For demonstration, only.
+            >>> bpd.read_gbq(destination, index_col="ordering_id")
+                         col1  col2
+            ordering_id
+            0               1     3
+            1               2     4
+            <BLANKLINE>
+            [2 rows x 2 columns]
 
         Args:
-            destination_table (str):
+            destination_table (Optional[str]):
                 Name of table to be written, in the form ``dataset.tablename``
                 or ``project.dataset.tablename``.
 
-            if_exists (str, default 'fail'):
-                Behavior when the destination table exists. Value can be one of:
+                If no ``destination_table`` is set, a new temporary table is
+                created in the BigQuery anonymous dataset.
+
+            if_exists (Optional[str]):
+                Behavior when the destination table exists. When
+                ``destination_table`` is set, this defaults to ``'fail'``. When
+                ``destination_table`` is not set, this field is not applicable.
+                A new table is always created. Value can be one of:
 
                 ``'fail'``
                     If table exists raise pandas_gbq.gbq.TableCreationError.
@@ -163,6 +186,11 @@ class DataFrame(NDFrame):
             ordering_id (Optional[str], default None):
                 If set, write the ordering of the DataFrame as a column in the
                 result table with this name.
+
+        Returns:
+            str:
+                The fully-qualified ID for the written table, in the form
+                ``project.dataset.tablename``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

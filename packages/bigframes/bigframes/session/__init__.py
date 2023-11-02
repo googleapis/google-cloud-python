@@ -223,6 +223,17 @@ class Session(
         query_job.result()  # blocks until finished
         self._session_id = query_job.session_info.session_id
 
+        # The anonymous dataset is used by BigQuery to write query results and
+        # session tables. BigQuery DataFrames also writes temp tables directly
+        # to the dataset, no BigQuery Session required. Note: there is a
+        # different anonymous dataset per location. See:
+        # https://cloud.google.com/bigquery/docs/cached-results#how_cached_results_are_stored
+        query_destination = query_job.destination
+        self._anonymous_dataset = bigquery.DatasetReference(
+            query_destination.project,
+            query_destination.dataset_id,
+        )
+
         self.bqclient.default_query_job_config = bigquery.QueryJobConfig(
             connection_properties=[
                 bigquery.ConnectionProperty("session_id", self._session_id)

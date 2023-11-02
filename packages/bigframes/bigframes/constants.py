@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+
 """Constants used across BigQuery DataFrames.
 
 This module should not depend on any others in the package.
@@ -23,3 +25,5 @@ FEEDBACK_LINK = (
 )
 
 ABSTRACT_METHOD_ERROR_MESSAGE = f"Abstract method. You have likely encountered a bug. Please share this stacktrace and how you reached it with the BigQuery DataFrames team. {FEEDBACK_LINK}"
+
+DEFAULT_EXPIRATION = datetime.timedelta(days=1)

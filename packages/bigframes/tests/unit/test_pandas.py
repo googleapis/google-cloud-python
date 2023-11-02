@@ -116,7 +116,7 @@ def test_pandas_attribute():
     assert bpd.ArrowDtype is pd.ArrowDtype
 
 
-def test_close_session_after_bq_session_ended(monkeypatch):
+def test_close_session_after_bq_session_ended(monkeypatch: pytest.MonkeyPatch):
     bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
     bqclient.project = "test-project"
     session = resources.create_bigquery_session(
@@ -141,7 +141,7 @@ def test_close_session_after_bq_session_ended(monkeypatch):
         google.api_core.exceptions.BadRequest,
         match="Session JUST_A_TEST has expired and is no longer available.",
     ):
-        bpd.read_gbq("SELECT 1")
+        bpd.read_gbq("SELECT 'ABC'")
 
     # Even though the query to stop the session raises an exception, we should
     # still be able to close it without raising an error to the user.
