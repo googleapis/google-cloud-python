@@ -63,6 +63,7 @@ from google.cloud.speech_v1.types.resource import (
     CustomClass,
     PhraseSet,
     SpeechAdaptation,
+    TranscriptNormalization,
 )
 
 __all__ = (
@@ -104,4 +105,5 @@ __all__ = (
     "CustomClass",
     "PhraseSet",
     "SpeechAdaptation",
+    "TranscriptNormalization",
 )
