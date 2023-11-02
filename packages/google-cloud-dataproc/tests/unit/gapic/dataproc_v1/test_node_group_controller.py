@@ -1569,6 +1569,7 @@ def test_create_node_group_rest(request_type):
                     {"machine_type": "machine_type_value", "vm_count": 875}
                 ],
             },
+            "startup_config": {"required_registration_fraction": 0.3216},
         },
         "labels": {},
     }
