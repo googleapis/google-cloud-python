@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.23.3...google-cloud-securitycenter-v1.24.0) (2023-11-02)
+
+
+### Features
+
+* Add SimulateSecurityHealthAnalyticsCustomModule API for testing SHA custom module ([#11854](https://github.com/googleapis/google-cloud-python/issues/11854)) ([6055a99](https://github.com/googleapis/google-cloud-python/commit/6055a9906140cc503f8e8aa0ff19dbdde7681a53))
+
 ## [1.23.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.23.2...google-cloud-securitycenter-v1.23.3) (2023-09-19)
 
 

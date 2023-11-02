@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.17.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.2...google-cloud-batch-v0.17.3) (2023-11-02)
+
+
+### Documentation
+
+* Add clarification for `TaskGroup.parallelism` ([9cd9608](https://github.com/googleapis/google-cloud-python/commit/9cd960879538700dd9c843a11855c9d58bbf97f2))
+* update default max parallel tasks per job ([#11940](https://github.com/googleapis/google-cloud-python/issues/11940)) ([9cd9608](https://github.com/googleapis/google-cloud-python/commit/9cd960879538700dd9c843a11855c9d58bbf97f2))
+
 ## [0.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.1...google-cloud-batch-v0.17.2) (2023-10-19)
 
 

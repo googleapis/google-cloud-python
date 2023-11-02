@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.32.0...google-cloud-container-v2.33.0) (2023-11-02)
+
+
+### Features
+
+* add a new cluster field for the cluster tier of GKE clusters ([63668fe](https://github.com/googleapis/google-cloud-python/commit/63668febe0b2d3a0ffce2cbf7e23a61a499817a3))
+* add CompleteConvertToAutopilot API to commit Autopilot conversion operation ([80b7a92](https://github.com/googleapis/google-cloud-python/commit/80b7a926ac91006f466d15b43a2d6988be69eac0))
+* add ResourceManagerTags API to attach tags on the underlying Compute Engine VMs of GKE Nodes ([80b7a92](https://github.com/googleapis/google-cloud-python/commit/80b7a926ac91006f466d15b43a2d6988be69eac0))
+* added EnterpriseConfig ([63668fe](https://github.com/googleapis/google-cloud-python/commit/63668febe0b2d3a0ffce2cbf7e23a61a499817a3))
+* **v1beta1:** adding a field to allow turn the DPv2 node to node encryption feature on or off ([80b7a92](https://github.com/googleapis/google-cloud-python/commit/80b7a926ac91006f466d15b43a2d6988be69eac0))
+
+
+### Documentation
+
+* updated comments ([80b7a92](https://github.com/googleapis/google-cloud-python/commit/80b7a926ac91006f466d15b43a2d6988be69eac0))
+
 ## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.31.0...google-cloud-container-v2.32.0) (2023-09-30)
 
 

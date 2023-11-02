@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.20.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.20.1...google-cloud-documentai-v2.20.2) (2023-11-02)
+
+
+### Documentation
+
+* updated comments ([#11950](https://github.com/googleapis/google-cloud-python/issues/11950)) ([a0da408](https://github.com/googleapis/google-cloud-python/commit/a0da408d0f322b3f4f11a0dbe39c92fa5770e59b))
+
 ## [2.20.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.20.0...google-cloud-documentai-v2.20.1) (2023-10-10)
 
 
