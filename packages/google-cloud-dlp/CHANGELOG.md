@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.12.3...google-cloud-dlp-v3.13.0) (2023-11-02)
+
+
+### Features
+
+* Add DeidentifyDataSource result summary protos ([65da9c9](https://github.com/googleapis/google-cloud-python/commit/65da9c9937dbe14918cf170cd5d1f1ab50659d5a))
+* Add protos for nullness and uniqueness, and column data profiles ([65da9c9](https://github.com/googleapis/google-cloud-python/commit/65da9c9937dbe14918cf170cd5d1f1ab50659d5a))
+* Add SensitivityScore proto to InfoType ([65da9c9](https://github.com/googleapis/google-cloud-python/commit/65da9c9937dbe14918cf170cd5d1f1ab50659d5a))
+* Introduce Discovery API protos and methods ([65da9c9](https://github.com/googleapis/google-cloud-python/commit/65da9c9937dbe14918cf170cd5d1f1ab50659d5a))
+
+
+### Documentation
+
+* Update comments for many messages. ([65da9c9](https://github.com/googleapis/google-cloud-python/commit/65da9c9937dbe14918cf170cd5d1f1ab50659d5a))
+
 ## [3.12.3](https://github.com/googleapis/python-dlp/compare/v3.12.2...v3.12.3) (2023-09-13)
 
 

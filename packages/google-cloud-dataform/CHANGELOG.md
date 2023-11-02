@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.5.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.3...google-cloud-dataform-v0.5.4) (2023-11-02)
+
+
+### Features
+
+* Support custom service account repository configuration ([13b57e4](https://github.com/googleapis/google-cloud-python/commit/13b57e4ace8a101f78d8a3043548e3373cfee1d0))
+* Support for ReleaseConfigs  ([13b57e4](https://github.com/googleapis/google-cloud-python/commit/13b57e4ace8a101f78d8a3043548e3373cfee1d0))
+* Support for WorkflowConfigs ([13b57e4](https://github.com/googleapis/google-cloud-python/commit/13b57e4ace8a101f78d8a3043548e3373cfee1d0))
+* Support labels on repositories ([13b57e4](https://github.com/googleapis/google-cloud-python/commit/13b57e4ace8a101f78d8a3043548e3373cfee1d0))
+* Support new ComputeRepositoryAccessTokenStatus repository method ([13b57e4](https://github.com/googleapis/google-cloud-python/commit/13b57e4ace8a101f78d8a3043548e3373cfee1d0))
+* Support new first-party repository methods for committing, listing/reading files, and fetching history ([13b57e4](https://github.com/googleapis/google-cloud-python/commit/13b57e4ace8a101f78d8a3043548e3373cfee1d0))
+* Support NPMRC environment variables ([13b57e4](https://github.com/googleapis/google-cloud-python/commit/13b57e4ace8a101f78d8a3043548e3373cfee1d0))
+* Support SSH based git authentication configuration ([13b57e4](https://github.com/googleapis/google-cloud-python/commit/13b57e4ace8a101f78d8a3043548e3373cfee1d0))
+* Support workspace compilation override fields ([13b57e4](https://github.com/googleapis/google-cloud-python/commit/13b57e4ace8a101f78d8a3043548e3373cfee1d0))
+
+
+### Bug Fixes
+
+* rearrange several messages, thus changing field types ([13b57e4](https://github.com/googleapis/google-cloud-python/commit/13b57e4ace8a101f78d8a3043548e3373cfee1d0))
+
+
+### Documentation
+
+* several comments reformatted ([13b57e4](https://github.com/googleapis/google-cloud-python/commit/13b57e4ace8a101f78d8a3043548e3373cfee1d0))
+
 ## [0.5.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.2...google-cloud-dataform-v0.5.3) (2023-09-19)
 
 

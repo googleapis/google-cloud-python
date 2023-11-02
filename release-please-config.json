@@ -2844,6 +2844,15 @@
             ],
             "release-type": "python"
         },
+        "packages/google-shopping-type": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-type",
+            "extra-files": [
+                "google/shopping/type/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
         "packages/grafeas": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.20.1...google-cloud-build-v3.21.0) (2023-11-02)
+
+
+### Features
+
+* Add optional field "SourceFetcher" to choose source fetcher tool ([#11965](https://github.com/googleapis/google-cloud-python/issues/11965)) ([bf00c56](https://github.com/googleapis/google-cloud-python/commit/bf00c5668231c5cbe839def93a210ceac5dd671d))
+
 ## [3.20.1](https://github.com/googleapis/python-cloudbuild/compare/v3.20.0...v3.20.1) (2023-10-09)
 
 

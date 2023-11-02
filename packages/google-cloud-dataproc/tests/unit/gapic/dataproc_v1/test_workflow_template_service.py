@@ -2834,6 +2834,7 @@ def test_create_workflow_template_rest(request_type):
                                 {"machine_type": "machine_type_value", "vm_count": 875}
                             ],
                         },
+                        "startup_config": {"required_registration_fraction": 0.3216},
                     },
                     "worker_config": {},
                     "secondary_worker_config": {},
@@ -4026,6 +4027,7 @@ def test_instantiate_inline_workflow_template_rest(request_type):
                                 {"machine_type": "machine_type_value", "vm_count": 875}
                             ],
                         },
+                        "startup_config": {"required_registration_fraction": 0.3216},
                     },
                     "worker_config": {},
                     "secondary_worker_config": {},
@@ -4658,6 +4660,7 @@ def test_update_workflow_template_rest(request_type):
                                 {"machine_type": "machine_type_value", "vm_count": 875}
                             ],
                         },
+                        "startup_config": {"required_registration_fraction": 0.3216},
                     },
                     "worker_config": {},
                     "secondary_worker_config": {},

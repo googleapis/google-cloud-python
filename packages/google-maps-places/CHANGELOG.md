@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.3...google-maps-places-v0.1.4) (2023-11-02)
+
+
+### Features
+
+* new features for Places GA ([#11909](https://github.com/googleapis/google-cloud-python/issues/11909)) ([9cd4ccb](https://github.com/googleapis/google-cloud-python/commit/9cd4ccbaebb43f27d406463e139c1a8bcfdf0577))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.2...google-maps-places-v0.1.3) (2023-09-19)
 
 

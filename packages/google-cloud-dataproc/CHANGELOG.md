@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.6.0...google-cloud-dataproc-v5.7.0) (2023-11-02)
+
+
+### Features
+
+* support required_registration_fraction for secondary workers ([#11970](https://github.com/googleapis/google-cloud-python/issues/11970)) ([52d4558](https://github.com/googleapis/google-cloud-python/commit/52d4558d361375a32dcba90a79ac362a71be25df))
+
 ## [5.6.0](https://github.com/googleapis/python-dataproc/compare/v5.5.1...v5.6.0) (2023-09-15)
 
 

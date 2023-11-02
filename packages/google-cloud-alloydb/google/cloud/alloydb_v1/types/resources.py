@@ -833,8 +833,8 @@ class Cluster(proto.Message):
                 for this cluster will be created in the allocated range. The
                 range name must comply with RFC 1035. Specifically, the name
                 must be 1-63 characters long and match the regular
-                expression `a-z <[-a-z0-9]*[a-z0-9]>`__?. Field name is
-                intended to be consistent with CloudSQL.
+                expression ``[a-z]([-a-z0-9]*[a-z0-9])?``. Field name is
+                intended to be consistent with Cloud SQL.
         """
 
         network: str = proto.Field(
@@ -1093,7 +1093,8 @@ class Instance(proto.Message):
         query_insights_config (google.cloud.alloydb_v1.types.Instance.QueryInsightsInstanceConfig):
             Configuration for query insights.
         read_pool_config (google.cloud.alloydb_v1.types.Instance.ReadPoolConfig):
-            Read pool specific config.
+            Read pool instance configuration. This is required if the
+            value of instanceType is READ_POOL.
         ip_address (str):
             Output only. The IP address for the Instance.
             This is the connection endpoint for an end-user
@@ -1282,7 +1283,7 @@ class Instance(proto.Message):
             query_string_length (int):
                 Query string length. The default value is
                 1024. Any integer between 256 and 4500 is
-                    considered valid.
+                considered valid.
             query_plans_per_minute (int):
                 Number of query execution plans captured by
                 Insights per minute for all queries combined.
