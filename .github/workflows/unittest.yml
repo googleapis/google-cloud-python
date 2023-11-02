@@ -24,7 +24,7 @@ jobs:
         python-version: ${{ matrix.python }}
     - name: Install nox
       run: |
-        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install --upgrade pip wheel
         python -m pip install nox
     - name: Run unit tests
       env:
@@ -53,7 +53,7 @@ jobs:
         python-version: ${{ matrix.python }}
     - name: Install nox
       run: |
-        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install --upgrade pip wheel
         python -m pip install nox
     - name: Run prerelease tests
       env:
@@ -80,7 +80,7 @@ jobs:
     - name: Install coverage
       if: steps.packages.num_files_changed > 0
       run: |
-        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install --upgrade pip wheel
         python -m pip install coverage
     - name: Download coverage results
       if: ${{ steps.date.packages.num_files_changed > 0 }}
