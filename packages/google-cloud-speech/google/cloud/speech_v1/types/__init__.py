@@ -48,7 +48,7 @@ from .cloud_speech_adaptation import (
     UpdateCustomClassRequest,
     UpdatePhraseSetRequest,
 )
-from .resource import CustomClass, PhraseSet, SpeechAdaptation
+from .resource import CustomClass, PhraseSet, SpeechAdaptation, TranscriptNormalization
 
 __all__ = (
     "LongRunningRecognizeMetadata",
@@ -85,4 +85,5 @@ __all__ = (
     "CustomClass",
     "PhraseSet",
     "SpeechAdaptation",
+    "TranscriptNormalization",
 )
