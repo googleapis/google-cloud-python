@@ -37,7 +37,10 @@ export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
 # A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
 
-if [ ${BUILD_TYPE} == "presubmit" ]; then
+if [ ${BUILD_TYPE} == "release" ]; then
+    # Run everything
+    GIT_DIFF_ARG=""
+elif [ ${BUILD_TYPE} == "presubmit" ]; then
     # For presubmit build, we want to know the difference from the
     # common commit in origin/main.
     GIT_DIFF_ARG="origin/main..."
