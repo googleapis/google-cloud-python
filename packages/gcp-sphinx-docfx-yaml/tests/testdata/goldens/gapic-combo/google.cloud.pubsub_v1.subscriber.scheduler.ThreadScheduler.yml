@@ -67,7 +67,10 @@ items:
     '
   syntax:
     content: 'schedule(callback: typing.Callable, *args, **kwargs) -> None'
-    parameters: []
+    parameters:
+    - description: The function to call.
+      id: callback
+      var_type: Callable
   type: method
   uid: google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler.schedule
 - attributes: []

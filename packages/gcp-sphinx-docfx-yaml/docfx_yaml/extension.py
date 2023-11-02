@@ -47,8 +47,9 @@ from sphinx.util.console import darkgreen, bold
 from sphinx.util import ensuredir
 from sphinx.errors import ExtensionError
 from sphinx.util.nodes import make_refnode
-from sphinxcontrib.napoleon.docstring import GoogleDocstring
-from sphinxcontrib.napoleon import Config, _process_docstring
+from sphinx.ext.napoleon import GoogleDocstring
+from sphinx.ext.napoleon import Config
+from sphinx.ext.napoleon import _process_docstring
 
 from .utils import transform_node, transform_string
 from .settings import API_ROOT

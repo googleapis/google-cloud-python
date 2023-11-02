@@ -29,6 +29,7 @@ items:
   - google.cloud.pubsub_v1.types.ExpirationPolicy
   - google.cloud.pubsub_v1.types.ExtensionRangeOptions
   - google.cloud.pubsub_v1.types.FeatureSet
+  - google.cloud.pubsub_v1.types.FeatureSetDefaults
   - google.cloud.pubsub_v1.types.FieldDescriptorProto
   - google.cloud.pubsub_v1.types.FieldMask
   - google.cloud.pubsub_v1.types.FieldOptions
@@ -242,6 +243,11 @@ references:
   name: FeatureSet
   parent: google.cloud.pubsub_v1.types
   uid: google.cloud.pubsub_v1.types.FeatureSet
+- fullName: google.cloud.pubsub_v1.types.FeatureSetDefaults
+  isExternal: false
+  name: FeatureSetDefaults
+  parent: google.cloud.pubsub_v1.types
+  uid: google.cloud.pubsub_v1.types.FeatureSetDefaults
 - fullName: google.cloud.pubsub_v1.types.FieldDescriptorProto
   isExternal: false
   name: FieldDescriptorProto

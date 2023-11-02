@@ -169,8 +169,9 @@ items:
     id: pop
     path: null
     startLine: null
-  summary: 'If key is not found, default is returned if given, otherwise KeyError
-    is raised
+  summary: 'If the key is not found, return the default if given; otherwise,
+
+    raise a KeyError.
 
 
     '

@@ -131,6 +131,13 @@
         uid: google.cloud.pubsub_v1.types.ExtensionRangeOptions
       - name: FeatureSet
         uid: google.cloud.pubsub_v1.types.FeatureSet
+      - items:
+        - name: Overview
+          uid: google.cloud.pubsub_v1.types.FeatureSetDefaults
+        - name: FeatureSetEditionDefault
+          uid: google.cloud.pubsub_v1.types.FeatureSetDefaults.FeatureSetEditionDefault
+        name: FeatureSetDefaults
+        uid: google.cloud.pubsub_v1.types.FeatureSetDefaults
       - name: FieldDescriptorProto
         uid: google.cloud.pubsub_v1.types.FieldDescriptorProto
       - name: FieldMask

@@ -2199,7 +2199,8 @@ Return the value for key if key is in the dictionary, else default.
 #### keys()
 
 #### pop(k, )
-If key is not found, default is returned if given, otherwise KeyError is raised
+If the key is not found, return the default if given; otherwise,
+raise a KeyError.
 
 
 #### popitem()
@@ -2333,7 +2334,8 @@ Return the value for key if key is in the dictionary, else default.
 #### keys()
 
 #### pop(k, )
-If key is not found, default is returned if given, otherwise KeyError is raised
+If the key is not found, return the default if given; otherwise,
+raise a KeyError.
 
 
 #### popitem()
@@ -2514,7 +2516,8 @@ Conditon’s ‘number_of_newer_versions’ value.
 
 
 #### pop(k, )
-If key is not found, default is returned if given, otherwise KeyError is raised
+If the key is not found, return the default if given; otherwise,
+raise a KeyError.
 
 
 #### popitem()
@@ -2589,7 +2592,8 @@ Return the value for key if key is in the dictionary, else default.
 #### keys()
 
 #### pop(k, )
-If key is not found, default is returned if given, otherwise KeyError is raised
+If the key is not found, return the default if given; otherwise,
+raise a KeyError.
 
 
 #### popitem()
@@ -2670,7 +2674,8 @@ Return the value for key if key is in the dictionary, else default.
 #### keys()
 
 #### pop(k, )
-If key is not found, default is returned if given, otherwise KeyError is raised
+If the key is not found, return the default if given; otherwise,
+raise a KeyError.
 
 
 #### popitem()
