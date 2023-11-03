@@ -15,6 +15,11 @@
                 "bulk_analyze_conversations"
               ]
             },
+            "BulkDeleteConversations": {
+              "methods": [
+                "bulk_delete_conversations"
+              ]
+            },
             "CalculateIssueModelStats": {
               "methods": [
                 "calculate_issue_model_stats"
@@ -210,6 +215,11 @@
                 "bulk_analyze_conversations"
               ]
             },
+            "BulkDeleteConversations": {
+              "methods": [
+                "bulk_delete_conversations"
+              ]
+            },
             "CalculateIssueModelStats": {
               "methods": [
                 "calculate_issue_model_stats"
@@ -403,6 +413,11 @@
             "BulkAnalyzeConversations": {
               "methods": [
                 "bulk_analyze_conversations"
+              ]
+            },
+            "BulkDeleteConversations": {
+              "methods": [
+                "bulk_delete_conversations"
               ]
             },
             "CalculateIssueModelStats": {

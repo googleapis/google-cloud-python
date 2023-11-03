@@ -182,6 +182,11 @@ class ContactCenterInsightsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.bulk_delete_conversations: gapic_v1.method.wrap_method(
+                self.bulk_delete_conversations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.ingest_conversations: gapic_v1.method.wrap_method(
                 self.ingest_conversations,
                 default_timeout=None,
@@ -434,6 +439,15 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.BulkAnalyzeConversationsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def bulk_delete_conversations(
+        self,
+    ) -> Callable[
+        [contact_center_insights.BulkDeleteConversationsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
