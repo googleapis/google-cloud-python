@@ -803,6 +803,55 @@ def test_apply_series_scalar_callable(
     pandas.testing.assert_series_equal(bf_result, pd_result)
 
 
+def test_df_keys(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    pandas.testing.assert_index_equal(
+        scalars_df_index.keys(), scalars_pandas_df_index.keys()
+    )
+
+
+def test_df_iter(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    for bf_i, df_i in zip(scalars_df_index, scalars_pandas_df_index):
+        assert bf_i == df_i
+
+
+def test_iterrows(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    for (bf_index, bf_series), (pd_index, pd_series) in zip(
+        scalars_df_index.iterrows(), scalars_pandas_df_index.iterrows()
+    ):
+        assert bf_index == pd_index
+        pandas.testing.assert_series_equal(bf_series, pd_series)
+
+
+@pytest.mark.parametrize(
+    (
+        "index",
+        "name",
+    ),
+    [
+        (
+            True,
+            "my_df",
+        ),
+        (False, None),
+    ],
+)
+def test_itertuples(scalars_df_index, index, name):
+    # Numeric has slightly different representation as a result of conversions.
+    bf_tuples = scalars_df_index.itertuples(index, name)
+    pd_tuples = scalars_df_index.to_pandas().itertuples(index, name)
+    for bf_tuple, pd_tuple in zip(bf_tuples, pd_tuples):
+        assert bf_tuple == pd_tuple
+
+
 def test_df_isin_list(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     values = ["Hello, World!", 55555, 2.51, pd.NA, True]

@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import itertools
 import numbers
 import textwrap
 import typing
@@ -147,6 +148,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def __len__(self):
         return self.shape[0]
+
+    def __iter__(self) -> typing.Iterator:
+        return itertools.chain.from_iterable(
+            map(lambda x: x.index, self._block.to_pandas_batches())
+        )
 
     def copy(self) -> Series:
         return Series(self._block)

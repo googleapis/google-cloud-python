@@ -975,6 +975,85 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def keys(self):
+        """
+        Get the 'info axis'.
+
+        This is index for Series, columns for DataFrame.
+
+        Returns:
+            Index: Info axis.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({
+            ...     'A': [1, 2, 3],
+            ...     'B': [4, 5, 6],
+            ...     })
+            >>> df.keys()
+            Index(['A', 'B'], dtype='object')
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def iterrows(self):
+        """
+        Iterate over DataFrame rows as (index, Series) pairs.
+
+        Yields:
+            a tuple (index, data) where data contains row values as a Series
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> df = bpd.DataFrame({
+            ...     'A': [1, 2, 3],
+            ...     'B': [4, 5, 6],
+            ...     })
+            >>> index, row = next(df.iterrows())
+            >>> index
+            0
+            >>> row
+            A    1
+            B    4
+            Name: 0, dtype: object
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def itertuples(self, index: bool = True, name: str | None = "Pandas"):
+        """
+        Iterate over DataFrame rows as namedtuples.
+
+        Args:
+            index (bool, default True):
+                If True, return the index as the first element of the tuple.
+            name (str or None, default "Pandas"):
+                The name of the returned namedtuples or None to return regular
+                tuples.
+
+        Returns:
+            iterator:
+                An object to iterate over namedtuples for each row in the
+                DataFrame with the first field possibly being the index and
+                following fields being the column values.
+
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> df = bpd.DataFrame({
+            ...     'A': [1, 2, 3],
+            ...     'B': [4, 5, 6],
+            ...     })
+            >>> next(df.itertuples(name="Pair"))
+            Pair(Index=0, A=1, B=4)
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def items(self):
         """
         Iterate over (column name, Series) pairs.

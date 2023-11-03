@@ -304,6 +304,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         rows, _ = self.shape
         return rows
 
+    def __iter__(self):
+        return iter(self.columns)
+
     def astype(
         self,
         dtype: Union[bigframes.dtypes.DtypeString, bigframes.dtypes.Dtype],
@@ -1477,11 +1480,26 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 f"isin(), you passed a [{type(values).__name__}]"
             )
 
+    def keys(self) -> pandas.Index:
+        return self.columns
+
     def items(self):
         column_ids = self._block.value_columns
         column_labels = self._block.column_labels
         for col_id, col_label in zip(column_ids, column_labels):
             yield col_label, bigframes.series.Series(self._block.select_column(col_id))
+
+    def iterrows(self) -> Iterable[tuple[typing.Any, pandas.Series]]:
+        for df in self.to_pandas_batches():
+            for item in df.iterrows():
+                yield item
+
+    def itertuples(
+        self, index: bool = True, name: typing.Optional[str] = "Pandas"
+    ) -> Iterable[tuple[typing.Any, ...]]:
+        for df in self.to_pandas_batches():
+            for item in df.itertuples(index=index, name=name):
+                yield item
 
     def dropna(
         self,

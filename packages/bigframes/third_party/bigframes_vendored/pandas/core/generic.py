@@ -1,7 +1,7 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/generic.py
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Iterator, Literal, Optional
 
 from bigframes import constants
 from third_party.bigframes_vendored.pandas.core import indexing
@@ -32,6 +32,35 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             int: Return the number of rows if Series. Otherwise return the number of
                 rows times number of columns if DataFrame.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def __iter__(self) -> Iterator:
+        """
+        Iterate over info axis.
+
+        Returns
+            iterator: Info axis as iterator.
+
+        **Examples:**
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({
+            ...     'A': [1, 2, 3],
+            ...     'B': [4, 5, 6],
+            ... })
+            >>> for x in df:
+            ...     print(x)
+            A
+            B
+
+            >>> series = bpd.Series(["a", "b", "c"], index=[10, 20, 30])
+            >>> for x in series:
+            ...     print(x)
+            10
+            20
+            30
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
