@@ -82,6 +82,10 @@ case ${TEST_TYPE} in
             nox -s unit-3.11
             retval=$?
             ;;
+        "3.12")
+            nox -s unit-3.12
+            retval=$?
+            ;;
         *)
             ;;
         esac
