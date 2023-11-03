@@ -45,10 +45,10 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_retry_bubble_async(async_echo):
-        with pytest.raises(exceptions.DeadlineExceeded):
+        with pytest.raises(exceptions.RetryError):
             await async_echo.echo({
                 'error': {
-                    'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
-                    'message': 'This took longer than you said it should.',
+                    'code': code_pb2.Code.Value('UNAVAILABLE'),
+                    'message': 'This service is not available.',
                 },
             })
