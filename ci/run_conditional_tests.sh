@@ -36,7 +36,7 @@ export PROJECT_ROOT=$(readlink -f $(dirname "${BASH_SOURCE[0]}")/..)
 echo $PROJECT_ROOT
 
 # A script file for running the test in a sub project.
-test_script="./${PROJECT_ROOT}/ci/run_single_test.sh"
+test_script=".${PROJECT_ROOT}/ci/run_single_test.sh"
 
 if [ ${BUILD_TYPE} == "presubmit" ]; then
     # For presubmit build, we want to know the difference from the
