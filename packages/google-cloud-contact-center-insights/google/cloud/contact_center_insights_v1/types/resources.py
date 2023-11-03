@@ -2484,7 +2484,7 @@ class AnnotatorSelector(proto.Message):
                 SUMMARIZATION_MODEL_UNSPECIFIED (0):
                     Unspecified summarization model.
                 BASELINE_MODEL (1):
-                    The Insights baseline model.
+                    The CCAI baseline model.
             """
             SUMMARIZATION_MODEL_UNSPECIFIED = 0
             BASELINE_MODEL = 1

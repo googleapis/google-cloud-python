@@ -51,6 +51,9 @@ __protobuf__ = proto.module(
         "BulkAnalyzeConversationsRequest",
         "BulkAnalyzeConversationsMetadata",
         "BulkAnalyzeConversationsResponse",
+        "BulkDeleteConversationsRequest",
+        "BulkDeleteConversationsMetadata",
+        "BulkDeleteConversationsResponse",
         "ExportInsightsDataRequest",
         "ExportInsightsDataMetadata",
         "ExportInsightsDataResponse",
@@ -609,6 +612,14 @@ class IngestConversationsRequest(proto.Message):
         conversation_config (google.cloud.contact_center_insights_v1.types.IngestConversationsRequest.ConversationConfig):
             Configuration that applies to all
             conversations.
+        redaction_config (google.cloud.contact_center_insights_v1.types.RedactionConfig):
+            Optional. DLP settings for transcript
+            redaction. Optional, will default to the config
+            specified in Settings.
+        speech_config (google.cloud.contact_center_insights_v1.types.SpeechConfig):
+            Optional. Default Speech-to-Text
+            configuration. Optional, will default to the
+            config specified in Settings.
     """
 
     class GcsSource(proto.Message):
@@ -618,11 +629,37 @@ class IngestConversationsRequest(proto.Message):
             bucket_uri (str):
                 Required. The Cloud Storage bucket containing
                 source objects.
+            bucket_object_type (google.cloud.contact_center_insights_v1.types.IngestConversationsRequest.GcsSource.BucketObjectType):
+                Optional. Specifies the type of the objects in
+                ``bucket_uri``.
         """
+
+        class BucketObjectType(proto.Enum):
+            r"""
+
+            Values:
+                BUCKET_OBJECT_TYPE_UNSPECIFIED (0):
+                    The object type is unspecified and will
+                    default to TRANSCRIPT.
+                TRANSCRIPT (1):
+                    The object is a transcript.
+                AUDIO (2):
+                    The object is an audio file.
+            """
+            BUCKET_OBJECT_TYPE_UNSPECIFIED = 0
+            TRANSCRIPT = 1
+            AUDIO = 2
 
         bucket_uri: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        bucket_object_type: "IngestConversationsRequest.GcsSource.BucketObjectType" = (
+            proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="IngestConversationsRequest.GcsSource.BucketObjectType",
+            )
         )
 
     class TranscriptObjectConfig(proto.Message):
@@ -647,11 +684,31 @@ class IngestConversationsRequest(proto.Message):
             agent_id (str):
                 An opaque, user-specified string representing
                 the human agent who handled the conversations.
+            agent_channel (int):
+                Optional. For audio conversations, this field
+                indicates which of the channels, 1 or 2,
+                contains the agent. Note that this must be set
+                for audio conversations to be properly displayed
+                and analyzed.
+            customer_channel (int):
+                Optional. For audio conversations, this field
+                indicates which of the channels, 1 or 2,
+                contains the customer. Note that this must be
+                set for audio conversations to be properly
+                displayed and analyzed.
         """
 
         agent_id: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        agent_channel: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        customer_channel: int = proto.Field(
+            proto.INT32,
+            number=3,
         )
 
     gcs_source: GcsSource = proto.Field(
@@ -674,6 +731,16 @@ class IngestConversationsRequest(proto.Message):
         proto.MESSAGE,
         number=4,
         message=ConversationConfig,
+    )
+    redaction_config: resources.RedactionConfig = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=resources.RedactionConfig,
+    )
+    speech_config: resources.SpeechConfig = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=resources.SpeechConfig,
     )
 
 
@@ -943,6 +1010,10 @@ class BulkAnalyzeConversationsMetadata(proto.Message):
             Total number of analyses requested. Computed by the number
             of conversations returned by ``filter`` multiplied by
             ``analysis_percentage`` in the request.
+        partial_errors (MutableSequence[google.rpc.status_pb2.Status]):
+            Output only. Partial errors during bulk
+            analyze operation that might cause the operation
+            output to be incomplete.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -972,6 +1043,11 @@ class BulkAnalyzeConversationsMetadata(proto.Message):
         proto.INT32,
         number=6,
     )
+    partial_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=status_pb2.Status,
+    )
 
 
 class BulkAnalyzeConversationsResponse(proto.Message):
@@ -992,6 +1068,89 @@ class BulkAnalyzeConversationsResponse(proto.Message):
         proto.INT32,
         number=2,
     )
+
+
+class BulkDeleteConversationsRequest(proto.Message):
+    r"""The request to delete conversations in bulk.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource to create
+            analyses in. Format:
+
+            projects/{project}/locations/{location}
+        filter (str):
+            Filter used to select the subset of
+            conversations to analyze.
+        max_delete_count (int):
+            Maximum number of conversations to delete. The default is
+            1000. It can be changed by setting the ``max_delete_count``
+            field.
+        force (bool):
+            If set to true, all of this conversation's
+            analyses will also be deleted. Otherwise, the
+            request will only succeed if the conversation
+            has no analyses.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    max_delete_count: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class BulkDeleteConversationsMetadata(proto.Message):
+    r"""The metadata for a bulk delete conversations operation.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation was created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation finished running.
+        request (google.cloud.contact_center_insights_v1.types.BulkDeleteConversationsRequest):
+            The original request for bulk delete.
+        partial_errors (MutableSequence[google.rpc.status_pb2.Status]):
+            Partial errors during bulk delete
+            conversations operation that might cause the
+            operation output to be incomplete.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request: "BulkDeleteConversationsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="BulkDeleteConversationsRequest",
+    )
+    partial_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
+    )
+
+
+class BulkDeleteConversationsResponse(proto.Message):
+    r"""The response for a bulk analyze conversations operation."""
 
 
 class ExportInsightsDataRequest(proto.Message):
