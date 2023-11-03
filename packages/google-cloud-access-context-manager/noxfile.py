@@ -220,7 +220,9 @@ def install_systemtest_dependencies(session, *constraints):
 @nox.session(python=["3.7", "3.8", "3.9"])
 @nox.parametrize(
     "library",
-    ["python-asset"],
+    [
+        ("google-cloud-python", "google-cloud-asset"),
+    ],
     ids=["asset"],
 )
 def test(session, library):
@@ -230,6 +232,9 @@ def test(session, library):
     NOTE: The unit and system test functions above are copied from the templates.
     They will need to be updated when the templates change.
     """
+    package = ""
+    if type(library) == tuple:
+        library, package = library
     try:
         session.run("git", "-C", library, "pull", external=True)
     except nox.command.CommandFailed:
@@ -242,6 +247,8 @@ def test(session, library):
         )
 
     session.cd(library)
+    if package:
+        session.cd(f"packages/{package}")
     unit(session)
     # system tests are run 3.7 only
     if session.python == "3.7":
@@ -337,13 +344,15 @@ def docs(session):
     )
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
     session.install("-e", ".")
     session.install(
-        "sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml"
+        "gcp-sphinx-docfx-yaml",
+        "alabaster",
+        "recommonmark",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
