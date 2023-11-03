@@ -10,7 +10,7 @@ jinja2<=3.0.3
 
 # General installations.
 gcp-docuploader
-gcp-releasetool
+gcp-releasetool>=1.10.5 # required for compatibility with cryptography>=39.x
 importlib-metadata
 
 # Required for package release.
@@ -20,4 +20,3 @@ wheel
 setuptools
 nox
 charset-normalizer<3
-click<8.1.0
