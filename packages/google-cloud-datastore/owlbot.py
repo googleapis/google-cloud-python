@@ -183,7 +183,7 @@ assert 1 == s.replace(
 assert 1 == s.replace(
     "noxfile.py",
     r"""\
-@nox.session\(python="3.9"\)
+@nox.session\(python="3.10"\)
 def docfx\(session\):
 """,
     """\
@@ -198,7 +198,7 @@ def doctests(session):
     session.run("py.test", "tests/doctests.py")
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def docfx(session):
 """,
 )
