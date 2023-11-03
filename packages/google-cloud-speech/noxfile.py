@@ -282,7 +282,7 @@ def docs(session):
 
     session.install("-e", ".")
     session.install(
-        "sphinx==4.0.1",
+        "sphinx==4.5.0",
         "alabaster",
         "recommonmark",
     )
@@ -308,7 +308,7 @@ def docfx(session):
 
     session.install("-e", ".")
     session.install(
-        "gcp-sphinx-docfx-yaml",
+        "https://github.com/googleapis/sphinx-docfx-yaml/archive/refs/heads/main.zip",
         "alabaster",
         "recommonmark",
     )
