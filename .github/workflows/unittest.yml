@@ -30,6 +30,7 @@ jobs:
         python -m pip install nox
     - name: Run unit tests
       env:
+        SETUPTOOLS_USE_DISTUTILS: stdlib
         COVERAGE_FILE: .coverage-${{ matrix.python }}
         BUILD_TYPE: presubmit
         TEST_TYPE: unit
