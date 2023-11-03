@@ -35,7 +35,6 @@ jobs:
         TEST_TYPE: unit
         PY_VERSION: ${{ matrix.python }}
       run: |
-        ls -la
         ci/run_conditional_tests.sh
     - name: Upload coverage results
       uses: actions/upload-artifact@v3
@@ -63,7 +62,6 @@ jobs:
         TEST_TYPE: prerelease
         PY_VERSION: ${{ matrix.python }}
       run: |
-        ls -la
         ci/run_conditional_tests.sh
 
   cover:
