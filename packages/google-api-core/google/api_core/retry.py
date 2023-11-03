@@ -62,6 +62,8 @@ import logging
 import random
 import sys
 import time
+import inspect
+import warnings
 from typing import Any, Callable, TypeVar, TYPE_CHECKING
 
 import requests.exceptions
@@ -84,6 +86,7 @@ _DEFAULT_INITIAL_DELAY = 1.0  # seconds
 _DEFAULT_MAXIMUM_DELAY = 60.0  # seconds
 _DEFAULT_DELAY_MULTIPLIER = 2.0
 _DEFAULT_DEADLINE = 60.0 * 2.0  # seconds
+_ASYNC_RETRY_WARNING = "Using the synchronous google.api_core.retry.Retry with asynchronous calls may lead to unexpected results. Please use google.api_core.retry_async.AsyncRetry instead."
 
 
 def if_exception_type(
@@ -201,7 +204,10 @@ def retry_target(
 
     for sleep in sleep_generator:
         try:
-            return target()
+            result = target()
+            if inspect.isawaitable(result):
+                warnings.warn(_ASYNC_RETRY_WARNING)
+            return result
 
         # pylint: disable=broad-except
         # This function explicitly must deal with broad exceptions.
