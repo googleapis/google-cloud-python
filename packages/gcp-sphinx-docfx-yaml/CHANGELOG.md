@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.7...v3.0.0) (2023-11-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* Bump minimum version to 3.10 ([#334](https://github.com/googleapis/sphinx-docfx-yaml/issues/334))
+
+### Features
+
+* Bump minimum version to 3.10 ([#334](https://github.com/googleapis/sphinx-docfx-yaml/issues/334)) ([97c34cb](https://github.com/googleapis/sphinx-docfx-yaml/commit/97c34cbd2e2167e68224db1c3bc1775dddc9f6c3))
+
 ## [2.0.7](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.6...v2.0.7) (2023-11-01)
 
 
