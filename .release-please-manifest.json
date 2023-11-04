@@ -117,6 +117,7 @@
     "packages/google-cloud-recommendations-ai": "0.10.5",
     "packages/google-cloud-recommender": "2.12.1",
     "packages/google-cloud-redis": "2.13.2",
+    "packages/google-cloud-redis-cluster": "0.0.0",
     "packages/google-cloud-resource-manager": "1.10.4",
     "packages/google-cloud-resource-settings": "1.7.2",
     "packages/google-cloud-retail": "1.16.3",

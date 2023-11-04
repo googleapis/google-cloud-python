@@ -2020,6 +2020,27 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-redis-cluster": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-redis-cluster",
+            "extra-files": [
+                "google/cloud/redis_cluster/gapic_version.py",
+                "google/cloud/redis_cluster_v1/gapic_version.py",
+                "google/cloud/redis_cluster_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.redis.cluster.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.redis.cluster.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-resource-manager": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
