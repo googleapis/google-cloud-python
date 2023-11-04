@@ -26,4 +26,4 @@ FEEDBACK_LINK = (
 
 ABSTRACT_METHOD_ERROR_MESSAGE = f"Abstract method. You have likely encountered a bug. Please share this stacktrace and how you reached it with the BigQuery DataFrames team. {FEEDBACK_LINK}"
 
-DEFAULT_EXPIRATION = datetime.timedelta(days=7)
+DEFAULT_EXPIRATION = datetime.timedelta(days=1)

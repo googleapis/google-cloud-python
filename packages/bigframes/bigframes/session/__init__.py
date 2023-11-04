@@ -16,7 +16,6 @@
 
 from __future__ import annotations
 
-import datetime
 import logging
 import os
 import re
@@ -431,9 +430,7 @@ class Session(
             index_cols = list(index_col)
 
         destination, query_job = self._query_to_destination(
-            query,
-            index_cols,
-            api_name=api_name,
+            query, index_cols, api_name="read_gbq_query"
         )
 
         # If there was no destination table, that means the query must have
@@ -511,12 +508,6 @@ class Session(
         If we can get a total ordering from the table, such as via primary key
         column(s), then return those too so that ordering generation can be
         avoided.
-
-        For tables that aren't already read-only, this creates Create a table
-        clone so that any changes to the underlying table don't affect the
-        DataFrame and break our assumptions, especially with regards to unique
-        index and ordering. See:
-        https://cloud.google.com/bigquery/docs/table-clones-create
         """
         if table_ref.dataset_id.upper() == "_SESSION":
             # _SESSION tables aren't supported by the tables.get REST API.
@@ -527,24 +518,15 @@ class Session(
                 None,
             )
 
-        now = datetime.datetime.now(datetime.timezone.utc)
-        destination = bigframes_io.create_table_clone(
-            table_ref,
-            self._anonymous_dataset,
-            # TODO(swast): Allow the default expiration to be configured.
-            now + constants.DEFAULT_EXPIRATION,
-            self,
-            api_name,
-        )
         table_expression = self.ibis_client.table(
-            destination.table_id,
-            database=f"{destination.project}.{destination.dataset_id}",
+            table_ref.table_id,
+            database=f"{table_ref.project}.{table_ref.dataset_id}",
         )
 
         # If there are primary keys defined, the query engine assumes these
         # columns are unique, even if the constraint is not enforced. We make
         # the same assumption and use these columns as the total ordering keys.
-        table = self.bqclient.get_table(destination)
+        table = self.bqclient.get_table(table_ref)
 
         # TODO(b/305264153): Use public properties to fetch primary keys once
         # added to google-cloud-bigquery.
@@ -553,7 +535,23 @@ class Session(
             .get("primaryKey", {})
             .get("columns")
         )
-        return table_expression, primary_keys
+
+        if not primary_keys:
+            return table_expression, None
+        else:
+            # Read from a snapshot since we won't have to copy the table data to create a total ordering.
+            job_config = bigquery.QueryJobConfig()
+            job_config.labels["bigframes-api"] = api_name
+            current_timestamp = list(
+                self.bqclient.query(
+                    "SELECT CURRENT_TIMESTAMP() AS `current_timestamp`",
+                    job_config=job_config,
+                ).result()
+            )[0][0]
+            table_expression = self.ibis_client.sql(
+                bigframes_io.create_snapshot_sql(table_ref, current_timestamp)
+            )
+            return table_expression, primary_keys
 
     def _read_gbq_table(
         self,
@@ -664,7 +662,20 @@ class Session(
                 total_ordering_columns=frozenset(index_cols),
             )
 
-            if not is_total_ordering:
+            # We have a total ordering, so query via "time travel" so that
+            # the underlying data doesn't mutate.
+            if is_total_ordering:
+                # Get the timestamp from the job metadata rather than the query
+                # text so that the query for determining uniqueness of the ID
+                # columns can be cached.
+                current_timestamp = query_job.started
+
+                # The job finished, so we should have a start time.
+                assert current_timestamp is not None
+                table_expression = self.ibis_client.sql(
+                    bigframes_io.create_snapshot_sql(table_ref, current_timestamp)
+                )
+            else:
                 # Make sure when we generate an ordering, the row_number()
                 # coresponds to the index columns.
                 table_expression = table_expression.order_by(index_cols)

@@ -19,63 +19,46 @@ import unittest.mock as mock
 import google.cloud.bigquery as bigquery
 import pytest
 
-import bigframes.session
 import bigframes.session._io.bigquery
 
 
-def test_create_table_clone_doesnt_clone_anonymous_datasets():
-    session = mock.create_autospec(bigframes.session.Session)
-    source = bigquery.TableReference.from_string(
+def test_create_snapshot_sql_doesnt_timetravel_anonymous_datasets():
+    table_ref = bigquery.TableReference.from_string(
         "my-test-project._e8166e0cdb.anonbb92cd"
     )
 
-    destination = bigframes.session._io.bigquery.create_table_clone(
-        source,
-        bigquery.DatasetReference("other-project", "other_dataset"),
-        datetime.datetime(2023, 11, 2, 15, 43, 21, tzinfo=datetime.timezone.utc),
-        session,
-        "test_api",
+    sql = bigframes.session._io.bigquery.create_snapshot_sql(
+        table_ref, datetime.datetime.now(datetime.timezone.utc)
     )
 
-    # Anonymous query results tables don't support CLONE
-    assert destination is source
-    session._start_query.assert_not_called()
+    # Anonymous query results tables don't support time travel.
+    assert "SYSTEM_TIME" not in sql
+
+    # Need fully-qualified table name.
+    assert "`my-test-project`.`_e8166e0cdb`.`anonbb92cd`" in sql
 
 
-def test_create_table_clone_sets_expiration():
-    session = mock.create_autospec(bigframes.session.Session)
-    source = bigquery.TableReference.from_string(
-        "my-test-project.test_dataset.some_table"
+def test_create_snapshot_sql_doesnt_timetravel_session_tables():
+    table_ref = bigquery.TableReference.from_string("my-test-project._session.abcdefg")
+
+    sql = bigframes.session._io.bigquery.create_snapshot_sql(
+        table_ref, datetime.datetime.now(datetime.timezone.utc)
     )
 
-    expiration = datetime.datetime(
-        2023, 11, 2, 15, 43, 21, tzinfo=datetime.timezone.utc
-    )
-    bigframes.session._io.bigquery.create_table_clone(
-        source,
-        bigquery.DatasetReference("other-project", "other_dataset"),
-        expiration,
-        session,
-        "test_api",
-    )
+    # We aren't modifying _SESSION tables, so don't use time travel.
+    assert "SYSTEM_TIME" not in sql
 
-    session._start_query.assert_called_once()
-    call_args = session._start_query.call_args
-    query = call_args.args[0]
-    assert "CREATE OR REPLACE TABLE" in query
-    assert "CLONE" in query
-    assert f'expiration_timestamp=TIMESTAMP "{expiration.isoformat()}"' in query
-    assert '("source", "bigquery-dataframes-temp")' in query
-    assert call_args.kwargs["job_config"].labels["bigframes-api"] == "test_api"
+    # Don't need the project ID for _SESSION tables.
+    assert "my-test-project" not in sql
 
 
 def test_create_temp_table_default_expiration():
     """Make sure the created table has an expiration."""
     bqclient = mock.create_autospec(bigquery.Client)
     dataset = bigquery.DatasetReference("test-project", "test_dataset")
-    expiration = datetime.datetime(
-        2023, 11, 2, 13, 44, 55, 678901, datetime.timezone.utc
-    )
+    now = datetime.datetime.now(datetime.timezone.utc)
+    expiration = datetime.timedelta(days=3)
+    expected_expires = now + expiration
 
     bigframes.session._io.bigquery.create_temp_table(bqclient, dataset, expiration)
 
@@ -85,11 +68,10 @@ def test_create_temp_table_default_expiration():
     assert table.project == "test-project"
     assert table.dataset_id == "test_dataset"
     assert table.table_id.startswith("bqdf")
-    # TODO(swast): Why isn't the expiration exactly what we set it to?
     assert (
-        (expiration - datetime.timedelta(minutes=1))
+        (expected_expires - datetime.timedelta(minutes=1))
         < table.expires
-        < (expiration + datetime.timedelta(minutes=1))
+        < (expected_expires + datetime.timedelta(minutes=1))
     )
 
 

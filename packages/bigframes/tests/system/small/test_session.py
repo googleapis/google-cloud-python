@@ -252,6 +252,9 @@ def test_read_gbq_w_primary_keys_table(
     sorted_result = result.sort_values(primary_keys)
     pd.testing.assert_frame_equal(result, sorted_result)
 
+    # Verify that we're working from a snapshot rather than a copy of the table.
+    assert "FOR SYSTEM_TIME AS OF TIMESTAMP" in df.sql
+
 
 @pytest.mark.parametrize(
     ("query_or_table", "max_results"),
