@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import datetime
 import re
 import textwrap
 import typing
@@ -2327,7 +2328,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 self._session.bqclient,
                 self._session._anonymous_dataset,
                 # TODO(swast): allow custom expiration times, probably via session configuration.
-                constants.DEFAULT_EXPIRATION,
+                datetime.datetime.now(datetime.timezone.utc)
+                + constants.DEFAULT_EXPIRATION,
             )
 
             if if_exists is not None and if_exists != "replace":

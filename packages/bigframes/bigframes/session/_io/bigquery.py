@@ -14,6 +14,8 @@
 
 """Private module: Helpers for I/O operations."""
 
+from __future__ import annotations
+
 import datetime
 import textwrap
 import types
@@ -69,6 +71,29 @@ def create_export_data_statement(
     )
 
 
+def random_table(dataset: bigquery.DatasetReference) -> bigquery.TableReference:
+    """Generate a random table ID with BigQuery DataFrames prefix.
+    Args:
+        dataset (google.cloud.bigquery.DatasetReference):
+            The dataset to make the table reference in. Usually the anonymous
+            dataset for the session.
+    Returns:
+        google.cloud.bigquery.TableReference:
+            Fully qualified table ID of a table that doesn't exist.
+    """
+    now = datetime.datetime.now(datetime.timezone.utc)
+    random_id = uuid.uuid4().hex
+    table_id = TEMP_TABLE_PREFIX.format(
+        date=now.strftime("%Y%m%d"), random_id=random_id
+    )
+    return dataset.table(table_id)
+
+
+def table_ref_to_sql(table: bigquery.TableReference) -> str:
+    """Format a table reference as escaped SQL."""
+    return f"`{table.project}`.`{table.dataset_id}`.`{table.table_id}`"
+
+
 def create_snapshot_sql(
     table_ref: bigquery.TableReference, current_timestamp: datetime.datetime
 ) -> str:
@@ -95,17 +120,12 @@ def create_snapshot_sql(
 def create_temp_table(
     bqclient: bigquery.Client,
     dataset: bigquery.DatasetReference,
-    expiration: datetime.timedelta,
+    expiration: datetime.datetime,
 ) -> str:
     """Create an empty table with an expiration in the desired dataset."""
-    now = datetime.datetime.now(datetime.timezone.utc)
-    random_id = uuid.uuid4().hex
-    table_id = TEMP_TABLE_PREFIX.format(
-        date=now.strftime("%Y%m%d"), random_id=random_id
-    )
-    table_ref = dataset.table(table_id)
+    table_ref = random_table(dataset)
     destination = bigquery.Table(table_ref)
-    destination.expires = now + expiration
+    destination.expires = expiration
     bqclient.create_table(destination)
     return f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}"
 

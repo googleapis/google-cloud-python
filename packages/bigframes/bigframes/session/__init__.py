@@ -430,7 +430,9 @@ class Session(
             index_cols = list(index_col)
 
         destination, query_job = self._query_to_destination(
-            query, index_cols, api_name="read_gbq_query"
+            query,
+            index_cols,
+            api_name=api_name,
         )
 
         # If there was no destination table, that means the query must have

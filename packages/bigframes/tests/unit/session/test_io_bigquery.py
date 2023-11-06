@@ -56,9 +56,9 @@ def test_create_temp_table_default_expiration():
     """Make sure the created table has an expiration."""
     bqclient = mock.create_autospec(bigquery.Client)
     dataset = bigquery.DatasetReference("test-project", "test_dataset")
-    now = datetime.datetime.now(datetime.timezone.utc)
-    expiration = datetime.timedelta(days=3)
-    expected_expires = now + expiration
+    expiration = datetime.datetime(
+        2023, 11, 2, 13, 44, 55, 678901, datetime.timezone.utc
+    )
 
     bigframes.session._io.bigquery.create_temp_table(bqclient, dataset, expiration)
 
@@ -69,9 +69,9 @@ def test_create_temp_table_default_expiration():
     assert table.dataset_id == "test_dataset"
     assert table.table_id.startswith("bqdf")
     assert (
-        (expected_expires - datetime.timedelta(minutes=1))
+        (expiration - datetime.timedelta(minutes=1))
         < table.expires
-        < (expected_expires + datetime.timedelta(minutes=1))
+        < (expiration + datetime.timedelta(minutes=1))
     )
 
 
