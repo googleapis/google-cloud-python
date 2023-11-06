@@ -308,7 +308,6 @@ class AppendRowsStream(object):
 
             if self._rpc is not None:
                 self._rpc.close()
-            self._rpc = None
             self._closed = True
             _LOGGER.debug("Finished stopping manager.")
 
