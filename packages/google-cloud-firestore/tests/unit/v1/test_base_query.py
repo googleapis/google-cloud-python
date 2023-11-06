@@ -1207,6 +1207,61 @@ def test_basequery__normalize_orders_w_name_orders_w_none_cursor():
     assert query._normalize_orders() == expected
 
 
+def test_basequery__normalize_orders_w_cursor_descending():
+    """
+    Test case for b/306472103
+    """
+    from google.cloud.firestore_v1.base_query import FieldFilter
+
+    collection = _make_collection("here")
+    snapshot = _make_snapshot(_make_docref("here", "doc_id"), {"a": 1, "b": 2})
+    query = (
+        _make_base_query(collection)
+        .where(filter=FieldFilter("a", "==", 1))
+        .where(filter=FieldFilter("b", "in", [1, 2, 3]))
+        .order_by("c", "DESCENDING")
+    )
+    query_w_snapshot = query.start_after(snapshot)
+
+    normalized = query._normalize_orders()
+    expected = [query._make_order("c", "DESCENDING")]
+    assert normalized == expected
+
+    normalized_w_snapshot = query_w_snapshot._normalize_orders()
+    expected_w_snapshot = expected + [query._make_order("__name__", "DESCENDING")]
+    assert normalized_w_snapshot == expected_w_snapshot
+
+
+def test_basequery__normalize_orders_w_cursor_descending_w_inequality():
+    """
+    Test case for b/306472103, with extra ineuality filter in "where" clause
+    """
+    from google.cloud.firestore_v1.base_query import FieldFilter
+
+    collection = _make_collection("here")
+    snapshot = _make_snapshot(_make_docref("here", "doc_id"), {"a": 1, "b": 2})
+    query = (
+        _make_base_query(collection)
+        .where(filter=FieldFilter("a", "==", 1))
+        .where(filter=FieldFilter("b", "in", [1, 2, 3]))
+        .where(filter=FieldFilter("c", "not-in", [4, 5, 6]))
+        .order_by("d", "DESCENDING")
+    )
+    query_w_snapshot = query.start_after(snapshot)
+
+    normalized = query._normalize_orders()
+    expected = [query._make_order("d", "DESCENDING")]
+    assert normalized == expected
+
+    normalized_w_snapshot = query_w_snapshot._normalize_orders()
+    expected_w_snapshot = [
+        query._make_order("d", "DESCENDING"),
+        query._make_order("c", "DESCENDING"),
+        query._make_order("__name__", "DESCENDING"),
+    ]
+    assert normalized_w_snapshot == expected_w_snapshot
+
+
 def test_basequery__normalize_cursor_none():
     query = _make_base_query(mock.sentinel.parent)
     assert query._normalize_cursor(None, query._orders) is None

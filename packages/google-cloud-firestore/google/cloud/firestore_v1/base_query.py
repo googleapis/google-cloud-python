@@ -85,6 +85,16 @@ _COMPARISON_OPERATORS = {
     "not-in": _operator_enum.NOT_IN,
     "array_contains_any": _operator_enum.ARRAY_CONTAINS_ANY,
 }
+# set of operators that don't involve equlity comparisons
+# will be used in query normalization
+_INEQUALITY_OPERATORS = (
+    _operator_enum.LESS_THAN,
+    _operator_enum.LESS_THAN_OR_EQUAL,
+    _operator_enum.GREATER_THAN_OR_EQUAL,
+    _operator_enum.GREATER_THAN,
+    _operator_enum.NOT_EQUAL,
+    _operator_enum.NOT_IN,
+)
 _BAD_OP_STRING = "Operator string {!r} is invalid. Valid choices are: {}."
 _BAD_OP_NAN_NULL = 'Only an equality filter ("==") can be used with None or NaN values'
 _INVALID_WHERE_TRANSFORM = "Transforms cannot be used as where values."
@@ -858,28 +868,21 @@ class BaseQuery(object):
         if self._end_at:
             if isinstance(self._end_at[0], document.DocumentSnapshot):
                 _has_snapshot_cursor = True
-
         if _has_snapshot_cursor:
-            should_order = [
-                _enum_from_op_string(key)
-                for key in _COMPARISON_OPERATORS
-                if key not in (_EQ_OP, "array_contains")
-            ]
+            # added orders should use direction of last order
+            last_direction = orders[-1].direction if orders else BaseQuery.ASCENDING
             order_keys = [order.field.field_path for order in orders]
             for filter_ in self._field_filters:
                 # FieldFilter.Operator should not compare equal to
                 # UnaryFilter.Operator, but it does
                 if isinstance(filter_.op, StructuredQuery.FieldFilter.Operator):
                     field = filter_.field.field_path
-                    if filter_.op in should_order and field not in order_keys:
-                        orders.append(self._make_order(field, "ASCENDING"))
-            if not orders:
-                orders.append(self._make_order("__name__", "ASCENDING"))
-            else:
-                order_keys = [order.field.field_path for order in orders]
-                if "__name__" not in order_keys:
-                    direction = orders[-1].direction  # enum?
-                    orders.append(self._make_order("__name__", direction))
+                    # skip equality filters and filters on fields already ordered
+                    if filter_.op in _INEQUALITY_OPERATORS and field not in order_keys:
+                        orders.append(self._make_order(field, last_direction))
+            # add __name__ if not already in orders
+            if "__name__" not in [order.field.field_path for order in orders]:
+                orders.append(self._make_order("__name__", last_direction))
 
         return orders
 
