@@ -255,6 +255,42 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         return self._operations_client
 
     @property
+    def process_open_lineage_run_event(
+        self,
+    ) -> Callable[
+        [lineage.ProcessOpenLineageRunEventRequest],
+        Awaitable[lineage.ProcessOpenLineageRunEventResponse],
+    ]:
+        r"""Return a callable for the process open lineage run event method over gRPC.
+
+        Creates new lineage events together with their
+        parents: process and run. Updates the process and run if
+        they already exist. Mapped from Open Lineage
+        specification:
+
+        https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+
+        Returns:
+            Callable[[~.ProcessOpenLineageRunEventRequest],
+                    Awaitable[~.ProcessOpenLineageRunEventResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "process_open_lineage_run_event" not in self._stubs:
+            self._stubs[
+                "process_open_lineage_run_event"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.lineage.v1.Lineage/ProcessOpenLineageRunEvent",
+                request_serializer=lineage.ProcessOpenLineageRunEventRequest.serialize,
+                response_deserializer=lineage.ProcessOpenLineageRunEventResponse.deserialize,
+            )
+        return self._stubs["process_open_lineage_run_event"]
+
+    @property
     def create_process(
         self,
     ) -> Callable[[lineage.CreateProcessRequest], Awaitable[lineage.Process]]:
