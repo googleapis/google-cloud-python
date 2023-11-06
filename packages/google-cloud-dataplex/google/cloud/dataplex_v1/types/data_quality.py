@@ -121,6 +121,10 @@ class DataQualityResult(proto.Message):
             Overall data quality result -- ``true`` if all rules passed.
         dimensions (MutableSequence[google.cloud.dataplex_v1.types.DataQualityDimensionResult]):
             A list of results at the dimension level.
+
+            A dimension will have a corresponding
+            ``DataQualityDimensionResult`` if and only if there is at
+            least one rule with the 'dimension' field set to it.
         rules (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRuleResult]):
             A list of all the rules in a job, and their
             results.
