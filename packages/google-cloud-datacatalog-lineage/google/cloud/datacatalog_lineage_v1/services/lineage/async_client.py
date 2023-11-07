@@ -47,6 +47,7 @@ from google.api_core import operation_async  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.datacatalog_lineage_v1.services.lineage import pagers
@@ -221,6 +222,127 @@ class LineageAsyncClient:
             client_options=client_options,
             client_info=client_info,
         )
+
+    async def process_open_lineage_run_event(
+        self,
+        request: Optional[
+            Union[lineage.ProcessOpenLineageRunEventRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        open_lineage: Optional[struct_pb2.Struct] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> lineage.ProcessOpenLineageRunEventResponse:
+        r"""Creates new lineage events together with their
+        parents: process and run. Updates the process and run if
+        they already exist. Mapped from Open Lineage
+        specification:
+
+        https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import datacatalog_lineage_v1
+
+            async def sample_process_open_lineage_run_event():
+                # Create a client
+                client = datacatalog_lineage_v1.LineageAsyncClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_lineage_v1.ProcessOpenLineageRunEventRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.process_open_lineage_run_event(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.datacatalog_lineage_v1.types.ProcessOpenLineageRunEventRequest, dict]]):
+                The request object. Request message for
+                [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+            parent (:class:`str`):
+                Required. The name of the project and
+                its location that should own the
+                process, run, and lineage event.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            open_lineage (:class:`google.protobuf.struct_pb2.Struct`):
+                Required. OpenLineage message
+                following OpenLineage format:
+                https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json
+
+                This corresponds to the ``open_lineage`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datacatalog_lineage_v1.types.ProcessOpenLineageRunEventResponse:
+                Response message for
+                   [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, open_lineage])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = lineage.ProcessOpenLineageRunEventRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if open_lineage is not None:
+            request.open_lineage = open_lineage
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.process_open_lineage_run_event,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def create_process(
         self,

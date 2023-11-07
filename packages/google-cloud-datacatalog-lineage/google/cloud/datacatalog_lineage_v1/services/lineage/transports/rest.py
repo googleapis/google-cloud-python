@@ -172,6 +172,14 @@ class LineageRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_process_open_lineage_run_event(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_process_open_lineage_run_event(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_search_links(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -459,6 +467,29 @@ class LineageRestInterceptor:
         self, response: lineage.ListRunsResponse
     ) -> lineage.ListRunsResponse:
         """Post-rpc interceptor for list_runs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Lineage server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_process_open_lineage_run_event(
+        self,
+        request: lineage.ProcessOpenLineageRunEventRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[lineage.ProcessOpenLineageRunEventRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for process_open_lineage_run_event
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Lineage server.
+        """
+        return request, metadata
+
+    def post_process_open_lineage_run_event(
+        self, response: lineage.ProcessOpenLineageRunEventResponse
+    ) -> lineage.ProcessOpenLineageRunEventResponse:
+        """Post-rpc interceptor for process_open_lineage_run_event
 
         Override in a subclass to manipulate the response
         after it is returned by the Lineage server but before
@@ -1964,6 +1995,107 @@ class LineageRestTransport(LineageTransport):
             resp = self._interceptor.post_list_runs(resp)
             return resp
 
+    class _ProcessOpenLineageRunEvent(LineageRestStub):
+        def __hash__(self):
+            return hash("ProcessOpenLineageRunEvent")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: lineage.ProcessOpenLineageRunEventRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> lineage.ProcessOpenLineageRunEventResponse:
+            r"""Call the process open lineage run
+            event method over HTTP.
+
+                Args:
+                    request (~.lineage.ProcessOpenLineageRunEventRequest):
+                        The request object. Request message for
+                    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.lineage.ProcessOpenLineageRunEventResponse:
+                        Response message for
+                    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}:processOpenLineageRunEvent",
+                    "body": "open_lineage",
+                },
+            ]
+            request, metadata = self._interceptor.pre_process_open_lineage_run_event(
+                request, metadata
+            )
+            pb_request = lineage.ProcessOpenLineageRunEventRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = lineage.ProcessOpenLineageRunEventResponse()
+            pb_resp = lineage.ProcessOpenLineageRunEventResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_process_open_lineage_run_event(resp)
+            return resp
+
     class _SearchLinks(LineageRestStub):
         def __hash__(self):
             return hash("SearchLinks")
@@ -2361,6 +2493,17 @@ class LineageRestTransport(LineageTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRuns(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def process_open_lineage_run_event(
+        self,
+    ) -> Callable[
+        [lineage.ProcessOpenLineageRunEventRequest],
+        lineage.ProcessOpenLineageRunEventResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ProcessOpenLineageRunEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def search_links(

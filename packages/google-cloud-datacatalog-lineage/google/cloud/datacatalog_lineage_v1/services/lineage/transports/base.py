@@ -124,6 +124,11 @@ class LineageTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.process_open_lineage_run_event: gapic_v1.method.wrap_method(
+                self.process_open_lineage_run_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_process: gapic_v1.method.wrap_method(
                 self.create_process,
                 default_timeout=None,
@@ -218,6 +223,18 @@ class LineageTransport(abc.ABC):
     @property
     def operations_client(self):
         """Return the client designed to process long-running operations."""
+        raise NotImplementedError()
+
+    @property
+    def process_open_lineage_run_event(
+        self,
+    ) -> Callable[
+        [lineage.ProcessOpenLineageRunEventRequest],
+        Union[
+            lineage.ProcessOpenLineageRunEventResponse,
+            Awaitable[lineage.ProcessOpenLineageRunEventResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property

@@ -52,9 +52,10 @@ class datacatalog_lineageCallTransformer(cst.CSTTransformer):
         'list_lineage_events': ('parent', 'page_size', 'page_token', ),
         'list_processes': ('parent', 'page_size', 'page_token', ),
         'list_runs': ('parent', 'page_size', 'page_token', ),
+        'process_open_lineage_run_event': ('parent', 'open_lineage', 'request_id', ),
         'search_links': ('parent', 'source', 'target', 'page_size', 'page_token', ),
         'update_process': ('process', 'update_mask', 'allow_missing', ),
-        'update_run': ('run', 'update_mask', ),
+        'update_run': ('run', 'update_mask', 'allow_missing', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

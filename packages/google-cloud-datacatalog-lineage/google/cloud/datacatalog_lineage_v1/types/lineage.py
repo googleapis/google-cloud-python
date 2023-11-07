@@ -31,6 +31,8 @@ __protobuf__ = proto.module(
         "EventLink",
         "EntityReference",
         "OperationMetadata",
+        "ProcessOpenLineageRunEventRequest",
+        "ProcessOpenLineageRunEventResponse",
         "CreateProcessRequest",
         "UpdateProcessRequest",
         "GetProcessRequest",
@@ -77,9 +79,12 @@ class Process(proto.Message):
             only contain UTF-8 letters or numbers, spaces or characters
             like ``_-:&.``
         attributes (MutableMapping[str, google.protobuf.struct_pb2.Value]):
-            Optional. The attributes of the process. Can
-            be anything, for example, "author". Up to 100
-            attributes are allowed.
+            Optional. The attributes of the process.
+            Should only be used for the purpose of
+            non-semantic management (classifying, describing
+            or labeling the process).
+
+            Up to 100 attributes are allowed.
         origin (google.cloud.datacatalog_lineage_v1.types.Origin):
             Optional. The origin of this process and its
             runs and lineage events.
@@ -123,9 +128,12 @@ class Run(proto.Message):
             only contain UTF-8 letters or numbers, spaces or characters
             like ``_-:&.``
         attributes (MutableMapping[str, google.protobuf.struct_pb2.Value]):
-            Optional. The attributes of the run. Can be
-            anything, for example, a string with an SQL
-            request. Up to 100 attributes are allowed.
+            Optional. The attributes of the run. Should
+            only be used for the purpose of non-semantic
+            management (classifying, describing or labeling
+            the run).
+
+            Up to 100 attributes are allowed.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The timestamp of the start of the
             run.
@@ -206,7 +214,7 @@ class LineageEvent(proto.Message):
             Optional. List of source-target pairs. Can't
             contain more than 100 tuples.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
-            Optional. The beginning of the transformation
+            Required. The beginning of the transformation
             which resulted in this lineage event. For
             streaming scenarios, it should be the beginning
             of the period from which the lineage is being
@@ -267,16 +275,9 @@ class EntityReference(proto.Message):
 
     Attributes:
         fully_qualified_name (str):
-            Required. Fully Qualified Name of the entity. Useful for
-            referencing entities that aren't represented as GCP
-            resources, for example, tables in Dataproc Metastore API.
-
-            Examples:
-
-            -  ``bigquery:dataset.project_id.dataset_id``
-            -  ``bigquery:table.project_id.dataset_id.table_id``
-            -  ``pubsub:project_id.topic_id``
-            -  ``dataproc_metastore:projectId.locationId.instanceId.databaseId.tableId``
+            Required. `Fully Qualified Name
+            (FQN) <https://cloud.google.com/data-catalog/docs/fully-qualified-names>`__
+            of the entity.
     """
 
     fully_qualified_name: str = proto.Field(
@@ -342,9 +343,12 @@ class OperationMetadata(proto.Message):
                 Unused.
             DELETE (1):
                 The resource deletion operation.
+            CREATE (2):
+                The resource creation operation.
         """
         TYPE_UNSPECIFIED = 0
         DELETE = 1
+        CREATE = 2
 
     state: State = proto.Field(
         proto.ENUM,
@@ -373,6 +377,70 @@ class OperationMetadata(proto.Message):
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class ProcessOpenLineageRunEventRequest(proto.Message):
+    r"""Request message for
+    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+
+    Attributes:
+        parent (str):
+            Required. The name of the project and its
+            location that should own the process, run, and
+            lineage event.
+        open_lineage (google.protobuf.struct_pb2.Struct):
+            Required. OpenLineage message following
+            OpenLineage format:
+            https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json
+        request_id (str):
+            A unique identifier for this request. Restricted to 36 ASCII
+            characters. A random UUID is recommended. This request is
+            idempotent only if a ``request_id`` is provided.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    open_lineage: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Struct,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ProcessOpenLineageRunEventResponse(proto.Message):
+    r"""Response message for
+    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+
+    Attributes:
+        process (str):
+            Created process name. Format:
+            ``projects/{project}/locations/{location}/processes/{process}``.
+        run (str):
+            Created run name. Format:
+            ``projects/{project}/locations/{location}/processes/{process}/runs/{run}``.
+        lineage_events (MutableSequence[str]):
+            Created lineage event names. Format:
+            ``projects/{project}/locations/{location}/processes/{process}/runs/{run}/lineageEvents/{lineage_event}``.
+    """
+
+    process: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    run: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    lineage_events: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -592,6 +660,9 @@ class UpdateRunRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to update. Currently not
             used. The whole message is updated.
+        allow_missing (bool):
+            If set to true and the run is not found, the
+            request creates it.
     """
 
     run: "Run" = proto.Field(
@@ -603,6 +674,10 @@ class UpdateRunRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -861,8 +936,8 @@ class SearchLinksRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The project and location you want search in the
-            format ``projects/*/locations/*``
+            Required. The project and location you want
+            search in.
         source (google.cloud.datacatalog_lineage_v1.types.EntityReference):
             Optional. Send asset information in the **source** field to
             retrieve all links that lead from the specified asset to
@@ -1005,8 +1080,8 @@ class BatchSearchLinkProcessesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The project and location you want search in the
-            format ``projects/*/locations/*``
+            Required. The project and location where you
+            want to search.
         links (MutableSequence[str]):
             Required. An array of links to check for their associated
             LineageProcesses.
@@ -1143,6 +1218,10 @@ class Origin(proto.Message):
     Attributes:
         source_type (google.cloud.datacatalog_lineage_v1.types.Origin.SourceType):
             Type of the source.
+
+            Use of a source_type other than ``CUSTOM`` for process
+            creation or updating is highly discouraged, and may be
+            restricted in the future without notice.
         name (str):
             If the source_type isn't CUSTOM, the value of this field
             should be a GCP resource name of the system, which reports
@@ -1171,6 +1250,8 @@ class Origin(proto.Message):
                 Composer
             LOOKER_STUDIO (5):
                 Looker Studio
+            DATAPROC (6):
+                Dataproc
         """
         SOURCE_TYPE_UNSPECIFIED = 0
         CUSTOM = 1
@@ -1178,6 +1259,7 @@ class Origin(proto.Message):
         DATA_FUSION = 3
         COMPOSER = 4
         LOOKER_STUDIO = 5
+        DATAPROC = 6
 
     source_type: SourceType = proto.Field(
         proto.ENUM,
