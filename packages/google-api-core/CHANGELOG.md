@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.13.0](https://github.com/googleapis/python-api-core/compare/v2.12.0...v2.13.0) (2023-11-03)
+
+
+### Features
+
+* Add caching to routing header calculation ([#526](https://github.com/googleapis/python-api-core/issues/526)) ([6251eab](https://github.com/googleapis/python-api-core/commit/6251eab3fca5f7e509cb9b6e476ce1184094b711))
+
+
+### Bug Fixes
+
+* Add warning to retry target to avoid incorrect usage ([#543](https://github.com/googleapis/python-api-core/issues/543)) ([bfb40e6](https://github.com/googleapis/python-api-core/commit/bfb40e6929ef47be7a6464d2f1e0d06595736b8d))
+* Drop usage of distutils ([#541](https://github.com/googleapis/python-api-core/issues/541)) ([4bd9e10](https://github.com/googleapis/python-api-core/commit/4bd9e10f20eea227c88e3e1496010cca6dd8a270))
+* Ensure exception is available when BackgroundConsumer open stream fails ([#357](https://github.com/googleapis/python-api-core/issues/357)) ([405272c](https://github.com/googleapis/python-api-core/commit/405272c05f8c6d20e242c6172b01f78f0fd3bf32))
+
 ## [2.12.0](https://github.com/googleapis/python-api-core/compare/v2.11.1...v2.12.0) (2023-09-07)
 
 
