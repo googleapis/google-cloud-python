@@ -75,6 +75,11 @@
                 "list_runs"
               ]
             },
+            "ProcessOpenLineageRunEvent": {
+              "methods": [
+                "process_open_lineage_run_event"
+              ]
+            },
             "SearchLinks": {
               "methods": [
                 "search_links"
@@ -160,6 +165,11 @@
                 "list_runs"
               ]
             },
+            "ProcessOpenLineageRunEvent": {
+              "methods": [
+                "process_open_lineage_run_event"
+              ]
+            },
             "SearchLinks": {
               "methods": [
                 "search_links"
@@ -243,6 +253,11 @@
             "ListRuns": {
               "methods": [
                 "list_runs"
+              ]
+            },
+            "ProcessOpenLineageRunEvent": {
+              "methods": [
+                "process_open_lineage_run_event"
               ]
             },
             "SearchLinks": {
