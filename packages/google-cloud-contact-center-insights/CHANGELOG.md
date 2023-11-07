@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.13.0...google-cloud-contact-center-insights-v1.14.0) (2023-11-07)
+
+
+### Features
+
+* Launch BulkDelete API and bulk audio import via the IngestConversations API ([0510e6d](https://github.com/googleapis/google-cloud-python/commit/0510e6dd60f2f1f2fc123d340629f4a6d8a89bda))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.12.1...google-cloud-contact-center-insights-v1.13.0) (2023-09-30)
 
 
