@@ -29,3 +29,7 @@ class BigQueryStorageNotFoundError(BigQueryError):
     """Raised when BigQuery Storage extra is not installed when trying to
     import it.
     """
+
+
+class LegacyPandasError(BigQueryError):
+    """Raised when too old a version of pandas package is detected at runtime."""

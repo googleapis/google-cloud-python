@@ -24,6 +24,7 @@ from google.cloud.bigquery import exceptions
 _MIN_PYARROW_VERSION = packaging.version.Version("3.0.0")
 _MIN_BQ_STORAGE_VERSION = packaging.version.Version("2.0.0")
 _BQ_STORAGE_OPTIONAL_READ_SESSION_VERSION = packaging.version.Version("2.6.0")
+_MIN_PANDAS_VERSION = packaging.version.Version("1.1.0")
 
 
 class PyarrowVersions:
@@ -171,3 +172,65 @@ class BQStorageVersions:
 
 
 BQ_STORAGE_VERSIONS = BQStorageVersions()
+
+
+class PandasVersions:
+    """Version comparisons for pandas package."""
+
+    def __init__(self):
+        self._installed_version = None
+
+    @property
+    def installed_version(self) -> packaging.version.Version:
+        """Return the parsed version of pandas"""
+        if self._installed_version is None:
+            import pandas  # type: ignore
+
+            self._installed_version = packaging.version.parse(
+                # Use 0.0.0, since it is earlier than any released version.
+                # Legacy versions also have the same property, but
+                # creating a LegacyVersion has been deprecated.
+                # https://github.com/pypa/packaging/issues/321
+                getattr(pandas, "__version__", "0.0.0")
+            )
+
+        return self._installed_version
+
+    def try_import(self, raise_if_error: bool = False) -> Any:
+        """Verify that a recent enough version of pandas extra is installed.
+        The function assumes that pandas extra is installed, and should thus
+        be used in places where this assumption holds.
+        Because `pip` can install an outdated version of this extra despite
+        the constraints in `setup.py`, the calling code can use this helper
+        to verify the version compatibility at runtime.
+        Returns:
+            The ``pandas`` module or ``None``.
+        Raises:
+            exceptions.LegacyPandasError:
+                If the pandas package is outdated and ``raise_if_error`` is
+                ``True``.
+        """
+        try:
+            import pandas
+        except ImportError as exc:  # pragma: NO COVER
+            if raise_if_error:
+                raise exceptions.LegacyPandasError(
+                    "pandas package not found. Install pandas version >="
+                    f" {_MIN_PANDAS_VERSION}"
+                ) from exc
+            return None
+
+        if self.installed_version < _MIN_PANDAS_VERSION:
+            if raise_if_error:
+                msg = (
+                    "Dependency pandas is outdated, please upgrade"
+                    f" it to version >= {_MIN_PANDAS_VERSION}"
+                    f" (version found: {self.installed_version})."
+                )
+                raise exceptions.LegacyPandasError(msg)
+            return None
+
+        return pandas
+
+
+PANDAS_VERSIONS = PandasVersions()

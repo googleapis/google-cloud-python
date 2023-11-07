@@ -202,6 +202,7 @@ __all__ = [
     # Custom exceptions
     "LegacyBigQueryStorageError",
     "LegacyPyarrowError",
+    "LegacyPandasError",
 ]
 
 

@@ -26,6 +26,11 @@ try:
 except ImportError:  # pragma: NO COVER
     bigquery_storage = None
 
+try:
+    import pandas  # type: ignore
+except ImportError:  # pragma: NO COVER
+    pandas = None
+
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import exceptions
 
@@ -173,3 +178,49 @@ def test_bqstorage_is_read_session_optional_false():
     bqstorage_versions = _versions_helpers.BQStorageVersions()
     with mock.patch("google.cloud.bigquery_storage.__version__", new="2.5.0"):
         assert not bqstorage_versions.is_read_session_optional
+
+
+@pytest.mark.skipif(pandas is None, reason="pandas is not installed")
+@pytest.mark.parametrize("version", ["1.5.0", "2.0.0", "2.1.0"])
+def test_try_import_raises_no_error_w_recent_pandas(version):
+    versions = _versions_helpers.PandasVersions()
+    with mock.patch("pandas.__version__", new=version):
+        try:
+            pandas = versions.try_import(raise_if_error=True)
+            assert pandas is not None
+        except exceptions.LegacyPandasError:  # pragma: NO COVER
+            raise ("Legacy error raised with a non-legacy dependency version.")
+
+
+@pytest.mark.skipif(pandas is None, reason="pandas is not installed")
+def test_try_import_returns_none_w_legacy_pandas():
+    versions = _versions_helpers.PandasVersions()
+    with mock.patch("pandas.__version__", new="1.0.0"):
+        pandas = versions.try_import()
+        assert pandas is None
+
+
+@pytest.mark.skipif(pandas is None, reason="pandas is not installed")
+def test_try_import_raises_error_w_legacy_pandas():
+    versions = _versions_helpers.PandasVersions()
+    with mock.patch("pandas.__version__", new="1.0.0"):
+        with pytest.raises(exceptions.LegacyPandasError):
+            versions.try_import(raise_if_error=True)
+
+
+@pytest.mark.skipif(pandas is None, reason="pandas is not installed")
+def test_installed_pandas_version_returns_cached():
+    versions = _versions_helpers.PandasVersions()
+    versions._installed_version = object()
+    assert versions.installed_version is versions._installed_version
+
+
+@pytest.mark.skipif(pandas is None, reason="pandas is not installed")
+def test_installed_pandas_version_returns_parsed_version():
+    versions = _versions_helpers.PandasVersions()
+    with mock.patch("pandas.__version__", new="1.1.0"):
+        version = versions.installed_version
+
+    assert version.major == 1
+    assert version.minor == 1
+    assert version.micro == 0
