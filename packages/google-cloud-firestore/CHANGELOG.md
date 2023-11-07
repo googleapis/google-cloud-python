@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.13.1](https://github.com/googleapis/python-firestore/compare/v2.13.0...v2.13.1) (2023-11-06)
+
+
+### Bug Fixes
+
+* Order normalization with descending query ([#788](https://github.com/googleapis/python-firestore/issues/788)) ([dbe8ef7](https://github.com/googleapis/python-firestore/commit/dbe8ef7dcaa1b23d520a37ec14375c1adf41e0e6))
+
 ## [2.13.0](https://github.com/googleapis/python-firestore/compare/v2.12.0...v2.13.0) (2023-10-23)
 
 
