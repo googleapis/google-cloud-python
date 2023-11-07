@@ -1211,6 +1211,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-edgenetwork": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-edgenetwork",
+            "extra-files": [
+                "google/cloud/edgenetwork/gapic_version.py",
+                "google/cloud/edgenetwork_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.edgenetwork.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-enterpriseknowledgegraph": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
