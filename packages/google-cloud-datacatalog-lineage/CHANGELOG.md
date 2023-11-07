@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.3.0...google-cloud-datacatalog-lineage-v0.3.1) (2023-11-07)
+
+
+### Features
+
+* add open lineage support ([079b58a](https://github.com/googleapis/google-cloud-python/commit/079b58af418cfcc036885280595efad0b7bb164f))
+
+
+### Bug Fixes
+
+* change `start_time` in message `.google.cloud.datacatalog.lineage.v1.LineageEvent` to `required` as intended by api ([079b58a](https://github.com/googleapis/google-cloud-python/commit/079b58af418cfcc036885280595efad0b7bb164f))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.2.4...google-cloud-datacatalog-lineage-v0.3.0) (2023-11-02)
 
 

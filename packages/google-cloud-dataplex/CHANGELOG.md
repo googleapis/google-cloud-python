@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.8.0...google-cloud-dataplex-v1.8.1) (2023-11-07)
+
+
+### Documentation
+
+* updated comments for `DataQualityResult.dimensions` field ([#11988](https://github.com/googleapis/google-cloud-python/issues/11988)) ([cf3d534](https://github.com/googleapis/google-cloud-python/commit/cf3d534856b3a5d9f56d85ba808cd3313b5a5434))
+
 ## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.7.0...google-cloud-dataplex-v1.8.0) (2023-11-02)
 
 
