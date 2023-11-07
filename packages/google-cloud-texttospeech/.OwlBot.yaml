@@ -22,3 +22,4 @@ deep-copy-regex:
 
 begin-after-commit-hash: f92897093108f24c013e9c15c3be2709417ba5d6
 
+api-name: google-cloud-texttospeech

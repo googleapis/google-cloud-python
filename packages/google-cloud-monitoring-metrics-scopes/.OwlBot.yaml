@@ -21,3 +21,4 @@ deep-copy-regex:
     dest: /owl-bot-staging/google-cloud-monitoring-metrics-scopes/$1
 
 begin-after-commit-hash: 1b107482f76ccd73babcecf44a742f187cfbbe08
+api-name: google-cloud-monitoring-metrics-scopes

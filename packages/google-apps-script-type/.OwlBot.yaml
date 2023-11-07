@@ -27,3 +27,4 @@ deep-copy-regex:
       dest: /owl-bot-staging/google-apps-script-type/$1
     - source: /google/apps/script/type/(type-py)
       dest: /owl-bot-staging/google-apps-script-type/$1
+api-name: google-apps-script-type

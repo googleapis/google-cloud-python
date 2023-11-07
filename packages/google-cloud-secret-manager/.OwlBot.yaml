@@ -25,3 +25,4 @@ deep-copy-regex:
 
 begin-after-commit-hash: 219c70cd9e899bc85b467a0557b3237d4c0a41ca
 
+api-name: google-cloud-secret-manager

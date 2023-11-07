@@ -22,3 +22,4 @@ deep-copy-regex:
 
 begin-after-commit-hash: ad5147b2c3694044935301527f68b951c2e1f419
 
+api-name: google-cloud-bigquery-datatransfer
