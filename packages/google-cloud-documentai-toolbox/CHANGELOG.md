@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.2-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.11.1-alpha...v0.11.2-alpha) (2023-11-07)
+
+
+### Bug Fixes
+
+* Updates to hOCR Template to follow hOCR Spec ([#195](https://github.com/googleapis/python-documentai-toolbox/issues/195)) ([3f52e82](https://github.com/googleapis/python-documentai-toolbox/commit/3f52e82eaa741cd2c8a08e8398ed6f4b3f65c419))
+
 ## [0.11.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.11.0-alpha...v0.11.1-alpha) (2023-10-23)
 
 
