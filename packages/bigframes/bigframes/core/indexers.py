@@ -117,6 +117,18 @@ class AtSeriesIndexer:
     ) -> Union[bigframes.core.scalar.Scalar, bigframes.series.Series]:
         return self._series.loc[key]
 
+    def __setitem__(
+        self,
+        key: LocSingleKey,
+        value: bigframes.core.scalar.Scalar,
+    ):
+        if not pd.api.types.is_scalar(value):
+            raise NotImplementedError(
+                "series.at.__setitem__ only supports scalar right-hand values. "
+                f"{constants.FEEDBACK_LINK}"
+            )
+        self._series.loc[key] = value
+
 
 class LocDataFrameIndexer:
     def __init__(self, dataframe: bigframes.dataframe.DataFrame):
