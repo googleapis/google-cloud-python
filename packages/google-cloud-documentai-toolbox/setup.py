@@ -66,6 +66,7 @@ setuptools.setup(
         "immutabledict >= 2.0.0, < 3.0.0dev; python_version<'3.8'",
         "Pillow >= 9.5.0, < 11.0.0",
         "Jinja2 >= 3.1.0, <= 4.0.0",
+        "hocr-spec >= 0.2.0",
     ),
     python_requires=">=3.7",
     classifiers=[

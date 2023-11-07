@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from io import BytesIO
 import json
 import os
 import shutil
@@ -31,6 +32,8 @@ import pytest
 
 from google.cloud import documentai
 from google.cloud.documentai_toolbox import document, gcs_utilities
+
+from hocr_spec import HocrValidator
 
 
 def get_bytes(file_name):
@@ -689,8 +692,15 @@ def test_export_hocr_str():
     )
 
     actual_hocr = wrapped_document.export_hocr_str(title="toolbox_invoice_test-0")
+    assert actual_hocr
+    validator = HocrValidator(profile="standard")
+    report = validator.validate(BytesIO(actual_hocr.encode("utf-8")), parse_strict=True)
 
-    with open("tests/unit/resources/toolbox_invoice_test_0_hocr.xml", "r") as f:
+    assert report.format("bool")
+
+    with open(
+        "tests/unit/resources/toolbox_invoice_test_0_hocr.xml", "r", encoding="utf-8"
+    ) as f:
         expected = f.read()
 
     assert actual_hocr == expected

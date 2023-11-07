@@ -11,3 +11,4 @@ google-cloud-documentai
 google-cloud-storage
 numpy
 pikepdf
+hocr-spec

@@ -24,7 +24,11 @@ def test_convert_document_to_hocr_sample() -> None:
         document_path=document_path, document_title=document_title
     )
 
-    with open("../../tests/unit/resources/toolbox_invoice_test_0_hocr.xml", "r") as f:
+    with open(
+        "../../tests/unit/resources/toolbox_invoice_test_0_hocr.xml",
+        "r",
+        encoding="utf-8",
+    ) as f:
         expected = f.read()
 
     assert actual == expected

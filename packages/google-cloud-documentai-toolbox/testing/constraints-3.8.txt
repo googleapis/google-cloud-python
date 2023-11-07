@@ -11,3 +11,4 @@ google-cloud-documentai
 google-cloud-storage
 numpy==1.21.6
 pikepdf==8.2.3
+hocr-spec
