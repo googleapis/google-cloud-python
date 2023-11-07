@@ -69,7 +69,7 @@
     "packages/google-cloud-documentai": "2.20.2",
     "packages/google-cloud-domains": "1.5.3",
     "packages/google-cloud-edgecontainer": "0.5.3",
-    "packages/google-cloud-edgenetwork": "0.0.0",
+    "packages/google-cloud-edgenetwork": "0.1.0",
     "packages/google-cloud-enterpriseknowledgegraph": "0.3.4",
     "packages/google-cloud-essential-contacts": "1.5.4",
     "packages/google-cloud-eventarc": "1.9.3",
