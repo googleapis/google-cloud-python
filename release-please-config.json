@@ -2880,6 +2880,36 @@
             ],
             "release-type": "python"
         },
+        "packages/google-shopping-merchant-inventories": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-inventories",
+            "extra-files": [
+                "google/shopping/merchant_inventories/gapic_version.py",
+                "google/shopping/merchant_inventories_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.inventories.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-shopping-merchant-reports": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-reports",
+            "extra-files": [
+                "google/shopping/merchant_reports/gapic_version.py",
+                "google/shopping/merchant_reports_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.reports.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-shopping-type": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
