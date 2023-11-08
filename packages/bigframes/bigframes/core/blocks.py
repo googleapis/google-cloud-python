@@ -282,7 +282,7 @@ class Block:
             column_labels_modified = self.column_labels
             for level, label in enumerate(index_labels):
                 if label is None:
-                    if "index" not in self.column_labels:
+                    if "index" not in self.column_labels and len(index_labels) <= 1:
                         label = "index"
                     else:
                         label = f"level_{level}"

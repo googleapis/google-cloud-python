@@ -1235,6 +1235,28 @@ def test_reset_index_with_unnamed_index(
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_reset_index_with_unnamed_multiindex(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    bf_df = dataframe.DataFrame(
+        ([1, 2, 3], [2, 5, 7]),
+        index=pd.MultiIndex.from_tuples([("a", "aa"), ("a", "aa")]),
+    )
+    pd_df = pd.DataFrame(
+        ([1, 2, 3], [2, 5, 7]),
+        index=pd.MultiIndex.from_tuples([("a", "aa"), ("a", "aa")]),
+    )
+
+    bf_df = bf_df.reset_index()
+    pd_df = pd_df.reset_index()
+
+    assert pd_df.columns[0] == "level_0"
+    assert bf_df.columns[0] == "level_0"
+    assert pd_df.columns[1] == "level_1"
+    assert bf_df.columns[1] == "level_1"
+
+
 def test_reset_index_with_unnamed_index_and_index_column(
     scalars_df_index,
     scalars_pandas_df_index,
