@@ -40,6 +40,7 @@ def join_by_column(
         "left",
         "outer",
         "right",
+        "cross",
     ],
     allow_row_identity_join: bool = True,
 ) -> compiled.CompiledArrayValue:
@@ -107,7 +108,7 @@ def join_by_column(
             left_table,
             right_table,
             predicates=join_conditions,
-            how=how,
+            how=how,  # type: ignore
         )
 
         # Preserve ordering accross joins.

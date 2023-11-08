@@ -289,6 +289,27 @@ def test_merge_left_on_right_on(scalars_dfs, merge_how):
     assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
 
 
+def test_pd_merge_cross(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    left_columns = ["int64_col", "float64_col", "int64_too"]
+    right_columns = ["int64_col", "bool_col", "string_col", "rowindex_2"]
+
+    left = scalars_df[left_columns]
+    right = scalars_df[right_columns]
+
+    df = bpd.merge(left, right, "cross", sort=True)
+    bf_result = df.to_pandas()
+
+    pd_result = pd.merge(
+        scalars_pandas_df[left_columns],
+        scalars_pandas_df[right_columns],
+        "cross",
+        sort=True,
+    )
+
+    pd.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
+
+
 @pytest.mark.parametrize(
     ("merge_how",),
     [

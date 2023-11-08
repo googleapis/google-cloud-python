@@ -49,6 +49,8 @@ def merge(
             join; sort keys lexicographically.
             ``inner``: use intersection of keys from both frames, similar to a SQL inner
             join; preserve the order of the left keys.
+            ``cross``: creates the cartesian product from both frames, preserves the order
+            of the left keys.
 
         on (label or list of labels):
             Columns to join on. It must be found in both DataFrames. Either on or left_on + right_on

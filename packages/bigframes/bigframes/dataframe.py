@@ -1933,6 +1933,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             "left",
             "outer",
             "right",
+            "cross",
         ] = "inner",
         # TODO(garrettwu): Currently can take inner, outer, left and right. To support
         # cross joins
@@ -1943,6 +1944,19 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         sort: bool = False,
         suffixes: tuple[str, str] = ("_x", "_y"),
     ) -> DataFrame:
+        if how == "cross":
+            if on is not None:
+                raise ValueError("'on' is not supported for cross join.")
+            result_block = self._block.merge(
+                right._block,
+                left_join_ids=[],
+                right_join_ids=[],
+                suffixes=suffixes,
+                how=how,
+                sort=True,
+            )
+            return DataFrame(result_block)
+
         if on is None:
             if left_on is None or right_on is None:
                 raise ValueError("Must specify `on` or `left_on` + `right_on`.")
@@ -1996,6 +2010,18 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise NotImplementedError(
                 f"Deduping column names is not implemented. {constants.FEEDBACK_LINK}"
             )
+        if how == "cross":
+            if on is not None:
+                raise ValueError("'on' is not supported for cross join.")
+            result_block = left._block.merge(
+                right._block,
+                left_join_ids=[],
+                right_join_ids=[],
+                suffixes=("", ""),
+                how="cross",
+                sort=True,
+            )
+            return DataFrame(result_block)
 
         # Join left columns with right index
         if on is not None:

@@ -417,6 +417,7 @@ class ArrayValue:
             "left",
             "outer",
             "right",
+            "cross",
         ],
         allow_row_identity_join: bool = True,
     ):

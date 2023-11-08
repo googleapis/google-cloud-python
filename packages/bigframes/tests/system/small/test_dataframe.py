@@ -914,6 +914,26 @@ def test_df_isin_dict(scalars_dfs):
     pandas.testing.assert_frame_equal(bf_result, pd_result.astype("boolean"))
 
 
+def test_df_cross_merge(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    left_columns = ["int64_col", "float64_col", "rowindex_2"]
+    right_columns = ["int64_col", "bool_col", "string_col", "rowindex_2"]
+
+    left = scalars_df[left_columns]
+    # Offset the rows somewhat so that outer join can have an effect.
+    right = scalars_df[right_columns].assign(rowindex_2=scalars_df["rowindex_2"] + 2)
+
+    bf_result = left.merge(right, "cross").to_pandas()
+
+    pd_result = scalars_pandas_df[left_columns].merge(
+        scalars_pandas_df[right_columns].assign(
+            rowindex_2=scalars_pandas_df["rowindex_2"] + 2
+        ),
+        "cross",
+    )
+    pd.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
+
+
 @pytest.mark.parametrize(
     ("merge_how",),
     [
@@ -1745,12 +1765,7 @@ def test_series_binop_add_different_table(
 
 all_joins = pytest.mark.parametrize(
     ("how",),
-    (
-        ("outer",),
-        ("left",),
-        ("right",),
-        ("inner",),
-    ),
+    (("outer",), ("left",), ("right",), ("inner",), ("cross",)),
 )
 
 
@@ -1795,13 +1810,18 @@ def test_join_param_on(scalars_dfs, how):
     bf_df_a = bf_df[["string_col", "int64_col", "rowindex_2"]]
     bf_df_a = bf_df_a.assign(rowindex_2=bf_df_a["rowindex_2"] + 2)
     bf_df_b = bf_df[["float64_col"]]
-    bf_result = bf_df_a.join(bf_df_b, on="rowindex_2", how=how).to_pandas()
 
-    pd_df_a = pd_df[["string_col", "int64_col", "rowindex_2"]]
-    pd_df_a = pd_df_a.assign(rowindex_2=pd_df_a["rowindex_2"] + 2)
-    pd_df_b = pd_df[["float64_col"]]
-    pd_result = pd_df_a.join(pd_df_b, on="rowindex_2", how=how)
-    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+    if how == "cross":
+        with pytest.raises(ValueError):
+            bf_df_a.join(bf_df_b, on="rowindex_2", how=how)
+    else:
+        bf_result = bf_df_a.join(bf_df_b, on="rowindex_2", how=how).to_pandas()
+
+        pd_df_a = pd_df[["string_col", "int64_col", "rowindex_2"]]
+        pd_df_a = pd_df_a.assign(rowindex_2=pd_df_a["rowindex_2"] + 2)
+        pd_df_b = pd_df[["float64_col"]]
+        pd_result = pd_df_a.join(pd_df_b, on="rowindex_2", how=how)
+        assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(

@@ -1531,6 +1531,7 @@ class Block:
             "left",
             "outer",
             "right",
+            "cross",
         ],
         left_join_ids: typing.Sequence[str],
         right_join_ids: typing.Sequence[str],
