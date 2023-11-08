@@ -311,6 +311,10 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         list through this method and then send the audience resource
         name to the ``QueryAudienceList`` method.
 
+        See `Creating an Audience
+        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Lists with examples.
+
         An audience list is a snapshot of the users currently in the
         audience at the time of audience list creation. Creating
         audience lists for one audience on different days will return
@@ -320,6 +324,12 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         in the ways that are important to your business. To learn more,
         see https://support.google.com/analytics/answer/9267572.
         Audience lists contain the users in each audience.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         Returns:
             Callable[[~.CreateAudienceListRequest],
@@ -352,11 +362,21 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         the users are not immediately available for listing. First, a
         request to ``CreateAudienceList`` is necessary to create an
         audience list of users, and then second, this method is used to
-        retrieve the users in the audience.
+        retrieve the users in the audience list.
+
+        See `Creating an Audience
+        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Lists with examples.
 
         Audiences in Google Analytics 4 allow you to segment your users
         in the ways that are important to your business. To learn more,
         see https://support.google.com/analytics/answer/9267572.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         Returns:
             Callable[[~.QueryAudienceListRequest],
@@ -377,6 +397,54 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         return self._stubs["query_audience_list"]
 
     @property
+    def sheet_export_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.SheetExportAudienceListRequest],
+        Awaitable[analytics_data_api.SheetExportAudienceListResponse],
+    ]:
+        r"""Return a callable for the sheet export audience list method over gRPC.
+
+        Exports an audience list of users to a Google Sheet. After
+        creating an audience, the users are not immediately available
+        for listing. First, a request to ``CreateAudienceList`` is
+        necessary to create an audience list of users, and then second,
+        this method is used to export those users in the audience list
+        to a Google Sheet.
+
+        See `Creating an Audience
+        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Lists with examples.
+
+        Audiences in Google Analytics 4 allow you to segment your users
+        in the ways that are important to your business. To learn more,
+        see https://support.google.com/analytics/answer/9267572.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
+
+        Returns:
+            Callable[[~.SheetExportAudienceListRequest],
+                    Awaitable[~.SheetExportAudienceListResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "sheet_export_audience_list" not in self._stubs:
+            self._stubs["sheet_export_audience_list"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/SheetExportAudienceList",
+                request_serializer=analytics_data_api.SheetExportAudienceListRequest.serialize,
+                response_deserializer=analytics_data_api.SheetExportAudienceListResponse.deserialize,
+            )
+        return self._stubs["sheet_export_audience_list"]
+
+    @property
     def get_audience_list(
         self,
     ) -> Callable[
@@ -385,9 +453,19 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
     ]:
         r"""Return a callable for the get audience list method over gRPC.
 
-        Gets configuration metadata about a specific audience
-        list. This method can be used to understand an audience
-        list after it has been created.
+        Gets configuration metadata about a specific audience list. This
+        method can be used to understand an audience list after it has
+        been created.
+
+        See `Creating an Audience
+        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Lists with examples.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         Returns:
             Callable[[~.GetAudienceListRequest],
@@ -416,12 +494,21 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
     ]:
         r"""Return a callable for the list audience lists method over gRPC.
 
-        Lists all audience lists for a property. This method
-        can be used for you to find and reuse existing audience
-        lists rather than creating unnecessary new audience
-        lists. The same audience can have multiple audience
-        lists that represent the list of users that were in an
-        audience on different days.
+        Lists all audience lists for a property. This method can be used
+        for you to find and reuse existing audience lists rather than
+        creating unnecessary new audience lists. The same audience can
+        have multiple audience lists that represent the list of users
+        that were in an audience on different days.
+
+        See `Creating an Audience
+        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Lists with examples.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         Returns:
             Callable[[~.ListAudienceListsRequest],

@@ -33,6 +33,8 @@ __protobuf__ = proto.module(
         "AudienceListMetadata",
         "QueryAudienceListRequest",
         "QueryAudienceListResponse",
+        "SheetExportAudienceListRequest",
+        "SheetExportAudienceListResponse",
         "AudienceRow",
         "AudienceDimension",
         "AudienceDimensionValue",
@@ -49,7 +51,7 @@ class GetAudienceListRequest(proto.Message):
     Attributes:
         name (str):
             Required. The audience list resource name. Format:
-            ``properties/{propertyId}/audienceLists/{audienceListId}``
+            ``properties/{property}/audienceLists/{audience_list}``
     """
 
     name: str = proto.Field(
@@ -64,17 +66,18 @@ class ListAudienceListsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. All audience lists for this property will be
-            listed in the response. Format: ``properties/{propertyId}``
+            listed in the response. Format: ``properties/{property}``
         page_size (int):
-            The maximum number of audience lists to
-            return. The service may return fewer than this
-            value. If unspecified, at most 200 audience
-            lists will be returned. The maximum value is
-            1000 (higher values will be coerced to the
-            maximum).
+            Optional. The maximum number of audience
+            lists to return. The service may return fewer
+            than this value. If unspecified, at most 200
+            audience lists will be returned. The maximum
+            value is 1000 (higher values will be coerced to
+            the maximum).
         page_token (str):
-            A page token, received from a previous ``ListAudienceLists``
-            call. Provide this to retrieve the subsequent page.
+            Optional. A page token, received from a previous
+            ``ListAudienceLists`` call. Provide this to retrieve the
+            subsequent page.
 
             When paginating, all other parameters provided to
             ``ListAudienceLists`` must match the call that provided the
@@ -133,7 +136,7 @@ class CreateAudienceListRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent resource where this audience list will
-            be created. Format: ``properties/{propertyId}``
+            be created. Format: ``properties/{property}``
         audience_list (google.analytics.data_v1alpha.types.AudienceList):
             Required. The audience list to create.
     """
@@ -159,18 +162,18 @@ class AudienceList(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The audience list resource name assigned during
-            creation. This resource name identifies this
+            Output only. Identifier. The audience list resource name
+            assigned during creation. This resource name identifies this
             ``AudienceList``.
 
             Format:
-            ``properties/{propertyId}/audienceLists/{audienceListId}``
+            ``properties/{property}/audienceLists/{audience_list}``
         audience (str):
             Required. The audience resource name. This resource name
             identifies the audience being listed and is shared between
             the Analytics Data & Admin APIs.
 
-            Format: ``properties/{propertyId}/audiences/{audienceId}``
+            Format: ``properties/{property}/audiences/{audience}``
         audience_display_name (str):
             Output only. The descriptive display name for
             this audience. For example, "Purchasers".
@@ -187,6 +190,23 @@ class AudienceList(proto.Message):
             the AudienceList began the ``CREATING`` state.
 
             This field is a member of `oneof`_ ``_begin_creating_time``.
+        creation_quota_tokens_charged (int):
+            Output only. The total quota tokens charged during creation
+            of the AudienceList. Because this token count is based on
+            activity from the ``CREATING`` state, this tokens charged
+            will be fixed once an AudienceList enters the ``ACTIVE`` or
+            ``FAILED`` states.
+        row_count (int):
+            Output only. The total number of rows in the
+            AudienceList result.
+
+            This field is a member of `oneof`_ ``_row_count``.
+        error_message (str):
+            Output only. Error message is populated when
+            an audience list fails during creation. A common
+            reason for such a failure is quota exhaustion.
+
+            This field is a member of `oneof`_ ``_error_message``.
     """
 
     class State(proto.Enum):
@@ -244,6 +264,20 @@ class AudienceList(proto.Message):
         optional=True,
         message=timestamp_pb2.Timestamp,
     )
+    creation_quota_tokens_charged: int = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    row_count: int = proto.Field(
+        proto.INT32,
+        number=8,
+        optional=True,
+    )
+    error_message: str = proto.Field(
+        proto.STRING,
+        number=9,
+        optional=True,
+    )
 
 
 class AudienceListMetadata(proto.Message):
@@ -255,12 +289,12 @@ class QueryAudienceListRequest(proto.Message):
 
     Attributes:
         name (str):
-            The name of the audience list to retrieve users from.
-            Format:
-            ``properties/{propertyId}/audienceLists/{audienceListId}``
+            Required. The name of the audience list to retrieve users
+            from. Format:
+            ``properties/{property}/audienceLists/{audience_list}``
         offset (int):
-            The row count of the start row. The first row is counted as
-            row 0.
+            Optional. The row count of the start row. The first row is
+            counted as row 0.
 
             When paging, the first request does not specify offset; or
             equivalently, sets offset to 0; the first request returns
@@ -271,10 +305,10 @@ class QueryAudienceListRequest(proto.Message):
             To learn more about this pagination parameter, see
             `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
         limit (int):
-            The number of rows to return. If unspecified, 10,000 rows
-            are returned. The API returns a maximum of 250,000 rows per
-            request, no matter how many you ask for. ``limit`` must be
-            positive.
+            Optional. The number of rows to return. If unspecified,
+            10,000 rows are returned. The API returns a maximum of
+            250,000 rows per request, no matter how many you ask for.
+            ``limit`` must be positive.
 
             The API can also return fewer rows than the requested
             ``limit``, if there aren't as many dimension values as the
@@ -317,9 +351,9 @@ class QueryAudienceListResponse(proto.Message):
             number of rows in this response will be less
             than or equal to request's page size.
         row_count (int):
-            The total number of rows in the query result. ``rowCount``
-            is independent of the number of rows returned in the
-            response, the ``limit`` request parameter, and the
+            The total number of rows in the AudienceList result.
+            ``rowCount`` is independent of the number of rows returned
+            in the response, the ``limit`` request parameter, and the
             ``offset`` request parameter. For example if a query returns
             175 rows and includes ``limit`` of 50 in the API request,
             the response will contain ``rowCount`` of 175 but only 50
@@ -349,6 +383,123 @@ class QueryAudienceListResponse(proto.Message):
     )
 
 
+class SheetExportAudienceListRequest(proto.Message):
+    r"""A request to export users in an audience list to a Google
+    Sheet.
+
+    Attributes:
+        name (str):
+            Required. The name of the audience list to retrieve users
+            from. Format:
+            ``properties/{property}/audienceLists/{audience_list}``
+        offset (int):
+            Optional. The row count of the start row. The first row is
+            counted as row 0.
+
+            When paging, the first request does not specify offset; or
+            equivalently, sets offset to 0; the first request returns
+            the first ``limit`` of rows. The second request sets offset
+            to the ``limit`` of the first request; the second request
+            returns the second ``limit`` of rows.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        limit (int):
+            Optional. The number of rows to return. If unspecified,
+            10,000 rows are returned. The API returns a maximum of
+            250,000 rows per request, no matter how many you ask for.
+            ``limit`` must be positive.
+
+            The API can also return fewer rows than the requested
+            ``limit``, if there aren't as many dimension values as the
+            ``limit``.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    offset: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    limit: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+
+
+class SheetExportAudienceListResponse(proto.Message):
+    r"""The created Google Sheet with the list of users in an
+    audience list.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        spreadsheet_uri (str):
+            A uri for you to visit in your browser to
+            view the Google Sheet.
+
+            This field is a member of `oneof`_ ``_spreadsheet_uri``.
+        spreadsheet_id (str):
+            An ID that identifies the created Google
+            Sheet resource.
+
+            This field is a member of `oneof`_ ``_spreadsheet_id``.
+        row_count (int):
+            The total number of rows in the AudienceList result.
+            ``rowCount`` is independent of the number of rows returned
+            in the response, the ``limit`` request parameter, and the
+            ``offset`` request parameter. For example if a query returns
+            175 rows and includes ``limit`` of 50 in the API request,
+            the response will contain ``rowCount`` of 175 but only 50
+            rows.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+
+            This field is a member of `oneof`_ ``_row_count``.
+        audience_list (google.analytics.data_v1alpha.types.AudienceList):
+            Configuration data about AudienceList being exported.
+            Returned to help interpret the AudienceList in the Google
+            Sheet of this response.
+
+            For example, the AudienceList may have more rows than are
+            present in the Google Sheet, and in that case, you may want
+            to send an additional sheet export request with a different
+            ``offset`` value to retrieve the next page of rows in an
+            additional Google Sheet.
+
+            This field is a member of `oneof`_ ``_audience_list``.
+    """
+
+    spreadsheet_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    spreadsheet_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    row_count: int = proto.Field(
+        proto.INT32,
+        number=3,
+        optional=True,
+    )
+    audience_list: "AudienceList" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message="AudienceList",
+    )
+
+
 class AudienceRow(proto.Message):
     r"""Dimension value attributes for the audience user row.
 
@@ -373,7 +524,7 @@ class AudienceDimension(proto.Message):
 
     Attributes:
         dimension_name (str):
-            The API name of the dimension. See the `API
+            Optional. The API name of the dimension. See the `API
             Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-api-schema#dimensions>`__
             for the list of dimension names.
     """
@@ -409,34 +560,34 @@ class RunFunnelReportRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics GA4 property identifier whose events are
-            tracked. Specified in the URL path and not the body. To
-            learn more, see `where to find your Property
+            Optional. A Google Analytics GA4 property identifier whose
+            events are tracked. Specified in the URL path and not the
+            body. To learn more, see `where to find your Property
             ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
             Within a batch request, this property should either be
             unspecified or consistent with the batch-level property.
 
             Example: properties/1234
         date_ranges (MutableSequence[google.analytics.data_v1alpha.types.DateRange]):
-            Date ranges of data to read. If multiple date
-            ranges are requested, each response row will
-            contain a zero based date range index. If two
-            date ranges overlap, the event data for the
-            overlapping days is included in the response
-            rows for both date ranges.
+            Optional. Date ranges of data to read. If
+            multiple date ranges are requested, each
+            response row will contain a zero based date
+            range index. If two date ranges overlap, the
+            event data for the overlapping days is included
+            in the response rows for both date ranges.
         funnel (google.analytics.data_v1alpha.types.Funnel):
-            The configuration of this request's funnel.
-            This funnel configuration is required.
+            Optional. The configuration of this request's
+            funnel. This funnel configuration is required.
         funnel_breakdown (google.analytics.data_v1alpha.types.FunnelBreakdown):
-            If specified, this breakdown adds a dimension to the funnel
-            table sub report response. This breakdown dimension expands
-            each funnel step to the unique values of the breakdown
-            dimension. For example, a breakdown by the
+            Optional. If specified, this breakdown adds a dimension to
+            the funnel table sub report response. This breakdown
+            dimension expands each funnel step to the unique values of
+            the breakdown dimension. For example, a breakdown by the
             ``deviceCategory`` dimension will create rows for
             ``mobile``, ``tablet``, ``desktop``, and the total.
         funnel_next_action (google.analytics.data_v1alpha.types.FunnelNextAction):
-            If specified, next action adds a dimension to the funnel
-            visualization sub report response. This next action
+            Optional. If specified, next action adds a dimension to the
+            funnel visualization sub report response. This next action
             dimension expands each funnel step to the unique values of
             the next action. For example a next action of the
             ``eventName`` dimension will create rows for several events
@@ -445,14 +596,14 @@ class RunFunnelReportRequest(proto.Message):
             Next action only supports ``eventName`` and most Page /
             Screen dimensions like ``pageTitle`` and ``pagePath``.
         funnel_visualization_type (google.analytics.data_v1alpha.types.RunFunnelReportRequest.FunnelVisualizationType):
-            The funnel visualization type controls the dimensions
-            present in the funnel visualization sub report response. If
-            not specified, ``STANDARD_FUNNEL`` is used.
+            Optional. The funnel visualization type controls the
+            dimensions present in the funnel visualization sub report
+            response. If not specified, ``STANDARD_FUNNEL`` is used.
         segments (MutableSequence[google.analytics.data_v1alpha.types.Segment]):
-            The configurations of segments. Segments are
-            subsets of a property's data. In a funnel report
-            with segments, the funnel is evaluated in each
-            segment.
+            Optional. The configurations of segments.
+            Segments are subsets of a property's data. In a
+            funnel report with segments, the funnel is
+            evaluated in each segment.
 
             Each segment specified in this request
             produces a separate row in the response; in the
@@ -461,23 +612,23 @@ class RunFunnelReportRequest(proto.Message):
             The segments parameter is optional. Requests are
             limited to 4 segments.
         limit (int):
-            The number of rows to return. If unspecified, 10,000 rows
-            are returned. The API returns a maximum of 250,000 rows per
-            request, no matter how many you ask for. ``limit`` must be
-            positive.
+            Optional. The number of rows to return. If unspecified,
+            10,000 rows are returned. The API returns a maximum of
+            250,000 rows per request, no matter how many you ask for.
+            ``limit`` must be positive.
 
             The API can also return fewer rows than the requested
             ``limit``, if there aren't as many dimension values as the
             ``limit``.
         dimension_filter (google.analytics.data_v1alpha.types.FilterExpression):
-            Dimension filters allow you to ask for only specific
-            dimension values in the report. To learn more, see `Creating
-            a Report: Dimension
+            Optional. Dimension filters allow you to ask for only
+            specific dimension values in the report. To learn more, see
+            `Creating a Report: Dimension
             Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
             for examples. Metrics cannot be used in this filter.
         return_property_quota (bool):
-            Toggles whether to return the current state of this
-            Analytics Property's quota. Quota is returned in
+            Optional. Toggles whether to return the current state of
+            this Analytics Property's quota. Quota is returned in
             `PropertyQuota <#PropertyQuota>`__.
     """
 

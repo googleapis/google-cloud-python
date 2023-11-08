@@ -40,6 +40,7 @@ async def sample_query_audience_list():
 
     # Initialize request argument(s)
     request = data_v1alpha.QueryAudienceListRequest(
+        name="name_value",
     )
 
     # Make the request

@@ -36,6 +36,8 @@ from .types.analytics_data_api import (
     QueryAudienceListResponse,
     RunFunnelReportRequest,
     RunFunnelReportResponse,
+    SheetExportAudienceListRequest,
+    SheetExportAudienceListResponse,
 )
 from .types.data import (
     BetweenFilter,
@@ -173,6 +175,8 @@ __all__ = (
     "SessionSegmentConditionGroup",
     "SessionSegmentCriteria",
     "SessionSegmentExclusion",
+    "SheetExportAudienceListRequest",
+    "SheetExportAudienceListResponse",
     "StringFilter",
     "UserCriteriaScoping",
     "UserExclusionDuration",

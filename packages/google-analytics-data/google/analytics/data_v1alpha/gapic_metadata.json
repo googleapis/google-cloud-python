@@ -34,6 +34,11 @@
               "methods": [
                 "run_funnel_report"
               ]
+            },
+            "SheetExportAudienceList": {
+              "methods": [
+                "sheet_export_audience_list"
+              ]
             }
           }
         },
@@ -64,6 +69,11 @@
               "methods": [
                 "run_funnel_report"
               ]
+            },
+            "SheetExportAudienceList": {
+              "methods": [
+                "sheet_export_audience_list"
+              ]
             }
           }
         },
@@ -93,6 +103,11 @@
             "RunFunnelReport": {
               "methods": [
                 "run_funnel_report"
+              ]
+            },
+            "SheetExportAudienceList": {
+              "methods": [
+                "sheet_export_audience_list"
               ]
             }
           }
