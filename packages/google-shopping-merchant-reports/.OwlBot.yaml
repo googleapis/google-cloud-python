@@ -15,4 +15,5 @@
 deep-copy-regex:
     - source: /google/shopping/merchant/reports/(v.*)/.*-py
       dest: /owl-bot-staging/google-shopping-merchant-reports/$1
+
 api-name: google-shopping-merchant-reports
