@@ -1101,23 +1101,38 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             copy[k] = v(copy)
             return copy
         elif utils.is_list_like(v):
-            given_rows = len(v)
-            actual_rows = len(self)
-            if given_rows != actual_rows:
-                raise ValueError(
-                    f"Length of values ({given_rows}) does not match length of index ({actual_rows})"
-                )
+            return self._assign_single_item_listlike(k, v)
+        else:
+            return self._assign_scalar(k, v)
 
-            local_df = bigframes.dataframe.DataFrame(
-                {k: v}, session=self._get_block().expr.session
+    def _assign_single_item_listlike(self, k: str, v: Sequence) -> DataFrame:
+        given_rows = len(v)
+        actual_rows = len(self)
+        assigning_to_empty_df = len(self.columns) == 0 and actual_rows == 0
+        if not assigning_to_empty_df and given_rows != actual_rows:
+            raise ValueError(
+                f"Length of values ({given_rows}) does not match length of index ({actual_rows})"
             )
-            # local_df is likely (but not guarunteed) to be cached locally
-            # since the original list came from memory and so is probably < MAX_INLINE_DF_SIZE
 
-            new_column_block = local_df._block
-            original_index_column_ids = self._block.index_columns
-            self_block = self._block.reset_index(drop=False)
-            result_index, (get_column_left, get_column_right) = self_block.index.join(
+        local_df = bigframes.dataframe.DataFrame(
+            {k: v}, session=self._get_block().expr.session
+        )
+        # local_df is likely (but not guaranteed) to be cached locally
+        # since the original list came from memory and so is probably < MAX_INLINE_DF_SIZE
+
+        new_column_block = local_df._block
+        original_index_column_ids = self._block.index_columns
+        self_block = self._block.reset_index(drop=False)
+        if assigning_to_empty_df:
+            if len(self._block.index_columns) > 1:
+                # match error raised by pandas here
+                raise ValueError(
+                    "Assigning listlike to a first column under multiindex is not supported."
+                )
+            result_block = new_column_block.with_index_labels(self._block.index_labels)
+            result_block = result_block.with_column_labels([k])
+        else:
+            result_index, (get_column_left, get_column_right,) = self_block.index.join(
                 new_column_block.index, how="left", block_identity_join=True
             )
             result_block = result_index._block
@@ -1125,13 +1140,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 [get_column_left[col_id] for col_id in original_index_column_ids],
                 index_labels=self._block.index_labels,
             )
-            return DataFrame(result_block)
-        else:
-            return self._assign_scalar(k, v)
+        return DataFrame(result_block)
 
     def _assign_scalar(self, label: str, value: Union[int, float]) -> DataFrame:
-        # TODO(swast): Make sure that k is the ID / SQL name, not a label,
-        # which could be invalid SQL.
         col_ids = self._block.cols_matching_label(label)
 
         block, constant_col_id = self._block.create_constant(value, label)

@@ -567,6 +567,34 @@ def test_assign_existing_column(scalars_dfs):
     assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
 
 
+def test_assign_listlike_to_empty_df(session):
+    empty_df = dataframe.DataFrame(session=session)
+    empty_pandas_df = pd.DataFrame()
+
+    bf_result = empty_df.assign(new_col=[1, 2, 3])
+    pd_result = empty_pandas_df.assign(new_col=[1, 2, 3])
+
+    pd_result["new_col"] = pd_result["new_col"].astype("Int64")
+    pd_result.index = pd_result.index.astype("Int64")
+    assert_pandas_df_equal_ignore_ordering(bf_result.to_pandas(), pd_result)
+
+
+def test_assign_to_empty_df_multiindex_error(session):
+    empty_df = dataframe.DataFrame(session=session)
+    empty_pandas_df = pd.DataFrame()
+    empty_df["empty_col_1"] = []
+    empty_df["empty_col_2"] = []
+    empty_pandas_df["empty_col_1"] = []
+    empty_pandas_df["empty_col_2"] = []
+    empty_df = empty_df.set_index(["empty_col_1", "empty_col_2"])
+    empty_pandas_df = empty_pandas_df.set_index(["empty_col_1", "empty_col_2"])
+
+    with pytest.raises(ValueError):
+        empty_df.assign(new_col=[1, 2, 3, 4, 5, 6, 7, 8, 9])
+    with pytest.raises(ValueError):
+        empty_pandas_df.assign(new_col=[1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+
 def test_assign_series(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     column_name = "int64_col"
