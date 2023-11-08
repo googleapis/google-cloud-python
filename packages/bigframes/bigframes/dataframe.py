@@ -1450,6 +1450,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return self.reindex(index=other.index, columns=other.columns, validate=validate)
 
     def interpolate(self, method: str = "linear") -> DataFrame:
+        if method == "pad":
+            return self.ffill()
         result = block_ops.interpolate(self._block, method)
         return DataFrame(result)
 

@@ -22,6 +22,7 @@ import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.ordering as ordering
 import bigframes.core.window_spec as windows
+import bigframes.dtypes as dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 
@@ -106,18 +107,33 @@ def indicate_duplicates(
 
 
 def interpolate(block: blocks.Block, method: str = "linear") -> blocks.Block:
-    if method != "linear":
+    supported_methods = [
+        "linear",
+        "values",
+        "index",
+        "nearest",
+        "zero",
+        "slinear",
+    ]
+    if method not in supported_methods:
         raise NotImplementedError(
-            f"Only 'linear' interpolate method supported. {constants.FEEDBACK_LINK}"
+            f"Method {method} not supported, following interpolate methods supported: {', '.join(supported_methods)}. {constants.FEEDBACK_LINK}"
         )
-    backwards_window = windows.WindowSpec(following=0)
-    forwards_window = windows.WindowSpec(preceding=0)
-
     output_column_ids = []
 
     original_columns = block.value_columns
     original_labels = block.column_labels
-    block, offsets = block.promote_offsets()
+
+    if method == "linear":  # Assumes evenly spaced, ignore index
+        block, xvalues = block.promote_offsets()
+    else:
+        index_columns = block.index_columns
+        if len(index_columns) != 1:
+            raise ValueError("only method 'linear' supports multi-index")
+        xvalues = block.index_columns[0]
+        if block.index_dtypes[0] not in dtypes.NUMERIC_BIGFRAMES_TYPES:
+            raise ValueError("Can only interpolate on numeric index.")
+
     for column in original_columns:
         # null in same places column is null
         should_interpolate = block._column_type(column) in [
@@ -125,48 +141,25 @@ def interpolate(block: blocks.Block, method: str = "linear") -> blocks.Block:
             pd.Int64Dtype(),
         ]
         if should_interpolate:
-            block, notnull = block.apply_unary_op(column, ops.notnull_op)
-            block, masked_offsets = block.apply_binary_op(
-                offsets, notnull, ops.partial_arg3(ops.where_op, None)
-            )
-
-            block, previous_value = block.apply_window_op(
-                column, agg_ops.LastNonNullOp(), backwards_window
-            )
-            block, next_value = block.apply_window_op(
-                column, agg_ops.FirstNonNullOp(), forwards_window
-            )
-            block, previous_value_offset = block.apply_window_op(
-                masked_offsets,
-                agg_ops.LastNonNullOp(),
-                backwards_window,
-                skip_reproject_unsafe=True,
-            )
-            block, next_value_offset = block.apply_window_op(
-                masked_offsets,
-                agg_ops.FirstNonNullOp(),
-                forwards_window,
-                skip_reproject_unsafe=True,
-            )
-
-            block, prediction_id = _interpolate(
+            interpolate_method_map = {
+                "linear": "linear",
+                "values": "linear",
+                "index": "linear",
+                "slinear": "linear",
+                "zero": "ffill",
+                "nearest": "nearest",
+            }
+            extrapolating_methods = ["linear", "values", "index"]
+            interpolate_method = interpolate_method_map[method]
+            do_extrapolate = method in extrapolating_methods
+            block, interpolated = _interpolate_column(
                 block,
-                previous_value_offset,
-                previous_value,
-                next_value_offset,
-                next_value,
-                offsets,
+                column,
+                xvalues,
+                interpolate_method=interpolate_method,
+                do_extrapolate=do_extrapolate,
             )
-
-            block, interpolated_column = block.apply_binary_op(
-                column, prediction_id, ops.fillna_op
-            )
-            # Pandas performs ffill-like behavior to extrapolate forwards
-            block, interpolated_and_ffilled = block.apply_binary_op(
-                interpolated_column, previous_value, ops.fillna_op
-            )
-
-            output_column_ids.append(interpolated_and_ffilled)
+            output_column_ids.append(interpolated)
         else:
             output_column_ids.append(column)
 
@@ -175,7 +168,80 @@ def interpolate(block: blocks.Block, method: str = "linear") -> blocks.Block:
     return block.with_column_labels(original_labels)
 
 
-def _interpolate(
+def _interpolate_column(
+    block: blocks.Block,
+    column: str,
+    x_values: str,
+    interpolate_method: str,
+    do_extrapolate: bool = True,
+) -> typing.Tuple[blocks.Block, str]:
+    if interpolate_method not in ["linear", "nearest", "ffill"]:
+        raise ValueError("interpolate method not supported")
+    window_ordering = (ordering.OrderingColumnReference(x_values),)
+    backwards_window = windows.WindowSpec(following=0, ordering=window_ordering)
+    forwards_window = windows.WindowSpec(preceding=0, ordering=window_ordering)
+
+    # Note, this method may
+    block, notnull = block.apply_unary_op(column, ops.notnull_op)
+    block, masked_offsets = block.apply_binary_op(
+        x_values, notnull, ops.partial_arg3(ops.where_op, None)
+    )
+
+    block, previous_value = block.apply_window_op(
+        column, agg_ops.LastNonNullOp(), backwards_window
+    )
+    block, next_value = block.apply_window_op(
+        column, agg_ops.FirstNonNullOp(), forwards_window
+    )
+    block, previous_value_offset = block.apply_window_op(
+        masked_offsets,
+        agg_ops.LastNonNullOp(),
+        backwards_window,
+        skip_reproject_unsafe=True,
+    )
+    block, next_value_offset = block.apply_window_op(
+        masked_offsets,
+        agg_ops.FirstNonNullOp(),
+        forwards_window,
+        skip_reproject_unsafe=True,
+    )
+
+    if interpolate_method == "linear":
+        block, prediction_id = _interpolate_points_linear(
+            block,
+            previous_value_offset,
+            previous_value,
+            next_value_offset,
+            next_value,
+            x_values,
+        )
+    elif interpolate_method == "nearest":
+        block, prediction_id = _interpolate_points_nearest(
+            block,
+            previous_value_offset,
+            previous_value,
+            next_value_offset,
+            next_value,
+            x_values,
+        )
+    else:  # interpolate_method == 'ffill':
+        block, prediction_id = _interpolate_points_ffill(
+            block,
+            previous_value_offset,
+            previous_value,
+            next_value_offset,
+            next_value,
+            x_values,
+        )
+    if do_extrapolate:
+        block, prediction_id = block.apply_binary_op(
+            prediction_id, previous_value, ops.fillna_op
+        )
+
+    return block.apply_binary_op(column, prediction_id, ops.fillna_op)
+
+
+def _interpolate_points_linear(
     block: blocks.Block,
     x0_id: str,
     y0_id: str,
@@ -193,6 +259,53 @@ def _interpolate(
 
     block, prediction_id = block.apply_binary_op(y0_id, y1_part, ops.add_op)
     block = block.drop_columns([x1x0diff, y1y0diff, xpredictx0diff, y1_weight, y1_part])
+    return block, prediction_id
+
+
+def _interpolate_points_nearest(
+    block: blocks.Block,
+    x0_id: str,
+    y0_id: str,
+    x1_id: str,
+    y1_id: str,
+    xpredict_id: str,
+) -> typing.Tuple[blocks.Block, str]:
+    """Interpolate by taking the y value of the nearest x value"""
+    block, left_diff = block.apply_binary_op(xpredict_id, x0_id, ops.sub_op)
+    block, right_diff = block.apply_binary_op(x1_id, xpredict_id, ops.sub_op)
+    # If diffs equal, choose left
+    block, choose_left = block.apply_binary_op(left_diff, right_diff, ops.le_op)
+    block, choose_left = block.apply_unary_op(
+        choose_left, ops.partial_right(ops.fillna_op, False)
+    )
+
+    block, nearest = block.apply_ternary_op(y0_id, choose_left, y1_id, ops.where_op)
+
+    block, y0_exists = block.apply_unary_op(y0_id, ops.notnull_op)
+    block, y1_exists = block.apply_unary_op(y1_id, ops.notnull_op)
+    block, is_interpolation = block.apply_binary_op(y0_exists, y1_exists, ops.and_op)
+
+    block, prediction_id = block.apply_binary_op(
+        nearest, is_interpolation, ops.partial_arg3(ops.where_op, None)
+    )
+
+    return block, prediction_id
+
+
+def _interpolate_points_ffill(
+    block: blocks.Block,
+    x0_id: str,
+    y0_id: str,
+    x1_id: str,
+    y1_id: str,
+    xpredict_id: str,
+) -> typing.Tuple[blocks.Block, str]:
+    """Interpolates by using the preceding values"""
+    # check for existance of y1, otherwise we are extrapolating instead of interpolating
+    block, y1_exists = block.apply_unary_op(y1_id, ops.notnull_op)
+    block, prediction_id = block.apply_binary_op(
+        y0_id, y1_exists, ops.partial_arg3(ops.where_op, None)
+    )
     return block, prediction_id
 
 

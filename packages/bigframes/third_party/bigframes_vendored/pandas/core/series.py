@@ -920,31 +920,49 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         Fill NaN values using an interpolation method.
 
-        Args:
-            method (str, default 'linear'):
-                Interpolation technique to use. Only 'linear' supported.
-                'linear': Ignore the index and treat the values as equally spaced.
-                This is the only method supported on MultiIndexes.
-
-        Returns:
-            Series:
-                Returns the same object type as the caller, interpolated at
-                some or all ``NaN`` values
-
         **Examples:**
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 
-            >>> series = bpd.Series([1, 2, 3, None, None, 6])
-            >>> series.interpolate()
-            0    1.0
-            1    2.0
-            2    3.0
-            3    4.0
-            4    5.0
-            5    6.0
-            dtype: Float64
+            >>> df = bpd.DataFrame({
+            ...     'A': [1, 2, 3, None, None, 6],
+            ...     'B': [None, 6, None, 2, None, 3],
+            ...     }, index=[0, 0.1, 0.3, 0.7, 0.9, 1.0])
+            >>> df.interpolate()
+                   A     B
+            0.0  1.0  <NA>
+            0.1  2.0   6.0
+            0.3  3.0   4.0
+            0.7  4.0   2.0
+            0.9  5.0   2.5
+            1.0  6.0   3.0
+            <BLANKLINE>
+            [6 rows x 2 columns]
+            >>> df.interpolate(method="values")
+                        A         B
+            0.0       1.0      <NA>
+            0.1       2.0       6.0
+            0.3       3.0  4.666667
+            0.7  4.714286       2.0
+            0.9  5.571429  2.666667
+            1.0       6.0       3.0
+            <BLANKLINE>
+            [6 rows x 2 columns]
+
+
+        Args:
+            method (str, default 'linear'):
+                Interpolation technique to use. Only 'linear' supported.
+                'linear': Ignore the index and treat the values as equally spaced.
+                This is the only method supported on MultiIndexes.
+                'index', 'values': use the actual numerical values of the index.
+                'pad': Fill in NaNs using existing values.
+                'nearest', 'zero', 'slinear': Emulates `scipy.interpolate.interp1d`
+        Returns:
+            Series:
+                Returns the same object type as the caller, interpolated at
+                some or all ``NaN`` values
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
