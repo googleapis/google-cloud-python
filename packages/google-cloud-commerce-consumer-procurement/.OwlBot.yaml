@@ -15,3 +15,4 @@
 deep-copy-regex:
     - source: /google/cloud/commerce/consumer/procurement/(.*)/.*-py
       dest: /owl-bot-staging/google-cloud-commerce-consumer-procurement/$1
+api-name: google-cloud-commerce-consumer-procurement

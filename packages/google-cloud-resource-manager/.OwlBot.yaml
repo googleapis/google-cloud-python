@@ -21,3 +21,4 @@ deep-copy-regex:
     dest: /owl-bot-staging/google-cloud-resource-manager/$1
 
 begin-after-commit-hash: 40278112d2922ec917140dcb5cc6d5ef2923aeb2
+api-name: google-cloud-resource-manager

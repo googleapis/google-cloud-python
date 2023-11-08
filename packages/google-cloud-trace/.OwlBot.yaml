@@ -22,3 +22,4 @@ deep-copy-regex:
 
 begin-after-commit-hash: 6acf4a0a797f1082027985c55c4b14b60f673dd7
 
+api-name: google-cloud-trace

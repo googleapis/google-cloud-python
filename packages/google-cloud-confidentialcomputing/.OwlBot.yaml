@@ -18,3 +18,4 @@ deep-preserve-regex:
 deep-copy-regex:
     - source: /google/cloud/confidentialcomputing/(.*)/.*-py
       dest: /owl-bot-staging/google-cloud-confidentialcomputing/$1
+api-name: google-cloud-confidentialcomputing

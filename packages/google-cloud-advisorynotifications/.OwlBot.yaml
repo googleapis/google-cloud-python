@@ -15,3 +15,4 @@
 deep-copy-regex:
     - source: /google/cloud/advisorynotifications/(.*)/.*-py
       dest: /owl-bot-staging/google-cloud-advisorynotifications/$1
+api-name: google-cloud-advisorynotifications

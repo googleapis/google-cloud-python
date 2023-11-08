@@ -15,3 +15,4 @@
 deep-copy-regex:
     - source: /google/cloud/datacatalog/lineage/(.*)/.*-py
       dest: /owl-bot-staging/google-cloud-datacatalog-lineage/$1
+api-name: google-cloud-datacatalog-lineage

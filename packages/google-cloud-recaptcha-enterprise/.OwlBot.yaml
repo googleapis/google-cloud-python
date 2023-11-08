@@ -25,3 +25,4 @@ deep-copy-regex:
 
 begin-after-commit-hash: a21f1091413a260393548c1b2ac44b7347923f08
 
+api-name: google-cloud-recaptcha-enterprise
