@@ -2498,6 +2498,7 @@ def test_mask_custom_value(scalars_dfs):
         # with timezone conversions, so we'll allow it.
         ("timestamp_col", pd.ArrowDtype(pa.timestamp("us"))),
         ("datetime_col", pd.ArrowDtype(pa.timestamp("us", tz="UTC"))),
+        ("date_col", "string[pyarrow]"),
         # TODO(bmil): fix Ibis bug: BigQuery backend rounds to nearest int
         # ("float64_col", "Int64"),
         # TODO(bmil): decide whether to fix Ibis bug: BigQuery backend
