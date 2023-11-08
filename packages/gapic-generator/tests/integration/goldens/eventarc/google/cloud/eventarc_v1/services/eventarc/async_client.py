@@ -2415,7 +2415,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_operations,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2466,7 +2466,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_operation,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2521,7 +2521,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_operation,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2571,7 +2571,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.cancel_operation,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2684,7 +2684,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_iam_policy,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2802,7 +2802,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_iam_policy,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2858,7 +2858,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.test_iam_permissions,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2909,7 +2909,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_location,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2960,7 +2960,7 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_locations,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,

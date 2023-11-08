@@ -52,3 +52,14 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
                     'message': 'This service is not available.',
                 },
             })
+
+    # Note: This test verifies that:
+    # Using gapic_v1.method.wrap_method in *AsyncClient raises a RPCError (Incorrect behaviour).
+    # Using gapic_v1.method_async.wrap_method in *AsyncClient raises a google.api_core.exceptions.GoogleAPIError.
+
+    @pytest.mark.asyncio
+    async def test_method_async_wrapper_for_async_client(async_echo):
+        with pytest.raises(exceptions.NotFound):
+            await async_echo.get_operation({
+                'name': "operations/echo"
+            })

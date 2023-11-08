@@ -3045,7 +3045,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_operation,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,

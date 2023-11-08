@@ -13416,7 +13416,7 @@ def test_get_operation(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
 @pytest.mark.asyncio
-async def test_get_operation_async(transport: str = "grpc"):
+async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
