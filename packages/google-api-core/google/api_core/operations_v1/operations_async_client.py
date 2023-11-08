@@ -26,7 +26,7 @@ import functools
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, page_iterator_async
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 from google.api_core import timeout as timeouts
 from google.longrunning import operations_pb2
 from grpc import Compression
@@ -48,7 +48,7 @@ class OperationsAsyncClient:
         # Create the gRPC client stub with gRPC AsyncIO channel.
         self.operations_stub = operations_pb2.OperationsStub(channel)
 
-        default_retry = retries.Retry(
+        default_retry = retries.AsyncRetry(
             initial=0.1,  # seconds
             maximum=60.0,  # seconds
             multiplier=1.3,
