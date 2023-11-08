@@ -13,7 +13,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import pkg_resources
+import google.auth
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -66,7 +66,7 @@ author = "Google, Inc."
 # built documents.
 #
 # The short X.Y version.
-version = pkg_resources.get_distribution("google-auth").version
+version = google.auth.__version__
 # The full version, including alpha/beta/rc tags.
 release = version
 
