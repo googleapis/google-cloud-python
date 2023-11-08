@@ -19,7 +19,7 @@ from __future__ import annotations
 import datetime
 import textwrap
 import types
-from typing import Dict, Iterable, Union
+from typing import Dict, Iterable, Optional, Union
 import uuid
 
 import google.cloud.bigquery as bigquery
@@ -121,11 +121,17 @@ def create_temp_table(
     bqclient: bigquery.Client,
     dataset: bigquery.DatasetReference,
     expiration: datetime.datetime,
+    *,
+    schema: Optional[Iterable[bigquery.SchemaField]] = None,
+    cluster_columns: Optional[list[str]] = None,
 ) -> str:
     """Create an empty table with an expiration in the desired dataset."""
     table_ref = random_table(dataset)
     destination = bigquery.Table(table_ref)
     destination.expires = expiration
+    destination.schema = schema
+    if cluster_columns:
+        destination.clustering_fields = cluster_columns
     bqclient.create_table(destination)
     return f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}"
 

@@ -32,6 +32,7 @@ from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+import bigframes.session._io.bigquery
 
 if typing.TYPE_CHECKING:
     from bigframes.session import Session
@@ -153,25 +154,28 @@ class ArrayValue:
 
     def cached(self, cluster_cols: typing.Sequence[str]) -> ArrayValue:
         """Write the ArrayValue to a session table and create a new block object that references it."""
-        compiled = self.compile()
-        ibis_expr = compiled._to_ibis_expr("unordered", expose_hidden_cols=True)
-        destination = self.session._ibis_to_session_table(
-            ibis_expr, cluster_cols=cluster_cols, api_name="cache"
+        compiled_value = self.compile()
+        ibis_expr = compiled_value._to_ibis_expr(
+            ordering_mode="unordered", expose_hidden_cols=True
         )
+        tmp_table = self.session._ibis_to_session_table(
+            ibis_expr, cluster_cols=cluster_cols, api_name="cached"
+        )
+
         table_expression = self.session.ibis_client.table(
-            f"{destination.project}.{destination.dataset_id}.{destination.table_id}"
+            f"{tmp_table.project}.{tmp_table.dataset_id}.{tmp_table.table_id}"
         )
-        new_columns = [table_expression[column] for column in compiled.column_ids]
+        new_columns = [table_expression[column] for column in compiled_value.column_ids]
         new_hidden_columns = [
             table_expression[column]
-            for column in compiled._hidden_ordering_column_names
+            for column in compiled_value._hidden_ordering_column_names
         ]
         return ArrayValue.from_ibis(
             self.session,
             table_expression,
             columns=new_columns,
             hidden_ordering_columns=new_hidden_columns,
-            ordering=compiled._ordering,
+            ordering=compiled_value._ordering,
         )
 
     # Operations

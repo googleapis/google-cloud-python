@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import datetime
 import logging
 import os
 import re
@@ -325,9 +326,15 @@ class Session(
         # internal issue 303057336.
         # Since we have a `statement_type == 'SELECT'`, schema should be populated.
         schema = typing.cast(Iterable[bigquery.SchemaField], dry_run_job.schema)
-        temp_table = self._create_session_table_empty(api_name, schema, index_cols)
+        cluster_cols = [
+            item.name
+            for item in schema
+            if (item.name in index_cols) and _can_cluster_bq(item)
+        ][:_MAX_CLUSTER_COLUMNS]
+        temp_table = self._create_empty_temp_table(schema, cluster_cols)
 
         job_config = bigquery.QueryJobConfig()
+        job_config.labels["bigframes-api"] = api_name
         job_config.destination = temp_table
 
         try:
@@ -422,7 +429,7 @@ class Session(
         index_col: Iterable[str] | str = (),
         col_order: Iterable[str] = (),
         max_results: Optional[int] = None,
-        api_name: str,
+        api_name: str = "read_gbq_query",
     ) -> dataframe.DataFrame:
         if isinstance(index_col, str):
             index_cols = [index_col]
@@ -430,9 +437,7 @@ class Session(
             index_cols = list(index_col)
 
         destination, query_job = self._query_to_destination(
-            query,
-            index_cols,
-            api_name=api_name,
+            query, index_cols, api_name=api_name
         )
 
         # If there was no destination table, that means the query must have
@@ -1273,53 +1278,26 @@ class Session(
         )
         return dataset.table(table_name)
 
-    def _create_session_table_empty(
+    def _create_empty_temp_table(
         self,
-        api_name: str,
         schema: Iterable[bigquery.SchemaField],
         cluster_cols: List[str],
     ) -> bigquery.TableReference:
         # Can't set a table in _SESSION as destination via query job API, so we
         # run DDL, instead.
-        table = self._create_session_table()
-        schema_sql = bigframes_io.bq_schema_to_sql(schema)
+        dataset = self._anonymous_dataset
+        expiration = (
+            datetime.datetime.now(datetime.timezone.utc) + constants.DEFAULT_EXPIRATION
+        )
 
-        clusterable_cols = [
-            col.name
-            for col in schema
-            if col.name in cluster_cols and _can_cluster_bq(col)
-        ][:_MAX_CLUSTER_COLUMNS]
-
-        if clusterable_cols:
-            cluster_cols_sql = ", ".join(
-                f"`{cluster_col}`" for cluster_col in clusterable_cols
-            )
-            cluster_sql = f"CLUSTER BY {cluster_cols_sql}"
-        else:
-            cluster_sql = ""
-
-        ddl_text = f"""
-        CREATE TEMP TABLE
-        `_SESSION`.`{table.table_id}`
-        ({schema_sql})
-        {cluster_sql}
-        """
-
-        job_config = bigquery.QueryJobConfig()
-
-        # Include a label so that Dataplex Lineage can identify temporary
-        # tables that BigQuery DataFrames creates. Googlers: See internal issue
-        # 296779699. We're labeling the job instead of the table because
-        # otherwise we get `BadRequest: 400 OPTIONS on temporary tables are not
-        # supported`.
-        job_config.labels = {"source": "bigquery-dataframes-temp"}
-        job_config.labels["bigframes-api"] = api_name
-
-        _, query_job = self._start_query(ddl_text, job_config=job_config)
-
-        # Use fully-qualified name instead of `_SESSION` name so that the
-        # created table can be used as the destination table.
-        return query_job.destination
+        table = bigframes_io.create_temp_table(
+            self.bqclient,
+            dataset,
+            expiration,
+            schema=schema,
+            cluster_columns=cluster_cols,
+        )
+        return bigquery.TableReference.from_string(table)
 
     def _create_sequential_ordering(
         self,
@@ -1356,13 +1334,13 @@ class Session(
         cluster_cols: Iterable[str],
         api_name: str,
     ) -> bigquery.TableReference:
-        desination, _ = self._query_to_destination(
+        destination, _ = self._query_to_destination(
             self.ibis_client.compile(table),
             index_cols=list(cluster_cols),
             api_name=api_name,
         )
         # There should always be a destination table for this query type.
-        return typing.cast(bigquery.TableReference, desination)
+        return typing.cast(bigquery.TableReference, destination)
 
     def remote_function(
         self,
