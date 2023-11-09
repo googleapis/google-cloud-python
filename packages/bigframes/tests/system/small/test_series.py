@@ -2922,3 +2922,30 @@ def test_map_series_input_duplicates_error(scalars_dfs):
         scalars_pandas_df.int64_too.map(pd_map_series)
     with pytest.raises(pd.errors.InvalidIndexError):
         scalars_df.int64_too.map(bf_map_series, verify_integrity=True)
+
+
+@pytest.mark.parametrize(
+    ("frac", "n", "random_state"),
+    [
+        (None, 4, None),
+        (0.5, None, None),
+        (None, 4, 10),
+        (0.5, None, 10),
+        (None, None, None),
+    ],
+    ids=[
+        "n_wo_random_state",
+        "frac_wo_random_state",
+        "n_w_random_state",
+        "frac_w_random_state",
+        "n_default",
+    ],
+)
+def test_sample(scalars_dfs, frac, n, random_state):
+    scalars_df, _ = scalars_dfs
+    df = scalars_df.int64_col.sample(frac=frac, n=n, random_state=random_state)
+    bf_result = df.to_pandas()
+
+    n = 1 if n is None else n
+    expected_sample_size = round(frac * scalars_df.shape[0]) if frac is not None else n
+    assert bf_result.shape[0] == expected_sample_size

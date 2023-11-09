@@ -1447,6 +1447,22 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         result_df = self_df.join(map_df, on="series")
         return result_df[self.name]
 
+    def sample(
+        self,
+        n: Optional[int] = None,
+        frac: Optional[float] = None,
+        *,
+        random_state: Optional[int] = None,
+    ) -> Series:
+        if n is not None and frac is not None:
+            raise ValueError("Only one of 'n' or 'frac' parameter can be specified.")
+
+        ns = (n,) if n is not None else ()
+        fracs = (frac,) if frac is not None else ()
+        return Series(
+            self._block._split(ns=ns, fracs=fracs, random_state=random_state)[0]
+        )
+
     def __array_ufunc__(
         self, ufunc: numpy.ufunc, method: str, *inputs, **kwargs
     ) -> Series:
