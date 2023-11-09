@@ -1,6 +1,20 @@
 # Changelog
 
 
+## [1.12.0](https://github.com/googleapis/gapic-generator-python/compare/v1.11.11...v1.12.0) (2023-11-09)
+
+
+### Features
+
+* Introduce compatibility with native namespace packages ([#1852](https://github.com/googleapis/gapic-generator-python/issues/1852)) ([ef2094a](https://github.com/googleapis/gapic-generator-python/commit/ef2094ae15cd8b4be5e18f1c6b4d62a6b8f0d416))
+
+
+### Bug Fixes
+
+* Allow pb2 files to be included in the output of py_gapic_assembly_pkg ([#1855](https://github.com/googleapis/gapic-generator-python/issues/1855)) ([e374734](https://github.com/googleapis/gapic-generator-python/commit/e37473494002de855d63498f731c26cec5c49b9c))
+* Implement Async Client to use Async Retry to work as expected ([#1823](https://github.com/googleapis/gapic-generator-python/issues/1823)) ([8ede788](https://github.com/googleapis/gapic-generator-python/commit/8ede788616b5b73f52bc7a8aca831c37b054b81f))
+* Wrap method in async client ([#1834](https://github.com/googleapis/gapic-generator-python/issues/1834)) ([8e1b5e0](https://github.com/googleapis/gapic-generator-python/commit/8e1b5e077a78904710d350b7dc97cdd2d6034fa9))
+
 ## [1.11.11](https://github.com/googleapis/gapic-generator-python/compare/v1.11.10...v1.11.11) (2023-11-02)
 
 
