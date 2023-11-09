@@ -22,3 +22,4 @@ deep-copy-regex:
 
 begin-after-commit-hash: 5f1b96948e61e31e6bb4b586238ad79d6c24cdc3
 
+api-name: google-cloud-appengine-admin

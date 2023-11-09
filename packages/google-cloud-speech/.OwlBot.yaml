@@ -22,3 +22,4 @@ deep-copy-regex:
 
 begin-after-commit-hash: 5b168da672b70ae9b5897b268b5e62f1c932a411
 
+api-name: google-cloud-speech

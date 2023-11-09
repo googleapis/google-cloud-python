@@ -123,6 +123,9 @@ sed -i -e "s|clientDocumentation|$CLIENT_DOCS_URL|" "${WORKSPACE_DIR}/${MONO_REP
 # Update apiPackage in .repo-metadata.json
 sed -i -e "s|apiPackage|$FOLDER_NAME|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.repo-metadata.json"
 
+# Update apiPackage in .OwlBot.yaml
+sed -i -e "s|apiPackage|$FOLDER_NAME|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.OwlBot.yaml"
+
 # If API_VERSION is not empty
 if [[ -n $API_VERSION ]]; then
     # Update apiVersion in .repo-metadata.json

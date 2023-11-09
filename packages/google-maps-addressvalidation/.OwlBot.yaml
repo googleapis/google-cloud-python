@@ -15,3 +15,5 @@
 deep-copy-regex:
     - source: /google/maps/addressvalidation/(.*)/.*-py
       dest: /owl-bot-staging/google-maps-addressvalidation/$1
+      
+api-name: google-maps-addressvalidation
