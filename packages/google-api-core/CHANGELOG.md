@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.13.1](https://github.com/googleapis/python-api-core/compare/v2.13.0...v2.13.1) (2023-11-09)
+
+
+### Bug Fixes
+
+* Update async client to use async retry ([#544](https://github.com/googleapis/python-api-core/issues/544)) ([f21bb32](https://github.com/googleapis/python-api-core/commit/f21bb32b8e6310116a642a6e6b6dd8e44e30e656))
+
 ## [2.13.0](https://github.com/googleapis/python-api-core/compare/v2.12.0...v2.13.0) (2023-11-03)
 
 
