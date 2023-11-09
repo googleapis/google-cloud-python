@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.3](https://github.com/googleapis/python-org-policy/compare/v1.8.2...v1.8.3) (2023-11-09)
+
+
+### Documentation
+
+* Minor formatting ([393fad7](https://github.com/googleapis/python-org-policy/commit/393fad76e8905590fdfa1349c70869f638621a89))
+
 ## [1.8.2](https://github.com/googleapis/python-org-policy/compare/v1.8.1...v1.8.2) (2023-07-04)
 
 
