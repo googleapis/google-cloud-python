@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.7](https://github.com/googleapis/python-grpc-google-iam-v1/compare/v0.12.6...v0.12.7) (2023-11-09)
+
+
+### Bug Fixes
+
+* Add classifier for python 3.11 ([#31](https://github.com/googleapis/python-grpc-google-iam-v1/issues/31)) ([3239ce6](https://github.com/googleapis/python-grpc-google-iam-v1/commit/3239ce6f8f192f5b9a081b7de8e9b9700358bdca))
+
 ## [0.12.6](https://github.com/googleapis/python-grpc-google-iam-v1/compare/v0.12.5...v0.12.6) (2023-01-06)
 
 
