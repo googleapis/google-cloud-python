@@ -386,6 +386,8 @@ class Block:
         max_download_size: Optional[int] = None,
         sampling_method: Optional[str] = None,
         random_state: Optional[int] = None,
+        *,
+        ordered: bool = True,
     ) -> Tuple[pd.DataFrame, bigquery.QueryJob]:
         """Run query and download results as a pandas DataFrame."""
         if max_download_size is None:
@@ -412,6 +414,7 @@ class Block:
             max_download_size=max_download_size,
             sampling_method=sampling_method,
             random_state=random_state,
+            ordered=ordered,
         )
         return df, query_job
 
@@ -446,12 +449,16 @@ class Block:
         max_download_size: Optional[int] = None,
         sampling_method: Optional[str] = None,
         random_state: Optional[int] = None,
+        *,
+        ordered: bool = True,
     ) -> Tuple[pd.DataFrame, int, bigquery.QueryJob]:
         """Run query and download results as a pandas DataFrame. Return the total number of results as well."""
         # TODO(swast): Allow for dry run and timeout.
         expr = self._apply_value_keys_to_expr(value_keys=value_keys)
 
-        results_iterator, query_job = expr.start_query(max_results=max_results)
+        results_iterator, query_job = expr.start_query(
+            max_results=max_results, sorted=ordered
+        )
 
         table_size = (
             expr.session._get_table_size(query_job.destination) / _BYTES_TO_MEGABYTES

@@ -130,13 +130,14 @@ def test_pca_explained_variance_(penguins_pca_model: decomposition.PCA):
             "explained_variance": [3.278657, 1.270829, 1.125354],
         },
     )
-    tests.system.utils.assert_pandas_df_equal_ignore_ordering(
+    tests.system.utils.assert_pandas_df_equal(
         result,
         expected,
         check_exact=False,
         rtol=0.1,
         check_index_type=False,
         check_dtype=False,
+        ignore_order=True,
     )
 
 
@@ -149,11 +150,12 @@ def test_pca_explained_variance_ratio_(penguins_pca_model: decomposition.PCA):
             "explained_variance_ratio": [0.469357, 0.181926, 0.1611],
         },
     )
-    tests.system.utils.assert_pandas_df_equal_ignore_ordering(
+    tests.system.utils.assert_pandas_df_equal(
         result,
         expected,
         check_exact=False,
         rtol=0.1,
         check_index_type=False,
         check_dtype=False,
+        ignore_order=True,
     )

@@ -23,16 +23,76 @@ import ibis
 import ibis.expr.types as ibis_types
 
 import bigframes.constants as constants
-import bigframes.core.compile as compiled
+import bigframes.core.compile.compiled as compiled
 import bigframes.core.joins.name_resolution as naming
 import bigframes.core.ordering as orderings
 
 SUPPORTED_ROW_IDENTITY_HOW = {"outer", "left", "inner"}
 
 
-def join_by_row_identity(
-    left: compiled.CompiledArrayValue, right: compiled.CompiledArrayValue, *, how: str
-) -> compiled.CompiledArrayValue:
+def join_by_row_identity_unordered(
+    left: compiled.UnorderedIR,
+    right: compiled.UnorderedIR,
+    *,
+    how: str,
+) -> compiled.UnorderedIR:
+    """Compute join when we are joining by row identity not a specific column."""
+    if how not in SUPPORTED_ROW_IDENTITY_HOW:
+        raise NotImplementedError(
+            f"Only how='outer','left','inner' currently supported. {constants.FEEDBACK_LINK}"
+        )
+
+    if not left._table.equals(right._table):
+        raise ValueError(
+            "Cannot combine objects without an explicit join/merge key. "
+            f"Left based on: {left._table.compile()}, but "
+            f"right based on: {right._table.compile()}"
+        )
+
+    left_predicates = left._predicates
+    right_predicates = right._predicates
+    # TODO(tbergeron): Skip generating these for inner part of join
+    (
+        left_relative_predicates,
+        right_relative_predicates,
+    ) = _get_relative_predicates(left_predicates, right_predicates)
+
+    combined_predicates = []
+    if left_predicates or right_predicates:
+        joined_predicates = _join_predicates(
+            left_predicates, right_predicates, join_type=how
+        )
+        combined_predicates = list(joined_predicates)  # builder expects mutable list
+
+    left_mask = left_relative_predicates if how in ["right", "outer"] else None
+    right_mask = right_relative_predicates if how in ["left", "outer"] else None
+
+    # Public mapping must use JOIN_NAME_REMAPPER to stay in sync with consumers of join result
+    map_left_id, map_right_id = naming.JOIN_NAME_REMAPPER(
+        left.column_ids, right.column_ids
+    )
+    joined_columns = [
+        _mask_value(left._get_ibis_column(key), left_mask).name(map_left_id[key])
+        for key in left.column_ids
+    ] + [
+        _mask_value(right._get_ibis_column(key), right_mask).name(map_right_id[key])
+        for key in right.column_ids
+    ]
+
+    joined_expr = compiled.UnorderedIR(
+        left._table,
+        columns=joined_columns,
+        predicates=combined_predicates,
+    )
+    return joined_expr
+
+
+def join_by_row_identity_ordered(
+    left: compiled.OrderedIR,
+    right: compiled.OrderedIR,
+    *,
+    how: str,
+) -> compiled.OrderedIR:
     """Compute join when we are joining by row identity not a specific column."""
     if how not in SUPPORTED_ROW_IDENTITY_HOW:
         raise NotImplementedError(
@@ -118,7 +178,7 @@ def join_by_row_identity(
         if key.column_id in right._hidden_ordering_column_names.keys()
     ]
 
-    joined_expr = compiled.CompiledArrayValue(
+    joined_expr = compiled.OrderedIR(
         left._table,
         columns=joined_columns,
         hidden_ordering_columns=hidden_ordering_columns,

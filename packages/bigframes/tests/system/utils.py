@@ -21,29 +21,33 @@ import pandas as pd
 import pyarrow as pa  # type: ignore
 
 
-def assert_pandas_df_equal_ignore_ordering(df0, df1, **kwargs):
-    # Sort by a column to get consistent results.
-    if df0.index.name != "rowindex":
-        df0 = df0.sort_values(
-            list(df0.columns.drop("geography_col", errors="ignore"))
-        ).reset_index(drop=True)
-        df1 = df1.sort_values(
-            list(df1.columns.drop("geography_col", errors="ignore"))
-        ).reset_index(drop=True)
-    else:
-        df0 = df0.sort_index()
-        df1 = df1.sort_index()
+def assert_pandas_df_equal(df0, df1, ignore_order: bool = False, **kwargs):
+    if ignore_order:
+        # Sort by a column to get consistent results.
+        if df0.index.name != "rowindex":
+            df0 = df0.sort_values(
+                list(df0.columns.drop("geography_col", errors="ignore"))
+            ).reset_index(drop=True)
+            df1 = df1.sort_values(
+                list(df1.columns.drop("geography_col", errors="ignore"))
+            ).reset_index(drop=True)
+        else:
+            df0 = df0.sort_index()
+            df1 = df1.sort_index()
 
     pd.testing.assert_frame_equal(df0, df1, **kwargs)
 
 
-def assert_series_equal_ignoring_order(left: pd.Series, right: pd.Series, **kwargs):
-    if left.index.name is None:
-        left = left.sort_values().reset_index(drop=True)
-        right = right.sort_values().reset_index(drop=True)
-    else:
-        left = left.sort_index()
-        right = right.sort_index()
+def assert_series_equal(
+    left: pd.Series, right: pd.Series, ignore_order: bool = False, **kwargs
+):
+    if ignore_order:
+        if left.index.name is None:
+            left = left.sort_values().reset_index(drop=True)
+            right = right.sort_values().reset_index(drop=True)
+        else:
+            left = left.sort_index()
+            right = right.sort_index()
 
     pd.testing.assert_series_equal(left, right, **kwargs)
 

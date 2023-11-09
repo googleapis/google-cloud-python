@@ -16,7 +16,7 @@ import pandas as pd
 import pytest
 
 import bigframes.series
-from tests.system.utils import assert_series_equal_ignoring_order
+from tests.system.utils import assert_series_equal
 
 DATETIME_COL_NAMES = [("datetime_col",), ("timestamp_col",)]
 
@@ -33,7 +33,7 @@ def test_day(scalars_dfs, col_name):
     bf_result = bf_series.dt.day.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.day
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result.astype(pd.Int64Dtype()),
         bf_result,
     )
@@ -51,7 +51,7 @@ def test_date(scalars_dfs, col_name):
     bf_result = bf_series.dt.date.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.date
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -69,7 +69,7 @@ def test_dayofweek(scalars_dfs, col_name):
     bf_result = bf_series.dt.dayofweek.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.dayofweek
 
-    assert_series_equal_ignoring_order(pd_result, bf_result, check_dtype=False)
+    assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(
@@ -84,7 +84,7 @@ def test_hour(scalars_dfs, col_name):
     bf_result = bf_series.dt.hour.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.hour
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result.astype(pd.Int64Dtype()),
         bf_result,
     )
@@ -102,7 +102,7 @@ def test_minute(scalars_dfs, col_name):
     bf_result = bf_series.dt.minute.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.minute
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result.astype(pd.Int64Dtype()),
         bf_result,
     )
@@ -120,7 +120,7 @@ def test_month(scalars_dfs, col_name):
     bf_result = bf_series.dt.month.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.month
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result.astype(pd.Int64Dtype()),
         bf_result,
     )
@@ -138,7 +138,7 @@ def test_quarter(scalars_dfs, col_name):
     bf_result = bf_series.dt.quarter.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.quarter
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result.astype(pd.Int64Dtype()),
         bf_result,
     )
@@ -156,7 +156,7 @@ def test_second(scalars_dfs, col_name):
     bf_result = bf_series.dt.second.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.second
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result.astype(pd.Int64Dtype()),
         bf_result,
     )
@@ -174,7 +174,7 @@ def test_time(scalars_dfs, col_name):
     bf_result = bf_series.dt.time.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.time
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -192,7 +192,7 @@ def test_year(scalars_dfs, col_name):
     bf_result = bf_series.dt.year.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.year
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result.astype(pd.Int64Dtype()),
         bf_result,
     )

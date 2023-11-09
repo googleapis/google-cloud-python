@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from bigframes.core.compile.compiled import CompiledArrayValue
-from bigframes.core.compile.compiler import compile_node
+from bigframes.core.compile.compiled import OrderedIR, UnorderedIR
+from bigframes.core.compile.compiler import compile_ordered, compile_unordered
 
 __all__ = [
-    "compile_node",
-    "CompiledArrayValue",
+    "compile_ordered",
+    "compile_unordered",
+    "OrderedIR",
+    "UnorderedIR",
 ]

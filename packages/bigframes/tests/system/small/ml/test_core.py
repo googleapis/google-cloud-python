@@ -225,7 +225,7 @@ def test_pca_model_principal_component_info(penguins_bqml_pca_model: core.BqmlMo
             "cumulative_explained_variance_ratio": [0.469357, 0.651283, 0.812383],
         },
     )
-    tests.system.utils.assert_pandas_df_equal_ignore_ordering(
+    tests.system.utils.assert_pandas_df_equal(
         result,
         expected,
         check_exact=False,
@@ -233,6 +233,7 @@ def test_pca_model_principal_component_info(penguins_bqml_pca_model: core.BqmlMo
         # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
         check_index_type=False,
         check_dtype=False,
+        ignore_order=True,
     )
 
 

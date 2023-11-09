@@ -24,7 +24,7 @@ from bigframes.ml import (
     pipeline,
     preprocessing,
 )
-from tests.system.utils import assert_pandas_df_equal_ignore_ordering
+from tests.system.utils import assert_pandas_df_equal
 
 
 def test_pipeline_linear_regression_fit_score_predict(
@@ -555,7 +555,7 @@ def test_pipeline_standard_scaler_kmeans_fit_score_predict(
         ),
     )
     expected.index.name = "observation"
-    assert_pandas_df_equal_ignore_ordering(result, expected)
+    assert_pandas_df_equal(result, expected, ignore_order=True)
 
 
 def test_pipeline_columntransformer_fit_predict(session, penguins_df_default_index):

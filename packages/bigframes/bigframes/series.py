@@ -271,6 +271,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         max_download_size: Optional[int] = None,
         sampling_method: Optional[str] = None,
         random_state: Optional[int] = None,
+        *,
+        ordered: bool = True,
     ) -> pandas.Series:
         """Writes Series to pandas Series.
 
@@ -290,6 +292,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 The seed for the uniform downsampling algorithm. If provided, the uniform method may
                 take longer to execute and require more computation. If set to a value other than
                 None, this will supersede the global config.
+            ordered (bool, default True):
+                Determines whether the resulting pandas series will be deterministically ordered.
+                In some cases, unordered may result in a faster-executing query.
+
 
         Returns:
             pandas.Series: A pandas Series with all rows of this Series if the data_sampling_threshold_mb
@@ -300,6 +306,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             max_download_size=max_download_size,
             sampling_method=sampling_method,
             random_state=random_state,
+            ordered=ordered,
         )
         self._set_internal_query_job(query_job)
         series = df[self._value_column]

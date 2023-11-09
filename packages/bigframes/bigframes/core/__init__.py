@@ -23,7 +23,8 @@ import ibis
 import ibis.expr.types as ibis_types
 import pandas
 
-import bigframes.core.compile as compiled
+import bigframes.core.compile.compiled as compiled
+import bigframes.core.compile.compiler as compiler
 import bigframes.core.guid
 import bigframes.core.nodes as nodes
 from bigframes.core.ordering import OrderingColumnReference
@@ -78,7 +79,7 @@ class ArrayValue:
 
     @property
     def column_ids(self) -> typing.Sequence[str]:
-        return self.compile().column_ids
+        return self._compile_ordered().column_ids
 
     @property
     def session(self) -> Session:
@@ -88,15 +89,18 @@ class ArrayValue:
         return self.node.session[0] if required_session else get_global_session()
 
     def get_column_type(self, key: str) -> bigframes.dtypes.Dtype:
-        return self.compile().get_column_type(key)
+        return self._compile_ordered().get_column_type(key)
 
-    def compile(self) -> compiled.CompiledArrayValue:
-        return compiled.compile_node(self.node)
+    def _compile_ordered(self) -> compiled.OrderedIR:
+        return compiler.compile_ordered(self.node)
+
+    def _compile_unordered(self) -> compiled.UnorderedIR:
+        return compiler.compile_unordered(self.node)
 
     def shape(self) -> typing.Tuple[int, int]:
         """Returns dimensions as (length, width) tuple."""
-        width = len(self.compile().columns)
-        count_expr = self.compile()._to_ibis_expr("unordered").count()
+        width = len(self._compile_unordered().columns)
+        count_expr = self._compile_unordered()._to_ibis_expr().count()
 
         # Support in-memory engines for hermetic unit tests.
         if not self.node.session:
@@ -121,11 +125,14 @@ class ArrayValue:
         col_id_overrides: typing.Mapping[str, str] = {},
         sorted: bool = False,
     ) -> str:
-        return self.compile().to_sql(
-            offset_column=offset_column,
-            col_id_overrides=col_id_overrides,
-            sorted=sorted,
-        )
+        if sorted or offset_column:
+            return self._compile_ordered().to_sql(
+                offset_column=offset_column,
+                col_id_overrides=col_id_overrides,
+                sorted=sorted,
+            )
+        else:
+            return self._compile_unordered().to_sql(col_id_overrides=col_id_overrides)
 
     def start_query(
         self,
@@ -154,7 +161,7 @@ class ArrayValue:
 
     def cached(self, cluster_cols: typing.Sequence[str]) -> ArrayValue:
         """Write the ArrayValue to a session table and create a new block object that references it."""
-        compiled_value = self.compile()
+        compiled_value = self._compile_ordered()
         ibis_expr = compiled_value._to_ibis_expr(
             ordering_mode="unordered", expose_hidden_cols=True
         )

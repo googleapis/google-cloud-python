@@ -16,6 +16,7 @@ import pandas as pd
 import pytest
 
 import bigframes.pandas as bpd
+from tests.system.utils import assert_pandas_df_equal
 
 
 @pytest.mark.parametrize(
@@ -88,16 +89,23 @@ def test_dataframe_groupby_aggregate(
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
 
 
-def test_dataframe_groupby_agg_string(scalars_df_index, scalars_pandas_df_index):
+@pytest.mark.parametrize(
+    ("ordered"),
+    [
+        (True),
+        (False),
+    ],
+)
+def test_dataframe_groupby_agg_string(
+    scalars_df_index, scalars_pandas_df_index, ordered
+):
     col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
     bf_result = scalars_df_index[col_names].groupby("string_col").agg("count")
     pd_result = scalars_pandas_df_index[col_names].groupby("string_col").agg("count")
-    bf_result_computed = bf_result.to_pandas()
+    bf_result_computed = bf_result.to_pandas(ordered=ordered)
 
-    pd.testing.assert_frame_equal(
-        pd_result,
-        bf_result_computed,
-        check_dtype=False,
+    assert_pandas_df_equal(
+        pd_result, bf_result_computed, check_dtype=False, ignore_order=not ordered
     )
 
 
@@ -270,13 +278,22 @@ def test_dataframe_groupby_kurt(scalars_df_index, scalars_pandas_df_index):
     pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 
 
-def test_dataframe_groupby_diff(scalars_df_index, scalars_pandas_df_index):
+@pytest.mark.parametrize(
+    ("ordered"),
+    [
+        (True),
+        (False),
+    ],
+)
+def test_dataframe_groupby_diff(scalars_df_index, scalars_pandas_df_index, ordered):
     col_names = ["float64_col", "int64_col", "string_col"]
     bf_result = scalars_df_index[col_names].groupby("string_col").diff(-1)
     pd_result = scalars_pandas_df_index[col_names].groupby("string_col").diff(-1)
-    bf_result_computed = bf_result.to_pandas()
+    bf_result_computed = bf_result.to_pandas(ordered=ordered)
 
-    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+    assert_pandas_df_equal(
+        pd_result, bf_result_computed, check_dtype=False, ignore_order=not ordered
+    )
 
 
 def test_dataframe_groupby_getitem(

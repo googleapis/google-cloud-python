@@ -16,7 +16,7 @@ import pandas
 import pytest
 
 import bigframes.pandas as bpd
-from tests.system.utils import assert_pandas_df_equal_ignore_ordering
+from tests.system.utils import assert_pandas_df_equal
 
 
 # Row Multi-index tests
@@ -429,7 +429,7 @@ def test_multi_index_dataframe_join(scalars_dfs, how):
         (["bool_col", "rowindex_2"])
     )[["float64_col"]]
     pd_result = pd_df_a.join(pd_df_b, how=how)
-    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+    assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
 
 
 @all_joins
@@ -450,7 +450,7 @@ def test_multi_index_dataframe_join_on(scalars_dfs, how):
     pd_df_a = pd_df_a.assign(rowindex_2=pd_df_a["rowindex_2"] + 2)
     pd_df_b = pd_df[["float64_col"]]
     pd_result = pd_df_a.join(pd_df_b, on="rowindex_2", how=how)
-    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+    assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
 
 
 @pytest.mark.parametrize(

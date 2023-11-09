@@ -19,7 +19,7 @@ import pytest
 
 import bigframes.series
 
-from ...utils import assert_series_equal_ignoring_order
+from ...utils import assert_series_equal
 
 
 def test_find(scalars_dfs):
@@ -31,7 +31,7 @@ def test_find(scalars_dfs):
 
     # One of type mismatches to be documented. Here, the `bf_result.dtype` is `Int64` but
     # the `pd_result.dtype` is `float64`: https://github.com/pandas-dev/pandas/issues/51948
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result.astype(pd.Int64Dtype()),
         bf_result,
     )
@@ -173,7 +173,7 @@ def test_len(scalars_dfs):
 
     # One of dtype mismatches to be documented. Here, the `bf_result.dtype` is `Int64` but
     # the `pd_result.dtype` is `float64`: https://github.com/pandas-dev/pandas/issues/51948
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result.astype(pd.Int64Dtype()),
         bf_result,
     )
@@ -186,7 +186,7 @@ def test_lower(scalars_dfs):
     bf_result = bf_series.str.lower().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.lower()
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -205,7 +205,7 @@ def test_reverse(scalars_dfs):
         else:
             pd_result.loc[i] = cell[::-1]
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -222,7 +222,7 @@ def test_slice(scalars_dfs, start, stop):
     pd_series = scalars_pandas_df[col_name]
     pd_result = pd_series.str.slice(start, stop)
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -235,7 +235,7 @@ def test_strip(scalars_dfs):
     bf_result = bf_series.str.strip().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.strip()
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -248,7 +248,7 @@ def test_upper(scalars_dfs):
     bf_result = bf_series.str.upper().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.upper()
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -330,7 +330,7 @@ def test_islower(weird_strings, weird_strings_pd):
     pd_result = weird_strings_pd.str.islower()
     bf_result = weird_strings.str.islower().to_pandas()
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         bf_result,
         pd_result.astype(pd.BooleanDtype())
         # the dtype here is a case of intentional diversion from pandas
@@ -342,7 +342,7 @@ def test_isupper(weird_strings, weird_strings_pd):
     pd_result = weird_strings_pd.str.isupper()
     bf_result = weird_strings.str.isupper().to_pandas()
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         bf_result,
         pd_result.astype(pd.BooleanDtype())
         # the dtype here is a case of intentional diversion from pandas
@@ -357,7 +357,7 @@ def test_rstrip(scalars_dfs):
     bf_result = bf_series.str.rstrip().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.rstrip()
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -370,7 +370,7 @@ def test_lstrip(scalars_dfs):
     bf_result = bf_series.str.lstrip().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.lstrip()
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -384,7 +384,7 @@ def test_repeat(scalars_dfs, repeats):
     bf_result = bf_series.str.repeat(repeats).to_pandas()
     pd_result = scalars_pandas_df[col_name].str.repeat(repeats)
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -397,7 +397,7 @@ def test_capitalize(scalars_dfs):
     bf_result = bf_series.str.capitalize().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.capitalize()
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -415,7 +415,7 @@ def test_cat_with_series(scalars_dfs):
     pd_right = scalars_pandas_df[col_name]
     pd_result = pd_left.str.cat(others=pd_right)
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -429,7 +429,7 @@ def test_str_match(scalars_dfs):
     bf_result = bf_series.str.match(pattern).to_pandas()
     pd_result = scalars_pandas_df[col_name].str.match(pattern)
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -443,7 +443,7 @@ def test_str_fullmatch(scalars_dfs):
     bf_result = bf_series.str.fullmatch(pattern).to_pandas()
     pd_result = scalars_pandas_df[col_name].str.fullmatch(pattern)
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -456,7 +456,7 @@ def test_str_get(scalars_dfs):
     bf_result = bf_series.str.get(8).to_pandas()
     pd_result = scalars_pandas_df[col_name].str.get(8)
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -469,7 +469,7 @@ def test_str_pad(scalars_dfs):
     bf_result = bf_series.str.pad(8, side="both", fillchar="%").to_pandas()
     pd_result = scalars_pandas_df[col_name].str.pad(8, side="both", fillchar="%")
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -492,7 +492,7 @@ def test_str_ljust(scalars_dfs):
     bf_result = bf_series.str.ljust(7, fillchar="%").to_pandas()
     pd_result = scalars_pandas_df[col_name].str.ljust(7, fillchar="%")
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -505,7 +505,7 @@ def test_str_rjust(scalars_dfs):
     bf_result = bf_series.str.rjust(9, fillchar="%").to_pandas()
     pd_result = scalars_pandas_df[col_name].str.rjust(9, fillchar="%")
 
-    assert_series_equal_ignoring_order(
+    assert_series_equal(
         pd_result,
         bf_result,
     )

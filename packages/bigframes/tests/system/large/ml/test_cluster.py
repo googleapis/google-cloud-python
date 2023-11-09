@@ -16,7 +16,7 @@ import pandas as pd
 import pytest
 
 from bigframes.ml import cluster
-from tests.system.utils import assert_pandas_df_equal_ignore_ordering
+from tests.system.utils import assert_pandas_df_equal
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -105,7 +105,7 @@ def test_cluster_configure_fit_score_predict(
         index=pd.Index(["test1", "test2", "test3", "test4"], dtype="string[pyarrow]"),
     )
     expected.index.name = "observation"
-    assert_pandas_df_equal_ignore_ordering(result, expected)
+    assert_pandas_df_equal(result, expected, ignore_order=True)
 
     # save, load, check n_clusters to ensure configuration was kept
     reloaded_model = model.to_gbq(
