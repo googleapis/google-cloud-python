@@ -67,6 +67,12 @@ export API_VERSION_OVERRIDE
 export DUAL_REGION_LOC_1
 export DUAL_REGION_LOC_2""")
 
+s.replace(
+    ".coveragerc",
+    "omit =",
+    """omit =
+  .nox/*""")
+
 python.py_samples(skip_readmes=True)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
