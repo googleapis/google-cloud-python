@@ -29,6 +29,7 @@ import nox
 
 BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
+
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.10"
@@ -89,6 +90,7 @@ def lint(session):
         "--check",
         *LINT_PATHS,
     )
+
     session.run("flake8", "google", "tests")
 
 
