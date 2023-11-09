@@ -609,6 +609,7 @@ def notebook(session):
         # our test infrastructure.
         "notebooks/getting_started/getting_started_bq_dataframes.ipynb",
         "notebooks/generative_ai/bq_dataframes_llm_code_generation.ipynb",
+        "notebooks/generative_ai/bq_dataframes_llm_kmeans.ipynb",
         "notebooks/regression/bq_dataframes_ml_linear_regression.ipynb",
         "notebooks/generative_ai/bq_dataframes_ml_drug_name_generation.ipynb",
         "notebooks/vertex_sdk/sdk2_bigframes_pytorch.ipynb",
