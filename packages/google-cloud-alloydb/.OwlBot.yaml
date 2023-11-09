@@ -18,3 +18,4 @@ deep-preserve-regex:
 deep-copy-regex:
     - source: /google/cloud/alloydb/(.*)/.*-py
       dest: /owl-bot-staging/google-cloud-alloydb/$1
+api-name: google-cloud-alloydb

@@ -15,3 +15,4 @@
 deep-copy-regex:
     - source: /google/ai/generativelanguage/(.*)/.*-py
       dest: /owl-bot-staging/google-ai-generativelanguage/$1
+api-name: google-ai-generativelanguage

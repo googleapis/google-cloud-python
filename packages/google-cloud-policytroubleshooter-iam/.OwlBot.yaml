@@ -18,3 +18,4 @@ deep-preserve-regex:
 deep-copy-regex:
     - source: /google/cloud/policytroubleshooter/iam/(.*)/.*-py
       dest: /owl-bot-staging/google-cloud-policytroubleshooter-iam/$1
+api-name: google-cloud-policytroubleshooter-iam

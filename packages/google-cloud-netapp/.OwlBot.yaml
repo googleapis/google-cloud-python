@@ -15,3 +15,4 @@
 deep-copy-regex:
     - source: /google/cloud/netapp/(.*)/.*-py
       dest: /owl-bot-staging/google-cloud-netapp/$1
+api-name: google-cloud-netapp

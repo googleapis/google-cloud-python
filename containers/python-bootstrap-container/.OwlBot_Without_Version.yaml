@@ -15,3 +15,4 @@
 deep-copy-regex:
     - source: /apiPath/(.*-py)
       dest: /owl-bot-staging/apiDashes/$1
+api-name: apiPackage

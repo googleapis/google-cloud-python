@@ -494,11 +494,12 @@ class AccountVerificationInfo(proto.Message):
 
     Attributes:
         endpoints (MutableSequence[google.cloud.recaptchaenterprise_v1.types.EndpointVerificationInfo]):
-            Endpoints that can be used for identity
-            verification.
+            Optional. Endpoints that can be used for
+            identity verification.
         language_code (str):
-            Language code preference for the verification
-            message, set as a IETF BCP 47 language code.
+            Optional. Language code preference for the
+            verification message, set as a IETF BCP 47
+            language code.
         latest_verification_result (google.cloud.recaptchaenterprise_v1.types.AccountVerificationInfo.Result):
             Output only. Result of the latest account
             verification challenge.
@@ -584,7 +585,7 @@ class PrivatePasswordLeakVerification(proto.Message):
 
     Attributes:
         lookup_hash_prefix (bytes):
-            Optional. Exactly 26-bit prefix of the
+            Required. Exactly 26-bit prefix of the
             SHA-256 hash of the canonicalized username. It
             is used to look up password leaks associated
             with that hash prefix.
@@ -630,7 +631,7 @@ class Assessment(proto.Message):
             Output only. The resource name for the Assessment in the
             format ``projects/{project}/assessments/{assessment}``.
         event (google.cloud.recaptchaenterprise_v1.types.Event):
-            The event being assessed.
+            Optional. The event being assessed.
         risk_analysis (google.cloud.recaptchaenterprise_v1.types.RiskAnalysis):
             Output only. The risk analysis result for the
             event being assessed.
@@ -638,24 +639,25 @@ class Assessment(proto.Message):
             Output only. Properties of the provided event
             token.
         account_verification (google.cloud.recaptchaenterprise_v1.types.AccountVerificationInfo):
-            Account verification information for identity
-            verification. The assessment event must include
-            a token and site key to use this feature.
+            Optional. Account verification information
+            for identity verification. The assessment event
+            must include a token and site key to use this
+            feature.
         account_defender_assessment (google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment):
-            Assessment returned by account defender when a
+            Output only. Assessment returned by account defender when a
             hashed_account_id is provided.
         private_password_leak_verification (google.cloud.recaptchaenterprise_v1.types.PrivatePasswordLeakVerification):
-            The private password leak verification field
-            contains the parameters that are used to to
-            check for leaks privately without sharing user
-            credentials.
+            Optional. The private password leak
+            verification field contains the parameters that
+            are used to to check for leaks privately without
+            sharing user credentials.
         firewall_policy_assessment (google.cloud.recaptchaenterprise_v1.types.FirewallPolicyAssessment):
-            Assessment returned when firewall policies belonging to the
-            project are evaluated using the field
+            Output only. Assessment returned when firewall policies
+            belonging to the project are evaluated using the field
             firewall_policy_evaluation.
         fraud_prevention_assessment (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment):
-            Assessment returned by Fraud Prevention when
-            TransactionData is provided.
+            Output only. Assessment returned by Fraud
+            Prevention when TransactionData is provided.
         fraud_signals (google.cloud.recaptchaenterprise_v1.types.FraudSignals):
             Output only. Fraud Signals specific to the
             users involved in a payment transaction.
@@ -754,8 +756,7 @@ class Event(proto.Message):
             specified, and have been created by a
             WAF-enabled key.
         ja3 (str):
-            Optional. Optional JA3 fingerprint for SSL
-            clients.
+            Optional. JA3 fingerprint for SSL clients.
         headers (MutableSequence[str]):
             Optional. HTTP header information about the
             request.
@@ -830,7 +831,7 @@ class Event(proto.Message):
 
 class TransactionData(proto.Message):
     r"""Transaction data associated with a payment protected by
-    reCAPTCHA Enterprise. All fields are optional.
+    reCAPTCHA Enterprise.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -846,8 +847,8 @@ class TransactionData(proto.Message):
 
             This field is a member of `oneof`_ ``_transaction_id``.
         payment_method (str):
-            The payment method for the transaction. The allowed values
-            are:
+            Optional. The payment method for the transaction. The
+            allowed values are:
 
             -  credit-card
             -  debit-card
@@ -857,35 +858,37 @@ class TransactionData(proto.Message):
             -  custom-{name} (If an alternative method is used, for
                example, custom-crypto)
         card_bin (str):
-            The Bank Identification Number - generally
-            the first 6 or 8 digits of the card.
+            Optional. The Bank Identification Number -
+            generally the first 6 or 8 digits of the card.
         card_last_four (str):
-            The last four digits of the card.
+            Optional. The last four digits of the card.
         currency_code (str):
-            The currency code in ISO-4217 format.
+            Optional. The currency code in ISO-4217
+            format.
         value (float):
-            The decimal value of the transaction in the
-            specified currency.
+            Optional. The decimal value of the
+            transaction in the specified currency.
         shipping_value (float):
-            The value of shipping in the specified
-            currency. 0 for free or no shipping.
+            Optional. The value of shipping in the
+            specified currency. 0 for free or no shipping.
         shipping_address (google.cloud.recaptchaenterprise_v1.types.TransactionData.Address):
-            Destination address if this transaction
-            involves shipping a physical item.
+            Optional. Destination address if this
+            transaction involves shipping a physical item.
         billing_address (google.cloud.recaptchaenterprise_v1.types.TransactionData.Address):
-            Address associated with the payment method
-            when applicable.
+            Optional. Address associated with the payment
+            method when applicable.
         user (google.cloud.recaptchaenterprise_v1.types.TransactionData.User):
-            Information about the user paying/initiating
-            the transaction.
+            Optional. Information about the user
+            paying/initiating the transaction.
         merchants (MutableSequence[google.cloud.recaptchaenterprise_v1.types.TransactionData.User]):
-            Information about the user or users
+            Optional. Information about the user or users
             fulfilling the transaction.
         items (MutableSequence[google.cloud.recaptchaenterprise_v1.types.TransactionData.Item]):
-            Items purchased in this transaction.
+            Optional. Items purchased in this
+            transaction.
         gateway_info (google.cloud.recaptchaenterprise_v1.types.TransactionData.GatewayInfo):
-            Information about the payment gateway's
-            response to the transaction.
+            Optional. Information about the payment
+            gateway's response to the transaction.
     """
 
     class Address(proto.Message):
@@ -893,22 +896,24 @@ class TransactionData(proto.Message):
 
         Attributes:
             recipient (str):
-                The recipient name, potentially including
-                information such as "care of".
+                Optional. The recipient name, potentially
+                including information such as "care of".
             address (MutableSequence[str]):
-                The first lines of the address. The first
-                line generally contains the street name and
-                number, and further lines may include
+                Optional. The first lines of the address. The
+                first line generally contains the street name
+                and number, and further lines may include
                 information such as an apartment number.
             locality (str):
-                The town/city of the address.
+                Optional. The town/city of the address.
             administrative_area (str):
-                The state, province, or otherwise
+                Optional. The state, province, or otherwise
                 administrative area of the address.
             region_code (str):
-                The CLDR country/region of the address.
+                Optional. The CLDR country/region of the
+                address.
             postal_code (str):
-                The postal or ZIP code of the address.
+                Optional. The postal or ZIP code of the
+                address.
         """
 
         recipient: str = proto.Field(
@@ -941,24 +946,25 @@ class TransactionData(proto.Message):
 
         Attributes:
             account_id (str):
-                Unique account identifier for this user. If using account
-                defender, this should match the hashed_account_id field.
-                Otherwise, a unique and persistent identifier for this
-                account.
+                Optional. Unique account identifier for this user. If using
+                account defender, this should match the hashed_account_id
+                field. Otherwise, a unique and persistent identifier for
+                this account.
             creation_ms (int):
-                The epoch milliseconds of the user's account
-                creation.
+                Optional. The epoch milliseconds of the
+                user's account creation.
             email (str):
-                The email address of the user.
+                Optional. The email address of the user.
             email_verified (bool):
-                Whether the email has been verified to be
-                accessible by the user (OTP or similar).
+                Optional. Whether the email has been verified
+                to be accessible by the user (OTP or similar).
             phone_number (str):
-                The phone number of the user, with country
-                code.
+                Optional. The phone number of the user, with
+                country code.
             phone_verified (bool):
-                Whether the phone number has been verified to
-                be accessible by the user (OTP or similar).
+                Optional. Whether the phone number has been
+                verified to be accessible by the user (OTP or
+                similar).
         """
 
         account_id: str = proto.Field(
@@ -991,16 +997,18 @@ class TransactionData(proto.Message):
 
         Attributes:
             name (str):
-                The full name of the item.
+                Optional. The full name of the item.
             value (float):
-                The value per item that the user is paying,
-                in the transaction currency, after discounts.
+                Optional. The value per item that the user is
+                paying, in the transaction currency, after
+                discounts.
             quantity (int):
-                The quantity of this item that is being
-                purchased.
+                Optional. The quantity of this item that is
+                being purchased.
             merchant_account_id (str):
-                When a merchant is specified, its corresponding account_id.
-                Necessary to populate marketplace-style transactions.
+                Optional. When a merchant is specified, its corresponding
+                account_id. Necessary to populate marketplace-style
+                transactions.
         """
 
         name: str = proto.Field(
@@ -1025,17 +1033,17 @@ class TransactionData(proto.Message):
 
         Attributes:
             name (str):
-                Name of the gateway service (for example,
-                stripe, square, paypal).
+                Optional. Name of the gateway service (for
+                example, stripe, square, paypal).
             gateway_response_code (str):
-                Gateway response code describing the state of
-                the transaction.
+                Optional. Gateway response code describing
+                the state of the transaction.
             avs_response_code (str):
-                AVS response code from the gateway
+                Optional. AVS response code from the gateway
                 (available only when reCAPTCHA Enterprise is
                 called after authorization).
             cvv_response_code (str):
-                CVV response code from the gateway
+                Optional. CVV response code from the gateway
                 (available only when reCAPTCHA Enterprise is
                 called after authorization).
         """
@@ -1123,16 +1131,17 @@ class RiskAnalysis(proto.Message):
 
     Attributes:
         score (float):
-            Legitimate event score from 0.0 to 1.0.
-            (1.0 means very likely legitimate traffic while
-            0.0 means very likely non-legitimate traffic).
+            Output only. Legitimate event score from 0.0
+            to 1.0. (1.0 means very likely legitimate
+            traffic while 0.0 means very likely
+            non-legitimate traffic).
         reasons (MutableSequence[google.cloud.recaptchaenterprise_v1.types.RiskAnalysis.ClassificationReason]):
-            Reasons contributing to the risk analysis
-            verdict.
+            Output only. Reasons contributing to the risk
+            analysis verdict.
         extended_verdict_reasons (MutableSequence[str]):
-            Extended verdict reasons to be used for
-            experimentation only. The set of possible
-            reasons is subject to change.
+            Output only. Extended verdict reasons to be
+            used for experimentation only. The set of
+            possible reasons is subject to change.
     """
 
     class ClassificationReason(proto.Enum):
@@ -1193,29 +1202,31 @@ class TokenProperties(proto.Message):
 
     Attributes:
         valid (bool):
-            Whether the provided user response token is valid. When
-            valid = false, the reason could be specified in
+            Output only. Whether the provided user response token is
+            valid. When valid = false, the reason could be specified in
             invalid_reason or it could also be due to a user failing to
             solve a challenge or a sitekey mismatch (i.e the sitekey
             used to generate the token was different than the one
             specified in the assessment).
         invalid_reason (google.cloud.recaptchaenterprise_v1.types.TokenProperties.InvalidReason):
-            Reason associated with the response when
-            valid = false.
+            Output only. Reason associated with the
+            response when valid = false.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            The timestamp corresponding to the generation
-            of the token.
+            Output only. The timestamp corresponding to
+            the generation of the token.
         hostname (str):
-            The hostname of the page on which the token
-            was generated (Web keys only).
+            Output only. The hostname of the page on
+            which the token was generated (Web keys only).
         android_package_name (str):
-            The name of the Android package with which
-            the token was generated (Android keys only).
+            Output only. The name of the Android package
+            with which the token was generated (Android keys
+            only).
         ios_bundle_id (str):
-            The ID of the iOS bundle with which the token
-            was generated (iOS keys only).
+            Output only. The ID of the iOS bundle with
+            which the token was generated (iOS keys only).
         action (str):
-            Action name provided at token generation.
+            Output only. Action name provided at token
+            generation.
     """
 
     class InvalidReason(proto.Enum):
@@ -1285,19 +1296,19 @@ class FraudPreventionAssessment(proto.Message):
 
     Attributes:
         transaction_risk (float):
-            Probability of this transaction being
-            fraudulent. Summarizes the combined risk of
-            attack vectors below. Values are from 0.0
+            Output only. Probability of this transaction
+            being fraudulent. Summarizes the combined risk
+            of attack vectors below. Values are from 0.0
             (lowest) to 1.0 (highest).
         stolen_instrument_verdict (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment.StolenInstrumentVerdict):
-            Assessment of this transaction for risk of a
-            stolen instrument.
+            Output only. Assessment of this transaction
+            for risk of a stolen instrument.
         card_testing_verdict (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment.CardTestingVerdict):
-            Assessment of this transaction for risk of
-            being part of a card testing attack.
+            Output only. Assessment of this transaction
+            for risk of being part of a card testing attack.
         behavioral_trust_verdict (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment.BehavioralTrustVerdict):
-            Assessment of this transaction for behavioral
-            trust.
+            Output only. Assessment of this transaction
+            for behavioral trust.
     """
 
     class StolenInstrumentVerdict(proto.Message):
@@ -1307,9 +1318,9 @@ class FraudPreventionAssessment(proto.Message):
 
         Attributes:
             risk (float):
-                Probability of this transaction being
-                executed with a stolen instrument. Values are
-                from 0.0 (lowest) to 1.0 (highest).
+                Output only. Probability of this transaction
+                being executed with a stolen instrument. Values
+                are from 0.0 (lowest) to 1.0 (highest).
         """
 
         risk: float = proto.Field(
@@ -1324,8 +1335,8 @@ class FraudPreventionAssessment(proto.Message):
 
         Attributes:
             risk (float):
-                Probability of this transaction attempt being
-                part of a card testing attack.
+                Output only. Probability of this transaction
+                attempt being part of a card testing attack.
                 Values are from 0.0 (lowest) to 1.0 (highest).
         """
 
@@ -1339,9 +1350,10 @@ class FraudPreventionAssessment(proto.Message):
 
         Attributes:
             trust (float):
-                Probability of this transaction attempt being
-                executed in a behaviorally trustworthy way.
-                Values are from 0.0 (lowest) to 1.0 (highest).
+                Output only. Probability of this transaction
+                attempt being executed in a behaviorally
+                trustworthy way. Values are from 0.0 (lowest) to
+                1.0 (highest).
         """
 
         trust: float = proto.Field(
@@ -1464,7 +1476,7 @@ class AccountDefenderAssessment(proto.Message):
 
     Attributes:
         labels (MutableSequence[google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment.AccountDefenderLabel]):
-            Labels for this request.
+            Output only. Labels for this request.
     """
 
     class AccountDefenderLabel(proto.Enum):
@@ -1907,8 +1919,8 @@ class Key(proto.Message):
             The resource name for the Key in the format
             ``projects/{project}/keys/{key}``.
         display_name (str):
-            Human-readable display name of this key.
-            Modifiable by user.
+            Required. Human-readable display name of this
+            key. Modifiable by user.
         web_settings (google.cloud.recaptchaenterprise_v1.types.WebKeySettings):
             Settings for keys that can be used by
             websites.
@@ -1925,15 +1937,16 @@ class Key(proto.Message):
 
             This field is a member of `oneof`_ ``platform_settings``.
         labels (MutableMapping[str, str]):
-            See [Creating and managing labels]
+            Optional. See [Creating and managing labels]
             (https://cloud.google.com/recaptcha-enterprise/docs/labels).
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp corresponding to
             the creation of this key.
         testing_options (google.cloud.recaptchaenterprise_v1.types.TestingOptions):
-            Options for user acceptance testing.
+            Optional. Options for user acceptance
+            testing.
         waf_settings (google.cloud.recaptchaenterprise_v1.types.WafSettings):
-            Settings for WAF
+            Optional. Settings for WAF
     """
 
     name: str = proto.Field(
@@ -1989,14 +2002,15 @@ class TestingOptions(proto.Message):
 
     Attributes:
         testing_score (float):
-            All assessments for this Key will return this
-            score. Must be between 0 (likely not legitimate)
-            and 1 (likely legitimate) inclusive.
+            Optional. All assessments for this Key will
+            return this score. Must be between 0 (likely not
+            legitimate) and 1 (likely legitimate) inclusive.
         testing_challenge (google.cloud.recaptchaenterprise_v1.types.TestingOptions.TestingChallenge):
-            For challenge-based keys only (CHECKBOX,
-            INVISIBLE), all challenge requests for this site
-            will return nocaptcha if NOCAPTCHA, or an
-            unsolvable challenge if CHALLENGE.
+            Optional. For challenge-based keys only
+            (CHECKBOX, INVISIBLE), all challenge requests
+            for this site will return nocaptcha if
+            NOCAPTCHA, or an unsolvable challenge if
+            CHALLENGE.
     """
 
     class TestingChallenge(proto.Enum):
@@ -2035,27 +2049,29 @@ class WebKeySettings(proto.Message):
 
     Attributes:
         allow_all_domains (bool):
-            If set to true, it means allowed_domains will not be
-            enforced.
+            Optional. If set to true, it means allowed_domains will not
+            be enforced.
         allowed_domains (MutableSequence[str]):
-            Domains or subdomains of websites allowed to
-            use the key. All subdomains of an allowed domain
-            are automatically allowed. A valid domain
-            requires a host and must not include any path,
-            port, query or fragment. Examples: 'example.com'
-            or 'subdomain.example.com'
+            Optional. Domains or subdomains of websites
+            allowed to use the key. All subdomains of an
+            allowed domain are automatically allowed. A
+            valid domain requires a host and must not
+            include any path, port, query or fragment.
+            Examples: 'example.com' or
+            'subdomain.example.com'
         allow_amp_traffic (bool):
-            If set to true, the key can be used on AMP
-            (Accelerated Mobile Pages) websites. This is
-            supported only for the SCORE integration type.
+            Optional. If set to true, the key can be used
+            on AMP (Accelerated Mobile Pages) websites. This
+            is supported only for the SCORE integration
+            type.
         integration_type (google.cloud.recaptchaenterprise_v1.types.WebKeySettings.IntegrationType):
             Required. Describes how this key is
             integrated with the website.
         challenge_security_preference (google.cloud.recaptchaenterprise_v1.types.WebKeySettings.ChallengeSecurityPreference):
-            Settings for the frequency and difficulty at
-            which this key triggers captcha challenges. This
-            should only be specified for IntegrationTypes
-            CHECKBOX and INVISIBLE.
+            Optional. Settings for the frequency and
+            difficulty at which this key triggers captcha
+            challenges. This should only be specified for
+            IntegrationTypes CHECKBOX and INVISIBLE.
     """
 
     class IntegrationType(proto.Enum):
@@ -2135,13 +2151,15 @@ class AndroidKeySettings(proto.Message):
 
     Attributes:
         allow_all_package_names (bool):
-            If set to true, allowed_package_names are not enforced.
+            Optional. If set to true, allowed_package_names are not
+            enforced.
         allowed_package_names (MutableSequence[str]):
-            Android package names of apps allowed to use
-            the key. Example: 'com.companyname.appname'
+            Optional. Android package names of apps
+            allowed to use the key. Example:
+            'com.companyname.appname'
         support_non_google_app_store_distribution (bool):
-            Set to true for keys that are used in an
-            Android application that is available for
+            Optional. Set to true for keys that are used
+            in an Android application that is available for
             download in app stores in addition to the Google
             Play Store.
     """
@@ -2165,14 +2183,15 @@ class IOSKeySettings(proto.Message):
 
     Attributes:
         allow_all_bundle_ids (bool):
-            If set to true, allowed_bundle_ids are not enforced.
+            Optional. If set to true, allowed_bundle_ids are not
+            enforced.
         allowed_bundle_ids (MutableSequence[str]):
-            iOS bundle ids of apps allowed to use the
-            key. Example:
+            Optional. iOS bundle ids of apps allowed to
+            use the key. Example:
             'com.companyname.productname.appname'
         apple_developer_id (google.cloud.recaptchaenterprise_v1.types.AppleDeveloperId):
-            Apple Developer account details for the app
-            that is protected by the reCAPTCHA Key.
+            Optional. Apple Developer account details for
+            the app that is protected by the reCAPTCHA Key.
             reCAPTCHA Enterprise leverages platform-specific
             checks like Apple App Attest and Apple
             DeviceCheck to protect your app from abuse.
@@ -2318,8 +2337,9 @@ class FirewallPolicyAssessment(proto.Message):
 
     Attributes:
         error (google.rpc.status_pb2.Status):
-            If the processing of a policy config fails, an error will be
-            populated and the firewall_policy will be left empty.
+            Output only. If the processing of a policy config fails, an
+            error will be populated and the firewall_policy will be left
+            empty.
         firewall_policy (google.cloud.recaptchaenterprise_v1.types.FirewallPolicy):
             Output only. The policy that matched the
             request. If more than one policy may match, this
@@ -2403,9 +2423,9 @@ class FirewallAction(proto.Message):
 
         Attributes:
             path (str):
-                The address to redirect to. The target is a
-                relative path in the current host. Example:
-                "/blog/404.html".
+                Optional. The address to redirect to. The
+                target is a relative path in the current host.
+                Example: "/blog/404.html".
         """
 
         path: str = proto.Field(
@@ -2420,11 +2440,11 @@ class FirewallAction(proto.Message):
 
         Attributes:
             key (str):
-                The header key to set in the request to the
-                backend server.
+                Optional. The header key to set in the
+                request to the backend server.
             value (str):
-                The header value to set in the request to the
-                backend server.
+                Optional. The header value to set in the
+                request to the backend server.
         """
 
         key: str = proto.Field(
@@ -2477,30 +2497,31 @@ class FirewallPolicy(proto.Message):
             The resource name for the FirewallPolicy in the format
             ``projects/{project}/firewallpolicies/{firewallpolicy}``.
         description (str):
-            A description of what this policy aims to
-            achieve, for convenience purposes. The
+            Optional. A description of what this policy
+            aims to achieve, for convenience purposes. The
             description can at most include 256 UTF-8
             characters.
         path (str):
-            The path for which this policy applies, specified as a glob
-            pattern. For more information on glob, see the `manual
+            Optional. The path for which this policy applies, specified
+            as a glob pattern. For more information on glob, see the
+            `manual
             page <https://man7.org/linux/man-pages/man7/glob.7.html>`__.
             A path has a max length of 200 characters.
         condition (str):
-            A CEL (Common Expression Language) conditional expression
-            that specifies if this policy applies to an incoming user
-            request. If this condition evaluates to true and the
-            requested path matched the path pattern, the associated
-            actions should be executed by the caller. The condition
-            string is checked for CEL syntax correctness on creation.
-            For more information, see the `CEL
+            Optional. A CEL (Common Expression Language) conditional
+            expression that specifies if this policy applies to an
+            incoming user request. If this condition evaluates to true
+            and the requested path matched the path pattern, the
+            associated actions should be executed by the caller. The
+            condition string is checked for CEL syntax correctness on
+            creation. For more information, see the `CEL
             spec <https://github.com/google/cel-spec>`__ and its
             `language
             definition <https://github.com/google/cel-spec/blob/master/doc/langdef.md>`__.
             A condition has a max length of 500 characters.
         actions (MutableSequence[google.cloud.recaptchaenterprise_v1.types.FirewallAction]):
-            The actions that the caller should take regarding user
-            access. There should be at most one terminal action. A
+            Optional. The actions that the caller should take regarding
+            user access. There should be at most one terminal action. A
             terminal action is any action that forces a response, such
             as ``AllowAction``, ``BlockAction`` or ``SubstituteAction``.
             Zero or more non-terminal actions such as ``SetHeader``

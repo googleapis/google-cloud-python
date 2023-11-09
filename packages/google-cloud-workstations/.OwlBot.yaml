@@ -15,3 +15,4 @@
 deep-copy-regex:
     - source: /google/cloud/workstations/(.*)/.*-py
       dest: /owl-bot-staging/google-cloud-workstations/$1
+api-name: google-cloud-workstations

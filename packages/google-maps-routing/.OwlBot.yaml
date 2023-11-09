@@ -15,3 +15,5 @@
 deep-copy-regex:
     - source: /google/maps/routing/(.*)/.*-py
       dest: /owl-bot-staging/google-maps-routing/$1
+
+api-name: google-maps-routing

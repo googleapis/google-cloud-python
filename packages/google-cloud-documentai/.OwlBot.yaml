@@ -25,3 +25,4 @@ deep-copy-regex:
 
 begin-after-commit-hash: 19c469f0eefe7735eb3d6438773f12dd88060da1
 
+api-name: google-cloud-documentai
