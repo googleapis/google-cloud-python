@@ -3,5 +3,5 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    type/services
-    type/types
+    type/services_
+    type/types_
