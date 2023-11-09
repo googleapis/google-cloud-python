@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## [0.33.3](https://github.com/googleapis/python-runtimeconfig/compare/v0.33.2...v0.33.3) (2023-11-09)
+
+
+### Bug Fixes
+
+* Add trove classifier for python 3.11 ([#177](https://github.com/googleapis/python-runtimeconfig/issues/177)) ([717429e](https://github.com/googleapis/python-runtimeconfig/commit/717429ea45ca13d045a07ddb7ff9bde7395bd1a2))
+* Require google-cloud-core &gt;= 1.4.4 ([#223](https://github.com/googleapis/python-runtimeconfig/issues/223)) ([e695994](https://github.com/googleapis/python-runtimeconfig/commit/e695994e66114303b17ef863e0203342dd0b7467))
+
 ## [0.33.2](https://github.com/googleapis/python-runtimeconfig/compare/v0.33.1...v0.33.2) (2022-07-10)
 
 
