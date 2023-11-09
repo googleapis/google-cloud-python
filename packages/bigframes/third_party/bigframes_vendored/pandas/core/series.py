@@ -728,18 +728,74 @@ class Series(NDFrame):  # type: ignore[misc]
         func,
     ) -> DataFrame | Series:
         """
-        Invoke function on values of Series.
+        Invoke function on values of a Series.
 
-        Can be ufunc (a NumPy function that applies to the entire Series)
-        or a Python function that only works on single values.
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Let's use ``reuse=False`` flag to make sure a new ``remote_function``
+        is created every time we run the following code, but you can skip it
+        to potentially reuse a previously deployed ``remote_function`` from
+        the same user defined function.
+
+            >>> @bpd.remote_function([int], float, reuse=False)
+            ... def minutes_to_hours(x):
+            ...     return x/60
+
+            >>> minutes = bpd.Series([0, 30, 60, 90, 120])
+            >>> minutes
+            0      0
+            1     30
+            2     60
+            3     90
+            4    120
+            dtype: Int64
+
+            >>> hours = minutes.apply(minutes_to_hours)
+            >>> hours
+            0    0.0
+            1    0.5
+            2    1.0
+            3    1.5
+            4    2.0
+            dtype: Float64
+
+        You could turn a user defined function with external package
+        dependencies into a BigQuery DataFrames remote function. You would
+        provide the names of the packages via ``packages`` param.
+
+            >>> @bpd.remote_function(
+            ...     [str],
+            ...     str,
+            ...     reuse=False,
+            ...     packages=["cryptography"],
+            ... )
+            ... def get_hash(input):
+            ...     from cryptography.fernet import Fernet
+            ...
+            ...     # handle missing value
+            ...     if input is None:
+            ...         input = ""
+            ...
+            ...     key = Fernet.generate_key()
+            ...     f = Fernet(key)
+            ...     return f.encrypt(input.encode()).decode()
+
+            >>> names = bpd.Series(["Alice", "Bob"])
+            >>> hashes = names.apply(get_hash)
 
         Args:
             func (function):
-                Python function or NumPy ufunc to apply.
+                BigFrames DataFrames ``remote_function`` to apply. The function
+                should take a scalar and return a scalar. It will be applied to
+                every element in the ``Series``.
 
         Returns:
-            bigframes.series.Series: If func returns a Series object the result
-                will be a DataFrame.
+            bigframes.series.Series: A new Series with values representing the
+            return value of the ``func`` applied to each element of the original
+            Series.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

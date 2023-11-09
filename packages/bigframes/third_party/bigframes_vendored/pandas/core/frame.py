@@ -2159,8 +2159,68 @@ class DataFrame(NDFrame):
            In pandas 2.1.0, DataFrame.applymap is deprecated and renamed to
            DataFrame.map.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Let's use ``reuse=False`` flag to make sure a new ``remote_function``
+        is created every time we run the following code, but you can skip it
+        to potentially reuse a previously deployed ``remote_function`` from
+        the same user defined function.
+
+            >>> @bpd.remote_function([int], float, reuse=False)
+            ... def minutes_to_hours(x):
+            ...     return x/60
+
+            >>> df_minutes = bpd.DataFrame(
+            ...     {"system_minutes" : [0, 30, 60, 90, 120],
+            ...      "user_minutes" : [0, 15, 75, 90, 6]})
+            >>> df_minutes
+            system_minutes  user_minutes
+            0               0             0
+            1              30            15
+            2              60            75
+            3              90            90
+            4             120             6
+            <BLANKLINE>
+            [5 rows x 2 columns]
+
+            >>> df_hours = df_minutes.map(minutes_to_hours)
+            >>> df_hours
+            system_minutes  user_minutes
+            0             0.0           0.0
+            1             0.5          0.25
+            2             1.0          1.25
+            3             1.5           1.5
+            4             2.0           0.1
+            <BLANKLINE>
+            [5 rows x 2 columns]
+
+        If there are ``NA``/``None`` values in the data, you can ignore
+        applying the remote function on such values by specifying
+        ``na_action='ignore'``.
+
+            >>> df_minutes = bpd.DataFrame(
+            ...     {
+            ...         "system_minutes" : [0, 30, 60, None, 90, 120, bpd.NA],
+            ...         "user_minutes" : [0, 15, 75, 90, 6, None, bpd.NA]
+            ...     }, dtype="Int64")
+            >>> df_hours = df_minutes.map(minutes_to_hours, na_action='ignore')
+            >>> df_hours
+            system_minutes  user_minutes
+            0             0.0           0.0
+            1             0.5          0.25
+            2             1.0          1.25
+            3            <NA>           1.5
+            4             1.5           0.1
+            5             2.0          <NA>
+            6            <NA>          <NA>
+            <BLANKLINE>
+            [7 rows x 2 columns]
+
         Args:
-            func:
+            func (function):
                 Python function wrapped by ``remote_function`` decorator,
                 returns a single value from a single value.
             na_action (Optional[str], default None):
