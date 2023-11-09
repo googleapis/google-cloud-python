@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.14.0](https://github.com/googleapis/python-api-core/compare/v2.13.1...v2.14.0) (2023-11-09)
+
+
+### Features
+
+* Support with_call for wrapped rpcs ([#550](https://github.com/googleapis/python-api-core/issues/550)) ([01a57a7](https://github.com/googleapis/python-api-core/commit/01a57a745f4c8345c9c93412c27dd416b49f5953))
+
 ## [2.13.1](https://github.com/googleapis/python-api-core/compare/v2.13.0...v2.13.1) (2023-11-09)
 
 
