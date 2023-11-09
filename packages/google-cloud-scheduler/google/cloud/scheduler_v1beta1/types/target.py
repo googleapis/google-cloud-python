@@ -118,8 +118,8 @@ class HttpTarget(proto.Message):
                the job name.
             -  ``X-CloudScheduler-ScheduleTime``: For Cloud Scheduler
                jobs specified in the unix-cron format, this header will
-               contain the job schedule time in RFC3339 UTC "Zulu"
-               format.
+               contain the job schedule as an offset of UTC parsed
+               according to RFC3339.
 
             The total size of headers must be less than 80KB.
         body (bytes):
@@ -227,8 +227,8 @@ class AppEngineHttpTarget(proto.Message):
                the job name.
             -  ``X-CloudScheduler-ScheduleTime``: For Cloud Scheduler
                jobs specified in the unix-cron format, this header will
-               contain the job schedule time in RFC3339 UTC "Zulu"
-               format.
+               contain the job schedule as an offset of UTC parsed
+               according to RFC3339.
 
             If the job has an
             [body][google.cloud.scheduler.v1beta1.AppEngineHttpTarget.body],
