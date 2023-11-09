@@ -736,6 +736,9 @@ def test_alpha_analytics_data_client_create_channel_credentials_file(
             default_scopes=(
                 "https://www.googleapis.com/auth/analytics",
                 "https://www.googleapis.com/auth/analytics.readonly",
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/drive.file",
+                "https://www.googleapis.com/auth/spreadsheets",
             ),
             scopes=None,
             default_host="analyticsdata.googleapis.com",
@@ -1409,6 +1412,261 @@ async def test_query_audience_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        analytics_data_api.SheetExportAudienceListRequest,
+        dict,
+    ],
+)
+def test_sheet_export_audience_list(request_type, transport: str = "grpc"):
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.sheet_export_audience_list), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_data_api.SheetExportAudienceListResponse(
+            spreadsheet_uri="spreadsheet_uri_value",
+            spreadsheet_id="spreadsheet_id_value",
+            row_count=992,
+        )
+        response = client.sheet_export_audience_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.SheetExportAudienceListRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.SheetExportAudienceListResponse)
+    assert response.spreadsheet_uri == "spreadsheet_uri_value"
+    assert response.spreadsheet_id == "spreadsheet_id_value"
+    assert response.row_count == 992
+
+
+def test_sheet_export_audience_list_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.sheet_export_audience_list), "__call__"
+    ) as call:
+        client.sheet_export_audience_list()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.SheetExportAudienceListRequest()
+
+
+@pytest.mark.asyncio
+async def test_sheet_export_audience_list_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_data_api.SheetExportAudienceListRequest,
+):
+    client = AlphaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.sheet_export_audience_list), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.SheetExportAudienceListResponse(
+                spreadsheet_uri="spreadsheet_uri_value",
+                spreadsheet_id="spreadsheet_id_value",
+                row_count=992,
+            )
+        )
+        response = await client.sheet_export_audience_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_data_api.SheetExportAudienceListRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.SheetExportAudienceListResponse)
+    assert response.spreadsheet_uri == "spreadsheet_uri_value"
+    assert response.spreadsheet_id == "spreadsheet_id_value"
+    assert response.row_count == 992
+
+
+@pytest.mark.asyncio
+async def test_sheet_export_audience_list_async_from_dict():
+    await test_sheet_export_audience_list_async(request_type=dict)
+
+
+def test_sheet_export_audience_list_field_headers():
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_data_api.SheetExportAudienceListRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.sheet_export_audience_list), "__call__"
+    ) as call:
+        call.return_value = analytics_data_api.SheetExportAudienceListResponse()
+        client.sheet_export_audience_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_sheet_export_audience_list_field_headers_async():
+    client = AlphaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_data_api.SheetExportAudienceListRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.sheet_export_audience_list), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.SheetExportAudienceListResponse()
+        )
+        await client.sheet_export_audience_list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_sheet_export_audience_list_flattened():
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.sheet_export_audience_list), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_data_api.SheetExportAudienceListResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.sheet_export_audience_list(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_sheet_export_audience_list_flattened_error():
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.sheet_export_audience_list(
+            analytics_data_api.SheetExportAudienceListRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_sheet_export_audience_list_flattened_async():
+    client = AlphaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.sheet_export_audience_list), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_data_api.SheetExportAudienceListResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_data_api.SheetExportAudienceListResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.sheet_export_audience_list(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_sheet_export_audience_list_flattened_error_async():
+    client = AlphaAnalyticsDataAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.sheet_export_audience_list(
+            analytics_data_api.SheetExportAudienceListRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         analytics_data_api.GetAudienceListRequest,
         dict,
     ],
@@ -1433,6 +1691,9 @@ def test_get_audience_list(request_type, transport: str = "grpc"):
             audience="audience_value",
             audience_display_name="audience_display_name_value",
             state=analytics_data_api.AudienceList.State.CREATING,
+            creation_quota_tokens_charged=3070,
+            row_count=992,
+            error_message="error_message_value",
         )
         response = client.get_audience_list(request)
 
@@ -1447,6 +1708,9 @@ def test_get_audience_list(request_type, transport: str = "grpc"):
     assert response.audience == "audience_value"
     assert response.audience_display_name == "audience_display_name_value"
     assert response.state == analytics_data_api.AudienceList.State.CREATING
+    assert response.creation_quota_tokens_charged == 3070
+    assert response.row_count == 992
+    assert response.error_message == "error_message_value"
 
 
 def test_get_audience_list_empty_call():
@@ -1492,6 +1756,9 @@ async def test_get_audience_list_async(
                 audience="audience_value",
                 audience_display_name="audience_display_name_value",
                 state=analytics_data_api.AudienceList.State.CREATING,
+                creation_quota_tokens_charged=3070,
+                row_count=992,
+                error_message="error_message_value",
             )
         )
         response = await client.get_audience_list(request)
@@ -1507,6 +1774,9 @@ async def test_get_audience_list_async(
     assert response.audience == "audience_value"
     assert response.audience_display_name == "audience_display_name_value"
     assert response.state == analytics_data_api.AudienceList.State.CREATING
+    assert response.creation_quota_tokens_charged == 3070
+    assert response.row_count == 992
+    assert response.error_message == "error_message_value"
 
 
 @pytest.mark.asyncio
@@ -2259,6 +2529,9 @@ def test_create_audience_list_rest(request_type):
         "dimensions": [{"dimension_name": "dimension_name_value"}],
         "state": 1,
         "begin_creating_time": {"seconds": 751, "nanos": 543},
+        "creation_quota_tokens_charged": 3070,
+        "row_count": 992,
+        "error_message": "error_message_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -2627,6 +2900,94 @@ def test_query_audience_list_rest(request_type):
     assert response.row_count == 992
 
 
+def test_query_audience_list_rest_required_fields(
+    request_type=analytics_data_api.QueryAudienceListRequest,
+):
+    transport_class = transports.AlphaAnalyticsDataRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_audience_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_audience_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_data_api.QueryAudienceListResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = analytics_data_api.QueryAudienceListResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.query_audience_list(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_query_audience_list_rest_unset_required_fields():
+    transport = transports.AlphaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.query_audience_list._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_query_audience_list_rest_interceptors(null_interceptor):
     transport = transports.AlphaAnalyticsDataRestTransport(
@@ -2776,6 +3137,291 @@ def test_query_audience_list_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        analytics_data_api.SheetExportAudienceListRequest,
+        dict,
+    ],
+)
+def test_sheet_export_audience_list_rest(request_type):
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/audienceLists/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.SheetExportAudienceListResponse(
+            spreadsheet_uri="spreadsheet_uri_value",
+            spreadsheet_id="spreadsheet_id_value",
+            row_count=992,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.SheetExportAudienceListResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.sheet_export_audience_list(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_data_api.SheetExportAudienceListResponse)
+    assert response.spreadsheet_uri == "spreadsheet_uri_value"
+    assert response.spreadsheet_id == "spreadsheet_id_value"
+    assert response.row_count == 992
+
+
+def test_sheet_export_audience_list_rest_required_fields(
+    request_type=analytics_data_api.SheetExportAudienceListRequest,
+):
+    transport_class = transports.AlphaAnalyticsDataRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).sheet_export_audience_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).sheet_export_audience_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_data_api.SheetExportAudienceListResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = analytics_data_api.SheetExportAudienceListResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.sheet_export_audience_list(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_sheet_export_audience_list_rest_unset_required_fields():
+    transport = transports.AlphaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.sheet_export_audience_list._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_sheet_export_audience_list_rest_interceptors(null_interceptor):
+    transport = transports.AlphaAnalyticsDataRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AlphaAnalyticsDataRestInterceptor(),
+    )
+    client = AlphaAnalyticsDataClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AlphaAnalyticsDataRestInterceptor, "post_sheet_export_audience_list"
+    ) as post, mock.patch.object(
+        transports.AlphaAnalyticsDataRestInterceptor, "pre_sheet_export_audience_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_data_api.SheetExportAudienceListRequest.pb(
+            analytics_data_api.SheetExportAudienceListRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_data_api.SheetExportAudienceListResponse.to_json(
+                analytics_data_api.SheetExportAudienceListResponse()
+            )
+        )
+
+        request = analytics_data_api.SheetExportAudienceListRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_data_api.SheetExportAudienceListResponse()
+
+        client.sheet_export_audience_list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_sheet_export_audience_list_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_data_api.SheetExportAudienceListRequest,
+):
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/audienceLists/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.sheet_export_audience_list(request)
+
+
+def test_sheet_export_audience_list_rest_flattened():
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_data_api.SheetExportAudienceListResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/audienceLists/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.SheetExportAudienceListResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.sheet_export_audience_list(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/audienceLists/*}:exportSheet"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_sheet_export_audience_list_rest_flattened_error(transport: str = "rest"):
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.sheet_export_audience_list(
+            analytics_data_api.SheetExportAudienceListRequest(),
+            name="name_value",
+        )
+
+
+def test_sheet_export_audience_list_rest_error():
+    client = AlphaAnalyticsDataClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         analytics_data_api.GetAudienceListRequest,
         dict,
     ],
@@ -2798,6 +3444,9 @@ def test_get_audience_list_rest(request_type):
             audience="audience_value",
             audience_display_name="audience_display_name_value",
             state=analytics_data_api.AudienceList.State.CREATING,
+            creation_quota_tokens_charged=3070,
+            row_count=992,
+            error_message="error_message_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2817,6 +3466,9 @@ def test_get_audience_list_rest(request_type):
     assert response.audience == "audience_value"
     assert response.audience_display_name == "audience_display_name_value"
     assert response.state == analytics_data_api.AudienceList.State.CREATING
+    assert response.creation_quota_tokens_charged == 3070
+    assert response.row_count == 992
+    assert response.error_message == "error_message_value"
 
 
 def test_get_audience_list_rest_required_fields(
@@ -3535,6 +4187,7 @@ def test_alpha_analytics_data_base_transport():
         "run_funnel_report",
         "create_audience_list",
         "query_audience_list",
+        "sheet_export_audience_list",
         "get_audience_list",
         "list_audience_lists",
     )
@@ -3578,6 +4231,9 @@ def test_alpha_analytics_data_base_transport_with_credentials_file():
             default_scopes=(
                 "https://www.googleapis.com/auth/analytics",
                 "https://www.googleapis.com/auth/analytics.readonly",
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/drive.file",
+                "https://www.googleapis.com/auth/spreadsheets",
             ),
             quota_project_id="octopus",
         )
@@ -3604,6 +4260,9 @@ def test_alpha_analytics_data_auth_adc():
             default_scopes=(
                 "https://www.googleapis.com/auth/analytics",
                 "https://www.googleapis.com/auth/analytics.readonly",
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/drive.file",
+                "https://www.googleapis.com/auth/spreadsheets",
             ),
             quota_project_id=None,
         )
@@ -3627,6 +4286,9 @@ def test_alpha_analytics_data_transport_auth_adc(transport_class):
             default_scopes=(
                 "https://www.googleapis.com/auth/analytics",
                 "https://www.googleapis.com/auth/analytics.readonly",
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/drive.file",
+                "https://www.googleapis.com/auth/spreadsheets",
             ),
             quota_project_id="octopus",
         )
@@ -3682,6 +4344,9 @@ def test_alpha_analytics_data_transport_create_channel(transport_class, grpc_hel
             default_scopes=(
                 "https://www.googleapis.com/auth/analytics",
                 "https://www.googleapis.com/auth/analytics.readonly",
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/drive.file",
+                "https://www.googleapis.com/auth/spreadsheets",
             ),
             scopes=["1", "2"],
             default_host="analyticsdata.googleapis.com",
@@ -3839,6 +4504,9 @@ def test_alpha_analytics_data_client_transport_session_collision(transport_name)
     assert session1 != session2
     session1 = client1.transport.query_audience_list._session
     session2 = client2.transport.query_audience_list._session
+    assert session1 != session2
+    session1 = client1.transport.sheet_export_audience_list._session
+    session2 = client2.transport.sheet_export_audience_list._session
     assert session1 != session2
     session1 = client1.transport.get_audience_list._session
     session2 = client2.transport.get_audience_list._session
@@ -4009,20 +4677,20 @@ def test_alpha_analytics_data_grpc_lro_async_client():
 
 
 def test_audience_list_path():
-    propertyId = "squid"
-    audienceListId = "clam"
-    expected = "properties/{propertyId}/audienceLists/{audienceListId}".format(
-        propertyId=propertyId,
-        audienceListId=audienceListId,
+    property = "squid"
+    audience_list = "clam"
+    expected = "properties/{property}/audienceLists/{audience_list}".format(
+        property=property,
+        audience_list=audience_list,
     )
-    actual = AlphaAnalyticsDataClient.audience_list_path(propertyId, audienceListId)
+    actual = AlphaAnalyticsDataClient.audience_list_path(property, audience_list)
     assert expected == actual
 
 
 def test_parse_audience_list_path():
     expected = {
-        "propertyId": "whelk",
-        "audienceListId": "octopus",
+        "property": "whelk",
+        "audience_list": "octopus",
     }
     path = AlphaAnalyticsDataClient.audience_list_path(**expected)
 

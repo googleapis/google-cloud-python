@@ -27,6 +27,8 @@ from .analytics_data_api import (
     QueryAudienceListResponse,
     RunFunnelReportRequest,
     RunFunnelReportResponse,
+    SheetExportAudienceListRequest,
+    SheetExportAudienceListResponse,
 )
 from .data import (
     BetweenFilter,
@@ -108,6 +110,8 @@ __all__ = (
     "QueryAudienceListResponse",
     "RunFunnelReportRequest",
     "RunFunnelReportResponse",
+    "SheetExportAudienceListRequest",
+    "SheetExportAudienceListResponse",
     "BetweenFilter",
     "DateRange",
     "Dimension",

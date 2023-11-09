@@ -339,6 +339,10 @@ class AlphaAnalyticsDataAsyncClient:
         list through this method and then send the audience resource
         name to the ``QueryAudienceList`` method.
 
+        See `Creating an Audience
+        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Lists with examples.
+
         An audience list is a snapshot of the users currently in the
         audience at the time of audience list creation. Creating
         audience lists for one audience on different days will return
@@ -348,6 +352,12 @@ class AlphaAnalyticsDataAsyncClient:
         in the ways that are important to your business. To learn more,
         see https://support.google.com/analytics/answer/9267572.
         Audience lists contain the users in each audience.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         .. code-block:: python
 
@@ -389,7 +399,7 @@ class AlphaAnalyticsDataAsyncClient:
                 list.
             parent (:class:`str`):
                 Required. The parent resource where this audience list
-                will be created. Format: ``properties/{propertyId}``
+                will be created. Format: ``properties/{property}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -483,11 +493,21 @@ class AlphaAnalyticsDataAsyncClient:
         the users are not immediately available for listing. First, a
         request to ``CreateAudienceList`` is necessary to create an
         audience list of users, and then second, this method is used to
-        retrieve the users in the audience.
+        retrieve the users in the audience list.
+
+        See `Creating an Audience
+        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Lists with examples.
 
         Audiences in Google Analytics 4 allow you to segment your users
         in the ways that are important to your business. To learn more,
         see https://support.google.com/analytics/answer/9267572.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         .. code-block:: python
 
@@ -506,6 +526,7 @@ class AlphaAnalyticsDataAsyncClient:
 
                 # Initialize request argument(s)
                 request = data_v1alpha.QueryAudienceListRequest(
+                    name="name_value",
                 )
 
                 # Make the request
@@ -519,9 +540,9 @@ class AlphaAnalyticsDataAsyncClient:
                 The request object. A request to list users in an
                 audience list.
             name (:class:`str`):
-                The name of the audience list to retrieve users from.
-                Format:
-                ``properties/{propertyId}/audienceLists/{audienceListId}``
+                Required. The name of the audience list to retrieve
+                users from. Format:
+                ``properties/{property}/audienceLists/{audience_list}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -578,6 +599,130 @@ class AlphaAnalyticsDataAsyncClient:
         # Done; return the response.
         return response
 
+    async def sheet_export_audience_list(
+        self,
+        request: Optional[
+            Union[analytics_data_api.SheetExportAudienceListRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_data_api.SheetExportAudienceListResponse:
+        r"""Exports an audience list of users to a Google Sheet. After
+        creating an audience, the users are not immediately available
+        for listing. First, a request to ``CreateAudienceList`` is
+        necessary to create an audience list of users, and then second,
+        this method is used to export those users in the audience list
+        to a Google Sheet.
+
+        See `Creating an Audience
+        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Lists with examples.
+
+        Audiences in Google Analytics 4 allow you to segment your users
+        in the ways that are important to your business. To learn more,
+        see https://support.google.com/analytics/answer/9267572.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            async def sample_sheet_export_audience_list():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataAsyncClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.SheetExportAudienceListRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.sheet_export_audience_list(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.data_v1alpha.types.SheetExportAudienceListRequest, dict]]):
+                The request object. A request to export users in an
+                audience list to a Google Sheet.
+            name (:class:`str`):
+                Required. The name of the audience list to retrieve
+                users from. Format:
+                ``properties/{property}/audienceLists/{audience_list}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1alpha.types.SheetExportAudienceListResponse:
+                The created Google Sheet with the
+                list of users in an audience list.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_data_api.SheetExportAudienceListRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.sheet_export_audience_list,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_audience_list(
         self,
         request: Optional[
@@ -589,9 +734,19 @@ class AlphaAnalyticsDataAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.AudienceList:
-        r"""Gets configuration metadata about a specific audience
-        list. This method can be used to understand an audience
-        list after it has been created.
+        r"""Gets configuration metadata about a specific audience list. This
+        method can be used to understand an audience list after it has
+        been created.
+
+        See `Creating an Audience
+        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Lists with examples.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         .. code-block:: python
 
@@ -625,7 +780,7 @@ class AlphaAnalyticsDataAsyncClient:
                 metadata about a specific audience list.
             name (:class:`str`):
                 Required. The audience list resource name. Format:
-                ``properties/{propertyId}/audienceLists/{audienceListId}``
+                ``properties/{property}/audienceLists/{audience_list}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -698,12 +853,21 @@ class AlphaAnalyticsDataAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAudienceListsAsyncPager:
-        r"""Lists all audience lists for a property. This method
-        can be used for you to find and reuse existing audience
-        lists rather than creating unnecessary new audience
-        lists. The same audience can have multiple audience
-        lists that represent the list of users that were in an
-        audience on different days.
+        r"""Lists all audience lists for a property. This method can be used
+        for you to find and reuse existing audience lists rather than
+        creating unnecessary new audience lists. The same audience can
+        have multiple audience lists that represent the list of users
+        that were in an audience on different days.
+
+        See `Creating an Audience
+        List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Lists with examples.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         .. code-block:: python
 
@@ -739,7 +903,7 @@ class AlphaAnalyticsDataAsyncClient:
             parent (:class:`str`):
                 Required. All audience lists for this property will be
                 listed in the response. Format:
-                ``properties/{propertyId}``
+                ``properties/{property}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

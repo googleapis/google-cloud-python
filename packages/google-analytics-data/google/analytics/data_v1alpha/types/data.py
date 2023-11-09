@@ -261,8 +261,8 @@ class MetricType(proto.Enum):
 
 
 class DateRange(proto.Message):
-    r"""A contiguous set of days: startDate, startDate + 1, ...,
-    endDate. Requests are allowed up to 4 date ranges.
+    r"""A contiguous set of days: ``startDate``, ``startDate + 1``, ...,
+    ``endDate``. Requests are allowed up to 4 date ranges.
 
     Attributes:
         start_date (str):
@@ -309,7 +309,15 @@ class Dimension(proto.Message):
         name (str):
             The name of the dimension. See the `API
             Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions>`__
-            for the list of dimension names.
+            for the list of dimension names supported by core reporting
+            methods such as ``runReport`` and ``batchRunReports``. See
+            `Realtime
+            Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-api-schema#dimensions>`__
+            for the list of dimension names supported by the
+            ``runRealtimeReport`` method. See `Funnel
+            Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/exploration-api-schema#dimensions>`__
+            for the list of dimension names supported by the
+            ``runFunnelReport`` method.
 
             If ``dimensionExpression`` is specified, ``name`` can be any
             string that you would like within the allowed character set.
@@ -2536,7 +2544,7 @@ class FunnelResponseMetadata(proto.Message):
     Attributes:
         sampling_metadatas (MutableSequence[google.analytics.data_v1alpha.types.SamplingMetadata]):
             If funnel report results are
-            `sampled <https://support.google.com/analytics/answer/2637192>`__,
+            `sampled <https://support.google.com/analytics/answer/13331292>`__,
             this describes what percentage of events were used in this
             funnel report. One ``samplingMetadatas`` is populated for
             each date range. Each ``samplingMetadatas`` corresponds to a
@@ -2556,7 +2564,7 @@ class FunnelResponseMetadata(proto.Message):
 
 class SamplingMetadata(proto.Message):
     r"""If funnel report results are
-    `sampled <https://support.google.com/analytics/answer/2637192>`__,
+    `sampled <https://support.google.com/analytics/answer/13331292>`__,
     this metadata describes what percentage of events were used in this
     funnel report for a date range. Sampling is the practice of
     analyzing a subset of all data in order to uncover the meaningful

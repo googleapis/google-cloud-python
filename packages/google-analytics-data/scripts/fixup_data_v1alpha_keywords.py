@@ -44,6 +44,7 @@ class dataCallTransformer(cst.CSTTransformer):
         'list_audience_lists': ('parent', 'page_size', 'page_token', ),
         'query_audience_list': ('name', 'offset', 'limit', ),
         'run_funnel_report': ('property', 'date_ranges', 'funnel', 'funnel_breakdown', 'funnel_next_action', 'funnel_visualization_type', 'segments', 'limit', 'dimension_filter', 'return_property_quota', ),
+        'sheet_export_audience_list': ('name', 'offset', 'limit', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
