@@ -137,6 +137,8 @@ def wrap_method(
     default_timeout=None,
     default_compression=None,
     client_info=client_info.DEFAULT_CLIENT_INFO,
+    *,
+    with_call=False,
 ):
     """Wrap an RPC method with common behavior.
 
@@ -216,6 +218,10 @@ def wrap_method(
                 passed as gRPC metadata to the method. If unspecified, then
                 a sane default will be used. If ``None``, then no user agent
                 metadata will be provided to the RPC method.
+        with_call (bool): If True, wrapped grpc.UnaryUnaryMulticallables will
+            return a tuple of (response, grpc.Call) instead of just the response.
+            This is useful for extracting trailing metadata from unary calls.
+            Defaults to False.
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
@@ -223,6 +229,13 @@ def wrap_method(
             arguments and applies the common error mapping, retry, timeout, compression,
             and metadata behavior to the low-level RPC method.
     """
+    if with_call:
+        try:
+            func = func.with_call
+        except AttributeError as exc:
+            raise ValueError(
+                "with_call=True is only supported for unary calls."
+            ) from exc
     func = grpc_helpers.wrap_errors(func)
     if client_info is not None:
         user_agent_metadata = [client_info.to_grpc_metadata()]
