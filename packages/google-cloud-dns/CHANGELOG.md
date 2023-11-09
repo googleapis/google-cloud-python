@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+## [0.34.2](https://github.com/googleapis/python-dns/compare/v0.34.1...v0.34.2) (2023-11-09)
+
+
+### Bug Fixes
+
+* **deps:** Remove dependency on package "six" ([#226](https://github.com/googleapis/python-dns/issues/226)) ([77a6545](https://github.com/googleapis/python-dns/commit/77a6545a80916ac6aa1c8f306ba03fb64be44dc1))
+
 ## [0.34.1](https://github.com/googleapis/python-dns/compare/v0.34.0...v0.34.1) (2022-07-14)
 
 
