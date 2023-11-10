@@ -36,7 +36,6 @@ from typing import (
     Tuple,
     Union,
 )
-import uuid
 import warnings
 
 import google.api_core.client_info
@@ -986,7 +985,7 @@ class Session(
         job_config.clustering_fields = cluster_cols
         job_config.labels = {"bigframes-api": api_name}
 
-        load_table_destination = self._create_session_table()
+        load_table_destination = bigframes_io.random_table(self._anonymous_dataset)
         load_job = self.bqclient.load_table_from_dataframe(
             pandas_dataframe_copy,
             load_table_destination,
@@ -999,8 +998,9 @@ class Session(
             total_ordering_columns=frozenset([ordering_col]),
             integer_encoding=IntegerEncoding(True, is_sequential=True),
         )
-        table_expression = self.ibis_client.sql(
-            f"SELECT * FROM `{load_table_destination.table_id}`"
+        table_expression = self.ibis_client.table(
+            load_table_destination.table_id,
+            database=f"{load_table_destination.project}.{load_table_destination.dataset_id}",
         )
 
         # b/297590178 Potentially a bug in bqclient.load_table_from_dataframe(), that only when the DF is empty, the index columns disappear in table_expression.
@@ -1278,13 +1278,6 @@ class Session(
                 "for large files to avoid loading the file into local memory."
             )
 
-    def _create_session_table(self) -> bigquery.TableReference:
-        table_name = f"{uuid.uuid4().hex}"
-        dataset = bigquery.Dataset(
-            bigquery.DatasetReference(self.bqclient.project, "_SESSION")
-        )
-        return dataset.table(table_name)
-
     def _create_empty_temp_table(
         self,
         schema: Iterable[bigquery.SchemaField],
@@ -1319,7 +1312,7 @@ class Session(
             ibis.row_number().cast(ibis_dtypes.int64).name(default_ordering_name)
         )
         table = table.mutate(**{default_ordering_name: default_ordering_col})
-        table_ref = self._ibis_to_session_table(
+        table_ref = self._ibis_to_temp_table(
             table,
             cluster_cols=list(index_cols) + [default_ordering_name],
             api_name=api_name,
@@ -1335,7 +1328,7 @@ class Session(
         )
         return table, ordering
 
-    def _ibis_to_session_table(
+    def _ibis_to_temp_table(
         self,
         table: ibis_types.Table,
         cluster_cols: Iterable[str],
