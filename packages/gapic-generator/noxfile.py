@@ -39,6 +39,7 @@ ALL_PYTHON = (
     "3.9",
     "3.10",
     "3.11",
+    "3.12",
 )
 
 NEWEST_PYTHON = ALL_PYTHON[-1]
@@ -260,7 +261,7 @@ def showcase_library(
         yield tmp_dir
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=ALL_PYTHON)
 def showcase(
     session,
     templates="DEFAULT",
@@ -299,7 +300,7 @@ def showcase_mtls(
         )
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=ALL_PYTHON)
 def showcase_alternative_templates(session):
     templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
     showcase(
@@ -404,7 +405,7 @@ def showcase_mypy(
         session.chdir(lib)
 
         # Run the tests.
-        session.run("mypy", "--explicit-package-bases", "google")
+        session.run("mypy", "-p", "google")
 
 
 @nox.session(python=NEWEST_PYTHON)
@@ -436,11 +437,11 @@ def snippetgen(session):
     session.run("py.test", "-vv", "tests/snippetgen")
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def docs(session):
     """Build the docs."""
 
-    session.install("sphinx==4.0.1", "sphinx_rtd_theme")
+    session.install("sphinx==4.5.0", "sphinx_rtd_theme")
     session.install(".")
 
     # Build the docs!
@@ -457,7 +458,7 @@ def docs(session):
     )
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Perform typecheck analysis."""
     # Pin to click==8.1.3 to workaround https://github.com/pallets/click/issues/2558
@@ -469,4 +470,4 @@ def mypy(session):
         "click==8.1.3",
     )
     session.install(".")
-    session.run("mypy", "gapic")
+    session.run("mypy", "-p", "gapic")

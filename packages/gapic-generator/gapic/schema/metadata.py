@@ -178,7 +178,7 @@ class Address(BaseAddress):
         # underscore between the module and the version. For example,
         # change google.cloud.documentai.v1 to google.cloud.documentai_v1.
         # Check if the package name contains a version.
-        version_regex = "^v\d[^/]*$"
+        version_regex = r"^v\d[^/]*$"
         regex_match = re.match(version_regex, self.package[-1])
         if regex_match and len(self.package) > 1:
             versioned_module = f"{self.package[-2]}_{regex_match[0]}"

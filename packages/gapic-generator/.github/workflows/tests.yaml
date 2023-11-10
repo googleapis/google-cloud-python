@@ -19,43 +19,51 @@ env:
 
 jobs:
   docs:
-    # Don't upgrade python version; there's a bug in 3.10 sphinx
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v4
+        # Use python 3.10 for docs to match the version for the sphinx plugin
+        # https://github.com/googleapis/synthtool/pull/1891
         with:
-          python-version: "3.9"
+          python-version: "3.10"
           cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
       - name: Build the documentation.
         run: nox -s docs
   mypy:
+    strategy:
+      matrix:
+        # Run mypy on all of the supported python versions listed in setup.py
+        # https://github.com/python/mypy/blob/master/setup.py
+        python: ["3.8", "3.9", "3.10", "3.11", "3.12"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python "3.11"
+      - name: Set up Python "${{ matrix.python }}"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "${{ matrix.python }}"
           cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
       - name: Check type annotations.
-        run: nox -s mypy
+        run: nox -s mypy-${{ matrix.python }}
   showcase:
     strategy:
+      # Run showcase tests on the lowest and highest supported runtimes
       matrix:
+        python: ["3.7", "3.12"]
         target: [showcase, showcase_alternative_templates]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python "3.11"
+      - name: Set up Python "${{ matrix.python }}"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "${{ matrix.python }}"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -81,7 +89,7 @@ jobs:
             unzip protoc-${PROTOC_VERSION}.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Run showcase tests.
-        run: nox -s ${{ matrix.target }}
+        run: nox -s ${{ matrix.target }}-${{ matrix.python }}
   showcase-mtls:
     if: ${{ false }}            # TODO(dovs): reenable when #1218 is fixed
     strategy:
@@ -95,10 +103,10 @@ jobs:
         run: |
           sudo mkdir -p /tmp/workspace/tests/cert/
           sudo chown -R ${USER} /tmp/workspace/
-      - name: Set up Python "3.11"
+      - name: Set up Python "3.12"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: 'pip'
       - name: Copy mtls files
         run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
@@ -131,7 +139,7 @@ jobs:
   showcase-unit:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
         variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins]
     runs-on: ubuntu-latest
     steps:
@@ -161,10 +169,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python "3.11"
+      - name: Set up Python "3.12"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -189,10 +197,10 @@ jobs:
         variant: ['', _alternative_templates]
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python "3.11"
+      - name: Set up Python "3.12"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -214,10 +222,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python "3.11"
+      - name: Set up Python "3.12"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: 'pip'
       - name: Install system dependencies.
         run: |
@@ -230,7 +238,7 @@ jobs:
   unit:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -251,7 +259,7 @@ jobs:
   fragment:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
         variant: ['', _alternative_templates]
     runs-on: ubuntu-latest
     steps:
@@ -303,21 +311,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python 3.11
+      - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: 'pip'
       - name: Install nox.
         run: |
             python -m pip install nox
       - name: Run blacken and lint on the generated output.
         run: |
-          nox -f tests/integration/goldens/asset/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/credentials/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/eventarc/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/logging/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
-          nox -f tests/integration/goldens/redis/noxfile.py -s mypy-3.11 blacken lint_setup_py lint
+          nox -f tests/integration/goldens/asset/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/credentials/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/eventarc/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/logging/noxfile.py -s mypy-3.12 blacken lint
+          nox -f tests/integration/goldens/redis/noxfile.py -s mypy-3.12 blacken lint
   style-check:
     runs-on: ubuntu-latest
     steps:
@@ -325,6 +333,8 @@ jobs:
       - name: Set up Python "3.11"
         uses: actions/setup-python@v4
         with:
+          # Do not upgrade this check to python 3.12 until
+          # https://github.com/hhatto/autopep8/issues/712 is fixed
           python-version: "3.11"
           cache: 'pip'
       - name: Install autopep8

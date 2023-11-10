@@ -28,16 +28,17 @@ ALL_PYTHON = [
     "3.9",
     "3.10",
     "3.11",
+    "3.12"
 ]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
-PACKAGE_NAME = subprocess.check_output([sys.executable, "setup.py", "--name"], encoding="utf-8")
+PACKAGE_NAME = 'google-cloud-eventarc'
 
 BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "samples", "noxfile.py", "setup.py"]
-DEFAULT_PYTHON_VERSION = "3.11"
+DEFAULT_PYTHON_VERSION = "3.12"
 
 nox.sessions = [
     "unit",
@@ -48,7 +49,6 @@ nox.sessions = [
     "docs",
     "blacken",
     "lint",
-    "lint_setup_py",
 ]
 
 @nox.session(python=ALL_PYTHON)
@@ -93,7 +93,7 @@ def mypy(session):
     session.install('.')
     session.run(
         'mypy',
-        '--explicit-package-bases',
+        '-p',
         'google',
     )
 
@@ -175,10 +175,3 @@ def blacken(session):
         "black",
         *BLACK_PATHS,
     )
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def lint_setup_py(session):
-    """Verify that setup.py is valid (including RST check)."""
-    session.install("docutils", "pygments")
-    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")

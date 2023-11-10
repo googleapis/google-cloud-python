@@ -58,7 +58,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    packages=setuptools.find_packages(exclude=["docs", "tests"]),
+    packages=setuptools.find_namespace_packages(exclude=["docs", "tests"]),
     url=url,
     classifiers=[
         release_status,
@@ -72,6 +72,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Operating System :: OS Independent",
         "Topic :: Software Development :: Code Generators",
         "Topic :: Software Development :: Libraries :: Python Modules",
