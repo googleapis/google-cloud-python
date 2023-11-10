@@ -836,11 +836,20 @@ class Session(
             )
 
         self._start_generic_job(load_job)
+        table_id = f"{table.project}.{table.dataset_id}.{table.table_id}"
+
+        # Update the table expiration so we aren't limited to the default 24
+        # hours of the anonymous dataset.
+        table_expiration = bigquery.Table(table_id)
+        table_expiration.expires = (
+            datetime.datetime.now(datetime.timezone.utc) + constants.DEFAULT_EXPIRATION
+        )
+        self.bqclient.update_table(table_expiration, ["expires"])
 
         # The BigQuery REST API for tables.get doesn't take a session ID, so we
         # can't get the schema for a temp table that way.
         return self.read_gbq_table(
-            f"{table.project}.{table.dataset_id}.{table.table_id}",
+            table_id,
             index_col=index_col,
             col_order=col_order,
         )
