@@ -36,6 +36,11 @@ jobs:
     if: ${{github.repository == 'googleapis/google-cloud-python'}}
     steps:
       - uses: actions/checkout@v4
+        # Use a fetch-depth of 2
+        # See https://github.com/googleapis/google-cloud-python/issues/12013
+        # and https://github.com/actions/checkout#checkout-head.
+        with:
+          fetch-depth: 2
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
