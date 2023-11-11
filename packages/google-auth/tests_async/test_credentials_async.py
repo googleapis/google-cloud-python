@@ -46,9 +46,7 @@ def test_expired_and_valid():
     # Set the expiration to one second more than now plus the clock skew
     # accomodation. These credentials should be valid.
     credentials.expiry = (
-        datetime.datetime.utcnow()
-        + _helpers.REFRESH_THRESHOLD
-        + datetime.timedelta(seconds=1)
+        _helpers.utcnow() + _helpers.REFRESH_THRESHOLD + datetime.timedelta(seconds=1)
     )
 
     assert credentials.valid
@@ -56,7 +54,7 @@ def test_expired_and_valid():
 
     # Set the credentials expiration to now. Because of the clock skew
     # accomodation, these credentials should report as expired.
-    credentials.expiry = datetime.datetime.utcnow()
+    credentials.expiry = _helpers.utcnow()
 
     assert not credentials.valid
     assert credentials.expired
