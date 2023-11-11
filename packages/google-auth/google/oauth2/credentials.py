@@ -54,8 +54,9 @@ _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaProject):
     """Credentials using OAuth 2.0 access and refresh tokens.
 
-    The credentials are considered immutable. If you want to modify the
-    quota project, use :meth:`with_quota_project` or ::
+    The credentials are considered immutable except the tokens and the token
+    expiry, which are updated after refresh. If you want to modify the quota
+    project, use :meth:`with_quota_project` or ::
 
         credentials = credentials.with_quota_project('myproject-123')
 
