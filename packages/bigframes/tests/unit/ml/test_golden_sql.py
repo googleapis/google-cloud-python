@@ -38,6 +38,7 @@ def mock_session():
 def mock_y():
     mock_y = mock.create_autospec(spec=bpd.DataFrame)
     mock_y.columns = pd.Index(["input_column_label"])
+    mock_y._cached.return_value = mock_y
 
     return mock_y
 
@@ -57,6 +58,7 @@ def mock_X(mock_y, mock_session):
         ["index_column_id"],
         ["index_column_label"],
     )
+    mock_X._cached.return_value = mock_X
 
     return mock_X
 

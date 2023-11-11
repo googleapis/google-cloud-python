@@ -24,12 +24,6 @@ class ParquetIOMixin:
 
             >>> gcs_path = "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
             >>> df = bpd.read_parquet(path=gcs_path)
-            >>> df.head(2)
-                  name post_abbr
-            0  Alabama        AL
-            1   Alaska        AK
-            <BLANKLINE>
-            [2 rows x 2 columns]
 
         Args:
             path (str):

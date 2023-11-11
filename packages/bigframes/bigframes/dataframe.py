@@ -2719,7 +2719,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return self._block
 
     def _cached(self) -> DataFrame:
-        return DataFrame(self._block.cached())
+        self._set_block(self._block.cached())
+        return self
 
     _DataFrameOrSeries = typing.TypeVar("_DataFrameOrSeries")
 

@@ -80,6 +80,24 @@ def test_to_pandas_array_struct_correct_result(session):
     )
 
 
+def test_load_json(session):
+    df = session.read_gbq(
+        """SELECT
+        JSON_OBJECT('foo', 10, 'bar', TRUE) AS json_column
+        """
+    )
+
+    result = df.to_pandas()
+    expected = pd.DataFrame(
+        {
+            "json_column": ['{"bar":true,"foo":10}'],
+        }
+    )
+    expected.index = expected.index.astype("Int64")
+    pd.testing.assert_series_equal(result.dtypes, expected.dtypes)
+    pd.testing.assert_series_equal(result["json_column"], expected["json_column"])
+
+
 def test_to_pandas_batches_w_correct_dtypes(scalars_df_default_index):
     """Verify to_pandas_batches() APIs returns the expected dtypes."""
     expected = scalars_df_default_index.dtypes

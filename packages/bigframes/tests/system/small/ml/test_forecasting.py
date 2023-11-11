@@ -36,6 +36,7 @@ def test_model_predict(time_series_arima_plus_model):
     expected["forecast_timestamp"] = expected["forecast_timestamp"].astype(
         pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
     )
+
     pd.testing.assert_frame_equal(
         predictions,
         expected,

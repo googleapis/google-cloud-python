@@ -1503,7 +1503,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
 
     def _cached(self) -> Series:
-        return Series(self._block.cached())
+        self._set_block(self._block.cached())
+        return self
 
 
 def _is_list_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Sequence]:

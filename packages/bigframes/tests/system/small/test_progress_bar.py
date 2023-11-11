@@ -52,14 +52,6 @@ def test_progress_bar_scalar(penguins_df_default_index: bf.dataframe.DataFrame, 
     assert_loading_msg_exist(capsys.readouterr().out)
 
 
-def test_progress_bar_read_gbq(session: bf.Session, penguins_table_id: str, capsys):
-    bf.options.display.progress_bar = "terminal"
-    capsys.readouterr()  # clear output
-    session.read_gbq(penguins_table_id)
-
-    assert_loading_msg_exist(capsys.readouterr().out)
-
-
 def test_progress_bar_extract_jobs(
     penguins_df_default_index: bf.dataframe.DataFrame, gcs_folder, capsys
 ):

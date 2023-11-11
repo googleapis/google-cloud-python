@@ -126,7 +126,7 @@ class BqmlModel:
 
     def forecast(self) -> bpd.DataFrame:
         sql = self._model_manipulation_sql_generator.ml_forecast()
-        return self._session.read_gbq(sql)
+        return self._session.read_gbq(sql, index_col="forecast_timestamp").reset_index()
 
     def evaluate(self, input_data: Optional[bpd.DataFrame] = None):
         # TODO: validate input data schema
@@ -139,14 +139,18 @@ class BqmlModel:
 
         sql = self._model_manipulation_sql_generator.ml_centroids()
 
-        return self._session.read_gbq(sql)
+        return self._session.read_gbq(
+            sql, index_col=["centroid_id", "feature"]
+        ).reset_index()
 
     def principal_components(self) -> bpd.DataFrame:
         assert self._model.model_type == "PCA"
 
         sql = self._model_manipulation_sql_generator.ml_principal_components()
 
-        return self._session.read_gbq(sql)
+        return self._session.read_gbq(
+            sql, index_col=["principal_component_id", "feature"]
+        ).reset_index()
 
     def principal_component_info(self) -> bpd.DataFrame:
         assert self._model.model_type == "PCA"
@@ -228,10 +232,12 @@ class BqmlModelFactory:
         Returns: a BqmlModel, wrapping a trained model in BigQuery
         """
         options = dict(options)
+        # Cache dataframes to make sure base table is not a snapshot
+        # cached dataframe creates a full copy, never uses snapshot
         if y_train is None:
-            input_data = X_train
+            input_data = X_train._cached()
         else:
-            input_data = X_train.join(y_train, how="outer")
+            input_data = X_train._cached().join(y_train._cached(), how="outer")
             options.update({"INPUT_LABEL_COLS": y_train.columns.tolist()})
 
         session = X_train._session
@@ -259,7 +265,9 @@ class BqmlModelFactory:
         ), "Time stamp data input must only contain 1 column."
 
         options = dict(options)
-        input_data = X_train.join(y_train, how="outer")
+        # Cache dataframes to make sure base table is not a snapshot
+        # cached dataframe creates a full copy, never uses snapshot
+        input_data = X_train._cached().join(y_train._cached(), how="outer")
         options.update({"TIME_SERIES_TIMESTAMP_COL": X_train.columns.tolist()[0]})
         options.update({"TIME_SERIES_DATA_COL": y_train.columns.tolist()[0]})
 

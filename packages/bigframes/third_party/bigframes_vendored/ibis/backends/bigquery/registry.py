@@ -22,10 +22,16 @@ def _last_non_null_value(translator, op: vendored_ibis_ops.LastNonNullValue):
     return f"LAST_VALUE({arg} IGNORE NULLS)"
 
 
+def _to_json_string(translator, op: vendored_ibis_ops.ToJsonString):
+    arg = translator.translate(op.arg)
+    return f"TO_JSON_STRING({arg})"
+
+
 patched_ops = {
-    vendored_ibis_ops.ApproximateMultiQuantile: _approx_quantiles,
-    vendored_ibis_ops.FirstNonNullValue: _first_non_null_value,
-    vendored_ibis_ops.LastNonNullValue: _last_non_null_value,
+    vendored_ibis_ops.ApproximateMultiQuantile: _approx_quantiles,  # type:ignore
+    vendored_ibis_ops.FirstNonNullValue: _first_non_null_value,  # type:ignore
+    vendored_ibis_ops.LastNonNullValue: _last_non_null_value,  # type:ignore
+    vendored_ibis_ops.ToJsonString: _to_json_string,  # type:ignore
 }
 
 OPERATION_REGISTRY.update(patched_ops)

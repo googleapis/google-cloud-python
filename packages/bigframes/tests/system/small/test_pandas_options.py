@@ -74,7 +74,7 @@ def test_read_gbq_start_sets_session_location(
 
     # Now read_gbq* from another location should fail
     with pytest.raises(
-        google.api_core.exceptions.NotFound,
+        (google.api_core.exceptions.NotFound, ValueError),
         match=dataset_id_permanent,
     ):
         read_method(query)
@@ -99,7 +99,7 @@ def test_read_gbq_start_sets_session_location(
 
     # Now read_gbq* from another location should fail
     with pytest.raises(
-        google.api_core.exceptions.NotFound,
+        (google.api_core.exceptions.NotFound, ValueError),
         match=dataset_id_permanent_tokyo,
     ):
         read_method(query_tokyo)
@@ -145,7 +145,7 @@ def test_read_gbq_after_session_start_must_comply_with_default_location(
 
     # Doing read_gbq* from a table in another location should fail
     with pytest.raises(
-        google.api_core.exceptions.NotFound,
+        (google.api_core.exceptions.NotFound, ValueError),
         match=dataset_id_permanent_tokyo,
     ):
         read_method(query_tokyo)
@@ -193,7 +193,7 @@ def test_read_gbq_must_comply_with_set_location_US(
 
     # Starting user journey with read_gbq* from another location should fail
     with pytest.raises(
-        google.api_core.exceptions.NotFound,
+        (google.api_core.exceptions.NotFound, ValueError),
         match=dataset_id_permanent_tokyo,
     ):
         read_method(query_tokyo)
@@ -243,7 +243,7 @@ def test_read_gbq_must_comply_with_set_location_non_US(
 
     # Starting user journey with read_gbq* from another location should fail
     with pytest.raises(
-        google.api_core.exceptions.NotFound,
+        (google.api_core.exceptions.NotFound, ValueError),
         match=dataset_id_permanent,
     ):
         read_method(query)
