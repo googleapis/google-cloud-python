@@ -15,6 +15,7 @@
 #
 import io
 import os
+import re
 
 import setuptools # type: ignore
 
@@ -25,10 +26,12 @@ name = 'google-cloud-eventarc'
 
 description = "Google Cloud Eventarc API client library"
 
-version = {}
+version = None
+
 with open(os.path.join(package_root, 'google/cloud/eventarc/gapic_version.py')) as fp:
-    exec(fp.read(), version)
-version = version["__version__"]
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    assert (len(version_candidates) == 1)
+    version = version_candidates[0]
 
 if version[0] == "0":
     release_status = "Development Status :: 4 - Beta"

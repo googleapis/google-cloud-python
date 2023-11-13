@@ -11,11 +11,6 @@ exclude_lines =
     pragma: NO COVER
     # Ignore debug-only repr
     def __repr__
-    # Ignore pkg_resources exceptions.
-    # This is added at the module level as a safeguard for if someone
-    # generates the code and tries to run it without pip installing. This
-    # makes it virtually impossible to test properly.
-    except pkg_resources.DistributionNotFound
     # This is used to indicate a python version mismatch,
     # which is not easily tested in unit tests.
     raise ImportError

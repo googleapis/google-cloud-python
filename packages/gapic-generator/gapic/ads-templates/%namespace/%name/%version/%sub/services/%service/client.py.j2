@@ -6,7 +6,6 @@ from collections import OrderedDict
 import os
 import re
 from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
-import pkg_resources
 {% if service.any_deprecated %}
 import warnings
 {% endif %}
@@ -20,6 +19,9 @@ from google.auth.transport import mtls                            # type: ignore
 from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
+
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
+from {{package_path}} import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -806,14 +808,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% endif %}
 
 
-try:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "{{ api.naming.warehouse_package_name }}",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 
 __all__ = (

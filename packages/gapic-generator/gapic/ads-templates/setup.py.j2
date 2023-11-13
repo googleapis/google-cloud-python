@@ -2,36 +2,58 @@
 
 {% block content %}
 
+import os
+import re
+
 import setuptools  # type: ignore
 
+package_root = os.path.abspath(os.path.dirname(__file__))
+
+name = '{{ api.naming.warehouse_package_name }}'
+
+{% set warehouse_description = api.naming.warehouse_package_name.replace('-',' ')|title %}
+{% set package_path = api.naming.module_namespace|join('/') + "/" + api.naming.module_name + "/" + api.naming.version %}
+
+description = "{{ warehouse_description }} API client library"
+
+version = None
+
+with open(os.path.join(package_root, '{{ package_path }}/gapic_version.py')) as fp:
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    assert (len(version_candidates) == 1)
+    version = version_candidates[0]
+
+if version[0] == "0":
+    release_status = "Development Status :: 4 - Beta"
+else:
+    release_status = "Development Status :: 5 - Production/Stable"
+
+dependencies = [
+    "google-api-core[grpc] >= 2.10.0, < 3.0.0dev",
+    "googleapis-common-protos >= 1.53.0",
+    "grpcio >= 1.10.0",
+    "proto-plus >= 1.19.4, <2.0.0dev",
+    "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
+    {% if api.requires_package(('google', 'iam', 'v1')) %}
+    "grpc-google-iam-v1",
+    {% endif %}
+]
+
+package_root = os.path.abspath(os.path.dirname(__file__))
+
+packages = [
+    package
+    for package in setuptools.find_namespace_packages()
+    if package.startswith("{{ api.naming.namespace_packages|first }}")
+]
 
 setuptools.setup(
-    name='{{ api.naming.warehouse_package_name }}',
-    version='0.0.1',
-    {% if api.naming.namespace %}
-    packages=setuptools.PEP420PackageFinder.find(),
-    namespace_packages={{ api.naming.namespace_packages }},
-    {% else %}
-    packages=setuptools.find_packages(),
-    {% endif %}
-    platforms='Posix; MacOS X; Windows',
-    include_package_data=True,
-    install_requires=(
-        {# TODO(dovs): remove when 1.x deprecation is complete #}
-        {% if 'rest' in opts.transport %}
-        "google-api-core[grpc] >= 2.10.0, < 3.0.0dev",
-        {% else %}
-        "google-api-core[grpc] >= 1.28.0, < 3.0.0dev",
-        {% endif %}
-        "googleapis-common-protos >= 1.53.0",
-        "grpcio >= 1.10.0",
-        "proto-plus >= 1.19.4, <2.0.0dev",
-        "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
-    {% if api.requires_package(('google', 'iam', 'v1')) %}
-        'grpc-google-iam-v1',
-    {% endif %}
-    ),
-    python_requires='>=3.7',{# Lazy import requires module-level getattr #}
+    name=name,
+    version=version,
+    description=description,
+    author="Google LLC",
+    author_email="googleapis-packages@google.com",
+    license="Apache 2.0",
     setup_requires=[
         'libcst >= 0.2.5',
     ],
@@ -39,18 +61,25 @@ setuptools.setup(
         'scripts/fixup_{{ api.naming.versioned_module_name }}_keywords.py',
     ],
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-        'Topic :: Internet',
-        'Topic :: Software Development :: Libraries :: Python Modules',
+        release_status,
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Operating System :: OS Independent",
+        "Topic :: Internet",
     ],
+    platforms="Posix; MacOS X; Windows",
+    packages=packages,
+    python_requires=">=3.7",
+    install_requires=dependencies,
+    include_package_data=True,
     zip_safe=False,
 )
 {% endblock %}
