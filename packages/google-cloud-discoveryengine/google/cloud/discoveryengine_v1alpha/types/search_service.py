@@ -41,6 +41,8 @@ class SearchRequest(proto.Message):
         serving_config (str):
             Required. The resource name of the Search serving config,
             such as
+            ``projects/*/locations/global/collections/default_collection/engines/*/servingConfigs/default_serving_config``,
+            or
             ``projects/*/locations/global/collections/default_collection/dataStores/default_data_store/servingConfigs/default_serving_config``.
             This field is used to identify the serving configuration
             name, set of models used to make the search.
@@ -91,12 +93,25 @@ class SearchRequest(proto.Message):
 
             If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
             returned.
+
+            Filtering in Vertex AI Search is done by mapping the LHS
+            filter key to a key property defined in the Vertex AI Search
+            backend -- this mapping is defined by the customer in their
+            schema. For example a media customer might have a field
+            'name' in their schema. In this case the filter would look
+            like this: filter --> name:'ANY("king kong")'
+
+            For more information about filtering including syntax and
+            filter operators, see
+            `Filter <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
         order_by (str):
             The order in which documents are returned. Documents can be
             ordered by a field in an
             [Document][google.cloud.discoveryengine.v1alpha.Document]
             object. Leave it unset if ordered by relevance. ``order_by``
-            expression is case-sensitive.
+            expression is case-sensitive. For more information on
+            ordering, see
+            `Ordering <https://cloud.google.com/retail/docs/filter-and-order#order>`__
 
             If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
             returned.
@@ -112,8 +127,9 @@ class SearchRequest(proto.Message):
             A maximum of 100 values are allowed. Otherwise, an
             ``INVALID_ARGUMENT`` error is returned.
         boost_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.BoostSpec):
-            Boost specification to boost certain
-            documents.
+            Boost specification to boost certain documents. For more
+            information on boosting, see
+            `Boosting <https://cloud.google.com/retail/docs/boosting#boost>`__
         params (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Additional search parameters.
 
@@ -121,11 +137,15 @@ class SearchRequest(proto.Message):
 
             -  ``user_country_code``: string. Default empty. If set to
                non-empty, results are restricted or boosted based on the
-               location provided.
+               location provided. Example: user_country_code: "au"
+
+               For available codes see `Country
+               Codes <https://developers.google.com/custom-search/docs/json_api_reference#countryCodes>`__
+
             -  ``search_type``: double. Default empty. Enables
                non-webpage searching depending on the value. The only
                valid non-default value is 1, which enables image
-               searching.
+               searching. Example: search_type: 1
         query_expansion_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.QueryExpansionSpec):
             The query expansion specification that
             specifies the conditions under which query

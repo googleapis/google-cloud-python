@@ -13,7 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import CustomAttribute, DoubleList, Interval, SolutionType, UserInfo
+from .common import (
+    CustomAttribute,
+    DoubleList,
+    IndustryVertical,
+    Interval,
+    SearchAddOn,
+    SearchTier,
+    SolutionType,
+    UserInfo,
+)
 from .completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .conversation import (
     Conversation,
@@ -32,6 +41,17 @@ from .conversational_search_service import (
     ListConversationsResponse,
     UpdateConversationRequest,
 )
+from .data_store import DataStore
+from .data_store_service import (
+    CreateDataStoreMetadata,
+    CreateDataStoreRequest,
+    DeleteDataStoreMetadata,
+    DeleteDataStoreRequest,
+    GetDataStoreRequest,
+    ListDataStoresRequest,
+    ListDataStoresResponse,
+    UpdateDataStoreRequest,
+)
 from .document import Document
 from .document_service import (
     CreateDocumentRequest,
@@ -40,6 +60,22 @@ from .document_service import (
     ListDocumentsRequest,
     ListDocumentsResponse,
     UpdateDocumentRequest,
+)
+from .engine import Engine
+from .engine_service import (
+    CreateEngineMetadata,
+    CreateEngineRequest,
+    DeleteEngineMetadata,
+    DeleteEngineRequest,
+    GetEngineRequest,
+    ListEnginesRequest,
+    ListEnginesResponse,
+    PauseEngineRequest,
+    ResumeEngineRequest,
+    TuneEngineMetadata,
+    TuneEngineRequest,
+    TuneEngineResponse,
+    UpdateEngineRequest,
 )
 from .import_config import (
     BigQuerySource,
@@ -96,6 +132,9 @@ __all__ = (
     "DoubleList",
     "Interval",
     "UserInfo",
+    "IndustryVertical",
+    "SearchAddOn",
+    "SearchTier",
     "SolutionType",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
@@ -112,6 +151,15 @@ __all__ = (
     "ListConversationsRequest",
     "ListConversationsResponse",
     "UpdateConversationRequest",
+    "DataStore",
+    "CreateDataStoreMetadata",
+    "CreateDataStoreRequest",
+    "DeleteDataStoreMetadata",
+    "DeleteDataStoreRequest",
+    "GetDataStoreRequest",
+    "ListDataStoresRequest",
+    "ListDataStoresResponse",
+    "UpdateDataStoreRequest",
     "Document",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
@@ -119,6 +167,20 @@ __all__ = (
     "ListDocumentsRequest",
     "ListDocumentsResponse",
     "UpdateDocumentRequest",
+    "Engine",
+    "CreateEngineMetadata",
+    "CreateEngineRequest",
+    "DeleteEngineMetadata",
+    "DeleteEngineRequest",
+    "GetEngineRequest",
+    "ListEnginesRequest",
+    "ListEnginesResponse",
+    "PauseEngineRequest",
+    "ResumeEngineRequest",
+    "TuneEngineMetadata",
+    "TuneEngineRequest",
+    "TuneEngineResponse",
+    "UpdateEngineRequest",
     "BigQuerySource",
     "GcsSource",
     "ImportDocumentsMetadata",
