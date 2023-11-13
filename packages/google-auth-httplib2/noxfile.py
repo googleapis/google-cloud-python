@@ -19,7 +19,6 @@ BLACK_PATHS = ["google_auth_httplib2.py", "tests"]
 
 TEST_DEPENDENCIES = [
     "flask",
-    "mock",
     "pytest",
     "pytest-cov",
     "pytest-localserver",

@@ -14,9 +14,9 @@
 
 import http.client
 import io
+from unittest import mock
 
 import httplib2
-import mock
 
 import google_auth_httplib2
 from tests import compliance
