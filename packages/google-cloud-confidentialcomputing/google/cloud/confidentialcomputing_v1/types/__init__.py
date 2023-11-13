@@ -22,6 +22,7 @@ from .service import (
     SignedEntity,
     SigningAlgorithm,
     TokenOptions,
+    TokenType,
     TpmAttestation,
     VerifyAttestationRequest,
     VerifyAttestationResponse,
@@ -39,4 +40,5 @@ __all__ = (
     "VerifyAttestationRequest",
     "VerifyAttestationResponse",
     "SigningAlgorithm",
+    "TokenType",
 )

@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     package="google.cloud.confidentialcomputing.v1",
     manifest={
         "SigningAlgorithm",
+        "TokenType",
         "Challenge",
         "CreateChallengeRequest",
         "VerifyAttestationRequest",
@@ -58,6 +59,20 @@ class SigningAlgorithm(proto.Enum):
     RSASSA_PSS_SHA256 = 1
     RSASSA_PKCS1V15_SHA256 = 2
     ECDSA_P256_SHA256 = 3
+
+
+class TokenType(proto.Enum):
+    r"""Token type enum contains the different types of token
+    responses Confidential Space supports
+
+    Values:
+        TOKEN_TYPE_UNSPECIFIED (0):
+            Unspecified token type
+        TOKEN_TYPE_OIDC (1):
+            OpenID Connect (OIDC) token type
+    """
+    TOKEN_TYPE_UNSPECIFIED = 0
+    TOKEN_TYPE_OIDC = 1
 
 
 class Challenge(proto.Message):
@@ -240,6 +255,9 @@ class TokenOptions(proto.Message):
             the eat_nonce claim in the output token. The minimum size
             for JSON-encoded EATs is 10 bytes and the maximum size is 74
             bytes.
+        token_type (google.cloud.confidentialcomputing_v1.types.TokenType):
+            Optional. Optional token type to select what
+            type of token to return.
     """
 
     audience: str = proto.Field(
@@ -249,6 +267,11 @@ class TokenOptions(proto.Message):
     nonce: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
+    )
+    token_type: "TokenType" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="TokenType",
     )
 
 
