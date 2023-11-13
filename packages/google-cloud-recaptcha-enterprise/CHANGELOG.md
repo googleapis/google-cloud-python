@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.13.0...google-cloud-recaptcha-enterprise-v1.14.0) (2023-11-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* Added required annotations
+
+### Bug Fixes
+
+* Added required annotations ([e8a00c4](https://github.com/googleapis/google-cloud-python/commit/e8a00c43318da1f260c837f9d6484384834c6705))
+
+
+### Documentation
+
+* CreateKeyRequest.display_name and PrivatePasswordLeakVerification.lookup_hash_prefix are now required ([e8a00c4](https://github.com/googleapis/google-cloud-python/commit/e8a00c43318da1f260c837f9d6484384834c6705))
+* Updated comments explaining if a field is optional or required ([e8a00c4](https://github.com/googleapis/google-cloud-python/commit/e8a00c43318da1f260c837f9d6484384834c6705))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.12.2...google-cloud-recaptcha-enterprise-v1.13.0) (2023-10-05)
 
 

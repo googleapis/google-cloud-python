@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.18.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.17.2...google-analytics-data-v0.18.0) (2023-11-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* change the resource pattern value to `properties/{property}/audienceLists/{audience_list}` for the resource definition `analyticsdata.googleapis.com/AudienceList`
+* change the resource pattern value to `properties/{property}` for the resource definition `analyticsadmin.googleapis.com/Property`
+
+### Features
+
+* add `creation_quota_tokens_charged`, `row_count`, `error_message` to the `AudienceList` resource ([c28986d](https://github.com/googleapis/google-cloud-python/commit/c28986d33652c0eed91809436628b45667732937))
+* add the SheetExportAudienceList method to the Data API v1 alpha ([c28986d](https://github.com/googleapis/google-cloud-python/commit/c28986d33652c0eed91809436628b45667732937))
+
+
+### Bug Fixes
+
+* add `optional` annotation to the `dimension_name` field of the `AudienceDimension` type ([c28986d](https://github.com/googleapis/google-cloud-python/commit/c28986d33652c0eed91809436628b45667732937))
+* add `optional` annotation to the `offset`, `limit` fields of the `QueryAudienceListRequest` type ([c28986d](https://github.com/googleapis/google-cloud-python/commit/c28986d33652c0eed91809436628b45667732937))
+* add `optional` annotation to the `page_token` field of the `ListAudienceListsRequest` type ([c28986d](https://github.com/googleapis/google-cloud-python/commit/c28986d33652c0eed91809436628b45667732937))
+* add `optional` annotation to the `property`, `date_ranges`, `funnel`, `funnel_breakdown`, `funnel_visualization_type`, `segments`, `dimension_filter`, `return_property_quota`, `limit` fields of the `RunFunnelReportRequest` type ([c28986d](https://github.com/googleapis/google-cloud-python/commit/c28986d33652c0eed91809436628b45667732937))
+* add `required` annotation to the `name` field of the `QueryAudienceListRequest` type ([c28986d](https://github.com/googleapis/google-cloud-python/commit/c28986d33652c0eed91809436628b45667732937))
+* change the resource pattern value to `properties/{property}/audienceLists/{audience_list}` for the resource definition `analyticsdata.googleapis.com/AudienceList` ([c28986d](https://github.com/googleapis/google-cloud-python/commit/c28986d33652c0eed91809436628b45667732937))
+* change the resource pattern value to `properties/{property}` for the resource definition `analyticsadmin.googleapis.com/Property` ([c28986d](https://github.com/googleapis/google-cloud-python/commit/c28986d33652c0eed91809436628b45667732937))
+
 ## [0.17.2](https://github.com/googleapis/python-analytics-data/compare/v0.17.1...v0.17.2) (2023-10-09)
 
 
