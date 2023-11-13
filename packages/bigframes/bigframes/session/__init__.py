@@ -1322,15 +1322,37 @@ class Session(
             The return type of the function must be explicitly specified in the
             function's original definition even if not otherwise required.
 
+        BigQuery Utils provides many public functions under the ``bqutil`` project on Google Cloud Platform project
+        (See: https://github.com/GoogleCloudPlatform/bigquery-utils/tree/master/udfs#using-the-udfs).
+        You can checkout Community UDFs to use community-contributed functions.
+        (See: https://github.com/GoogleCloudPlatform/bigquery-utils/tree/master/udfs/community#community-udfs).
+
         **Examples:**
+
+        Use the ``cw_lower_case_ascii_only`` function from Community UDFs.
+        (https://github.com/GoogleCloudPlatform/bigquery-utils/blob/master/udfs/community/cw_lower_case_ascii_only.sqlx)
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 
-            >>> function_name = "bqutil.fn.cw_lower_case_ascii_only"
-            >>> func = bpd.read_gbq_function(function_name=function_name)
-            >>> func.bigframes_remote_function
-            'bqutil.fn.cw_lower_case_ascii_only'
+            >>> df = bpd.DataFrame({'id': [1, 2, 3], 'name': ['AURÉLIE', 'CÉLESTINE', 'DAPHNÉ']})
+            >>> df
+               id       name
+            0   1    AURÉLIE
+            1   2  CÉLESTINE
+            2   3     DAPHNÉ
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+            >>> func = bpd.read_gbq_function("bqutil.fn.cw_lower_case_ascii_only")
+            >>> df1 = df.assign(new_name=df['name'].apply(func))
+            >>> df1
+               id       name   new_name
+            0   1    AURÉLIE    aurÉlie
+            1   2  CÉLESTINE  cÉlestine
+            2   3     DAPHNÉ     daphnÉ
+            <BLANKLINE>
+            [3 rows x 3 columns]
 
         Args:
             function_name (str):
