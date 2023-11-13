@@ -22,13 +22,20 @@ def test_bigquery_dataframes_pandas_methods():
     bq_df = bpd.read_gbq(query_or_table)
 
     # Inspect one of the columns (or series) of the DataFrame:
-    bq_df["body_mass_g"].head(10)
+    bq_df["body_mass_g"]
 
     # Compute the mean of this series:
     average_body_mass = bq_df["body_mass_g"].mean()
     print(f"average_body_mass: {average_body_mass}")
 
-    # Calculate the mean body_mass_g by species using the groupby operation:
-    bq_df["body_mass_g"].groupby(by=bq_df["species"]).mean().head()
+    # Find the heaviest species using the groupby operation to calculate the
+    # mean body_mass_g:
+    (
+        bq_df["body_mass_g"]
+        .groupby(by=bq_df["species"])
+        .mean()
+        .sort_values(ascending=False)
+        .head(10)
+    )
     # [END bigquery_dataframes_pandas_methods]
     assert average_body_mass is not None
