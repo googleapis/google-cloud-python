@@ -19,6 +19,7 @@ import typing
 import pandas as pd
 
 import bigframes.constants as constants
+from bigframes.core import log_adapter
 import bigframes.core as core
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
@@ -33,6 +34,7 @@ import bigframes.series as series
 import third_party.bigframes_vendored.pandas.core.groupby as vendored_pandas_groupby
 
 
+@log_adapter.class_logger
 class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
     __doc__ = vendored_pandas_groupby.GroupBy.__doc__
 
@@ -406,6 +408,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return col_ids[0]
 
 
+@log_adapter.class_logger
 class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
     __doc__ = vendored_pandas_groupby.GroupBy.__doc__
 

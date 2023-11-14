@@ -64,6 +64,7 @@ from pandas._typing import (
 
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes.constants as constants
+from bigframes.core import log_adapter
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.guid as guid
@@ -1347,6 +1348,10 @@ class Session(
         Starts query job and waits for results.
         """
         job_config = self._prepare_job_config(job_config)
+        api_methods = log_adapter.get_and_reset_api_methods()
+        job_config.labels = bigframes_io.create_job_configs_labels(
+            job_configs_labels=job_config.labels, api_methods=api_methods
+        )
         query_job = self.bqclient.query(sql, job_config=job_config)
 
         opts = bigframes.options.display
@@ -1381,6 +1386,8 @@ class Session(
     ) -> bigquery.QueryJobConfig:
         if job_config is None:
             job_config = self.bqclient.default_query_job_config
+        if job_config is None:
+            job_config = bigquery.QueryJobConfig()
         if bigframes.options.compute.maximum_bytes_billed is not None:
             job_config.maximum_bytes_billed = (
                 bigframes.options.compute.maximum_bytes_billed

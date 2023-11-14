@@ -41,6 +41,7 @@ import bigframes
 import bigframes._config.display_options as display_options
 import bigframes.constants as constants
 import bigframes.core
+from bigframes.core import log_adapter
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.groupby as groupby
@@ -81,6 +82,7 @@ ERROR_IO_REQUIRES_WILDCARD = (
 
 
 # Inherits from pandas DataFrame so that we can use the same docstrings.
+@log_adapter.class_logger
 class DataFrame(vendored_pandas_frame.DataFrame):
     __doc__ = vendored_pandas_frame.DataFrame.__doc__
 

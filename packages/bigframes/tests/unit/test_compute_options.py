@@ -18,13 +18,9 @@ from . import resources
 
 def test_maximum_bytes_option():
     session = resources.create_bigquery_session()
-    num_query_calls = 0
     with bf.option_context("compute.maximum_bytes_billed", 10000):
-        # clear initial method calls
-        session.bqclient.method_calls = []
+        session.bqclient.query.reset_mock()
         session._start_query("query")
-        for call in session.bqclient.method_calls:
-            _, _, kwargs = call
-            num_query_calls += 1
-            assert kwargs["job_config"].maximum_bytes_billed == 10000
-    assert num_query_calls > 0
+        call = session.bqclient.query.call_args
+        assert call.kwargs["job_config"].maximum_bytes_billed == 10000
+        session.bqclient.query.assert_called_once()

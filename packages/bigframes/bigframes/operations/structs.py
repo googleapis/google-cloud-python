@@ -18,6 +18,7 @@ import typing
 
 import ibis.expr.types as ibis_types
 
+from bigframes.core import log_adapter
 import bigframes.dataframe
 import bigframes.operations
 import bigframes.operations.base
@@ -38,6 +39,7 @@ class _StructField(bigframes.operations.UnaryOp):
         return struct_value[name].name(name)
 
 
+@log_adapter.class_logger
 class StructAccessor(
     bigframes.operations.base.SeriesMethods, vendoracessors.StructAccessor
 ):

@@ -18,6 +18,7 @@ import re
 from typing import cast, Literal, Optional, Union
 
 import bigframes.constants as constants
+from bigframes.core import log_adapter
 import bigframes.dataframe as df
 import bigframes.operations as ops
 import bigframes.operations.base
@@ -32,6 +33,7 @@ REGEXP_FLAGS = {
 }
 
 
+@log_adapter.class_logger
 class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMethods):
     __doc__ = vendorstr.StringMethods.__doc__
 

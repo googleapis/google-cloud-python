@@ -17,15 +17,34 @@
 from __future__ import annotations
 
 import datetime
+import itertools
 import textwrap
 import types
-from typing import Dict, Iterable, Optional, Union
+from typing import Dict, Iterable, Optional, Sequence, Union
 import uuid
 
 import google.cloud.bigquery as bigquery
 
 IO_ORDERING_ID = "bqdf_row_nums"
+MAX_LABELS_COUNT = 64
 TEMP_TABLE_PREFIX = "bqdf{date}_{random_id}"
+
+
+def create_job_configs_labels(
+    job_configs_labels: Optional[Dict[str, str]],
+    api_methods: Sequence[str],
+) -> Dict[str, str]:
+    if job_configs_labels is None:
+        job_configs_labels = {}
+
+    labels = list(
+        itertools.chain(
+            job_configs_labels.keys(),
+            (f"recent-bigframes-api-{i}" for i in range(len(api_methods))),
+        )
+    )
+    values = list(itertools.chain(job_configs_labels.values(), api_methods))
+    return dict(zip(labels[:MAX_LABELS_COUNT], values[:MAX_LABELS_COUNT]))
 
 
 def create_export_csv_statement(

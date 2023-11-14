@@ -16,12 +16,14 @@ from __future__ import annotations
 
 import typing
 
+from bigframes.core import log_adapter
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.operations.aggregations as agg_ops
 import third_party.bigframes_vendored.pandas.core.window.rolling as vendored_pandas_rolling
 
 
+@log_adapter.class_logger
 class Window(vendored_pandas_rolling.Window):
     __doc__ = vendored_pandas_rolling.Window.__doc__
 
