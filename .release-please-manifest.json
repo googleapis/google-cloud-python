@@ -19,7 +19,7 @@
     "packages/google-cloud-assured-workloads": "1.10.3",
     "packages/google-cloud-automl": "2.11.3",
     "packages/google-cloud-bare-metal-solution": "1.5.1",
-    "packages/google-cloud-batch": "0.17.3",
+    "packages/google-cloud-batch": "0.17.4",
     "packages/google-cloud-beyondcorp-appconnections": "0.4.4",
     "packages/google-cloud-beyondcorp-appconnectors": "0.4.4",
     "packages/google-cloud-beyondcorp-appgateways": "0.4.4",
