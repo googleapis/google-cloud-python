@@ -19,7 +19,6 @@ import textwrap
 import typing
 from typing import List
 
-import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import numpy as np
 import pandas as pd
@@ -985,26 +984,3 @@ def test_read_json_gcs_default_engine(session, scalars_dfs, gcs_folder):
 
     assert df.shape[0] == scalars_df.shape[0]
     pd.testing.assert_series_equal(df.dtypes, scalars_df.dtypes)
-
-
-def test_session_id(session):
-    assert session._session_id is not None
-
-    # BQ client always runs query within the opened session.
-    query_job = session.bqclient.query("SELECT 1")
-    assert query_job.session_info.session_id == session._session_id
-
-    # TODO(chelsealin): Verify the session id can be binded with a load job.
-
-
-@pytest.mark.flaky(retries=2)
-def test_to_close_session():
-    session = bigframes.Session()
-    assert session._session_id is not None
-    session.close()
-    assert session._session_id is None
-
-    # Session has expired and is no longer available.
-    with pytest.raises(google.api_core.exceptions.BadRequest):
-        query_job = session.bqclient.query("SELECT 1")
-        query_job.result()  # blocks until finished

@@ -161,7 +161,7 @@ class Session(
                 application_name=context.application_name,
             )
 
-        self._create_and_bind_bq_session()
+        self._create_bq_datasets()
         self.ibis_client = typing.cast(
             ibis_bigquery.Backend,
             ibis.bigquery.connect(
@@ -210,19 +210,12 @@ class Session(
 
     def __hash__(self):
         # Stable hash needed to use in expression tree
-        return hash(self._session_id)
+        return hash(str(self._anonymous_dataset))
 
-    def _create_and_bind_bq_session(self):
-        """Create a BQ session and bind the session id with clients to capture BQ activities:
-        go/bigframes-transient-data"""
-        job_config = bigquery.QueryJobConfig(create_session=True)
-        # Make sure the session is a new one, not one associated with another query.
-        job_config.use_query_cache = False
-        query_job = self.bqclient.query(
-            "SELECT 1", job_config=job_config, location=self._location
-        )
+    def _create_bq_datasets(self):
+        """Create and identify dataset(s) for temporary BQ resources."""
+        query_job = self.bqclient.query("SELECT 1", location=self._location)
         query_job.result()  # blocks until finished
-        self._session_id = query_job.session_info.session_id
 
         # The anonymous dataset is used by BigQuery to write query results and
         # session tables. BigQuery DataFrames also writes temp tables directly
@@ -235,17 +228,6 @@ class Session(
             query_destination.dataset_id,
         )
 
-        self.bqclient.default_query_job_config = bigquery.QueryJobConfig(
-            connection_properties=[
-                bigquery.ConnectionProperty("session_id", self._session_id)
-            ]
-        )
-        self.bqclient.default_load_job_config = bigquery.LoadJobConfig(
-            connection_properties=[
-                bigquery.ConnectionProperty("session_id", self._session_id)
-            ]
-        )
-
         # Dataset for storing remote functions, which don't yet
         # support proper session temporary storage yet
         self._session_dataset = bigquery.Dataset(
@@ -254,28 +236,7 @@ class Session(
         self._session_dataset.location = self._location
 
     def close(self):
-        """Terminated the BQ session, otherwises the session will be terminated automatically after
-        24 hours of inactivity or after 7 days."""
-        if self._session_id is not None and self.bqclient is not None:
-            abort_session_query = "CALL BQ.ABORT_SESSION('{}')".format(self._session_id)
-            try:
-                query_job = self.bqclient.query(abort_session_query)
-                query_job.result()  # blocks until finished
-            except google.api_core.exceptions.BadRequest as exc:
-                # Ignore the exception when the BQ session itself has expired
-                # https://cloud.google.com/bigquery/docs/sessions-terminating#auto-terminate_a_session
-                if not exc.message.startswith(
-                    f"Session {self._session_id} has expired and is no longer available."
-                ):
-                    raise
-            except google.auth.exceptions.RefreshError:
-                # The refresh token may itself have been invalidated or expired
-                # https://developers.google.com/identity/protocols/oauth2#expiration
-                # Don't raise the exception in this case while closing the
-                # BigFrames session, so that the end user has a path for getting
-                # out of a bad session due to unusable credentials.
-                pass
-            self._session_id = None
+        """No-op. Temporary resources are deleted after 7 days."""
 
     def read_gbq(
         self,

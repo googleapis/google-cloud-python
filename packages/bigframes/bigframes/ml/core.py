@@ -16,12 +16,14 @@
 
 from __future__ import annotations
 
+import datetime
 from typing import Callable, cast, Iterable, Mapping, Optional, Union
 import uuid
 
 from google.cloud import bigquery
 
 import bigframes
+import bigframes.constants as constants
 from bigframes.ml import sql as ml_sql
 import bigframes.pandas as bpd
 
@@ -192,24 +194,27 @@ class BqmlModel:
 
 class BqmlModelFactory:
     def __init__(self):
-        model_id = self._create_temp_model_id()
-        self._model_creation_sql_generator = ml_sql.ModelCreationSqlGenerator(model_id)
+        self._model_creation_sql_generator = ml_sql.ModelCreationSqlGenerator()
 
-    def _create_temp_model_id(self) -> str:
-        return uuid.uuid4().hex
-
-    def _reset_model_id(self):
-        self._model_creation_sql_generator._model_id = self._create_temp_model_id()
+    def _create_model_ref(
+        self, dataset: bigquery.DatasetReference
+    ) -> bigquery.ModelReference:
+        return bigquery.ModelReference.from_string(
+            f"{dataset.project}.{dataset.dataset_id}.{uuid.uuid4().hex}"
+        )
 
     def _create_model_with_sql(self, session: bigframes.Session, sql: str) -> BqmlModel:
         # fit the model, synchronously
         _, job = session._start_query(sql)
 
         # real model path in the session specific hidden dataset and table prefix
-        model_name_full = f"{job.destination.dataset_id}.{job.destination.table_id}"
-        model = session.bqclient.get_model(model_name_full)
+        model_name_full = f"{job.destination.project}.{job.destination.dataset_id}.{job.destination.table_id}"
+        model = bigquery.Model(model_name_full)
+        model.expires = (
+            datetime.datetime.now(datetime.timezone.utc) + constants.DEFAULT_EXPIRATION
+        )
+        model = session.bqclient.update_model(model, ["expires"])
 
-        self._reset_model_id()
         return BqmlModel(session, model)
 
     def create_model(
@@ -219,7 +224,7 @@ class BqmlModelFactory:
         transforms: Optional[Iterable[str]] = None,
         options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
     ) -> BqmlModel:
-        """Create a session-temporary BQML model with the CREATE MODEL statement
+        """Create a session-temporary BQML model with the CREATE OR REPLACE MODEL statement
 
         Args:
             X_train: features columns for training
@@ -241,9 +246,11 @@ class BqmlModelFactory:
             options.update({"INPUT_LABEL_COLS": y_train.columns.tolist()})
 
         session = X_train._session
+        model_ref = self._create_model_ref(session._anonymous_dataset)
 
         sql = self._model_creation_sql_generator.create_model(
             source_df=input_data,
+            model_ref=model_ref,
             transforms=transforms,
             options=options,
         )
@@ -272,9 +279,11 @@ class BqmlModelFactory:
         options.update({"TIME_SERIES_DATA_COL": y_train.columns.tolist()[0]})
 
         session = X_train._session
+        model_ref = self._create_model_ref(session._anonymous_dataset)
 
         sql = self._model_creation_sql_generator.create_model(
             source_df=input_data,
+            model_ref=model_ref,
             transforms=transforms,
             options=options,
         )
@@ -287,7 +296,7 @@ class BqmlModelFactory:
         connection_name: str,
         options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
     ) -> BqmlModel:
-        """Create a session-temporary BQML remote model with the CREATE MODEL statement
+        """Create a session-temporary BQML remote model with the CREATE OR REPLACE MODEL statement
 
         Args:
             connection_name:
@@ -298,8 +307,10 @@ class BqmlModelFactory:
         Returns:
             BqmlModel: a BqmlModel wrapping a trained model in BigQuery
         """
+        model_ref = self._create_model_ref(session._anonymous_dataset)
         sql = self._model_creation_sql_generator.create_remote_model(
             connection_name=connection_name,
+            model_ref=model_ref,
             options=options,
         )
 
@@ -310,7 +321,7 @@ class BqmlModelFactory:
         session: bigframes.Session,
         options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
     ) -> BqmlModel:
-        """Create a session-temporary BQML imported model with the CREATE MODEL statement
+        """Create a session-temporary BQML imported model with the CREATE OR REPLACE MODEL statement
 
         Args:
             options: a dict of options to configure the model. Generates a BQML OPTIONS
@@ -318,7 +329,9 @@ class BqmlModelFactory:
 
         Returns: a BqmlModel, wrapping a trained model in BigQuery
         """
+        model_ref = self._create_model_ref(session._anonymous_dataset)
         sql = self._model_creation_sql_generator.create_imported_model(
+            model_ref=model_ref,
             options=options,
         )
 

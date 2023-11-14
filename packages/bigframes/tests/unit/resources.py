@@ -66,7 +66,6 @@ def create_bigquery_session(
         credentials=credentials, location="test-region"
     )
     session = bigframes.Session(context=bqoptions, clients_provider=clients_provider)
-    session._session_id = session_id
     return session
 
 

@@ -23,15 +23,39 @@ import bigframes
 from bigframes.ml import core, linear_model
 import bigframes.pandas as bpd
 
+TEMP_MODEL_ID = bigquery.ModelReference.from_string(
+    "test-project._anon123.temp_model_id"
+)
+
 
 @pytest.fixture
 def mock_session():
     mock_session = mock.create_autospec(spec=bigframes.Session)
 
-    # return values we don't care about, but need to provide to continue the program when calling session._start_query()
-    mock_session._start_query.return_value = (None, mock.MagicMock())
+    mock_session._anonymous_dataset = bigquery.DatasetReference(
+        TEMP_MODEL_ID.project, TEMP_MODEL_ID.dataset_id
+    )
+
+    query_job = mock.create_autospec(bigquery.QueryJob)
+    type(query_job).destination = mock.PropertyMock(
+        return_value=bigquery.TableReference(
+            mock_session._anonymous_dataset, TEMP_MODEL_ID.model_id
+        )
+    )
+    mock_session._start_query.return_value = (None, query_job)
 
     return mock_session
+
+
+@pytest.fixture
+def bqml_model_factory(mocker: pytest_mock.MockerFixture):
+    mocker.patch(
+        "bigframes.ml.core.BqmlModelFactory._create_model_ref",
+        return_value=TEMP_MODEL_ID,
+    )
+    bqml_model_factory = core.BqmlModelFactory()
+
+    return bqml_model_factory
 
 
 @pytest.fixture
@@ -64,17 +88,6 @@ def mock_X(mock_y, mock_session):
 
 
 @pytest.fixture
-def bqml_model_factory(mocker: pytest_mock.MockerFixture):
-    mocker.patch(
-        "bigframes.ml.core.BqmlModelFactory._create_temp_model_id",
-        return_value="temp_model_id",
-    )
-    bqml_model_factory = core.BqmlModelFactory()
-
-    return bqml_model_factory
-
-
-@pytest.fixture
 def bqml_model(mock_session):
     bqml_model = core.BqmlModel(
         mock_session, bigquery.Model("model_project.model_dataset.model_id")
@@ -91,7 +104,7 @@ def test_linear_regression_default_fit(
     model.fit(mock_X, mock_y)
 
     mock_session._start_query.assert_called_once_with(
-        'CREATE TEMP MODEL `temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="normal_equation",\n  fit_intercept=True,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  ls_init_learn_rate=0.1,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
+        'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="normal_equation",\n  fit_intercept=True,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  ls_init_learn_rate=0.1,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
 
@@ -101,7 +114,7 @@ def test_linear_regression_params_fit(bqml_model_factory, mock_session, mock_X, 
     model.fit(mock_X, mock_y)
 
     mock_session._start_query.assert_called_once_with(
-        'CREATE TEMP MODEL `temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="normal_equation",\n  fit_intercept=False,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  ls_init_learn_rate=0.1,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
+        'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="normal_equation",\n  fit_intercept=False,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  ls_init_learn_rate=0.1,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
 
@@ -134,7 +147,7 @@ def test_logistic_regression_default_fit(
     model.fit(mock_X, mock_y)
 
     mock_session._start_query.assert_called_once_with(
-        'CREATE TEMP MODEL `temp_model_id`\nOPTIONS(\n  model_type="LOGISTIC_REG",\n  data_split_method="NO_SPLIT",\n  fit_intercept=True,\n  auto_class_weights=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
+        'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LOGISTIC_REG",\n  data_split_method="NO_SPLIT",\n  fit_intercept=True,\n  auto_class_weights=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
 
@@ -148,7 +161,7 @@ def test_logistic_regression_params_fit(
     model.fit(mock_X, mock_y)
 
     mock_session._start_query.assert_called_once_with(
-        'CREATE TEMP MODEL `temp_model_id`\nOPTIONS(\n  model_type="LOGISTIC_REG",\n  data_split_method="NO_SPLIT",\n  fit_intercept=False,\n  auto_class_weights=True,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
+        'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LOGISTIC_REG",\n  data_split_method="NO_SPLIT",\n  fit_intercept=False,\n  auto_class_weights=True,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
 
