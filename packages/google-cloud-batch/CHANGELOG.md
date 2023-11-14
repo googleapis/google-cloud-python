@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.3...google-cloud-batch-v0.17.4) (2023-11-14)
+
+
+### Features
+
+* [google-cloud-batch] add a CloudLoggingOption and use_generic_task_monitored_resource fields for users to opt out new batch monitored resource in cloud logging ([#12019](https://github.com/googleapis/google-cloud-python/issues/12019)) ([13fd2e1](https://github.com/googleapis/google-cloud-python/commit/13fd2e1256668b3e5ca92bccd9029b1c41839e41))
+
 ## [0.17.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.2...google-cloud-batch-v0.17.3) (2023-11-02)
 
 
