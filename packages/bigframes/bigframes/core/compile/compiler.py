@@ -129,7 +129,7 @@ def compile_filter(node: nodes.FilterNode, ordered: bool = True):
 @_compile_node.register
 def compile_orderby(node: nodes.OrderByNode, ordered: bool = True):
     if ordered:
-        return compile_ordered(node.child).order_by(node.by, node.stable)
+        return compile_ordered(node.child).order_by(node.by)
     else:
         return compile_unordered(node.child)
 

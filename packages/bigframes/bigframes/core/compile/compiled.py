@@ -753,11 +753,9 @@ class OrderedIR(BaseIbisIR):
             predicates=self._predicates,
         )
 
-    def order_by(
-        self, by: Sequence[OrderingColumnReference], stable: bool = False
-    ) -> OrderedIR:
+    def order_by(self, by: Sequence[OrderingColumnReference]) -> OrderedIR:
         expr_builder = self.builder()
-        expr_builder.ordering = self._ordering.with_ordering_columns(by, stable=stable)
+        expr_builder.ordering = self._ordering.with_ordering_columns(by)
         return expr_builder.build()
 
     def reversed(self) -> OrderedIR:

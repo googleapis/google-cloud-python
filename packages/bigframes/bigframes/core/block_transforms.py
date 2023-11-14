@@ -509,7 +509,7 @@ def nsmallest(
         )
         for col_id in column_ids
     ]
-    block = block.order_by(order_refs, stable=True)
+    block = block.order_by(order_refs)
     if keep in ("first", "last"):
         return block.slice(0, n)
     else:  # keep == "all":
@@ -541,7 +541,7 @@ def nlargest(
         )
         for col_id in column_ids
     ]
-    block = block.order_by(order_refs, stable=True)
+    block = block.order_by(order_refs)
     if keep in ("first", "last"):
         return block.slice(0, n)
     else:  # keep == "all":

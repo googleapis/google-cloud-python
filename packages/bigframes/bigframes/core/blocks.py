@@ -235,10 +235,9 @@ class Block:
     def order_by(
         self,
         by: typing.Sequence[ordering.OrderingColumnReference],
-        stable: bool = False,
     ) -> Block:
         return Block(
-            self._expr.order_by(by, stable=stable),
+            self._expr.order_by(by),
             index_columns=self.index_columns,
             column_labels=self.column_labels,
             index_labels=self.index.names,
@@ -1596,7 +1595,6 @@ class Block:
             # sort uses coalesced join keys always
             joined_expr = joined_expr.order_by(
                 [ordering.OrderingColumnReference(col_id) for col_id in coalesced_ids],
-                stable=True,
             )
 
         joined_expr = joined_expr.select_columns(result_columns)

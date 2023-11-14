@@ -28,8 +28,6 @@ ORDERING_ID_STRING_BASE: int = 10
 # Sufficient to store any value up to 2^63
 DEFAULT_ORDERING_ID_LENGTH: int = math.ceil(63 * math.log(2, ORDERING_ID_STRING_BASE))
 
-STABLE_SORTS = ["mergesort", "stable"]
-
 
 class OrderingDirection(Enum):
     ASC = 1
@@ -113,17 +111,12 @@ class ExpressionOrdering:
     def with_ordering_columns(
         self,
         ordering_value_columns: Sequence[OrderingColumnReference] = (),
-        stable: bool = False,
     ) -> ExpressionOrdering:
         """Creates a new ordering that reorders by the given columns.
 
         Args:
             ordering_value_columns:
                 In decreasing precedence order, the values used to sort the ordering
-            stable:
-                If True, will use apply a stable sorting, using the old ordering where
-                the new ordering produces ties. Otherwise, ties will be resolved in
-                a performance maximizing way,
 
         Returns:
             Modified ExpressionOrdering
@@ -131,28 +124,32 @@ class ExpressionOrdering:
         col_ids_new = [
             ordering_ref.column_id for ordering_ref in ordering_value_columns
         ]
-        if stable:
-            # Only reference each column once, so discard old referenc if there is a new reference
-            old_ordering_keep = [
-                ordering_ref
-                for ordering_ref in self.ordering_value_columns
-                if ordering_ref.column_id not in col_ids_new
-            ]
-        else:
-            # New ordering needs to keep all total ordering columns no matter what.
-            # All other old ordering references can be discarded as does not need
-            # to be a stable sort.
-            old_ordering_keep = [
-                ordering_ref
-                for ordering_ref in self.ordering_value_columns
-                if (ordering_ref.column_id not in col_ids_new)
-                and (ordering_ref.column_id in self.total_ordering_columns)
-            ]
-        new_ordering = (*ordering_value_columns, *old_ordering_keep)
+        old_ordering_keep = [
+            ordering_ref
+            for ordering_ref in self.ordering_value_columns
+            if ordering_ref.column_id not in col_ids_new
+        ]
+
+        # Truncate to remove any unneded col references after all total order cols included
+        new_ordering = self._truncate_ordering(
+            (*ordering_value_columns, *old_ordering_keep)
+        )
         return ExpressionOrdering(
             new_ordering,
             total_ordering_columns=self.total_ordering_columns,
         )
+
+    def _truncate_ordering(
+        self, order_refs: tuple[OrderingColumnReference, ...]
+    ) -> tuple[OrderingColumnReference, ...]:
+        total_order_cols_remaining = set(self.total_ordering_columns)
+        for i in range(len(order_refs)):
+            column = order_refs[i].column_id
+            if column in total_order_cols_remaining:
+                total_order_cols_remaining.remove(column)
+            if len(total_order_cols_remaining) == 0:
+                return order_refs[: i + 1]
+        raise ValueError("Ordering did not contain all total_order_cols")
 
     def with_reverse(self):
         """Reverses the ordering."""

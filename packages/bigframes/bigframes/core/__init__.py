@@ -200,12 +200,8 @@ class ArrayValue:
             )
         )
 
-    def order_by(
-        self, by: Sequence[OrderingColumnReference], stable: bool = False
-    ) -> ArrayValue:
-        return ArrayValue(
-            nodes.OrderByNode(child=self.node, by=tuple(by), stable=stable)
-        )
+    def order_by(self, by: Sequence[OrderingColumnReference]) -> ArrayValue:
+        return ArrayValue(nodes.OrderByNode(child=self.node, by=tuple(by)))
 
     def reversed(self) -> ArrayValue:
         return ArrayValue(nodes.ReversedNode(child=self.node))
