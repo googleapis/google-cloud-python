@@ -557,12 +557,16 @@ class TestCredentials(object):
         assert jwt_grant.called
         assert not self_signed_jwt_refresh.called
 
-    def test_refresh_non_gdu_missing_jwt_credentials(self):
-        credentials = self.make_credentials(universe_domain="foo")
+    def test_refresh_missing_jwt_credentials(self):
+        credentials = self.make_credentials()
+        credentials = credentials.with_scopes(["foo", "bar"])
+        credentials = credentials.with_always_use_jwt_access(True)
+        assert not credentials._jwt_credentials
 
-        with pytest.raises(exceptions.RefreshError) as excinfo:
-            credentials.refresh(None)
-        assert excinfo.match("self._jwt_credentials is missing")
+        credentials.refresh(mock.Mock())
+
+        # jwt credentials should have been automatically created with scopes
+        assert credentials._jwt_credentials is not None
 
     def test_refresh_non_gdu_domain_wide_delegation_not_supported(self):
         credentials = self.make_credentials(universe_domain="foo")

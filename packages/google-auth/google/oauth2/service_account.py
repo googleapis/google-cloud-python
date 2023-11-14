@@ -417,13 +417,11 @@ class Credentials(
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
-        if (
-            self._universe_domain != _DEFAULT_UNIVERSE_DOMAIN
-            and not self._jwt_credentials
-        ):
-            raise exceptions.RefreshError(
-                "self._jwt_credentials is missing for non-default universe domain"
-            )
+        if self._always_use_jwt_access and not self._jwt_credentials:
+            # If self signed jwt should be used but jwt credential is not
+            # created, try to create one with scopes
+            self._create_self_signed_jwt(None)
+
         if self._universe_domain != _DEFAULT_UNIVERSE_DOMAIN and self._subject:
             raise exceptions.RefreshError(
                 "domain wide delegation is not supported for non-default universe domain"
