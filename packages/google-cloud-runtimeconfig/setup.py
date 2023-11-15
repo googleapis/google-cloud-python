@@ -22,7 +22,13 @@ import setuptools
 
 name = "google-cloud-runtimeconfig"
 description = "Google Cloud RuntimeConfig API client library"
-version = "0.33.3"
+
+version = {}
+with open("google/cloud/runtimeconfig/version.py") as fp:
+    exec(fp.read(), version)
+version = version["__version__"]
+
+
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'

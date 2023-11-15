@@ -1,4 +1,4 @@
-# Copyright 2016 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Google Cloud Runtime Configurator API package."""
-
-
-from google.cloud.runtimeconfig import version as runtimeconfig_version
-
-__version__ = runtimeconfig_version.__version__
-
-from google.cloud.runtimeconfig.client import Client
-
-__all__ = ["__version__", "Client"]
+__version__ = "0.33.3"
