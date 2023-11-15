@@ -75,6 +75,11 @@
                 "restore_instance"
               ]
             },
+            "RevertInstance": {
+              "methods": [
+                "revert_instance"
+              ]
+            },
             "UpdateBackup": {
               "methods": [
                 "update_backup"
@@ -160,6 +165,11 @@
                 "restore_instance"
               ]
             },
+            "RevertInstance": {
+              "methods": [
+                "revert_instance"
+              ]
+            },
             "UpdateBackup": {
               "methods": [
                 "update_backup"
@@ -243,6 +253,11 @@
             "RestoreInstance": {
               "methods": [
                 "restore_instance"
+              ]
+            },
+            "RevertInstance": {
+              "methods": [
+                "revert_instance"
               ]
             },
             "UpdateBackup": {
