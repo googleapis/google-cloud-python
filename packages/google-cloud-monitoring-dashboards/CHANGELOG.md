@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.12.2...google-cloud-monitoring-dashboards-v2.12.3) (2023-11-15)
+
+
+### Bug Fixes
+
+* drop pkg_resources ([#12015](https://github.com/googleapis/google-cloud-python/issues/12015)) ([7e9cd0c](https://github.com/googleapis/google-cloud-python/commit/7e9cd0c8edb175b98176e3a2951fcd0b681fd3a6))
+
 ## [2.12.2](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.12.1...v2.12.2) (2023-07-04)
 
 

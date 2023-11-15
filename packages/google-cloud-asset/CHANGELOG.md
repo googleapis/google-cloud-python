@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.20.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.20.0...google-cloud-asset-v3.20.1) (2023-11-15)
+
+
+### Bug Fixes
+
+* drop pkg_resources ([#12015](https://github.com/googleapis/google-cloud-python/issues/12015)) ([7e9cd0c](https://github.com/googleapis/google-cloud-python/commit/7e9cd0c8edb175b98176e3a2951fcd0b681fd3a6))
+
 ## [3.20.0](https://github.com/googleapis/python-asset/compare/v3.19.1...v3.20.0) (2023-10-16)
 
 
