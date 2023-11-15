@@ -27,7 +27,9 @@ from google.monitoring.dashboard_v1 import gapic_version as package_version
 from google import auth
 from google.monitoring.dashboard_v1.types import dashboard, dashboards_service
 
-_client_info = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
+_client_info = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 class DashboardsServiceTransport(abc.ABC):
