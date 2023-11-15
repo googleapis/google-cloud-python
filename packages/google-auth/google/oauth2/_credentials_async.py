@@ -96,6 +96,12 @@ class Credentials(oauth2_credentials.Credentials):
                     )
                 )
 
+    @_helpers.copy_docstring(credentials.Credentials)
+    async def before_request(self, request, method, url, headers):
+        if not self.valid:
+            await self.refresh(request)
+        self.apply(headers)
+
 
 class UserAccessTokenCredentials(oauth2_credentials.UserAccessTokenCredentials):
     """Access token credentials for user account.
