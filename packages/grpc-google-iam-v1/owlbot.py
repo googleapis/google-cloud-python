@@ -43,7 +43,7 @@ s.copy("googleapis/google/api/*.proto", "google/api")
 # ----------------------------------------------------------------------------
 
 templated_files = gcp.CommonTemplates().py_library()
-s.move(templated_files / ".kokoro", excludes=["docs/**/*", "publish-docs.sh"])
+s.move(templated_files / ".kokoro")
 s.move(templated_files / "LICENSE")
 s.move(templated_files / "CONTRIBUTING.rst")
 s.move(templated_files / "*.md")
