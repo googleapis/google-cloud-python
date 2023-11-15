@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.11.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.11.3...google-cloud-automl-v2.11.4) (2023-11-15)
+
+
+### Bug Fixes
+
+* drop pkg_resources ([#12015](https://github.com/googleapis/google-cloud-python/issues/12015)) ([7e9cd0c](https://github.com/googleapis/google-cloud-python/commit/7e9cd0c8edb175b98176e3a2951fcd0b681fd3a6))
+
 ## [2.11.3](https://github.com/googleapis/python-automl/compare/v2.11.2...v2.11.3) (2023-10-09)
 
 
