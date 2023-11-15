@@ -615,6 +615,7 @@ def notebook(session):
         "notebooks/vertex_sdk/sdk2_bigframes_pytorch.ipynb",
         "notebooks/vertex_sdk/sdk2_bigframes_sklearn.ipynb",
         "notebooks/vertex_sdk/sdk2_bigframes_tensorflow.ipynb",
+        "notebooks/visualization/bq_dataframes_covid_line_graphs.ipynb",
         # The experimental notebooks imagine features that don't yet
         # exist or only exist as temporary prototypes.
         "notebooks/experimental/longer_ml_demo.ipynb",
