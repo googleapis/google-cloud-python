@@ -1628,6 +1628,7 @@
             "extra-files": [
                 "google/cloud/monitoring_dashboard/gapic_version.py",
                 "google/cloud/monitoring_dashboard_v1/gapic_version.py",
+                "google/monitoring/dashboard_v1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.monitoring.dashboard.v1.json",
