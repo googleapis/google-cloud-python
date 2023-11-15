@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "GetInstanceRequest",
         "UpdateInstanceRequest",
         "RestoreInstanceRequest",
+        "RevertInstanceRequest",
         "DeleteInstanceRequest",
         "ListInstancesRequest",
         "ListInstancesResponse",
@@ -160,8 +161,11 @@ class FileShareConfig(proto.Message):
 
     Attributes:
         name (str):
-            The name of the file share (must be 16
-            characters or less).
+            Required. The name of the file share. Must use 1-16
+            characters for the basic service tier and 1-63 characters
+            for all other service tiers. Must use lowercase letters,
+            numbers, or underscores ``[a-z0-9_]``. Must start with a
+            letter. Immutable.
         capacity_gb (int):
             File share capacity in gigabytes (GB).
             Filestore defines 1 GB as 1024^3 bytes.
@@ -325,6 +329,8 @@ class Instance(proto.Message):
             overwriting each other.
         satisfies_pzs (google.protobuf.wrappers_pb2.BoolValue):
             Output only. Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
         kms_key_name (str):
             KMS key name used for data encryption.
         suspension_reasons (MutableSequence[google.cloud.filestore_v1.types.Instance.SuspensionReason]):
@@ -366,6 +372,8 @@ class Instance(proto.Message):
             RESUMING (10):
                 The instance is in the process of becoming
                 active.
+            REVERTING (12):
+                The instance is reverting to a snapshot.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -377,6 +385,7 @@ class Instance(proto.Message):
         SUSPENDED = 8
         SUSPENDING = 9
         RESUMING = 10
+        REVERTING = 12
 
     class Tier(proto.Enum):
         r"""Available service tiers.
@@ -404,6 +413,13 @@ class Instance(proto.Message):
                 ENTERPRISE instances offer the features and
                 availability needed for mission-critical
                 workloads.
+            ZONAL (7):
+                ZONAL instances offer expanded capacity and
+                performance scaling capabilities.
+            REGIONAL (8):
+                REGIONAL instances offer the features and
+                availability needed for mission-critical
+                workloads.
         """
         TIER_UNSPECIFIED = 0
         STANDARD = 1
@@ -412,6 +428,8 @@ class Instance(proto.Message):
         BASIC_SSD = 4
         HIGH_SCALE_SSD = 5
         ENTERPRISE = 6
+        ZONAL = 7
+        REGIONAL = 8
 
     class SuspensionReason(proto.Enum):
         r"""SuspensionReason contains the possible reasons for a
@@ -477,6 +495,10 @@ class Instance(proto.Message):
         proto.MESSAGE,
         number=13,
         message=wrappers_pb2.BoolValue,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=18,
     )
     kms_key_name: str = proto.Field(
         proto.STRING,
@@ -599,6 +621,32 @@ class RestoreInstanceRequest(proto.Message):
         proto.STRING,
         number=3,
         oneof="source",
+    )
+
+
+class RevertInstanceRequest(proto.Message):
+    r"""RevertInstanceRequest reverts the given instance's file share
+    to the specified snapshot.
+
+    Attributes:
+        name (str):
+            Required.
+            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``.
+            The resource name of the instance, in the format
+        target_snapshot_id (str):
+            Required. The snapshot resource ID, in the format
+            'my-snapshot', where the specified ID is the {snapshot_id}
+            of the fully qualified name like
+            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}/snapshots/{snapshot_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_snapshot_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -990,6 +1038,8 @@ class Backup(proto.Message):
             storage.
         satisfies_pzs (google.protobuf.wrappers_pb2.BoolValue):
             Output only. Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
         kms_key (str):
             Immutable. KMS key name used for data
             encryption.
@@ -1011,12 +1061,17 @@ class Backup(proto.Message):
                 Backup is available for use.
             DELETING (4):
                 Backup is being deleted.
+            INVALID (5):
+                Backup is not valid and cannot be used for
+                creating new instances or restoring existing
+                instances.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         FINALIZING = 2
         READY = 3
         DELETING = 4
+        INVALID = 5
 
     name: str = proto.Field(
         proto.STRING,
@@ -1070,6 +1125,10 @@ class Backup(proto.Message):
         proto.MESSAGE,
         number=12,
         message=wrappers_pb2.BoolValue,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=14,
     )
     kms_key: str = proto.Field(
         proto.STRING,
