@@ -4,6 +4,41 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.14.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.13.0...v0.14.0) (2023-11-14)
+
+
+### Features
+
+* Add 'cross' join support ([#176](https://github.com/googleapis/python-bigquery-dataframes/issues/176)) ([765446a](https://github.com/googleapis/python-bigquery-dataframes/commit/765446a929abe1ac076c3037afa7892f64105356))
+* Add 'index', 'pad', 'nearest' interpolate methods ([#162](https://github.com/googleapis/python-bigquery-dataframes/issues/162)) ([6a28403](https://github.com/googleapis/python-bigquery-dataframes/commit/6a2840349a23035bdfdabacd1e231b41bbb5ed7a))
+* Add series.sample (identical to existing dataframe.sample) ([#187](https://github.com/googleapis/python-bigquery-dataframes/issues/187)) ([37914a4](https://github.com/googleapis/python-bigquery-dataframes/commit/37914a4077c681881491f5c36d1a9c9f4255e18f))
+* Add unordered sql compilation ([#156](https://github.com/googleapis/python-bigquery-dataframes/issues/156)) ([58f420c](https://github.com/googleapis/python-bigquery-dataframes/commit/58f420c91d94ca085e9810f36513ffe772bfddcf))
+* Log most recent API calls as `recent-bigframes-api-xx` labels on BigQuery jobs ([#145](https://github.com/googleapis/python-bigquery-dataframes/issues/145)) ([4ea33b7](https://github.com/googleapis/python-bigquery-dataframes/commit/4ea33b7433532ae3a386a6ffa9eb57360ea39526))
+* Read_gbq creates order deterministically without table copy ([#191](https://github.com/googleapis/python-bigquery-dataframes/issues/191)) ([8ab81de](https://github.com/googleapis/python-bigquery-dataframes/commit/8ab81dee4d0eee499094f2dd576550f0c59d7551))
+* Support `date_series.astype("string[pyarrow]")` to cast DATE to STRING ([#186](https://github.com/googleapis/python-bigquery-dataframes/issues/186)) ([aee0e8e](https://github.com/googleapis/python-bigquery-dataframes/commit/aee0e8e2518c59bd1e0b07940c3309871fde8899))
+* Support `series.at[row_label] = scalar` ([#173](https://github.com/googleapis/python-bigquery-dataframes/issues/173)) ([0c8bd33](https://github.com/googleapis/python-bigquery-dataframes/commit/0c8bd33806bb99206b8b12dbdf7d7485c6ffb759))
+* Temporary resources no longer use BigQuery Sessions ([#194](https://github.com/googleapis/python-bigquery-dataframes/issues/194)) ([4a02cac](https://github.com/googleapis/python-bigquery-dataframes/commit/4a02cac88c7d7b46bed1fa813a862fc2ef9ef084))
+
+
+### Bug Fixes
+
+* All sort operation are now stable ([#195](https://github.com/googleapis/python-bigquery-dataframes/issues/195)) ([3a2761f](https://github.com/googleapis/python-bigquery-dataframes/commit/3a2761f3c38d0de8b8eda47fffa15b8412aa84b0))
+* Default to 7 days expiration for `read_csv`, `read_json`, `read_parquet` ([#193](https://github.com/googleapis/python-bigquery-dataframes/issues/193)) ([03606cd](https://github.com/googleapis/python-bigquery-dataframes/commit/03606cda30eb7645bfd4534460112dcca56b0ab0))
+* Deprecate the `remote_service_type` in llm model ([#180](https://github.com/googleapis/python-bigquery-dataframes/issues/180)) ([a8a409a](https://github.com/googleapis/python-bigquery-dataframes/commit/a8a409ab0bd1f99dfb442df0703bf8786e0fe58e))
+* For reset_index on unnamed multiindex, always use level_[n] label ([#182](https://github.com/googleapis/python-bigquery-dataframes/issues/182)) ([f95000d](https://github.com/googleapis/python-bigquery-dataframes/commit/f95000d3f88662be4d88c8b0152f1b838e99ec55))
+* Match pandas behavior when assigning listlike to empty dfs ([#172](https://github.com/googleapis/python-bigquery-dataframes/issues/172)) ([c1d1f42](https://github.com/googleapis/python-bigquery-dataframes/commit/c1d1f42a21cc089877f79ebb46a39ddef6958e04))
+* Use anonymous dataset instead of session dataset for temp tables ([#181](https://github.com/googleapis/python-bigquery-dataframes/issues/181)) ([800d44e](https://github.com/googleapis/python-bigquery-dataframes/commit/800d44eb5eb77da5d87b2e005f5a2ed53842e7b5))
+* Use random table for `read_pandas` ([#192](https://github.com/googleapis/python-bigquery-dataframes/issues/192)) ([741c75e](https://github.com/googleapis/python-bigquery-dataframes/commit/741c75e5797e26a1487ff3da76a07953d9537f3f))
+* Use random table when loading data for `read_csv`, `read_json`, `read_parquet` ([#175](https://github.com/googleapis/python-bigquery-dataframes/issues/175)) ([9d2e6dc](https://github.com/googleapis/python-bigquery-dataframes/commit/9d2e6dc1ae4e11e80da4aabe0daa3a6044137cc6))
+
+
+### Documentation
+
+* Add code samples for `read_gbq_function` using community UDFs ([#188](https://github.com/googleapis/python-bigquery-dataframes/issues/188)) ([7506eab](https://github.com/googleapis/python-bigquery-dataframes/commit/7506eabf2e58159507809e36abfe90c417dfe92f))
+* Add docstring code samples for `Series.apply` and `DataFrame.map` ([#185](https://github.com/googleapis/python-bigquery-dataframes/issues/185)) ([c816d84](https://github.com/googleapis/python-bigquery-dataframes/commit/c816d843e6f3c5a944cd4395ed0e1e91cec49812))
+* Add llm kmeans notebook as an included example ([#177](https://github.com/googleapis/python-bigquery-dataframes/issues/177)) ([d49ae42](https://github.com/googleapis/python-bigquery-dataframes/commit/d49ae42a379fafd601cc94227e7f8f14b3d5f8c3))
+* Use `head()` to get top `n` results, not to preview results ([#190](https://github.com/googleapis/python-bigquery-dataframes/issues/190)) ([87f84c9](https://github.com/googleapis/python-bigquery-dataframes/commit/87f84c9e58e7d0ea521ac386c9f02791cdddd19f))
+
 ## [0.13.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.12.0...v0.13.0) (2023-11-07)
 
 
