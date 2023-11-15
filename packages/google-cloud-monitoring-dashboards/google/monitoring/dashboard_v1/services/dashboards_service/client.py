@@ -28,8 +28,8 @@ from google.auth import credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import pkg_resources
 
+from google.monitoring.dashboard_v1 import gapic_version as package_version
 from google.monitoring.dashboard_v1.services.dashboards_service import pagers
 from google.monitoring.dashboard_v1.types import dashboard, dashboards_service, layouts
 
@@ -526,14 +526,9 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         return response
 
 
-try:
-    _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-monitoring-dashboard",
-        ).version,
-    )
-except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+_client_info = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 
 
 __all__ = ("DashboardsServiceClient",)
