@@ -37,11 +37,20 @@ class RecommendRequest(proto.Message):
 
     Attributes:
         serving_config (str):
-            Required. Full resource name of the format:
+            Required. Full resource name of a
+            [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig]:
+            ``projects/*/locations/global/collections/*/engines/*/servingConfigs/*``,
+            or
             ``projects/*/locations/global/collections/*/dataStores/*/servingConfigs/*``
 
-            Before you can request recommendations from your model, you
-            must create at least one serving config for it.
+            One default serving config is created along with your
+            recommendation engine creation. The engine ID will be used
+            as the ID of the default serving config. For example, for
+            Engine
+            ``projects/*/locations/global/collections/*/engines/my-engine``,
+            you can use
+            ``projects/*/locations/global/collections/*/engines/my-engine/servingConfigs/my-engine``
+            for your [Recommend][] requests.
         user_event (google.cloud.discoveryengine_v1alpha.types.UserEvent):
             Required. Context about the user, what they are looking at
             and what action they took to trigger the Recommend request.
