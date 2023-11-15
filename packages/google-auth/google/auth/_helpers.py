@@ -23,11 +23,9 @@ import urllib
 
 from google.auth import exceptions
 
-# Token server doesn't provide a new a token when doing refresh unless the
-# token is expiring within 30 seconds, so refresh threshold should not be
-# more than 30 seconds. Otherwise auth lib will send tons of refresh requests
-# until 30 seconds before the expiration, and cause a spike of CPU usage.
-REFRESH_THRESHOLD = datetime.timedelta(seconds=20)
+# The smallest MDS cache used by this library stores tokens until 4 minutes from
+# expiry.
+REFRESH_THRESHOLD = datetime.timedelta(minutes=3, seconds=45)
 
 
 def copy_docstring(source_class):
