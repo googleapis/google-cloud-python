@@ -193,7 +193,12 @@ def system(session):
     session.install("-e", f".{extras}", "-c", constraints_path)
 
     # Run py.test against the system tests.
-    session.run("py.test", "--quiet", os.path.join("tests", "system"), *session.posargs)
+    session.run(
+        "py.test",
+        "--quiet",
+        os.path.join("tests", "system"),
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
