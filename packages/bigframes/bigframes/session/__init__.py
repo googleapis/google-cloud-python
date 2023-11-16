@@ -1120,8 +1120,9 @@ class Session(
         ordering_hash_part = guid.generate_guid("bigframes_ordering_")
         ordering_rand_part = guid.generate_guid("bigframes_ordering_")
 
+        # All inputs into hash must be non-null or resulting hash will be null
         str_values = list(
-            map(lambda col: _convert_to_string(table[col]), table.columns)
+            map(lambda col: _convert_to_nonnull_string(table[col]), table.columns)
         )
         full_row_str = (
             str_values[0].concat(*str_values[1:])
@@ -1419,7 +1420,7 @@ def _can_cluster_bq(field: bigquery.SchemaField):
     )
 
 
-def _convert_to_string(column: ibis_types.Column) -> ibis_types.StringColumn:
+def _convert_to_nonnull_string(column: ibis_types.Column) -> ibis_types.StringValue:
     col_type = column.type()
     if (
         col_type.is_numeric()
@@ -1436,4 +1437,6 @@ def _convert_to_string(column: ibis_types.Column) -> ibis_types.StringColumn:
         # TO_JSON_STRING works with all data types, but isn't the most efficient
         # Needed for JSON, STRUCT and ARRAY datatypes
         result = vendored_ibis_ops.ToJsonString(column).to_expr()  # type: ignore
-    return typing.cast(ibis_types.StringColumn, result)
+    # Escape backslashes and use backslash as delineator
+    escaped = typing.cast(ibis_types.StringColumn, result.fillna("")).replace("\\", "\\\\")  # type: ignore
+    return typing.cast(ibis_types.StringColumn, ibis.literal("\\")).concat(escaped)

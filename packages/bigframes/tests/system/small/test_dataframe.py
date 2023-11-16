@@ -2703,6 +2703,14 @@ def test_sample(scalars_dfs, frac, n, random_state):
     assert bf_result.shape[1] == scalars_df.shape[1]
 
 
+def test_sample_determinism(penguins_df_default_index):
+    df = penguins_df_default_index.sample(n=100, random_state=12345).head(15)
+    bf_result = df.to_pandas()
+    bf_result2 = df.to_pandas()
+
+    pandas.testing.assert_frame_equal(bf_result, bf_result2)
+
+
 def test_sample_raises_value_error(scalars_dfs):
     scalars_df, _ = scalars_dfs
     with pytest.raises(
