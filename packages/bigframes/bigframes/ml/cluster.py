@@ -17,7 +17,7 @@ https://scikit-learn.org/stable/modules/clustering.html."""
 
 from __future__ import annotations
 
-from typing import cast, Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from google.cloud import bigquery
 
@@ -92,7 +92,7 @@ class KMeans(
 
         (X,) = utils.convert_to_dataframe(X)
 
-        return cast(bpd.DataFrame, self._bqml_model.predict(X)[["CENTROID_ID"]])
+        return self._bqml_model.predict(X)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> KMeans:
         """Save the model to BigQuery.

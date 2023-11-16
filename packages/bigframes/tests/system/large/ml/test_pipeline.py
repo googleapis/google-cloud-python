@@ -545,7 +545,9 @@ def test_pipeline_standard_scaler_kmeans_fit_score_predict(
         score_result, score_expected, check_exact=False, rtol=0.1
     )
 
-    result = pl.predict(new_penguins).to_pandas().sort_index()
+    predictions = pl.predict(new_penguins).to_pandas().sort_index()
+    assert predictions.shape == (6, 9)
+    result = predictions[["CENTROID_ID"]]
     expected = pd.DataFrame(
         {"CENTROID_ID": [1, 2, 1, 2, 1, 2]},
         dtype="Int64",

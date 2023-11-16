@@ -98,7 +98,9 @@ def test_cluster_configure_fit_score_predict(
         score_result, score_expected, check_exact=False, rtol=0.1
     )
 
-    result = model.predict(new_penguins).to_pandas()
+    predictions = model.predict(new_penguins).to_pandas()
+    assert predictions.shape == (4, 9)
+    result = predictions[["CENTROID_ID"]]
     expected = pd.DataFrame(
         {"CENTROID_ID": [2, 3, 1, 2]},
         dtype="Int64",

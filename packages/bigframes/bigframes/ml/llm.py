@@ -149,7 +149,8 @@ class PaLM2TextGenerator(base.Predictor):
 
 
         Returns:
-            bigframes.dataframe.DataFrame: Output DataFrame with only 1 column as the output text results."""
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
+        """
 
         # Params reference: https://cloud.google.com/vertex-ai/docs/generative-ai/learn/models
         if temperature < 0.0 or temperature > 1.0:
@@ -181,11 +182,7 @@ class PaLM2TextGenerator(base.Predictor):
             "top_p": top_p,
             "flatten_json_output": True,
         }
-        df = self._bqml_model.generate_text(X, options)
-        return cast(
-            bpd.DataFrame,
-            df[[_TEXT_GENERATE_RESULT_COLUMN]],
-        )
+        return self._bqml_model.generate_text(X, options)
 
 
 class PaLM2TextEmbeddingGenerator(base.Predictor):
@@ -269,7 +266,7 @@ class PaLM2TextEmbeddingGenerator(base.Predictor):
                 Input DataFrame, which needs to contain a column with name "content". Only the column will be used as input. Content can include preamble, questions, suggestions, instructions, or examples.
 
         Returns:
-            bigframes.dataframe.DataFrame: Output DataFrame with only 1 column as the output embedding results
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
         """
 
         # Params reference: https://cloud.google.com/vertex-ai/docs/generative-ai/learn/models
@@ -287,8 +284,4 @@ class PaLM2TextEmbeddingGenerator(base.Predictor):
         options = {
             "flatten_json_output": True,
         }
-        df = self._bqml_model.generate_text_embedding(X, options)
-        return cast(
-            bpd.DataFrame,
-            df[[_EMBED_TEXT_RESULT_COLUMN]],
-        )
+        return self._bqml_model.generate_text_embedding(X, options)

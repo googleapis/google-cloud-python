@@ -17,7 +17,7 @@ https://scikit-learn.org/stable/modules/linear_model.html."""
 
 from __future__ import annotations
 
-from typing import cast, Dict, List, Literal, Optional, Union
+from typing import Dict, List, Literal, Optional, Union
 
 from google.cloud import bigquery
 
@@ -145,16 +145,7 @@ class LinearRegression(
 
         (X,) = utils.convert_to_dataframe(X)
 
-        df = self._bqml_model.predict(X)
-        return cast(
-            bpd.DataFrame,
-            df[
-                [
-                    cast(str, field.name)
-                    for field in self._bqml_model.model.label_columns
-                ]
-            ],
-        )
+        return self._bqml_model.predict(X)
 
     def score(
         self,
@@ -267,16 +258,7 @@ class LogisticRegression(
 
         (X,) = utils.convert_to_dataframe(X)
 
-        df = self._bqml_model.predict(X)
-        return cast(
-            bpd.DataFrame,
-            df[
-                [
-                    cast(str, field.name)
-                    for field in self._bqml_model.model.label_columns
-                ]
-            ],
-        )
+        return self._bqml_model.predict(X)
 
     def score(
         self,

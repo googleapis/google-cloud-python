@@ -17,7 +17,7 @@ https://scikit-learn.org/stable/modules/ensemble.html"""
 
 from __future__ import annotations
 
-from typing import cast, Dict, List, Literal, Optional, Union
+from typing import Dict, List, Literal, Optional, Union
 
 from google.cloud import bigquery
 
@@ -168,16 +168,7 @@ class XGBRegressor(
             raise RuntimeError("A model must be fitted before predict")
         (X,) = utils.convert_to_dataframe(X)
 
-        df = self._bqml_model.predict(X)
-        return cast(
-            bpd.DataFrame,
-            df[
-                [
-                    cast(str, field.name)
-                    for field in self._bqml_model.model.label_columns
-                ]
-            ],
-        )
+        return self._bqml_model.predict(X)
 
     def score(
         self,
@@ -328,19 +319,9 @@ class XGBClassifier(
     def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
-
         (X,) = utils.convert_to_dataframe(X)
 
-        df = self._bqml_model.predict(X)
-        return cast(
-            bpd.DataFrame,
-            df[
-                [
-                    cast(str, field.name)
-                    for field in self._bqml_model.model.label_columns
-                ]
-            ],
-        )
+        return self._bqml_model.predict(X)
 
     def score(
         self,
@@ -486,19 +467,9 @@ class RandomForestRegressor(
     ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
-
         (X,) = utils.convert_to_dataframe(X)
 
-        df = self._bqml_model.predict(X)
-        return cast(
-            bpd.DataFrame,
-            df[
-                [
-                    cast(str, field.name)
-                    for field in self._bqml_model.model.label_columns
-                ]
-            ],
-        )
+        return self._bqml_model.predict(X)
 
     def score(
         self,
@@ -661,19 +632,9 @@ class RandomForestClassifier(
     ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
-
         (X,) = utils.convert_to_dataframe(X)
 
-        df = self._bqml_model.predict(X)
-        return cast(
-            bpd.DataFrame,
-            df[
-                [
-                    cast(str, field.name)
-                    for field in self._bqml_model.model.label_columns
-                ]
-            ],
-        )
+        return self._bqml_model.predict(X)
 
     def score(
         self,

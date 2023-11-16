@@ -16,7 +16,6 @@ Generalized Linear Models.
 # Original location: https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/linear_model/_base.py
 
 from abc import ABCMeta
-from typing import List, Optional
 
 from bigframes import constants
 from third_party.bigframes_vendored.sklearn.base import (
@@ -35,7 +34,7 @@ class LinearModel(BaseEstimator, metaclass=ABCMeta):
                 Series or DataFrame of shape (n_samples, n_features). Samples.
 
         Returns:
-            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples,). Returns predicted values.
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -50,8 +49,7 @@ class LinearClassifierMixin(ClassifierMixin):
                 which we want to get the predictions.
 
         Returns:
-            bigframes.dataframe.DataFrame:  DataFrame of shape (n_samples,), containing
-                the class labels for each sample.
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

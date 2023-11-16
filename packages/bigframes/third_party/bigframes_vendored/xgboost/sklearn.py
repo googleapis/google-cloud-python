@@ -18,7 +18,7 @@ class XGBModel(XGBModelBase):
                 Series or DataFrame of shape (n_samples, n_features). Samples.
 
         Returns:
-            DataFrame of shape (n_samples,): Returns predicted values.
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

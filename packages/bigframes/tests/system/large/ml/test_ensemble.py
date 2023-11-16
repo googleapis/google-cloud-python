@@ -179,7 +179,7 @@ def test_xgbclassifier_default_params(penguins_df_default_index, dataset_id):
     )
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+# @pytest.mark.flaky(retries=2, delay=120)
 def test_xgbclassifier_dart_booster_multiple_params(
     penguins_df_default_index, dataset_id
 ):

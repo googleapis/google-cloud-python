@@ -78,16 +78,7 @@ class TensorFlowModel(base.Predictor):
 
         (X,) = utils.convert_to_dataframe(X)
 
-        df = self._bqml_model.predict(X)
-        return cast(
-            bpd.DataFrame,
-            df[
-                [
-                    cast(str, field.name)
-                    for field in self._bqml_model.model.label_columns
-                ]
-            ],
-        )
+        return self._bqml_model.predict(X)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> TensorFlowModel:
         """Save the model to BigQuery.
@@ -161,16 +152,7 @@ class ONNXModel(base.Predictor):
 
         (X,) = utils.convert_to_dataframe(X)
 
-        df = self._bqml_model.predict(X)
-        return cast(
-            bpd.DataFrame,
-            df[
-                [
-                    cast(str, field.name)
-                    for field in self._bqml_model.model.label_columns
-                ]
-            ],
-        )
+        return self._bqml_model.predict(X)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> ONNXModel:
         """Save the model to BigQuery.

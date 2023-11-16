@@ -62,7 +62,9 @@ _PD_NEW_PENGUINS = pd.DataFrame.from_dict(
 
 def test_kmeans_predict(session, penguins_kmeans_model: cluster.KMeans):
     new_penguins = session.read_pandas(_PD_NEW_PENGUINS)
-    result = penguins_kmeans_model.predict(new_penguins).to_pandas()
+    predictions = penguins_kmeans_model.predict(new_penguins).to_pandas()
+    assert predictions.shape == (4, 9)
+    result = predictions[["CENTROID_ID"]]
     expected = pd.DataFrame(
         {"CENTROID_ID": [2, 3, 1, 2]},
         dtype="Int64",

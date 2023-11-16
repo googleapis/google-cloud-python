@@ -32,7 +32,9 @@ def test_tensorflow_create_model_default_session(imported_tensorflow_model_path)
 
 def test_tensorflow_model_predict(imported_tensorflow_model, llm_text_df):
     df = llm_text_df.rename(columns={"prompt": "input"})
-    result = imported_tensorflow_model.predict(df).to_pandas()
+    predictions = imported_tensorflow_model.predict(df).to_pandas()
+    assert predictions.shape == (3, 2)
+    result = predictions[["dense_1"]]
     # The values are non-human-readable. As they are a dense layer of Neural Network.
     # And since it is pretrained and imported, the model is a opaque-box.
     # We may want to switch to better test model and cases.
@@ -72,7 +74,9 @@ def test_onnx_create_model_default_session(imported_onnx_model_path):
 
 
 def test_onnx_model_predict(imported_onnx_model, onnx_iris_df):
-    result = imported_onnx_model.predict(onnx_iris_df).to_pandas()
+    predictions = imported_onnx_model.predict(onnx_iris_df).to_pandas()
+    assert predictions.shape == (3, 7)
+    result = predictions[["label", "probabilities"]]
     value1 = np.array([0.9999993443489075, 0.0, 0.0])
     value2 = np.array([0.0, 0.0, 0.9999993443489075])
     expected = pd.DataFrame(

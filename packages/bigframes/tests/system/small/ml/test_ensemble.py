@@ -98,7 +98,9 @@ def test_xgbregressor_model_score_series(
 def test_xgbregressor_model_predict(
     penguins_xgbregressor_model: bigframes.ml.ensemble.XGBRegressor, new_penguins_df
 ):
-    result = penguins_xgbregressor_model.predict(new_penguins_df).to_pandas()
+    predictions = penguins_xgbregressor_model.predict(new_penguins_df).to_pandas()
+    assert predictions.shape == (3, 8)
+    result = predictions[["predicted_body_mass_g"]]
     expected = pandas.DataFrame(
         {"predicted_body_mass_g": ["4293.1538089", "3410.0271", "3357.944"]},
         dtype="Float64",
@@ -220,7 +222,9 @@ def test_xgbclassifier_model_score_series(
 def test_xgbclassifier_model_predict(
     penguins_xgbclassifier_model: bigframes.ml.ensemble.XGBClassifier, new_penguins_df
 ):
-    result = penguins_xgbclassifier_model.predict(new_penguins_df).to_pandas()
+    predictions = penguins_xgbclassifier_model.predict(new_penguins_df).to_pandas()
+    assert predictions.shape == (3, 9)
+    result = predictions[["predicted_sex"]]
     expected = pandas.DataFrame(
         {"predicted_sex": ["MALE", "MALE", "FEMALE"]},
         dtype="string[pyarrow]",
@@ -363,7 +367,11 @@ def test_randomforestregressor_model_predict(
     penguins_randomforest_regressor_model: bigframes.ml.ensemble.RandomForestRegressor,
     new_penguins_df,
 ):
-    result = penguins_randomforest_regressor_model.predict(new_penguins_df).to_pandas()
+    predictions = penguins_randomforest_regressor_model.predict(
+        new_penguins_df
+    ).to_pandas()
+    assert predictions.shape == (3, 8)
+    result = predictions[["predicted_body_mass_g"]]
     expected = pandas.DataFrame(
         {"predicted_body_mass_g": ["3897.341797", "3458.385742", "3458.385742"]},
         dtype="Float64",
@@ -490,7 +498,11 @@ def test_randomforestclassifier_model_predict(
     penguins_randomforest_classifier_model: bigframes.ml.ensemble.RandomForestClassifier,
     new_penguins_df,
 ):
-    result = penguins_randomforest_classifier_model.predict(new_penguins_df).to_pandas()
+    predictions = penguins_randomforest_classifier_model.predict(
+        new_penguins_df
+    ).to_pandas()
+    assert predictions.shape == (3, 9)
+    result = predictions[["predicted_sex"]]
     expected = pandas.DataFrame(
         {"predicted_sex": ["MALE", "MALE", "FEMALE"]},
         dtype="string[pyarrow]",

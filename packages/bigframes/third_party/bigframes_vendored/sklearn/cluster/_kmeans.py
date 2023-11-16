@@ -20,19 +20,7 @@ from third_party.bigframes_vendored.sklearn.base import BaseEstimator
 class _BaseKMeans(BaseEstimator, ABC):
     """Base class for KMeans and MiniBatchKMeans"""
 
-    def predict(self, X):
-        """Predict the closest cluster each sample in X belongs to.
-
-        Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
-                Series or DataFrame of shape (n_samples, n_features). The data matrix for
-                which we want to get the predictions.
-
-        Returns:
-            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples,), containing the
-                class labels for each sample.
-        """
-        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+    pass
 
 
 class KMeans(_BaseKMeans):
@@ -73,7 +61,7 @@ class KMeans(_BaseKMeans):
                 DataFrame of shape (n_samples, n_features). New data to predict.
 
         Returns:
-            bigframes.dataframe.DataFrame: DataFrame of the cluster each sample belongs to.
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted labels.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

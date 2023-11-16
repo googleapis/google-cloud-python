@@ -91,13 +91,15 @@ def test_linear_reg_model_score_series(
 
 def test_linear_reg_model_predict(penguins_linear_model, new_penguins_df):
     predictions = penguins_linear_model.predict(new_penguins_df).to_pandas()
+    assert predictions.shape == (3, 8)
+    result = predictions[["predicted_body_mass_g"]]
     expected = pandas.DataFrame(
         {"predicted_body_mass_g": [4030.1, 3280.8, 3177.9]},
         dtype="Float64",
         index=pandas.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
     pandas.testing.assert_frame_equal(
-        predictions.sort_index(),
+        result.sort_index(),
         expected,
         check_exact=False,
         rtol=0.1,
@@ -224,13 +226,15 @@ def test_logistic_model_score_series(
 
 def test_logsitic_model_predict(penguins_logistic_model, new_penguins_df):
     predictions = penguins_logistic_model.predict(new_penguins_df).to_pandas()
+    assert predictions.shape == (3, 9)
+    result = predictions[["predicted_sex"]]
     expected = pandas.DataFrame(
         {"predicted_sex": ["MALE", "MALE", "FEMALE"]},
         dtype="string[pyarrow]",
         index=pandas.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
     pandas.testing.assert_frame_equal(
-        predictions.sort_index(),
+        result.sort_index(),
         expected,
         check_exact=False,
         rtol=0.1,

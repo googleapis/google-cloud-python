@@ -17,7 +17,7 @@ https://scikit-learn.org/stable/modules/decomposition.html."""
 
 from __future__ import annotations
 
-from typing import cast, List, Optional, Union
+from typing import List, Optional, Union
 
 from google.cloud import bigquery
 
@@ -106,12 +106,7 @@ class PCA(
 
         (X,) = utils.convert_to_dataframe(X)
 
-        return cast(
-            bpd.DataFrame,
-            self._bqml_model.predict(X)[
-                ["principal_component_" + str(i + 1) for i in range(self.n_components)]
-            ],
-        )
+        return self._bqml_model.predict(X)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> PCA:
         """Save the model to BigQuery.
