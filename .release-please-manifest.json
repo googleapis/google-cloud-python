@@ -139,7 +139,7 @@
     "packages/google-cloud-support": "0.1.2",
     "packages/google-cloud-talent": "2.11.2",
     "packages/google-cloud-tasks": "2.14.2",
-    "packages/google-cloud-telcoautomation": "0.0.0",
+    "packages/google-cloud-telcoautomation": "0.1.0",
     "packages/google-cloud-texttospeech": "2.14.2",
     "packages/google-cloud-tpu": "1.16.0",
     "packages/google-cloud-trace": "1.11.3",
