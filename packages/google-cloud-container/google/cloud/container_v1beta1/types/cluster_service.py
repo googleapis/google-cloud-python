@@ -190,6 +190,7 @@ __protobuf__ = proto.module(
         "CostManagementConfig",
         "TpuConfig",
         "Master",
+        "AutopilotConversionStatus",
         "Autopilot",
         "WorkloadPolicyConfig",
         "NotificationConfig",
@@ -6427,30 +6428,6 @@ class NodePool(proto.Message):
     to them, which may be used to reference them during pod
     scheduling. They may also be resized up or down, to accommodate
     the workload.
-    These upgrade settings control the level of parallelism and the
-    level of disruption caused by an upgrade.
-
-    maxUnavailable controls the number of nodes that can be
-    simultaneously unavailable.
-
-    maxSurge controls the number of additional nodes that can be
-    added to the node pool temporarily for the time of the upgrade
-    to increase the number of available nodes.
-
-    (maxUnavailable + maxSurge) determines the level of parallelism
-    (how many nodes are being upgraded at the same time).
-
-    Note: upgrades inevitably introduce some disruption since
-    workloads need to be moved from old nodes to new, upgraded ones.
-    Even if maxUnavailable=0, this holds true. (Disruption stays
-    within the limits of PodDisruptionBudget, if it is configured.)
-
-    Consider a hypothetical node pool with 5 nodes having
-    maxSurge=2, maxUnavailable=1. This means the upgrade process
-    upgrades 3 nodes simultaneously. It creates 2 additional
-    (upgraded) nodes, then it brings down 3 old (not yet upgraded)
-    nodes at the same time. This ensures that there are always at
-    least 4 nodes available.
 
     Attributes:
         name (str):
@@ -6526,6 +6503,9 @@ class NodePool(proto.Message):
             on the value of node pool fields, and may be
             sent on update requests to ensure the client has
             an up-to-date value before proceeding.
+        queued_provisioning (google.cloud.container_v1beta1.types.NodePool.QueuedProvisioning):
+            Specifies the configuration of queued
+            provisioning.
         best_effort_provisioning (google.cloud.container_v1beta1.types.BestEffortProvisioning):
             Enable best effort provisioning for nodes
     """
@@ -6568,7 +6548,31 @@ class NodePool(proto.Message):
         ERROR = 6
 
     class UpgradeSettings(proto.Message):
-        r"""These upgrade settings configure the upgrade strategy for the node
+        r"""These upgrade settings control the level of parallelism and the
+        level of disruption caused by an upgrade.
+
+        maxUnavailable controls the number of nodes that can be
+        simultaneously unavailable.
+
+        maxSurge controls the number of additional nodes that can be added
+        to the node pool temporarily for the time of the upgrade to increase
+        the number of available nodes.
+
+        (maxUnavailable + maxSurge) determines the level of parallelism (how
+        many nodes are being upgraded at the same time).
+
+        Note: upgrades inevitably introduce some disruption since workloads
+        need to be moved from old nodes to new, upgraded ones. Even if
+        maxUnavailable=0, this holds true. (Disruption stays within the
+        limits of PodDisruptionBudget, if it is configured.)
+
+        Consider a hypothetical node pool with 5 nodes having maxSurge=2,
+        maxUnavailable=1. This means the upgrade process upgrades 3 nodes
+        simultaneously. It creates 2 additional (upgraded) nodes, then it
+        brings down 3 old (not yet upgraded) nodes at the same time. This
+        ensures that there are always at least 4 nodes available.
+
+        These upgrade settings configure the upgrade strategy for the node
         pool. Use strategy to switch between the strategies applied to the
         node pool.
 
@@ -6784,6 +6788,23 @@ class NodePool(proto.Message):
             number=3,
         )
 
+    class QueuedProvisioning(proto.Message):
+        r"""QueuedProvisioning defines the queued provisioning used by
+        the node pool.
+
+        Attributes:
+            enabled (bool):
+                Denotes that this nodepool is QRM specific,
+                meaning nodes can be only obtained through
+                queuing via the Cluster Autoscaler
+                ProvisioningRequest API.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -6869,6 +6890,11 @@ class NodePool(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=110,
+    )
+    queued_provisioning: QueuedProvisioning = proto.Field(
+        proto.MESSAGE,
+        number=112,
+        message=QueuedProvisioning,
     )
     best_effort_provisioning: "BestEffortProvisioning" = proto.Field(
         proto.MESSAGE,
@@ -9584,6 +9610,36 @@ class Master(proto.Message):
     r"""Master is the configuration for components on master."""
 
 
+class AutopilotConversionStatus(proto.Message):
+    r"""AutopilotConversionStatus represents conversion status.
+
+    Attributes:
+        state (google.cloud.container_v1beta1.types.AutopilotConversionStatus.State):
+            Output only. The current state of the
+            conversion.
+    """
+
+    class State(proto.Enum):
+        r"""The current state of the conversion.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                STATE_UNSPECIFIED indicates the state is unspecified.
+            DONE (5):
+                DONE indicates the conversion has been
+                completed. Old node pools will continue being
+                deleted in the background.
+        """
+        STATE_UNSPECIFIED = 0
+        DONE = 5
+
+    state: State = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+
+
 class Autopilot(proto.Message):
     r"""Autopilot is the configuration for Autopilot settings on the
     cluster.
@@ -9593,6 +9649,8 @@ class Autopilot(proto.Message):
             Enable Autopilot
         workload_policy_config (google.cloud.container_v1beta1.types.WorkloadPolicyConfig):
             Workload policy configuration for Autopilot.
+        conversion_status (google.cloud.container_v1beta1.types.AutopilotConversionStatus):
+            ConversionStatus shows conversion status.
     """
 
     enabled: bool = proto.Field(
@@ -9603,6 +9661,11 @@ class Autopilot(proto.Message):
         proto.MESSAGE,
         number=2,
         message="WorkloadPolicyConfig",
+    )
+    conversion_status: "AutopilotConversionStatus" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AutopilotConversionStatus",
     )
 
 
