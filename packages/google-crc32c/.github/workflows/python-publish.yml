@@ -13,7 +13,7 @@ jobs:
   build-source-distribution:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python
       uses: actions/setup-python@v4
     - name: Build
@@ -29,15 +29,15 @@ jobs:
     # See: https://github.com/pypa/manylinux/issues/994
     name: Build wheels on ubuntu-20.04 - x86_64 - manylinux1
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
 
     - name: Build Wheels
-      uses: pypa/cibuildwheel@v2.14.1
+      uses: pypa/cibuildwheel@v2.16.1
       env:
         CIBW_ARCHS_LINUX: x86_64
         CIBW_MANYLINUX_X86_64_IMAGE: manylinux1
@@ -81,17 +81,17 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
 
     - name: Set up QEMU for ARM64 cross compile
       if: ${{ matrix.arch }} == 'aarch64'
       id: qemu
-      uses: docker/setup-qemu-action@v2
+      uses: docker/setup-qemu-action@v3
 
     - name: Build Wheels
-      uses: pypa/cibuildwheel@v2.14.1
+      uses: pypa/cibuildwheel@v2.16.1
       env:
         CIBW_ARCHS_LINUX: ${{ matrix.arch }}
         CIBW_ENVIRONMENT: >
@@ -131,7 +131,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
 
@@ -164,7 +164,7 @@ jobs:
         make -C build all install
 
     - name: Build Wheels
-      uses: pypa/cibuildwheel@v2.14.1
+      uses: pypa/cibuildwheel@v2.16.1
       env:
         CIBW_ARCHS_MACOS: ${{ matrix.arch }}
         CIBW_ENVIRONMENT: >
@@ -194,7 +194,7 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
 
@@ -238,7 +238,7 @@ jobs:
         fi
 
     - name: Build Wheels
-      uses: pypa/cibuildwheel@v2.14.1
+      uses: pypa/cibuildwheel@v2.16.1
       env:
         CIBW_ARCHS_WINDOWS: ${{ steps.platform-arch.outputs.arch }}
         CIBW_ENVIRONMENT: >

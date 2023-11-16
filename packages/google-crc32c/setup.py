@@ -107,6 +107,7 @@ def build_c_extension():
         package_dir={"": "src"},
         ext_modules=[module],
         cmdclass={"build_ext": BuildExtWithDLL},
+        install_requires=["importlib_resources>=1.3 ; python_version < '3.9' and os_name == 'nt'"],
     )
 
 

@@ -15,8 +15,6 @@
 import os
 import sys
 
-import pkg_resources
-
 
 def modify_path():
     """Modify the module search path."""
@@ -29,9 +27,15 @@ def modify_path():
         return
 
     try:
-        extra_dll_dir = pkg_resources.resource_filename("google_crc32c", "extra-dll")
+        try:
+            # Python 3.9+
+            from importlib.resources import files as _resources_files
+        except ImportError:
+            # Python 3.7 & 3.8
+            from importlib_resources import files as _resources_files  # type: ignore
+        extra_dll_dir = str(_resources_files("google_crc32c") / "extra-dll")
         if os.path.isdir(extra_dll_dir):
-            # Python 3.6, 3.7 use path
+            # Python 3.7 use path
             os.environ["PATH"] = path + os.pathsep + extra_dll_dir
             # Python 3.8+ uses add_dll_directory.
             if sys.version_info[0] == 3 and sys.version_info[1] >= 8:
