@@ -33,6 +33,7 @@ from google.cloud.confidentialcomputing_v1.types.service import (
     SignedEntity,
     SigningAlgorithm,
     TokenOptions,
+    TokenType,
     TpmAttestation,
     VerifyAttestationRequest,
     VerifyAttestationResponse,
@@ -52,4 +53,5 @@ __all__ = (
     "VerifyAttestationRequest",
     "VerifyAttestationResponse",
     "SigningAlgorithm",
+    "TokenType",
 )

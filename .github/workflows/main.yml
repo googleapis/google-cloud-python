@@ -37,6 +37,11 @@ jobs:
         id: date
         run: echo "::set-output name=current_date::$(date +'%Y-%m-%d')"
       - uses: actions/checkout@v4
+        # Use a fetch-depth of 2
+        # See https://github.com/googleapis/google-cloud-python/issues/12013
+        # and https://github.com/actions/checkout#checkout-head.
+        with:
+          fetch-depth: 2
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:

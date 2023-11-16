@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.1...google-cloud-confidentialcomputing-v0.4.2) (2023-11-13)
+
+
+### Features
+
+* [google-cloud-confidentialcomputing] Add a new field `token_type` to `TokenOptions` message proto ([#12011](https://github.com/googleapis/google-cloud-python/issues/12011)) ([37b1ae9](https://github.com/googleapis/google-cloud-python/commit/37b1ae9e3a03e246d74da6cb3276d2b2d0d9135c))
+
 ## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.0...google-cloud-confidentialcomputing-v0.4.1) (2023-09-19)
 
 

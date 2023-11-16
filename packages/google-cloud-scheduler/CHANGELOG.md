@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.11.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.11.2...google-cloud-scheduler-v2.11.3) (2023-11-13)
+
+
+### Documentation
+
+* [google-cloud-scheduler] correct timezone/offset information for Cloud Scheduler headers ([#12007](https://github.com/googleapis/google-cloud-python/issues/12007)) ([dd04e8f](https://github.com/googleapis/google-cloud-python/commit/dd04e8f16d965e7f9278e9ef24cd7dbdcc1363ec))
+
 ## [2.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.11.1...google-cloud-scheduler-v2.11.2) (2023-09-30)
 
 

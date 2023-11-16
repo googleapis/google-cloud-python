@@ -52,6 +52,7 @@ class filestoreCallTransformer(cst.CSTTransformer):
         'list_instances': ('parent', 'page_size', 'page_token', 'order_by', 'filter', ),
         'list_snapshots': ('parent', 'page_size', 'page_token', 'order_by', 'filter', ),
         'restore_instance': ('name', 'file_share', 'source_backup', ),
+        'revert_instance': ('name', 'target_snapshot_id', ),
         'update_backup': ('backup', 'update_mask', ),
         'update_instance': ('update_mask', 'instance', ),
         'update_snapshot': ('update_mask', 'snapshot', ),

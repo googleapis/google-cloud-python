@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.2...google-cloud-discoveryengine-v0.11.3) (2023-11-13)
+
+
+### Features
+
+* [google-cloud-discoveryengine] add data store and engine services ([#12017](https://github.com/googleapis/google-cloud-python/issues/12017)) ([ac7c891](https://github.com/googleapis/google-cloud-python/commit/ac7c891c50de4f95f0253c6716482bbb78696793))
+
 ## [0.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.1...google-cloud-discoveryengine-v0.11.2) (2023-10-10)
 
 
