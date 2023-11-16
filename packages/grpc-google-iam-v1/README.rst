@@ -19,7 +19,7 @@ Python Client for IAM
 .. _Product Documentation:  https://cloud.google.com/iam
 
 Installation
-~~~~~~~~~~~~
+^^^^^^^^^^^^
 
 Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
 create isolated Python environments. The basic problem it addresses is one of

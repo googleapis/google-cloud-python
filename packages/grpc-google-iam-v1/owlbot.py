@@ -44,11 +44,12 @@ s.copy("googleapis/google/api/*.proto", "google/api")
 
 templated_files = gcp.CommonTemplates().py_library()
 s.move(templated_files / ".kokoro")
+s.move(templated_files / "docs", excludes=["multiprocessing.rst"])
 s.move(templated_files / "LICENSE")
 s.move(templated_files / "CONTRIBUTING.rst")
 s.move(templated_files / "*.md")
 s.move(templated_files / "renovate.json")
-s.move(templated_files / ".github", excludes=["workflows"])
+s.move(templated_files / ".github", excludes=["workflows/unittest.yml"])
 
 python.py_samples(skip_readmes=True)
 
