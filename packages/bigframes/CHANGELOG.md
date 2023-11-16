@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.14.1](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.14.0...v0.14.1) (2023-11-16)
+
+
+### Bug Fixes
+
+* Correctly handle null values when initializing fingerprint ordering ([#210](https://github.com/googleapis/python-bigquery-dataframes/issues/210)) ([8324f13](https://github.com/googleapis/python-bigquery-dataframes/commit/8324f133547ec35da5eefc0a8b02fe0f3887d81d))
+
+
+### Documentation
+
+* Add an example notebook about line graphs ([#197](https://github.com/googleapis/python-bigquery-dataframes/issues/197)) ([f957b27](https://github.com/googleapis/python-bigquery-dataframes/commit/f957b278b39e0a472a3153e9e1906c2d5f2ac2e5))
+
 ## [0.14.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.13.0...v0.14.0) (2023-11-14)
 
 
