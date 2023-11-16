@@ -46,7 +46,7 @@
     "packages/google-cloud-confidentialcomputing": "0.4.2",
     "packages/google-cloud-config": "0.1.1",
     "packages/google-cloud-contact-center-insights": "1.14.0",
-    "packages/google-cloud-container": "2.33.0",
+    "packages/google-cloud-container": "2.34.0",
     "packages/google-cloud-containeranalysis": "2.12.4",
     "packages/google-cloud-contentwarehouse": "0.7.2",
     "packages/google-cloud-data-fusion": "1.8.3",

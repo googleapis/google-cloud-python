@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.33.0...google-cloud-container-v2.34.0) (2023-11-16)
+
+
+### Features
+
+* Add AutopilotConversionStatus ([21c6d43](https://github.com/googleapis/google-cloud-python/commit/21c6d431e9b3166fc40b906b1d5b3788c0cfb224))
+* Add Provisioning Request API ([21c6d43](https://github.com/googleapis/google-cloud-python/commit/21c6d431e9b3166fc40b906b1d5b3788c0cfb224))
+
+
+### Documentation
+
+* Improve NodePool documentation ([21c6d43](https://github.com/googleapis/google-cloud-python/commit/21c6d431e9b3166fc40b906b1d5b3788c0cfb224))
+
 ## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.32.0...google-cloud-container-v2.33.0) (2023-11-02)
 
 
