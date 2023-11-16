@@ -50,6 +50,7 @@ s.move(templated_files / "CONTRIBUTING.rst")
 s.move(templated_files / "*.md")
 s.move(templated_files / "renovate.json")
 s.move(templated_files / ".github", excludes=["workflows/unittest.yml"])
+s.move(templated_files / ".trampolinerc")
 
 python.py_samples(skip_readmes=True)
 
