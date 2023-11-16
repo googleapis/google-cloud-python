@@ -8,9 +8,9 @@ on:
 jobs:
 
   mypy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -35,12 +35,12 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
 
     - name: Build Wheels
-      uses: pypa/cibuildwheel@v2.14.1
+      uses: pypa/cibuildwheel@v2.16.1
       env:
         # For presubmit, just build / test the most common arch
         CIBW_ARCHS: native
@@ -82,7 +82,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
 
@@ -116,7 +116,7 @@ jobs:
         make -C build all install
 
     - name: Build Wheels
-      uses: pypa/cibuildwheel@v2.14.1
+      uses: pypa/cibuildwheel@v2.16.1
       env:
         # For presubmit, just build / test the most common arch
         CIBW_ARCHS: native
@@ -150,7 +150,7 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
 
@@ -203,7 +203,7 @@ jobs:
         fi
 
     - name: Build Wheels
-      uses: pypa/cibuildwheel@v2.14.1
+      uses: pypa/cibuildwheel@v2.16.1
       env:
         CIBW_ARCHS_WINDOWS: ${{ steps.platform-arch.outputs.arch }}
         # For presubmit, skip build / test for pypy
