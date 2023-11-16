@@ -2430,6 +2430,27 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-telcoautomation": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-telcoautomation",
+            "extra-files": [
+                "google/cloud/telcoautomation/gapic_version.py",
+                "google/cloud/telcoautomation_v1/gapic_version.py",
+                "google/cloud/telcoautomation_v1alpha1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.telcoautomation.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.telcoautomation.v1alpha1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-texttospeech": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
