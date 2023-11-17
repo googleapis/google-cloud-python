@@ -5638,6 +5638,9 @@ class NodePool(proto.Message):
             on the value of node pool fields, and may be
             sent on update requests to ensure the client has
             an up-to-date value before proceeding.
+        queued_provisioning (google.cloud.container_v1.types.NodePool.QueuedProvisioning):
+            Specifies the configuration of queued
+            provisioning.
         best_effort_provisioning (google.cloud.container_v1.types.BestEffortProvisioning):
             Enable best effort provisioning for nodes
     """
@@ -5916,6 +5919,23 @@ class NodePool(proto.Message):
             number=3,
         )
 
+    class QueuedProvisioning(proto.Message):
+        r"""QueuedProvisioning defines the queued provisioning used by
+        the node pool.
+
+        Attributes:
+            enabled (bool):
+                Denotes that this nodepool is QRM specific,
+                meaning nodes can be only obtained through
+                queuing via the Cluster Autoscaler
+                ProvisioningRequest API.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -6001,6 +6021,11 @@ class NodePool(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=110,
+    )
+    queued_provisioning: QueuedProvisioning = proto.Field(
+        proto.MESSAGE,
+        number=112,
+        message=QueuedProvisioning,
     )
     best_effort_provisioning: "BestEffortProvisioning" = proto.Field(
         proto.MESSAGE,
