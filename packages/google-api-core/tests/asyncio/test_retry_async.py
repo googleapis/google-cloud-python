@@ -280,7 +280,6 @@ class TestAsyncRetry:
     @mock.patch("asyncio.sleep", autospec=True)
     @pytest.mark.asyncio
     async def test___call___and_execute_retry(self, sleep, uniform):
-
         on_error = mock.Mock(spec=["__call__"], side_effect=[None])
         retry_ = retry_async.AsyncRetry(
             predicate=retry_async.if_exception_type(ValueError)
@@ -305,7 +304,6 @@ class TestAsyncRetry:
     @mock.patch("asyncio.sleep", autospec=True)
     @pytest.mark.asyncio
     async def test___call___and_execute_retry_hitting_deadline(self, sleep, uniform):
-
         on_error = mock.Mock(spec=["__call__"], side_effect=[None] * 10)
         retry_ = retry_async.AsyncRetry(
             predicate=retry_async.if_exception_type(ValueError),
@@ -315,7 +313,7 @@ class TestAsyncRetry:
             deadline=9.9,
         )
 
-        utcnow = datetime.datetime.utcnow()
+        utcnow = datetime.datetime.now(tz=datetime.timezone.utc)
         utcnow_patcher = mock.patch(
             "google.api_core.datetime_helpers.utcnow", return_value=utcnow
         )

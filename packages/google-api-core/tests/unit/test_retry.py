@@ -361,7 +361,6 @@ class TestRetry(object):
     @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n)
     @mock.patch("time.sleep", autospec=True)
     def test___call___and_execute_retry(self, sleep, uniform):
-
         on_error = mock.Mock(spec=["__call__"], side_effect=[None])
         retry_ = retry.Retry(predicate=retry.if_exception_type(ValueError))
 
@@ -383,7 +382,6 @@ class TestRetry(object):
     @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n)
     @mock.patch("time.sleep", autospec=True)
     def test___call___and_execute_retry_hitting_deadline(self, sleep, uniform):
-
         on_error = mock.Mock(spec=["__call__"], side_effect=[None] * 10)
         retry_ = retry.Retry(
             predicate=retry.if_exception_type(ValueError),
@@ -393,7 +391,7 @@ class TestRetry(object):
             deadline=30.9,
         )
 
-        utcnow = datetime.datetime.utcnow()
+        utcnow = datetime.datetime.now(tz=datetime.timezone.utc)
         utcnow_patcher = mock.patch(
             "google.api_core.datetime_helpers.utcnow", return_value=utcnow
         )

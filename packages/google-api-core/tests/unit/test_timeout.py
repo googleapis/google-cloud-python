@@ -58,10 +58,10 @@ class TestTimeToDeadlineTimeout(object):
     def test_apply(self):
         target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
 
-        datetime.datetime.utcnow()
+        datetime.datetime.now(tz=datetime.timezone.utc)
         datetime.timedelta(seconds=1)
 
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(tz=datetime.timezone.utc)
 
         times = [
             now,
@@ -92,10 +92,10 @@ class TestTimeToDeadlineTimeout(object):
     def test_apply_no_timeout(self):
         target = mock.Mock(spec=["__call__", "__name__"], __name__="target")
 
-        datetime.datetime.utcnow()
+        datetime.datetime.now(tz=datetime.timezone.utc)
         datetime.timedelta(seconds=1)
 
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(tz=datetime.timezone.utc)
 
         times = [
             now,

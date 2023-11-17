@@ -42,7 +42,7 @@ _RFC3339_NANOS = re.compile(
 
 def utcnow():
     """A :meth:`datetime.datetime.utcnow()` alias to allow mocking in tests."""
-    return datetime.datetime.utcnow()
+    return datetime.datetime.now(tz=datetime.timezone.utc).replace(tzinfo=None)
 
 
 def to_milliseconds(value):
