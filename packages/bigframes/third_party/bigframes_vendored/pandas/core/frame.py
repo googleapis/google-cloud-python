@@ -2121,6 +2121,59 @@ class DataFrame(NDFrame):
         used to group large amounts of data and compute operations on these
         groups.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'Animal': ['Falcon', 'Falcon',
+            ...                                'Parrot', 'Parrot'],
+            ...                     'Max Speed': [380., 370., 24., 26.]})
+            >>> df
+               Animal  Max Speed
+            0  Falcon      380.0
+            1  Falcon      370.0
+            2  Parrot       24.0
+            3  Parrot       26.0
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+            >>> df.groupby(['Animal'])['Max Speed'].mean()
+            Animal
+            Falcon    375.0
+            Parrot     25.0
+            Name: Max Speed, dtype: Float64
+
+        We can also choose to include NA in group keys or not by setting `dropna`:
+
+            >>> df = bpd.DataFrame([[1, 2, 3],[1, None, 4], [2, 1, 3], [1, 2, 2]],
+            ...                    columns=["a", "b", "c"])
+            >>> df.groupby(by=["b"]).sum()
+                 a  c
+            b
+            1.0  2  3
+            2.0  2  5
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df.groupby(by=["b"], dropna=False).sum()
+                  a  c
+            b
+            1.0   2  3
+            2.0   2  5
+            <NA>  1  4
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+        We can also choose to return object with group labels or not by setting `as_index`:
+
+            >>> df.groupby(by=["b"], as_index=False).sum()
+                 b  a  c
+            0  1.0  2  3
+            1  2.0  2  5
+            <BLANKLINE>
+            [2 rows x 3 columns]
+
         Args:
             by (str, Sequence[str]):
                 A label or list of labels may be passed to group by the columns
@@ -2224,7 +2277,7 @@ class DataFrame(NDFrame):
                 Python function wrapped by ``remote_function`` decorator,
                 returns a single value from a single value.
             na_action (Optional[str], default None):
-                ``{None, 'ignore'}``, default None. If ‘ignore’, propagate NaN
+                ``{None, 'ignore'}``, default None. If `ignore`, propagate NaN
                 values, without passing them to func.
 
         Returns:
@@ -2239,6 +2292,74 @@ class DataFrame(NDFrame):
         """Join columns of another DataFrame.
 
         Join columns with `other` DataFrame on index
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Join two DataFrames by specifying how to handle the operation:
+
+            >>> df1 = bpd.DataFrame({'col1': ['foo', 'bar'], 'col2': [1, 2]}, index=[10, 11])
+            >>> df1
+               col1  col2
+            10  foo     1
+            11  bar     2
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df2 = bpd.DataFrame({'col3': ['foo', 'baz'], 'col4': [3, 4]}, index=[11, 22])
+            >>> df2
+               col3  col4
+            11  foo     3
+            22  baz     4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df1.join(df2)
+               col1  col2  col3  col4
+            10  foo     1  <NA>  <NA>
+            11  bar     2   foo     3
+            <BLANKLINE>
+            [2 rows x 4 columns]
+
+            >>> df1.join(df2, how="left")
+               col1  col2  col3  col4
+            10  foo     1  <NA>  <NA>
+            11  bar     2   foo     3
+            <BLANKLINE>
+            [2 rows x 4 columns]
+
+            >>> df1.join(df2, how="right")
+                col1  col2 col3  col4
+            11  bar      2  foo     3
+            22  <NA>  <NA>  baz     4
+            <BLANKLINE>
+            [2 rows x 4 columns]
+
+            >>> df1.join(df2, how="outer")
+                col1  col2  col3  col4
+            10   foo     1  <NA>  <NA>
+            11   bar     2   foo     3
+            22  <NA>  <NA>   baz     4
+            <BLANKLINE>
+            [3 rows x 4 columns]
+
+            >>> df1.join(df2, how="inner")
+               col1  col2 col3  col4
+            11  bar     2  foo     3
+            <BLANKLINE>
+            [1 rows x 4 columns]
+
+
+        Another option to join using the key columns is to use the on parameter:
+
+            >>> df1.join(df2, on="col1", how="right")
+                  col1  col2 col3  col4
+            <NA>    11  <NA>  foo     3
+            <NA>    22  <NA>  baz     4
+            <BLANKLINE>
+            [2 rows x 4 columns]
 
         Args:
             other:
@@ -2292,6 +2413,78 @@ class DataFrame(NDFrame):
             rows will be matched against each other. This is different from usual SQL
             join behaviour and can lead to unexpected results.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Merge DataFrames df1 and df2 by specifiying type of merge:
+
+            >>> df1 = bpd.DataFrame({'a': ['foo', 'bar'], 'b': [1, 2]})
+            >>> df1
+                 a  b
+            0  foo  1
+            1  bar  2
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df2 = bpd.DataFrame({'a': ['foo', 'baz'], 'c': [3, 4]})
+            >>> df2
+                 a  c
+            0  foo  3
+            1  baz  4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df1.merge(df2, how="inner", on="a")
+                 a  b  c
+            0  foo  1  3
+            <BLANKLINE>
+            [1 rows x 3 columns]
+
+            >>> df1.merge(df2, how='left', on='a')
+                 a  b     c
+            0  foo  1     3
+            1  bar  2  <NA>
+            <BLANKLINE>
+            [2 rows x 3 columns]
+
+        Merge df1 and df2 on the lkey and rkey columns. The value columns have
+        the default suffixes, _x and _y, appended.
+
+            >>> df1 = bpd.DataFrame({'lkey': ['foo', 'bar', 'baz', 'foo'],
+            ...                     'value': [1, 2, 3, 5]})
+            >>> df1
+              lkey  value
+            0  foo      1
+            1  bar      2
+            2  baz      3
+            3  foo      5
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+            >>> df2 = bpd.DataFrame({'rkey': ['foo', 'bar', 'baz', 'foo'],
+            ...                     'value': [5, 6, 7, 8]})
+            >>> df2
+              rkey  value
+            0  foo      5
+            1  bar      6
+            2  baz      7
+            3  foo      8
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+            >>> df1.merge(df2, left_on='lkey', right_on='rkey')
+              lkey  value_x rkey  value_y
+            0  foo        1  foo        5
+            1  foo        1  foo        8
+            2  bar        2  bar        6
+            3  baz        3  baz        7
+            4  foo        5  foo        5
+            5  foo        5  foo        8
+            <BLANKLINE>
+            [6 rows x 4 columns]
+
         Args:
             right:
                 Object to merge with.
@@ -2341,6 +2534,29 @@ class DataFrame(NDFrame):
         Objects passed to the function are Series objects whose index is
         the DataFrame's index (``axis=0``) the final return type
         is inferred from the return type of the applied function.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
+            >>> df
+            col1	col2
+            0	1	3
+            1	2	4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> def sqaure(x):
+            ...     return x * x
+            >>> df1 = df.apply(sqaure)
+            >>> df
+               col1  col2
+            0     1     3
+            1     2     4
+            <BLANKLINE>
+            [2 rows x 2 columns]
 
         Args:
             func (function):
