@@ -1696,6 +1696,49 @@ class Series(NDFrame):  # type: ignore[misc]
     def where(self, cond, other):
         """Replace values where the condition is False.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([10, 11, 12, 13, 14])
+            >>> s
+            0    10
+            1    11
+            2    12
+            3    13
+            4    14
+            dtype: Int64
+
+        You can filter the values in the Series based on a condition. The values
+        matching the condition would be kept, and not matching would be replaced.
+        The default replacement value is ``NA``.
+
+            >>> s.where(s % 2 == 0)
+            0      10
+            1    <NA>
+            2      12
+            3    <NA>
+            4      14
+            dtype: Int64
+
+        You can specify a custom replacement value for non-matching values.
+
+            >>> s.where(s % 2 == 0, -1)
+            0    10
+            1    -1
+            2    12
+            3    -1
+            4    14
+            dtype: Int64
+            >>> s.where(s % 2 == 0, 100*s)
+            0      10
+            1    1100
+            2      12
+            3    1300
+            4      14
+            dtype: Int64
+
         Args:
             cond (bool Series/DataFrame, array-like, or callable):
                 Where cond is True, keep the original value. Where False, replace
@@ -1719,6 +1762,77 @@ class Series(NDFrame):  # type: ignore[misc]
 
     def mask(self, cond, other):
         """Replace values where the condition is True.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([10, 11, 12, 13, 14])
+            >>> s
+            0    10
+            1    11
+            2    12
+            3    13
+            4    14
+            dtype: Int64
+
+        You can mask the values in the Series based on a condition. The values
+        matching the condition would be masked.
+
+            >>> s.mask(s % 2 == 0)
+            0    <NA>
+            1      11
+            2    <NA>
+            3      13
+            4    <NA>
+            dtype: Int64
+
+        You can specify a custom mask value.
+
+            >>> s.mask(s % 2 == 0, -1)
+            0    -1
+            1    11
+            2    -1
+            3    13
+            4    -1
+            dtype: Int64
+            >>> s.mask(s % 2 == 0, 100*s)
+            0    1000
+            1      11
+            2    1200
+            3      13
+            4    1400
+            dtype: Int64
+
+        You can also use a remote function to evaluate the mask condition. This
+        is useful in situation such as the following, where the mask
+        condition is evaluated based on a complicated business logic which cannot
+        be expressed in form of a Series.
+
+            >>> @bpd.remote_function([str], bool, reuse=False)
+            ... def should_mask(name):
+            ...     hash = 0
+            ...     for char_ in name:
+            ...         hash += ord(char_)
+            ...     return hash % 2 == 0
+
+            >>> s = bpd.Series(["Alice", "Bob", "Caroline"])
+            >>> s
+            0       Alice
+            1         Bob
+            2    Caroline
+            dtype: string
+            >>> s.mask(should_mask)
+            0        <NA>
+            1         Bob
+            2    Caroline
+            dtype: string
+            >>> s.mask(should_mask, "REDACTED")
+            0    REDACTED
+            1         Bob
+            2    Caroline
+            dtype: string
 
         Args:
             cond (bool Series/DataFrame, array-like, or callable):
