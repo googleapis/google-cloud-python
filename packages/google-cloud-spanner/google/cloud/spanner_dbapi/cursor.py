@@ -315,6 +315,10 @@ class Cursor(object):
                 "Executing DDL statements with executemany() method is not allowed."
             )
 
+        # For every operation, we've got to ensure that any prior DDL
+        # statements were run.
+        self.connection.run_prior_DDL_statements()
+
         many_result_set = StreamedManyResultSets()
 
         if class_ in (parse_utils.STMT_INSERT, parse_utils.STMT_UPDATING):
