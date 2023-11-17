@@ -1031,30 +1031,41 @@ class OrderedIR(BaseIbisIR):
 
     def to_sql(
         self,
-        offset_column: typing.Optional[str] = None,
         col_id_overrides: typing.Mapping[str, str] = {},
         sorted: bool = False,
     ) -> str:
-        offsets_id = offset_column or ORDER_ID_COLUMN
-
         sql = ibis_bigquery.Backend().compile(
             self._to_ibis_expr(
-                ordering_mode="offset_col"
-                if (offset_column or sorted)
-                else "unordered",
-                order_col_name=offsets_id,
+                ordering_mode="unordered",
                 col_id_overrides=col_id_overrides,
+                expose_hidden_cols=sorted,
             )
         )
         if sorted:
+            output_columns = [
+                col_id_overrides.get(col) if (col in col_id_overrides) else col
+                for col in self.column_ids
+            ]
+            selection = ", ".join(map(lambda col_id: f"`{col_id}`", output_columns))
+            order_by_clause = self._ordering_clause(self._ordering.all_ordering_columns)
+
             sql = textwrap.dedent(
-                f"SELECT * EXCEPT (`{offsets_id}`)\n"
+                f"SELECT {selection}\n"
                 "FROM (\n"
                 f"{sql}\n"
                 ")\n"
-                f"ORDER BY `{offsets_id}`\n"
+                f"{order_by_clause}\n"
             )
         return typing.cast(str, sql)
+
+    def _ordering_clause(self, ordering: Iterable[OrderingColumnReference]) -> str:
+        parts = []
+        for col_ref in ordering:
+            asc_desc = "ASC" if col_ref.direction.is_ascending else "DESC"
+            null_clause = "NULLS LAST" if col_ref.na_last else "NULLS FIRST"
+            part = f"`{col_ref.column_id}` {asc_desc} {null_clause}"
+            parts.append(part)
+        return f"ORDER BY {' ,'.join(parts)}"
 
     def _to_ibis_expr(
         self,

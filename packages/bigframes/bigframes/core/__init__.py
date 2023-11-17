@@ -125,14 +125,18 @@ class ArrayValue:
         col_id_overrides: typing.Mapping[str, str] = {},
         sorted: bool = False,
     ) -> str:
-        if sorted or offset_column:
-            return self._compile_ordered().to_sql(
-                offset_column=offset_column,
+        array_value = self
+        if offset_column:
+            array_value = self.promote_offsets(offset_column)
+        if sorted:
+            return array_value._compile_ordered().to_sql(
                 col_id_overrides=col_id_overrides,
                 sorted=sorted,
             )
         else:
-            return self._compile_unordered().to_sql(col_id_overrides=col_id_overrides)
+            return array_value._compile_unordered().to_sql(
+                col_id_overrides=col_id_overrides
+            )
 
     def start_query(
         self,

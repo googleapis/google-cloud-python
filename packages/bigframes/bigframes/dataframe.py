@@ -2577,14 +2577,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         }
 
         if ordering_id is not None:
-            return array_value.to_sql(
-                offset_column=ordering_id,
-                col_id_overrides=id_overrides,
-            )
-        else:
-            return array_value.to_sql(
-                col_id_overrides=id_overrides,
-            )
+            array_value = array_value.promote_offsets(ordering_id)
+        return array_value.to_sql(
+            col_id_overrides=id_overrides,
+        )
 
     def _run_io_query(
         self,
