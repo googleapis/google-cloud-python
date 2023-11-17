@@ -483,13 +483,15 @@ class GbqConnector(object):
                 project=self.project_id,
             )
             logger.debug("Query running...")
-        except (RefreshError, ValueError):
+        except (RefreshError, ValueError) as ex:
             if self.private_key:
-                raise AccessDenied("The service account credentials are not valid")
+                raise AccessDenied(
+                    f"The service account credentials are not valid: {ex}"
+                )
             else:
                 raise AccessDenied(
                     "The credentials have been revoked or expired, "
-                    "please re-run the application to re-authorize"
+                    f"please re-run the application to re-authorize: {ex}"
                 )
         except self.http_error as ex:
             self.process_http_error(ex)
