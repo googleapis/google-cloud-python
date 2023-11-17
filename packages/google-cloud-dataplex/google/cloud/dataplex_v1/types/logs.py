@@ -613,6 +613,13 @@ class GovernanceEvent(proto.Message):
                 BigQuery set iam policy for policy tag.
             ACCESS_POLICY_UPDATE (14):
                 Access policy update event.
+            GOVERNANCE_RULE_MATCHED_RESOURCES (15):
+                Number of resources matched with particular
+                Query.
+            GOVERNANCE_RULE_SEARCH_LIMIT_EXCEEDS (16):
+                Rule processing exceeds the allowed limit.
+            GOVERNANCE_RULE_ERRORS (17):
+                Rule processing errors.
         """
         EVENT_TYPE_UNSPECIFIED = 0
         RESOURCE_IAM_POLICY_UPDATE = 1
@@ -627,6 +634,9 @@ class GovernanceEvent(proto.Message):
         BIGQUERY_POLICY_TAG_DELETE = 12
         BIGQUERY_POLICY_TAG_SET_IAM_POLICY = 13
         ACCESS_POLICY_UPDATE = 14
+        GOVERNANCE_RULE_MATCHED_RESOURCES = 15
+        GOVERNANCE_RULE_SEARCH_LIMIT_EXCEEDS = 16
+        GOVERNANCE_RULE_ERRORS = 17
 
     class Entity(proto.Message):
         r"""Information about Entity resource that the log event is
@@ -844,6 +854,25 @@ class DataScanEvent(proto.Message):
                 key of the map is the name of the dimension. The value is
                 the bool value depicting whether the dimension result was
                 ``pass`` or not.
+            score (float):
+                The table-level data quality score for the data scan job.
+
+                The data quality score ranges between [0, 100] (up to two
+                decimal points).
+            dimension_score (MutableMapping[str, float]):
+                The score of each dimension for data quality result. The key
+                of the map is the name of the dimension. The value is the
+                data quality score for the dimension.
+
+                The score ranges between [0, 100] (up to two decimal
+                points).
+            column_score (MutableMapping[str, float]):
+                The score of each column scanned in the data scan job. The
+                key of the map is the name of the column. The value is the
+                data quality score for the column.
+
+                The score ranges between [0, 100] (up to two decimal
+                points).
         """
 
         row_count: int = proto.Field(
@@ -858,6 +887,20 @@ class DataScanEvent(proto.Message):
             proto.STRING,
             proto.BOOL,
             number=3,
+        )
+        score: float = proto.Field(
+            proto.FLOAT,
+            number=4,
+        )
+        dimension_score: MutableMapping[str, float] = proto.MapField(
+            proto.STRING,
+            proto.FLOAT,
+            number=5,
+        )
+        column_score: MutableMapping[str, float] = proto.MapField(
+            proto.STRING,
+            proto.FLOAT,
+            number=6,
         )
 
     class DataProfileAppliedConfigs(proto.Message):
