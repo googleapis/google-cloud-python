@@ -266,6 +266,28 @@ def test_wrap_errors_non_streaming(wrap_unary_errors):
     wrap_unary_errors.assert_called_once_with(callable_)
 
 
+def test_grpc_async_stream():
+    """
+    GrpcAsyncStream type should be both an AsyncIterator and a grpc.aio.Call.
+    """
+    instance = grpc_helpers_async.GrpcAsyncStream[int]()
+    assert isinstance(instance, grpc.aio.Call)
+    # should implement __aiter__ and __anext__
+    assert hasattr(instance, "__aiter__")
+    it = instance.__aiter__()
+    assert hasattr(it, "__anext__")
+
+
+def test_awaitable_grpc_call():
+    """
+    AwaitableGrpcCall type should be an Awaitable and a grpc.aio.Call.
+    """
+    instance = grpc_helpers_async.AwaitableGrpcCall[int]()
+    assert isinstance(instance, grpc.aio.Call)
+    # should implement __await__
+    assert hasattr(instance, "__await__")
+
+
 @mock.patch("google.api_core.grpc_helpers_async._wrap_stream_errors")
 def test_wrap_errors_streaming(wrap_stream_errors):
     callable_ = mock.create_autospec(aio.UnaryStreamMultiCallable)

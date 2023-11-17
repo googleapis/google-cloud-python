@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Helpers for :mod:`grpc`."""
+from typing import Generic, TypeVar, Iterator
 
 import collections
 import functools
@@ -54,6 +55,9 @@ _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCal
 
 _LOGGER = logging.getLogger(__name__)
 
+# denotes the proto response type for grpc calls
+P = TypeVar("P")
+
 
 def _patch_callable_name(callable_):
     """Fix-up gRPC callable attributes.
@@ -79,7 +83,7 @@ def _wrap_unary_errors(callable_):
     return error_remapped_callable
 
 
-class _StreamingResponseIterator(grpc.Call):
+class _StreamingResponseIterator(Generic[P], grpc.Call):
     def __init__(self, wrapped, prefetch_first_result=True):
         self._wrapped = wrapped
 
@@ -97,11 +101,11 @@ class _StreamingResponseIterator(grpc.Call):
             # ignore stop iteration at this time. This should be handled outside of retry.
             pass
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[P]:
         """This iterator is also an iterable that returns itself."""
         return self
 
-    def __next__(self):
+    def __next__(self) -> P:
         """Get the next response from the stream.
 
         Returns:
@@ -142,6 +146,10 @@ class _StreamingResponseIterator(grpc.Call):
 
     def trailing_metadata(self):
         return self._wrapped.trailing_metadata()
+
+
+# public type alias denoting the return type of streaming gapic calls
+GrpcStream = _StreamingResponseIterator[P]
 
 
 def _wrap_stream_errors(callable_):

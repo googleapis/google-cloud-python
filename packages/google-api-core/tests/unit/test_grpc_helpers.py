@@ -195,6 +195,23 @@ class Test_StreamingResponseIterator:
         wrapped.trailing_metadata.assert_called_once_with()
 
 
+class TestGrpcStream(Test_StreamingResponseIterator):
+    @staticmethod
+    def _make_one(wrapped, **kw):
+        return grpc_helpers.GrpcStream(wrapped, **kw)
+
+    def test_grpc_stream_attributes(self):
+        """
+        Should be both a grpc.Call and an iterable
+        """
+        call = self._make_one(None)
+        assert isinstance(call, grpc.Call)
+        # should implement __iter__
+        assert hasattr(call, "__iter__")
+        it = call.__iter__()
+        assert hasattr(it, "__next__")
+
+
 def test_wrap_stream_okay():
     expected_responses = [1, 2, 3]
     callable_ = mock.Mock(spec=["__call__"], return_value=iter(expected_responses))
