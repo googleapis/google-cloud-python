@@ -123,6 +123,7 @@ class dialogflowcxCallTransformer(cst.CSTTransformer):
         'start_experiment': ('name', ),
         'stop_experiment': ('name', ),
         'streaming_detect_intent': ('query_input', 'session', 'query_params', 'output_audio_config', 'enable_partial_response', 'enable_debugging_info', ),
+        'submit_answer_feedback': ('session', 'response_id', 'answer_feedback', 'update_mask', ),
         'train_flow': ('name', ),
         'update_agent': ('agent', 'update_mask', ),
         'update_entity_type': ('entity_type', 'language_code', 'update_mask', ),

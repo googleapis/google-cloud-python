@@ -156,6 +156,11 @@ class SessionsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.submit_answer_feedback: gapic_v1.method.wrap_method(
+                self.submit_answer_feedback,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -203,6 +208,15 @@ class SessionsTransport(abc.ABC):
     ) -> Callable[
         [session.FulfillIntentRequest],
         Union[session.FulfillIntentResponse, Awaitable[session.FulfillIntentResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def submit_answer_feedback(
+        self,
+    ) -> Callable[
+        [session.SubmitAnswerFeedbackRequest],
+        Union[session.AnswerFeedback, Awaitable[session.AnswerFeedback]],
     ]:
         raise NotImplementedError()
 

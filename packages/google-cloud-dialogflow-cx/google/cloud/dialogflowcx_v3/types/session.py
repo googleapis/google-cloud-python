@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
@@ -37,6 +38,8 @@ from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
     manifest={
+        "AnswerFeedback",
+        "SubmitAnswerFeedbackRequest",
         "DetectIntentRequest",
         "DetectIntentResponse",
         "StreamingDetectIntentRequest",
@@ -44,6 +47,10 @@ __protobuf__ = proto.module(
         "StreamingDetectIntentResponse",
         "StreamingRecognitionResult",
         "QueryParameters",
+        "SearchConfig",
+        "BoostSpec",
+        "BoostSpecs",
+        "FilterSpecs",
         "QueryInput",
         "QueryResult",
         "TextInput",
@@ -59,6 +66,119 @@ __protobuf__ = proto.module(
         "SentimentAnalysisResult",
     },
 )
+
+
+class AnswerFeedback(proto.Message):
+    r"""Stores information about feedback provided by users about a
+    response.
+
+    Attributes:
+        rating (google.cloud.dialogflowcx_v3.types.AnswerFeedback.Rating):
+            Optional. Rating from user for the specific
+            Dialogflow response.
+        rating_reason (google.cloud.dialogflowcx_v3.types.AnswerFeedback.RatingReason):
+            Optional. In case of thumbs down rating
+            provided, users can optionally provide context
+            about the rating.
+        custom_rating (str):
+            Optional. Custom rating from the user about
+            the provided answer, with maximum length of 1024
+            characters. For example, client could use a
+            customized JSON object to indicate the rating.
+    """
+
+    class Rating(proto.Enum):
+        r"""Represents thumbs up/down rating provided by user about a
+        response.
+
+        Values:
+            RATING_UNSPECIFIED (0):
+                Rating not specified.
+            THUMBS_UP (1):
+                Thumbs up feedback from user.
+            THUMBS_DOWN (2):
+                Thumbs down feedback from user.
+        """
+        RATING_UNSPECIFIED = 0
+        THUMBS_UP = 1
+        THUMBS_DOWN = 2
+
+    class RatingReason(proto.Message):
+        r"""Stores extra information about why users provided thumbs down
+        rating.
+
+        Attributes:
+            reason_labels (MutableSequence[str]):
+                Optional. Custom reason labels for thumbs
+                down rating provided by the user. The maximum
+                number of labels allowed is 10 and the maximum
+                length of a single label is 128 characters.
+            feedback (str):
+                Optional. Additional feedback about the rating. This field
+                can be populated without choosing a predefined ``reason``.
+        """
+
+        reason_labels: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+        feedback: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    rating: Rating = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Rating,
+    )
+    rating_reason: RatingReason = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=RatingReason,
+    )
+    custom_rating: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class SubmitAnswerFeedbackRequest(proto.Message):
+    r"""The request to set the feedback for a bot answer.
+
+    Attributes:
+        session (str):
+            Required. The name of the session the
+            feedback was sent to.
+        response_id (str):
+            Required. ID of the response to update its feedback. This is
+            the same as DetectIntentResponse.response_id.
+        answer_feedback (google.cloud.dialogflowcx_v3.types.AnswerFeedback):
+            Required. Feedback provided for a bot answer.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The mask to control which fields to
+            update. If the mask is not present, all fields
+            will be updated.
+    """
+
+    session: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    response_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    answer_feedback: "AnswerFeedback" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AnswerFeedback",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=field_mask_pb2.FieldMask,
+    )
 
 
 class DetectIntentRequest(proto.Message):
@@ -796,6 +916,28 @@ class QueryParameters(proto.Message):
             and its data is stored for 30 minutes after the
             last request is sent for the session. This value
             should be no longer than 1 day.
+        end_user_metadata (google.protobuf.struct_pb2.Struct):
+            Optional. Information about the end-user to improve the
+            relevance and accuracy of generative answers.
+
+            This will be interpreted and used by a language model, so,
+            for good results, the data should be self-descriptive, and
+            in a simple structure.
+
+            Example:
+
+            .. code:: json
+
+               {
+                 "subscription plan": "Business Premium Plus",
+                 "devices owned": [
+                   {"model": "Google Pixel 7"},
+                   {"model": "Google Pixel Tablet"}
+                 ]
+               }
+        search_config (google.cloud.dialogflowcx_v3.types.SearchConfig):
+            Optional. Search configuration for UCS search
+            queries.
     """
 
     time_zone: str = proto.Field(
@@ -853,6 +995,158 @@ class QueryParameters(proto.Message):
         proto.MESSAGE,
         number=16,
         message=duration_pb2.Duration,
+    )
+    end_user_metadata: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=struct_pb2.Struct,
+    )
+    search_config: "SearchConfig" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message="SearchConfig",
+    )
+
+
+class SearchConfig(proto.Message):
+    r"""Search configuration for UCS search queries.
+
+    Attributes:
+        boost_specs (MutableSequence[google.cloud.dialogflowcx_v3.types.BoostSpecs]):
+            Optional. Boosting configuration for the
+            datastores.
+        filter_specs (MutableSequence[google.cloud.dialogflowcx_v3.types.FilterSpecs]):
+            Optional. Filter configuration for the
+            datastores.
+    """
+
+    boost_specs: MutableSequence["BoostSpecs"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="BoostSpecs",
+    )
+    filter_specs: MutableSequence["FilterSpecs"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="FilterSpecs",
+    )
+
+
+class BoostSpec(proto.Message):
+    r"""Boost specification to boost certain documents.
+    A copy of google.cloud.discoveryengine.v1main.BoostSpec, field
+    documentation is available at
+    https://cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1alpha/BoostSpec
+
+    Attributes:
+        condition_boost_specs (MutableSequence[google.cloud.dialogflowcx_v3.types.BoostSpec.ConditionBoostSpec]):
+            Optional. Condition boost specifications. If
+            a document matches multiple conditions in the
+            specifictions, boost scores from these
+            specifications are all applied and combined in a
+            non-linear way. Maximum number of specifications
+            is 20.
+    """
+
+    class ConditionBoostSpec(proto.Message):
+        r"""Boost applies to documents which match a condition.
+
+        Attributes:
+            condition (str):
+                Optional. An expression which specifies a boost condition.
+                The syntax and supported fields are the same as a filter
+                expression. Examples:
+
+                -  To boost documents with document ID "doc_1" or "doc_2",
+                   and color "Red" or "Blue":
+
+                   -  (id: ANY("doc_1", "doc_2")) AND (color:
+                      ANY("Red","Blue"))
+            boost (float):
+                Optional. Strength of the condition boost, which should be
+                in [-1, 1]. Negative boost means demotion. Default is 0.0.
+
+                Setting to 1.0 gives the document a big promotion. However,
+                it does not necessarily mean that the boosted document will
+                be the top result at all times, nor that other documents
+                will be excluded. Results could still be shown even when
+                none of them matches the condition. And results that are
+                significantly more relevant to the search query can still
+                trump your heavily favored but irrelevant documents.
+
+                Setting to -1.0 gives the document a big demotion. However,
+                results that are deeply relevant might still be shown. The
+                document will have an upstream battle to get a fairly high
+                ranking, but it is not blocked out completely.
+
+                Setting to 0.0 means no boost applied. The boosting
+                condition is ignored.
+        """
+
+        condition: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        boost: float = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+
+    condition_boost_specs: MutableSequence[ConditionBoostSpec] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=ConditionBoostSpec,
+    )
+
+
+class BoostSpecs(proto.Message):
+    r"""Boost specifications for data stores.
+
+    Attributes:
+        data_stores (MutableSequence[str]):
+            Optional. Data Stores where the boosting configuration is
+            applied. The full names of the referenced data stores.
+            Formats:
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
+            \`projects/{project}/locations/{location}/dataStores/{data_store}
+        spec (MutableSequence[google.cloud.dialogflowcx_v3.types.BoostSpec]):
+            Optional. A list of boosting specifications.
+    """
+
+    data_stores: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    spec: MutableSequence["BoostSpec"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="BoostSpec",
+    )
+
+
+class FilterSpecs(proto.Message):
+    r"""Filter specifications for data stores.
+
+    Attributes:
+        data_stores (MutableSequence[str]):
+            Optional. Data Stores where the boosting configuration is
+            applied. The full names of the referenced data stores.
+            Formats:
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
+            \`projects/{project}/locations/{location}/dataStores/{data_store}
+        filter (str):
+            Optional. The filter expression to be
+            applied. Expression syntax is documented at
+            https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata#filter-expression-syntax
+    """
+
+    data_stores: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1084,6 +1378,10 @@ class QueryResult(proto.Message):
             Cloud Storage, then the client may need to wait
             for the resulting object to appear in the bucket
             before proceeding.
+        allow_answer_feedback (bool):
+            Indicates whether the Thumbs up/Thumbs down
+            rating controls are need to be shown for the
+            response in the Dialogflow Messenger widget.
     """
 
     text: str = proto.Field(
@@ -1171,6 +1469,10 @@ class QueryResult(proto.Message):
         proto.MESSAGE,
         number=21,
         message=gcdc_advanced_settings.AdvancedSettings,
+    )
+    allow_answer_feedback: bool = proto.Field(
+        proto.BOOL,
+        number=32,
     )
 
 

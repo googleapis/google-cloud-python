@@ -45,6 +45,7 @@ from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
@@ -4500,6 +4501,13 @@ def test_create_test_case_rest(request_type):
                                 "model": "model_value",
                                 "model_variant": 1,
                                 "single_utterance": True,
+                                "barge_in_config": {
+                                    "no_barge_in_duration": {
+                                        "seconds": 751,
+                                        "nanos": 543,
+                                    },
+                                    "total_duration": {},
+                                },
                             },
                             "audio": b"audio_blob",
                         },
@@ -5091,6 +5099,13 @@ def test_update_test_case_rest(request_type):
                                 "model": "model_value",
                                 "model_variant": 1,
                                 "single_utterance": True,
+                                "barge_in_config": {
+                                    "no_barge_in_duration": {
+                                        "seconds": 751,
+                                        "nanos": 543,
+                                    },
+                                    "total_duration": {},
+                                },
                             },
                             "audio": b"audio_blob",
                         },
