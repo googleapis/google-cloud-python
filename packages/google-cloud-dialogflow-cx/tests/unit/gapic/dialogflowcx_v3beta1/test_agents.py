@@ -4048,6 +4048,7 @@ def test_create_agent_rest(request_type):
         },
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
         "gen_app_builder_settings": {"engine": "engine_value"},
+        "answer_feedback_settings": {"enable_answer_feedback": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4454,6 +4455,7 @@ def test_update_agent_rest(request_type):
         },
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
         "gen_app_builder_settings": {"engine": "engine_value"},
+        "answer_feedback_settings": {"enable_answer_feedback": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

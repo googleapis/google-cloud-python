@@ -360,6 +360,33 @@ class SessionsGrpcTransport(SessionsTransport):
             )
         return self._stubs["fulfill_intent"]
 
+    @property
+    def submit_answer_feedback(
+        self,
+    ) -> Callable[[session.SubmitAnswerFeedbackRequest], session.AnswerFeedback]:
+        r"""Return a callable for the submit answer feedback method over gRPC.
+
+        Updates the feedback received from the user for a
+        single turn of the bot response.
+
+        Returns:
+            Callable[[~.SubmitAnswerFeedbackRequest],
+                    ~.AnswerFeedback]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "submit_answer_feedback" not in self._stubs:
+            self._stubs["submit_answer_feedback"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Sessions/SubmitAnswerFeedback",
+                request_serializer=session.SubmitAnswerFeedbackRequest.serialize,
+                response_deserializer=session.AnswerFeedback.deserialize,
+            )
+        return self._stubs["submit_answer_feedback"]
+
     def close(self):
         self.grpc_channel.close()
 

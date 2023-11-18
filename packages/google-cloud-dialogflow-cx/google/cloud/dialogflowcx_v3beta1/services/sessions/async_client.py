@@ -67,6 +67,8 @@ class SessionsAsyncClient:
     DEFAULT_ENDPOINT = SessionsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = SessionsClient.DEFAULT_MTLS_ENDPOINT
 
+    data_store_path = staticmethod(SessionsClient.data_store_path)
+    parse_data_store_path = staticmethod(SessionsClient.parse_data_store_path)
     entity_type_path = staticmethod(SessionsClient.entity_type_path)
     parse_entity_type_path = staticmethod(SessionsClient.parse_entity_type_path)
     flow_path = staticmethod(SessionsClient.flow_path)
@@ -656,6 +658,88 @@ class SessionsAsyncClient:
                     ),
                 )
             ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def submit_answer_feedback(
+        self,
+        request: Optional[Union[session.SubmitAnswerFeedbackRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> session.AnswerFeedback:
+        r"""Updates the feedback received from the user for a
+        single turn of the bot response.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            async def sample_submit_answer_feedback():
+                # Create a client
+                client = dialogflowcx_v3beta1.SessionsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.SubmitAnswerFeedbackRequest(
+                    session="session_value",
+                    response_id="response_id_value",
+                )
+
+                # Make the request
+                response = await client.submit_answer_feedback(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.SubmitAnswerFeedbackRequest, dict]]):
+                The request object. The request to set the feedback for a
+                bot answer.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflowcx_v3beta1.types.AnswerFeedback:
+                Stores information about feedback
+                provided by users about a response.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = session.SubmitAnswerFeedbackRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.submit_answer_feedback,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
         )
 
         # Send the request.

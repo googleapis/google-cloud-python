@@ -234,35 +234,6 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
         return self._grpc_channel
 
     @property
-    def list_entity_types(
-        self,
-    ) -> Callable[
-        [entity_type.ListEntityTypesRequest], entity_type.ListEntityTypesResponse
-    ]:
-        r"""Return a callable for the list entity types method over gRPC.
-
-        Returns the list of all entity types in the specified
-        agent.
-
-        Returns:
-            Callable[[~.ListEntityTypesRequest],
-                    ~.ListEntityTypesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_entity_types" not in self._stubs:
-            self._stubs["list_entity_types"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3beta1.EntityTypes/ListEntityTypes",
-                request_serializer=entity_type.ListEntityTypesRequest.serialize,
-                response_deserializer=entity_type.ListEntityTypesResponse.deserialize,
-            )
-        return self._stubs["list_entity_types"]
-
-    @property
     def get_entity_type(
         self,
     ) -> Callable[[entity_type.GetEntityTypeRequest], entity_type.EntityType]:
@@ -377,6 +348,35 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_entity_type"]
+
+    @property
+    def list_entity_types(
+        self,
+    ) -> Callable[
+        [entity_type.ListEntityTypesRequest], entity_type.ListEntityTypesResponse
+    ]:
+        r"""Return a callable for the list entity types method over gRPC.
+
+        Returns the list of all entity types in the specified
+        agent.
+
+        Returns:
+            Callable[[~.ListEntityTypesRequest],
+                    ~.ListEntityTypesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_entity_types" not in self._stubs:
+            self._stubs["list_entity_types"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.EntityTypes/ListEntityTypes",
+                request_serializer=entity_type.ListEntityTypesRequest.serialize,
+                response_deserializer=entity_type.ListEntityTypesResponse.deserialize,
+            )
+        return self._stubs["list_entity_types"]
 
     def close(self):
         self.grpc_channel.close()
