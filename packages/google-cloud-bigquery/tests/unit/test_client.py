@@ -6401,11 +6401,16 @@ class TestClient(unittest.TestCase):
         age = SchemaField("age", "INTEGER", mode="NULLABLE")
         joined = SchemaField("joined", "TIMESTAMP", mode="NULLABLE")
         table = Table(self.TABLE_REF, schema=[full_name, age, joined])
+        table._properties["location"] = "us-central1"
         table._properties["numRows"] = 7
 
         iterator = client.list_rows(table, timeout=7.5)
 
-        # Check that initial total_rows is populated from the table.
+        # Check that initial RowIterator is populated from the table metadata.
+        self.assertIsNone(iterator.job_id)
+        self.assertEqual(iterator.location, "us-central1")
+        self.assertEqual(iterator.project, table.project)
+        self.assertIsNone(iterator.query_id)
         self.assertEqual(iterator.total_rows, 7)
         page = next(iterator.pages)
         rows = list(page)
@@ -6521,6 +6526,10 @@ class TestClient(unittest.TestCase):
             selected_fields=[],
         )
 
+        self.assertIsNone(rows.job_id)
+        self.assertIsNone(rows.location)
+        self.assertEqual(rows.project, self.TABLE_REF.project)
+        self.assertIsNone(rows.query_id)
         # When a table reference / string and selected_fields is provided,
         # total_rows can't be populated until iteration starts.
         self.assertIsNone(rows.total_rows)

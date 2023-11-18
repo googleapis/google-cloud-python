@@ -952,6 +952,7 @@ class TestQueryJob(_Base):
             },
             "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
             "totalRows": "2",
+            "queryId": "abc-def",
         }
         job_resource = self._make_resource(started=True, location="EU")
         job_resource_done = self._make_resource(started=True, ended=True, location="EU")
@@ -980,6 +981,10 @@ class TestQueryJob(_Base):
         rows = list(result)
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0].col1, "abc")
+        self.assertEqual(result.job_id, self.JOB_ID)
+        self.assertEqual(result.location, "EU")
+        self.assertEqual(result.project, self.PROJECT)
+        self.assertEqual(result.query_id, "abc-def")
         # Test that the total_rows property has changed during iteration, based
         # on the response from tabledata.list.
         self.assertEqual(result.total_rows, 1)
@@ -1023,6 +1028,12 @@ class TestQueryJob(_Base):
         calls = conn.api_request.mock_calls
         self.assertIsInstance(result, _EmptyRowIterator)
         self.assertEqual(calls, [])
+        self.assertEqual(result.location, "EU")
+        self.assertEqual(result.project, self.PROJECT)
+        # Intentionally omit job_id and query_id since this doesn't
+        # actually correspond to a finished query job.
+        self.assertIsNone(result.job_id)
+        self.assertIsNone(result.query_id)
 
     def test_result_with_done_job_calls_get_query_results(self):
         query_resource_done = {
@@ -1180,16 +1191,21 @@ class TestQueryJob(_Base):
             "jobComplete": True,
             "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
             "schema": {"fields": []},
+            "queryId": "xyz-abc",
         }
         connection = make_connection(query_resource, query_resource)
         client = _make_client(self.PROJECT, connection=connection)
-        resource = self._make_resource(ended=True)
+        resource = self._make_resource(ended=True, location="asia-northeast1")
         job = self._get_target_class().from_api_repr(resource, client)
 
         result = job.result()
 
         self.assertIsInstance(result, _EmptyRowIterator)
         self.assertEqual(list(result), [])
+        self.assertEqual(result.project, self.PROJECT)
+        self.assertEqual(result.job_id, self.JOB_ID)
+        self.assertEqual(result.location, "asia-northeast1")
+        self.assertEqual(result.query_id, "xyz-abc")
 
     def test_result_invokes_begins(self):
         begun_resource = self._make_resource()

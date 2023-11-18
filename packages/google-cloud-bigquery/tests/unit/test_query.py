@@ -1386,6 +1386,16 @@ class Test_QueryResults(unittest.TestCase):
         query = self._make_one(resource)
         self.assertEqual(query.page_token, "TOKEN")
 
+    def test_query_id_missing(self):
+        query = self._make_one(self._make_resource())
+        self.assertIsNone(query.query_id)
+
+    def test_query_id_present(self):
+        resource = self._make_resource()
+        resource["queryId"] = "test-query-id"
+        query = self._make_one(resource)
+        self.assertEqual(query.query_id, "test-query-id")
+
     def test_total_rows_present_integer(self):
         resource = self._make_resource()
         resource["totalRows"] = 42

@@ -2113,6 +2113,38 @@ class TestRowIterator(unittest.TestCase):
         ]
         self.assertEqual(iterator.schema, expected_schema)
 
+    def test_job_id_missing(self):
+        rows = self._make_one()
+        self.assertIsNone(rows.job_id)
+
+    def test_job_id_present(self):
+        rows = self._make_one(job_id="abc-123")
+        self.assertEqual(rows.job_id, "abc-123")
+
+    def test_location_missing(self):
+        rows = self._make_one()
+        self.assertIsNone(rows.location)
+
+    def test_location_present(self):
+        rows = self._make_one(location="asia-northeast1")
+        self.assertEqual(rows.location, "asia-northeast1")
+
+    def test_project_missing(self):
+        rows = self._make_one()
+        self.assertIsNone(rows.project)
+
+    def test_project_present(self):
+        rows = self._make_one(project="test-project")
+        self.assertEqual(rows.project, "test-project")
+
+    def test_query_id_missing(self):
+        rows = self._make_one()
+        self.assertIsNone(rows.query_id)
+
+    def test_query_id_present(self):
+        rows = self._make_one(query_id="xyz-987")
+        self.assertEqual(rows.query_id, "xyz-987")
+
     def test_iterate(self):
         from google.cloud.bigquery.schema import SchemaField
 

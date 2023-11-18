@@ -560,7 +560,7 @@ def test_to_dataframe_bqstorage(table_read_options_kwarg):
         [name_array, age_array], schema=arrow_schema
     )
     connection = make_connection(query_resource)
-    client = _make_client(connection=connection)
+    client = _make_client(connection=connection, project="bqstorage-billing-project")
     job = target_class.from_api_repr(resource, client)
     session = bigquery_storage.types.ReadSession()
     session.arrow_schema.serialized_schema = arrow_schema.serialize().to_pybytes()
@@ -597,7 +597,9 @@ def test_to_dataframe_bqstorage(table_read_options_kwarg):
         **table_read_options_kwarg,
     )
     bqstorage_client.create_read_session.assert_called_once_with(
-        parent=f"projects/{client.project}",
+        # The billing project can differ from the data project. Make sure we
+        # are charging to the billing project, not the data project.
+        parent="projects/bqstorage-billing-project",
         read_session=expected_session,
         max_stream_count=0,  # Use default number of streams for best performance.
     )
@@ -618,7 +620,7 @@ def test_to_dataframe_bqstorage_no_pyarrow_compression():
         "schema": {"fields": [{"name": "name", "type": "STRING", "mode": "NULLABLE"}]},
     }
     connection = make_connection(query_resource)
-    client = _make_client(connection=connection)
+    client = _make_client(connection=connection, project="bqstorage-billing-project")
     job = target_class.from_api_repr(resource, client)
     bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
     session = bigquery_storage.types.ReadSession()
@@ -646,7 +648,9 @@ def test_to_dataframe_bqstorage_no_pyarrow_compression():
         data_format=bigquery_storage.DataFormat.ARROW,
     )
     bqstorage_client.create_read_session.assert_called_once_with(
-        parent=f"projects/{client.project}",
+        # The billing project can differ from the data project. Make sure we
+        # are charging to the billing project, not the data project.
+        parent="projects/bqstorage-billing-project",
         read_session=expected_session,
         max_stream_count=0,
     )

@@ -3843,6 +3843,8 @@ class Client(ClientWithProject):
             # tables can be fetched without a column filter.
             selected_fields=selected_fields,
             total_rows=getattr(table, "num_rows", None),
+            project=table.project,
+            location=table.location,
         )
         return row_iterator
 
@@ -3859,6 +3861,7 @@ class Client(ClientWithProject):
         page_size: Optional[int] = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
+        query_id: Optional[str] = None,
     ) -> RowIterator:
         """List the rows of a completed query.
         See
@@ -3898,6 +3901,9 @@ class Client(ClientWithProject):
                 would otherwise be a successful response.
                 If multiple requests are made under the hood, ``timeout``
                 applies to each individual request.
+            query_id (Optional[str]):
+                [Preview] ID of a completed query. This ID is auto-generated
+                and not guaranteed to be populated.
         Returns:
             google.cloud.bigquery.table.RowIterator:
                 Iterator of row data
@@ -3928,6 +3934,10 @@ class Client(ClientWithProject):
             table=destination,
             extra_params=params,
             total_rows=total_rows,
+            project=project,
+            location=location,
+            job_id=job_id,
+            query_id=query_id,
         )
         return row_iterator
 

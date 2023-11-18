@@ -912,6 +912,14 @@ class _QueryResults(object):
         return self._properties.get("jobReference", {}).get("jobId")
 
     @property
+    def query_id(self) -> Optional[str]:
+        """[Preview] ID of a completed query.
+
+        This ID is auto-generated and not guaranteed to be populated.
+        """
+        return self._properties.get("queryId")
+
+    @property
     def page_token(self):
         """Token for fetching next bach of results.
 
