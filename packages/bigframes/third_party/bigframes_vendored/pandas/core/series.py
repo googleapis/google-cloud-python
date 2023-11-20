@@ -44,7 +44,54 @@ class Series(NDFrame):  # type: ignore[misc]
 
     @property
     def index(self):
-        """The index (axis labels) of the Series."""
+        """The index (axis labels) of the Series.
+
+        The index of a Series is used to label and identify each element of the
+        underlying data. The index can be thought of as an immutable ordered set
+        (technically a multi-set, as it may contain duplicate labels), and is
+        used to index and align data.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        You can access the index of a Series via ``index`` property.
+
+            >>> df = bpd.DataFrame({'Name': ['Alice', 'Bob', 'Aritra'],
+            ...                     'Age': [25, 30, 35],
+            ...                     'Location': ['Seattle', 'New York', 'Kona']},
+            ...                    index=([10, 20, 30]))
+            >>> s = df["Age"]
+            >>> s
+            10    25
+            20    30
+            30    35
+            Name: Age, dtype: Int64
+            >>> s.index # doctest: +ELLIPSIS
+            <bigframes.core.indexes.index.Index object at ...>
+            >>> s.index.values
+            array([10, 20, 30], dtype=object)
+
+        Let's try setting a multi-index case reflect via ``index`` property.
+
+            >>> df1 = df.set_index(["Name", "Location"])
+            >>> s1 = df1["Age"]
+            >>> s1
+            Name    Location
+            Alice   Seattle     25
+            Bob     New York    30
+            Aritra  Kona        35
+            Name: Age, dtype: Int64
+            >>> s1.index # doctest: +ELLIPSIS
+            <bigframes.core.indexes.index.Index object at ...>
+            >>> s1.index.values
+            array([('Alice', 'Seattle'), ('Bob', 'New York'), ('Aritra', 'Kona')],
+                dtype=object)
+
+        Returns:
+            The index labels of the Series.
+        """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property

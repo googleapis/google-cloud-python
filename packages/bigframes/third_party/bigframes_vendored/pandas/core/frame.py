@@ -3106,6 +3106,47 @@ class DataFrame(NDFrame):
         index is used for label-based access and alignment, and can be accessed
         or modified using this attribute.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        You can access the index of a DataFrame via ``index`` property.
+
+            >>> df = bpd.DataFrame({'Name': ['Alice', 'Bob', 'Aritra'],
+            ...                     'Age': [25, 30, 35],
+            ...                     'Location': ['Seattle', 'New York', 'Kona']},
+            ...                    index=([10, 20, 30]))
+            >>> df
+                Name  Age  Location
+            10   Alice   25   Seattle
+            20     Bob   30  New York
+            30  Aritra   35      Kona
+            <BLANKLINE>
+            [3 rows x 3 columns]
+            >>> df.index # doctest: +ELLIPSIS
+            <bigframes.core.indexes.index.Index object at ...>
+            >>> df.index.values
+            array([10, 20, 30], dtype=object)
+
+        Let's try setting a new index for the dataframe and see that reflect via
+        ``index`` property.
+
+            >>> df1 = df.set_index(["Name", "Location"])
+            >>> df1
+                            Age
+            Name   Location
+            Alice  Seattle    25
+            Bob    New York   30
+            Aritra Kona       35
+            <BLANKLINE>
+            [3 rows x 1 columns]
+            >>> df1.index # doctest: +ELLIPSIS
+            <bigframes.core.indexes.index.Index object at ...>
+            >>> df1.index.values
+            array([('Alice', 'Seattle'), ('Bob', 'New York'), ('Aritra', 'Kona')],
+                dtype=object)
+
         Returns:
             The index labels of the DataFrame.
         """
@@ -3113,7 +3154,43 @@ class DataFrame(NDFrame):
 
     @property
     def columns(self):
-        "The column labels of the DataFrame."
+        """The column labels of the DataFrame.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        You can access the column labels of a DataFrame via ``columns`` property.
+
+            >>> df = bpd.DataFrame({'Name': ['Alice', 'Bob', 'Aritra'],
+            ...                     'Age': [25, 30, 35],
+            ...                     'Location': ['Seattle', 'New York', 'Kona']},
+            ...                    index=([10, 20, 30]))
+            >>> df
+                  Name  Age  Location
+            10   Alice   25   Seattle
+            20     Bob   30  New York
+            30  Aritra   35      Kona
+            <BLANKLINE>
+            [3 rows x 3 columns]
+            >>> df.columns
+            Index(['Name', 'Age', 'Location'], dtype='object')
+
+        You can also set new labels for columns.
+
+            >>> df.columns = ["NewName", "NewAge", "NewLocation"]
+            >>> df
+               NewName  NewAge NewLocation
+            10   Alice      25     Seattle
+            20     Bob      30    New York
+            30  Aritra      35        Kona
+            <BLANKLINE>
+            [3 rows x 3 columns]
+            >>> df.columns
+            Index(['NewName', 'NewAge', 'NewLocation'], dtype='object')
+
+        """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def value_counts(
