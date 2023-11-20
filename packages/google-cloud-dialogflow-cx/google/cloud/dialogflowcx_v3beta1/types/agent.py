@@ -159,6 +159,9 @@ class Agent(proto.Message):
             Gen App Builder-related agent-level settings.
 
             This field is a member of `oneof`_ ``_gen_app_builder_settings``.
+        answer_feedback_settings (google.cloud.dialogflowcx_v3beta1.types.Agent.AnswerFeedbackSettings):
+            Optional. Answer feedback collection
+            settings.
     """
 
     class GitIntegrationSettings(proto.Message):
@@ -237,6 +240,23 @@ class Agent(proto.Message):
             number=1,
         )
 
+    class AnswerFeedbackSettings(proto.Message):
+        r"""Settings for answer feedback collection.
+
+        Attributes:
+            enable_answer_feedback (bool):
+                Optional. If enabled, end users will be able to provide
+                [answer
+                feedback][google.cloud.dialogflow.cx.v3beta1.AnswerFeedback]
+                to Dialogflow responses. Feature works only if interaction
+                logging is enabled in the Dialogflow agent.
+        """
+
+        enable_answer_feedback: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -310,6 +330,11 @@ class Agent(proto.Message):
         number=33,
         optional=True,
         message=GenAppBuilderSettings,
+    )
+    answer_feedback_settings: AnswerFeedbackSettings = proto.Field(
+        proto.MESSAGE,
+        number=38,
+        message=AnswerFeedbackSettings,
     )
 
 

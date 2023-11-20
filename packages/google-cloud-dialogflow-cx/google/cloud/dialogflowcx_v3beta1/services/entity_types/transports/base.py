@@ -129,11 +129,6 @@ class EntityTypesTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.list_entity_types: gapic_v1.method.wrap_method(
-                self.list_entity_types,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.get_entity_type: gapic_v1.method.wrap_method(
                 self.get_entity_type,
                 default_timeout=None,
@@ -154,6 +149,11 @@ class EntityTypesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_entity_types: gapic_v1.method.wrap_method(
+                self.list_entity_types,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -163,18 +163,6 @@ class EntityTypesTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
-        raise NotImplementedError()
-
-    @property
-    def list_entity_types(
-        self,
-    ) -> Callable[
-        [entity_type.ListEntityTypesRequest],
-        Union[
-            entity_type.ListEntityTypesResponse,
-            Awaitable[entity_type.ListEntityTypesResponse],
-        ],
-    ]:
         raise NotImplementedError()
 
     @property
@@ -210,6 +198,18 @@ class EntityTypesTransport(abc.ABC):
     ) -> Callable[
         [entity_type.DeleteEntityTypeRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_entity_types(
+        self,
+    ) -> Callable[
+        [entity_type.ListEntityTypesRequest],
+        Union[
+            entity_type.ListEntityTypesResponse,
+            Awaitable[entity_type.ListEntityTypesResponse],
+        ],
     ]:
         raise NotImplementedError()
 

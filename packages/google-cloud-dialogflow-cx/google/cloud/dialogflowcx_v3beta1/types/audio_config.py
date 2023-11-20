@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "SsmlVoiceGender",
         "OutputAudioEncoding",
         "SpeechWordInfo",
+        "BargeInConfig",
         "InputAudioConfig",
         "VoiceSelectionParams",
         "SynthesizeSpeechConfig",
@@ -253,6 +254,54 @@ class SpeechWordInfo(proto.Message):
     )
 
 
+class BargeInConfig(proto.Message):
+    r"""Configuration of the barge-in behavior. Barge-in instructs the API
+    to return a detected utterance at a proper time while the client is
+    playing back the response audio from a previous request. When the
+    client sees the utterance, it should stop the playback and
+    immediately get ready for receiving the responses for the current
+    request.
+
+    The barge-in handling requires the client to start streaming audio
+    input as soon as it starts playing back the audio from the previous
+    response. The playback is modeled into two phases:
+
+    -  No barge-in phase: which goes first and during which speech
+       detection should not be carried out.
+
+    -  Barge-in phase: which follows the no barge-in phase and during
+       which the API starts speech detection and may inform the client
+       that an utterance has been detected. Note that no-speech event is
+       not expected in this phase.
+
+    The client provides this configuration in terms of the durations of
+    those two phases. The durations are measured in terms of the audio
+    length from the the start of the input audio.
+
+    No-speech event is a response with END_OF_UTTERANCE without any
+    transcript following up.
+
+    Attributes:
+        no_barge_in_duration (google.protobuf.duration_pb2.Duration):
+            Duration that is not eligible for barge-in at
+            the beginning of the input audio.
+        total_duration (google.protobuf.duration_pb2.Duration):
+            Total duration for the playback at the
+            beginning of the input audio.
+    """
+
+    no_barge_in_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    total_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+
+
 class InputAudioConfig(proto.Message):
     r"""Instructs the speech recognizer on how to process the audio
     content.
@@ -313,6 +362,9 @@ class InputAudioConfig(proto.Message):
             is received, the client should close the stream and start a
             new request with a new stream as needed. Note: This setting
             is relevant only for streaming methods.
+        barge_in_config (google.cloud.dialogflowcx_v3beta1.types.BargeInConfig):
+            Configuration of barge-in behavior during the
+            streaming of input audio.
     """
 
     audio_encoding: "AudioEncoding" = proto.Field(
@@ -344,6 +396,11 @@ class InputAudioConfig(proto.Message):
     single_utterance: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    barge_in_config: "BargeInConfig" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="BargeInConfig",
     )
 
 
