@@ -15,4 +15,4 @@
 deep-copy-regex:
     - source: /google/cloud/telcoautomation/(v.*)/.*-py
       dest: /owl-bot-staging/google-cloud-telcoautomation/$1
-api-name: apiPackage
+api-name: google-cloud-telcoautomation
