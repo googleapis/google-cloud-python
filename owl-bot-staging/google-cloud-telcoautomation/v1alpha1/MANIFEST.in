@@ -1,0 +1,2 @@
+recursive-include google/cloud/telcoautomation *.py
+recursive-include google/cloud/telcoautomation_v1alpha1 *.py
