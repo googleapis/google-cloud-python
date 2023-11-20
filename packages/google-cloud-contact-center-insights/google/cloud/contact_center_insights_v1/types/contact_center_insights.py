@@ -361,12 +361,11 @@ class UploadConversationRequest(proto.Message):
             are ``[a-z][0-9]-``
         redaction_config (google.cloud.contact_center_insights_v1.types.RedactionConfig):
             Optional. DLP settings for transcript
-            redaction. Optional, will default to the config
-            specified in Settings.
+            redaction. Will default to the config specified
+            in Settings.
         speech_config (google.cloud.contact_center_insights_v1.types.SpeechConfig):
-            Optional. Default Speech-to-Text
-            configuration. Optional, will default to the
-            config specified in Settings.
+            Optional. Speech-to-Text configuration. Will
+            default to the config specified in Settings.
     """
 
     parent: str = proto.Field(
@@ -639,8 +638,8 @@ class IngestConversationsRequest(proto.Message):
 
             Values:
                 BUCKET_OBJECT_TYPE_UNSPECIFIED (0):
-                    The object type is unspecified and will
-                    default to TRANSCRIPT.
+                    The object type is unspecified and will default to
+                    ``TRANSCRIPT``.
                 TRANSCRIPT (1):
                     The object is a transcript.
                 AUDIO (2):
@@ -1075,17 +1074,15 @@ class BulkDeleteConversationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource to create
-            analyses in. Format:
+            Required. The parent resource to delete
+            conversations from. Format:
 
             projects/{project}/locations/{location}
         filter (str):
             Filter used to select the subset of
-            conversations to analyze.
+            conversations to delete.
         max_delete_count (int):
-            Maximum number of conversations to delete. The default is
-            1000. It can be changed by setting the ``max_delete_count``
-            field.
+            Maximum number of conversations to delete.
         force (bool):
             If set to true, all of this conversation's
             analyses will also be deleted. Otherwise, the
@@ -1150,7 +1147,7 @@ class BulkDeleteConversationsMetadata(proto.Message):
 
 
 class BulkDeleteConversationsResponse(proto.Message):
-    r"""The response for a bulk analyze conversations operation."""
+    r"""The response for a bulk delete conversations operation."""
 
 
 class ExportInsightsDataRequest(proto.Message):
