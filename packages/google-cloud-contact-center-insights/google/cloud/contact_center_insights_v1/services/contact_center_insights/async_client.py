@@ -1533,7 +1533,7 @@ class ContactCenterInsightsAsyncClient:
                 in bulk.
             parent (:class:`str`):
                 Required. The parent resource to
-                create analyses in. Format:
+                delete conversations from. Format:
 
                 projects/{project}/locations/{location}
 
@@ -1542,7 +1542,7 @@ class ContactCenterInsightsAsyncClient:
                 should not be set.
             filter (:class:`str`):
                 Filter used to select the subset of
-                conversations to analyze.
+                conversations to delete.
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1559,7 +1559,7 @@ class ContactCenterInsightsAsyncClient:
 
                 The result type for the operation will be
                 :class:`google.cloud.contact_center_insights_v1.types.BulkDeleteConversationsResponse`
-                The response for a bulk analyze conversations operation.
+                The response for a bulk delete conversations operation.
 
         """
         # Create or coerce a protobuf request object.
