@@ -25,7 +25,7 @@ def test_get_standardized_ids_columns():
         "0",
         utils.UNNAMED_COLUMN_ID,
         "duplicate",
-        "duplicate.1",
+        "duplicate_1",
         "with_space",
     ]
     assert idx_ids == []
@@ -37,13 +37,13 @@ def test_get_standardized_ids_indexes():
 
     col_ids, idx_ids = utils.get_standardized_ids(col_labels, idx_labels)
 
-    assert col_ids == ["duplicate.2"]
+    assert col_ids == ["duplicate_2"]
     assert idx_ids == [
         "string",
         "0",
         utils.UNNAMED_INDEX_ID,
         "duplicate",
-        "duplicate.1",
+        "duplicate_1",
         "with_space",
     ]
 

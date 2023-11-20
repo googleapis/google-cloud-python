@@ -13,13 +13,13 @@ def dedup_names(
     """
     Rename column names if duplicates exist.
 
-    Currently the renaming is done by appending a period and an autonumeric,
-    but a custom pattern may be supported in the future.
+    Currently the renaming is done by appending a underscore and an
+    autonumeric, but a custom pattern may be supported in the future.
 
     Examples
     ```
     dedup_names(["x", "y", "x", "x"], is_potential_multiindex=False)
-    ['x', 'y', 'x.1', 'x.2']
+    ['x', 'y', 'x_1', 'x_2']
     ```
     """
     names = list(names)  # so we can index
@@ -34,9 +34,9 @@ def dedup_names(
             if is_potential_multiindex:
                 # for mypy
                 assert isinstance(col, tuple)
-                col = col[:-1] + (f"{col[-1]}.{cur_count}",)
+                col = col[:-1] + (f"{col[-1]}_{cur_count}",)
             else:
-                col = f"{col}.{cur_count}"
+                col = f"{col}_{cur_count}"
             cur_count = counts[col]
 
         names[i] = col
