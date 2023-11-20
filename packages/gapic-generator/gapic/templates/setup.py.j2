@@ -43,7 +43,7 @@ dependencies = [
     {% endif %}
     {% endfor %}
 ]
-url = "https://github.com/googleapis/python-{{ api.naming.warehouse_package_name|replace("google-cloud-", "")|replace("google-", "") }}"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/{{ api.naming.warehouse_package_name }}"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
