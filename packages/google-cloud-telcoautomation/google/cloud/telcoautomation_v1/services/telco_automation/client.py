@@ -2629,12 +2629,12 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 2. "latest=true"            : Lists
                     latest revisions across all
                     blueprints.
-                3. "name=<name>"            : Lists all
+                3. "name={name}"            : Lists all
                     revisions of blueprint with name
-                    <name>.
-                4. "name=<name> latest=true": Lists
+                    {name}.
+                4. "name={name} latest=true": Lists
                     latest revision of blueprint with
-                    name <name>
+                    name {name}
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2769,12 +2769,12 @@ class TelcoAutomationClient(metaclass=TelcoAutomationClientMeta):
                 2. "latest=true"            : Lists
                     latest revisions across all
                     deployments.
-                3. "name=<name>"            : Lists all
+                3. "name={name}"            : Lists all
                     revisions of deployment with name
-                    <name>.
-                4. "name=<name> latest=true": Lists
+                    {name}.
+                4. "name={name} latest=true": Lists
                     latest revision of deployment with
-                    name <name>
+                    name {name}
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
