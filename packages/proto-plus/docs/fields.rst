@@ -177,6 +177,23 @@ a string (which should match for all fields within the oneof):
       s = Song(database_id="e6aa708c7e", name="Little Fugue")
       assert "name" in s and "database_id" not in s
 
+   To query which ``oneof`` is present in a given message, use ``proto.Message._pb("oneof")``.
+
+   Example:
+
+   .. code-block:: python
+
+      import proto
+
+      class Song(proto.Message):
+          name = proto.Field(proto.STRING, number=1, oneof="identifier")
+          database_id = proto.Field(proto.STRING, number=2, oneof="identifier")
+
+      s = Song(name="Canon in D minor")
+      assert s._pb.WhichOneof("identifier") == "name"
+
+      s = Song(database_id="e6aa708c7e")
+      assert s._pb.WhichOneof("identifier") == "database_id"
 
 
 Optional fields
