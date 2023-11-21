@@ -35,6 +35,8 @@ __protobuf__ = proto.module(
         "Assessment",
         "Event",
         "TransactionData",
+        "UserInfo",
+        "UserId",
         "RiskAnalysis",
         "TokenProperties",
         "FraudPreventionAssessment",
@@ -277,15 +279,19 @@ class AnnotateAssessmentRequest(proto.Message):
             without concluding whether the event is
             legitimate or fraudulent.
         reasons (MutableSequence[google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Reason]):
-            Optional. Optional reasons for the annotation
-            that will be assigned to the Event.
+            Optional. Reasons for the annotation that are
+            assigned to the event.
+        account_id (str):
+            Optional. A stable account identifier to apply to the
+            assessment. This is an alternative to setting ``account_id``
+            in ``CreateAssessment``, for example when a stable account
+            identifier is not yet known in the initial request.
         hashed_account_id (bytes):
-            Optional. Unique stable hashed user identifier to apply to
-            the assessment. This is an alternative to setting the
-            hashed_account_id in CreateAssessment, for example when the
-            account identifier is not yet known in the initial request.
-            It is recommended that the identifier is hashed using
-            hmac-sha256 with stable secret.
+            Optional. A stable hashed account identifier to apply to the
+            assessment. This is an alternative to setting
+            ``hashed_account_id`` in ``CreateAssessment``, for example
+            when a stable account identifier is not yet known in the
+            initial request.
         transaction_event (google.cloud.recaptchaenterprise_v1.types.TransactionEvent):
             Optional. If the assessment is part of a
             payment transaction, provide details on payment
@@ -419,6 +425,10 @@ class AnnotateAssessmentRequest(proto.Message):
         proto.ENUM,
         number=3,
         enum=Reason,
+    )
+    account_id: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
     hashed_account_id: bytes = proto.Field(
         proto.BYTES,
@@ -644,8 +654,8 @@ class Assessment(proto.Message):
             must include a token and site key to use this
             feature.
         account_defender_assessment (google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment):
-            Output only. Assessment returned by account defender when a
-            hashed_account_id is provided.
+            Output only. Assessment returned by account
+            defender when an account identifier is provided.
         private_password_leak_verification (google.cloud.recaptchaenterprise_v1.types.PrivatePasswordLeakVerification):
             Optional. The private password leak
             verification field contains the parameters that
@@ -740,9 +750,10 @@ class Event(proto.Message):
             platforms already integrated with recaptcha
             enterprise.
         hashed_account_id (bytes):
-            Optional. Unique stable hashed user
-            identifier for the request. The identifier must
-            be hashed using hmac-sha256 with stable secret.
+            Optional. Deprecated: use ``user_info.account_id`` instead.
+            Unique stable hashed user identifier for the request. The
+            identifier must be hashed using hmac-sha256 with stable
+            secret.
         express (bool):
             Optional. Flag for a reCAPTCHA express request for an
             assessment without a token. If enabled, ``site_key`` must
@@ -772,6 +783,14 @@ class Event(proto.Message):
             enables reCAPTCHA Enterprise Fraud Prevention
             and the FraudPreventionAssessment component in
             the response.
+        user_info (google.cloud.recaptchaenterprise_v1.types.UserInfo):
+            Optional. Information about the user that
+            generates this event, when they can be
+            identified. They are often identified through
+            the use of an account for logged-in requests or
+            login/registration requests, or by providing
+            user identifiers for guest actions like
+            checkout.
     """
 
     token: str = proto.Field(
@@ -826,6 +845,11 @@ class Event(proto.Message):
         proto.MESSAGE,
         number=13,
         message="TransactionData",
+    )
+    user_info: "UserInfo" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="UserInfo",
     )
 
 
@@ -1123,6 +1147,91 @@ class TransactionData(proto.Message):
         proto.MESSAGE,
         number=10,
         message=GatewayInfo,
+    )
+
+
+class UserInfo(proto.Message):
+    r"""User information associated with a request protected by
+    reCAPTCHA Enterprise.
+
+    Attributes:
+        create_account_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Creation time for this account
+            associated with this user. Leave blank for non
+            logged-in actions, guest checkout, or when there
+            is no account associated with the current user.
+        account_id (str):
+            Optional. For logged-in requests or
+            login/registration requests, the unique account
+            identifier associated with this user. You can
+            use the username if it is stable (meaning it is
+            the same for every request associated with the
+            same user), or any stable user ID of your
+            choice. Leave blank for non logged-in actions or
+            guest checkout.
+        user_ids (MutableSequence[google.cloud.recaptchaenterprise_v1.types.UserId]):
+            Optional. Identifiers associated with this
+            user or request.
+    """
+
+    create_account_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    account_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    user_ids: MutableSequence["UserId"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="UserId",
+    )
+
+
+class UserId(proto.Message):
+    r"""An identifier associated with a user.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        email (str):
+            Optional. An email address.
+
+            This field is a member of `oneof`_ ``id_oneof``.
+        phone_number (str):
+            Optional. A phone number. Should use the
+            E.164 format.
+
+            This field is a member of `oneof`_ ``id_oneof``.
+        username (str):
+            Optional. A unique username, if different from all the other
+            identifiers and ``account_id`` that are provided. Can be a
+            unique login handle or display name for a user.
+
+            This field is a member of `oneof`_ ``id_oneof``.
+    """
+
+    email: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="id_oneof",
+    )
+    phone_number: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="id_oneof",
+    )
+    username: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="id_oneof",
     )
 
 

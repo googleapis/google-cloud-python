@@ -39,7 +39,7 @@ def partition(
 class recaptchaenterpriseCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'annotate_assessment': ('name', 'annotation', 'reasons', 'hashed_account_id', 'transaction_event', ),
+        'annotate_assessment': ('name', 'annotation', 'reasons', 'account_id', 'hashed_account_id', 'transaction_event', ),
         'create_assessment': ('parent', 'assessment', ),
         'create_firewall_policy': ('parent', 'firewall_policy', ),
         'create_key': ('parent', 'key', ),
