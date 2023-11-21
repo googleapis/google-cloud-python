@@ -5494,8 +5494,8 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 Returns:
                     ~.securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse:
                         Response message for simulating a
-                    SecurityHealthAnalyticsCustomModule
-                    against a given resource.
+                    ``SecurityHealthAnalyticsCustomModule`` against a given
+                    resource.
 
             """
 

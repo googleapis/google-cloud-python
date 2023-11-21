@@ -4742,16 +4742,17 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 4 MB by default.
             parent (str):
                 Required. The relative resource name of the
-                organization, project, or folder. See:
-                https://cloud.google.com/apis/design/resource_names#relative_resource_name
-                An example is: "organizations/{organization_id}".
+                organization, project, or folder. For more information
+                about relative resource names, see `Relative Resource
+                Name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
+                Example: ``organizations/{organization_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             custom_config (google.cloud.securitycenter_v1.types.CustomConfig):
-                Required. The user specified custom
-                configuration to test.
+                Required. The custom configuration
+                that you need to test.
 
                 This corresponds to the ``custom_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4771,9 +4772,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Returns:
             google.cloud.securitycenter_v1.types.SimulateSecurityHealthAnalyticsCustomModuleResponse:
-                Response message for simulating a
-                SecurityHealthAnalyticsCustomModule
-                against a given resource.
+                Response message for simulating a SecurityHealthAnalyticsCustomModule
+                   against a given resource.
 
         """
         # Create or coerce a protobuf request object.
