@@ -22,11 +22,13 @@ from typing import List, Optional, Union
 from google.cloud import bigquery
 
 import bigframes
+from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.decomposition._pca
 
 
+@log_adapter.class_logger
 class PCA(
     base.UnsupervisedTrainablePredictor,
     third_party.bigframes_vendored.sklearn.decomposition._pca.PCA,

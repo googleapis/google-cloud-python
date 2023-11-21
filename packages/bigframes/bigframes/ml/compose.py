@@ -22,6 +22,7 @@ import typing
 from typing import List, Optional, Tuple, Union
 
 from bigframes import constants
+from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, preprocessing, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.compose._column_transformer
@@ -36,6 +37,7 @@ CompilablePreprocessorType = Union[
 ]
 
 
+@log_adapter.class_logger
 class ColumnTransformer(
     base.Transformer,
     third_party.bigframes_vendored.sklearn.compose._column_transformer.ColumnTransformer,

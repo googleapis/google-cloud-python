@@ -59,6 +59,7 @@ def test_create_job_configs_labels_length_limit_not_met():
 
 
 def test_create_job_configs_labels_log_adaptor_call_method_under_length_limit():
+    log_adapter.get_and_reset_api_methods()
     cur_labels = {
         "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",
@@ -87,6 +88,7 @@ def test_create_job_configs_labels_log_adaptor_call_method_under_length_limit():
 
 
 def test_create_job_configs_labels_length_limit_met_and_labels_is_none():
+    log_adapter.get_and_reset_api_methods()
     df = bpd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
     # Test running methods more than the labels' length limit
     for i in range(66):
@@ -102,6 +104,7 @@ def test_create_job_configs_labels_length_limit_met_and_labels_is_none():
 
 
 def test_create_job_configs_labels_length_limit_met():
+    log_adapter.get_and_reset_api_methods()
     cur_labels = {
         "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",

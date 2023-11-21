@@ -24,11 +24,13 @@ from google.cloud import bigquery
 
 import bigframes
 import bigframes.constants as constants
+from bigframes.core import log_adapter
 from bigframes.ml import base, compose, forecasting, loader, preprocessing, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.pipeline
 
 
+@log_adapter.class_logger
 class Pipeline(
     base.BaseEstimator,
     third_party.bigframes_vendored.sklearn.pipeline.Pipeline,

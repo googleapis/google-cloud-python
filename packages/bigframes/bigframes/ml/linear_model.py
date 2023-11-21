@@ -23,6 +23,7 @@ from google.cloud import bigquery
 
 import bigframes
 import bigframes.constants as constants
+from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.linear_model._base
@@ -46,6 +47,7 @@ _BQML_PARAMS_MAPPING = {
 }
 
 
+@log_adapter.class_logger
 class LinearRegression(
     base.SupervisedTrainablePredictor,
     third_party.bigframes_vendored.sklearn.linear_model._base.LinearRegression,
@@ -178,6 +180,7 @@ class LinearRegression(
         return new_model.session.read_gbq_model(model_name)
 
 
+@log_adapter.class_logger
 class LogisticRegression(
     base.SupervisedTrainablePredictor,
     third_party.bigframes_vendored.sklearn.linear_model._logistic.LogisticRegression,

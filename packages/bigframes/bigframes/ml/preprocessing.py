@@ -20,6 +20,7 @@ from __future__ import annotations
 import typing
 from typing import Any, cast, List, Literal, Optional, Tuple, Union
 
+from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.preprocessing._data
@@ -28,6 +29,7 @@ import third_party.bigframes_vendored.sklearn.preprocessing._encoder
 import third_party.bigframes_vendored.sklearn.preprocessing._label
 
 
+@log_adapter.class_logger
 class StandardScaler(
     base.Transformer,
     third_party.bigframes_vendored.sklearn.preprocessing._data.StandardScaler,
@@ -111,6 +113,7 @@ class StandardScaler(
         )
 
 
+@log_adapter.class_logger
 class MaxAbsScaler(
     base.Transformer,
     third_party.bigframes_vendored.sklearn.preprocessing._data.MaxAbsScaler,
@@ -194,6 +197,7 @@ class MaxAbsScaler(
         )
 
 
+@log_adapter.class_logger
 class MinMaxScaler(
     base.Transformer,
     third_party.bigframes_vendored.sklearn.preprocessing._data.MinMaxScaler,
@@ -277,6 +281,7 @@ class MinMaxScaler(
         )
 
 
+@log_adapter.class_logger
 class KBinsDiscretizer(
     base.Transformer,
     third_party.bigframes_vendored.sklearn.preprocessing._discretization.KBinsDiscretizer,
@@ -395,6 +400,7 @@ class KBinsDiscretizer(
         )
 
 
+@log_adapter.class_logger
 class OneHotEncoder(
     base.Transformer,
     third_party.bigframes_vendored.sklearn.preprocessing._encoder.OneHotEncoder,
@@ -524,6 +530,7 @@ class OneHotEncoder(
         )
 
 
+@log_adapter.class_logger
 class LabelEncoder(
     base.LabelTransformer,
     third_party.bigframes_vendored.sklearn.preprocessing._label.LabelEncoder,

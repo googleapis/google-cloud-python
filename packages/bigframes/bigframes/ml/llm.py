@@ -21,7 +21,7 @@ import warnings
 
 import bigframes
 from bigframes import clients, constants
-from bigframes.core import blocks
+from bigframes.core import blocks, log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 
@@ -43,6 +43,7 @@ _ML_GENERATE_TEXT_STATUS = "ml_generate_text_status"
 _ML_EMBED_TEXT_STATUS = "ml_embed_text_status"
 
 
+@log_adapter.class_logger
 class PaLM2TextGenerator(base.Predictor):
     """PaLM2 text generator LLM model.
 
@@ -200,6 +201,7 @@ class PaLM2TextGenerator(base.Predictor):
         return df
 
 
+@log_adapter.class_logger
 class PaLM2TextEmbeddingGenerator(base.Predictor):
     """PaLM2 text embedding generator LLM model.
 

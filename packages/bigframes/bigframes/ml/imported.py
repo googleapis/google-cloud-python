@@ -21,10 +21,12 @@ from typing import cast, Optional, Union
 from google.cloud import bigquery
 
 import bigframes
+from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 
 
+@log_adapter.class_logger
 class TensorFlowModel(base.Predictor):
     """Imported TensorFlow model.
 
@@ -101,6 +103,7 @@ class TensorFlowModel(base.Predictor):
         return new_model.session.read_gbq_model(model_name)
 
 
+@log_adapter.class_logger
 class ONNXModel(base.Predictor):
     """Imported Open Neural Network Exchange (ONNX) model.
 

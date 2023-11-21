@@ -21,10 +21,12 @@ from typing import Dict, List, Optional, Union
 from google.cloud import bigquery
 
 import bigframes
+from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 
 
+@log_adapter.class_logger
 class ARIMAPlus(base.SupervisedTrainablePredictor):
     """Time Series ARIMA Plus model."""
 
