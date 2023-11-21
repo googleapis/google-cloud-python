@@ -2687,6 +2687,7 @@ def test_create_job_rest(request_type):
                 "task_count_per_node": 2022,
                 "require_hosts_file": True,
                 "permissive_ssh": True,
+                "enable_oslogin": True,
             }
         ],
         "scheduling_policy": 1,
