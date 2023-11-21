@@ -494,6 +494,11 @@ def prerelease(session: nox.sessions.Session, tests_path):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
 
+    # Ignore officially released versions of certain packages specified in
+    # testing/constraints-*.txt and install a more recent, pre-release versions
+    # directly
+    already_installed = set()
+
     # PyArrow prerelease packages are published to an alternative PyPI host.
     # https://arrow.apache.org/docs/python/install.html#installing-nightly-packages
     session.install(
@@ -504,6 +509,8 @@ def prerelease(session: nox.sessions.Session, tests_path):
         "--upgrade",
         "pyarrow",
     )
+    already_installed.add("pyarrow")
+
     session.install(
         "--extra-index-url",
         "https://pypi.anaconda.org/scipy-wheels-nightly/simple",
@@ -512,16 +519,48 @@ def prerelease(session: nox.sessions.Session, tests_path):
         "--upgrade",
         "pandas",
     )
-    session.install(
-        "--upgrade",
-        "-e",  # Use -e so that py.typed file is included.
-        "git+https://github.com/ibis-project/ibis.git#egg=ibis-framework",
-    )
+    already_installed.add("pandas")
+
+    # TODO(shobs):
+    # Commit https://github.com/ibis-project/ibis/commit/c20ba7feab6bdea6c299721310e04dbc10551cc2
+    # introduced breaking change that removed the following:
+    #   ibis.expr.rules.column
+    #   ibis.expr.rules.value
+    #   ibis.expr.rules.any
+    # Let's exclude ibis head from prerelease install list for now. Instead, use
+    # a working ibis-framework version resolved via setup.by (currently resolves
+    # to version 6.2.0 due to version requirement "6.2.0,<7.0.0dev").
+    # We should enable the head back once bigframes support a version that
+    # includes the above commit.
+    # session.install(
+    #    "--upgrade",
+    #    "-e",  # Use -e so that py.typed file is included.
+    #    "git+https://github.com/ibis-project/ibis.git#egg=ibis-framework",
+    # )
+    session.install("--no-deps", "ibis-framework==6.2.0")
+    already_installed.add("ibis-framework")
+
     # Workaround https://github.com/googleapis/python-db-dtypes-pandas/issues/178
     session.install("--no-deps", "db-dtypes")
+    already_installed.add("db-dtypes")
+
+    # Ensure we catch breaking changes in the client libraries early.
+    session.install(
+        "--upgrade",
+        "-e",
+        "git+https://github.com/googleapis/python-bigquery.git#egg=google-cloud-bigquery",
+    )
+    already_installed.add("google-cloud-bigquery")
+    session.install(
+        "--upgrade",
+        "-e",
+        "git+https://github.com/googleapis/python-bigquery-storage.git#egg=google-cloud-bigquery-storage",
+    )
+    already_installed.add("google-cloud-bigquery-storage")
 
     # Workaround to install pandas-gbq >=0.15.0, which is required by test only.
     session.install("--no-deps", "pandas-gbq")
+    already_installed.add("pandas-gbq")
 
     session.install(
         *set(UNIT_TEST_STANDARD_DEPENDENCIES + SYSTEM_TEST_STANDARD_DEPENDENCIES),
@@ -541,9 +580,6 @@ def prerelease(session: nox.sessions.Session, tests_path):
         constraints_text = constraints_file.read()
 
     # Ignore leading whitespace and comment lines.
-    already_installed = frozenset(
-        ("db-dtypes", "pandas", "pyarrow", "ibis-framework", "pandas-gbq")
-    )
     deps = [
         match.group(1)
         for match in re.finditer(
