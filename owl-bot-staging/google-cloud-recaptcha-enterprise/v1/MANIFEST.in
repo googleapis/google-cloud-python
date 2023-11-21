@@ -1,0 +1,2 @@
+recursive-include google/cloud/recaptchaenterprise *.py
+recursive-include google/cloud/recaptchaenterprise_v1 *.py
