@@ -2129,30 +2129,32 @@ class SimulateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The relative resource name of the organization,
-            project, or folder. See:
-            https://cloud.google.com/apis/design/resource_names#relative_resource_name
-            An example is: "organizations/{organization_id}".
+            project, or folder. For more information about relative
+            resource names, see `Relative Resource
+            Name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
+            Example: ``organizations/{organization_id}``
         custom_config (google.cloud.securitycenter_v1.types.CustomConfig):
-            Required. The user specified custom
-            configuration to test.
+            Required. The custom configuration that you
+            need to test.
         resource (google.cloud.securitycenter_v1.types.SimulateSecurityHealthAnalyticsCustomModuleRequest.SimulatedResource):
             Required. Resource data to simulate custom
             module against.
     """
 
     class SimulatedResource(proto.Message):
-        r"""Manually constructed resource. If the custom module only evaluates
-        against the resource data, the iam_policy_data field can be omitted,
-        and vice versa.
+        r"""Manually constructed resource name. If the custom module evaluates
+        against only the resource data, you can omit the ``iam_policy_data``
+        field. If it evaluates only the ``iam_policy_data`` field, you can
+        omit the resource data.
 
         Attributes:
             resource_type (str):
-                Required. The type of the resource, e.g.
+                Required. The type of the resource, for example,
                 ``compute.googleapis.com/Disk``.
             resource_data (google.protobuf.struct_pb2.Struct):
-                Optional. A representation of the GCP
-                resource. Should match the GCP resource JSON
-                format.
+                Optional. A representation of the Google
+                Cloud resource. Should match the Google Cloud
+                resource JSON format.
             iam_policy_data (google.iam.v1.policy_pb2.Policy):
                 Optional. A representation of the IAM policy.
         """
@@ -2190,7 +2192,7 @@ class SimulateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
 class SimulateSecurityHealthAnalyticsCustomModuleResponse(proto.Message):
     r"""Response message for simulating a
-    SecurityHealthAnalyticsCustomModule against a given resource.
+    ``SecurityHealthAnalyticsCustomModule`` against a given resource.
 
     Attributes:
         result (google.cloud.securitycenter_v1.types.SimulateSecurityHealthAnalyticsCustomModuleResponse.SimulatedResult):
