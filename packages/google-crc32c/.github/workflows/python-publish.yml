@@ -23,49 +23,6 @@ jobs:
         name: python-package-distributions
         path: dist/
 
-  build-wheels-manylinux1:
-    # Note: the 'manylinux1' image will no longer be supported by PyPA
-    # after 2022-01-01.
-    # See: https://github.com/pypa/manylinux/issues/994
-    name: Build wheels on ubuntu-20.04 - x86_64 - manylinux1
-
-    runs-on: ubuntu-22.04
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: 'recursive'
-
-    - name: Build Wheels
-      uses: pypa/cibuildwheel@v2.16.2
-      env:
-        CIBW_ARCHS_LINUX: x86_64
-        CIBW_MANYLINUX_X86_64_IMAGE: manylinux1
-        CIBW_BUILD: "cp3[6-9]-manylinux*"  # manylinux1 has no support for 3.10+ Python or PyPy
-        CIBW_ENVIRONMENT: >
-            CRC32C_PURE_PYTHON="0"
-            CRC32C_INSTALL_PREFIX="$(pwd)/usr"
-        CIBW_BUILD_VERBOSITY: 1
-        # Build the C library inside CIBW so that the manylinux image is
-        # used to link the share library;  otherwise, our extension wouldn't
-        # be able to link with it.
-        CIBW_BEFORE_BUILD: >
-            python -m pip install --only-binary --require-hashes -r scripts/requirements.txt &&
-            cmake -S google_crc32c -B build \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DCRC32C_BUILD_TESTS=no \
-                -DCRC32C_BUILD_BENCHMARKS=no \
-                -DBUILD_SHARED_LIBS=yes \
-                -DCMAKE_INSTALL_PREFIX:PATH=$(pwd)/usr &&
-            make -C build all install
-        CIBW_TEST_REQUIRES: pytest
-        CIBW_TEST_COMMAND: py.test -v {project}/tests/
-
-    - uses: actions/upload-artifact@v3
-      with:
-        name: python-package-distributions
-        path: wheelhouse/
-
   build-wheels-linux:
     name: Build wheels on ${{ matrix.os }} - ${{ matrix.arch }}
 
@@ -258,7 +215,6 @@ jobs:
     if: github.event_name == 'release'
     needs:
       - build-source-distribution
-      - build-wheels-manylinux1
       - build-wheels-linux
       - build-wheels-macos
       - build-wheels-windows

@@ -21,12 +21,10 @@ Wheels are published for the following platforms / architectures:
 - `manylinux2010` platform, `x86_64` and `1686` architectures
 - `manylinux2014` platform, `aarch64` architecture
 
-### Deprecated
+### Unsupported Platforms
 
-- `manylinux1` platform, `x86_64` architecture wheels will be built until
-  2021-12-31, when the PyPA group drops support for the `manylinux1` image.
-  See: https://github.com/pypa/manylinux/issues/994 
-
+- `manylinux1` platform, `x86_64` architecture support has ended.
+See https://github.com/pypa/manylinux/issues/994.
 
 ## Mac OS
 
