@@ -1362,13 +1362,13 @@ class Test_QueryResults(unittest.TestCase):
         self.assertEqual(query.errors, ERRORS)
 
     def test_job_id_missing(self):
-        with self.assertRaises(ValueError):
-            self._make_one({})
+        query = self._make_one({})
+        self.assertIsNone(query.job_id)
 
     def test_job_id_broken_job_reference(self):
         resource = {"jobReference": {"bogus": "BOGUS"}}
-        with self.assertRaises(ValueError):
-            self._make_one(resource)
+        query = self._make_one(resource)
+        self.assertIsNone(query.job_id)
 
     def test_job_id_present(self):
         resource = self._make_resource()

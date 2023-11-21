@@ -25,6 +25,7 @@ import mock
 import requests
 
 from google.cloud.bigquery.client import _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS
+import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.query
 from google.cloud.bigquery.table import _EmptyRowIterator
 
@@ -1081,6 +1082,114 @@ class TestQueryJob(_Base):
             timeout=None,
         )
         conn.api_request.assert_has_calls([query_results_call, query_results_page_call])
+        assert conn.api_request.call_count == 2
+
+    def test_result_with_done_jobs_query_response_doesnt_call_get_query_results(self):
+        """With a done result from jobs.query, we don't need to call
+        jobs.getQueryResults to wait for the query to finish.
+
+        jobs.get is still called because there is an assumption that after
+        QueryJob.result(), all job metadata is available locally.
+        """
+        job_resource = self._make_resource(started=True, ended=True, location="EU")
+        conn = make_connection(job_resource)
+        client = _make_client(self.PROJECT, connection=conn)
+        query_resource_done = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "rows": [{"f": [{"v": "abc"}]}],
+            "totalRows": "1",
+        }
+        job = google.cloud.bigquery._job_helpers._to_query_job(
+            client,
+            "SELECT 'abc' AS col1",
+            request_config=None,
+            query_response=query_resource_done,
+        )
+        assert job.state == "DONE"
+
+        result = job.result()
+
+        rows = list(result)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].col1, "abc")
+        job_path = f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}"
+        conn.api_request.assert_called_once_with(
+            method="GET",
+            path=job_path,
+            query_params={},
+            timeout=None,
+        )
+
+    def test_result_with_done_jobs_query_response_and_page_size_invalidates_cache(self):
+        """We don't call jobs.query with a page size, so if the user explicitly
+        requests a certain size, invalidate the cache.
+        """
+        # Arrange
+        job_resource = self._make_resource(
+            started=True, ended=True, location="asia-northeast1"
+        )
+        query_resource_done = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "rows": [{"f": [{"v": "abc"}]}],
+            "pageToken": "initial-page-token-shouldnt-be-used",
+            "totalRows": "4",
+        }
+        query_page_resource = {
+            "totalRows": 4,
+            "pageToken": "some-page-token",
+            "rows": [
+                {"f": [{"v": "row1"}]},
+                {"f": [{"v": "row2"}]},
+                {"f": [{"v": "row3"}]},
+            ],
+        }
+        query_page_resource_2 = {"totalRows": 4, "rows": [{"f": [{"v": "row4"}]}]}
+        conn = make_connection(job_resource, query_page_resource, query_page_resource_2)
+        client = _make_client(self.PROJECT, connection=conn)
+        job = google.cloud.bigquery._job_helpers._to_query_job(
+            client,
+            "SELECT col1 FROM table",
+            request_config=None,
+            query_response=query_resource_done,
+        )
+        assert job.state == "DONE"
+
+        # Act
+        result = job.result(page_size=3)
+
+        # Assert
+        actual_rows = list(result)
+        self.assertEqual(len(actual_rows), 4)
+
+        query_results_path = f"/projects/{self.PROJECT}/queries/{self.JOB_ID}"
+        query_page_1_call = mock.call(
+            method="GET",
+            path=query_results_path,
+            query_params={
+                "maxResults": 3,
+                "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
+                "location": "asia-northeast1",
+                "formatOptions.useInt64Timestamp": True,
+            },
+            timeout=None,
+        )
+        query_page_2_call = mock.call(
+            method="GET",
+            path=query_results_path,
+            query_params={
+                "pageToken": "some-page-token",
+                "maxResults": 3,
+                "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
+                "location": "asia-northeast1",
+                "formatOptions.useInt64Timestamp": True,
+            },
+            timeout=None,
+        )
+        conn.api_request.assert_has_calls([query_page_1_call, query_page_2_call])
 
     def test_result_with_max_results(self):
         from google.cloud.bigquery.table import RowIterator

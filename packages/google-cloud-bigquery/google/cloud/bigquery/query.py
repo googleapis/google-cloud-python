@@ -1005,14 +1005,6 @@ class _QueryResults(object):
         Args:
             api_response (Dict): Response returned from an API call
         """
-        job_id_present = (
-            "jobReference" in api_response
-            and "jobId" in api_response["jobReference"]
-            and "projectId" in api_response["jobReference"]
-        )
-        if not job_id_present:
-            raise ValueError("QueryResult requires a job reference")
-
         self._properties.clear()
         self._properties.update(copy.deepcopy(api_response))
 

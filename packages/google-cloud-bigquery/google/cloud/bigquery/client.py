@@ -3862,6 +3862,7 @@ class Client(ClientWithProject):
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
         query_id: Optional[str] = None,
+        first_page_response: Optional[Dict[str, Any]] = None,
     ) -> RowIterator:
         """List the rows of a completed query.
         See
@@ -3904,6 +3905,8 @@ class Client(ClientWithProject):
             query_id (Optional[str]):
                 [Preview] ID of a completed query. This ID is auto-generated
                 and not guaranteed to be populated.
+            first_page_response (Optional[dict]):
+                API response for the first page of results (if available).
         Returns:
             google.cloud.bigquery.table.RowIterator:
                 Iterator of row data
@@ -3923,6 +3926,11 @@ class Client(ClientWithProject):
         if start_index is not None:
             params["startIndex"] = start_index
 
+        # We don't call jobs.query with a page size, so if the user explicitly
+        # requests a certain size, invalidate the cache.
+        if page_size is not None:
+            first_page_response = None
+
         params["formatOptions.useInt64Timestamp"] = True
         row_iterator = RowIterator(
             client=self,
@@ -3938,6 +3946,7 @@ class Client(ClientWithProject):
             location=location,
             job_id=job_id,
             query_id=query_id,
+            first_page_response=first_page_response,
         )
         return row_iterator
 

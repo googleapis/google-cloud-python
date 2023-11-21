@@ -22,6 +22,7 @@ import google.api_core.exceptions as core_exceptions
 from google.api_core import retry as retries
 
 from google.cloud.bigquery import job
+import google.cloud.bigquery.query
 
 # Avoid circular imports
 if TYPE_CHECKING:  # pragma: NO COVER
@@ -197,14 +198,9 @@ def _to_query_job(
     job_complete = query_response.get("jobComplete")
     if job_complete:
         query_job._properties["status"]["state"] = "DONE"
-        # TODO: https://github.com/googleapis/python-bigquery/issues/589
-        # Set the first page of results if job is "complete" and there is
-        # only 1 page of results. Otherwise, use the existing logic that
-        # refreshes the job stats.
-        #
-        # This also requires updates to `to_dataframe` and the DB API connector
-        # so that they don't try to read from a destination table if all the
-        # results are present.
+        query_job._query_results = google.cloud.bigquery.query._QueryResults(
+            query_response
+        )
     else:
         query_job._properties["status"]["state"] = "PENDING"
 

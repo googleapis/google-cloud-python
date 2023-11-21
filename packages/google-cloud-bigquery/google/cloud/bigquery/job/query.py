@@ -1586,7 +1586,8 @@ class QueryJob(_AsyncJob):
                 # Since the job could already be "done" (e.g. got a finished job
                 # via client.get_job), the superclass call to done() might not
                 # set the self._query_results cache.
-                self._reload_query_results(retry=retry, timeout=timeout)
+                if self._query_results is None or not self._query_results.complete:
+                    self._reload_query_results(retry=retry, timeout=timeout)
 
             if retry_do_query is not None and job_retry is not None:
                 do_get_result = job_retry(do_get_result)
@@ -1615,6 +1616,15 @@ class QueryJob(_AsyncJob):
                 query_id=self.query_id,
             )
 
+        # We know that there's at least 1 row, so only treat the response from
+        # jobs.getQueryResults / jobs.query as the first page of the
+        # RowIterator response if there are any rows in it. This prevents us
+        # from stopping the iteration early because we're missing rows and
+        # there's no next page token.
+        first_page_response = self._query_results._properties
+        if "rows" not in first_page_response:
+            first_page_response = None
+
         rows = self._client._list_rows_from_query_results(
             self.job_id,
             self.location,
@@ -1628,6 +1638,7 @@ class QueryJob(_AsyncJob):
             retry=retry,
             timeout=timeout,
             query_id=self.query_id,
+            first_page_response=first_page_response,
         )
         rows._preserve_order = _contains_order_by(self.query)
         return rows
