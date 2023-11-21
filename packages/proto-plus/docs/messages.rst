@@ -55,6 +55,33 @@ A few things to note:
   falsy value or not set all is to mark it ``optional``.
 * Because all fields are optional, it is the responsibility of application logic
   to determine whether a necessary field has been set.
+* You can optionally define a `__protobuf__` attribute in your module which will be used
+  to differentiate messages which have the same name but exist in different modules.
+
+.. code-block:: python
+
+    # file a.py
+    import proto
+
+    __protobuf__ = proto.module(package="a")
+
+    class A(proto.Message):
+        name = proto.Field(proto.STRING, number=1)
+
+    # file b.py
+    import proto
+
+    __protobuf__ = proto.module(package="b")
+
+    class A(proto.Message):
+        name = proto.Field(proto.STRING, number=1)
+
+    # file main.py
+    import a
+    import b
+
+    _a = a.A(name="Hello, A!")
+    _b = b.A(name="Hello, B!")
 
 .. _messages: https://developers.google.com/protocol-buffers/docs/proto3#simple
 
