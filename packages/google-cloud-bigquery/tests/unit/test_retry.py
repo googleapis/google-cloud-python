@@ -125,6 +125,7 @@ def test_DEFAULT_JOB_RETRY_predicate():
 
 
 def test_DEFAULT_JOB_RETRY_deadline():
-    from google.cloud.bigquery.retry import DEFAULT_JOB_RETRY
+    from google.cloud.bigquery.retry import DEFAULT_JOB_RETRY, DEFAULT_RETRY
 
-    assert DEFAULT_JOB_RETRY._deadline == 600
+    # Make sure we can retry the job at least once.
+    assert DEFAULT_JOB_RETRY._deadline > DEFAULT_RETRY._deadline

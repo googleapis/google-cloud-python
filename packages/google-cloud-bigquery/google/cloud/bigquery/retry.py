@@ -34,7 +34,12 @@ _UNSTRUCTURED_RETRYABLE_TYPES = (
     auth_exceptions.TransportError,
 )
 
-_DEFAULT_JOB_DEADLINE = 60.0 * 10.0  # seconds
+_DEFAULT_RETRY_DEADLINE = 10.0 * 60.0  # 10 minutes
+
+# Allow for a few retries after the API request times out. This relevant for
+# rateLimitExceeded errors, which can be raised either by the Google load
+# balancer or the BigQuery job server.
+_DEFAULT_JOB_DEADLINE = 3.0 * _DEFAULT_RETRY_DEADLINE
 
 
 def _should_retry(exc):
@@ -51,7 +56,7 @@ def _should_retry(exc):
     return reason in _RETRYABLE_REASONS
 
 
-DEFAULT_RETRY = retry.Retry(predicate=_should_retry, deadline=600.0)
+DEFAULT_RETRY = retry.Retry(predicate=_should_retry, deadline=_DEFAULT_RETRY_DEADLINE)
 """The default retry object.
 
 Any method with a ``retry`` parameter will be retried automatically,
