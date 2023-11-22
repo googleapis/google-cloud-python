@@ -38,8 +38,8 @@ def run_remote_function_and_read_gbq_function(project_id: str):
     # function. It requires a BigQuery connection. If the connection is not
     # already created, BigQuery DataFrames will attempt to create one assuming
     # the necessary APIs and IAM permissions are setup in the project. In our
-    # examples we would be using a pre-created connection named
-    # `bigframes-rf-conn`. We will also set `reuse=False` to make sure we don't
+    # examples we will be letting the default connection `bigframes-default-connection`
+    # be used. We will also set `reuse=False` to make sure we don't
     # step over someone else creating remote function in the same project from
     # the exact same source code at the same time. Let's try a `pandas`-like use
     # case in which we want to apply a user defined scalar function to every
@@ -49,7 +49,6 @@ def run_remote_function_and_read_gbq_function(project_id: str):
     @bpd.remote_function(
         [float],
         str,
-        bigquery_connection="bigframes-rf-conn",
         reuse=False,
     )
     def get_bucket(num):
@@ -94,7 +93,6 @@ def run_remote_function_and_read_gbq_function(project_id: str):
     @bpd.remote_function(
         [str],
         str,
-        bigquery_connection="bigframes-rf-conn",
         reuse=False,
         packages=["cryptography"],
     )
