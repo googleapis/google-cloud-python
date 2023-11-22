@@ -2668,7 +2668,11 @@ def test_create_job_rest(request_type):
         },
         "create_time": {},
         "update_time": {},
-        "logs_policy": {"destination": 1, "logs_path": "logs_path_value"},
+        "logs_policy": {
+            "destination": 1,
+            "logs_path": "logs_path_value",
+            "cloud_logging_option": {},
+        },
         "notifications": [
             {
                 "pubsub_topic": "pubsub_topic_value",
