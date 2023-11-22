@@ -2584,6 +2584,33 @@ class DataFrame(NDFrame):
         along a Dataframe axis that is True or equivalent (e.g. non-zero or
         non-empty).
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [True, True], "B": [False, False]})
+            >>> df
+                    A        B
+            0    True    False
+            1    True    False
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        Checking if each column contains at least one True element(the default behavior without an explicit axis parameter).
+
+            >>> df.any()
+            A     True
+            B    False
+            dtype: boolean
+
+        Checking if each row contains at least one True element.
+
+            >>> df.any(axis=1)
+            0    True
+            1    True
+            dtype: boolean
+
         Args:
             axis ({index (0), columns (1)}):
                 Axis for the function to be applied on.
@@ -2604,6 +2631,33 @@ class DataFrame(NDFrame):
         along a DataFrame axis that is False or equivalent (e.g. zero or
         empty).
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [True, True], "B": [False, False]})
+            >>> df
+                    A        B
+            0    True    False
+            1    True    False
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        Checking if all values in each column are True(the default behavior without an explicit axis parameter).
+
+            >>> df.all()
+            A     True
+            B    False
+            dtype: boolean
+
+        Checking across rows to see if all values are True.
+
+            >>> df.all(axis=1)
+            0    False
+            1    False
+            dtype: boolean
+
         Args:
             axis ({index (0), columns (1)}):
                 Axis for the function to be applied on.
@@ -2620,8 +2674,37 @@ class DataFrame(NDFrame):
         """
         Return the product of the values over the requested axis.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [1, 2, 3], "B": [4.5, 5.5, 6.5]})
+            >>> df
+                A    B
+            0   1  4.5
+            1   2  5.5
+            2   3  6.5
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+        Calculating the product of each column(the default behavior without an explicit axis parameter).
+
+            >>> df.prod()
+            A        6.0
+            B    160.875
+            dtype: Float64
+
+        Calculating the product of each row.
+
+            >>> df.prod(axis=1)
+            0     4.5
+            1    11.0
+            2    19.5
+            dtype: Float64
+
         Args:
-            aßxis ({index (0), columns (1)}):
+            axis ({index (0), columns (1)}):
                 Axis for the function to be applied on.
                 For Series this parameter is unused and defaults to 0.
             numeric_only (bool. default False):
