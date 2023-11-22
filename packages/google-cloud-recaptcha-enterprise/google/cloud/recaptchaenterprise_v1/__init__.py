@@ -74,6 +74,8 @@ from .types.recaptchaenterprise import (
     TransactionEvent,
     UpdateFirewallPolicyRequest,
     UpdateKeyRequest,
+    UserId,
+    UserInfo,
     WafSettings,
     WebKeySettings,
 )
@@ -132,6 +134,8 @@ __all__ = (
     "TransactionEvent",
     "UpdateFirewallPolicyRequest",
     "UpdateKeyRequest",
+    "UserId",
+    "UserInfo",
     "WafSettings",
     "WebKeySettings",
 )
