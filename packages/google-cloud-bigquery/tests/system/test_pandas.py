@@ -428,8 +428,7 @@ def test_load_table_from_dataframe_w_nulls(bigquery_client, dataset_id):
 
 
 def test_load_table_from_dataframe_w_required(bigquery_client, dataset_id):
-    """Test that a DataFrame with required columns can be uploaded if a
-    BigQuery schema is specified.
+    """Test that a DataFrame can be uploaded to a table with required columns.
 
     See: https://github.com/googleapis/google-cloud-python/issues/8093
     """
@@ -440,7 +439,6 @@ def test_load_table_from_dataframe_w_required(bigquery_client, dataset_id):
 
     records = [{"name": "Chip", "age": 2}, {"name": "Dale", "age": 3}]
     dataframe = pandas.DataFrame(records, columns=["name", "age"])
-    job_config = bigquery.LoadJobConfig(schema=table_schema)
     table_id = "{}.{}.load_table_from_dataframe_w_required".format(
         bigquery_client.project, dataset_id
     )
@@ -451,15 +449,50 @@ def test_load_table_from_dataframe_w_required(bigquery_client, dataset_id):
         bigquery.Table(table_id, schema=table_schema)
     )
 
-    job_config = bigquery.LoadJobConfig(schema=table_schema)
-    load_job = bigquery_client.load_table_from_dataframe(
-        dataframe, table_id, job_config=job_config
-    )
+    load_job = bigquery_client.load_table_from_dataframe(dataframe, table_id)
     load_job.result()
 
     table = bigquery_client.get_table(table)
     assert tuple(table.schema) == table_schema
     assert table.num_rows == 2
+    for field in table.schema:
+        assert field.mode == "REQUIRED"
+
+
+def test_load_table_from_dataframe_w_required_but_local_nulls_fails(
+    bigquery_client, dataset_id
+):
+    """Test that a DataFrame with nulls can't be uploaded to a table with
+    required columns.
+
+    See: https://github.com/googleapis/python-bigquery/issues/1692
+    """
+    table_schema = (
+        bigquery.SchemaField("name", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
+    )
+
+    records = [
+        {"name": "Chip", "age": 2},
+        {"name": "Dale", "age": 3},
+        {"name": None, "age": None},
+        {"name": "Alvin", "age": 4},
+    ]
+    dataframe = pandas.DataFrame(records, columns=["name", "age"])
+    table_id = (
+        "{}.{}.load_table_from_dataframe_w_required_but_local_nulls_fails".format(
+            bigquery_client.project, dataset_id
+        )
+    )
+
+    # Create the table before loading so that schema mismatch errors are
+    # identified.
+    helpers.retry_403(bigquery_client.create_table)(
+        bigquery.Table(table_id, schema=table_schema)
+    )
+
+    with pytest.raises(google.api_core.exceptions.BadRequest, match="null"):
+        bigquery_client.load_table_from_dataframe(dataframe, table_id).result()
 
 
 def test_load_table_from_dataframe_w_explicit_schema(bigquery_client, dataset_id):

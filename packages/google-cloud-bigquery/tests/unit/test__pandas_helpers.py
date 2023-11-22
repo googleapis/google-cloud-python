@@ -1017,30 +1017,41 @@ def test_dataframe_to_arrow_with_required_fields(module_under_test):
     )
 
     data = {
-        "field01": ["hello", "world"],
-        "field02": [b"abd", b"efg"],
-        "field03": [1, 2],
-        "field04": [3, 4],
-        "field05": [1.25, 9.75],
-        "field06": [-1.75, -3.5],
-        "field07": [decimal.Decimal("1.2345"), decimal.Decimal("6.7891")],
+        "field01": ["hello", None, "world"],
+        "field02": [b"abd", b"efg", b"hij"],
+        "field03": [1, 2, 3],
+        "field04": [4, None, 5],
+        "field05": [1.25, 0.0, 9.75],
+        "field06": [-1.75, None, -3.5],
+        "field07": [
+            decimal.Decimal("1.2345"),
+            decimal.Decimal("6.7891"),
+            -decimal.Decimal("10.111213"),
+        ],
         "field08": [
             decimal.Decimal("-{d38}.{d38}".format(d38="9" * 38)),
+            None,
             decimal.Decimal("{d38}.{d38}".format(d38="9" * 38)),
         ],
-        "field09": [True, False],
-        "field10": [False, True],
+        "field09": [True, False, True],
+        "field10": [False, True, None],
         "field11": [
             datetime.datetime(1970, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc),
             datetime.datetime(2012, 12, 21, 9, 7, 42, tzinfo=datetime.timezone.utc),
+            datetime.datetime(2022, 7, 14, 23, 59, 59, tzinfo=datetime.timezone.utc),
         ],
-        "field12": [datetime.date(9999, 12, 31), datetime.date(1970, 1, 1)],
-        "field13": [datetime.time(23, 59, 59, 999999), datetime.time(12, 0, 0)],
+        "field12": [datetime.date(9999, 12, 31), None, datetime.date(1970, 1, 1)],
+        "field13": [datetime.time(23, 59, 59, 999999), None, datetime.time(12, 0, 0)],
         "field14": [
             datetime.datetime(1970, 1, 1, 0, 0, 0),
+            None,
             datetime.datetime(2012, 12, 21, 9, 7, 42),
         ],
-        "field15": ["POINT(30 10)", "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))"],
+        "field15": [
+            None,
+            "POINT(30 10)",
+            "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))",
+        ],
     }
     dataframe = pandas.DataFrame(data)
 
@@ -1049,7 +1060,11 @@ def test_dataframe_to_arrow_with_required_fields(module_under_test):
 
     assert len(arrow_schema) == len(bq_schema)
     for arrow_field in arrow_schema:
-        assert not arrow_field.nullable
+        # Even if the remote schema is REQUIRED, there's a chance there's
+        # local NULL values. Arrow will gladly interpret these NULL values
+        # as non-NULL and give you an arbitrary value. See:
+        # https://github.com/googleapis/python-bigquery/issues/1692
+        assert arrow_field.nullable
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -1101,7 +1116,11 @@ def test_dataframe_to_arrow_dict_sequence_schema(module_under_test):
     arrow_schema = arrow_table.schema
 
     expected_fields = [
-        pyarrow.field("field01", "string", nullable=False),
+        # Even if the remote schema is REQUIRED, there's a chance there's
+        # local NULL values. Arrow will gladly interpret these NULL values
+        # as non-NULL and give you an arbitrary value. See:
+        # https://github.com/googleapis/python-bigquery/issues/1692
+        pyarrow.field("field01", "string", nullable=True),
         pyarrow.field("field02", "bool", nullable=True),
     ]
     assert list(arrow_schema) == expected_fields
