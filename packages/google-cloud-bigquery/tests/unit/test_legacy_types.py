@@ -13,9 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
+
 import warnings
 
+try:
+    import proto  # type: ignore
+except ImportError:  # pragma: NO COVER
+    proto = None
 
+
+@pytest.mark.skipif(proto is None, reason="proto is not installed")
 def test_importing_legacy_types_emits_warning():
     with warnings.catch_warnings(record=True) as warned:
         from google.cloud.bigquery_v2 import types  # noqa: F401
