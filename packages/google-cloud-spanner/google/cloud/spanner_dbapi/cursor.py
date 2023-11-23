@@ -32,13 +32,14 @@ from google.cloud.spanner_dbapi.exceptions import InterfaceError
 from google.cloud.spanner_dbapi.exceptions import OperationalError
 from google.cloud.spanner_dbapi.exceptions import ProgrammingError
 
-from google.cloud.spanner_dbapi import _helpers
+from google.cloud.spanner_dbapi import _helpers, client_side_statement_executor
 from google.cloud.spanner_dbapi._helpers import ColumnInfo
 from google.cloud.spanner_dbapi._helpers import CODE_TO_DISPLAY_SIZE
 
 from google.cloud.spanner_dbapi import parse_utils
 from google.cloud.spanner_dbapi.parse_utils import get_param_types
 from google.cloud.spanner_dbapi.parse_utils import sql_pyformat_args_to_spanner
+from google.cloud.spanner_dbapi.parsed_statement import StatementType
 from google.cloud.spanner_dbapi.utils import PeekIterator
 from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
 
@@ -210,7 +211,10 @@ class Cursor(object):
         for ddl in sqlparse.split(sql):
             if ddl:
                 ddl = ddl.rstrip(";")
-                if parse_utils.classify_stmt(ddl) != parse_utils.STMT_DDL:
+                if (
+                    parse_utils.classify_statement(ddl).statement_type
+                    != StatementType.DDL
+                ):
                     raise ValueError("Only DDL statements may be batched.")
 
                 statements.append(ddl)
@@ -239,8 +243,12 @@ class Cursor(object):
                 self._handle_DQL(sql, args or None)
                 return
 
-            class_ = parse_utils.classify_stmt(sql)
-            if class_ == parse_utils.STMT_DDL:
+            parsed_statement = parse_utils.classify_statement(sql)
+            if parsed_statement.statement_type == StatementType.CLIENT_SIDE:
+                return client_side_statement_executor.execute(
+                    self.connection, parsed_statement
+                )
+            if parsed_statement.statement_type == StatementType.DDL:
                 self._batch_DDLs(sql)
                 if self.connection.autocommit:
                     self.connection.run_prior_DDL_statements()
@@ -251,7 +259,7 @@ class Cursor(object):
             # self._run_prior_DDL_statements()
             self.connection.run_prior_DDL_statements()
 
-            if class_ == parse_utils.STMT_UPDATING:
+            if parsed_statement.statement_type == StatementType.UPDATE:
                 sql = parse_utils.ensure_where_clause(sql)
 
             sql, args = sql_pyformat_args_to_spanner(sql, args or None)
@@ -276,7 +284,7 @@ class Cursor(object):
                         self.connection.retry_transaction()
                 return
 
-            if class_ == parse_utils.STMT_NON_UPDATING:
+            if parsed_statement.statement_type == StatementType.QUERY:
                 self._handle_DQL(sql, args or None)
             else:
                 self.connection.database.run_in_transaction(
@@ -309,10 +317,17 @@ class Cursor(object):
         self._result_set = None
         self._row_count = _UNSET_COUNT
 
-        class_ = parse_utils.classify_stmt(operation)
-        if class_ == parse_utils.STMT_DDL:
+        parsed_statement = parse_utils.classify_statement(operation)
+        if parsed_statement.statement_type == StatementType.DDL:
             raise ProgrammingError(
                 "Executing DDL statements with executemany() method is not allowed."
+            )
+
+        if parsed_statement.statement_type == StatementType.CLIENT_SIDE:
+            raise ProgrammingError(
+                "Executing the following operation: "
+                + operation
+                + ", with executemany() method is not allowed."
             )
 
         # For every operation, we've got to ensure that any prior DDL
@@ -321,7 +336,10 @@ class Cursor(object):
 
         many_result_set = StreamedManyResultSets()
 
-        if class_ in (parse_utils.STMT_INSERT, parse_utils.STMT_UPDATING):
+        if parsed_statement.statement_type in (
+            StatementType.INSERT,
+            StatementType.UPDATE,
+        ):
             statements = []
 
             for params in seq_of_params:

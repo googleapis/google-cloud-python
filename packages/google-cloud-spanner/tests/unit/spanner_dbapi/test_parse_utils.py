@@ -15,6 +15,7 @@
 import sys
 import unittest
 
+from google.cloud.spanner_dbapi.parsed_statement import StatementType
 from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1 import JsonObject
 
@@ -24,45 +25,43 @@ class TestParseUtils(unittest.TestCase):
     skip_message = "Subtests are not supported in Python 2"
 
     def test_classify_stmt(self):
-        from google.cloud.spanner_dbapi.parse_utils import STMT_DDL
-        from google.cloud.spanner_dbapi.parse_utils import STMT_INSERT
-        from google.cloud.spanner_dbapi.parse_utils import STMT_NON_UPDATING
-        from google.cloud.spanner_dbapi.parse_utils import STMT_UPDATING
-        from google.cloud.spanner_dbapi.parse_utils import classify_stmt
+        from google.cloud.spanner_dbapi.parse_utils import classify_statement
 
         cases = (
-            ("SELECT 1", STMT_NON_UPDATING),
-            ("SELECT s.SongName FROM Songs AS s", STMT_NON_UPDATING),
-            ("(SELECT s.SongName FROM Songs AS s)", STMT_NON_UPDATING),
+            ("SELECT 1", StatementType.QUERY),
+            ("SELECT s.SongName FROM Songs AS s", StatementType.QUERY),
+            ("(SELECT s.SongName FROM Songs AS s)", StatementType.QUERY),
             (
                 "WITH sq AS (SELECT SchoolID FROM Roster) SELECT * from sq",
-                STMT_NON_UPDATING,
+                StatementType.QUERY,
             ),
             (
                 "CREATE TABLE django_content_type (id STRING(64) NOT NULL, name STRING(100) "
                 "NOT NULL, app_label STRING(100) NOT NULL, model STRING(100) NOT NULL) PRIMARY KEY(id)",
-                STMT_DDL,
+                StatementType.DDL,
             ),
             (
                 "CREATE INDEX SongsBySingerAlbumSongNameDesc ON "
                 "Songs(SingerId, AlbumId, SongName DESC), INTERLEAVE IN Albums",
-                STMT_DDL,
+                StatementType.DDL,
             ),
-            ("CREATE INDEX SongsBySongName ON Songs(SongName)", STMT_DDL),
+            ("CREATE INDEX SongsBySongName ON Songs(SongName)", StatementType.DDL),
             (
                 "CREATE INDEX AlbumsByAlbumTitle2 ON Albums(AlbumTitle) STORING (MarketingBudget)",
-                STMT_DDL,
+                StatementType.DDL,
             ),
-            ("CREATE ROLE parent", STMT_DDL),
-            ("GRANT SELECT ON TABLE Singers TO ROLE parent", STMT_DDL),
-            ("REVOKE SELECT ON TABLE Singers TO ROLE parent", STMT_DDL),
-            ("GRANT ROLE parent TO ROLE child", STMT_DDL),
-            ("INSERT INTO table (col1) VALUES (1)", STMT_INSERT),
-            ("UPDATE table SET col1 = 1 WHERE col1 = NULL", STMT_UPDATING),
+            ("CREATE ROLE parent", StatementType.DDL),
+            ("commit", StatementType.CLIENT_SIDE),
+            (" commit TRANSACTION ", StatementType.CLIENT_SIDE),
+            ("GRANT SELECT ON TABLE Singers TO ROLE parent", StatementType.DDL),
+            ("REVOKE SELECT ON TABLE Singers TO ROLE parent", StatementType.DDL),
+            ("GRANT ROLE parent TO ROLE child", StatementType.DDL),
+            ("INSERT INTO table (col1) VALUES (1)", StatementType.INSERT),
+            ("UPDATE table SET col1 = 1 WHERE col1 = NULL", StatementType.UPDATE),
         )
 
         for query, want_class in cases:
-            self.assertEqual(classify_stmt(query), want_class)
+            self.assertEqual(classify_statement(query).statement_type, want_class)
 
     @unittest.skipIf(skip_condition, skip_message)
     def test_sql_pyformat_args_to_spanner(self):

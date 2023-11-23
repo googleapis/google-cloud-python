@@ -20,6 +20,8 @@ import time
 
 from google.cloud import spanner_v1
 from google.cloud._helpers import UTC
+
+from google.cloud.spanner_dbapi import Cursor
 from google.cloud.spanner_dbapi.connection import connect
 from google.cloud.spanner_dbapi.connection import Connection
 from google.cloud.spanner_dbapi.exceptions import ProgrammingError
@@ -72,37 +74,11 @@ def dbapi_database(raw_database):
 
 def test_commit(shared_instance, dbapi_database):
     """Test committing a transaction with several statements."""
-    want_row = (
-        1,
-        "updated-first-name",
-        "last-name",
-        "test.email_updated@domen.ru",
-    )
     # connect to the test database
     conn = Connection(shared_instance, dbapi_database)
     cursor = conn.cursor()
 
-    # execute several DML statements within one transaction
-    cursor.execute(
-        """
-INSERT INTO contacts (contact_id, first_name, last_name, email)
-VALUES (1, 'first-name', 'last-name', 'test.email@domen.ru')
-    """
-    )
-    cursor.execute(
-        """
-UPDATE contacts
-SET first_name = 'updated-first-name'
-WHERE first_name = 'first-name'
-"""
-    )
-    cursor.execute(
-        """
-UPDATE contacts
-SET email = 'test.email_updated@domen.ru'
-WHERE email = 'test.email@domen.ru'
-"""
-    )
+    want_row = _execute_common_precommit_statements(cursor)
     conn.commit()
 
     # read the resulting data from the database
@@ -114,6 +90,25 @@ WHERE email = 'test.email@domen.ru'
 
     cursor.close()
     conn.close()
+
+
+def test_commit_client_side(shared_instance, dbapi_database):
+    """Test committing a transaction with several statements."""
+    # connect to the test database
+    conn = Connection(shared_instance, dbapi_database)
+    cursor = conn.cursor()
+
+    want_row = _execute_common_precommit_statements(cursor)
+    cursor.execute("""COMMIT""")
+
+    # read the resulting data from the database
+    cursor.execute("SELECT * FROM contacts")
+    got_rows = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    assert got_rows == [want_row]
 
 
 def test_rollback(shared_instance, dbapi_database):
@@ -810,3 +805,33 @@ THEN RETURN contact_id, first_name
     assert cur.fetchone() == (1, "first-name")
     assert cur.rowcount == 1
     conn.commit()
+
+
+def _execute_common_precommit_statements(cursor: Cursor):
+    # execute several DML statements within one transaction
+    cursor.execute(
+        """
+        INSERT INTO contacts (contact_id, first_name, last_name, email)
+        VALUES (1, 'first-name', 'last-name', 'test.email@domen.ru')
+        """
+    )
+    cursor.execute(
+        """
+        UPDATE contacts
+        SET first_name = 'updated-first-name'
+        WHERE first_name = 'first-name'
+        """
+    )
+    cursor.execute(
+        """
+        UPDATE contacts
+        SET email = 'test.email_updated@domen.ru'
+        WHERE email = 'test.email@domen.ru'
+        """
+    )
+    return (
+        1,
+        "updated-first-name",
+        "last-name",
+        "test.email_updated@domen.ru",
+    )

@@ -14,9 +14,11 @@
 
 """Cursor() class unit tests."""
 
-import mock
+from unittest import mock
 import sys
 import unittest
+
+from google.cloud.spanner_dbapi.parsed_statement import ParsedStatement, StatementType
 
 
 class TestCursor(unittest.TestCase):
@@ -182,7 +184,6 @@ class TestCursor(unittest.TestCase):
         self.assertIsInstance(cursor._itr, PeekIterator)
 
     def test_execute_insert_statement_autocommit_off(self):
-        from google.cloud.spanner_dbapi import parse_utils
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
         from google.cloud.spanner_dbapi.utils import PeekIterator
 
@@ -192,54 +193,54 @@ class TestCursor(unittest.TestCase):
         cursor.connection.transaction_checkout = mock.MagicMock(autospec=True)
 
         cursor._checksum = ResultsChecksum()
+        sql = "INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)"
         with mock.patch(
-            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
-            return_value=parse_utils.STMT_UPDATING,
+            "google.cloud.spanner_dbapi.parse_utils.classify_statement",
+            return_value=ParsedStatement(StatementType.UPDATE, sql),
         ):
             with mock.patch(
                 "google.cloud.spanner_dbapi.connection.Connection.run_statement",
                 return_value=(mock.MagicMock(), ResultsChecksum()),
             ):
-                cursor.execute(
-                    sql="INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)"
-                )
+                cursor.execute(sql)
                 self.assertIsInstance(cursor._result_set, mock.MagicMock)
                 self.assertIsInstance(cursor._itr, PeekIterator)
 
     def test_execute_statement(self):
-        from google.cloud.spanner_dbapi import parse_utils
-
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
         cursor = self._make_one(connection)
 
+        sql = "sql"
         with mock.patch(
-            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
-            side_effect=[parse_utils.STMT_DDL, parse_utils.STMT_UPDATING],
-        ) as mock_classify_stmt:
-            sql = "sql"
+            "google.cloud.spanner_dbapi.parse_utils.classify_statement",
+            side_effect=[
+                ParsedStatement(StatementType.DDL, sql),
+                ParsedStatement(StatementType.UPDATE, sql),
+            ],
+        ) as mockclassify_statement:
             with self.assertRaises(ValueError):
                 cursor.execute(sql=sql)
-            mock_classify_stmt.assert_called_with(sql)
-            self.assertEqual(mock_classify_stmt.call_count, 2)
+            mockclassify_statement.assert_called_with(sql)
+            self.assertEqual(mockclassify_statement.call_count, 2)
             self.assertEqual(cursor.connection._ddl_statements, [])
 
         with mock.patch(
-            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
-            return_value=parse_utils.STMT_DDL,
-        ) as mock_classify_stmt:
+            "google.cloud.spanner_dbapi.parse_utils.classify_statement",
+            return_value=ParsedStatement(StatementType.DDL, sql),
+        ) as mockclassify_statement:
             sql = "sql"
             cursor.execute(sql=sql)
-            mock_classify_stmt.assert_called_with(sql)
-            self.assertEqual(mock_classify_stmt.call_count, 2)
+            mockclassify_statement.assert_called_with(sql)
+            self.assertEqual(mockclassify_statement.call_count, 2)
             self.assertEqual(cursor.connection._ddl_statements, [sql])
 
         with mock.patch(
-            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
-            return_value=parse_utils.STMT_NON_UPDATING,
+            "google.cloud.spanner_dbapi.parse_utils.classify_statement",
+            return_value=ParsedStatement(StatementType.QUERY, sql),
         ):
             with mock.patch(
                 "google.cloud.spanner_dbapi.cursor.Cursor._handle_DQL",
-                return_value=parse_utils.STMT_NON_UPDATING,
+                return_value=ParsedStatement(StatementType.QUERY, sql),
             ) as mock_handle_ddl:
                 connection.autocommit = True
                 sql = "sql"
@@ -247,14 +248,15 @@ class TestCursor(unittest.TestCase):
                 mock_handle_ddl.assert_called_once_with(sql, None)
 
         with mock.patch(
-            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
-            return_value="other_statement",
+            "google.cloud.spanner_dbapi.parse_utils.classify_statement",
+            return_value=ParsedStatement(StatementType.UPDATE, sql),
         ):
             cursor.connection._database = mock_db = mock.MagicMock()
             mock_db.run_in_transaction = mock_run_in = mock.MagicMock()
-            sql = "sql"
-            cursor.execute(sql=sql)
-            mock_run_in.assert_called_once_with(cursor._do_execute_update, sql, None)
+            cursor.execute(sql="sql")
+            mock_run_in.assert_called_once_with(
+                cursor._do_execute_update, "sql WHERE 1=1", None
+            )
 
     def test_execute_integrity_error(self):
         from google.api_core import exceptions
@@ -264,21 +266,21 @@ class TestCursor(unittest.TestCase):
         cursor = self._make_one(connection)
 
         with mock.patch(
-            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
+            "google.cloud.spanner_dbapi.parse_utils.classify_statement",
             side_effect=exceptions.AlreadyExists("message"),
         ):
             with self.assertRaises(IntegrityError):
                 cursor.execute(sql="sql")
 
         with mock.patch(
-            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
+            "google.cloud.spanner_dbapi.parse_utils.classify_statement",
             side_effect=exceptions.FailedPrecondition("message"),
         ):
             with self.assertRaises(IntegrityError):
                 cursor.execute(sql="sql")
 
         with mock.patch(
-            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
+            "google.cloud.spanner_dbapi.parse_utils.classify_statement",
             side_effect=exceptions.OutOfRange("message"),
         ):
             with self.assertRaises(IntegrityError):
@@ -292,7 +294,7 @@ class TestCursor(unittest.TestCase):
         cursor = self._make_one(connection)
 
         with mock.patch(
-            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
+            "google.cloud.spanner_dbapi.parse_utils.classify_statement",
             side_effect=exceptions.InvalidArgument("message"),
         ):
             with self.assertRaises(ProgrammingError):
@@ -306,7 +308,7 @@ class TestCursor(unittest.TestCase):
         cursor = self._make_one(connection)
 
         with mock.patch(
-            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
+            "google.cloud.spanner_dbapi.parse_utils.classify_statement",
             side_effect=exceptions.InternalServerError("message"),
         ):
             with self.assertRaises(OperationalError):
@@ -335,6 +337,20 @@ class TestCursor(unittest.TestCase):
 
         with self.assertRaises(ProgrammingError):
             cursor.executemany("""DROP DATABASE database_name""", ())
+
+    def test_executemany_client_statement(self):
+        from google.cloud.spanner_dbapi import connect, ProgrammingError
+
+        connection = connect("test-instance", "test-database")
+
+        cursor = connection.cursor()
+
+        with self.assertRaises(ProgrammingError) as error:
+            cursor.executemany("""COMMIT TRANSACTION""", ())
+        self.assertEqual(
+            str(error.exception),
+            "Executing the following operation: COMMIT TRANSACTION, with executemany() method is not allowed.",
+        )
 
     @mock.patch("google.cloud.spanner_v1.Client")
     def test_executemany(self, mock_client):
