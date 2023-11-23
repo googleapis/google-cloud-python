@@ -6,4 +6,4 @@
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
 protobuf==3.19.5
-grpcio==1.44.0
+grpcio==1.51.3

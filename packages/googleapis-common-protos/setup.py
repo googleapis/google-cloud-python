@@ -26,7 +26,9 @@ dependencies = [
     "protobuf>=3.19.5,<5.0.0.dev0,!=3.20.0,!=3.20.1,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
 
-extras_require = {"grpc": ["grpcio >= 1.44.0, <2.0.0.dev0"]}
+# Require grpcio >= 1.51.3 for compatibility with Mac M1
+# https://github.com/googleapis/python-pubsub/pull/900
+extras_require = {"grpc": ["grpcio >= 1.51.3, <2.0.0.dev0"]}
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
