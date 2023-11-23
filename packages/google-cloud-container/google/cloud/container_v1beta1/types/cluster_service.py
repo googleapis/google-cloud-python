@@ -10081,11 +10081,18 @@ class AdvancedDatapathObservabilityConfig(proto.Message):
     r"""AdvancedDatapathObservabilityConfig specifies configuration
     of observability features of advanced datapath.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         enable_metrics (bool):
             Expose flow metrics on nodes
         relay_mode (google.cloud.container_v1beta1.types.AdvancedDatapathObservabilityConfig.RelayMode):
             Method used to make Relay available
+        enable_relay (bool):
+            Enable Relay component
+
+            This field is a member of `oneof`_ ``_enable_relay``.
     """
 
     class RelayMode(proto.Enum):
@@ -10114,6 +10121,11 @@ class AdvancedDatapathObservabilityConfig(proto.Message):
         proto.ENUM,
         number=2,
         enum=RelayMode,
+    )
+    enable_relay: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
     )
 
 
