@@ -55,15 +55,13 @@ def default(session):
     session.install("asyncmock", "pytest-asyncio")
 
     session.install("mock", "pytest", "pytest-cov")
-    session.install("-e", ".")
-
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
 
     # Install grpc-google-iam-v1
     # This *must* be the last install command to get the package from source.
-    session.install("e", "..", "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
@@ -80,6 +78,7 @@ def default(session):
     )
 
 
+@nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
@@ -106,15 +105,13 @@ def system(session):
     # virtualenv's dist-packages.
     session.install("mock", "pytest", "google-cloud-testutils")
 
-    session.install("-e", ".")
-
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
 
     # Install grpc-google-iam-v1
     # This *must* be the last install command to get the package from source.
-    session.install("e", "..", "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -155,7 +152,7 @@ def test(session, library):
 
     session.cd(library)
 
-    unit(session)
+    default(session)
 
     # system tests are run on 3.7 only
     if session.python == "3.7":
