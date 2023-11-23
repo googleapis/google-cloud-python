@@ -12,13 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import click
 from pathlib import Path
 from typing import List, Tuple, Set
+import sys
 
-import click
 from packaging.requirements import Requirement
 from packaging.version import Version
-import pkg_resources
+
+if sys.version_info < (3, 8):
+    import importlib_metadata as metadata
+else:
+    import importlib.metadata as metadata
 
 
 def _get_package_requirements(package_name: str) -> List[Requirement]:
@@ -30,12 +35,12 @@ def _get_package_requirements(package_name: str) -> List[Requirement]:
         package_name (str): The name of the package.
 
     Returns:
-        List[pkg_resources.Requirement]: A list of package requirements and extras.
+        List[packaging.requirements.Requirement]: A list of package requirements and extras.
     """
-    dist = pkg_resources.get_distribution(package_name)
-    extras = tuple(dist.extras)
-    requirements = [Requirement(str(r)) for r in dist.requires(extras=extras)]
-
+    requirements = []
+    distribution = metadata.distribution(package_name)
+    if distribution.requires:
+        requirements = [Requirement(str(r)) for r in distribution.requires]
     return requirements
 
 

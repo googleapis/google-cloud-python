@@ -86,7 +86,7 @@ def mypy(session):
     session.run("mypy", "test_utils/", "tests/")
 
 
-@nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11"])
+@nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"])
 def unit(session):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -123,7 +123,7 @@ def check_lower_bounds(session):
         "--package-name",
         "google-cloud-testutils",
         "--constraints-file",
-        "testing/constraints-3.6.txt",
+        "testing/constraints-3.7.txt",
     )
 
 
@@ -137,5 +137,5 @@ def update_lower_bounds(session):
         "--package-name",
         "google-cloud-testutils",
         "--constraints-file",
-        "testing/constraints-3.6.txt",
+        "testing/constraints-3.7.txt",
     )

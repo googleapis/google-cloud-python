@@ -28,7 +28,7 @@ class FakeDateTime(object):
     def __init__(self, fake_now):
         self._fake_now = fake_now
 
-    def utcnow(self):
+    def now(self, timezone):
         return self._fake_now
 
     strptime = datetime.datetime.strptime

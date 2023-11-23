@@ -58,7 +58,8 @@ class Prefixer(object):
         self._prefix = _common_prefix(repo, relative_dir, separator=separator)
 
     def create_prefix(self) -> str:
-        timestamp = datetime.datetime.utcnow().strftime(_RESOURCE_DATE_FORMAT)
+        now = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+        timestamp = now.strftime(_RESOURCE_DATE_FORMAT)
         random_string = hex(random.randrange(0x1000000))[2:]
         return f"{self._prefix}{self._separator}{timestamp}{self._separator}{random_string}"
 
@@ -72,7 +73,8 @@ class Prefixer(object):
             return None
 
     def should_cleanup(self, resource_name: str) -> bool:
-        yesterday = datetime.datetime.utcnow() - self._cleanup_age
+        now = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+        yesterday = now - self._cleanup_age
         if not resource_name.startswith(self._prefix):
             return False
 

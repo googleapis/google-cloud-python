@@ -28,6 +28,12 @@ scripts = (
     ["lower-bound-checker=test_utils.lower_bound_checker.lower_bound_checker:main"],
 )
 
+packages = [
+    package
+    for package in setuptools.find_namespace_packages()
+    if package.startswith("test_utils")
+]
+
 setuptools.setup(
     name="google-cloud-testutils",
     version=version,
@@ -36,11 +42,16 @@ setuptools.setup(
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
     url="https://github.com/googleapis/python-test-utils",
-    packages=setuptools.PEP420PackageFinder.find(),
+    packages=packages,
     entry_points={"console_scripts": scripts},
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
-    install_requires=("google-auth >= 0.4.0", "click>=7.0.0", "packaging>=19.0"),
+    install_requires=(
+        "google-auth >= 0.4.0",
+        "click>=7.0.0",
+        "packaging>=19.0",
+        "importlib_metadata>=1.0.0; python_version<'3.8'",
+    ),
     python_requires=">=3.7",
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -51,6 +62,8 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Internet",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
