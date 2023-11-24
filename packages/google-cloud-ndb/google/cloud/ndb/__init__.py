@@ -21,9 +21,9 @@ version of the ``db`` API (hence ``ndb``).
 .. autodata:: __all__
 """
 
-from pkg_resources import get_distribution
+from google.cloud.ndb import version
 
-__version__ = get_distribution("google-cloud-ndb").version
+__version__ = version.__version__
 
 from google.cloud.ndb.client import Client
 from google.cloud.ndb.context import AutoBatcher
@@ -131,6 +131,7 @@ from google.cloud.ndb._transaction import transactional_tasklet
 from google.cloud.ndb._transaction import non_transactional
 
 __all__ = [
+    "__version__",
     "AutoBatcher",
     "Client",
     "Context",

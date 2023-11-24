@@ -14,9 +14,19 @@
 
 import io
 import os
+import re
 
 import setuptools
 
+
+PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
+
+version = None
+
+with open(os.path.join(PACKAGE_ROOT, "google/cloud/ndb/version.py")) as fp:
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    assert len(version_candidates) == 1
+    version = version_candidates[0]
 
 def main():
     package_root = os.path.abspath(os.path.dirname(__file__))
@@ -36,7 +46,7 @@ def main():
 
     setuptools.setup(
         name="google-cloud-ndb",
-        version = "2.2.2",
+        version = version,
         description="NDB library for Google Cloud Datastore",
         long_description=readme,
         long_description_content_type="text/markdown",
