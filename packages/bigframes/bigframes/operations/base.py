@@ -141,7 +141,7 @@ class SeriesMethods:
         if isinstance(other, pd.Series):
             # TODO: Convert to BigQuery DataFrames series
             raise NotImplementedError(
-                f"Pandas series not supported supported as operand. {constants.FEEDBACK_LINK}"
+                f"Pandas series not supported as operand. {constants.FEEDBACK_LINK}"
             )
         if isinstance(other, series.Series):
             (left, right, block) = self._align(other, how=alignment)

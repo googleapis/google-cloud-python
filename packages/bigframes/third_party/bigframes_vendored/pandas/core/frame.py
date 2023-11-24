@@ -3485,6 +3485,77 @@ class DataFrame(NDFrame):
             The dot method for Series computes the inner product, instead of the
             matrix product here.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> left = bpd.DataFrame([[0, 1, -2, -1], [1, 1, 1, 1]])
+            >>> left
+               0  1   2   3
+            0  0  1  -2  -1
+            1  1  1   1   1
+            <BLANKLINE>
+            [2 rows x 4 columns]
+            >>> right = bpd.DataFrame([[0, 1], [1, 2], [-1, -1], [2, 0]])
+            >>> right
+                0   1
+            0   0   1
+            1   1   2
+            2  -1  -1
+            3   2   0
+            <BLANKLINE>
+            [4 rows x 2 columns]
+            >>> left.dot(right)
+               0  1
+            0  1  4
+            1  2  2
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        You can also use the operator ``@`` for the dot product:
+
+            >>> left @ right
+               0  1
+            0  1  4
+            1  2  2
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        The right input can be a Series, in which case the result will also be a
+        Series:
+
+            >>> right = bpd.Series([1, 2, -1,0])
+            >>> left @ right
+            0    4
+            1    2
+            dtype: Int64
+
+        Any user defined index of the left matrix and columns of the right
+        matrix will reflect in the result.
+
+            >>> left = bpd.DataFrame([[1, 2, 3], [2, 5, 7]], index=["alpha", "beta"])
+            >>> left
+                   0  1  2
+            alpha  1  2  3
+            beta   2  5  7
+            <BLANKLINE>
+            [2 rows x 3 columns]
+            >>> right = bpd.DataFrame([[2, 4, 8], [1, 5, 10], [3, 6, 9]], columns=["red", "green", "blue"])
+            >>> right
+               red  green  blue
+            0    2      4     8
+            1    1      5    10
+            2    3      6     9
+            <BLANKLINE>
+            [3 rows x 3 columns]
+            >>> left.dot(right)
+                   red  green  blue
+            alpha   13     32    55
+            beta    30     75   129
+            <BLANKLINE>
+            [2 rows x 3 columns]
+
         Args:
             other (Series or DataFrame):
                 The other object to compute the matrix product with.

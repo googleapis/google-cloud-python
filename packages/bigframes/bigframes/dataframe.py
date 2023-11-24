@@ -2797,7 +2797,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         result = result[other_frame.columns]
 
         if isinstance(other, bf_series.Series):
-            result = result[other.name].rename()
+            # There should be exactly one column in the result
+            result = result[result.columns[0]].rename()
 
         return result
 

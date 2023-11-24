@@ -631,6 +631,21 @@ class Series(NDFrame):  # type: ignore[misc]
             BigQuery Dataframes does not validate this property and will produce
             incorrect results if indices are not equal.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([0, 1, 2, 3])
+            >>> other = bpd.Series([-1, 2, -3, 4])
+            >>> s.dot(other)
+            8
+
+        You can also use the operator ``@`` for the dot product:
+
+            >>> s @ other
+            8
+
         Args:
             other (Series):
                 The other object to compute the dot product with its columns.

@@ -3493,6 +3493,29 @@ def test_df_dot_operator(
     )
 
 
+def test_df_dot_series_inline():
+    left = [[1, 2, 3], [2, 5, 7]]
+    right = [2, 1, 3]
+
+    bf1 = dataframe.DataFrame(left)
+    bf2 = series.Series(right)
+    bf_result = bf1.dot(bf2).to_pandas()
+
+    df1 = pd.DataFrame(left)
+    df2 = pd.Series(right)
+    pd_result = df1.dot(df2)
+
+    # Patch pandas dtypes for testing parity
+    # Pandas result is int64 instead of Int64 (nullable) dtype.
+    pd_result = pd_result.astype(pd.Int64Dtype())
+    pd_result.index = pd_result.index.astype(pd.Int64Dtype())
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
 def test_df_dot_series(
     matrix_2by3_df, matrix_2by3_pandas_df, matrix_3by4_df, matrix_3by4_pandas_df
 ):
