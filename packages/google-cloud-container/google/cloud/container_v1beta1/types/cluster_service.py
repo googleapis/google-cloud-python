@@ -2717,12 +2717,13 @@ class BinaryAuthorization(proto.Message):
                 singleton policy. This is equivalent to setting
                 the enabled boolean to true.
             POLICY_BINDINGS (5):
-                Use Binary Authorization with the policies specified in
-                policy_bindings.
+                Use Binary Authorization Continuous Validation with the
+                policies specified in policy_bindings.
             POLICY_BINDINGS_AND_PROJECT_SINGLETON_POLICY_ENFORCE (6):
-                Use Binary Authorization with the policies specified in
-                policy_bindings, and also with the project's singleton
-                policy in enforcement mode.
+                Use Binary Authorization Continuous Validation with the
+                policies specified in policy_bindings and enforce Kubernetes
+                admission requests with Binary Authorization using the
+                project's singleton policy.
         """
         EVALUATION_MODE_UNSPECIFIED = 0
         DISABLED = 1
