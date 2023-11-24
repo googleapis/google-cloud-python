@@ -74,6 +74,18 @@ APIs and Services". From there, look for "Databases" in the Category filter.
 Make sure that both "Cloud Datastore API" and "Google Cloud Firestore API" are
 enabled.
 
+Accessing a specific project, database, or namespace
+====================================================
+
+A client can be bound to a chosen Google Cloud project, database, and/or namespace
+by passing one or more of these options to the client constructor::
+
+    client = ndb.Client(
+        project="your-project-id",
+        database="your-database-id",
+        namespace="your-namespace"
+    )
+
 Defining Entities, Keys, and Properties
 =======================================
 
