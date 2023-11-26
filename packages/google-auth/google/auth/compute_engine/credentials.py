@@ -73,6 +73,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
         self._quota_project_id = quota_project_id
         self._scopes = scopes
         self._default_scopes = default_scopes
+        self._universe_domain_cached = False
 
     def _retrieve_info(self, request):
         """Retrieve information about the service account.
@@ -130,6 +131,14 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
     @property
     def requires_scopes(self):
         return not self._scopes
+
+    @property
+    def universe_domain(self):
+        if self._universe_domain_cached:
+            return self._universe_domain
+        self._universe_domain = _metadata.get_universe_domain()
+        self._universe_domain_cached = True
+        return self._universe_domain
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):

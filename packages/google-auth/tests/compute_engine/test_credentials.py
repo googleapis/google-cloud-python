@@ -208,6 +208,26 @@ class TestCredentials(object):
         assert headers["authorization"] == "Bearer token"
         assert headers["x-goog-api-client"] == "cred-type/mds"
 
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_universe_domain",
+        return_value="fake_universe_domain",
+    )
+    def test_universe_domain(self, get_universe_domain):
+        self.credentials._universe_domain_cached = False
+        self.credentials._universe_domain = "googleapis.com"
+
+        # calling the universe_domain property should trigger a call to
+        # get_universe_domain to fetch the value. The value should be cached.
+        assert self.credentials.universe_domain == "fake_universe_domain"
+        assert self.credentials._universe_domain == "fake_universe_domain"
+        assert self.credentials._universe_domain_cached
+        get_universe_domain.assert_called_once()
+
+        # calling the universe_domain property the second time should use the
+        # cached value instead of calling get_universe_domain
+        assert self.credentials.universe_domain == "fake_universe_domain"
+        get_universe_domain.assert_called_once()
+
 
 class TestIDTokenCredentials(object):
     credentials = None

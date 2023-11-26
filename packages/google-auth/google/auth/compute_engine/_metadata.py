@@ -156,6 +156,7 @@ def get(
     recursive=False,
     retry_count=5,
     headers=None,
+    return_none_for_not_found_error=False,
 ):
     """Fetch a resource from the metadata server.
 
@@ -173,6 +174,8 @@ def get(
         retry_count (int): How many times to attempt connecting to metadata
             server using above timeout.
         headers (Optional[Mapping[str, str]]): Headers for the request.
+        return_none_for_not_found_error (Optional[bool]): If True, returns None
+            for 404 error instead of throwing an exception.
 
     Returns:
         Union[Mapping, str]: If the metadata server returns JSON, a mapping of
@@ -216,8 +219,17 @@ def get(
             "metadata service. Compute Engine Metadata server unavailable".format(url)
         )
 
+    content = _helpers.from_bytes(response.data)
+
+    if response.status == http_client.NOT_FOUND and return_none_for_not_found_error:
+        _LOGGER.info(
+            "Compute Engine Metadata server call to %s returned 404, reason: %s",
+            path,
+            content,
+        )
+        return None
+
     if response.status == http_client.OK:
-        content = _helpers.from_bytes(response.data)
         if (
             _helpers.parse_content_type(response.headers["content-type"])
             == "application/json"
@@ -232,14 +244,14 @@ def get(
                 raise new_exc from caught_exc
         else:
             return content
-    else:
-        raise exceptions.TransportError(
-            "Failed to retrieve {} from the Google Compute Engine "
-            "metadata service. Status: {} Response:\n{}".format(
-                url, response.status, response.data
-            ),
-            response,
-        )
+
+    raise exceptions.TransportError(
+        "Failed to retrieve {} from the Google Compute Engine "
+        "metadata service. Status: {} Response:\n{}".format(
+            url, response.status, response.data
+        ),
+        response,
+    )
 
 
 def get_project_id(request):
@@ -257,6 +269,29 @@ def get_project_id(request):
             retrieving metadata.
     """
     return get(request, "project/project-id")
+
+
+def get_universe_domain(request):
+    """Get the universe domain value from the metadata server.
+
+    Args:
+        request (google.auth.transport.Request): A callable used to make
+            HTTP requests.
+
+    Returns:
+        str: The universe domain value. If the universe domain endpoint is not
+        not found, return the default value, which is googleapis.com
+
+    Raises:
+        google.auth.exceptions.TransportError: if an error other than
+            404 occurs while retrieving metadata.
+    """
+    universe_domain = get(
+        request, "universe/universe_domain", return_none_for_not_found_error=True
+    )
+    if not universe_domain:
+        return "googleapis.com"
+    return universe_domain
 
 
 def get_service_account_info(request, service_account="default"):
