@@ -89,6 +89,11 @@ class ContinuousValidationEvent(proto.Message):
             Attributes:
                 image (str):
                     The name of the image.
+                container_name (str):
+                    The name of the container.
+                container_type (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.ContainerType):
+                    The container type that this image belongs
+                    to.
                 result (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.AuditResult):
                     The result of the audit for this image.
                 description (str):
@@ -96,6 +101,27 @@ class ContinuousValidationEvent(proto.Message):
                 check_results (MutableSequence[google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult]):
                     List of check results.
             """
+
+            class ContainerType(proto.Enum):
+                r"""The container type.
+
+                Values:
+                    CONTAINER_TYPE_UNSPECIFIED (0):
+                        The container type should always be
+                        specified. This is an error.
+                    CONTAINER (1):
+                        A regular deployment.
+                    INIT_CONTAINER (2):
+                        Init container defined as specified at
+                        https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+                    EPHEMERAL_CONTAINER (3):
+                        Ephemeral container defined as specified at
+                        https://kubernetes.io/docs/concepts/workloads/pods/ephemeral-containers/
+                """
+                CONTAINER_TYPE_UNSPECIFIED = 0
+                CONTAINER = 1
+                INIT_CONTAINER = 2
+                EPHEMERAL_CONTAINER = 3
 
             class AuditResult(proto.Enum):
                 r"""Result of the audit.
@@ -224,6 +250,15 @@ class ContinuousValidationEvent(proto.Message):
             image: str = proto.Field(
                 proto.STRING,
                 number=1,
+            )
+            container_name: str = proto.Field(
+                proto.STRING,
+                number=5,
+            )
+            container_type: "ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.ContainerType" = proto.Field(
+                proto.ENUM,
+                number=6,
+                enum="ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.ContainerType",
             )
             result: "ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.AuditResult" = proto.Field(
                 proto.ENUM,
