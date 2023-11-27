@@ -30,6 +30,12 @@ readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
+packages = [
+    package
+    for package in setuptools.find_namespace_packages()
+    if package.startswith("google")
+]
+
 setuptools.setup(
     name="google-cloud-documentai-toolbox",
     author="Google LLC",
@@ -39,8 +45,7 @@ setuptools.setup(
     license="Apache 2.0",
     long_description=readme,
     long_description_content_type="text/x-rst",
-    packages=setuptools.PEP420PackageFinder.find(),
-    namespace_packages=("google", "google.cloud"),
+    packages=packages,
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
     package_data={
