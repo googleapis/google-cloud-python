@@ -199,13 +199,6 @@ class Session(
         return self._clients_provider.resourcemanagerclient
 
     @property
-    def _session_dataset_id(self):
-        """A dataset for storing temporary objects local to the session
-        This is a workaround for remote functions that do not
-        yet support session-temporary instances."""
-        return self._session_dataset.dataset_id
-
-    @property
     def _project(self):
         return self.bqclient.project
 
@@ -228,13 +221,6 @@ class Session(
             query_destination.project,
             query_destination.dataset_id,
         )
-
-        # Dataset for storing remote functions, which don't yet
-        # support proper session temporary storage yet
-        self._session_dataset = bigquery.Dataset(
-            f"{self.bqclient.project}.bigframes_temp_{self._location.lower().replace('-', '_')}"
-        )
-        self._session_dataset.location = self._location
 
     def close(self):
         """No-op. Temporary resources are deleted after 7 days."""

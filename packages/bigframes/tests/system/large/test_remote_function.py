@@ -22,7 +22,7 @@ import tempfile
 import textwrap
 
 from google.api_core.exceptions import NotFound, ResourceExhausted
-from google.cloud import functions_v2
+from google.cloud import bigquery, functions_v2
 import pandas
 import pytest
 import test_utils.prefixer
@@ -1182,6 +1182,51 @@ def test_remote_function_default_connection(session, scalars_dfs, dataset_id):
         @session.remote_function([int], int, dataset=dataset_id)
         def square(x):
             return x * x
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_int64_col = scalars_df["int64_col"]
+        bf_int64_col_filter = bf_int64_col.notnull()
+        bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
+        bf_result_col = bf_int64_col_filtered.apply(square)
+        bf_result = (
+            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+        )
+
+        pd_int64_col = scalars_pandas_df["int64_col"]
+        pd_int64_col_filter = pd_int64_col.notnull()
+        pd_int64_col_filtered = pd_int64_col[pd_int64_col_filter]
+        pd_result_col = pd_int64_col_filtered.apply(lambda x: x * x)
+        # TODO(shobs): Figure why pandas .apply() changes the dtype, i.e.
+        # pd_int64_col_filtered.dtype is Int64Dtype()
+        # pd_int64_col_filtered.apply(lambda x: x * x).dtype is int64.
+        # For this test let's force the pandas dtype to be same as bigframes' dtype.
+        pd_result_col = pd_result_col.astype(pandas.Int64Dtype())
+        pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
+
+        assert_pandas_df_equal(bf_result, pd_result)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, square
+        )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_anonymous_dataset(session, scalars_dfs):
+    try:
+        # This usage of remote_function is expected to create the remote
+        # function in the bigframes session's anonymous dataset. Use reuse=False
+        # param to make sure parallel instances of the test don't step over each
+        # other due to the common anonymous dataset.
+        @session.remote_function([int], int, reuse=False)
+        def square(x):
+            return x * x
+
+        assert (
+            bigquery.Routine(square.bigframes_remote_function).dataset_id
+            == session._anonymous_dataset.dataset_id
+        )
 
         scalars_df, scalars_pandas_df = scalars_dfs
 

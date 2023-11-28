@@ -62,13 +62,12 @@ def bq_cf_connection_location_project_mismatched() -> str:
 
 
 @pytest.fixture(scope="module")
-def session_with_bq_connection_and_permanent_dataset(
+def session_with_bq_connection(
     bq_cf_connection, dataset_id_permanent
 ) -> bigframes.Session:
     session = bigframes.Session(
         bigframes.BigQueryOptions(bq_connection=bq_cf_connection)
     )
-    session._session_dataset = bigquery.Dataset(dataset_id_permanent)
     return session
 
 
@@ -277,13 +276,11 @@ def test_remote_function_direct_no_session_param_project_mismatched(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_remote_function_direct_session_param(
-    session_with_bq_connection_and_permanent_dataset, scalars_dfs
-):
+def test_remote_function_direct_session_param(session_with_bq_connection, scalars_dfs):
     @rf.remote_function(
         [int],
         int,
-        session=session_with_bq_connection_and_permanent_dataset,
+        session=session_with_bq_connection,
     )
     def square(x):
         return x * x
@@ -313,9 +310,7 @@ def test_remote_function_direct_session_param(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_remote_function_via_session_default(
-    session_with_bq_connection_and_permanent_dataset, scalars_dfs
-):
+def test_remote_function_via_session_default(session_with_bq_connection, scalars_dfs):
     # Session has bigquery connection initialized via context. Without an
     # explicit dataset the default dataset from the session would be used.
     # Without an explicit bigquery connection, the one present in Session set
@@ -323,7 +318,7 @@ def test_remote_function_via_session_default(
     # the default behavior of reuse=True will take effect. Please note that the
     # udf is same as the one used in other tests in this file so the underlying
     # cloud function would be common and quickly reused.
-    @session_with_bq_connection_and_permanent_dataset.remote_function([int], int)
+    @session_with_bq_connection.remote_function([int], int)
     def square(x):
         return x * x
 
@@ -391,15 +386,11 @@ def test_remote_function_via_session_with_overrides(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_dataframe_applymap(
-    session_with_bq_connection_and_permanent_dataset, scalars_dfs
-):
+def test_dataframe_applymap(session_with_bq_connection, scalars_dfs):
     def add_one(x):
         return x + 1
 
-    remote_add_one = session_with_bq_connection_and_permanent_dataset.remote_function(
-        [int], int
-    )(add_one)
+    remote_add_one = session_with_bq_connection.remote_function([int], int)(add_one)
 
     scalars_df, scalars_pandas_df = scalars_dfs
     int64_cols = ["int64_col", "int64_too"]
@@ -422,15 +413,11 @@ def test_dataframe_applymap(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_dataframe_applymap_na_ignore(
-    session_with_bq_connection_and_permanent_dataset, scalars_dfs
-):
+def test_dataframe_applymap_na_ignore(session_with_bq_connection, scalars_dfs):
     def add_one(x):
         return x + 1
 
-    remote_add_one = session_with_bq_connection_and_permanent_dataset.remote_function(
-        [int], int
-    )(add_one)
+    remote_add_one = session_with_bq_connection.remote_function([int], int)(add_one)
 
     scalars_df, scalars_pandas_df = scalars_dfs
     int64_cols = ["int64_col", "int64_too"]
@@ -451,13 +438,11 @@ def test_dataframe_applymap_na_ignore(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_series_map(session_with_bq_connection_and_permanent_dataset, scalars_dfs):
+def test_series_map(session_with_bq_connection, scalars_dfs):
     def add_one(x):
         return x + 1
 
-    remote_add_one = session_with_bq_connection_and_permanent_dataset.remote_function(
-        [int], int
-    )(add_one)
+    remote_add_one = session_with_bq_connection.remote_function([int], int)(add_one)
 
     scalars_df, scalars_pandas_df = scalars_dfs
 

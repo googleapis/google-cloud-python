@@ -267,10 +267,9 @@ definition. To view and manage connections, do the following:
 3. In the Explorer pane, expand that project and then expand External connections.
 
 BigQuery remote functions are created in the dataset you specify, or
-in a dataset with the name ``bigframes_temp_location``, where location is
-the location used by the BigQuery DataFrames session. For example,
-``bigframes_temp_us_central1``. To view and manage remote functions, do
-the following:
+in a special type of `hidden dataset <https://cloud.google.com/bigquery/docs/datasets#hidden_datasets>`__
+referred to as an anonymous dataset. To view and manage remote functions created
+in a user provided dataset, do the following:
 
 1. Go to `BigQuery in the Google Cloud Console <https://console.cloud.google.com/bigquery>`__.
 2. Select the project in which you created the remote function.

@@ -188,6 +188,7 @@ class RemoteFunctionClient:
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function_2
         bq_function_args = []
         bq_function_return_type = BigQueryType.from_ibis(output_type)
+
         # We are expecting the input type annotations to be 1:1 with the input args
         for idx, name in enumerate(input_args):
             bq_function_args.append(
@@ -204,14 +205,22 @@ class RemoteFunctionClient:
 
         logger.info(f"Creating BQ remote function: {create_function_ddl}")
 
-        # Make sure the dataset exists
+        # Make sure the dataset exists. I.e. if it doesn't exist, go ahead and
+        # create it
         dataset = bigquery.Dataset(
             bigquery.DatasetReference.from_string(
                 self._bq_dataset, default_project=self._gcp_project_id
             )
         )
         dataset.location = self._bq_location
-        self._bq_client.create_dataset(dataset, exists_ok=True)
+        try:
+            # This check does not require bigquery.datasets.create IAM
+            # permission. So, if the data set already exists, then user can work
+            # without having that permission.
+            self._bq_client.get_dataset(dataset)
+        except google.api_core.exceptions.NotFound:
+            # This requires bigquery.datasets.create IAM permission
+            self._bq_client.create_dataset(dataset, exists_ok=True)
 
         # TODO: Use session._start_query() so we get progress bar
         query_job = self._bq_client.query(create_function_ddl)  # Make an API request.
@@ -610,7 +619,7 @@ def get_routine_reference(
             raise DatasetMissingError
 
         dataset_ref = bigquery.DatasetReference(
-            bigquery_client.project, session._session_dataset_id
+            bigquery_client.project, session._anonymous_dataset.dataset_id
         )
         return dataset_ref.routine(routine_ref_str)
 
@@ -778,9 +787,7 @@ def remote_function(
             dataset, default_project=bigquery_client.project
         )
     else:
-        dataset_ref = bigquery.DatasetReference.from_string(
-            session._session_dataset_id, default_project=bigquery_client.project
-        )
+        dataset_ref = session._anonymous_dataset
 
     bq_location, cloud_function_region = get_remote_function_locations(
         bigquery_client.location
