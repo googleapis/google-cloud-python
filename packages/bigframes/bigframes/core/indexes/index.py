@@ -155,6 +155,14 @@ class Index(vendored_pandas_index.Index):
     def T(self) -> Index:
         return self.transpose()
 
+    def _memory_usage(self) -> int:
+        (n_rows,) = self.shape
+        return sum(
+            self.dtypes.map(
+                lambda dtype: bigframes.dtypes.DTYPE_BYTE_SIZES.get(dtype, 8) * n_rows
+            )
+        )
+
     def transpose(self) -> Index:
         return self
 
@@ -326,7 +334,10 @@ class Index(vendored_pandas_index.Index):
 
     def __getitem__(self, key: int) -> typing.Any:
         if isinstance(key, int):
-            result_pd_df, _ = self._block.slice(key, key + 1, 1).to_pandas()
+            if key != -1:
+                result_pd_df, _ = self._block.slice(key, key + 1, 1).to_pandas()
+            else:  # special case, want [-1:] instead of [-1:0]
+                result_pd_df, _ = self._block.slice(key).to_pandas()
             if result_pd_df.empty:
                 raise IndexError("single positional indexer is out-of-bounds")
             return result_pd_df.index[0]

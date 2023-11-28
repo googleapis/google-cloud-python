@@ -143,6 +143,19 @@ BIGFRAMES_STRING_TO_BIGFRAMES: Dict[DtypeString, Dtype] = {
 # "string" and "string[pyarrow] are accepted"
 BIGFRAMES_STRING_TO_BIGFRAMES["string[pyarrow]"] = pd.StringDtype(storage="pyarrow")
 
+# For the purposes of dataframe.memory_usage
+# https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#data_type_sizes
+DTYPE_BYTE_SIZES = {
+    pd.BooleanDtype(): 1,
+    pd.Int64Dtype(): 8,
+    pd.Float32Dtype(): 8,
+    pd.StringDtype(): 8,
+    pd.ArrowDtype(pa.time64("us")): 8,
+    pd.ArrowDtype(pa.timestamp("us")): 8,
+    pd.ArrowDtype(pa.timestamp("us", tz="UTC")): 8,
+    pd.ArrowDtype(pa.date32()): 8,
+}
+
 
 def ibis_dtype_to_bigframes_dtype(
     ibis_dtype: ibis_dtypes.DataType,

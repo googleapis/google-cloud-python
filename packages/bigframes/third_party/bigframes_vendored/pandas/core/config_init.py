@@ -33,6 +33,17 @@ Attributes:
             Instead estimated bytes processed will be shown. Dataframe and Series
             objects can still be computed with methods that explicitly execute and
             download results.
+    max_info_columns (int):
+        max_info_columns is used in DataFrame.info method to decide if
+        per column information will be printed.
+    max_info_rows (int or None):
+        df.info() will usually show null-counts for each column.
+        For large frames this can be quite slow. max_info_rows and max_info_cols
+        limit this null check only to frames with smaller dimensions than
+        specified.
+    memory_usage (bool):
+        This specifies if the memory usage of a DataFrame should be displayed when
+        df.info() is called. Valid values True,False,
 """
 
 sampling_options_doc = """

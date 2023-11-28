@@ -32,6 +32,10 @@ class DisplayOptions:
     progress_bar: Optional[str] = "auto"
     repr_mode: Literal["head", "deferred"] = "head"
 
+    max_info_columns: int = 100
+    max_info_rows: Optional[int] = 200000
+    memory_usage: bool = True
+
 
 @contextlib.contextmanager
 def pandas_repr(display_options: DisplayOptions):

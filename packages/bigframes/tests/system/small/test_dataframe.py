@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import operator
 import tempfile
 import typing
@@ -253,6 +254,47 @@ def test_drop_with_custom_column_labels(scalars_dfs):
         columns=dropped_columns
     )
     assert_pandas_df_equal(bf_result, pd_result)
+
+
+def test_df_memory_usage(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    pd_result = scalars_pandas_df.memory_usage()
+    bf_result = scalars_df.memory_usage()
+
+    pd.testing.assert_series_equal(pd_result, bf_result, rtol=1.5)
+
+
+def test_df_info(scalars_dfs):
+    expected = (
+        "<class 'bigframes.dataframe.DataFrame'>\n"
+        "Index: 9 entries, 0 to 8\n"
+        "Data columns (total 13 columns):\n"
+        "  #  Column         Non-Null Count    Dtype\n"
+        "---  -------------  ----------------  ------------------------------\n"
+        "  0  bool_col       8 non-null        boolean\n"
+        "  1  bytes_col      6 non-null        object\n"
+        "  2  date_col       7 non-null        date32[day][pyarrow]\n"
+        "  3  datetime_col   6 non-null        timestamp[us][pyarrow]\n"
+        "  4  geography_col  4 non-null        geometry\n"
+        "  5  int64_col      8 non-null        Int64\n"
+        "  6  int64_too      9 non-null        Int64\n"
+        "  7  numeric_col    6 non-null        object\n"
+        "  8  float64_col    7 non-null        Float64\n"
+        "  9  rowindex_2     9 non-null        Int64\n"
+        " 10  string_col     8 non-null        string\n"
+        " 11  time_col       6 non-null        time64[us][pyarrow]\n"
+        " 12  timestamp_col  6 non-null        timestamp[us, tz=UTC][pyarrow]\n"
+        "dtypes: Float64(1), Int64(3), boolean(1), date32[day][pyarrow](1), geometry(1), object(2), string(1), time64[us][pyarrow](1), timestamp[us, tz=UTC][pyarrow](1), timestamp[us][pyarrow](1)\n"
+        "memory usage: 945 bytes\n"
+    )
+
+    scalars_df, _ = scalars_dfs
+    bf_result = io.StringIO()
+
+    scalars_df.info(buf=bf_result)
+
+    assert expected == bf_result.getvalue()
 
 
 def test_drop_index(scalars_dfs):

@@ -228,6 +228,7 @@ def mypy(session):
                 "types-python-dateutil",
                 "types-requests",
                 "types-setuptools",
+                "types-tabulate",
             ]
         )
         | set(SYSTEM_TEST_STANDARD_DEPENDENCIES)

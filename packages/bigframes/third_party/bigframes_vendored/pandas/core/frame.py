@@ -92,6 +92,72 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def info(
+        self,
+        verbose: bool | None = None,
+        buf=None,
+        max_cols: int | None = None,
+        memory_usage: bool | None = None,
+        show_counts: bool | None = None,
+    ) -> None:
+        """
+        Print a concise summary of a DataFrame.
+
+        This method prints information about a DataFrame including
+        the index dtypeand columns, non-null values and memory usage.
+
+        Args:
+            verbose (bool, optional):
+                Whether to print the full summary. By default, the setting in
+                ``pandas.options.display.max_info_columns`` is followed.
+            buf (writable buffer, defaults to sys.stdout):
+                Where to send the output. By default, the output is printed to
+                sys.stdout. Pass a writable buffer if you need to further process
+                the output.
+            max_cols (int, optional):
+                When to switch from the verbose to the truncated output. If the
+                DataFrame has more than `max_cols` columns, the truncated output
+                is used. By default, the setting in
+                ``pandas.options.display.max_info_columns`` is used.
+            memory_usage (bool, optional):
+                Specifies whether total memory usage of the DataFrame
+                elements (including the index) should be displayed. By default,
+                this follows the ``pandas.options.display.memory_usage`` setting.
+                True always show memory usage. False never shows memory usage.
+                Memory estimation is made based in column dtype and number of rows
+                assuming values consume the same memory amount for corresponding dtypes.
+            show_counts (bool, optional):
+                Whether to show the non-null counts. By default, this is shown
+                only if the DataFrame is smaller than
+                ``pandas.options.display.max_info_rows`` and
+                ``pandas.options.display.max_info_columns``. A value of True always
+                shows the counts, and False never shows the counts.
+
+        Returns:
+            None: This method prints a summary of a DataFrame and returns None."""
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def memory_usage(self, index: bool = True):
+        """
+        Return the memory usage of each column in bytes.
+
+        The memory usage can optionally include the contribution of
+        the index and elements of `object` dtype.
+
+        This value is displayed in `DataFrame.info` by default. This can be
+        suppressed by setting ``pandas.options.display.memory_usage`` to False.
+
+        Args:
+            index (bool, default True):
+                Specifies whether to include the memory usage of the DataFrame's
+                index in returned Series. If ``index=True``, the memory usage of
+                the index is the first item in the output.
+
+        Returns:
+            Series: A Series whose index is the original column names and whose values is the memory usage of each column in bytes.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     # ----------------------------------------------------------------------
     # IO methods (to / from other formats)
     def to_numpy(self, dtype=None, copy=False, na_value=None, **kwargs) -> np.ndarray:
