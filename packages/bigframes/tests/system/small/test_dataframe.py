@@ -3546,3 +3546,14 @@ def test_df_dot_operator_series(
         bf_result,
         pd_result,
     )
+
+
+def test_to_pandas_downsampling_option_override(session):
+    df = session.read_gbq("bigframes-dev.bigframes_tests_sys.batting")
+    download_size = 1
+
+    df = df.to_pandas(max_download_size=download_size, sampling_method="head")
+
+    total_memory_bytes = df.memory_usage(deep=True).sum()
+    total_memory_mb = total_memory_bytes / (1024 * 1024)
+    assert total_memory_mb == pytest.approx(download_size, rel=0.3)
