@@ -15,7 +15,7 @@
 import os
 import sys
 
-import pkg_resources
+import proto
 
 
 sys.path.insert(0, os.path.abspath(".."))
@@ -27,7 +27,7 @@ project = "Proto Plus for Python"
 copyright = "2018, Google LLC"
 author = "Google LLC"
 
-version = pkg_resources.get_distribution("proto-plus").version
+version = proto.version.__version__
 
 
 # -- General configuration ---------------------------------------------------
