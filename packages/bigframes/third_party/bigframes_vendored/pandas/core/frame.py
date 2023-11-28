@@ -2597,14 +2597,14 @@ class DataFrame(NDFrame):
             <BLANKLINE>
             [2 rows x 2 columns]
 
-        Checking if each column contains at least one True element (the default behavior without an explicit axis parameter).
+        Checking if each column contains at least one True element(the default behavior without an explicit axis parameter):
 
             >>> df.any()
             A     True
             B    False
             dtype: boolean
 
-        Checking if each row contains at least one True element.
+        Checking if each row contains at least one True element:
 
             >>> df.any(axis=1)
             0    True
@@ -2644,14 +2644,14 @@ class DataFrame(NDFrame):
             <BLANKLINE>
             [2 rows x 2 columns]
 
-        Checking if all values in each column are True (the default behavior without an explicit axis parameter).
+        Checking if all values in each column are True(the default behavior without an explicit axis parameter):
 
             >>> df.all()
             A     True
             B    False
             dtype: boolean
 
-        Checking across rows to see if all values are True.
+        Checking across rows to see if all values are True:
 
             >>> df.all(axis=1)
             0    False
@@ -2688,14 +2688,14 @@ class DataFrame(NDFrame):
             <BLANKLINE>
             [3 rows x 2 columns]
 
-        Calculating the product of each column (the default behavior without an explicit axis parameter).
+        Calculating the product of each column(the default behavior without an explicit axis parameter):
 
             >>> df.prod()
             A        6.0
             B    160.875
             dtype: Float64
 
-        Calculating the product of each row.
+        Calculating the product of each row:
 
             >>> df.prod(axis=1)
             0     4.5
@@ -2911,10 +2911,36 @@ class DataFrame(NDFrame):
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def kurt(self, *, numeric_only: bool = False):
-        """Return unbiased kurtosis over requested axis.
+        """Return unbiased kurtosis over columns.
 
         Kurtosis obtained using Fisher's definition of
         kurtosis (kurtosis of normal == 0.0). Normalized by N-1.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [1, 2, 3, 4, 5],
+            ...                     "B": [3, 4, 3, 2, 1],
+            ...                     "C": [2, 2, 3, 2, 2]})
+            >>> df
+                A	B	C
+            0	1	3	2
+            1	2	4	2
+            2	3	3	3
+            3	4	2	2
+            4	5	1	2
+            <BLANKLINE>
+            [5 rows x 3 columns]
+
+        Calculating the kurtosis value of each column:
+
+            >>> df.kurt()
+            A        -1.2
+            B   -0.177515
+            C         5.0
+            dtype: Float64
 
         Args:
             numeric_only (bool, default False):
@@ -2926,9 +2952,35 @@ class DataFrame(NDFrame):
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def std(self, *, numeric_only: bool = False):
-        """Return sample standard deviation over requested axis.
+        """Return sample standard deviation over columns.
 
         Normalized by N-1 by default.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [1, 2, 3, 4, 5],
+            ...                     "B": [3, 4, 3, 2, 1],
+            ...                     "C": [2, 2, 3, 2, 2]})
+            >>> df
+                A	B	C
+            0	1	3	2
+            1	2	4	2
+            2	3	3	3
+            3	4	2	2
+            4	5	1	2
+            <BLANKLINE>
+            [5 rows x 3 columns]
+
+        Calculating the standard deviation of each column:
+
+            >>> df.std()
+            A    1.581139
+            B    1.140175
+            C    0.447214
+            dtype: Float64
 
         Args:
             numeric_only (bool. default False):
@@ -2941,10 +2993,36 @@ class DataFrame(NDFrame):
 
     def count(self, *, numeric_only: bool = False):
         """
-        Count non-NA cells for each column or row.
+        Count non-NA cells for each column.
 
         The values `None`, `NaN`, `NaT`, and optionally `numpy.inf` (depending
         on `pandas.options.mode.use_inf_as_na`) are considered NA.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [1, None, 3, 4, 5],
+            ...                     "B": [1, 2, 3, 4, 5],
+            ...                     "C": [None, 3.5, None, 4.5, 5.0]})
+            >>> df
+                   A	B	   C
+            0	 1.0	1	<NA>
+            1	<NA>	2	 3.5
+            2	 3.0	3	<NA>
+            3	 4.0	4	 4.5
+            4	 5.0	5	 5.0
+            <BLANKLINE>
+            [5 rows x 3 columns]
+
+        Counting non-NA values for each column:
+
+            >>> df.count()
+            A    4.0
+            B    5.0
+            C    3.0
+            dtype: Float64
 
         Args:
             numeric_only (bool, default False):
