@@ -14,7 +14,7 @@
 
 import io
 
-from setuptools import find_packages
+from setuptools import find_namespace_packages
 from setuptools import setup
 
 
@@ -37,7 +37,7 @@ setup(
     description="Google Authentication Library",
     long_description=long_description,
     url="https://github.com/GoogleCloudPlatform/google-auth-library-python-oauthlib",
-    packages=find_packages(exclude=("tests*",)),
+    packages=find_namespace_packages(exclude=("tests*",)),
     install_requires=DEPENDENCIES,
     extras_require={"tool": TOOL_DEPENDENCIES},
     entry_points={
