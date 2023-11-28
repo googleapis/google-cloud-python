@@ -16,6 +16,7 @@ import io
 import os
 
 import setuptools
+from setuptools import find_namespace_packages
 
 
 name = "googleapis-common-protos"
@@ -35,12 +36,6 @@ package_root = os.path.abspath(os.path.dirname(__file__))
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
-
-packages = [
-    package
-    for package in setuptools.PEP420PackageFinder.find()
-    if package.startswith("google")
-]
 
 setuptools.setup(
     name=name,
@@ -66,10 +61,9 @@ setuptools.setup(
     install_requires=dependencies,
     extras_require=extras_require,
     license="Apache-2.0",
-    packages=packages,
     package_data={"": ["*.proto"]},
     python_requires=">=3.7",
-    namespace_packages=["google", "google.logging"],
+    packages=find_namespace_packages(exclude=("tests*", "testing*")),
     url="https://github.com/googleapis/python-api-common-protos",
     include_package_data=True,
 )
