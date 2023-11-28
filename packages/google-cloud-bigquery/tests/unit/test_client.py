@@ -30,7 +30,11 @@ import mock
 import requests
 import packaging
 import pytest
-import pkg_resources
+
+try:
+    import importlib.metadata as metadata
+except ImportError:
+    import importlib_metadata as metadata
 
 try:
     import pandas
@@ -76,13 +80,10 @@ except (ImportError, AttributeError):  # pragma: NO COVER
 from test_utils.imports import maybe_fail_import
 from tests.unit.helpers import make_connection
 
-PANDAS_MINIUM_VERSION = pkg_resources.parse_version("1.0.0")
-
 if pandas is not None:
-    PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
+    PANDAS_INSTALLED_VERSION = metadata.version("pandas")
 else:
-    # Set to less than MIN version.
-    PANDAS_INSTALLED_VERSION = pkg_resources.parse_version("0.0.0")
+    PANDAS_INSTALLED_VERSION = "0.0.0"
 
 
 def _make_credentials():
@@ -8145,10 +8146,7 @@ class TestClientUpload(object):
             timeout=DEFAULT_TIMEOUT,
         )
 
-    @unittest.skipIf(
-        pandas is None or PANDAS_INSTALLED_VERSION < PANDAS_MINIUM_VERSION,
-        "Only `pandas version >=1.0.0` supported",
-    )
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_nullable_int64_datatype(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
@@ -8193,10 +8191,7 @@ class TestClientUpload(object):
             SchemaField("x", "INT64", "NULLABLE", None),
         )
 
-    @unittest.skipIf(
-        pandas is None or PANDAS_INSTALLED_VERSION < PANDAS_MINIUM_VERSION,
-        "Only `pandas version >=1.0.0` supported",
-    )
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     # @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_nullable_int64_datatype_automatic_schema(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES

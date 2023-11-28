@@ -22,8 +22,12 @@ import unittest
 import warnings
 
 import mock
-import pkg_resources
 import pytest
+
+try:
+    import importlib.metadata as metadata
+except ImportError:
+    import importlib_metadata as metadata
 
 import google.api_core.exceptions
 from test_utils.imports import maybe_fail_import
@@ -71,9 +75,9 @@ except (ImportError, AttributeError):  # pragma: NO COVER
     tqdm = None
 
 if pandas is not None:
-    PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
+    PANDAS_INSTALLED_VERSION = metadata.version("pandas")
 else:
-    PANDAS_INSTALLED_VERSION = pkg_resources.parse_version("0.0.0")
+    PANDAS_INSTALLED_VERSION = "0.0.0"
 
 
 def _mock_client():
@@ -3793,9 +3797,7 @@ class TestRowIterator(unittest.TestCase):
             self.assertEqual(df.timestamp.dtype.name, "object")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @pytest.mark.skipif(
-        PANDAS_INSTALLED_VERSION >= pkg_resources.parse_version("2.0.0"), reason=""
-    )
+    @pytest.mark.skipif(PANDAS_INSTALLED_VERSION[0:2] not in ["0.", "1."], reason="")
     def test_to_dataframe_w_none_dtypes_mapper(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -3908,9 +3910,7 @@ class TestRowIterator(unittest.TestCase):
             )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @pytest.mark.skipif(
-        PANDAS_INSTALLED_VERSION >= pkg_resources.parse_version("2.0.0"), reason=""
-    )
+    @pytest.mark.skipif(PANDAS_INSTALLED_VERSION[0:2] not in ["0.", "1."], reason="")
     def test_to_dataframe_column_dtypes(self):
         from google.cloud.bigquery.schema import SchemaField
 

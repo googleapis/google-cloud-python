@@ -17,7 +17,6 @@ import copy
 import json
 
 import mock
-import pkg_resources
 import pytest
 
 
@@ -45,14 +44,19 @@ try:
 except (ImportError, AttributeError):  # pragma: NO COVER
     tqdm = None
 
+try:
+    import importlib.metadata as metadata
+except ImportError:
+    import importlib_metadata as metadata
+
 from ..helpers import make_connection
 from .helpers import _make_client
 from .helpers import _make_job_resource
 
 if pandas is not None:
-    PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
+    PANDAS_INSTALLED_VERSION = metadata.version("pandas")
 else:
-    PANDAS_INSTALLED_VERSION = pkg_resources.parse_version("0.0.0")
+    PANDAS_INSTALLED_VERSION = "0.0.0"
 
 pandas = pytest.importorskip("pandas")
 
@@ -656,9 +660,7 @@ def test_to_dataframe_bqstorage_no_pyarrow_compression():
     )
 
 
-@pytest.mark.skipif(
-    PANDAS_INSTALLED_VERSION >= pkg_resources.parse_version("2.0.0"), reason=""
-)
+@pytest.mark.skipif(PANDAS_INSTALLED_VERSION[0:2] not in ["0.", "1."], reason="")
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_to_dataframe_column_dtypes():
     from google.cloud.bigquery.job import QueryJob as target_class
