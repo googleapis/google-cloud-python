@@ -2852,6 +2852,33 @@ class DataFrame(NDFrame):
     def mean(self, axis=0, *, numeric_only: bool = False):
         """Return the mean of the values over the requested axis.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [1, 3], "B": [2, 4]})
+            >>> df
+                A	B
+            0	1	2
+            1	3	4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        Calculating the mean of each column (the default behavior without an explicit axis parameter).
+
+            >>> df.mean()
+            A    2.0
+            B    3.0
+            dtype: Float64
+
+        Calculating the mean of each row.
+
+            >>> df.mean(axis=1)
+            0    1.5
+            1    3.5
+            dtype: Float64
+
         Args:
             axis ({index (0), columns (1)}):
                 Axis for the function to be applied on.
@@ -2865,7 +2892,27 @@ class DataFrame(NDFrame):
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def median(self, *, numeric_only: bool = False, exact: bool = False):
-        """Return the median of the values over the requested axis.
+        """Return the median of the values over colunms.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [1, 3], "B": [2, 4]})
+            >>> df
+                A	B
+            0	1	2
+            1	3	4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        Finding the median value of each column.
+
+            >>> df.median()
+            A    1.0
+            B    2.0
+            dtype: Float64
 
         Args:
             numeric_only (bool. default False):
@@ -2884,6 +2931,34 @@ class DataFrame(NDFrame):
 
         Normalized by N-1 by default.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [1, 3], "B": [2, 4]})
+            >>> df
+                A	B
+            0	1	2
+            1	3	4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        Calculating the variance of each column (the default behavior without an explicit axis parameter).
+
+            >>> df.var()
+            A    2.0
+            B    2.0
+            dtype: Float64
+
+        Calculating the variance of each row.
+
+            >>> df.var(axis=1)
+            0    0.5
+            1    0.5
+            dtype: Float64
+
+
         Args:
             axis ({index (0), columns (1)}):
                 Axis for the function to be applied on.
@@ -2897,9 +2972,35 @@ class DataFrame(NDFrame):
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def skew(self, *, numeric_only: bool = False):
-        """Return unbiased skew over requested axis.
+        """Return unbiased skew over columns.
 
         Normalized by N-1.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'A': [1, 2, 3, 4, 5],
+            ...                    'B': [5, 4, 3, 2, 1],
+            ...                    'C': [2, 2, 3, 2, 2]})
+            >>> df
+                A	B	C
+            0	1	5	2
+            1	2	4	2
+            2	3	3	3
+            3	4	2	2
+            4	5	1	2
+            <BLANKLINE>
+            [5 rows x 3 columns]
+
+        Calculating the skewness of each column.
+
+            >>> df.skew()
+            A         0.0
+            B         0.0
+            C    2.236068
+            dtype: Float64
 
         Args:
             numeric_only (bool, default False):
