@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [1.13.0](https://github.com/googleapis/gapic-generator-python/compare/v1.12.0...v1.13.0) (2023-11-20)
+
+
+### Features
+
+* Add support for python 3.12 ([#1816](https://github.com/googleapis/gapic-generator-python/issues/1816)) ([b65898e](https://github.com/googleapis/gapic-generator-python/commit/b65898e11f6b7210a0614eb1ece4b139541f17cd))
+* Add support for python 312 (ads templates) ([#1861](https://github.com/googleapis/gapic-generator-python/issues/1861)) ([d65a540](https://github.com/googleapis/gapic-generator-python/commit/d65a54045abb9b25364e8cfb0ad4c7e5d95917d2))
+
+
+### Bug Fixes
+
+* Bump proto-plus version to 1.22.3 ([#1863](https://github.com/googleapis/gapic-generator-python/issues/1863)) ([2ad9be2](https://github.com/googleapis/gapic-generator-python/commit/2ad9be28500972777cec69097be6581eaefb89e4))
+
 ## [1.12.0](https://github.com/googleapis/gapic-generator-python/compare/v1.11.11...v1.12.0) (2023-11-09)
 
 
