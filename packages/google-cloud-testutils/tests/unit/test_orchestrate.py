@@ -282,10 +282,11 @@ def test__conductor():
 
 
 def test__get_syncpoints():  # pragma: SYNCPOINT test_get_syncpoints
-    lines = enumerate(open(__file__, "r"), start=1)
-    for expected_lineno, line in lines:  # pragma: NO BRANCH COVER
-        if "# pragma: SYNCPOINT test_get_syncpoints" in line:
-            break
+    with open(__file__, "r") as file:
+        lines = enumerate(file, start=1)
+        for expected_lineno, line in lines:  # pragma: NO BRANCH COVER
+            if "# pragma: SYNCPOINT test_get_syncpoints" in line:
+                break
 
     orchestrate._get_syncpoints(__file__)
     syncpoints = orchestrate._SYNCPOINTS[__file__]["test_get_syncpoints"]
@@ -327,10 +328,11 @@ class Test_TestThread:
 
     @staticmethod
     def test__trace_reach_syncpoint():
-        lines = enumerate(open(__file__, "r"), start=1)
-        for syncpoint_lineno, line in lines:  # pragma: NO BRANCH COVER
-            if "# pragma: SYNCPOINT test_get_syncpoints" in line:
-                break
+        with open(__file__, "r") as file:
+            lines = enumerate(file, start=1)
+            for syncpoint_lineno, line in lines:  # pragma: NO BRANCH COVER
+                if "# pragma: SYNCPOINT test_get_syncpoints" in line:
+                    break
 
         orchestrate._SYNCPOINTS.clear()
         frame = mock.Mock(
