@@ -45,10 +45,6 @@ packages = [
     package for package in setuptools.find_packages() if package.startswith("google")
 ]
 
-# Determine which namespaces are needed.
-namespaces = ["google"]
-namespaces.append("google.identity")
-
 setuptools.setup(
     name=name,
     version=version,
@@ -75,7 +71,6 @@ setuptools.setup(
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
-    namespace_packages=namespaces,
     install_requires=dependencies,
     python_requires=">=3.7",
     include_package_data=True,
