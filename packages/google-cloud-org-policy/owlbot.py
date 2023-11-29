@@ -41,7 +41,7 @@ for library in s.get_staging_dirs(default_version):
     if clean_up_generated_samples:
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
-    s.move([library], excludes=["**/gapic_version.py", "noxfile.py"])
+    s.move([library], excludes=["**/gapic_version.py", "noxfile.py", "tests/__init__.py"])
 s.remove_staging_dirs()
 
 # Clean up googleapis

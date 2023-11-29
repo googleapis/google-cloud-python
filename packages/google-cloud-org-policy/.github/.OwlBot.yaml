@@ -15,6 +15,10 @@
 docker:
   image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
 
+# See https://github.com/googleapis/python-org-policy/issues/22
+deep-preserve-regex:
+  - /owl-bot-staging/v1
+
 deep-remove-regex:
   - /owl-bot-staging
 
