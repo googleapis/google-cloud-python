@@ -16,6 +16,7 @@ import io
 import random
 import tempfile
 import textwrap
+import time
 import typing
 from typing import List
 
@@ -306,6 +307,23 @@ def test_read_gbq_w_script_no_select(session, dataset_id: str):
     """
     df = session.read_gbq(ddl).to_pandas()
     assert df["statement_type"][0] == "SCRIPT"
+
+
+def test_read_gbq_twice_with_same_timestamp(session, penguins_table_id):
+    df1 = session.read_gbq(penguins_table_id)
+    time.sleep(1)
+    df2 = session.read_gbq(penguins_table_id)
+    df1.columns = [
+        "species1",
+        "island1",
+        "culmen_length_mm1",
+        "culmen_depth_mm1",
+        "flipper_length_mm1",
+        "body_mass_g1",
+        "sex1",
+    ]
+    df3 = df1.join(df2)
+    assert df3 is not None
 
 
 def test_read_gbq_model(session, penguins_linear_model_name):

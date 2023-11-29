@@ -16,6 +16,7 @@ class GBQIOMixin:
         index_col: Iterable[str] | str = (),
         col_order: Iterable[str] = (),
         max_results: Optional[int] = None,
+        use_cache: bool = True,
     ):
         """Loads a DataFrame from BigQuery.
 
@@ -83,6 +84,8 @@ class GBQIOMixin:
             max_results (Optional[int], default None):
                 If set, limit the maximum number of rows to fetch from the
                 query results.
+            use_cache (bool, default True):
+                Whether to cache the query inputs. Default to True.
 
         Returns:
             bigframes.dataframe.DataFrame: A DataFrame representing results of the query or table.

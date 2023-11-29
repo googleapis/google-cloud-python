@@ -147,20 +147,6 @@ def test_create_snapshot_sql_doesnt_timetravel_anonymous_datasets():
     assert "`my-test-project`.`_e8166e0cdb`.`anonbb92cd`" in sql
 
 
-def test_create_snapshot_sql_doesnt_timetravel_session_tables():
-    table_ref = bigquery.TableReference.from_string("my-test-project._session.abcdefg")
-
-    sql = bigframes.session._io.bigquery.create_snapshot_sql(
-        table_ref, datetime.datetime.now(datetime.timezone.utc)
-    )
-
-    # We aren't modifying _SESSION tables, so don't use time travel.
-    assert "SYSTEM_TIME" not in sql
-
-    # Don't need the project ID for _SESSION tables.
-    assert "my-test-project" not in sql
-
-
 def test_create_temp_table_default_expiration():
     """Make sure the created table has an expiration."""
     bqclient = mock.create_autospec(bigquery.Client)

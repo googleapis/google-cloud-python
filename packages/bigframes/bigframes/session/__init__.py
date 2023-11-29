@@ -177,6 +177,7 @@ class Session(
         # Now that we're starting the session, don't allow the options to be
         # changed.
         context._session_started = True
+        self._df_snapshot: Dict[bigquery.TableReference, datetime.datetime] = {}
 
     @property
     def bqclient(self):
@@ -232,6 +233,7 @@ class Session(
         index_col: Iterable[str] | str = (),
         col_order: Iterable[str] = (),
         max_results: Optional[int] = None,
+        use_cache: bool = True,
         # Add a verify index argument that fails if the index is not unique.
     ) -> dataframe.DataFrame:
         # TODO(b/281571214): Generate prompt to show the progress of read_gbq.
@@ -242,6 +244,7 @@ class Session(
                 col_order=col_order,
                 max_results=max_results,
                 api_name="read_gbq",
+                use_cache=use_cache,
             )
         else:
             # TODO(swast): Query the snapshot table but mark it as a
@@ -253,6 +256,7 @@ class Session(
                 col_order=col_order,
                 max_results=max_results,
                 api_name="read_gbq",
+                use_cache=use_cache,
             )
 
     def _query_to_destination(
@@ -260,6 +264,7 @@ class Session(
         query: str,
         index_cols: List[str],
         api_name: str,
+        use_cache: bool = True,
     ) -> Tuple[Optional[bigquery.TableReference], Optional[bigquery.QueryJob]]:
         # If a dry_run indicates this is not a query type job, then don't
         # bother trying to do a CREATE TEMP TABLE ... AS SELECT ... statement.
@@ -284,6 +289,7 @@ class Session(
         job_config = bigquery.QueryJobConfig()
         job_config.labels["bigframes-api"] = api_name
         job_config.destination = temp_table
+        job_config.use_query_cache = use_cache
 
         try:
             # Write to temp table to workaround BigQuery 10 GB query results
@@ -305,6 +311,7 @@ class Session(
         index_col: Iterable[str] | str = (),
         col_order: Iterable[str] = (),
         max_results: Optional[int] = None,
+        use_cache: bool = True,
     ) -> dataframe.DataFrame:
         """Turn a SQL query into a DataFrame.
 
@@ -362,6 +369,7 @@ class Session(
             col_order=col_order,
             max_results=max_results,
             api_name="read_gbq_query",
+            use_cache=use_cache,
         )
 
     def _read_gbq_query(
@@ -372,6 +380,7 @@ class Session(
         col_order: Iterable[str] = (),
         max_results: Optional[int] = None,
         api_name: str = "read_gbq_query",
+        use_cache: bool = True,
     ) -> dataframe.DataFrame:
         if isinstance(index_col, str):
             index_cols = [index_col]
@@ -379,7 +388,10 @@ class Session(
             index_cols = list(index_col)
 
         destination, query_job = self._query_to_destination(
-            query, index_cols, api_name=api_name
+            query,
+            index_cols,
+            api_name=api_name,
+            use_cache=use_cache,
         )
 
         # If there was no destination table, that means the query must have
@@ -403,6 +415,7 @@ class Session(
             index_col=index_cols,
             col_order=col_order,
             max_results=max_results,
+            use_cache=use_cache,
         )
 
     def read_gbq_table(
@@ -412,6 +425,7 @@ class Session(
         index_col: Iterable[str] | str = (),
         col_order: Iterable[str] = (),
         max_results: Optional[int] = None,
+        use_cache: bool = True,
     ) -> dataframe.DataFrame:
         """Turn a BigQuery table into a DataFrame.
 
@@ -434,6 +448,7 @@ class Session(
             col_order=col_order,
             max_results=max_results,
             api_name="read_gbq_table",
+            use_cache=use_cache,
         )
 
     def _get_snapshot_sql_and_primary_key(
@@ -441,6 +456,7 @@ class Session(
         table_ref: bigquery.table.TableReference,
         *,
         api_name: str,
+        use_cache: bool = True,
     ) -> Tuple[ibis_types.Table, Optional[Sequence[str]]]:
         """Create a read-only Ibis table expression representing a table.
 
@@ -448,19 +464,6 @@ class Session(
         column(s), then return those too so that ordering generation can be
         avoided.
         """
-        if table_ref.dataset_id.upper() == "_SESSION":
-            # _SESSION tables aren't supported by the tables.get REST API.
-            return (
-                self.ibis_client.sql(
-                    f"SELECT * FROM `_SESSION`.`{table_ref.table_id}`"
-                ),
-                None,
-            )
-        table_expression = self.ibis_client.table(
-            table_ref.table_id,
-            database=f"{table_ref.project}.{table_ref.dataset_id}",
-        )
-
         # If there are primary keys defined, the query engine assumes these
         # columns are unique, even if the constraint is not enforced. We make
         # the same assumption and use these columns as the total ordering keys.
@@ -481,14 +484,18 @@ class Session(
 
         job_config = bigquery.QueryJobConfig()
         job_config.labels["bigframes-api"] = api_name
-        current_timestamp = list(
-            self.bqclient.query(
-                "SELECT CURRENT_TIMESTAMP() AS `current_timestamp`",
-                job_config=job_config,
-            ).result()
-        )[0][0]
+        if use_cache and table_ref in self._df_snapshot.keys():
+            snapshot_timestamp = self._df_snapshot[table_ref]
+        else:
+            snapshot_timestamp = list(
+                self.bqclient.query(
+                    "SELECT CURRENT_TIMESTAMP() AS `current_timestamp`",
+                    job_config=job_config,
+                ).result()
+            )[0][0]
+            self._df_snapshot[table_ref] = snapshot_timestamp
         table_expression = self.ibis_client.sql(
-            bigframes_io.create_snapshot_sql(table_ref, current_timestamp)
+            bigframes_io.create_snapshot_sql(table_ref, snapshot_timestamp)
         )
         return table_expression, primary_keys
 
@@ -500,12 +507,11 @@ class Session(
         col_order: Iterable[str] = (),
         max_results: Optional[int] = None,
         api_name: str,
+        use_cache: bool = True,
     ) -> dataframe.DataFrame:
         if max_results and max_results <= 0:
             raise ValueError("`max_results` should be a positive number.")
 
-        # TODO(swast): Can we re-use the temp table from other reads in the
-        # session, if the original table wasn't modified?
         table_ref = bigquery.table.TableReference.from_string(
             query, default_project=self.bqclient.project
         )
@@ -513,7 +519,9 @@ class Session(
         (
             table_expression,
             total_ordering_cols,
-        ) = self._get_snapshot_sql_and_primary_key(table_ref, api_name=api_name)
+        ) = self._get_snapshot_sql_and_primary_key(
+            table_ref, api_name=api_name, use_cache=use_cache
+        )
 
         for key in col_order:
             if key not in table_expression.columns:
