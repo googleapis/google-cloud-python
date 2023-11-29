@@ -25,6 +25,7 @@ from .services.entity_types import EntityTypesAsyncClient, EntityTypesClient
 from .services.environments import EnvironmentsAsyncClient, EnvironmentsClient
 from .services.experiments import ExperimentsAsyncClient, ExperimentsClient
 from .services.flows import FlowsAsyncClient, FlowsClient
+from .services.generators import GeneratorsAsyncClient, GeneratorsClient
 from .services.intents import IntentsAsyncClient, IntentsClient
 from .services.pages import PagesAsyncClient, PagesClient
 from .services.security_settings_service import (
@@ -154,6 +155,16 @@ from .types.flow import (
 from .types.fulfillment import Fulfillment
 from .types.gcs import GcsDestination
 from .types.generative_settings import GenerativeSettings
+from .types.generator import (
+    CreateGeneratorRequest,
+    DeleteGeneratorRequest,
+    Generator,
+    GetGeneratorRequest,
+    ListGeneratorsRequest,
+    ListGeneratorsResponse,
+    Phrase,
+    UpdateGeneratorRequest,
+)
 from .types.import_strategy import ImportStrategy
 from .types.inline import InlineDestination, InlineSource
 from .types.intent import (
@@ -314,6 +325,7 @@ __all__ = (
     "EnvironmentsAsyncClient",
     "ExperimentsAsyncClient",
     "FlowsAsyncClient",
+    "GeneratorsAsyncClient",
     "IntentsAsyncClient",
     "PagesAsyncClient",
     "SecuritySettingsServiceAsyncClient",
@@ -351,6 +363,7 @@ __all__ = (
     "CreateEnvironmentRequest",
     "CreateExperimentRequest",
     "CreateFlowRequest",
+    "CreateGeneratorRequest",
     "CreateIntentRequest",
     "CreatePageRequest",
     "CreateSecuritySettingsRequest",
@@ -367,6 +380,7 @@ __all__ = (
     "DeleteEnvironmentRequest",
     "DeleteExperimentRequest",
     "DeleteFlowRequest",
+    "DeleteGeneratorRequest",
     "DeleteIntentRequest",
     "DeletePageRequest",
     "DeleteSecuritySettingsRequest",
@@ -411,6 +425,8 @@ __all__ = (
     "Fulfillment",
     "GcsDestination",
     "GenerativeSettings",
+    "Generator",
+    "GeneratorsClient",
     "GetAgentRequest",
     "GetAgentValidationResultRequest",
     "GetChangelogRequest",
@@ -421,6 +437,7 @@ __all__ = (
     "GetFlowRequest",
     "GetFlowValidationResultRequest",
     "GetGenerativeSettingsRequest",
+    "GetGeneratorRequest",
     "GetIntentRequest",
     "GetPageRequest",
     "GetSecuritySettingsRequest",
@@ -464,6 +481,8 @@ __all__ = (
     "ListExperimentsResponse",
     "ListFlowsRequest",
     "ListFlowsResponse",
+    "ListGeneratorsRequest",
+    "ListGeneratorsResponse",
     "ListIntentsRequest",
     "ListIntentsResponse",
     "ListPagesRequest",
@@ -494,6 +513,7 @@ __all__ = (
     "Page",
     "PageInfo",
     "PagesClient",
+    "Phrase",
     "QueryInput",
     "QueryParameters",
     "QueryResult",
@@ -550,6 +570,7 @@ __all__ = (
     "UpdateExperimentRequest",
     "UpdateFlowRequest",
     "UpdateGenerativeSettingsRequest",
+    "UpdateGeneratorRequest",
     "UpdateIntentRequest",
     "UpdatePageRequest",
     "UpdateSecuritySettingsRequest",
