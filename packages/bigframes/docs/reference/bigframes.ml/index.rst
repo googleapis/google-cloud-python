@@ -30,3 +30,5 @@ API Reference
     pipeline
 
     preprocessing
+
+    remote

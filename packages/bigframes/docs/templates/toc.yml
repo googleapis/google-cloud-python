@@ -109,6 +109,12 @@
         uid: bigframes.ml.llm.PaLM2TextEmbeddingGenerator
       name: llm
     - items:
+      - name: Overview
+        uid: bigframes.ml.remote
+      - name: VertexAIModel
+        uid: bigframes.ml.remote.VertexAIModel
+      name: remote
+    - items:
       - name: metrics
         uid: bigframes.ml.metrics
       name: metrics

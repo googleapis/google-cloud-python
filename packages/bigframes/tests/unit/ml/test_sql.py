@@ -190,6 +190,32 @@ OPTIONS(
     )
 
 
+def test_create_remote_model_with_params_produces_correct_sql(
+    model_creation_sql_generator: ml_sql.ModelCreationSqlGenerator,
+):
+    sql = model_creation_sql_generator.create_remote_model(
+        connection_name="my_project.us.my_connection",
+        model_ref=bigquery.ModelReference.from_string(
+            "test-proj._anonXYZ.create_remote_model"
+        ),
+        input={"column1": "int64"},
+        output={"result": "array<float64>"},
+        options={"option_key1": "option_value1", "option_key2": 2},
+    )
+    assert (
+        sql
+        == """CREATE OR REPLACE MODEL `test-proj`.`_anonXYZ`.`create_remote_model`
+INPUT(
+  column1 int64)
+OUTPUT(
+  result array<float64>)
+REMOTE WITH CONNECTION `my_project.us.my_connection`
+OPTIONS(
+  option_key1="option_value1",
+  option_key2=2)"""
+    )
+
+
 def test_create_imported_model_produces_correct_sql(
     model_creation_sql_generator: ml_sql.ModelCreationSqlGenerator,
 ):

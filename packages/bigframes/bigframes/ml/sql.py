@@ -57,6 +57,12 @@ class BaseSqlGenerator:
         indent_str = "  "
         return "\n" + indent_str + f",\n{indent_str}".join(expr_sqls)
 
+    def build_schema(self, **kwargs: str) -> str:
+        """Encode a dict of values into a formatted schema type items for SQL"""
+        indent_str = "  "
+        param_strs = [f"{k} {v}" for k, v in kwargs.items()]
+        return "\n" + indent_str + f",\n{indent_str}".join(param_strs)
+
     def options(self, **kwargs: Union[str, int, float, Iterable[str]]) -> str:
         """Encode the OPTIONS clause for BQML"""
         return f"OPTIONS({self.build_parameters(**kwargs)})"
@@ -64,6 +70,14 @@ class BaseSqlGenerator:
     def struct_options(self, **kwargs: Union[int, float]) -> str:
         """Encode a BQ STRUCT as options."""
         return f"STRUCT({self.build_structs(**kwargs)})"
+
+    def input(self, **kwargs: str) -> str:
+        """Encode a BQML INPUT clause."""
+        return f"INPUT({self.build_schema(**kwargs)})"
+
+    def output(self, **kwargs: str) -> str:
+        """Encode a BQML OUTPUT clause."""
+        return f"OUTPUT({self.build_schema(**kwargs)})"
 
     # Connection
     def connection(self, conn_name: str) -> str:
@@ -154,15 +168,19 @@ class ModelCreationSqlGenerator(BaseSqlGenerator):
         self,
         connection_name: str,
         model_ref: google.cloud.bigquery.ModelReference,
+        input: Mapping[str, str] = {},
+        output: Mapping[str, str] = {},
         options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
     ) -> str:
         """Encode the CREATE OR REPLACE MODEL statement for BQML remote model."""
-        options_sql = self.options(**options)
-
         parts = [f"CREATE OR REPLACE MODEL {self._model_id_sql(model_ref)}"]
+        if input:
+            parts.append(self.input(**input))
+        if output:
+            parts.append(self.output(**output))
         parts.append(self.connection(connection_name))
-        if options_sql:
-            parts.append(options_sql)
+        if options:
+            parts.append(self.options(**options))
         return "\n".join(parts)
 
     def create_imported_model(

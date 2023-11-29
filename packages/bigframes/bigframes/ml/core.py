@@ -294,6 +294,8 @@ class BqmlModelFactory:
         self,
         session: bigframes.Session,
         connection_name: str,
+        input: Mapping[str, str] = {},
+        output: Mapping[str, str] = {},
         options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
     ) -> BqmlModel:
         """Create a session-temporary BQML remote model with the CREATE OR REPLACE MODEL statement
@@ -301,6 +303,10 @@ class BqmlModelFactory:
         Args:
             connection_name:
                 a BQ connection to talk with Vertex AI, of the format <PROJECT_NUMBER>.<REGION>.<CONNECTION_NAME>. https://cloud.google.com/bigquery/docs/create-cloud-resource-connection
+            input:
+                input schema for general remote models
+            output:
+                output schema for general remote models
             options:
                 a dict of options to configure the model. Generates a BQML OPTIONS clause
 
@@ -311,6 +317,8 @@ class BqmlModelFactory:
         sql = self._model_creation_sql_generator.create_remote_model(
             connection_name=connection_name,
             model_ref=model_ref,
+            input=input,
+            output=output,
             options=options,
         )
 
