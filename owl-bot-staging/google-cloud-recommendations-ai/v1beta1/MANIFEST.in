@@ -1,0 +1,2 @@
+recursive-include google/cloud/recommendationengine *.py
+recursive-include google/cloud/recommendationengine_v1beta1 *.py
