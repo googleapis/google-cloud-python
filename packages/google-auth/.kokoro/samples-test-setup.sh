@@ -44,5 +44,5 @@ gcloud config set project ${PROJECT_ID}
 # Decrypt system test secrets
 ./scripts/decrypt-secrets.sh
 
-# Run system tests which use a different noxfile
-python3 -m nox -f samples/cloud-client/snippets/noxfile.py
+# Run samples tests which use a different noxfile
+python3 -m nox -f samples/cloud-client/snippets/noxfile.py -s "$RUN_TESTS_SESSION"
