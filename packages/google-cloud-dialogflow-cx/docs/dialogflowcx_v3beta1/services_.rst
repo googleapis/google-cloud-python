@@ -10,6 +10,7 @@ Services for Google Cloud Dialogflowcx v3beta1 API
     environments
     experiments
     flows
+    generators
     intents
     pages
     security_settings_service
