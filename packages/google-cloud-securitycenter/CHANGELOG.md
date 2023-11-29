@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.24.0...google-cloud-securitycenter-v1.24.1) (2023-11-29)
+
+
+### Documentation
+
+* [google-cloud-securitycenter] Modify documentation of SimulateSecurityHealthAnalyticsCustomModuleRequest ([#12042](https://github.com/googleapis/google-cloud-python/issues/12042)) ([27239dd](https://github.com/googleapis/google-cloud-python/commit/27239dd0334abef451bd85a016c749400a93727f))
+
 ## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.23.3...google-cloud-securitycenter-v1.24.0) (2023-11-02)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.14.0...google-cloud-recaptcha-enterprise-v1.15.0) (2023-11-29)
+
+
+### Features
+
+* Added AnnotateAssessmentRequest.account_id  ([7d6ce5b](https://github.com/googleapis/google-cloud-python/commit/7d6ce5b49f9d1960cb3f4ffa8e7baf2e7ec126e2))
+* Added Event.user_info ([7d6ce5b](https://github.com/googleapis/google-cloud-python/commit/7d6ce5b49f9d1960cb3f4ffa8e7baf2e7ec126e2))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.13.0...google-cloud-recaptcha-enterprise-v1.14.0) (2023-11-13)
 
 

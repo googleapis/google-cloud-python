@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.35.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.34.0...google-cloud-container-v2.35.0) (2023-11-29)
+
+
+### Features
+
+* [google-cloud-container] add Provisioning Request API ([#12030](https://github.com/googleapis/google-cloud-python/issues/12030)) ([c858b5a](https://github.com/googleapis/google-cloud-python/commit/c858b5aa9f65b7a0725d013598ab8274eb3ee89f))
+* add enable_relay field to AdvancedDatapathObservabilityConfig ([90eea69](https://github.com/googleapis/google-cloud-python/commit/90eea69a477cc820e82b75242559696463b2f2b7))
+* Add enable_relay field to AdvancedDatapathObservabilityConfig ([a12d82f](https://github.com/googleapis/google-cloud-python/commit/a12d82f77fa7b8a35d271880c8bbba9e0d8f8825))
+* Enable Enterprise Flag to allow configuring Advanced Vuln Insights ([a12d82f](https://github.com/googleapis/google-cloud-python/commit/a12d82f77fa7b8a35d271880c8bbba9e0d8f8825))
+
+
+### Documentation
+
+* [google-cloud-container] improve API documentation for Binary Authorization ([#12049](https://github.com/googleapis/google-cloud-python/issues/12049)) ([a927596](https://github.com/googleapis/google-cloud-python/commit/a9275968985b1bffa5b4ebad1f90259963aa1b88))
+
 ## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.33.0...google-cloud-container-v2.34.0) (2023-11-16)
 
 
