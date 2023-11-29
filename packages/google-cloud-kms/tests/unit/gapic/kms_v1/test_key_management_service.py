@@ -18760,7 +18760,7 @@ def test_list_locations(transport: str = "grpc"):
 
 
 @pytest.mark.asyncio
-async def test_list_locations_async(transport: str = "grpc"):
+async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
