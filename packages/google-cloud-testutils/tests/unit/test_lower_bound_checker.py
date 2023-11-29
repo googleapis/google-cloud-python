@@ -88,7 +88,7 @@ def test_update_constraints():
     
         output = constraints_path.read_text().split("\n")
 
-        assert output == ["click==7.0.0", "grpcio==1.0.0", "packaging==14.0", "requests==1.0.0", "wheel==0.35.0",]
+        assert output == ["click==7.0.0", "grpcio==1.0.0", "packaging==14.0", "requests==1.0.0", "wheel==0.41.0",]
 
 
 
@@ -96,7 +96,7 @@ def test_update_constraints_overwrites_existing_file():
     constraints = [
         "requests==1.0.0",
         "packaging==13.0",
-        "wheel==0.36.0",
+        "wheel==0.42.0",
         "click==5.0.0",
     ]
     with constraints_file(constraints) as c:
@@ -107,14 +107,14 @@ def test_update_constraints_overwrites_existing_file():
         assert result.exit_code == 0
 
         output = c.read_text().split("\n")
-        assert output == ["click==7.0.0", "grpcio==1.0.0", "packaging==14.0", "requests==1.0.0", "wheel==0.35.0",
+        assert output == ["click==7.0.0", "grpcio==1.0.0", "packaging==14.0", "requests==1.0.0", "wheel==0.41.0",
         ]
 
 def test_update_constraints_with_setup_py_missing_lower_bounds():
     constraints = [
         "requests==1.0.0",
         "packaging==14.0",
-        "wheel==0.35.0",
+        "wheel==0.41.0",
         "click==7.0.0",
     ]
     with constraints_file(constraints) as c:
@@ -134,7 +134,7 @@ def test_check():
     constraints = [
         "requests==1.0.0",
         "packaging==14.0",
-        "wheel==0.35.0",
+        "wheel==0.41.0",
         "click==7.0.0",
         "grpcio==1.0.0"
     ]
@@ -150,7 +150,7 @@ def test_update_constraints_with_extra_constraints():
     constraints = [
         "requests==1.0.0",
         "packaging==14.0",
-        "wheel==0.35.0",
+        "wheel==0.41.0",
         "click==7.0.0",
         "grpcio==1.0.0",
         "pytest==6.0.0",  # additional requirement
@@ -218,7 +218,7 @@ def test_check_with_constraints_file_different_versions():
     constraints = [
         "requests==1.2.0",  # setup.py has 1.0.0
         "packaging==14.1",  # setup.py has 14.0
-        "wheel==0.36.0",  # setup.py has 0.35.0
+        "wheel==0.42.0",  # setup.py has 0.41.0
         "click==7.0.0",
         "grpcio==1.0.0"
     ]
