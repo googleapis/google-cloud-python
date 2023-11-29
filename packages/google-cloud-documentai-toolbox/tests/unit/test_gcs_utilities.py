@@ -576,3 +576,11 @@ def test_upload_file_with_file_error():
             file_name="document_1.json",
             file_content="Document",
         )
+
+
+def test_get_blobs_with_no_input():
+    with pytest.raises(
+        ValueError,
+        match="You must provide either `gcs_uri` or both `gcs_bucket_name` and `gcs_prefix`.",
+    ):
+        gcs_utilities.get_blobs()

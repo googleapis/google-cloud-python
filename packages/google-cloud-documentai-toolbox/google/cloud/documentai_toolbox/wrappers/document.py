@@ -40,7 +40,7 @@ from google.cloud.documentai_toolbox.wrappers.page import FormField, Page
 def _entities_from_shards(
     shards: List[documentai.Document],
 ) -> List[Entity]:
-    r"""Returns a list of Entities from a list of documentai.Document shards.
+    r"""Returns a list of Entities and Properties from a list of documentai.Document shards.
 
     Args:
         shards (List[google.cloud.documentai.Document]):
@@ -83,7 +83,7 @@ def _pages_from_shards(shards: List[documentai.Document]) -> List[Page]:
             A list of Pages.
     """
     result = [
-        Page(documentai_object=shard_page, document_text=shard.text)
+        Page(documentai_object=shard_page, _document_text=shard.text)
         for shard in shards
         for shard_page in shard.pages
     ]
@@ -94,7 +94,7 @@ def _pages_from_shards(shards: List[documentai.Document]) -> List[Page]:
 
 
 def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Document]:
-    r"""Returns a list of documentai.Document shards from a Cloud Storage folder.
+    r"""Returns a list of `documentai.Document` shards from a Cloud Storage folder.
 
     Args:
         gcs_bucket_name (str):
@@ -331,7 +331,7 @@ class Document:
 
     Attributes:
         shards (List[google.cloud.documentai.Document]):
-            Optional. A list of `documentai.Document` shards of the same `Document`.
+            Required. A list of `documentai.Document` shards of the same `Document`.
             Each shard consists of a number of pages in the `Document`.
         gcs_bucket_name (Optional[str]):
             Optional. The name of the gcs bucket.
@@ -360,14 +360,29 @@ class Document:
     gcs_prefix: Optional[str] = dataclasses.field(default=None, repr=False)
     gcs_input_uri: Optional[str] = dataclasses.field(default=None, repr=False)
 
-    pages: List[Page] = dataclasses.field(init=False, repr=False)
-    entities: List[Entity] = dataclasses.field(init=False, repr=False)
-    text: str = dataclasses.field(init=False, repr=False)
+    _pages: Optional[List[Page]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    _entities: List[Entity] = dataclasses.field(init=False, repr=False, default=None)
+    _text: str = dataclasses.field(init=False, repr=False, default=None)
 
-    def __post_init__(self) -> None:
-        self.pages = _pages_from_shards(shards=self.shards)
-        self.entities = _entities_from_shards(shards=self.shards)
-        self.text = "".join(shard.text for shard in self.shards)
+    @property
+    def pages(self):
+        if self._pages is None:
+            self._pages = _pages_from_shards(shards=self.shards)
+        return self._pages
+
+    @property
+    def entities(self):
+        if self._entities is None:
+            self._entities = _entities_from_shards(shards=self.shards)
+        return self._entities
+
+    @property
+    def text(self):
+        if self._text is None:
+            self._text = "".join(shard.text for shard in self.shards)
+        return self._text
 
     @classmethod
     def from_document_path(

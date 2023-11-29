@@ -18,7 +18,7 @@
 from abc import ABC
 
 import dataclasses
-from typing import cast, List, Optional
+from typing import cast, List, Optional, Type
 
 import pandas as pd
 
@@ -33,9 +33,7 @@ class Table:
 
     Attributes:
         documentai_object (google.cloud.documentai.Document.Page.Table):
-            Required. The original google.cloud.documentai.Document.Page.Table object.
-        document_text (str):
-            Required. UTF-8 encoded text in reading order from the document.
+            Required. The original object.
         body_rows (List[List[str]]):
             Required. A list of body rows.
         header_rows (List[List[str]]):
@@ -43,18 +41,32 @@ class Table:
     """
 
     documentai_object: documentai.Document.Page.Table = dataclasses.field(repr=False)
-    document_text: dataclasses.InitVar[str]
+    _page: "Page" = dataclasses.field(repr=False)
 
-    body_rows: List[List[str]] = dataclasses.field(init=False, repr=False)
-    header_rows: List[List[str]] = dataclasses.field(init=False, repr=False)
+    _body_rows: Optional[List[List[str]]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    _header_rows: Optional[List[List[str]]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
 
-    def __post_init__(self, document_text) -> None:
-        self.header_rows = _table_rows_from_documentai_table_rows(
-            table_rows=list(self.documentai_object.header_rows), text=document_text
-        )
-        self.body_rows = _table_rows_from_documentai_table_rows(
-            table_rows=list(self.documentai_object.body_rows), text=document_text
-        )
+    @property
+    def body_rows(self):
+        if self._body_rows is None:
+            self._body_rows = _table_rows_from_documentai_table_rows(
+                table_rows=list(self.documentai_object.body_rows),
+                text=self._page._document_text,
+            )
+        return self._body_rows
+
+    @property
+    def header_rows(self):
+        if self._header_rows is None:
+            self._header_rows = _table_rows_from_documentai_table_rows(
+                table_rows=list(self.documentai_object.header_rows),
+                text=self._page._document_text,
+            )
+        return self._header_rows
 
     def to_dataframe(self) -> pd.DataFrame:
         r"""Returns pd.DataFrame from documentai.table
@@ -81,39 +93,55 @@ class FormField:
 
     Attributes:
         documentai_object (google.cloud.documentai.Document.Page.FormField):
-            Required. The original google.cloud.documentai.Document.Page.FormField object.
-        document_text (str):
-            Required. UTF-8 encoded text in reading order from the document.
+            Required. The original object.
         field_name (str):
             Required. The form field name
         field_value (str):
             Required. The form field value
     """
 
-    documentai_object: documentai.Document.Page.FormField
-    document_text: dataclasses.InitVar[str]
+    documentai_object: documentai.Document.Page.FormField = dataclasses.field(
+        repr=False
+    )
+    _page: "Page" = dataclasses.field(repr=False)
 
-    field_name: str = dataclasses.field(init=False)
-    field_value: str = dataclasses.field(init=False)
+    _field_name: Optional[str] = dataclasses.field(init=False, repr=False, default=None)
+    _field_value: Optional[str] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
 
-    def __post_init__(self, document_text) -> None:
-        self.field_name = _trim_text(
-            _text_from_layout(self.documentai_object.field_name, document_text)
-        )
-        self.field_value = _trim_text(
-            _text_from_layout(self.documentai_object.field_value, document_text)
-        )
+    @property
+    def field_name(self):
+        if self._field_name is None:
+            self._field_name = _trim_text(
+                _text_from_layout(
+                    self.documentai_object.field_name, self._page._document_text
+                )
+            )
+        return self._field_name
+
+    @property
+    def field_value(self):
+        if self._field_value is None:
+            self._field_value = _trim_text(
+                _text_from_layout(
+                    self.documentai_object.field_value, self._page._document_text
+                )
+            )
+        return self._field_value
 
 
 @dataclasses.dataclass
-class BasePageElement(ABC):
+class _BasePageElement(ABC):
     """Base class for representing a wrapped Document AI Page element (Symbol, Token, Line, Paragraph, Block)."""
 
     documentai_object: ElementWithLayout = dataclasses.field(repr=False)
     _page: "Page" = dataclasses.field(repr=False)
 
-    _text: Optional[str] = dataclasses.field(init=False, default=None)
-    _hocr_bounding_box: Optional[str] = dataclasses.field(init=False, default=None)
+    _text: Optional[str] = dataclasses.field(init=False, repr=False, default=None)
+    _hocr_bounding_box: Optional[str] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
 
     @property
     def text(self):
@@ -122,7 +150,7 @@ class BasePageElement(ABC):
         """
         if self._text is None:
             self._text = _text_from_layout(
-                layout=self.documentai_object.layout, text=self._page.document_text
+                layout=self.documentai_object.layout, text=self._page._document_text
             )
         return self._text
 
@@ -140,15 +168,15 @@ class BasePageElement(ABC):
 
 
 @dataclasses.dataclass
-class Symbol(BasePageElement):
+class Symbol(_BasePageElement):
     """Represents a wrapped documentai.Document.Page.Symbol.
     https://cloud.google.com/document-ai/docs/process-documents-ocr#enable_symbols
 
     Attributes:
         documentai_object (google.cloud.documentai.Document.Page.Symbol):
             Required. The original object.
-        _page (Page):
-            Required. The Page object containing the Symbol.
+        text (str):
+            Required. The text of the Symbol.
     """
 
     @property
@@ -158,103 +186,123 @@ class Symbol(BasePageElement):
 
 
 @dataclasses.dataclass
-class Token(BasePageElement):
+class Token(_BasePageElement):
     """Represents a wrapped documentai.Document.Page.Token.
 
     Attributes:
         documentai_object (google.cloud.documentai.Document.Page.Token):
             Required. The original object.
-        _page (Page):
-            Required. The Page object containing the Token.
+        text (str):
+            Required. The text of the Token.
         symbols (List[Symbol]):
-            Required. The Symbols contained within the Token.
+            Optional. The Symbols contained within the Token.
     """
 
-    symbols: List[Symbol] = dataclasses.field(init=False, repr=False)
+    _symbols: Optional[List[Symbol]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
 
-    def __post_init__(self) -> None:
-        self.symbols = cast(
-            List[Symbol],
-            _get_children_of_element(self.documentai_object, self._page.symbols),
-        )
+    @property
+    def symbols(self):
+        if self._symbols is None:
+            self._symbols = cast(
+                List[Symbol],
+                _get_children_of_element(self.documentai_object, self._page.symbols),
+            )
+        return self._symbols
 
 
 @dataclasses.dataclass
-class Line(BasePageElement):
+class Line(_BasePageElement):
     """Represents a wrapped documentai.Document.Page.Line.
 
     Attributes:
         documentai_object (google.cloud.documentai.Document.Page.Line):
             Required. The original object.
-        _page (Page):
-            Required. The Page object containing the Line.
-        tokens (List[Token]):
-            Required. The Tokens contained within the Line.
+        text (str):
+            Required. The text of the Line.
+        _tokens (List[Token]):
+            Optional. The Tokens contained within the Line.
     """
 
-    tokens: List[Token] = dataclasses.field(init=False, repr=False)
+    _tokens: Optional[List[Token]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
 
-    def __post_init__(self) -> None:
-        self.tokens = cast(
-            List[Token],
-            _get_children_of_element(self.documentai_object, self._page.tokens),
-        )
+    @property
+    def tokens(self):
+        if self._tokens is None:
+            self._tokens = cast(
+                List[Token],
+                _get_children_of_element(self.documentai_object, self._page.tokens),
+            )
+        return self._tokens
 
 
 @dataclasses.dataclass
-class Paragraph(BasePageElement):
+class Paragraph(_BasePageElement):
     """Represents a wrapped documentai.Document.Page.Paragraph.
 
     Attributes:
         documentai_object (google.cloud.documentai.Document.Page.Paragraph):
             Required. The original object.
-        _page (Page):
-            Required. The Page object containing the Paragraph.
-        lines (List[Line]):
-            Required. The Lines contained within the Paragraph.
+        text (str):
+            Required. The text of the Paragraph.
+        _lines (List[Line]):
+            Optional. The Lines contained within the Paragraph.
     """
 
-    lines: List[Line] = dataclasses.field(init=False, repr=False)
+    _lines: Optional[List[Line]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
 
-    def __post_init__(self) -> None:
-        self.lines = cast(
-            List[Line],
-            _get_children_of_element(self.documentai_object, self._page.lines),
-        )
+    @property
+    def lines(self):
+        if self._lines is None:
+            self._lines = cast(
+                List[Line],
+                _get_children_of_element(self.documentai_object, self._page.lines),
+            )
+        return self._lines
 
 
 @dataclasses.dataclass
-class Block(BasePageElement):
+class Block(_BasePageElement):
     """Represents a wrapped documentai.Document.Page.Block.
 
     Attributes:
         documentai_object (google.cloud.documentai.Document.Page.Block):
             Required. The original object.
-        _page (Page):
-            Required. The Page object containing the Block.
-        paragraphs (List[Paragraph]):
-            Required. The Paragraphs contained within the Block.
+        text (str):
+            Required. The text of the Block.
+        _paragraphs (List[Paragraph]):
+            Optional. The Paragraphs contained within the Block.
     """
 
-    paragraphs: List[Paragraph] = dataclasses.field(init=False, repr=False)
+    _paragraphs: Optional[List[Paragraph]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
 
-    def __post_init__(self) -> None:
-        self.paragraphs = cast(
-            List[Paragraph],
-            _get_children_of_element(self.documentai_object, self._page.paragraphs),
-        )
+    @property
+    def paragraphs(self):
+        if self._paragraphs is None:
+            self._paragraphs = cast(
+                List[Paragraph],
+                _get_children_of_element(self.documentai_object, self._page.paragraphs),
+            )
+        return self._paragraphs
 
 
 @dataclasses.dataclass
-class MathFormula(BasePageElement):
+class MathFormula(_BasePageElement):
     """Represents a wrapped documentai.Document.Page.VisualElement with type `math_formula`.
     https://cloud.google.com/document-ai/docs/process-documents-ocr#math_ocr
 
     Attributes:
         documentai_object (google.cloud.documentai.Document.Page.VisualElement):
             Required. The original object.
-        _page (Page):
-            Required. The Page object containing the VisualElement.
+        text (str):
+            Required. The text of the MathFormula.
     """
 
     @property
@@ -387,18 +435,15 @@ class Page:
 
     Attributes:
         documentai_object (google.cloud.documentai.Document.Page):
-            Required. The original google.cloud.documentai.Document.Page object.
-        document_text (str):
-            Required. The full text of the `Document` containing the `Page`.
+            Required. The original object.
         text (str):
             Required. UTF-8 encoded text of the page.
         page_number (int):
             Required. The page number of the `Page`.
-        form_fields (List[FormField]):
-            Required. A list of visually detected form fields on the
-            page.
+        hocr_bounding_box (str):
+            Required. hOCR bounding box of the page element.
         symbols (List[Symbol]):
-            Required. A list of visually detected text symbols
+            Optional. A list of visually detected text symbols
             (characters/letters) on the page.
         tokens (List[Token]):
             Required. A list of visually detected text tokens (words) on the
@@ -415,8 +460,11 @@ class Page:
             Required. A list of visually detected text blocks
             on the page. A collection of lines that a human
             would perceive as a block.
+        form_fields (List[FormField]):
+            Optional. A list of visually detected form fields on the
+            page.
         tables (List[Table]):
-            Required. A list of visually detected tables on the
+            Optional. A list of visually detected tables on the
             page.
         math_formulas (List[MathFormula]):
             Optional. A list of visually detected math formulas
@@ -424,81 +472,117 @@ class Page:
     """
 
     documentai_object: documentai.Document.Page = dataclasses.field(repr=False)
-    document_text: str = dataclasses.field(repr=False)
+    _document_text: str = dataclasses.field(repr=False)
 
-    text: str = dataclasses.field(init=False, repr=False)
-    page_number: int = dataclasses.field(init=False, repr=False)
-    form_fields: List[FormField] = dataclasses.field(init=False, repr=False)
-    symbols: List[Symbol] = dataclasses.field(init=False, repr=False)
-    tokens: List[Token] = dataclasses.field(init=False, repr=False)
-    lines: List[Line] = dataclasses.field(init=False, repr=False)
-    paragraphs: List[Paragraph] = dataclasses.field(init=False, repr=False)
-    blocks: List[Block] = dataclasses.field(init=False, repr=False)
-    tables: List[Table] = dataclasses.field(init=False, repr=False)
-    math_formulas: List[MathFormula] = dataclasses.field(init=False, repr=False)
-    _hocr_bounding_box: Optional[str] = dataclasses.field(init=False, default=None)
+    _text: Optional[str] = dataclasses.field(init=False, repr=False, default=None)
+    _page_number: Optional[int] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    _form_fields: Optional[List[FormField]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    _symbols: Optional[List[Symbol]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    _tokens: Optional[List[Token]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    _lines: Optional[List[Line]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    _paragraphs: Optional[List[Paragraph]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    _blocks: Optional[List[Block]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    _tables: Optional[List[Table]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    _math_formulas: Optional[List[MathFormula]] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
+    _hocr_bounding_box: Optional[str] = dataclasses.field(
+        init=False, repr=False, default=None
+    )
 
-    def __post_init__(self) -> None:
+    def _get_elements(self, element_type: Type, attribute_name: str) -> List:
         """
-        Order of Init
-        Symbol
-        Token
-        Line
-        Paragraph,
-        Block
+        Helper method to create elements based on specified type.
         """
-
-        self.text = _text_from_layout(
-            self.documentai_object.layout, text=self.document_text
-        )
-        self.page_number = int(self.documentai_object.page_number)
-
-        self.tables = [
-            Table(documentai_object=table, document_text=self.document_text)
-            for table in self.documentai_object.tables
-        ]
-
-        self.form_fields = [
-            FormField(documentai_object=form_field, document_text=self.document_text)
-            for form_field in self.documentai_object.form_fields
-        ]
-
-        self.math_formulas = [
-            MathFormula(documentai_object=visual_element, _page=self)
-            for visual_element in self.documentai_object.visual_elements
-            if visual_element.type_ == "math_formula"
-        ]
-
-        self.symbols = [
-            Symbol(documentai_object=symbol, _page=self)
-            for symbol in self.documentai_object.symbols
-        ]
-
-        self.tokens = [
-            Token(documentai_object=token, _page=self)
-            for token in self.documentai_object.tokens
-        ]
-
-        self.lines = [
-            Line(documentai_object=line, _page=self)
-            for line in self.documentai_object.lines
-        ]
-
-        self.paragraphs = [
-            Paragraph(documentai_object=paragraph, _page=self)
-            for paragraph in self.documentai_object.paragraphs
-        ]
-
-        self.blocks = [
-            Block(documentai_object=block, _page=self)
-            for block in self.documentai_object.blocks
+        elements = getattr(self.documentai_object, attribute_name)
+        return [
+            element_type(documentai_object=element, _page=self) for element in elements
         ]
 
     @property
+    def text(self):
+        if self._text is None:
+            self._text = _text_from_layout(
+                self.documentai_object.layout, text=self._document_text
+            )
+        return self._text
+
+    @property
+    def page_number(self):
+        if self._page_number is None:
+            self._page_number = self.documentai_object.page_number
+        return self._page_number
+
+    @property
+    def tables(self):
+        if self._tables is None:
+            self._tables = self._get_elements(Table, "tables")
+        return self._tables
+
+    @property
+    def form_fields(self):
+        if self._form_fields is None:
+            self._form_fields = self._get_elements(FormField, "form_fields")
+        return self._form_fields
+
+    @property
+    def math_formulas(self):
+        if self._math_formulas is None:
+            self._math_formulas = [
+                MathFormula(documentai_object=visual_element, _page=self)
+                for visual_element in self.documentai_object.visual_elements
+                if visual_element.type_ == "math_formula"
+            ]
+        return self._math_formulas
+
+    @property
+    def symbols(self):
+        if self._symbols is None:
+            self._symbols = self._get_elements(Symbol, "symbols")
+        return self._symbols
+
+    @property
+    def tokens(self):
+        if self._tokens is None:
+            self._tokens = self._get_elements(Token, "tokens")
+        return self._tokens
+
+    @property
+    def lines(self):
+        if self._lines is None:
+            self._lines = self._get_elements(Line, "lines")
+        return self._lines
+
+    @property
+    def paragraphs(self):
+        if self._paragraphs is None:
+            self._paragraphs = self._get_elements(Paragraph, "paragraphs")
+        return self._paragraphs
+
+    @property
+    def blocks(self):
+        if self._blocks is None:
+            self._blocks = self._get_elements(Block, "blocks")
+        return self._blocks
+
+    @property
     def hocr_bounding_box(self):
-        """
-        hOCR bounding box of the page element.
-        """
         if self._hocr_bounding_box is None:
             self._hocr_bounding_box = _get_hocr_bounding_box(
                 element_with_layout=self.documentai_object,
