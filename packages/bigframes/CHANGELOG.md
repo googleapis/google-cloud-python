@@ -4,6 +4,51 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.15.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.14.1...v0.15.0) (2023-11-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* model.predict returns all the columns ([#204](https://github.com/googleapis/python-bigquery-dataframes/issues/204))
+
+### Features
+
+* Add info and memory_usage methods to dataframe ([#219](https://github.com/googleapis/python-bigquery-dataframes/issues/219)) ([9d6613d](https://github.com/googleapis/python-bigquery-dataframes/commit/9d6613d318b558722b7bab12773efdea4bbe9931))
+* Add remote vertex model support ([#237](https://github.com/googleapis/python-bigquery-dataframes/issues/237)) ([0bfc4fb](https://github.com/googleapis/python-bigquery-dataframes/commit/0bfc4fb117686c734d4a2503d5a6de0e64e9f9b9))
+* Add the recent api method for ML component ([#225](https://github.com/googleapis/python-bigquery-dataframes/issues/225)) ([ed8876d](https://github.com/googleapis/python-bigquery-dataframes/commit/ed8876d3439a3b45b65e8789737c3c2e3a7f1adb))
+* Model.predict returns all the columns ([#204](https://github.com/googleapis/python-bigquery-dataframes/issues/204)) ([416171a](https://github.com/googleapis/python-bigquery-dataframes/commit/416171a70d91d4a6b71622ba72685147ab7d6186))
+* Send warnings on LLM prediction partial failures ([#216](https://github.com/googleapis/python-bigquery-dataframes/issues/216)) ([81125f9](https://github.com/googleapis/python-bigquery-dataframes/commit/81125f9505ad98e89939769a8e1fcf30518705f0))
+
+
+### Bug Fixes
+
+* Add df snapshots lookup for `read_gbq` ([#229](https://github.com/googleapis/python-bigquery-dataframes/issues/229)) ([d0d9b84](https://github.com/googleapis/python-bigquery-dataframes/commit/d0d9b84b101eb03c499d85e74dcfc900dedd4137))
+* Avoid unnecessary row_number() on sort key for io ([#211](https://github.com/googleapis/python-bigquery-dataframes/issues/211)) ([a18d40e](https://github.com/googleapis/python-bigquery-dataframes/commit/a18d40e808ee0822d21715cc3e8f794c418aeebc))
+* Dedup special character ([#209](https://github.com/googleapis/python-bigquery-dataframes/issues/209)) ([dd78acb](https://github.com/googleapis/python-bigquery-dataframes/commit/dd78acb174545ba292776a642afcec46f8ee4a2a))
+* Invalid JSON type of the notebook ([#215](https://github.com/googleapis/python-bigquery-dataframes/issues/215)) ([a729831](https://github.com/googleapis/python-bigquery-dataframes/commit/a7298317ea2604faa6ae31817f1f729d7e0b9818))
+* Make to_pandas override enable_downsampling when sampling_method is manually set. ([#200](https://github.com/googleapis/python-bigquery-dataframes/issues/200)) ([ae03756](https://github.com/googleapis/python-bigquery-dataframes/commit/ae03756f5ee45e0e74e0c0bdd4777e018eba2273))
+* Polish the llm+kmeans notebook ([#208](https://github.com/googleapis/python-bigquery-dataframes/issues/208)) ([e8532b1](https://github.com/googleapis/python-bigquery-dataframes/commit/e8532b1d999d26ea1ebdd30efb8f2c0a93a6a28d))
+* Update the llm+kmeans notebook with recent change ([#236](https://github.com/googleapis/python-bigquery-dataframes/issues/236)) ([f8917ab](https://github.com/googleapis/python-bigquery-dataframes/commit/f8917abc094e222e0435891d4d184b77bfe67722))
+* Use anonymous dataset to create `remote_function` ([#205](https://github.com/googleapis/python-bigquery-dataframes/issues/205)) ([69b016e](https://github.com/googleapis/python-bigquery-dataframes/commit/69b016eae7ea97d84ceeb22ba09f5472841db072))
+
+
+### Documentation
+
+* Add code samples for `index` and `column` properties ([#212](https://github.com/googleapis/python-bigquery-dataframes/issues/212)) ([c88d38e](https://github.com/googleapis/python-bigquery-dataframes/commit/c88d38e69682f4c620174086b8f16f4780c04811))
+* Add code samples for df reshaping, function, merge, and join methods ([#203](https://github.com/googleapis/python-bigquery-dataframes/issues/203)) ([010486c](https://github.com/googleapis/python-bigquery-dataframes/commit/010486c3494e05d714da6cc7d51514518d9ae1ea))
+* Add examples for dataframe.kurt, dataframe.std, dataframe.count ([#232](https://github.com/googleapis/python-bigquery-dataframes/issues/232)) ([f9c6e72](https://github.com/googleapis/python-bigquery-dataframes/commit/f9c6e727e2b901310bb5301da449d616ea85e135))
+* Add examples for dataframe.mean, dataframe.median, dataframe.va… ([#228](https://github.com/googleapis/python-bigquery-dataframes/issues/228)) ([edd0522](https://github.com/googleapis/python-bigquery-dataframes/commit/edd0522747eadb74780124fb18ed7face251441d))
+* Add examples for dataframe.min, dataframe.max and dataframe.sum ([#227](https://github.com/googleapis/python-bigquery-dataframes/issues/227)) ([3a375e8](https://github.com/googleapis/python-bigquery-dataframes/commit/3a375e87b64b8fb51370bfec8f2cfdbcd8fe960a))
+* Code samples for `Series.dot` and `DataFrame.dot` ([#226](https://github.com/googleapis/python-bigquery-dataframes/issues/226)) ([b62a07a](https://github.com/googleapis/python-bigquery-dataframes/commit/b62a07a95cd60f995a48825c9874822d0eb02483))
+* Code samples for `Series.where` and `Series.mask` ([#217](https://github.com/googleapis/python-bigquery-dataframes/issues/217)) ([52dfad2](https://github.com/googleapis/python-bigquery-dataframes/commit/52dfad281def82548751a276ce42b087dbb09f9a))
+* Code samples for dataframe.any, dataframe.all and dataframe.prod ([#223](https://github.com/googleapis/python-bigquery-dataframes/issues/223)) ([d7957fa](https://github.com/googleapis/python-bigquery-dataframes/commit/d7957fad071d223ef8f6fb8f3de395c865ff60aa))
+* Make the code samples reflect default bq connection usage ([#206](https://github.com/googleapis/python-bigquery-dataframes/issues/206)) ([71844b0](https://github.com/googleapis/python-bigquery-dataframes/commit/71844b03cdbfe684320c186a0488c8c7fb4fcd6e))
+
+
+### Miscellaneous Chores
+
+* Release 0.15.0 ([#241](https://github.com/googleapis/python-bigquery-dataframes/issues/241)) ([6c899be](https://github.com/googleapis/python-bigquery-dataframes/commit/6c899be2989e24f697d72fe1bb92ebbf7dec84cb))
+
 ## [0.14.1](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.14.0...v0.14.1) (2023-11-16)
 
 
