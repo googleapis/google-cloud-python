@@ -14,6 +14,7 @@
 
 import io
 import os
+import re
 
 import setuptools
 
@@ -22,7 +23,16 @@ import setuptools
 
 name = "google-cloud-dns"
 description = "Google Cloud DNS API client library"
-version = "0.34.2"
+
+package_root = os.path.abspath(os.path.dirname(__file__))
+
+version = None
+
+with open(os.path.join(package_root, "google/cloud/dns/version.py")) as fp:
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    assert len(version_candidates) == 1
+    version = version_candidates[0]
+
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -39,7 +49,6 @@ extras = {}
 
 # Setup boilerplate below this line.
 
-package_root = os.path.abspath(os.path.dirname(__file__))
 
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
@@ -48,14 +57,10 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 # Only include packages under the 'google' namespace. Do not include tests,
 # benchmarks, etc.
 packages = [
-    package for package in setuptools.find_packages() if package.startswith("google")
+    package
+    for package in setuptools.find_namespace_packages()
+    if package.startswith("google")
 ]
-
-# Determine which namespaces are needed.
-namespaces = ["google"]
-if "google.cloud" in packages:
-    namespaces.append("google.cloud")
-
 
 setuptools.setup(
     name=name,
@@ -81,7 +86,6 @@ setuptools.setup(
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
-    namespace_packages=namespaces,
     install_requires=dependencies,
     extras_require=extras,
     python_requires=">=3.7",

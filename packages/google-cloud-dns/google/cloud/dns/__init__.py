@@ -24,11 +24,7 @@ The main concepts with this API are:
   (adding/deleting resource record sets) to a zone.
 """
 
-
-from pkg_resources import get_distribution
-
-__version__ = get_distribution("google-cloud-dns").version
-
+from google.cloud.dns.version import __version__
 from google.cloud.dns.zone import Changes
 from google.cloud.dns.client import Client
 from google.cloud.dns.zone import ManagedZone
