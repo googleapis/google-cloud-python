@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-binary-authorization-v1.7.0...google-cloud-binary-authorization-v1.8.0) (2023-11-29)
+
+
+### Features
+
+* [google-cloud-binary-authorization] add container_name, container_type fields to Continuous Validation Logs ([#12051](https://github.com/googleapis/google-cloud-python/issues/12051)) ([b063395](https://github.com/googleapis/google-cloud-python/commit/b063395e4436b68acc5a48cb6e8f60cce70abc17))
+
 ## [1.7.0](https://github.com/googleapis/python-binary-authorization/compare/v1.6.2...v1.7.0) (2023-10-09)
 
 

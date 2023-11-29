@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.17.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.4...google-cloud-batch-v0.17.5) (2023-11-29)
+
+
+### Features
+
+* Add a CloudLoggingOption to configure additional settings for Cloud Logging ([9c53819](https://github.com/googleapis/google-cloud-python/commit/9c5381911c4eb0b0b67d116a53ed6a08e870bbe1))
+* **v1alpha:** Add TaskGroup.enable_oslogin to give the Batch job submitter the ability to run runnables as non-root controlled by IAM ([5392065](https://github.com/googleapis/google-cloud-python/commit/5392065c62888a649dca0697b6e5ce3ea174ae00))
+
+
+### Documentation
+
+* Update comment for AllocationPolicy.network ([9c53819](https://github.com/googleapis/google-cloud-python/commit/9c5381911c4eb0b0b67d116a53ed6a08e870bbe1))
+* **v1alpha:** Update documentation for the network field of AllocationPolicy ([5392065](https://github.com/googleapis/google-cloud-python/commit/5392065c62888a649dca0697b6e5ce3ea174ae00))
+
 ## [0.17.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.3...google-cloud-batch-v0.17.4) (2023-11-14)
 
 

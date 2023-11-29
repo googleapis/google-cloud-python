@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.8.1...google-cloud-dataplex-v1.9.0) (2023-11-29)
+
+
+### Features
+
+* added DataQualityResult.score, dimension_score, column_score ([b2dade2](https://github.com/googleapis/google-cloud-python/commit/b2dade2448863a9fba033030fcfbb1a03da68dd2))
+* new event types GOVERNANCE_RULE_MATCHED_RESOURCES, GOVERNANCE_RULE_SEARCH_LIMIT_EXCEEDS, GOVERNANCE_RULE_ERRORS ([b2dade2](https://github.com/googleapis/google-cloud-python/commit/b2dade2448863a9fba033030fcfbb1a03da68dd2))
+
 ## [1.8.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.8.0...google-cloud-dataplex-v1.8.1) (2023-11-07)
 
 

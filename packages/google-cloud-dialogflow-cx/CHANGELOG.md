@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.28.0...google-cloud-dialogflow-cx-v1.29.0) (2023-11-29)
+
+
+### Features
+
+* add agent answer feedback capabilit ([080c0cc](https://github.com/googleapis/google-cloud-python/commit/080c0cc198efb69d129845bc289eba2100ea69c0))
+* add boost & bury and filter ES controls ([080c0cc](https://github.com/googleapis/google-cloud-python/commit/080c0cc198efb69d129845bc289eba2100ea69c0))
+* add end_user_metadata to QueryParameters ([080c0cc](https://github.com/googleapis/google-cloud-python/commit/080c0cc198efb69d129845bc289eba2100ea69c0))
+* add fields for supporting barge-in in StreamingDetectIntent API ([080c0cc](https://github.com/googleapis/google-cloud-python/commit/080c0cc198efb69d129845bc289eba2100ea69c0))
+* added Generator API  ([5fc7b7b](https://github.com/googleapis/google-cloud-python/commit/5fc7b7bc10861ffb015acc0a57f5976251be7fdc))
+
+
+### Documentation
+
+* updated doc for speech model ([5fc7b7b](https://github.com/googleapis/google-cloud-python/commit/5fc7b7bc10861ffb015acc0a57f5976251be7fdc))
+
 ## [1.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.27.1...google-cloud-dialogflow-cx-v1.28.0) (2023-09-30)
 
 

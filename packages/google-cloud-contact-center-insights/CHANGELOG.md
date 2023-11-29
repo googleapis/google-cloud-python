@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.14.0...google-cloud-contact-center-insights-v1.14.1) (2023-11-29)
+
+
+### Documentation
+
+* [google-cloud-contact-center-insights] Update IngestConversations and BulkAnalyzeConversations comments ([#12036](https://github.com/googleapis/google-cloud-python/issues/12036)) ([0845dc3](https://github.com/googleapis/google-cloud-python/commit/0845dc3ffb42c62591f1890007d7814c3f12ad36))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.13.0...google-cloud-contact-center-insights-v1.14.0) (2023-11-07)
 
 
