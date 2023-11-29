@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.23.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.22.0...v2.23.0) (2023-11-17)
+
+
+### Features
+
+* Add default_missing_value_interpretation field; indicate KMS_SERVICE_ERROR is retryable ([#637](https://github.com/googleapis/python-bigquery-storage/issues/637)) ([9550ea6](https://github.com/googleapis/python-bigquery-storage/commit/9550ea666721f5dac5b708e2537de29a9bef7cd9))
+
+
+### Bug Fixes
+
+* Do not set BidiRpc to None when closing it ([#698](https://github.com/googleapis/python-bigquery-storage/issues/698)) ([7921561](https://github.com/googleapis/python-bigquery-storage/commit/792156175a15a221932481663931bd1e71e9b6c6))
+* **samples:** Catch EOFError in quickstart ([#708](https://github.com/googleapis/python-bigquery-storage/issues/708)) ([1683879](https://github.com/googleapis/python-bigquery-storage/commit/1683879b44477ae849f68e350d38143f88b657aa))
+
+
+### Documentation
+
+* Minor formatting ([cbde9a6](https://github.com/googleapis/python-bigquery-storage/commit/cbde9a6d475fa8c74b3cacee8ded5ad8a76b9492))
+
 ## [2.22.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.21.0...v2.22.0) (2023-07-06)
 
 
