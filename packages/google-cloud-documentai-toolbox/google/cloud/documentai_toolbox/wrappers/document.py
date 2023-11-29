@@ -396,13 +396,15 @@ class Document:
             else [document_path]
         )
 
-        documents = [
-            documentai.Document.from_json(
-                open(file_path, "r", encoding="utf-8").read(),
-                ignore_unknown_fields=True,
-            )
-            for file_path in document_paths
-        ]
+        documents: List[documentai.Document] = []
+        for file_path in document_paths:
+            with open(file_path, "r", encoding="utf-8") as file:
+                json_content = file.read()
+                document = documentai.Document.from_json(
+                    json_content,
+                    ignore_unknown_fields=True,
+                )
+                documents.append(document)
 
         return cls(shards=documents)
 
