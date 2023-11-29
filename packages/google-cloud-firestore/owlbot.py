@@ -322,20 +322,6 @@ def lint_setup_py(session):
 ''',
 )
 
-s.replace(
-    ".coveragerc",
-    """\
-    raise NotImplementedError
-omit =
-""",
-    """\
-    raise NotImplementedError
-    # Ignore setuptools-less fallback
-    except pkg_resources.DistributionNotFound:
-omit =
-""",
-)
-
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
 s.replace(
