@@ -16,7 +16,7 @@ import io
 import re
 import os
 
-from setuptools import find_packages, setup
+from setuptools import find_namespace_packages, setup
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
@@ -37,7 +37,7 @@ setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     url="https://github.com/googleapis/proto-plus-python.git",
-    packages=find_packages(exclude=["docs", "tests"]),
+    packages=find_namespace_packages(exclude=["docs", "tests"]),
     description="Beautiful, Pythonic protocol buffers.",
     long_description=README,
     platforms="Posix; MacOS X",
