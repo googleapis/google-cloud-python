@@ -36,14 +36,14 @@ from google.cloud.logging_v2 import gapic_version as package_version
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
 
 from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
@@ -278,7 +278,7 @@ class LoggingServiceV2AsyncClient:
                 This corresponds to the ``log_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -305,7 +305,7 @@ class LoggingServiceV2AsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_log,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -472,7 +472,7 @@ class LoggingServiceV2AsyncClient:
                 This corresponds to the ``entries`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -510,7 +510,7 @@ class LoggingServiceV2AsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.write_log_entries,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -629,7 +629,7 @@ class LoggingServiceV2AsyncClient:
                 This corresponds to the ``order_by`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -668,7 +668,7 @@ class LoggingServiceV2AsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_log_entries,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -746,7 +746,7 @@ class LoggingServiceV2AsyncClient:
             request (Optional[Union[google.cloud.logging_v2.types.ListMonitoredResourceDescriptorsRequest, dict]]):
                 The request object. The parameters to
                 ListMonitoredResourceDescriptors
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -768,7 +768,7 @@ class LoggingServiceV2AsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_monitored_resource_descriptors,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -857,7 +857,7 @@ class LoggingServiceV2AsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -893,7 +893,7 @@ class LoggingServiceV2AsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_logs,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -986,7 +986,7 @@ class LoggingServiceV2AsyncClient:
         Args:
             requests (AsyncIterator[`google.cloud.logging_v2.types.TailLogEntriesRequest`]):
                 The request object AsyncIterator. The parameters to ``TailLogEntries``.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1001,7 +1001,7 @@ class LoggingServiceV2AsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.tail_log_entries,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -1041,7 +1041,7 @@ class LoggingServiceV2AsyncClient:
             request (:class:`~.operations_pb2.ListOperationsRequest`):
                 The request object. Request message for
                 `ListOperations` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1058,7 +1058,7 @@ class LoggingServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_operations,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1095,7 +1095,7 @@ class LoggingServiceV2AsyncClient:
             request (:class:`~.operations_pb2.GetOperationRequest`):
                 The request object. Request message for
                 `GetOperation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1112,7 +1112,7 @@ class LoggingServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_operation,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1153,7 +1153,7 @@ class LoggingServiceV2AsyncClient:
             request (:class:`~.operations_pb2.CancelOperationRequest`):
                 The request object. Request message for
                 `CancelOperation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1169,7 +1169,7 @@ class LoggingServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.cancel_operation,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
