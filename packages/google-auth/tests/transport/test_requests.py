@@ -545,16 +545,12 @@ class TestMutualTlsOffloadAdapter(object):
         google.auth.transport._custom_tls_signer.CustomTlsSigner, "load_libraries"
     )
     @mock.patch.object(
-        google.auth.transport._custom_tls_signer.CustomTlsSigner, "set_up_custom_key"
-    )
-    @mock.patch.object(
         google.auth.transport._custom_tls_signer.CustomTlsSigner,
         "attach_to_ssl_context",
     )
     def test_success(
         self,
         mock_attach_to_ssl_context,
-        mock_set_up_custom_key,
         mock_load_libraries,
         mock_proxy_manager_for,
         mock_init_poolmanager,
@@ -565,7 +561,6 @@ class TestMutualTlsOffloadAdapter(object):
         )
 
         mock_load_libraries.assert_called_once()
-        mock_set_up_custom_key.assert_called_once()
         assert mock_attach_to_ssl_context.call_count == 2
 
         adapter.init_poolmanager()

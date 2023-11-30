@@ -107,6 +107,22 @@ def load_signer_lib(signer_lib_path):
     return lib
 
 
+def load_provider_lib(provider_lib_path):
+    _LOGGER.debug("loading provider library from %s", provider_lib_path)
+
+    # winmode parameter is only available for python 3.8+.
+    lib = (
+        ctypes.CDLL(provider_lib_path, winmode=0)
+        if sys.version_info >= (3, 8) and os.name == "nt"
+        else ctypes.CDLL(provider_lib_path)
+    )
+
+    lib.ECP_attach_to_ctx.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+    lib.ECP_attach_to_ctx.restype = ctypes.c_int
+
+    return lib
+
+
 # Computes SHA256 hash.
 def _compute_sha256_digest(to_be_signed, to_be_signed_len):
     from cryptography.hazmat.primitives import hashes
@@ -199,21 +215,31 @@ class CustomTlsSigner(object):
         self._enterprise_cert_file_path = enterprise_cert_file_path
         self._cert = None
         self._sign_callback = None
+        self._provider_lib = None
 
     def load_libraries(self):
-        try:
-            with open(self._enterprise_cert_file_path, "r") as f:
-                enterprise_cert_json = json.load(f)
-                libs = enterprise_cert_json["libs"]
-                signer_library = libs["ecp_client"]
-                offload_library = libs["tls_offload"]
-        except (KeyError, ValueError) as caught_exc:
-            new_exc = exceptions.MutualTLSChannelError(
-                "enterprise cert file is invalid", caught_exc
-            )
-            raise new_exc from caught_exc
-        self._offload_lib = load_offload_lib(offload_library)
-        self._signer_lib = load_signer_lib(signer_library)
+        with open(self._enterprise_cert_file_path, "r") as f:
+            enterprise_cert_json = json.load(f)
+            libs = enterprise_cert_json.get("libs", {})
+
+            signer_library = libs.get("ecp_client", None)
+            offload_library = libs.get("tls_offload", None)
+            provider_library = libs.get("ecp_provider", None)
+
+        # Using newer provider implementation. This is mutually exclusive to the
+        # offload implementation.
+        if provider_library:
+            self._provider_lib = load_provider_lib(provider_library)
+            return
+
+        # Using old offload implementation
+        if offload_library and signer_library:
+            self._offload_lib = load_offload_lib(offload_library)
+            self._signer_lib = load_signer_lib(signer_library)
+            self.set_up_custom_key()
+            return
+
+        raise exceptions.MutualTLSChannelError("enterprise cert file is invalid")
 
     def set_up_custom_key(self):
         # We need to keep a reference of the cert and sign callback so it won't
@@ -224,11 +250,22 @@ class CustomTlsSigner(object):
         )
 
     def attach_to_ssl_context(self, ctx):
-        # In the TLS handshake, the signing operation will be done by the
-        # sign_callback.
-        if not self._offload_lib.ConfigureSslContext(
-            self._sign_callback,
-            ctypes.c_char_p(self._cert),
-            _cast_ssl_ctx_to_void_p(ctx._ctx._context),
-        ):
-            raise exceptions.MutualTLSChannelError("failed to configure SSL context")
+        if self._provider_lib:
+            if not self._provider_lib.ECP_attach_to_ctx(
+                _cast_ssl_ctx_to_void_p(ctx._ctx._context),
+                self._enterprise_cert_file_path.encode("ascii"),
+            ):
+                raise exceptions.MutualTLSChannelError(
+                    "failed to configure ECP Provider SSL context"
+                )
+        elif self._offload_lib and self._signer_lib:
+            if not self._offload_lib.ConfigureSslContext(
+                self._sign_callback,
+                ctypes.c_char_p(self._cert),
+                _cast_ssl_ctx_to_void_p(ctx._ctx._context),
+            ):
+                raise exceptions.MutualTLSChannelError(
+                    "failed to configure ECP Offload SSL context"
+                )
+        else:
+            raise exceptions.MutualTLSChannelError("Invalid ECP configuration.")

@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 import base64
 import ctypes
 import os
@@ -30,9 +29,17 @@ FAKE_ENTERPRISE_CERT_FILE_PATH = "/path/to/enterprise/cert/file"
 ENTERPRISE_CERT_FILE = os.path.join(
     os.path.dirname(__file__), "../data/enterprise_cert_valid.json"
 )
+ENTERPRISE_CERT_FILE_PROVIDER = os.path.join(
+    os.path.dirname(__file__), "../data/enterprise_cert_valid_provider.json"
+)
 INVALID_ENTERPRISE_CERT_FILE = os.path.join(
     os.path.dirname(__file__), "../data/enterprise_cert_invalid.json"
 )
+
+
+def test_load_provider_lib():
+    with mock.patch("ctypes.CDLL", return_value=mock.MagicMock()):
+        _custom_tls_signer.load_provider_lib("/path/to/provider/lib")
 
 
 def test_load_offload_lib():
@@ -173,62 +180,81 @@ def test_custom_tls_signer():
         ) as load_offload_lib:
             load_offload_lib.return_value = offload_lib
             load_signer_lib.return_value = signer_lib
-            signer_object = _custom_tls_signer.CustomTlsSigner(ENTERPRISE_CERT_FILE)
-            signer_object.load_libraries()
-    assert signer_object._cert is None
+            with mock.patch(
+                "google.auth.transport._custom_tls_signer.get_cert"
+            ) as get_cert:
+                with mock.patch(
+                    "google.auth.transport._custom_tls_signer.get_sign_callback"
+                ) as get_sign_callback:
+                    get_cert.return_value = b"mock_cert"
+                    signer_object = _custom_tls_signer.CustomTlsSigner(
+                        ENTERPRISE_CERT_FILE
+                    )
+                    signer_object.load_libraries()
+                    signer_object.attach_to_ssl_context(create_urllib3_context())
+                    get_cert.assert_called_once()
+                    get_sign_callback.assert_called_once()
+                    offload_lib.ConfigureSslContext.assert_called_once()
     assert signer_object._enterprise_cert_file_path == ENTERPRISE_CERT_FILE
     assert signer_object._offload_lib == offload_lib
     assert signer_object._signer_lib == signer_lib
     load_signer_lib.assert_called_with("/path/to/signer/lib")
     load_offload_lib.assert_called_with("/path/to/offload/lib")
 
-    # Test set_up_custom_key and set_up_ssl_context methods
-    with mock.patch("google.auth.transport._custom_tls_signer.get_cert") as get_cert:
-        with mock.patch(
-            "google.auth.transport._custom_tls_signer.get_sign_callback"
-        ) as get_sign_callback:
-            get_cert.return_value = b"mock_cert"
-            signer_object.set_up_custom_key()
-            signer_object.attach_to_ssl_context(create_urllib3_context())
-    get_cert.assert_called_once()
-    get_sign_callback.assert_called_once()
-    offload_lib.ConfigureSslContext.assert_called_once()
+
+def test_custom_tls_signer_provider():
+    provider_lib = mock.MagicMock()
+
+    # Test load_libraries method
+    with mock.patch(
+        "google.auth.transport._custom_tls_signer.load_provider_lib"
+    ) as load_provider_lib:
+        load_provider_lib.return_value = provider_lib
+        signer_object = _custom_tls_signer.CustomTlsSigner(
+            ENTERPRISE_CERT_FILE_PROVIDER
+        )
+        signer_object.load_libraries()
+        signer_object.attach_to_ssl_context(mock.MagicMock())
+
+    assert signer_object._enterprise_cert_file_path == ENTERPRISE_CERT_FILE_PROVIDER
+    assert signer_object._provider_lib == provider_lib
+    load_provider_lib.assert_called_with("/path/to/provider/lib")
 
 
 def test_custom_tls_signer_failed_to_load_libraries():
-    # Test load_libraries method
     with pytest.raises(exceptions.MutualTLSChannelError) as excinfo:
         signer_object = _custom_tls_signer.CustomTlsSigner(INVALID_ENTERPRISE_CERT_FILE)
         signer_object.load_libraries()
     assert excinfo.match("enterprise cert file is invalid")
 
 
-def test_custom_tls_signer_fail_to_offload():
-    offload_lib = mock.MagicMock()
-    signer_lib = mock.MagicMock()
-
-    with mock.patch(
-        "google.auth.transport._custom_tls_signer.load_signer_lib"
-    ) as load_signer_lib:
-        with mock.patch(
-            "google.auth.transport._custom_tls_signer.load_offload_lib"
-        ) as load_offload_lib:
-            load_offload_lib.return_value = offload_lib
-            load_signer_lib.return_value = signer_lib
-            signer_object = _custom_tls_signer.CustomTlsSigner(ENTERPRISE_CERT_FILE)
-            signer_object.load_libraries()
-
-    # set the return value to be 0 which indicts offload fails
-    offload_lib.ConfigureSslContext.return_value = 0
-
+def test_custom_tls_signer_failed_to_attach():
     with pytest.raises(exceptions.MutualTLSChannelError) as excinfo:
-        with mock.patch(
-            "google.auth.transport._custom_tls_signer.get_cert"
-        ) as get_cert:
-            with mock.patch(
-                "google.auth.transport._custom_tls_signer.get_sign_callback"
-            ):
-                get_cert.return_value = b"mock_cert"
-                signer_object.set_up_custom_key()
-                signer_object.attach_to_ssl_context(create_urllib3_context())
-    assert excinfo.match("failed to configure SSL context")
+        signer_object = _custom_tls_signer.CustomTlsSigner(ENTERPRISE_CERT_FILE)
+        signer_object._offload_lib = mock.MagicMock()
+        signer_object._signer_lib = mock.MagicMock()
+        signer_object._sign_callback = mock.MagicMock()
+        signer_object._cert = b"mock cert"
+        signer_object._offload_lib.ConfigureSslContext.return_value = False
+        signer_object.attach_to_ssl_context(mock.MagicMock())
+    assert excinfo.match("failed to configure ECP Offload SSL context")
+
+
+def test_custom_tls_signer_failed_to_attach_provider():
+    with pytest.raises(exceptions.MutualTLSChannelError) as excinfo:
+        signer_object = _custom_tls_signer.CustomTlsSigner(
+            ENTERPRISE_CERT_FILE_PROVIDER
+        )
+        signer_object._provider_lib = mock.MagicMock()
+        signer_object._provider_lib.ECP_attach_to_ctx.return_value = False
+        signer_object.attach_to_ssl_context(mock.MagicMock())
+    assert excinfo.match("failed to configure ECP Provider SSL context")
+
+
+def test_custom_tls_signer_failed_to_attach_no_libs():
+    with pytest.raises(exceptions.MutualTLSChannelError) as excinfo:
+        signer_object = _custom_tls_signer.CustomTlsSigner(ENTERPRISE_CERT_FILE)
+        signer_object._offload_lib = None
+        signer_object._signer_lib = None
+        signer_object.attach_to_ssl_context(mock.MagicMock())
+    assert excinfo.match("Invalid ECP configuration.")
