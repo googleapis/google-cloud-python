@@ -1,0 +1,2 @@
+recursive-include google/cloud/osconfig *.py
+recursive-include google/cloud/osconfig_v1alpha *.py
