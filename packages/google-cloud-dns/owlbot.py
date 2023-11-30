@@ -32,5 +32,13 @@ s.move(templated_files, excludes=["docs/multiprocessing.rst", "README.rst"])
 
 python.py_samples(skip_readmes=True)
 
+s.replace(
+    "noxfile.py",
+    """    # Use pre-release gRPC for system tests.
+    # Exclude version 1.52.0rc1 which has a known issue.
+    # See https://github.com/grpc/grpc/issues/32163
+    session.install\("--pre", "grpcio!=1.52.0rc1"\)""",
+    ""
+)
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 

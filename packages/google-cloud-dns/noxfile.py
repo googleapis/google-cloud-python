@@ -190,11 +190,6 @@ def unit(session):
 
 
 def install_systemtest_dependencies(session, *constraints):
-    # Use pre-release gRPC for system tests.
-    # Exclude version 1.52.0rc1 which has a known issue.
-    # See https://github.com/grpc/grpc/issues/32163
-    session.install("--pre", "grpcio!=1.52.0rc1")
-
     session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES, *constraints)
 
     if SYSTEM_TEST_EXTERNAL_DEPENDENCIES:
