@@ -1,4 +1,5 @@
 google-cloud-pubsub==2.18.4
 avro==1.11.3
-protobuf==4.24.4
+protobuf===4.24.4; python_version == '3.7'
+protobuf==4.25.1; python_version >= '3.8'
 avro==1.11.3
