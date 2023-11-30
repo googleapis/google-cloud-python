@@ -20,7 +20,7 @@ You can install using `pip`_::
 
 For more information on setting up your Python development environment, please refer to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
-.. _`Python Development Environment Setup Guide`: https://cloud.google.com/python/setup
+.. _`Python Development Environment Setup Guide`: https://cloud.google.com/python/docs/setup
 
 Extras
 ------
