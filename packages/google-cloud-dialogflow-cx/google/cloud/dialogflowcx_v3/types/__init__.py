@@ -124,6 +124,16 @@ from .flow import (
 from .fulfillment import Fulfillment
 from .gcs import GcsDestination
 from .generative_settings import GenerativeSettings
+from .generator import (
+    CreateGeneratorRequest,
+    DeleteGeneratorRequest,
+    Generator,
+    GetGeneratorRequest,
+    ListGeneratorsRequest,
+    ListGeneratorsResponse,
+    Phrase,
+    UpdateGeneratorRequest,
+)
 from .inline import InlineDestination, InlineSource
 from .intent import (
     CreateIntentRequest,
@@ -372,6 +382,14 @@ __all__ = (
     "Fulfillment",
     "GcsDestination",
     "GenerativeSettings",
+    "CreateGeneratorRequest",
+    "DeleteGeneratorRequest",
+    "Generator",
+    "GetGeneratorRequest",
+    "ListGeneratorsRequest",
+    "ListGeneratorsResponse",
+    "Phrase",
+    "UpdateGeneratorRequest",
     "ImportStrategy",
     "InlineDestination",
     "InlineSource",
