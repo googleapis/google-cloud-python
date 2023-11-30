@@ -1,0 +1,2 @@
+recursive-include google/cloud/storage_transfer *.py
+recursive-include google/cloud/storage_transfer_v1 *.py
