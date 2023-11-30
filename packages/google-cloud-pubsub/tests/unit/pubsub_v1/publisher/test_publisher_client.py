@@ -636,7 +636,7 @@ def test_resume_publish(creds):
     client._set_sequencer(topic=topic, sequencer=sequencer, ordering_key=ordering_key)
 
     client.resume_publish(topic, ordering_key)
-    assert sequencer.unpause.called_once()
+    sequencer.unpause.assert_called_once()
 
 
 def test_resume_publish_no_sequencer_found(creds):
