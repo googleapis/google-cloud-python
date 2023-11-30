@@ -50,23 +50,22 @@ def _entities_from_shards(
         List[Entity]:
             a list of Entities.
     """
-    result = []
-    # Needed to load the correct page index for sharded documents.
-    page_offset = 0
-    for shard in shards:
-        entities = [
-            Entity(documentai_object=entity, page_offset=page_offset)
-            for entity in shard.entities
-        ]
-        properties = [
-            Entity(documentai_object=prop, page_offset=page_offset)
-            for entity in shard.entities
-            for prop in entity.properties
-        ]
-        result.extend(entities + properties)
-        page_offset += len(shard.pages)
+    result = [
+        Entity(
+            documentai_object=item,
+            # Needed to load the correct page index for sharded documents.
+            page_offset=sum(len(shard.pages) for shard in shards[:i]),
+        )
+        for i, shard in enumerate(shards)
+        for entity in shard.entities
+        for item in (entity, *entity.properties)
+    ]
 
-    if len(result) > 1 and result[0].documentai_object.id:
+    # https://github.com/googleapis/python-documentai-toolbox/issues/199
+    # Only sort entities if the ids are all numeric.
+    # Document AI Workbench labeling outputs hexadecimal ids which should not be sorted.
+    # Sorting numeric ids is needed for backwards-compatible behavior.
+    if len(result) > 1 and all(item.documentai_object.id.isdigit() for item in result):
         result.sort(key=lambda x: int(x.documentai_object.id))
     return result
 

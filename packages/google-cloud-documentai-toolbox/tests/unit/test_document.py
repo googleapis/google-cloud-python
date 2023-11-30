@@ -109,6 +109,7 @@ def create_document_with_images_without_bbox(get_bytes_images_mock):
     doc = document.Document.from_gcs(
         gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
     )
+    get_bytes_images_mock.assert_called_once()
 
     del (
         doc.entities[0]
@@ -169,7 +170,7 @@ def test_pages_from_shards():
         assert page.page_number == page_index + 1
 
 
-def test_entities_from_shard():
+def test_entities_from_shards():
     shards = []
     for byte in get_bytes("tests/unit/resources/0"):
         shards.append(documentai.Document.from_json(byte))
@@ -181,6 +182,22 @@ def test_entities_from_shard():
     assert actual[1].mention_text == "$140.00"
     assert actual[1].type_ == "vat/tax_amount"
     assert actual[1].normalized_text == "140 USD"
+
+
+# For documents labeled in Document AI Workbench
+def test_entities_from_shards_with_hex_ids():
+    shards = []
+    for byte in get_bytes("tests/unit/resources/hex_ids"):
+        shards.append(documentai.Document.from_json(byte))
+
+    actual = document._entities_from_shards(shards=shards)
+
+    assert actual[0].documentai_object.id == "ef4fd8a921c0ea81"
+    assert actual[0].mention_text == "453,945"
+    assert actual[0].type_ == "application_number"
+    assert actual[1].documentai_object.id == "ef4fd8a921c0e000"
+    assert actual[1].mention_text == "G06F 1/26"
+    assert actual[1].type_ == "class_international"
 
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.documentai")
