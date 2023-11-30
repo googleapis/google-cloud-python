@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.12.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.11.2-alpha...v0.12.0-alpha) (2023-11-30)
+
+
+### Features
+
+* Add support for Python 3.12 ([1ff4bf7](https://github.com/googleapis/python-documentai-toolbox/commit/1ff4bf757a86349402e74d206aca1df677ad9ff1))
+* Introduce compatibility with native namespace packages ([#201](https://github.com/googleapis/python-documentai-toolbox/issues/201)) ([d178acb](https://github.com/googleapis/python-documentai-toolbox/commit/d178acb50a7ad4a0ce0bc7f6fc4550a87dc7a252))
+
+
+### Bug Fixes
+
+* Implement lazy-loading of properties to speed up initialization ([#205](https://github.com/googleapis/python-documentai-toolbox/issues/205)) ([7001c76](https://github.com/googleapis/python-documentai-toolbox/commit/7001c765864b0b364a45cbe376821423870afb1e))
+* Prevent sorting entities labeled in Document AI Workbench ([#200](https://github.com/googleapis/python-documentai-toolbox/issues/200)) ([d843e51](https://github.com/googleapis/python-documentai-toolbox/commit/d843e51cfe4dfa9afd6c93f9a6902ac613ac31f2))
+
 ## [0.11.2-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.11.1-alpha...v0.11.2-alpha) (2023-11-07)
 
 
