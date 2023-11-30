@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.24.0](https://github.com/googleapis/google-auth-library-python/compare/v2.23.4...v2.24.0) (2023-11-29)
+
+
+### Features
+
+* Add support for Python 3.12 ([#1421](https://github.com/googleapis/google-auth-library-python/issues/1421)) ([307916c](https://github.com/googleapis/google-auth-library-python/commit/307916cdd99fc99bb4de567848f0809746db0562))
+* Add universe domain support for VM cred ([#1409](https://github.com/googleapis/google-auth-library-python/issues/1409)) ([7ab0fce](https://github.com/googleapis/google-auth-library-python/commit/7ab0fced0008ad9283c955b7dd7e2b7db55ae5e7))
+* Modify the token refresh window ([#1419](https://github.com/googleapis/google-auth-library-python/issues/1419)) ([c6af1d6](https://github.com/googleapis/google-auth-library-python/commit/c6af1d692b43833baca978948376739547cf685a))
+
+
+### Bug Fixes
+
+* Add missing before request to async oauth2 credentials. ([#1420](https://github.com/googleapis/google-auth-library-python/issues/1420)) ([8eaa878](https://github.com/googleapis/google-auth-library-python/commit/8eaa878618f648b1dac35b9f420651f22e357445))
+* Auto create self signed jwt cred ([#1418](https://github.com/googleapis/google-auth-library-python/issues/1418)) ([6c610a5](https://github.com/googleapis/google-auth-library-python/commit/6c610a564e833545837991f473b98139740b8866))
+* Migrate datetime.utcnow for python 3.12 ([#1413](https://github.com/googleapis/google-auth-library-python/issues/1413)) ([e4d9c27](https://github.com/googleapis/google-auth-library-python/commit/e4d9c278375647e6c21754f42b81819827beb5e4))
+
+
+### Documentation
+
+* Update user cred doc ([#1414](https://github.com/googleapis/google-auth-library-python/issues/1414)) ([3f426bc](https://github.com/googleapis/google-auth-library-python/commit/3f426bc05c5620e612a54e21fb6562e965ba24bd))
+
 ## [2.23.4](https://github.com/googleapis/google-auth-library-python/compare/v2.23.3...v2.23.4) (2023-10-31)
 
 
