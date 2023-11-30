@@ -106,7 +106,7 @@ def mypy(session):
     # TODO: Only check the hand-written layer, the generated code does not pass
     # mypy checks yet.
     # https://github.com/googleapis/gapic-generator-python/issues/1092
-    session.run("mypy", "google/cloud")
+    session.run("mypy", "-p", "google.cloud")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
