@@ -149,7 +149,7 @@ def unit(session):
     default(session)
 
 
-@nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11"])
+@nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"])
 def unit_grpc_gcp(session):
     """Run the unit test suite with grpcio-gcp installed."""
     constraints_path = str(
@@ -163,7 +163,7 @@ def unit_grpc_gcp(session):
     default(session)
 
 
-@nox.session(python=["3.8", "3.10", "3.11"])
+@nox.session(python=["3.8", "3.10", "3.11", "3.12"])
 def unit_wo_grpc(session):
     """Run the unit test suite w/o grpcio installed"""
     default(session, install_grpc=False)
