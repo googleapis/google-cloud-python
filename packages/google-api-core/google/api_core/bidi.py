@@ -93,10 +93,7 @@ class _RequestQueueGenerator(object):
         # property is set. So we have to check if self.call is set before
         # seeing if it's active. We need to return True if self.call is None.
         # See https://github.com/googleapis/python-api-core/issues/560.
-        if self.call is not None and not self.call.is_active():
-            return False
-        else:
-            return True
+        return self.call is None or self.call.is_active()
 
     def __iter__(self):
         if self._initial_request is not None:
