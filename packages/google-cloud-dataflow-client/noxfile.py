@@ -35,7 +35,7 @@ LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.10"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.7", "3.8", "3.9", "3.10", "3.11"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -49,7 +49,7 @@ UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
@@ -339,7 +339,7 @@ def docfx(session):
     )
 
 
-@nox.session(python="3.11")
+@nox.session(python="3.12")
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed."""
 
