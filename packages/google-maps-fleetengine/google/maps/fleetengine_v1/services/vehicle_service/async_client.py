@@ -31,7 +31,7 @@ import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
@@ -39,9 +39,9 @@ from google.oauth2 import service_account  # type: ignore
 from google.maps.fleetengine_v1 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
@@ -289,7 +289,7 @@ class VehicleServiceAsyncClient:
         Args:
             request (Optional[Union[google.maps.fleetengine_v1.types.CreateVehicleRequest, dict]]):
                 The request object. ``CreateVehicle`` request message.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -306,7 +306,7 @@ class VehicleServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_vehicle,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -375,7 +375,7 @@ class VehicleServiceAsyncClient:
         Args:
             request (Optional[Union[google.maps.fleetengine_v1.types.GetVehicleRequest, dict]]):
                 The request object. ``GetVehicle`` request message.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -392,7 +392,7 @@ class VehicleServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_vehicle,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -478,7 +478,7 @@ class VehicleServiceAsyncClient:
         Args:
             request (Optional[Union[google.maps.fleetengine_v1.types.UpdateVehicleRequest, dict]]):
                 The request object. \`UpdateVehicle request message.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -495,7 +495,7 @@ class VehicleServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_vehicle,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -565,7 +565,7 @@ class VehicleServiceAsyncClient:
         Args:
             request (Optional[Union[google.maps.fleetengine_v1.types.UpdateVehicleLocationRequest, dict]]):
                 The request object. ``UpdateVehicleLocation`` request message.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -660,7 +660,7 @@ class VehicleServiceAsyncClient:
         Args:
             request (Optional[Union[google.maps.fleetengine_v1.types.UpdateVehicleAttributesRequest, dict]]):
                 The request object. ``UpdateVehicleAttributes`` request message.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -677,7 +677,7 @@ class VehicleServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_vehicle_attributes,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -749,7 +749,7 @@ class VehicleServiceAsyncClient:
         Args:
             request (Optional[Union[google.maps.fleetengine_v1.types.ListVehiclesRequest, dict]]):
                 The request object. ``ListVehicles`` request message.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -845,7 +845,7 @@ class VehicleServiceAsyncClient:
         Args:
             request (Optional[Union[google.maps.fleetengine_v1.types.SearchVehiclesRequest, dict]]):
                 The request object. ``SearchVehicles`` request message.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -862,7 +862,7 @@ class VehicleServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.search_vehicles,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -936,7 +936,7 @@ class VehicleServiceAsyncClient:
         Args:
             request (Optional[Union[google.maps.fleetengine_v1.types.SearchVehiclesRequest, dict]]):
                 The request object. ``SearchVehicles`` request message.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
