@@ -140,12 +140,12 @@ replacements:
     ]
     before: |
       \]
-      url = \"https://github.com/googleapis/google-cloud-python\"
+      url = \"https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-monitoring\"
     after: |
       ]
       extras = {"pandas": "pandas >= 0.23.2"}
 
-      url = "https://github.com/googleapis/google-cloud-python"
+      url = \"https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-monitoring\"
     count: 1
   - paths: [
       packages/google-cloud-monitoring/testing/constraints-3.7.txt,
