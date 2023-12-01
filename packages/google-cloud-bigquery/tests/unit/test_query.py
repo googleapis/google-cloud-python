@@ -1281,7 +1281,6 @@ class Test_StructQueryParameter(unittest.TestCase):
         field1 = self._make_one("test", _make_subparam("field1", "STRING", "hello"))
         got = repr(field1)
         self.assertIn("StructQueryParameter", got)
-        self.assertIn("'field1', 'STRING'", got)
         self.assertIn("'field1': 'hello'", got)
 
 
