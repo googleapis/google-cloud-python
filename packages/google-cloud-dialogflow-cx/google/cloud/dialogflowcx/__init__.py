@@ -42,6 +42,10 @@ from google.cloud.dialogflowcx_v3.services.experiments.async_client import (
 from google.cloud.dialogflowcx_v3.services.experiments.client import ExperimentsClient
 from google.cloud.dialogflowcx_v3.services.flows.async_client import FlowsAsyncClient
 from google.cloud.dialogflowcx_v3.services.flows.client import FlowsClient
+from google.cloud.dialogflowcx_v3.services.generators.async_client import (
+    GeneratorsAsyncClient,
+)
+from google.cloud.dialogflowcx_v3.services.generators.client import GeneratorsClient
 from google.cloud.dialogflowcx_v3.services.intents.async_client import (
     IntentsAsyncClient,
 )
@@ -196,6 +200,16 @@ from google.cloud.dialogflowcx_v3.types.flow import (
 from google.cloud.dialogflowcx_v3.types.fulfillment import Fulfillment
 from google.cloud.dialogflowcx_v3.types.gcs import GcsDestination
 from google.cloud.dialogflowcx_v3.types.generative_settings import GenerativeSettings
+from google.cloud.dialogflowcx_v3.types.generator import (
+    CreateGeneratorRequest,
+    DeleteGeneratorRequest,
+    Generator,
+    GetGeneratorRequest,
+    ListGeneratorsRequest,
+    ListGeneratorsResponse,
+    Phrase,
+    UpdateGeneratorRequest,
+)
 from google.cloud.dialogflowcx_v3.types.import_strategy import ImportStrategy
 from google.cloud.dialogflowcx_v3.types.inline import InlineDestination, InlineSource
 from google.cloud.dialogflowcx_v3.types.intent import (
@@ -366,6 +380,8 @@ __all__ = (
     "ExperimentsAsyncClient",
     "FlowsClient",
     "FlowsAsyncClient",
+    "GeneratorsClient",
+    "GeneratorsAsyncClient",
     "IntentsClient",
     "IntentsAsyncClient",
     "PagesClient",
@@ -480,6 +496,14 @@ __all__ = (
     "Fulfillment",
     "GcsDestination",
     "GenerativeSettings",
+    "CreateGeneratorRequest",
+    "DeleteGeneratorRequest",
+    "Generator",
+    "GetGeneratorRequest",
+    "ListGeneratorsRequest",
+    "ListGeneratorsResponse",
+    "Phrase",
+    "UpdateGeneratorRequest",
     "ImportStrategy",
     "InlineDestination",
     "InlineSource",
