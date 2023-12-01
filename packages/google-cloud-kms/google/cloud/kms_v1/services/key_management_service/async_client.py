@@ -30,7 +30,7 @@ from typing import (
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
@@ -38,9 +38,9 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.kms_v1 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
@@ -303,7 +303,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -339,7 +339,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_key_rings,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -429,7 +429,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -465,7 +465,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_crypto_keys,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -556,7 +556,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -592,7 +592,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_crypto_key_versions,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -682,7 +682,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -718,7 +718,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_import_jobs,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -807,7 +807,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -840,7 +840,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_key_ring,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -923,7 +923,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -962,7 +962,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_crypto_key,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -1044,7 +1044,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1089,7 +1089,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_crypto_key_version,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -1176,7 +1176,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1211,7 +1211,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_public_key,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -1292,7 +1292,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1369,7 +1369,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_import_job,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -1467,7 +1467,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``key_ring`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1504,7 +1504,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_key_ring,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -1606,7 +1606,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``crypto_key`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1649,7 +1649,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_crypto_key,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -1746,7 +1746,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``crypto_key_version`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1866,7 +1866,7 @@ class KeyManagementServiceAsyncClient:
             request (Optional[Union[google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest, dict]]):
                 The request object. Request message for
                 [KeyManagementService.ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1993,7 +1993,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``import_job`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -2074,7 +2074,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_import_job,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -2160,7 +2160,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -2201,7 +2201,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_crypto_key,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -2303,7 +2303,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -2350,7 +2350,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_crypto_key_version,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -2448,7 +2448,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``crypto_key_version_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -2489,7 +2489,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_crypto_key_primary_version,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -2591,7 +2591,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -2636,7 +2636,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.destroy_crypto_key_version,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -2727,7 +2727,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -2772,7 +2772,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.restore_crypto_key_version,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -2883,7 +2883,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``plaintext`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -2918,7 +2918,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.encrypt,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -3012,7 +3012,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``ciphertext`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -3047,7 +3047,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.decrypt,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -3126,7 +3126,7 @@ class KeyManagementServiceAsyncClient:
             request (Optional[Union[google.cloud.kms_v1.types.RawEncryptRequest, dict]]):
                 The request object. Request message for
                 [KeyManagementService.RawEncrypt][google.cloud.kms.v1.KeyManagementService.RawEncrypt].
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -3212,7 +3212,7 @@ class KeyManagementServiceAsyncClient:
             request (Optional[Union[google.cloud.kms_v1.types.RawDecryptRequest, dict]]):
                 The request object. Request message for
                 [KeyManagementService.RawDecrypt][google.cloud.kms.v1.KeyManagementService.RawDecrypt].
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -3320,7 +3320,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``digest`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -3355,7 +3355,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.asymmetric_sign,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -3451,7 +3451,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``ciphertext`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -3486,7 +3486,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.asymmetric_decrypt,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -3580,7 +3580,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``data`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -3615,7 +3615,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.mac_sign,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -3716,7 +3716,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``mac`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -3753,7 +3753,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.mac_verify,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -3854,7 +3854,7 @@ class KeyManagementServiceAsyncClient:
                 This corresponds to the ``protection_level`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -3891,7 +3891,7 @@ class KeyManagementServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.generate_random_bytes,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -3936,7 +3936,7 @@ class KeyManagementServiceAsyncClient:
             request (:class:`~.location_pb2.GetLocationRequest`):
                 The request object. Request message for
                 `GetLocation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -3953,7 +3953,7 @@ class KeyManagementServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_location,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -3990,7 +3990,7 @@ class KeyManagementServiceAsyncClient:
             request (:class:`~.location_pb2.ListLocationsRequest`):
                 The request object. Request message for
                 `ListLocations` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -4007,7 +4007,7 @@ class KeyManagementServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
+        rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_locations,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
@@ -4046,7 +4046,7 @@ class KeyManagementServiceAsyncClient:
             request (:class:`~.policy_pb2.SetIamPolicyRequest`):
                 The request object. Request message for `SetIamPolicy`
                 method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -4167,7 +4167,7 @@ class KeyManagementServiceAsyncClient:
             request (:class:`~.iam_policy_pb2.GetIamPolicyRequest`):
                 The request object. Request message for `GetIamPolicy`
                 method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -4289,7 +4289,7 @@ class KeyManagementServiceAsyncClient:
             request (:class:`~.iam_policy_pb2.TestIamPermissionsRequest`):
                 The request object. Request message for
                 `TestIamPermissions` method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
