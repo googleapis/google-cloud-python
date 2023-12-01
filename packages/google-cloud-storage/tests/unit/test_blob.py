@@ -5923,7 +5923,7 @@ class Test_Blob(unittest.TestCase):
                 blob._do_download.assert_called()
                 called_headers = blob._do_download.call_args.args[-4]
                 self.assertIsInstance(called_headers, dict)
-                self.assertDictContainsSubset(custom_headers, called_headers)
+                self.assertLessEqual(custom_headers.items(), called_headers.items())
 
 
 class Test__quote(unittest.TestCase):

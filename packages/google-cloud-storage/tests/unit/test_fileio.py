@@ -434,7 +434,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         writer = self._make_blob_writer(blob)
 
         with self.assertRaises(io.UnsupportedOperation):
-            writer.seek()
+            writer.seek(0)
 
     def test_conditional_retry_failure(self):
         blob = mock.Mock()
