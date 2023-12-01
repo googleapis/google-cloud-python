@@ -3367,9 +3367,31 @@ class DataFrame(NDFrame):
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cummin(self) -> DataFrame:
-        """Return cumulative minimum over a DataFrame axis.
+        """Return cumulative minimum over columns.
 
         Returns a DataFrame of the same size containing the cumulative minimum.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [3, 1, 2], "B": [1, 2, 3]})
+            >>> df
+                A	B
+            0	3	1
+            1	1	2
+            2	2	3
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+            >>> df.cummin()
+                A	B
+            0	3	1
+            1	1	1
+            2	1	1
+            <BLANKLINE>
+            [3 rows x 2 columns]
 
         Returns:
             bigframes.dataframe.DataFrame: Return cumulative minimum of DataFrame.
@@ -3377,9 +3399,31 @@ class DataFrame(NDFrame):
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cummax(self) -> DataFrame:
-        """Return cumulative maximum over a DataFrame axis.
+        """Return cumulative maximum over columns.
 
         Returns a DataFrame of the same size containing the cumulative maximum.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [3, 1, 2], "B": [1, 2, 3]})
+            >>> df
+                A	B
+            0	3	1
+            1	1	2
+            2	2	3
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+            >>> df.cummax()
+                A	B
+            0	3	1
+            1	3	2
+            2	3	3
+            <BLANKLINE>
+            [3 rows x 2 columns]
 
         Returns:
             bigframes.dataframe.DataFrame: Return cumulative maximum of DataFrame.
@@ -3387,9 +3431,31 @@ class DataFrame(NDFrame):
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cumsum(self) -> DataFrame:
-        """Return cumulative sum over a DataFrame axis.
+        """Return cumulative sum over columns.
 
         Returns a DataFrame of the same size containing the cumulative sum.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [3, 1, 2], "B": [1, 2, 3]})
+            >>> df
+                A	B
+            0	3	1
+            1	1	2
+            2	2	3
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+            >>> df.cumsum()
+                A	B
+            0	3	1
+            1	4	3
+            2	6	6
+            <BLANKLINE>
+            [3 rows x 2 columns]
 
         Returns:
             bigframes.dataframe.DataFrame: Return cumulative sum of DataFrame.
@@ -3397,9 +3463,31 @@ class DataFrame(NDFrame):
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cumprod(self) -> DataFrame:
-        """Return cumulative product over a DataFrame axis.
+        """Return cumulative product over columns.
 
         Returns a DataFrame of the same size containing the cumulative product.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [3, 1, 2], "B": [1, 2, 3]})
+            >>> df
+                A	B
+            0	3	1
+            1	1	2
+            2	2	3
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+            >>> df.cumprod()
+                A	B
+            0	3	1
+            1	3	2
+            2	6	6
+            <BLANKLINE>
+            [3 rows x 2 columns]
 
         Returns:
             bigframes.dataframe.DataFrame: Return cumulative product of DataFrame.
