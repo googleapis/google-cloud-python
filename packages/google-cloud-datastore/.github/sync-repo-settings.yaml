@@ -28,6 +28,7 @@ branchProtectionRules:
     - 'unit (3.9)'
     - 'unit (3.10)'
     - 'unit (3.11)'
+    - 'unit (3.12)'
     - 'cover'
     - 'mypy'
 # List of explicit permissions to add (additive only)
