@@ -137,7 +137,7 @@ def mypy(session):
     session.install(
         "mypy", "types-setuptools", "types-mock", "types-protobuf", "types-requests"
     )
-    session.run("mypy", "google/")
+    session.run("mypy", "-p", "google")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
