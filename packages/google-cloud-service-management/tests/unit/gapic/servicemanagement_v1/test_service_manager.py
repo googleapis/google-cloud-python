@@ -6722,6 +6722,10 @@ def test_create_service_config_rest(request_type):
                         "max_poll_delay": {},
                         "total_poll_timeout": {},
                     },
+                    "auto_populated_fields": [
+                        "auto_populated_fields_value1",
+                        "auto_populated_fields_value2",
+                    ],
                 }
             ],
             "new_issue_uri": "new_issue_uri_value",

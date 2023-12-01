@@ -201,6 +201,26 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def recurring_audience_list_path(
+        property: str,
+        recurring_audience_list: str,
+    ) -> str:
+        """Returns a fully-qualified recurring_audience_list string."""
+        return "properties/{property}/recurringAudienceLists/{recurring_audience_list}".format(
+            property=property,
+            recurring_audience_list=recurring_audience_list,
+        )
+
+    @staticmethod
+    def parse_recurring_audience_list_path(path: str) -> Dict[str, str]:
+        """Parses a recurring_audience_list path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/recurringAudienceLists/(?P<recurring_audience_list>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
@@ -1191,6 +1211,412 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAudienceListsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_recurring_audience_list(
+        self,
+        request: Optional[
+            Union[analytics_data_api.CreateRecurringAudienceListRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        recurring_audience_list: Optional[
+            analytics_data_api.RecurringAudienceList
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_data_api.RecurringAudienceList:
+        r"""Creates a recurring audience list. Recurring audience lists
+        produces new audience lists each day. Audience lists are users
+        in an audience at the time of the list's creation.
+
+        A recurring audience list ensures that you have audience list
+        based on the most recent data available for use each day. If you
+        manually create audience list, you don't know when an audience
+        list based on an additional day's data is available. This
+        recurring audience list automates the creation of an audience
+        list when an additional day's data is available. You will
+        consume fewer quota tokens by using recurring audience list
+        versus manually creating audience list at various times of day
+        trying to guess when an additional day's data is ready.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            def sample_create_recurring_audience_list():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                recurring_audience_list = data_v1alpha.RecurringAudienceList()
+                recurring_audience_list.audience = "audience_value"
+
+                request = data_v1alpha.CreateRecurringAudienceListRequest(
+                    parent="parent_value",
+                    recurring_audience_list=recurring_audience_list,
+                )
+
+                # Make the request
+                response = client.create_recurring_audience_list(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.data_v1alpha.types.CreateRecurringAudienceListRequest, dict]):
+                The request object. A request to create a new recurring
+                audience list.
+            parent (str):
+                Required. The parent resource where this recurring
+                audience list will be created. Format:
+                ``properties/{property}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            recurring_audience_list (google.analytics.data_v1alpha.types.RecurringAudienceList):
+                Required. The recurring audience list
+                to create.
+
+                This corresponds to the ``recurring_audience_list`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1alpha.types.RecurringAudienceList:
+                A recurring audience list produces
+                new audience lists each day. Audience
+                lists are users in an audience at the
+                time of the list's creation. A recurring
+                audience list ensures that you have
+                audience list based on the most recent
+                data available for use each day.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, recurring_audience_list])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_data_api.CreateRecurringAudienceListRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_data_api.CreateRecurringAudienceListRequest
+        ):
+            request = analytics_data_api.CreateRecurringAudienceListRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if recurring_audience_list is not None:
+                request.recurring_audience_list = recurring_audience_list
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_recurring_audience_list
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_recurring_audience_list(
+        self,
+        request: Optional[
+            Union[analytics_data_api.GetRecurringAudienceListRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_data_api.RecurringAudienceList:
+        r"""Gets configuration metadata about a specific recurring audience
+        list. This method can be used to understand a recurring audience
+        list's state after it has been created. For example, a recurring
+        audience list resource will generate audience list instances for
+        each day, and this method can be used to get the resource name
+        of the most recent audience list instance.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            def sample_get_recurring_audience_list():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.GetRecurringAudienceListRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_recurring_audience_list(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.data_v1alpha.types.GetRecurringAudienceListRequest, dict]):
+                The request object. A request to retrieve configuration
+                metadata about a specific recurring
+                audience list.
+            name (str):
+                Required. The recurring audience list resource name.
+                Format:
+                ``properties/{property}/recurringAudienceLists/{recurring_audience_list}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1alpha.types.RecurringAudienceList:
+                A recurring audience list produces
+                new audience lists each day. Audience
+                lists are users in an audience at the
+                time of the list's creation. A recurring
+                audience list ensures that you have
+                audience list based on the most recent
+                data available for use each day.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_data_api.GetRecurringAudienceListRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_data_api.GetRecurringAudienceListRequest):
+            request = analytics_data_api.GetRecurringAudienceListRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_recurring_audience_list
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_recurring_audience_lists(
+        self,
+        request: Optional[
+            Union[analytics_data_api.ListRecurringAudienceListsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListRecurringAudienceListsPager:
+        r"""Lists all recurring audience lists for a property. This method
+        can be used for you to find and reuse existing recurring
+        audience lists rather than creating unnecessary new recurring
+        audience lists. The same audience can have multiple recurring
+        audience lists that represent different dimension combinations;
+        for example, just the dimension ``deviceId`` or both the
+        dimensions ``deviceId`` and ``userId``.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            def sample_list_recurring_audience_lists():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.ListRecurringAudienceListsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_recurring_audience_lists(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.analytics.data_v1alpha.types.ListRecurringAudienceListsRequest, dict]):
+                The request object. A request to list all recurring
+                audience lists for a property.
+            parent (str):
+                Required. All recurring audience lists for this property
+                will be listed in the response. Format:
+                ``properties/{property}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1alpha.services.alpha_analytics_data.pagers.ListRecurringAudienceListsPager:
+                A list of all recurring audience
+                lists for a property.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_data_api.ListRecurringAudienceListsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_data_api.ListRecurringAudienceListsRequest
+        ):
+            request = analytics_data_api.ListRecurringAudienceListsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_recurring_audience_lists
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListRecurringAudienceListsPager(
             method=rpc,
             request=request,
             response=response,
