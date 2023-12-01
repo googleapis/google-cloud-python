@@ -2381,6 +2381,32 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         blocks = self._block._split(ns=ns, fracs=fracs, random_state=random_state)
         return [DataFrame(block) for block in blocks]
 
+    @classmethod
+    def from_dict(
+        cls,
+        data: dict,
+        orient: str = "columns",
+        dtype=None,
+        columns=None,
+    ) -> DataFrame:
+        return cls(pandas.DataFrame.from_dict(data, orient, dtype, columns))  # type: ignore
+
+    @classmethod
+    def from_records(
+        cls,
+        data,
+        index=None,
+        exclude=None,
+        columns=None,
+        coerce_float: bool = False,
+        nrows: int | None = None,
+    ) -> DataFrame:
+        return cls(
+            pandas.DataFrame.from_records(
+                data, index, exclude, columns, coerce_float, nrows
+            )
+        )
+
     def to_csv(
         self, path_or_buf: str, sep=",", *, header: bool = True, index: bool = True
     ) -> None:

@@ -196,6 +196,81 @@ class DataFrame(NDFrame):
 
     # ----------------------------------------------------------------------
     # IO methods (to / from other formats)
+    @classmethod
+    def from_dict(
+        cls,
+        data: dict,
+        orient="columns",
+        dtype=None,
+        columns=None,
+    ) -> DataFrame:
+        """
+        Construct DataFrame from dict of array-like or dicts.
+
+        Creates DataFrame object from dictionary by columns or by index
+        allowing dtype specification.
+
+        Args:
+            data (dict):
+                Of the form {field : array-like} or {field : dict}.
+            orient ({'columns', 'index', 'tight'}, default 'columns'):
+                The "orientation" of the data. If the keys of the passed dict
+                should be the columns of the resulting DataFrame, pass 'columns'
+                (default). Otherwise if the keys should be rows, pass 'index'.
+                If 'tight', assume a dict with keys ['index', 'columns', 'data',
+                'index_names', 'column_names'].
+            dtype (dtype, default None):
+                Data type to force after DataFrame construction, otherwise infer.
+            columns (list, default None):
+                Column labels to use when ``orient='index'``. Raises a ValueError
+                if used with ``orient='columns'`` or ``orient='tight'``.
+
+        Returns:
+            DataFrame
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @classmethod
+    def from_records(
+        cls,
+        data,
+        index=None,
+        exclude=None,
+        columns=None,
+        coerce_float: bool = False,
+        nrows: int | None = None,
+    ) -> DataFrame:
+        """
+        Convert structured or record ndarray to DataFrame.
+
+        Creates a DataFrame object from a structured ndarray, sequence of
+        tuples or dicts, or DataFrame.
+
+        Args:
+            data (structured ndarray, sequence of tuples or dicts):
+                Structured input data.
+            index (str, list of fields, array-like):
+                Field of array to use as the index, alternately a specific set of
+                input labels to use.
+            exclude (sequence, default None):
+                Columns or fields to exclude.
+            columns (sequence, default None):
+                Column names to use. If the passed data do not have names
+                associated with them, this argument provides names for the
+                columns. Otherwise this argument indicates the order of the columns
+                in the result (any names not found in the data will become all-NA
+                columns).
+            coerce_float (bool, default False):
+                Attempt to convert values of non-string, non-numeric objects (like
+                decimal.Decimal) to floating point, useful for SQL result sets.
+            nrows (int, default None):
+                Number of rows to read if data is an iterator.
+
+        Returns:
+            DataFrame
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def to_numpy(self, dtype=None, copy=False, na_value=None, **kwargs) -> np.ndarray:
         """
         Convert the DataFrame to a NumPy array.
