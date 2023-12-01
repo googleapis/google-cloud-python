@@ -44,7 +44,7 @@ dependencies = [
     "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
 extras = {
-    "pandas": ["pandas>=0.21.1"],
+    "pandas": ["pandas>=0.21.1", "importlib_metadata>=1.0.0; python_version<'3.8'"],
     "fastavro": ["fastavro>=0.21.2"],
     "pyarrow": ["pyarrow>=0.15.0"],
 }
@@ -58,13 +58,9 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 
 packages = [
     package
-    for package in setuptools.PEP420PackageFinder.find()
+    for package in setuptools.find_namespace_packages()
     if package.startswith("google")
 ]
-
-namespaces = ["google"]
-if "google.cloud" in packages:
-    namespaces.append("google.cloud")
 
 setuptools.setup(
     name=name,
@@ -92,7 +88,6 @@ setuptools.setup(
     platforms="Posix; MacOS X; Windows",
     packages=packages,
     python_requires=">=3.7",
-    namespace_packages=namespaces,
     install_requires=dependencies,
     extras_require=extras,
     scripts=["scripts/fixup_bigquery_storage_v1_keywords.py"],
