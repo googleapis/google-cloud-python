@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "DataQualityDimensionResult",
         "DataQualityDimension",
         "DataQualityRule",
+        "DataQualityColumnResult",
     },
 )
 
@@ -116,15 +117,30 @@ class DataQualitySpec(proto.Message):
 class DataQualityResult(proto.Message):
     r"""The output of a DataQualityScan.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         passed (bool):
             Overall data quality result -- ``true`` if all rules passed.
+        score (float):
+            Output only. The overall data quality score.
+
+            The score ranges between [0, 100] (up to two decimal
+            points).
+
+            This field is a member of `oneof`_ ``_score``.
         dimensions (MutableSequence[google.cloud.dataplex_v1.types.DataQualityDimensionResult]):
             A list of results at the dimension level.
 
             A dimension will have a corresponding
             ``DataQualityDimensionResult`` if and only if there is at
             least one rule with the 'dimension' field set to it.
+        columns (MutableSequence[google.cloud.dataplex_v1.types.DataQualityColumnResult]):
+            Output only. A list of results at the column level.
+
+            A column will have a corresponding
+            ``DataQualityColumnResult`` if and only if there is at least
+            one rule with the 'column' field set to it.
         rules (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRuleResult]):
             A list of all the rules in a job, and their
             results.
@@ -198,10 +214,20 @@ class DataQualityResult(proto.Message):
         proto.BOOL,
         number=5,
     )
+    score: float = proto.Field(
+        proto.FLOAT,
+        number=9,
+        optional=True,
+    )
     dimensions: MutableSequence["DataQualityDimensionResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="DataQualityDimensionResult",
+    )
+    columns: MutableSequence["DataQualityColumnResult"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="DataQualityColumnResult",
     )
     rules: MutableSequence["DataQualityRuleResult"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -299,12 +325,23 @@ class DataQualityDimensionResult(proto.Message):
     r"""DataQualityDimensionResult provides a more detailed,
     per-dimension view of the results.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         dimension (google.cloud.dataplex_v1.types.DataQualityDimension):
             Output only. The dimension config specified
             in the DataQualitySpec, as is.
         passed (bool):
             Whether the dimension passed or failed.
+        score (float):
+            Output only. The dimension-level data quality score for this
+            data scan job if and only if the 'dimension' field is set.
+
+            The score ranges between [0, 100] (up to two decimal
+            points).
+
+            This field is a member of `oneof`_ ``_score``.
     """
 
     dimension: "DataQualityDimension" = proto.Field(
@@ -315,6 +352,11 @@ class DataQualityDimensionResult(proto.Message):
     passed: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    score: float = proto.Field(
+        proto.FLOAT,
+        number=4,
+        optional=True,
     )
 
 
@@ -685,6 +727,38 @@ class DataQualityRule(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=505,
+    )
+
+
+class DataQualityColumnResult(proto.Message):
+    r"""DataQualityColumnResult provides a more detailed, per-column
+    view of the results.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        column (str):
+            Output only. The column specified in the
+            DataQualityRule.
+        score (float):
+            Output only. The column-level data quality score for this
+            data scan job if and only if the 'column' field is set.
+
+            The score ranges between between [0, 100] (up to two decimal
+            points).
+
+            This field is a member of `oneof`_ ``_score``.
+    """
+
+    column: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    score: float = proto.Field(
+        proto.FLOAT,
+        number=2,
+        optional=True,
     )
 
 

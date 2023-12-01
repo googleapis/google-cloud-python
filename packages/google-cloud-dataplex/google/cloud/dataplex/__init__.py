@@ -62,6 +62,7 @@ from google.cloud.dataplex_v1.types.data_profile import (
     DataProfileSpec,
 )
 from google.cloud.dataplex_v1.types.data_quality import (
+    DataQualityColumnResult,
     DataQualityDimension,
     DataQualityDimensionResult,
     DataQualityResult,
@@ -214,6 +215,7 @@ __all__ = (
     "UpdateContentRequest",
     "DataProfileResult",
     "DataProfileSpec",
+    "DataQualityColumnResult",
     "DataQualityDimension",
     "DataQualityDimensionResult",
     "DataQualityResult",
