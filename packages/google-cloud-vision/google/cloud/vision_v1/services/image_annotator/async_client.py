@@ -30,7 +30,7 @@ from typing import (
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
@@ -38,9 +38,9 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.vision_v1 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -274,7 +274,7 @@ class ImageAnnotatorAsyncClient:
                 This corresponds to the ``requests`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -307,7 +307,7 @@ class ImageAnnotatorAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_annotate_images,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -391,7 +391,7 @@ class ImageAnnotatorAsyncClient:
                 This corresponds to the ``requests`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -422,7 +422,7 @@ class ImageAnnotatorAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_annotate_files,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -521,7 +521,7 @@ class ImageAnnotatorAsyncClient:
                 This corresponds to the ``output_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -559,7 +559,7 @@ class ImageAnnotatorAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.async_batch_annotate_images,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
@@ -654,7 +654,7 @@ class ImageAnnotatorAsyncClient:
                 This corresponds to the ``requests`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -690,7 +690,7 @@ class ImageAnnotatorAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.async_batch_annotate_files,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,

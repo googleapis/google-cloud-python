@@ -30,7 +30,7 @@ from typing import (
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
@@ -38,9 +38,9 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.iap_v1 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
 
 from google.cloud.iap_v1.services.identity_aware_proxy_o_auth_service import pagers
 from google.cloud.iap_v1.types import service
@@ -264,7 +264,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.iap_v1.types.ListBrandsRequest, dict]]):
                 The request object. The request sent to ListBrands.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -350,7 +350,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.iap_v1.types.CreateBrandRequest, dict]]):
                 The request object. The request sent to CreateBrand.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -430,7 +430,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.iap_v1.types.GetBrandRequest, dict]]):
                 The request object. The request sent to GetBrand.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -516,7 +516,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
             request (Optional[Union[google.cloud.iap_v1.types.CreateIdentityAwareProxyClientRequest, dict]]):
                 The request object. The request sent to
                 CreateIdentityAwareProxyClient.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -599,7 +599,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
             request (Optional[Union[google.cloud.iap_v1.types.ListIdentityAwareProxyClientsRequest, dict]]):
                 The request object. The request sent to
                 ListIdentityAwareProxyClients.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -694,7 +694,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
             request (Optional[Union[google.cloud.iap_v1.types.GetIdentityAwareProxyClientRequest, dict]]):
                 The request object. The request sent to
                 GetIdentityAwareProxyClient.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -778,7 +778,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
             request (Optional[Union[google.cloud.iap_v1.types.ResetIdentityAwareProxyClientSecretRequest, dict]]):
                 The request object. The request sent to
                 ResetIdentityAwareProxyClientSecret.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -860,7 +860,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
             request (Optional[Union[google.cloud.iap_v1.types.DeleteIdentityAwareProxyClientRequest, dict]]):
                 The request object. The request sent to
                 DeleteIdentityAwareProxyClient.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be

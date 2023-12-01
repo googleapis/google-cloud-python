@@ -22,9 +22,9 @@ from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.monitoring.dashboard_v1 import gapic_version as package_version
 
 from google import auth
+from google.monitoring.dashboard_v1 import gapic_version as package_version
 from google.monitoring.dashboard_v1.types import dashboard, dashboards_service
 
 _client_info = gapic_v1.client_info.ClientInfo(
