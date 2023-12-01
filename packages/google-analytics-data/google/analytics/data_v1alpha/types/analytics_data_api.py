@@ -25,6 +25,11 @@ from google.analytics.data_v1alpha.types import data
 __protobuf__ = proto.module(
     package="google.analytics.data.v1alpha",
     manifest={
+        "CreateRecurringAudienceListRequest",
+        "RecurringAudienceList",
+        "GetRecurringAudienceListRequest",
+        "ListRecurringAudienceListsRequest",
+        "ListRecurringAudienceListsResponse",
         "GetAudienceListRequest",
         "ListAudienceListsRequest",
         "ListAudienceListsResponse",
@@ -42,6 +47,206 @@ __protobuf__ = proto.module(
         "RunFunnelReportResponse",
     },
 )
+
+
+class CreateRecurringAudienceListRequest(proto.Message):
+    r"""A request to create a new recurring audience list.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this recurring audience
+            list will be created. Format: ``properties/{property}``
+        recurring_audience_list (google.analytics.data_v1alpha.types.RecurringAudienceList):
+            Required. The recurring audience list to
+            create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    recurring_audience_list: "RecurringAudienceList" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RecurringAudienceList",
+    )
+
+
+class RecurringAudienceList(proto.Message):
+    r"""A recurring audience list produces new audience lists each
+    day. Audience lists are users in an audience at the time of the
+    list's creation. A recurring audience list ensures that you have
+    audience list based on the most recent data available for use
+    each day.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Output only. Identifier. The recurring audience list
+            resource name assigned during creation. This resource name
+            identifies this ``RecurringAudienceList``.
+
+            Format:
+            ``properties/{property}/recurringAudienceLists/{recurring_audience_list}``
+        audience (str):
+            Required. The audience resource name. This resource name
+            identifies the audience being listed and is shared between
+            the Analytics Data & Admin APIs.
+
+            Format: ``properties/{property}/audiences/{audience}``
+        audience_display_name (str):
+            Output only. The descriptive display name for
+            this audience. For example, "Purchasers".
+        dimensions (MutableSequence[google.analytics.data_v1alpha.types.AudienceDimension]):
+            Required. The dimensions requested and
+            displayed in the audience list response.
+        active_days_remaining (int):
+            Optional. The number of remaining days that a
+            recurring audience export will produce an
+            audience list instance. This counter decreases
+            by one each day, and when it reaches zero, no
+            new audience lists will be created.
+
+            Recurring audience list request for Analytics
+            360 properties default to 180 days and have a
+            maximum of 365 days. Requests for standard
+            Analytics properties default to 14 days and have
+            a maximum of 30 days.
+
+            The minimum value allowed during creation is 1.
+            Requests above their respective maximum will be
+            coerced to their maximum.
+
+            This field is a member of `oneof`_ ``_active_days_remaining``.
+        audience_lists (MutableSequence[str]):
+            Output only. Audience list resource names for
+            audience list instances created for this
+            recurring audience list. One audience list is
+            created for each day, and the audience list will
+            be listed here.
+
+            This list is ordered with the most recently
+            created audience list first.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    audience: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    audience_display_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    dimensions: MutableSequence["AudienceDimension"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="AudienceDimension",
+    )
+    active_days_remaining: int = proto.Field(
+        proto.INT32,
+        number=5,
+        optional=True,
+    )
+    audience_lists: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+
+
+class GetRecurringAudienceListRequest(proto.Message):
+    r"""A request to retrieve configuration metadata about a specific
+    recurring audience list.
+
+    Attributes:
+        name (str):
+            Required. The recurring audience list resource name. Format:
+            ``properties/{property}/recurringAudienceLists/{recurring_audience_list}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListRecurringAudienceListsRequest(proto.Message):
+    r"""A request to list all recurring audience lists for a
+    property.
+
+    Attributes:
+        parent (str):
+            Required. All recurring audience lists for this property
+            will be listed in the response. Format:
+            ``properties/{property}``
+        page_size (int):
+            Optional. The maximum number of recurring
+            audience lists to return. The service may return
+            fewer than this value. If unspecified, at most
+            200 recurring audience lists will be returned.
+            The maximum value is 1000 (higher values will be
+            coerced to the maximum).
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListRecurringAudienceLists`` call. Provide this to
+            retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListRecurringAudienceLists`` must match the call that
+            provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListRecurringAudienceListsResponse(proto.Message):
+    r"""A list of all recurring audience lists for a property.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        recurring_audience_lists (MutableSequence[google.analytics.data_v1alpha.types.RecurringAudienceList]):
+            Each recurring audience list for a property.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    recurring_audience_lists: MutableSequence[
+        "RecurringAudienceList"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="RecurringAudienceList",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
 
 
 class GetAudienceListRequest(proto.Message):
@@ -179,7 +384,7 @@ class AudienceList(proto.Message):
             this audience. For example, "Purchasers".
         dimensions (MutableSequence[google.analytics.data_v1alpha.types.AudienceDimension]):
             Required. The dimensions requested and
-            displayed in the report response.
+            displayed in the query response.
         state (google.analytics.data_v1alpha.types.AudienceList.State):
             Output only. The current state for this
             AudienceList.
@@ -207,6 +412,21 @@ class AudienceList(proto.Message):
             reason for such a failure is quota exhaustion.
 
             This field is a member of `oneof`_ ``_error_message``.
+        percentage_completed (float):
+            Output only. The percentage completed for
+            this audience export ranging between 0 to 100.
+
+            This field is a member of `oneof`_ ``_percentage_completed``.
+        recurring_audience_list (str):
+            Output only. The recurring audience list that
+            created this audience list. Recurring audience
+            lists create audience lists daily.
+
+            If audience lists are created directly, they
+            will have no associated recurring audience list,
+            and this field will be blank.
+
+            This field is a member of `oneof`_ ``_recurring_audience_list``.
     """
 
     class State(proto.Enum):
@@ -276,6 +496,16 @@ class AudienceList(proto.Message):
     error_message: str = proto.Field(
         proto.STRING,
         number=9,
+        optional=True,
+    )
+    percentage_completed: float = proto.Field(
+        proto.DOUBLE,
+        number=11,
+        optional=True,
+    )
+    recurring_audience_list: str = proto.Field(
+        proto.STRING,
+        number=12,
         optional=True,
     )
 

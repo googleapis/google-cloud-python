@@ -15,14 +15,29 @@
                 "create_audience_list"
               ]
             },
+            "CreateRecurringAudienceList": {
+              "methods": [
+                "create_recurring_audience_list"
+              ]
+            },
             "GetAudienceList": {
               "methods": [
                 "get_audience_list"
               ]
             },
+            "GetRecurringAudienceList": {
+              "methods": [
+                "get_recurring_audience_list"
+              ]
+            },
             "ListAudienceLists": {
               "methods": [
                 "list_audience_lists"
+              ]
+            },
+            "ListRecurringAudienceLists": {
+              "methods": [
+                "list_recurring_audience_lists"
               ]
             },
             "QueryAudienceList": {
@@ -50,14 +65,29 @@
                 "create_audience_list"
               ]
             },
+            "CreateRecurringAudienceList": {
+              "methods": [
+                "create_recurring_audience_list"
+              ]
+            },
             "GetAudienceList": {
               "methods": [
                 "get_audience_list"
               ]
             },
+            "GetRecurringAudienceList": {
+              "methods": [
+                "get_recurring_audience_list"
+              ]
+            },
             "ListAudienceLists": {
               "methods": [
                 "list_audience_lists"
+              ]
+            },
+            "ListRecurringAudienceLists": {
+              "methods": [
+                "list_recurring_audience_lists"
               ]
             },
             "QueryAudienceList": {
@@ -85,14 +115,29 @@
                 "create_audience_list"
               ]
             },
+            "CreateRecurringAudienceList": {
+              "methods": [
+                "create_recurring_audience_list"
+              ]
+            },
             "GetAudienceList": {
               "methods": [
                 "get_audience_list"
               ]
             },
+            "GetRecurringAudienceList": {
+              "methods": [
+                "get_recurring_audience_list"
+              ]
+            },
             "ListAudienceLists": {
               "methods": [
                 "list_audience_lists"
+              ]
+            },
+            "ListRecurringAudienceLists": {
+              "methods": [
+                "list_recurring_audience_lists"
               ]
             },
             "QueryAudienceList": {

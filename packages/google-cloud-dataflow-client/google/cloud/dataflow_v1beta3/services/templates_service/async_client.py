@@ -30,7 +30,7 @@ from typing import (
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
@@ -38,9 +38,9 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.dataflow_v1beta3 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -256,7 +256,7 @@ class TemplatesServiceAsyncClient:
             request (Optional[Union[google.cloud.dataflow_v1beta3.types.CreateJobFromTemplateRequest, dict]]):
                 The request object. A request to create a Cloud Dataflow
                 job from a template.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -340,7 +340,7 @@ class TemplatesServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dataflow_v1beta3.types.LaunchTemplateRequest, dict]]):
                 The request object. A request to launch a template.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -425,7 +425,7 @@ class TemplatesServiceAsyncClient:
             request (Optional[Union[google.cloud.dataflow_v1beta3.types.GetTemplateRequest, dict]]):
                 The request object. A request to retrieve a Cloud
                 Dataflow job template.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be

@@ -31,7 +31,7 @@ import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
@@ -39,9 +39,9 @@ from google.oauth2 import service_account  # type: ignore
 from google.maps.fleetengine_delivery_v1 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -320,7 +320,7 @@ class DeliveryServiceAsyncClient:
                 This corresponds to the ``delivery_vehicle_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -366,7 +366,7 @@ class DeliveryServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_delivery_vehicle,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -445,7 +445,7 @@ class DeliveryServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -487,7 +487,7 @@ class DeliveryServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_delivery_vehicle,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -587,7 +587,7 @@ class DeliveryServiceAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -631,7 +631,7 @@ class DeliveryServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_delivery_vehicle,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -709,7 +709,7 @@ class DeliveryServiceAsyncClient:
         Args:
             request (Optional[Union[google.maps.fleetengine_delivery_v1.types.BatchCreateTasksRequest, dict]]):
                 The request object. The ``BatchCreateTask`` request message.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -726,7 +726,7 @@ class DeliveryServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_create_tasks,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -850,7 +850,7 @@ class DeliveryServiceAsyncClient:
                 This corresponds to the ``task_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -901,7 +901,7 @@ class DeliveryServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_task,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -980,7 +980,7 @@ class DeliveryServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1027,7 +1027,7 @@ class DeliveryServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_task,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -1109,7 +1109,7 @@ class DeliveryServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1149,7 +1149,7 @@ class DeliveryServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.search_tasks,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -1268,7 +1268,7 @@ class DeliveryServiceAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1317,7 +1317,7 @@ class DeliveryServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_task,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -1399,7 +1399,7 @@ class DeliveryServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1435,7 +1435,7 @@ class DeliveryServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_tasks,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -1525,7 +1525,7 @@ class DeliveryServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1561,7 +1561,7 @@ class DeliveryServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_task_tracking_info,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
@@ -1642,7 +1642,7 @@ class DeliveryServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1677,7 +1677,7 @@ class DeliveryServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_delivery_vehicles,
-            default_retry=retries.Retry(
+            default_retry=retries.AsyncRetry(
                 initial=1.0,
                 maximum=10.0,
                 multiplier=1.3,
