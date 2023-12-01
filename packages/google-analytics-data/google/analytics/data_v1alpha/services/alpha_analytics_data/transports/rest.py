@@ -79,6 +79,14 @@ class AlphaAnalyticsDataRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_recurring_audience_list(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_recurring_audience_list(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_audience_list(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -87,11 +95,27 @@ class AlphaAnalyticsDataRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_recurring_audience_list(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_recurring_audience_list(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_audience_lists(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_audience_lists(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_recurring_audience_lists(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_recurring_audience_lists(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -148,6 +172,31 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return response
 
+    def pre_create_recurring_audience_list(
+        self,
+        request: analytics_data_api.CreateRecurringAudienceListRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_data_api.CreateRecurringAudienceListRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_recurring_audience_list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlphaAnalyticsData server.
+        """
+        return request, metadata
+
+    def post_create_recurring_audience_list(
+        self, response: analytics_data_api.RecurringAudienceList
+    ) -> analytics_data_api.RecurringAudienceList:
+        """Post-rpc interceptor for create_recurring_audience_list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlphaAnalyticsData server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_audience_list(
         self,
         request: analytics_data_api.GetAudienceListRequest,
@@ -171,6 +220,31 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return response
 
+    def pre_get_recurring_audience_list(
+        self,
+        request: analytics_data_api.GetRecurringAudienceListRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_data_api.GetRecurringAudienceListRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_recurring_audience_list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlphaAnalyticsData server.
+        """
+        return request, metadata
+
+    def post_get_recurring_audience_list(
+        self, response: analytics_data_api.RecurringAudienceList
+    ) -> analytics_data_api.RecurringAudienceList:
+        """Post-rpc interceptor for get_recurring_audience_list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlphaAnalyticsData server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_audience_lists(
         self,
         request: analytics_data_api.ListAudienceListsRequest,
@@ -187,6 +261,31 @@ class AlphaAnalyticsDataRestInterceptor:
         self, response: analytics_data_api.ListAudienceListsResponse
     ) -> analytics_data_api.ListAudienceListsResponse:
         """Post-rpc interceptor for list_audience_lists
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlphaAnalyticsData server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_recurring_audience_lists(
+        self,
+        request: analytics_data_api.ListRecurringAudienceListsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_data_api.ListRecurringAudienceListsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_recurring_audience_lists
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlphaAnalyticsData server.
+        """
+        return request, metadata
+
+    def post_list_recurring_audience_lists(
+        self, response: analytics_data_api.ListRecurringAudienceListsResponse
+    ) -> analytics_data_api.ListRecurringAudienceListsResponse:
+        """Post-rpc interceptor for list_recurring_audience_lists
 
         Override in a subclass to manipulate the response
         after it is returned by the AlphaAnalyticsData server but before
@@ -489,6 +588,114 @@ class AlphaAnalyticsDataRestTransport(AlphaAnalyticsDataTransport):
             resp = self._interceptor.post_create_audience_list(resp)
             return resp
 
+    class _CreateRecurringAudienceList(AlphaAnalyticsDataRestStub):
+        def __hash__(self):
+            return hash("CreateRecurringAudienceList")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_data_api.CreateRecurringAudienceListRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_data_api.RecurringAudienceList:
+            r"""Call the create recurring audience
+            list method over HTTP.
+
+                Args:
+                    request (~.analytics_data_api.CreateRecurringAudienceListRequest):
+                        The request object. A request to create a new recurring
+                    audience list.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.analytics_data_api.RecurringAudienceList:
+                        A recurring audience list produces
+                    new audience lists each day. Audience
+                    lists are users in an audience at the
+                    time of the list's creation. A recurring
+                    audience list ensures that you have
+                    audience list based on the most recent
+                    data available for use each day.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/recurringAudienceLists",
+                    "body": "recurring_audience_list",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_recurring_audience_list(
+                request, metadata
+            )
+            pb_request = analytics_data_api.CreateRecurringAudienceListRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_data_api.RecurringAudienceList()
+            pb_resp = analytics_data_api.RecurringAudienceList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_recurring_audience_list(resp)
+            return resp
+
     class _GetAudienceList(AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("GetAudienceList")
@@ -583,6 +790,104 @@ class AlphaAnalyticsDataRestTransport(AlphaAnalyticsDataTransport):
             resp = self._interceptor.post_get_audience_list(resp)
             return resp
 
+    class _GetRecurringAudienceList(AlphaAnalyticsDataRestStub):
+        def __hash__(self):
+            return hash("GetRecurringAudienceList")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_data_api.GetRecurringAudienceListRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_data_api.RecurringAudienceList:
+            r"""Call the get recurring audience
+            list method over HTTP.
+
+                Args:
+                    request (~.analytics_data_api.GetRecurringAudienceListRequest):
+                        The request object. A request to retrieve configuration
+                    metadata about a specific recurring
+                    audience list.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.analytics_data_api.RecurringAudienceList:
+                        A recurring audience list produces
+                    new audience lists each day. Audience
+                    lists are users in an audience at the
+                    time of the list's creation. A recurring
+                    audience list ensures that you have
+                    audience list based on the most recent
+                    data available for use each day.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/recurringAudienceLists/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_recurring_audience_list(
+                request, metadata
+            )
+            pb_request = analytics_data_api.GetRecurringAudienceListRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_data_api.RecurringAudienceList()
+            pb_resp = analytics_data_api.RecurringAudienceList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_recurring_audience_list(resp)
+            return resp
+
     class _ListAudienceLists(AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("ListAudienceLists")
@@ -672,6 +977,100 @@ class AlphaAnalyticsDataRestTransport(AlphaAnalyticsDataTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_audience_lists(resp)
+            return resp
+
+    class _ListRecurringAudienceLists(AlphaAnalyticsDataRestStub):
+        def __hash__(self):
+            return hash("ListRecurringAudienceLists")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_data_api.ListRecurringAudienceListsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_data_api.ListRecurringAudienceListsResponse:
+            r"""Call the list recurring audience
+            lists method over HTTP.
+
+                Args:
+                    request (~.analytics_data_api.ListRecurringAudienceListsRequest):
+                        The request object. A request to list all recurring
+                    audience lists for a property.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.analytics_data_api.ListRecurringAudienceListsResponse:
+                        A list of all recurring audience
+                    lists for a property.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=properties/*}/recurringAudienceLists",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_recurring_audience_lists(
+                request, metadata
+            )
+            pb_request = analytics_data_api.ListRecurringAudienceListsRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_data_api.ListRecurringAudienceListsResponse()
+            pb_resp = analytics_data_api.ListRecurringAudienceListsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_recurring_audience_lists(resp)
             return resp
 
     class _QueryAudienceList(AlphaAnalyticsDataRestStub):
@@ -974,6 +1373,17 @@ class AlphaAnalyticsDataRestTransport(AlphaAnalyticsDataTransport):
         return self._CreateAudienceList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_recurring_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.CreateRecurringAudienceListRequest],
+        analytics_data_api.RecurringAudienceList,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateRecurringAudienceList(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_audience_list(
         self,
     ) -> Callable[
@@ -982,6 +1392,17 @@ class AlphaAnalyticsDataRestTransport(AlphaAnalyticsDataTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAudienceList(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_recurring_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetRecurringAudienceListRequest],
+        analytics_data_api.RecurringAudienceList,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetRecurringAudienceList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_audience_lists(
@@ -993,6 +1414,17 @@ class AlphaAnalyticsDataRestTransport(AlphaAnalyticsDataTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAudienceLists(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_recurring_audience_lists(
+        self,
+    ) -> Callable[
+        [analytics_data_api.ListRecurringAudienceListsRequest],
+        analytics_data_api.ListRecurringAudienceListsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListRecurringAudienceLists(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def query_audience_list(
