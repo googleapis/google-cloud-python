@@ -6722,6 +6722,10 @@ def test_create_service_config_rest(request_type):
                         "max_poll_delay": {},
                         "total_poll_timeout": {},
                     },
+                    "auto_populated_fields": [
+                        "auto_populated_fields_value1",
+                        "auto_populated_fields_value2",
+                    ],
                 }
             ],
             "new_issue_uri": "new_issue_uri_value",
@@ -9704,7 +9708,7 @@ def test_list_operations(transport: str = "grpc"):
 
 
 @pytest.mark.asyncio
-async def test_list_operations_async(transport: str = "grpc"):
+async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = ServiceManagerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
