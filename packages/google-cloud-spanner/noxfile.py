@@ -173,9 +173,9 @@ def default(session):
     session.run(
         "py.test",
         "--quiet",
-        "--cov=google.cloud.spanner",
-        "--cov=google.cloud",
-        "--cov=tests.unit",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google",
+        "--cov=tests/unit",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
