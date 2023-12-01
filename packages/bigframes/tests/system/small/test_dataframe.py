@@ -297,6 +297,26 @@ def test_df_info(scalars_dfs):
     assert expected == bf_result.getvalue()
 
 
+@pytest.mark.parametrize(
+    ("include", "exclude"),
+    [
+        ("Int64", None),
+        (["int"], None),
+        ("number", None),
+        ([pd.Int64Dtype(), pd.BooleanDtype()], None),
+        (None, [pd.Int64Dtype(), pd.BooleanDtype()]),
+        ("Int64", ["boolean"]),
+    ],
+)
+def test_select_dtypes(scalars_dfs, include, exclude):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    pd_result = scalars_pandas_df.select_dtypes(include=include, exclude=exclude)
+    bf_result = scalars_df.select_dtypes(include=include, exclude=exclude).to_pandas()
+
+    pd.testing.assert_frame_equal(pd_result, bf_result)
+
+
 def test_drop_index(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 

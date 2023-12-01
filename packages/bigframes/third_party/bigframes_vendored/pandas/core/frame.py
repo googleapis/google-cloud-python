@@ -158,6 +158,42 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def select_dtypes(self, include=None, exclude=None) -> DataFrame:
+        """
+        Return a subset of the DataFrame's columns based on the column dtypes.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': ["hello", "world"], 'col3': [True, False]})
+            >>> df.select_dtypes(include=['Int64'])
+               col1
+            0     1
+            1     2
+            <BLANKLINE>
+            [2 rows x 1 columns]
+
+            >>> df.select_dtypes(exclude=['Int64'])
+                col2   col3
+            0  hello   True
+            1  world  False
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+
+        Args:
+            include (scalar or list-like):
+                A selection of dtypes or strings to be included.
+            exclude (scalar or list-like):
+                A selection of dtypes or strings to be excluded.
+
+        Returns:
+            DataFrame: The subset of the frame including the dtypes in ``include`` and excluding the dtypes in ``exclude``.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     # ----------------------------------------------------------------------
     # IO methods (to / from other formats)
     def to_numpy(self, dtype=None, copy=False, na_value=None, **kwargs) -> np.ndarray:
