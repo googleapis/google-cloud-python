@@ -47,7 +47,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--strict")
 
 
-def default(session):
+def default(session, repository=None):
     # Install all test dependencies, then install this package in-place.
     session.install("asyncmock", "pytest-asyncio")
 
@@ -55,9 +55,16 @@ def default(session):
     session.install("mock==5.0.0", "pytest", "pytest-cov")
     session.install("-e", ".")
 
+    # Use the repository specific constraints path if it exists
     constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}-{repository}.txt"
     )
+
+    # If there is no repository specific constraints path, use the default one.
+    if not Path(constraints_path).exists():
+        constraints_path = str(
+            CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+        )
 
     # Install googleapis-api-common-protos
     # This *must* be the last install command to get the package from source.
@@ -78,12 +85,12 @@ def default(session):
     )
 
 
-def unit(session):
+def unit(session, repository=None):
     """Run the unit test suite."""
-    default(session)
+    default(session, repository)
 
 
-def system(session):
+def system(session, repository=None):
     """Run the system test suite."""
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
@@ -107,9 +114,17 @@ def system(session):
 
     session.install("-e", ".")
 
+    # Use the repository specific constraints path if it exists
     constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}-{repository}.txt"
     )
+
+    # If there is no repository specific constraints path, use the default one.
+    if not Path(constraints_path).exists():
+        constraints_path = str(
+            CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+        )
+
 
     # Install googleapis-api-common-protos
     # This *must* be the last install command to get the package from source.
@@ -160,14 +175,14 @@ def test(session, library):
     if package:
         session.cd(f'packages/{package}')
 
-    unit(session)
+    unit(session, repository)
 
     # system tests are run on 3.7 only
     if session.python == "3.7":
         if repository == "python-pubsub":
             session.install("psutil")
             session.install("flaky")
-        system(session)
+        system(session, repository)
 
 @nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"])
 def tests_local(session):
