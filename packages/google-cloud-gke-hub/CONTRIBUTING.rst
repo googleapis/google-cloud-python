@@ -22,7 +22,7 @@ In order to add a feature:
   documentation.
 
 - The feature must work fully on the following CPython versions:
-  3.7, 3.8, 3.9, 3.10 and 3.11 on both UNIX and Windows.
+  3.7, 3.8, 3.9, 3.10, 3.11 and 3.12 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -35,21 +35,21 @@ Using a Development Checkout
 You'll have to create a development environment using a Git checkout:
 
 - While logged into your GitHub account, navigate to the
-  ``python-gke-hub`` `repo`_ on GitHub.
+  ``google-cloud-python`` `repo`_ on GitHub.
 
-- Fork and clone the ``python-gke-hub`` repository to your GitHub account by
+- Fork and clone the ``google-cloud-python`` repository to your GitHub account by
   clicking the "Fork" button.
 
-- Clone your fork of ``python-gke-hub`` from your GitHub account to your local
+- Clone your fork of ``google-cloud-python`` from your GitHub account to your local
   computer, substituting your account username and specifying the destination
-  as ``hack-on-python-gke-hub``.  E.g.::
+  as ``hack-on-google-cloud-python``.  E.g.::
 
    $ cd ${HOME}
-   $ git clone git@github.com:USERNAME/python-gke-hub.git hack-on-python-gke-hub
-   $ cd hack-on-python-gke-hub
-   # Configure remotes such that you can pull changes from the googleapis/python-gke-hub
+   $ git clone git@github.com:USERNAME/google-cloud-python.git hack-on-google-cloud-python
+   $ cd hack-on-google-cloud-python
+   # Configure remotes such that you can pull changes from the googleapis/google-cloud-python
    # repository into your local repository.
-   $ git remote add upstream git@github.com:googleapis/python-gke-hub.git
+   $ git remote add upstream git@github.com:googleapis/google-cloud-python.git
    # fetch and merge changes from upstream into main
    $ git fetch upstream
    $ git merge upstream/main
@@ -60,7 +60,7 @@ repo, from which you can submit a pull request.
 To work on the codebase and run the tests, we recommend using ``nox``,
 but you can also use a ``virtualenv`` of your own creation.
 
-.. _repo: https://github.com/googleapis/python-gke-hub
+.. _repo: https://github.com/googleapis/google-cloud-python
 
 Using ``nox``
 =============
@@ -72,7 +72,7 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 - To run a single unit test::
 
-    $ nox -s unit-3.11 -- -k <name of test>
+    $ nox -s unit-3.12 -- -k <name of test>
 
 
   .. note::
@@ -113,7 +113,7 @@ Coding Style
    export GOOGLE_CLOUD_TESTING_BRANCH="main"
 
   By doing this, you are specifying the location of the most up-to-date
-  version of ``python-gke-hub``. The
+  version of ``google-cloud-python``. The
   remote name ``upstream`` should point to the official ``googleapis``
   checkout and the branch should be the default branch on that remote (``main``).
 
@@ -143,12 +143,12 @@ Running System Tests
    $ nox -s system
 
    # Run a single system test
-   $ nox -s system-3.11 -- -k <name of test>
+   $ nox -s system-3.12 -- -k <name of test>
 
 
   .. note::
 
-      System tests are only configured to run under Python 3.8, 3.9, 3.10 and 3.11.
+      System tests are only configured to run under Python 3.8, 3.9, 3.10, 3.11 and 3.12.
       For expediency, we do not run them in older versions of Python 3.
 
   This alone will not run the tests. You'll need to change some local
@@ -209,7 +209,7 @@ The `description on PyPI`_ for the project comes directly from the
 ``README``. Due to the reStructuredText (``rst``) parser used by
 PyPI, relative links which will work on GitHub (e.g. ``CONTRIBUTING.rst``
 instead of
-``https://github.com/googleapis/python-gke-hub/blob/main/CONTRIBUTING.rst``)
+``https://github.com/googleapis/google-cloud-python/blob/main/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
 .. _description on PyPI: https://pypi.org/project/google-cloud-gke-hub
@@ -226,17 +226,19 @@ We support:
 -  `Python 3.9`_
 -  `Python 3.10`_
 -  `Python 3.11`_
+-  `Python 3.12`_
 
 .. _Python 3.7: https://docs.python.org/3.7/
 .. _Python 3.8: https://docs.python.org/3.8/
 .. _Python 3.9: https://docs.python.org/3.9/
 .. _Python 3.10: https://docs.python.org/3.10/
 .. _Python 3.11: https://docs.python.org/3.11/
+.. _Python 3.12: https://docs.python.org/3.12/
 
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
-.. _config: https://github.com/googleapis/python-gke-hub/blob/main/packages/google-cloud-gke-hub/noxfile.py
+.. _config: https://github.com/googleapis/google-cloud-python/blob/main/packages/google-cloud-gke-hub/noxfile.py
 
 
 **********

@@ -159,6 +159,21 @@ class AlphaAnalyticsDataTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_recurring_audience_list: gapic_v1.method.wrap_method(
+                self.create_recurring_audience_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_recurring_audience_list: gapic_v1.method.wrap_method(
+                self.get_recurring_audience_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_recurring_audience_lists: gapic_v1.method.wrap_method(
+                self.list_recurring_audience_lists,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -239,6 +254,42 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         Union[
             analytics_data_api.ListAudienceListsResponse,
             Awaitable[analytics_data_api.ListAudienceListsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_recurring_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.CreateRecurringAudienceListRequest],
+        Union[
+            analytics_data_api.RecurringAudienceList,
+            Awaitable[analytics_data_api.RecurringAudienceList],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_recurring_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetRecurringAudienceListRequest],
+        Union[
+            analytics_data_api.RecurringAudienceList,
+            Awaitable[analytics_data_api.RecurringAudienceList],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_recurring_audience_lists(
+        self,
+    ) -> Callable[
+        [analytics_data_api.ListRecurringAudienceListsRequest],
+        Union[
+            analytics_data_api.ListRecurringAudienceListsResponse,
+            Awaitable[analytics_data_api.ListRecurringAudienceListsResponse],
         ],
     ]:
         raise NotImplementedError()

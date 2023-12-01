@@ -828,6 +828,100 @@
         }
       }
     },
+    "Generators": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "GeneratorsClient",
+          "rpcs": {
+            "CreateGenerator": {
+              "methods": [
+                "create_generator"
+              ]
+            },
+            "DeleteGenerator": {
+              "methods": [
+                "delete_generator"
+              ]
+            },
+            "GetGenerator": {
+              "methods": [
+                "get_generator"
+              ]
+            },
+            "ListGenerators": {
+              "methods": [
+                "list_generators"
+              ]
+            },
+            "UpdateGenerator": {
+              "methods": [
+                "update_generator"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "GeneratorsAsyncClient",
+          "rpcs": {
+            "CreateGenerator": {
+              "methods": [
+                "create_generator"
+              ]
+            },
+            "DeleteGenerator": {
+              "methods": [
+                "delete_generator"
+              ]
+            },
+            "GetGenerator": {
+              "methods": [
+                "get_generator"
+              ]
+            },
+            "ListGenerators": {
+              "methods": [
+                "list_generators"
+              ]
+            },
+            "UpdateGenerator": {
+              "methods": [
+                "update_generator"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "GeneratorsClient",
+          "rpcs": {
+            "CreateGenerator": {
+              "methods": [
+                "create_generator"
+              ]
+            },
+            "DeleteGenerator": {
+              "methods": [
+                "delete_generator"
+              ]
+            },
+            "GetGenerator": {
+              "methods": [
+                "get_generator"
+              ]
+            },
+            "ListGenerators": {
+              "methods": [
+                "list_generators"
+              ]
+            },
+            "UpdateGenerator": {
+              "methods": [
+                "update_generator"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Intents": {
       "clients": {
         "grpc": {
