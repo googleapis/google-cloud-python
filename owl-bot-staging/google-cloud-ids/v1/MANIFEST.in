@@ -1,0 +1,2 @@
+recursive-include google/cloud/ids *.py
+recursive-include google/cloud/ids_v1 *.py
