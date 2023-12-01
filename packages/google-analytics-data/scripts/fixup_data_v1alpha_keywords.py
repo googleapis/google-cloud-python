@@ -40,8 +40,11 @@ class dataCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_audience_list': ('parent', 'audience_list', ),
+        'create_recurring_audience_list': ('parent', 'recurring_audience_list', ),
         'get_audience_list': ('name', ),
+        'get_recurring_audience_list': ('name', ),
         'list_audience_lists': ('parent', 'page_size', 'page_token', ),
+        'list_recurring_audience_lists': ('parent', 'page_size', 'page_token', ),
         'query_audience_list': ('name', 'offset', 'limit', ),
         'run_funnel_report': ('property', 'date_ranges', 'funnel', 'funnel_breakdown', 'funnel_next_action', 'funnel_visualization_type', 'segments', 'limit', 'dimension_filter', 'return_property_quota', ),
         'sheet_export_audience_list': ('name', 'offset', 'limit', ),
