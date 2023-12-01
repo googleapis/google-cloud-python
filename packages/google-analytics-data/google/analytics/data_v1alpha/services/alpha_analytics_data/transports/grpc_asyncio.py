@@ -528,6 +528,138 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
             )
         return self._stubs["list_audience_lists"]
 
+    @property
+    def create_recurring_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.CreateRecurringAudienceListRequest],
+        Awaitable[analytics_data_api.RecurringAudienceList],
+    ]:
+        r"""Return a callable for the create recurring audience list method over gRPC.
+
+        Creates a recurring audience list. Recurring audience lists
+        produces new audience lists each day. Audience lists are users
+        in an audience at the time of the list's creation.
+
+        A recurring audience list ensures that you have audience list
+        based on the most recent data available for use each day. If you
+        manually create audience list, you don't know when an audience
+        list based on an additional day's data is available. This
+        recurring audience list automates the creation of an audience
+        list when an additional day's data is available. You will
+        consume fewer quota tokens by using recurring audience list
+        versus manually creating audience list at various times of day
+        trying to guess when an additional day's data is ready.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
+
+        Returns:
+            Callable[[~.CreateRecurringAudienceListRequest],
+                    Awaitable[~.RecurringAudienceList]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_recurring_audience_list" not in self._stubs:
+            self._stubs[
+                "create_recurring_audience_list"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/CreateRecurringAudienceList",
+                request_serializer=analytics_data_api.CreateRecurringAudienceListRequest.serialize,
+                response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
+            )
+        return self._stubs["create_recurring_audience_list"]
+
+    @property
+    def get_recurring_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetRecurringAudienceListRequest],
+        Awaitable[analytics_data_api.RecurringAudienceList],
+    ]:
+        r"""Return a callable for the get recurring audience list method over gRPC.
+
+        Gets configuration metadata about a specific recurring audience
+        list. This method can be used to understand a recurring audience
+        list's state after it has been created. For example, a recurring
+        audience list resource will generate audience list instances for
+        each day, and this method can be used to get the resource name
+        of the most recent audience list instance.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
+
+        Returns:
+            Callable[[~.GetRecurringAudienceListRequest],
+                    Awaitable[~.RecurringAudienceList]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_recurring_audience_list" not in self._stubs:
+            self._stubs["get_recurring_audience_list"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetRecurringAudienceList",
+                request_serializer=analytics_data_api.GetRecurringAudienceListRequest.serialize,
+                response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
+            )
+        return self._stubs["get_recurring_audience_list"]
+
+    @property
+    def list_recurring_audience_lists(
+        self,
+    ) -> Callable[
+        [analytics_data_api.ListRecurringAudienceListsRequest],
+        Awaitable[analytics_data_api.ListRecurringAudienceListsResponse],
+    ]:
+        r"""Return a callable for the list recurring audience lists method over gRPC.
+
+        Lists all recurring audience lists for a property. This method
+        can be used for you to find and reuse existing recurring
+        audience lists rather than creating unnecessary new recurring
+        audience lists. The same audience can have multiple recurring
+        audience lists that represent different dimension combinations;
+        for example, just the dimension ``deviceId`` or both the
+        dimensions ``deviceId`` and ``userId``.
+
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
+
+        Returns:
+            Callable[[~.ListRecurringAudienceListsRequest],
+                    Awaitable[~.ListRecurringAudienceListsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_recurring_audience_lists" not in self._stubs:
+            self._stubs[
+                "list_recurring_audience_lists"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/ListRecurringAudienceLists",
+                request_serializer=analytics_data_api.ListRecurringAudienceListsRequest.serialize,
+                response_deserializer=analytics_data_api.ListRecurringAudienceListsResponse.deserialize,
+            )
+        return self._stubs["list_recurring_audience_lists"]
+
     def close(self):
         return self.grpc_channel.close()
 
