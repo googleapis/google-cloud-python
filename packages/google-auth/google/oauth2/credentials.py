@@ -49,6 +49,7 @@ _LOGGER = logging.getLogger(__name__)
 
 # The Google OAuth 2.0 token endpoint. Used for authorized user credentials.
 _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
+_DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 
 
 class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaProject):
@@ -85,6 +86,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         enable_reauth_refresh=False,
         granted_scopes=None,
         trust_boundary=None,
+        universe_domain=_DEFAULT_UNIVERSE_DOMAIN,
     ):
         """
         Args:
@@ -126,6 +128,9 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             granted_scopes (Optional[Sequence[str]]): The scopes that were consented/granted by the user.
                 This could be different from the requested scopes and it could be empty if granted
                 and requested scopes were same.
+            trust_boundary (str): String representation of trust boundary meta.
+            universe_domain (Optional[str]): The universe domain. The default
+                universe domain is googleapis.com.
         """
         super(Credentials, self).__init__()
         self.token = token
@@ -143,6 +148,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self.refresh_handler = refresh_handler
         self._enable_reauth_refresh = enable_reauth_refresh
         self._trust_boundary = trust_boundary
+        self._universe_domain = universe_domain or _DEFAULT_UNIVERSE_DOMAIN
 
     def __getstate__(self):
         """A __getstate__ method must exist for the __setstate__ to be called
@@ -273,6 +279,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             rapt_token=self.rapt_token,
             enable_reauth_refresh=self._enable_reauth_refresh,
             trust_boundary=self._trust_boundary,
+            universe_domain=self._universe_domain,
         )
 
     @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
@@ -292,6 +299,34 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             rapt_token=self.rapt_token,
             enable_reauth_refresh=self._enable_reauth_refresh,
             trust_boundary=self._trust_boundary,
+            universe_domain=self._universe_domain,
+        )
+
+    def with_universe_domain(self, universe_domain):
+        """Create a copy of the credential with the given universe domain.
+
+        Args:
+            universe_domain (str): The universe domain value.
+
+        Returns:
+            google.oauth2.credentials.Credentials: A new credentials instance.
+        """
+
+        return self.__class__(
+            self.token,
+            refresh_token=self.refresh_token,
+            id_token=self.id_token,
+            token_uri=self._token_uri,
+            client_id=self.client_id,
+            client_secret=self.client_secret,
+            scopes=self.scopes,
+            default_scopes=self.default_scopes,
+            granted_scopes=self.granted_scopes,
+            quota_project_id=self.quota_project_id,
+            rapt_token=self.rapt_token,
+            enable_reauth_refresh=self._enable_reauth_refresh,
+            trust_boundary=self._trust_boundary,
+            universe_domain=universe_domain,
         )
 
     def _metric_header_for_usage(self):
@@ -299,6 +334,17 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
+        if self._universe_domain != _DEFAULT_UNIVERSE_DOMAIN:
+            raise exceptions.RefreshError(
+                "User credential refresh is only supported in the default "
+                "googleapis.com universe domain, but the current universe "
+                "domain is {}. If you created the credential with an access "
+                "token, it's likely that the provided token is expired now, "
+                "please update your code with a valid token.".format(
+                    self._universe_domain
+                )
+            )
+
         scopes = self._scopes if self._scopes is not None else self._default_scopes
         # Use refresh handler if available and no refresh token is
         # available. This is useful in general when tokens are obtained by calling
@@ -428,6 +474,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             expiry=expiry,
             rapt_token=info.get("rapt_token"),  # may not exist
             trust_boundary=info.get("trust_boundary"),  # may not exist
+            universe_domain=info.get("universe_domain"),  # may not exist
         )
 
     @classmethod
@@ -471,6 +518,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             "client_secret": self.client_secret,
             "scopes": self.scopes,
             "rapt_token": self.rapt_token,
+            "universe_domain": self._universe_domain,
         }
         if self.expiry:  # flatten expiry timestamp
             prep["expiry"] = self.expiry.isoformat() + "Z"

@@ -122,6 +122,17 @@ class TestCredentials(object):
 
         assert excinfo.match("The provided refresh_handler is not a callable or None.")
 
+    def test_refresh_with_non_default_universe_domain(self):
+        creds = credentials.Credentials(
+            token="token", universe_domain="dummy_universe.com"
+        )
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            creds.refresh(mock.Mock())
+
+        assert excinfo.match(
+            "refresh is only supported in the default googleapis.com universe domain"
+        )
+
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
@@ -774,6 +785,12 @@ class TestCredentials(object):
         creds.apply(headers)
         assert "x-goog-user-project" in headers
 
+    def test_with_universe_domain(self):
+        creds = credentials.Credentials(token="token")
+        assert creds.universe_domain == "googleapis.com"
+        new_creds = creds.with_universe_domain("dummy_universe.com")
+        assert new_creds.universe_domain == "dummy_universe.com"
+
     def test_with_token_uri(self):
         info = AUTH_USER_INFO.copy()
 
@@ -868,6 +885,7 @@ class TestCredentials(object):
         assert json_asdict.get("scopes") == creds.scopes
         assert json_asdict.get("client_secret") == creds.client_secret
         assert json_asdict.get("expiry") == info["expiry"]
+        assert json_asdict.get("universe_domain") == creds.universe_domain
 
         # Test with a `strip` arg
         json_output = creds.to_json(strip=["client_secret"])

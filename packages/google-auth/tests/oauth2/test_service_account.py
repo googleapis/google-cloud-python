@@ -205,6 +205,17 @@ class TestCredentials(object):
         creds_with_new_token_uri = credentials.with_token_uri(new_token_uri)
         assert creds_with_new_token_uri._token_uri == new_token_uri
 
+    def test_with_universe_domain(self):
+        credentials = self.make_credentials()
+
+        new_credentials = credentials.with_universe_domain("dummy_universe.com")
+        assert new_credentials.universe_domain == "dummy_universe.com"
+        assert new_credentials._always_use_jwt_access
+
+        new_credentials = credentials.with_universe_domain("googleapis.com")
+        assert new_credentials.universe_domain == "googleapis.com"
+        assert not new_credentials._always_use_jwt_access
+
     def test__with_always_use_jwt_access(self):
         credentials = self.make_credentials()
         assert not credentials._always_use_jwt_access
