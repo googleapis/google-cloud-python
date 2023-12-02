@@ -31,10 +31,11 @@ extras = ["tests"]
 extras_by_python = {
     "3.8": ["tests", "alembic", "bqstorage"],
     "3.11": ["tests", "geography", "bqstorage"],
+    "3.12": ["tests", "geography", "bqstorage"],
 }
 templated_files = common.py_library(
-    unit_test_python_versions=["3.8", "3.9", "3.10", "3.11"],
-    system_test_python_versions=["3.8", "3.11"],
+    unit_test_python_versions=["3.8", "3.9", "3.10", "3.11", "3.12"],
+    system_test_python_versions=["3.8", "3.11", "3.12"],
     cov_level=100,
     unit_test_extras=extras,
     unit_test_extras_by_python=extras_by_python,
@@ -126,7 +127,7 @@ place_before(
 
 
 install_logic = '''
-    if install_extras and session.python == "3.11":
+    if install_extras and session.python in ["3.11", "3.12"]:
         install_target = ".[geography,alembic,tests,bqstorage]"
     elif install_extras:
         install_target = ".[all]"
@@ -173,7 +174,7 @@ def compliance(session):
     )
     if session.python == "3.8":
         extras = "[tests,alembic]"
-    elif session.python == "3.11":
+    elif session.python in ["3.11", "3.12"]:
         extras = "[tests,geography]"
     else:
         extras = "[tests]"

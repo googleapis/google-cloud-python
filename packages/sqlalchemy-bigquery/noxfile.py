@@ -35,7 +35,7 @@ LINT_PATHS = ["docs", "sqlalchemy_bigquery", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -60,9 +60,14 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "geography",
         "bqstorage",
     ],
+    "3.12": [
+        "tests",
+        "geography",
+        "bqstorage",
+    ],
 }
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.11"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.11", "3.12"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -81,6 +86,11 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "bqstorage",
     ],
     "3.11": [
+        "tests",
+        "geography",
+        "bqstorage",
+    ],
+    "3.12": [
         "tests",
         "geography",
         "bqstorage",
@@ -195,7 +205,7 @@ def default(session, install_extras=True):
     )
     install_unittest_dependencies(session, "-c", constraints_path)
 
-    if install_extras and session.python == "3.11":
+    if install_extras and session.python in ["3.11", "3.12"]:
         install_target = ".[geography,alembic,tests,bqstorage]"
     elif install_extras:
         install_target = ".[all]"
@@ -370,7 +380,7 @@ def compliance(session):
     )
     if session.python == "3.8":
         extras = "[tests,alembic]"
-    elif session.python == "3.11":
+    elif session.python in ["3.11", "3.12"]:
         extras = "[tests,geography]"
     else:
         extras = "[tests]"
