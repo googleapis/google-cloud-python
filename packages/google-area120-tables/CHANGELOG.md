@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.11.5](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.4...google-area120-tables-v0.11.5) (2023-12-02)
+
+
+### Features
+
+* Add support for python 3.12 ([ea6cfc2](https://github.com/googleapis/google-cloud-python/commit/ea6cfc2f86e77757b8cb05f7fd0d9c0b7ccaf7cf))
+* Introduce compatibility with native namespace packages ([ea6cfc2](https://github.com/googleapis/google-cloud-python/commit/ea6cfc2f86e77757b8cb05f7fd0d9c0b7ccaf7cf))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([ea6cfc2](https://github.com/googleapis/google-cloud-python/commit/ea6cfc2f86e77757b8cb05f7fd0d9c0b7ccaf7cf))
+* Use `retry_async` instead of `retry` in async client ([ea6cfc2](https://github.com/googleapis/google-cloud-python/commit/ea6cfc2f86e77757b8cb05f7fd0d9c0b7ccaf7cf))
+
 ## [0.11.4](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.3...google-area120-tables-v0.11.4) (2023-09-30)
 
 
