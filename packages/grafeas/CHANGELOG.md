@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.8.1...grafeas-v1.9.0) (2023-12-02)
+
+
+### Features
+
+* Add support for python 3.12 ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+* Introduce compatibility with native namespace packages ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+* Use `retry_async` instead of `retry` in async client ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+
 ## [1.8.1](https://github.com/googleapis/python-grafeas/compare/v1.8.0...v1.8.1) (2023-01-20)
 
 

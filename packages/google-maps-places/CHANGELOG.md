@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.4...google-maps-places-v0.1.5) (2023-12-02)
+
+
+### Features
+
+* Add support for python 3.12 ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+* Introduce compatibility with native namespace packages ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+* Use `retry_async` instead of `retry` in async client ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.3...google-maps-places-v0.1.4) (2023-11-02)
 
 
