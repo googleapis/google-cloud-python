@@ -1111,8 +1111,9 @@ class BigQueryConfig(proto.Message):
             The name of the table to which to write data,
             of the form {projectId}.{datasetId}.{tableId}
         use_topic_schema (bool):
-            When true, use the topic's schema as the
-            columns to write to in BigQuery, if it exists.
+            Optional. When true, use the topic's schema as the columns
+            to write to in BigQuery, if it exists. ``use_topic_schema``
+            and ``use_table_schema`` cannot be enabled at the same time.
         write_metadata (bool):
             When true, write the subscription name, message_id,
             publish_time, attributes, and ordering_key to additional
@@ -1131,6 +1132,10 @@ class BigQueryConfig(proto.Message):
             Output only. An output-only field that
             indicates whether or not the subscription can
             receive messages.
+        use_table_schema (bool):
+            Optional. When true, use the BigQuery table's schema as the
+            columns to write to in BigQuery. ``use_table_schema`` and
+            ``use_topic_schema`` cannot be enabled at the same time.
     """
 
     class State(proto.Enum):
@@ -1185,6 +1190,10 @@ class BigQueryConfig(proto.Message):
         proto.ENUM,
         number=5,
         enum=State,
+    )
+    use_table_schema: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
