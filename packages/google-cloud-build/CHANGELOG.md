@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.21.0...google-cloud-build-v3.22.0) (2023-12-02)
+
+
+### Features
+
+* Add support for python 3.12 ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+* Introduce compatibility with native namespace packages ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+* Use `retry_async` instead of `retry` in async client ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+
 ## [3.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.20.1...google-cloud-build-v3.21.0) (2023-11-02)
 
 
