@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-source-context-v1.4.3...google-cloud-source-context-v1.5.0) (2023-12-02)
+
+
+### Features
+
+* Add support for python 3.12 ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+* Introduce compatibility with native namespace packages ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+* Use `retry_async` instead of `retry` in async client ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+
 ## [1.4.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-source-context-v1.4.2...google-cloud-source-context-v1.4.3) (2023-09-19)
 
 
