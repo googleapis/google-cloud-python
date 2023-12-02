@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-phishing-protection-v1.9.2...google-cloud-phishing-protection-v1.10.0) (2023-12-02)
+
+
+### Features
+
+* Add support for python 3.12 ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+* Introduce compatibility with native namespace packages ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+* Use `retry_async` instead of `retry` in async client ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+
 ## [1.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-phishing-protection-v1.9.1...google-cloud-phishing-protection-v1.9.2) (2023-09-19)
 
 
