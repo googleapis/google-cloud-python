@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gsuiteaddons-v0.3.3...google-cloud-gsuiteaddons-v0.3.4) (2023-12-02)
+
+
+### Features
+
+* Add support for python 3.12 ([5cd98aa](https://github.com/googleapis/google-cloud-python/commit/5cd98aa0e8ead2eef82ecdcef4141b33a7da2b5a))
+* Introduce compatibility with native namespace packages ([5cd98aa](https://github.com/googleapis/google-cloud-python/commit/5cd98aa0e8ead2eef82ecdcef4141b33a7da2b5a))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([5cd98aa](https://github.com/googleapis/google-cloud-python/commit/5cd98aa0e8ead2eef82ecdcef4141b33a7da2b5a))
+* Use `retry_async` instead of `retry` in async client ([5cd98aa](https://github.com/googleapis/google-cloud-python/commit/5cd98aa0e8ead2eef82ecdcef4141b33a7da2b5a))
+
 ## [0.3.3](https://github.com/googleapis/python-gsuiteaddons/compare/v0.3.2...v0.3.3) (2023-09-21)
 
 
