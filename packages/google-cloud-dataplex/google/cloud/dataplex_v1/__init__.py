@@ -40,6 +40,7 @@ from .types.content import (
 )
 from .types.data_profile import DataProfileResult, DataProfileSpec
 from .types.data_quality import (
+    DataQualityColumnResult,
     DataQualityDimension,
     DataQualityDimensionResult,
     DataQualityResult,
@@ -192,6 +193,7 @@ __all__ = (
     "DataAttributeBinding",
     "DataProfileResult",
     "DataProfileSpec",
+    "DataQualityColumnResult",
     "DataQualityDimension",
     "DataQualityDimensionResult",
     "DataQualityResult",

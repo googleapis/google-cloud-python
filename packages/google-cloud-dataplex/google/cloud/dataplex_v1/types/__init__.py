@@ -24,6 +24,7 @@ from .content import (
 )
 from .data_profile import DataProfileResult, DataProfileSpec
 from .data_quality import (
+    DataQualityColumnResult,
     DataQualityDimension,
     DataQualityDimensionResult,
     DataQualityResult,
@@ -159,6 +160,7 @@ __all__ = (
     "UpdateContentRequest",
     "DataProfileResult",
     "DataProfileSpec",
+    "DataQualityColumnResult",
     "DataQualityDimension",
     "DataQualityDimensionResult",
     "DataQualityResult",
