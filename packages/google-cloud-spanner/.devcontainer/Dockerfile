@@ -1,4 +1,4 @@
-ARG VARIANT="3.8"
+ARG VARIANT="3.12"
 FROM mcr.microsoft.com/devcontainers/python:${VARIANT}
 
 #install nox
