@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.29.0...google-cloud-dialogflow-cx-v1.30.0) (2023-12-02)
+
+
+### Features
+
+* Add DirectPredict to PredictionService ([15b4370](https://github.com/googleapis/google-cloud-python/commit/15b437074ad6f4029d6e4d1d9bca0cd88985a2dc))
+* Add DirectRawPredict to PredictionService ([15b4370](https://github.com/googleapis/google-cloud-python/commit/15b437074ad6f4029d6e4d1d9bca0cd88985a2dc))
+* Add grpc_ports to UploadModel ModelContainerSpec ([15b4370](https://github.com/googleapis/google-cloud-python/commit/15b437074ad6f4029d6e4d1d9bca0cd88985a2dc))
+* Add StreamingPredict to PredictionService. ([15b4370](https://github.com/googleapis/google-cloud-python/commit/15b437074ad6f4029d6e4d1d9bca0cd88985a2dc))
+* Add StreamingRawPredict to PredictionService. ([15b4370](https://github.com/googleapis/google-cloud-python/commit/15b437074ad6f4029d6e4d1d9bca0cd88985a2dc))
+* Add support for python 3.12 ([15b4370](https://github.com/googleapis/google-cloud-python/commit/15b437074ad6f4029d6e4d1d9bca0cd88985a2dc))
+* Added Generator API  ([15b4370](https://github.com/googleapis/google-cloud-python/commit/15b437074ad6f4029d6e4d1d9bca0cd88985a2dc))
+* Introduce compatibility with native namespace packages ([15b4370](https://github.com/googleapis/google-cloud-python/commit/15b437074ad6f4029d6e4d1d9bca0cd88985a2dc))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([15b4370](https://github.com/googleapis/google-cloud-python/commit/15b437074ad6f4029d6e4d1d9bca0cd88985a2dc))
+* Use `retry_async` instead of `retry` in async client ([15b4370](https://github.com/googleapis/google-cloud-python/commit/15b437074ad6f4029d6e4d1d9bca0cd88985a2dc))
+
 ## [1.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.28.0...google-cloud-dialogflow-cx-v1.29.0) (2023-11-29)
 
 
