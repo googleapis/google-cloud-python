@@ -8,9 +8,9 @@ argcomplete==3.1.6 \
     --hash=sha256:3b1f07d133332547a53c79437527c00be48cca3807b1d4ca5cab1b26313386a6 \
     --hash=sha256:71f4683bc9e6b0be85f2b2c1224c47680f210903e23512cfebfe5a41edfd883a
     # via nox
-colorlog==6.7.0 \
-    --hash=sha256:0d33ca236784a1ba3ff9c532d4964126d8a2c44f1f0cb1d2b0728196f512f662 \
-    --hash=sha256:bd94bd21c1e13fac7bd3153f4bc3a7dc0eb0974b8bc2fdf1a989e474f6e582e5
+colorlog==6.8.0 \
+    --hash=sha256:4ed23b05a1154294ac99f511fabe8c1d6d4364ec1f7fc989c7fb515ccc29d375 \
+    --hash=sha256:fbb6fdf9d5685f2517f388fb29bb27d54e8654dd31f58bc2a3b217e967a95ca6
     # via nox
 distlib==0.3.7 \
     --hash=sha256:2e24928bc811348f0feb63014e97aaae3037f2cf48712d51ae61df7fd6075057 \
