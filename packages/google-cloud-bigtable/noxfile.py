@@ -135,7 +135,7 @@ def mypy(session):
     )
     session.install("google-cloud-testutils")
     # TODO: also verify types on tests, all of google package
-    session.run("mypy", "google/", "tests/")
+    session.run("mypy", "-p", "google", "-p", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
