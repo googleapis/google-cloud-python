@@ -1231,6 +1231,20 @@ class TestDatabase(_BaseTest):
         self.assertIsInstance(checkout, BatchCheckout)
         self.assertIs(checkout._database, database)
 
+    def test_mutation_groups(self):
+        from google.cloud.spanner_v1.database import MutationGroupsCheckout
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        session = _Session()
+        pool.put(session)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        checkout = database.mutation_groups()
+        self.assertIsInstance(checkout, MutationGroupsCheckout)
+        self.assertIs(checkout._database, database)
+
     def test_batch_snapshot(self):
         from google.cloud.spanner_v1.database import BatchSnapshot
 
@@ -2677,6 +2691,179 @@ class TestBatchSnapshot(_BaseTest):
             retry=gapic_v1.method.DEFAULT,
             timeout=gapic_v1.method.DEFAULT,
         )
+
+
+class TestMutationGroupsCheckout(_BaseTest):
+    def _get_target_class(self):
+        from google.cloud.spanner_v1.database import MutationGroupsCheckout
+
+        return MutationGroupsCheckout
+
+    @staticmethod
+    def _make_spanner_client():
+        from google.cloud.spanner_v1 import SpannerClient
+
+        return mock.create_autospec(SpannerClient)
+
+    def test_ctor(self):
+        from google.cloud.spanner_v1.batch import MutationGroups
+
+        database = _Database(self.DATABASE_NAME)
+        pool = database._pool = _Pool()
+        session = _Session(database)
+        pool.put(session)
+        checkout = self._make_one(database)
+        self.assertIs(checkout._database, database)
+
+        with checkout as groups:
+            self.assertIsNone(pool._session)
+            self.assertIsInstance(groups, MutationGroups)
+            self.assertIs(groups._session, session)
+
+        self.assertIs(pool._session, session)
+
+    def test_context_mgr_success(self):
+        import datetime
+        from google.cloud.spanner_v1._helpers import _make_list_value_pbs
+        from google.cloud.spanner_v1 import BatchWriteRequest
+        from google.cloud.spanner_v1 import BatchWriteResponse
+        from google.cloud.spanner_v1 import Mutation
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.spanner_v1.batch import MutationGroups
+        from google.rpc.status_pb2 import Status
+
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now_pb = _datetime_to_pb_timestamp(now)
+        status_pb = Status(code=200)
+        response = BatchWriteResponse(
+            commit_timestamp=now_pb, indexes=[0], status=status_pb
+        )
+        database = _Database(self.DATABASE_NAME)
+        api = database.spanner_api = self._make_spanner_client()
+        api.batch_write.return_value = [response]
+        pool = database._pool = _Pool()
+        session = _Session(database)
+        pool.put(session)
+        checkout = self._make_one(database)
+
+        request_options = RequestOptions(transaction_tag=self.TRANSACTION_TAG)
+        request = BatchWriteRequest(
+            session=self.SESSION_NAME,
+            mutation_groups=[
+                BatchWriteRequest.MutationGroup(
+                    mutations=[
+                        Mutation(
+                            insert=Mutation.Write(
+                                table="table",
+                                columns=["col"],
+                                values=_make_list_value_pbs([["val"]]),
+                            )
+                        )
+                    ]
+                )
+            ],
+            request_options=request_options,
+        )
+        with checkout as groups:
+            self.assertIsNone(pool._session)
+            self.assertIsInstance(groups, MutationGroups)
+            self.assertIs(groups._session, session)
+            group = groups.group()
+            group.insert("table", ["col"], [["val"]])
+            groups.batch_write(request_options)
+            self.assertEqual(groups.committed, True)
+
+        self.assertIs(pool._session, session)
+
+        api.batch_write.assert_called_once_with(
+            request=request,
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
+        )
+
+    def test_context_mgr_failure(self):
+        from google.cloud.spanner_v1.batch import MutationGroups
+
+        database = _Database(self.DATABASE_NAME)
+        pool = database._pool = _Pool()
+        session = _Session(database)
+        pool.put(session)
+        checkout = self._make_one(database)
+
+        class Testing(Exception):
+            pass
+
+        with self.assertRaises(Testing):
+            with checkout as groups:
+                self.assertIsNone(pool._session)
+                self.assertIsInstance(groups, MutationGroups)
+                self.assertIs(groups._session, session)
+                raise Testing()
+
+        self.assertIs(pool._session, session)
+
+    def test_context_mgr_session_not_found_error(self):
+        from google.cloud.exceptions import NotFound
+
+        database = _Database(self.DATABASE_NAME)
+        session = _Session(database, name="session-1")
+        session.exists = mock.MagicMock(return_value=False)
+        pool = database._pool = _Pool()
+        new_session = _Session(database, name="session-2")
+        new_session.create = mock.MagicMock(return_value=[])
+        pool._new_session = mock.MagicMock(return_value=new_session)
+
+        pool.put(session)
+        checkout = self._make_one(database)
+
+        self.assertEqual(pool._session, session)
+        with self.assertRaises(NotFound):
+            with checkout as _:
+                raise NotFound("Session not found")
+        # Assert that session-1 was removed from pool and new session was added.
+        self.assertEqual(pool._session, new_session)
+
+    def test_context_mgr_table_not_found_error(self):
+        from google.cloud.exceptions import NotFound
+
+        database = _Database(self.DATABASE_NAME)
+        session = _Session(database, name="session-1")
+        session.exists = mock.MagicMock(return_value=True)
+        pool = database._pool = _Pool()
+        pool._new_session = mock.MagicMock(return_value=[])
+
+        pool.put(session)
+        checkout = self._make_one(database)
+
+        self.assertEqual(pool._session, session)
+        with self.assertRaises(NotFound):
+            with checkout as _:
+                raise NotFound("Table not found")
+        # Assert that session-1 was not removed from pool.
+        self.assertEqual(pool._session, session)
+        pool._new_session.assert_not_called()
+
+    def test_context_mgr_unknown_error(self):
+        database = _Database(self.DATABASE_NAME)
+        session = _Session(database)
+        pool = database._pool = _Pool()
+        pool._new_session = mock.MagicMock(return_value=[])
+        pool.put(session)
+        checkout = self._make_one(database)
+
+        class Testing(Exception):
+            pass
+
+        self.assertEqual(pool._session, session)
+        with self.assertRaises(Testing):
+            with checkout as _:
+                raise Testing("Unknown error.")
+        # Assert that session-1 was not removed from pool.
+        self.assertEqual(pool._session, session)
+        pool._new_session.assert_not_called()
 
 
 def _make_instance_api():

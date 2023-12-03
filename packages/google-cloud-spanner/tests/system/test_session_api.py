@@ -2521,6 +2521,41 @@ def test_partition_query(sessions_database, not_emulator):
     batch_txn.close()
 
 
+def test_mutation_groups_insert_or_update_then_query(not_emulator, sessions_database):
+    sd = _sample_data
+    num_groups = 3
+    num_mutations_per_group = len(sd.BATCH_WRITE_ROW_DATA) // num_groups
+
+    with sessions_database.batch() as batch:
+        batch.delete(sd.TABLE, sd.ALL)
+
+    with sessions_database.mutation_groups() as groups:
+        for i in range(num_groups):
+            group = groups.group()
+            for j in range(num_mutations_per_group):
+                group.insert_or_update(
+                    sd.TABLE,
+                    sd.COLUMNS,
+                    [sd.BATCH_WRITE_ROW_DATA[i * num_mutations_per_group + j]],
+                )
+        # Response indexes received
+        seen = collections.Counter()
+        for response in groups.batch_write():
+            _check_batch_status(response.status.code)
+            assert response.commit_timestamp is not None
+            assert len(response.indexes) > 0
+            seen.update(response.indexes)
+        # All indexes must be in the range [0, num_groups-1] and seen exactly once
+        assert len(seen) == num_groups
+        assert all((0 <= idx < num_groups and ct == 1) for (idx, ct) in seen.items())
+
+    # Verify the writes by reading from the database
+    with sessions_database.snapshot() as snapshot:
+        rows = list(snapshot.execute_sql(sd.SQL))
+
+    sd._check_rows_data(rows, sd.BATCH_WRITE_ROW_DATA)
+
+
 class FauxCall:
     def __init__(self, code, details="FauxCall"):
         self._code = code

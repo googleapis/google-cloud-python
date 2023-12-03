@@ -413,6 +413,130 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(len(batch._mutations), 1)
 
 
+class TestMutationGroups(_BaseTest, OpenTelemetryBase):
+    def _getTargetClass(self):
+        from google.cloud.spanner_v1.batch import MutationGroups
+
+        return MutationGroups
+
+    def test_ctor(self):
+        session = _Session()
+        groups = self._make_one(session)
+        self.assertIs(groups._session, session)
+
+    def test_batch_write_already_committed(self):
+        from google.cloud.spanner_v1.keyset import KeySet
+
+        keys = [[0], [1], [2]]
+        keyset = KeySet(keys=keys)
+        database = _Database()
+        database.spanner_api = _FauxSpannerAPI(_batch_write_response=[])
+        session = _Session(database)
+        groups = self._make_one(session)
+        group = groups.group()
+        group.delete(TABLE_NAME, keyset=keyset)
+        groups.batch_write()
+        self.assertSpanAttributes(
+            "CloudSpanner.BatchWrite",
+            status=StatusCode.OK,
+            attributes=dict(BASE_ATTRIBUTES, num_mutation_groups=1),
+        )
+        assert groups.committed
+        # The second call to batch_write should raise an error.
+        with self.assertRaises(ValueError):
+            groups.batch_write()
+
+    def test_batch_write_grpc_error(self):
+        from google.api_core.exceptions import Unknown
+        from google.cloud.spanner_v1.keyset import KeySet
+
+        keys = [[0], [1], [2]]
+        keyset = KeySet(keys=keys)
+        database = _Database()
+        database.spanner_api = _FauxSpannerAPI(_rpc_error=True)
+        session = _Session(database)
+        groups = self._make_one(session)
+        group = groups.group()
+        group.delete(TABLE_NAME, keyset=keyset)
+
+        with self.assertRaises(Unknown):
+            groups.batch_write()
+
+        self.assertSpanAttributes(
+            "CloudSpanner.BatchWrite",
+            status=StatusCode.ERROR,
+            attributes=dict(BASE_ATTRIBUTES, num_mutation_groups=1),
+        )
+
+    def _test_batch_write_with_request_options(self, request_options=None):
+        import datetime
+        from google.cloud.spanner_v1 import BatchWriteResponse
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.rpc.status_pb2 import Status
+
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now_pb = _datetime_to_pb_timestamp(now)
+        status_pb = Status(code=200)
+        response = BatchWriteResponse(
+            commit_timestamp=now_pb, indexes=[0], status=status_pb
+        )
+        database = _Database()
+        api = database.spanner_api = _FauxSpannerAPI(_batch_write_response=[response])
+        session = _Session(database)
+        groups = self._make_one(session)
+        group = groups.group()
+        group.insert(TABLE_NAME, COLUMNS, VALUES)
+
+        response_iter = groups.batch_write(request_options)
+        self.assertEqual(len(response_iter), 1)
+        self.assertEqual(response_iter[0], response)
+
+        (
+            session,
+            mutation_groups,
+            actual_request_options,
+            metadata,
+        ) = api._batch_request
+        self.assertEqual(session, self.SESSION_NAME)
+        self.assertEqual(mutation_groups, groups._mutation_groups)
+        self.assertEqual(
+            metadata,
+            [
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
+        )
+        if request_options is None:
+            expected_request_options = RequestOptions()
+        elif type(request_options) is dict:
+            expected_request_options = RequestOptions(request_options)
+        else:
+            expected_request_options = request_options
+        self.assertEqual(actual_request_options, expected_request_options)
+
+        self.assertSpanAttributes(
+            "CloudSpanner.BatchWrite",
+            status=StatusCode.OK,
+            attributes=dict(BASE_ATTRIBUTES, num_mutation_groups=1),
+        )
+
+    def test_batch_write_no_request_options(self):
+        self._test_batch_write_with_request_options()
+
+    def test_batch_write_w_transaction_tag_success(self):
+        self._test_batch_write_with_request_options(
+            RequestOptions(transaction_tag="tag-1-1")
+        )
+
+    def test_batch_write_w_transaction_tag_dictionary_success(self):
+        self._test_batch_write_with_request_options({"transaction_tag": "tag-1-1"})
+
+    def test_batch_write_w_incorrect_tag_dictionary_error(self):
+        with self.assertRaises(ValueError):
+            self._test_batch_write_with_request_options({"incorrect_tag": "tag-1-1"})
+
+
 class _Session(object):
     def __init__(self, database=None, name=TestBatch.SESSION_NAME):
         self._database = database
@@ -428,6 +552,7 @@ class _FauxSpannerAPI:
     _create_instance_conflict = False
     _instance_not_found = False
     _committed = None
+    _batch_request = None
     _rpc_error = False
 
     def __init__(self, **kwargs):
@@ -451,3 +576,20 @@ class _FauxSpannerAPI:
         if self._rpc_error:
             raise Unknown("error")
         return self._commit_response
+
+    def batch_write(
+        self,
+        request=None,
+        metadata=None,
+    ):
+        from google.api_core.exceptions import Unknown
+
+        self._batch_request = (
+            request.session,
+            request.mutation_groups,
+            request.request_options,
+            metadata,
+        )
+        if self._rpc_error:
+            raise Unknown("error")
+        return self._batch_write_response

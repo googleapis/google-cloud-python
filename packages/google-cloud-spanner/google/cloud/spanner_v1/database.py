@@ -50,6 +50,7 @@ from google.cloud.spanner_v1._helpers import (
     _metadata_with_leader_aware_routing,
 )
 from google.cloud.spanner_v1.batch import Batch
+from google.cloud.spanner_v1.batch import MutationGroups
 from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import SessionCheckout
@@ -734,6 +735,17 @@ class Database(object):
         """
         return BatchCheckout(self, request_options)
 
+    def mutation_groups(self):
+        """Return an object which wraps a mutation_group.
+
+        The wrapper *must* be used as a context manager, with the mutation group
+        as the value returned by the wrapper.
+
+        :rtype: :class:`~google.cloud.spanner_v1.database.MutationGroupsCheckout`
+        :returns: new wrapper
+        """
+        return MutationGroupsCheckout(self)
+
     def batch_snapshot(self, read_timestamp=None, exact_staleness=None):
         """Return an object which wraps a batch read / query.
 
@@ -1038,6 +1050,39 @@ class BatchCheckout(object):
                     extra={"commit_stats": self._batch.commit_stats},
                 )
             self._database._pool.put(self._session)
+
+
+class MutationGroupsCheckout(object):
+    """Context manager for using mutation groups from a database.
+
+    Inside the context manager, checks out a session from the database,
+    creates mutation groups from it, making the groups available.
+
+    Caller must *not* use the object to perform API requests outside the scope
+    of the context manager.
+
+    :type database: :class:`~google.cloud.spanner_v1.database.Database`
+    :param database: database to use
+    """
+
+    def __init__(self, database):
+        self._database = database
+        self._session = None
+
+    def __enter__(self):
+        """Begin ``with`` block."""
+        session = self._session = self._database._pool.get()
+        return MutationGroups(session)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """End ``with`` block."""
+        if isinstance(exc_val, NotFound):
+            # If NotFound exception occurs inside the with block
+            # then we validate if the session still exists.
+            if not self._session.exists():
+                self._session = self._database._pool._new_session()
+                self._session.create()
+        self._database._pool.put(self._session)
 
 
 class SnapshotCheckout(object):

@@ -34,6 +34,8 @@ from .types.result_set import ResultSetMetadata
 from .types.result_set import ResultSetStats
 from .types.spanner import BatchCreateSessionsRequest
 from .types.spanner import BatchCreateSessionsResponse
+from .types.spanner import BatchWriteRequest
+from .types.spanner import BatchWriteResponse
 from .types.spanner import BeginTransactionRequest
 from .types.spanner import CommitRequest
 from .types.spanner import CreateSessionRequest
@@ -99,6 +101,8 @@ __all__ = (
     # google.cloud.spanner_v1.types
     "BatchCreateSessionsRequest",
     "BatchCreateSessionsResponse",
+    "BatchWriteRequest",
+    "BatchWriteResponse",
     "BeginTransactionRequest",
     "CommitRequest",
     "CommitResponse",
