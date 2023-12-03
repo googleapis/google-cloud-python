@@ -35,7 +35,7 @@ s.move(
         ".flake8",
         ".coveragerc",
         "setup.cfg",
-	"README.rst",
+        "README.rst",
     ],
 )
 

@@ -14,9 +14,14 @@
 
 """Helpers for deprecated code and modules."""
 
+import sys
 import warnings
 
-import pkg_resources
+
+if sys.version_info < (3, 8):
+    import importlib_metadata as metadata
+else:
+    import importlib.metadata as metadata
 
 
 def complain(distribution_name):
@@ -29,7 +34,7 @@ def complain(distribution_name):
         distribution_name (str): The name of the obsolete distribution.
     """
     try:
-        pkg_resources.get_distribution(distribution_name)
+        metadata.distribution(distribution_name)
         warnings.warn(
             "The {pkg} distribution is now obsolete. "
             "Please `pip uninstall {pkg}`. "
@@ -38,5 +43,5 @@ def complain(distribution_name):
             ),
             DeprecationWarning,
         )
-    except pkg_resources.DistributionNotFound:
+    except metadata.PackageNotFoundError:
         pass

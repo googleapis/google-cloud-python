@@ -48,7 +48,7 @@ def mypy(session):
         "types-mock",
         "types-protobuf",
     )
-    session.run("mypy", "google", "tests")
+    session.run("mypy", "-p", "google", "-p", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

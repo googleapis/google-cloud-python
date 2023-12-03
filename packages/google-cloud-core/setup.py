@@ -30,6 +30,7 @@ release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core >= 1.31.6, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
     "google-auth >= 1.25.0, < 3.0dev",
+    "importlib-metadata > 1.0.0; python_version<'3.8'",
 ]
 extras = {"grpc": "grpcio >= 1.38.0, < 2.0dev"}
 
@@ -50,14 +51,10 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 # Only include packages under the 'google' namespace. Do not include tests,
 # benchmarks, etc.
 packages = [
-    package for package in setuptools.find_packages() if package.startswith("google")
+    package
+    for package in setuptools.find_namespace_packages()
+    if package.startswith("google")
 ]
-
-# Determine which namespaces are needed.
-namespaces = ["google"]
-if "google.cloud" in packages:
-    namespaces.append("google.cloud")
-
 
 setuptools.setup(
     name=name,
@@ -83,7 +80,6 @@ setuptools.setup(
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
-    namespace_packages=namespaces,
     install_requires=dependencies,
     extras_require=extras,
     python_requires=">=3.7",
