@@ -217,6 +217,49 @@ class CloudDeployTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.list_custom_target_types: gapic_v1.method.wrap_method(
+                self.list_custom_target_types,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_custom_target_type: gapic_v1.method.wrap_method(
+                self.get_custom_target_type,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_custom_target_type: gapic_v1.method.wrap_method(
+                self.create_custom_target_type,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_custom_target_type: gapic_v1.method.wrap_method(
+                self.update_custom_target_type,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_custom_target_type: gapic_v1.method.wrap_method(
+                self.delete_custom_target_type,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.list_releases: gapic_v1.method.wrap_method(
                 self.list_releases,
                 default_retry=retries.Retry(
@@ -556,6 +599,54 @@ class CloudDeployTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_deploy.DeleteTargetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_custom_target_types(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListCustomTargetTypesRequest],
+        Union[
+            cloud_deploy.ListCustomTargetTypesResponse,
+            Awaitable[cloud_deploy.ListCustomTargetTypesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.GetCustomTargetTypeRequest],
+        Union[cloud_deploy.CustomTargetType, Awaitable[cloud_deploy.CustomTargetType]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.CreateCustomTargetTypeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.UpdateCustomTargetTypeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.DeleteCustomTargetTypeRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

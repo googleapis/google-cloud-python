@@ -122,6 +122,14 @@ class CloudDeployRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_custom_target_type(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_custom_target_type(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_delivery_pipeline(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -162,6 +170,14 @@ class CloudDeployRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_custom_target_type(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_custom_target_type(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_delivery_pipeline(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -199,6 +215,14 @@ class CloudDeployRestInterceptor:
                 return request, metadata
 
             def post_get_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_custom_target_type(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_custom_target_type(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -263,6 +287,14 @@ class CloudDeployRestInterceptor:
                 return request, metadata
 
             def post_list_automations(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_custom_target_types(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_custom_target_types(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -335,6 +367,14 @@ class CloudDeployRestInterceptor:
                 return request, metadata
 
             def post_update_automation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_custom_target_type(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_custom_target_type(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -498,6 +538,29 @@ class CloudDeployRestInterceptor:
         """
         return response
 
+    def pre_create_custom_target_type(
+        self,
+        request: cloud_deploy.CreateCustomTargetTypeRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.CreateCustomTargetTypeRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_custom_target_type
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_create_custom_target_type(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_custom_target_type
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_delivery_pipeline(
         self,
         request: cloud_deploy.CreateDeliveryPipelineRequest,
@@ -613,6 +676,29 @@ class CloudDeployRestInterceptor:
         """
         return response
 
+    def pre_delete_custom_target_type(
+        self,
+        request: cloud_deploy.DeleteCustomTargetTypeRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.DeleteCustomTargetTypeRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_custom_target_type
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_delete_custom_target_type(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_custom_target_type
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_delivery_pipeline(
         self,
         request: cloud_deploy.DeleteDeliveryPipelineRequest,
@@ -719,6 +805,29 @@ class CloudDeployRestInterceptor:
 
     def post_get_config(self, response: cloud_deploy.Config) -> cloud_deploy.Config:
         """Post-rpc interceptor for get_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_custom_target_type(
+        self,
+        request: cloud_deploy.GetCustomTargetTypeRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.GetCustomTargetTypeRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_custom_target_type
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_get_custom_target_type(
+        self, response: cloud_deploy.CustomTargetType
+    ) -> cloud_deploy.CustomTargetType:
+        """Post-rpc interceptor for get_custom_target_type
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudDeploy server but before
@@ -895,6 +1004,29 @@ class CloudDeployRestInterceptor:
         self, response: cloud_deploy.ListAutomationsResponse
     ) -> cloud_deploy.ListAutomationsResponse:
         """Post-rpc interceptor for list_automations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_custom_target_types(
+        self,
+        request: cloud_deploy.ListCustomTargetTypesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.ListCustomTargetTypesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_custom_target_types
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_list_custom_target_types(
+        self, response: cloud_deploy.ListCustomTargetTypesResponse
+    ) -> cloud_deploy.ListCustomTargetTypesResponse:
+        """Post-rpc interceptor for list_custom_target_types
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudDeploy server but before
@@ -1100,6 +1232,29 @@ class CloudDeployRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_automation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_custom_target_type(
+        self,
+        request: cloud_deploy.UpdateCustomTargetTypeRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.UpdateCustomTargetTypeRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_custom_target_type
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_update_custom_target_type(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_custom_target_type
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudDeploy server but before
@@ -2082,6 +2237,106 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_create_automation(resp)
             return resp
 
+    class _CreateCustomTargetType(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("CreateCustomTargetType")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "customTargetTypeId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.CreateCustomTargetTypeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create custom target type method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.CreateCustomTargetTypeRequest):
+                    The request object. The request object for ``CreateCustomTargetType``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/customTargetTypes",
+                    "body": "custom_target_type",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_custom_target_type(
+                request, metadata
+            )
+            pb_request = cloud_deploy.CreateCustomTargetTypeRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_custom_target_type(resp)
+            return resp
+
     class _CreateDeliveryPipeline(CloudDeployRestStub):
         def __hash__(self):
             return hash("CreateDeliveryPipeline")
@@ -2566,6 +2821,95 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_delete_automation(resp)
             return resp
 
+    class _DeleteCustomTargetType(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("DeleteCustomTargetType")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.DeleteCustomTargetTypeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete custom target type method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.DeleteCustomTargetTypeRequest):
+                    The request object. The request object for ``DeleteCustomTargetType``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/customTargetTypes/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_custom_target_type(
+                request, metadata
+            )
+            pb_request = cloud_deploy.DeleteCustomTargetTypeRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_custom_target_type(resp)
+            return resp
+
     class _DeleteDeliveryPipeline(CloudDeployRestStub):
         def __hash__(self):
             return hash("DeleteDeliveryPipeline")
@@ -2781,7 +3125,7 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
                 An ``Automation`` enables the automation of manually
                 driven actions for a Delivery Pipeline, which includes
-                Release promotion amongst Targets, Rollout repair and
+                Release promotion among Targets, Rollout repair and
                 Rollout deployment strategy advancement. The intention
                 of Automation is to reduce manual intervention in the
                 continuous delivery process.
@@ -2873,8 +3217,8 @@ class CloudDeployRestTransport(CloudDeployTransport):
                 ~.cloud_deploy.AutomationRun:
                     An ``AutomationRun`` resource in the Cloud Deploy API.
 
-                An ``AutomationRun`` represents an automation execution
-                instance of an automation rule.
+                An ``AutomationRun`` represents an execution instance of
+                an automation rule.
 
             """
 
@@ -3012,6 +3356,100 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_config(resp)
+            return resp
+
+    class _GetCustomTargetType(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("GetCustomTargetType")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.GetCustomTargetTypeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.CustomTargetType:
+            r"""Call the get custom target type method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.GetCustomTargetTypeRequest):
+                    The request object. The request object for ``GetCustomTargetType``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.CustomTargetType:
+                    A ``CustomTargetType`` resource in the Cloud Deploy API.
+
+                A ``CustomTargetType`` defines a type of custom target
+                that can be referenced in a ``Target`` in order to
+                facilitate deploying to a runtime that does not have a
+                1P integration with Cloud Deploy.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/customTargetTypes/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_custom_target_type(
+                request, metadata
+            )
+            pb_request = cloud_deploy.GetCustomTargetTypeRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.CustomTargetType()
+            pb_resp = cloud_deploy.CustomTargetType.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_custom_target_type(resp)
             return resp
 
     class _GetDeliveryPipeline(CloudDeployRestStub):
@@ -3737,6 +4175,94 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_automations(resp)
+            return resp
+
+    class _ListCustomTargetTypes(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("ListCustomTargetTypes")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.ListCustomTargetTypesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.ListCustomTargetTypesResponse:
+            r"""Call the list custom target types method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.ListCustomTargetTypesRequest):
+                    The request object. The request object for ``ListCustomTargetTypes``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.ListCustomTargetTypesResponse:
+                    The response object from ``ListCustomTargetTypes.``
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/customTargetTypes",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_custom_target_types(
+                request, metadata
+            )
+            pb_request = cloud_deploy.ListCustomTargetTypesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.ListCustomTargetTypesResponse()
+            pb_resp = cloud_deploy.ListCustomTargetTypesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_custom_target_types(resp)
             return resp
 
     class _ListDeliveryPipelines(CloudDeployRestStub):
@@ -4565,6 +5091,106 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_update_automation(resp)
             return resp
 
+    class _UpdateCustomTargetType(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("UpdateCustomTargetType")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.UpdateCustomTargetTypeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update custom target type method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.UpdateCustomTargetTypeRequest):
+                    The request object. The request object for ``UpdateCustomTargetType``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{custom_target_type.name=projects/*/locations/*/customTargetTypes/*}",
+                    "body": "custom_target_type",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_custom_target_type(
+                request, metadata
+            )
+            pb_request = cloud_deploy.UpdateCustomTargetTypeRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_custom_target_type(resp)
+            return resp
+
     class _UpdateDeliveryPipeline(CloudDeployRestStub):
         def __hash__(self):
             return hash("UpdateDeliveryPipeline")
@@ -4823,6 +5449,16 @@ class CloudDeployRestTransport(CloudDeployTransport):
         return self._CreateAutomation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.CreateCustomTargetTypeRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateCustomTargetType(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_delivery_pipeline(
         self,
     ) -> Callable[
@@ -4865,6 +5501,16 @@ class CloudDeployRestTransport(CloudDeployTransport):
         return self._DeleteAutomation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.DeleteCustomTargetTypeRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteCustomTargetType(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_delivery_pipeline(
         self,
     ) -> Callable[
@@ -4905,6 +5551,16 @@ class CloudDeployRestTransport(CloudDeployTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.GetCustomTargetTypeRequest], cloud_deploy.CustomTargetType
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetCustomTargetType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_delivery_pipeline(
@@ -4976,6 +5632,17 @@ class CloudDeployRestTransport(CloudDeployTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAutomations(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_custom_target_types(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListCustomTargetTypesRequest],
+        cloud_deploy.ListCustomTargetTypesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListCustomTargetTypes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_delivery_pipelines(
@@ -5059,6 +5726,16 @@ class CloudDeployRestTransport(CloudDeployTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAutomation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.UpdateCustomTargetTypeRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateCustomTargetType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_delivery_pipeline(

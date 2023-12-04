@@ -64,12 +64,22 @@ __protobuf__ = proto.module(
         "AnthosCluster",
         "CloudRunLocation",
         "MultiTarget",
+        "CustomTarget",
         "ListTargetsRequest",
         "ListTargetsResponse",
         "GetTargetRequest",
         "CreateTargetRequest",
         "UpdateTargetRequest",
         "DeleteTargetRequest",
+        "CustomTargetType",
+        "CustomTargetSkaffoldActions",
+        "SkaffoldModules",
+        "ListCustomTargetTypesRequest",
+        "ListCustomTargetTypesResponse",
+        "GetCustomTargetTypeRequest",
+        "CreateCustomTargetTypeRequest",
+        "UpdateCustomTargetTypeRequest",
+        "DeleteCustomTargetTypeRequest",
         "TargetAttribute",
         "Release",
         "BuildArtifact",
@@ -85,7 +95,9 @@ __protobuf__ = proto.module(
         "Metadata",
         "DeployJobRunMetadata",
         "CloudRunMetadata",
+        "CustomTargetDeployMetadata",
         "AutomationRolloutMetadata",
+        "CustomMetadata",
         "Phase",
         "DeploymentJobs",
         "ChildRolloutJobs",
@@ -168,11 +180,11 @@ class SkaffoldSupportState(proto.Enum):
         SKAFFOLD_SUPPORT_STATE_UNSPECIFIED (0):
             Default value. This value is unused.
         SKAFFOLD_SUPPORT_STATE_SUPPORTED (1):
-            This skaffold version is currently supported.
+            This Skaffold version is currently supported.
         SKAFFOLD_SUPPORT_STATE_MAINTENANCE_MODE (2):
-            This skaffold version is in maintenance mode.
+            This Skaffold version is in maintenance mode.
         SKAFFOLD_SUPPORT_STATE_UNSUPPORTED (3):
-            This skaffold version is no longer supported.
+            This Skaffold version is no longer supported.
     """
     SKAFFOLD_SUPPORT_STATE_UNSPECIFIED = 0
     SKAFFOLD_SUPPORT_STATE_SUPPORTED = 1
@@ -818,11 +830,35 @@ class CloudRunConfig(proto.Message):
             This is required to be true for
             CanaryDeployments, but optional for
             CustomCanaryDeployments.
+        canary_revision_tags (MutableSequence[str]):
+            Optional. A list of tags that are added to
+            the canary revision while the canary deployment
+            is in progress.
+        prior_revision_tags (MutableSequence[str]):
+            Optional. A list of tags that are added to
+            the prior revision while the canary deployment
+            is in progress.
+        stable_revision_tags (MutableSequence[str]):
+            Optional. A list of tags that are added to
+            the final stable revision after the canary
+            deployment is completed.
     """
 
     automatic_traffic_control: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+    canary_revision_tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    prior_revision_tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    stable_revision_tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -889,8 +925,8 @@ class PipelineReadyCondition(proto.Message):
 
 
 class TargetsPresentCondition(proto.Message):
-    r"""TargetsPresentCondition contains information on any Targets
-    defined in the Delivery Pipeline that do not actually exist.
+    r"""``TargetsPresentCondition`` contains information on any Targets
+    referenced in the Delivery Pipeline that do not actually exist.
 
     Attributes:
         status (bool):
@@ -1442,6 +1478,11 @@ class Target(proto.Message):
             multiTarget.
 
             This field is a member of `oneof`_ ``deployment_target``.
+        custom_target (google.cloud.deploy_v1.types.CustomTarget):
+            Optional. Information specifying a Custom
+            Target.
+
+            This field is a member of `oneof`_ ``deployment_target``.
         etag (str):
             Optional. This checksum is computed by the
             server based on the value of other fields, and
@@ -1525,6 +1566,12 @@ class Target(proto.Message):
         number=19,
         oneof="deployment_target",
         message="MultiTarget",
+    )
+    custom_target: "CustomTarget" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        oneof="deployment_target",
+        message="CustomTarget",
     )
     etag: str = proto.Field(
         proto.STRING,
@@ -1783,6 +1830,21 @@ class MultiTarget(proto.Message):
     """
 
     target_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CustomTarget(proto.Message):
+    r"""Information specifying a Custom Target.
+
+    Attributes:
+        custom_target_type (str):
+            Required. The name of the CustomTargetType. Format must be
+            ``projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}``.
+    """
+
+    custom_target_type: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -2079,6 +2141,536 @@ class DeleteTargetRequest(proto.Message):
     )
 
 
+class CustomTargetType(proto.Message):
+    r"""A ``CustomTargetType`` resource in the Cloud Deploy API.
+
+    A ``CustomTargetType`` defines a type of custom target that can be
+    referenced in a ``Target`` in order to facilitate deploying to a
+    runtime that does not have a 1P integration with Cloud Deploy.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Optional. Name of the ``CustomTargetType``. Format is
+            ``projects/{project}/locations/{location}/customTargetTypes/[a-z][a-z0-9\-]{0,62}``.
+        custom_target_type_id (str):
+            Output only. Resource id of the ``CustomTargetType``.
+        uid (str):
+            Output only. Unique identifier of the ``CustomTargetType``.
+        description (str):
+            Optional. Description of the ``CustomTargetType``. Max
+            length is 255 characters.
+        annotations (MutableMapping[str, str]):
+            Optional. User annotations. These attributes
+            can only be set and used by the user, and not by
+            Cloud Deploy. See
+            https://google.aip.dev/128#annotations for more
+            details such as format and size limitations.
+        labels (MutableMapping[str, str]):
+            Optional. Labels are attributes that can be set and used by
+            both the user and by Cloud Deploy. Labels must meet the
+            following constraints:
+
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes.
+            -  All characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  Keys must start with a lowercase letter or international
+               character.
+            -  Each resource is limited to a maximum of 64 labels.
+
+            Both keys and values are additionally constrained to be <=
+            128 bytes.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time at which the ``CustomTargetType`` was
+            created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Most recent time at which the
+            ``CustomTargetType`` was updated.
+        etag (str):
+            Optional. This checksum is computed by the
+            server based on the value of other fields, and
+            may be sent on update and delete requests to
+            ensure the client has an up-to-date value before
+            proceeding.
+        custom_actions (google.cloud.deploy_v1.types.CustomTargetSkaffoldActions):
+            Configures render and deploy for the ``CustomTargetType``
+            using Skaffold custom actions.
+
+            This field is a member of `oneof`_ ``definition``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    custom_target_type_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    custom_actions: "CustomTargetSkaffoldActions" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="definition",
+        message="CustomTargetSkaffoldActions",
+    )
+
+
+class CustomTargetSkaffoldActions(proto.Message):
+    r"""CustomTargetSkaffoldActions represents the ``CustomTargetType``
+    configuration using Skaffold custom actions.
+
+    Attributes:
+        render_action (str):
+            Optional. The Skaffold custom action responsible for render
+            operations. If not provided then Cloud Deploy will perform
+            the render operations via ``skaffold render``.
+        deploy_action (str):
+            Required. The Skaffold custom action
+            responsible for deploy operations.
+        include_skaffold_modules (MutableSequence[google.cloud.deploy_v1.types.SkaffoldModules]):
+            Optional. List of Skaffold modules Cloud
+            Deploy will include in the Skaffold Config as
+            required before performing diagnose.
+    """
+
+    render_action: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    deploy_action: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    include_skaffold_modules: MutableSequence["SkaffoldModules"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="SkaffoldModules",
+    )
+
+
+class SkaffoldModules(proto.Message):
+    r"""Skaffold Config modules and their remote source.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        configs (MutableSequence[str]):
+            Optional. The Skaffold Config modules to use
+            from the specified source.
+        git (google.cloud.deploy_v1.types.SkaffoldModules.SkaffoldGitSource):
+            Remote git repository containing the Skaffold
+            Config modules.
+
+            This field is a member of `oneof`_ ``source``.
+        google_cloud_storage (google.cloud.deploy_v1.types.SkaffoldModules.SkaffoldGCSSource):
+            Cloud Storage bucket containing the Skaffold
+            Config modules.
+
+            This field is a member of `oneof`_ ``source``.
+    """
+
+    class SkaffoldGitSource(proto.Message):
+        r"""Git repository containing Skaffold Config modules.
+
+        Attributes:
+            repo (str):
+                Required. Git repository the package should
+                be cloned from.
+            path (str):
+                Optional. Relative path from the repository
+                root to the Skaffold file.
+            ref (str):
+                Optional. Git ref the package should be
+                cloned from.
+        """
+
+        repo: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        path: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        ref: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    class SkaffoldGCSSource(proto.Message):
+        r"""Cloud Storage bucket containing Skaffold Config modules.
+
+        Attributes:
+            source (str):
+                Required. Cloud Storage source paths to copy recursively.
+                For example, providing "gs://my-bucket/dir/configs/*" will
+                result in Skaffold copying all files within the
+                "dir/configs" directory in the bucket "my-bucket".
+            path (str):
+                Optional. Relative path from the source to
+                the Skaffold file.
+        """
+
+        source: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        path: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    configs: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    git: SkaffoldGitSource = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message=SkaffoldGitSource,
+    )
+    google_cloud_storage: SkaffoldGCSSource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message=SkaffoldGCSSource,
+    )
+
+
+class ListCustomTargetTypesRequest(proto.Message):
+    r"""The request object for ``ListCustomTargetTypes``.
+
+    Attributes:
+        parent (str):
+            Required. The parent that owns this collection of custom
+            target types. Format must be
+            ``projects/{project_id}/locations/{location_name}``.
+        page_size (int):
+            Optional. The maximum number of ``CustomTargetType`` objects
+            to return. The service may return fewer than this value. If
+            unspecified, at most 50 ``CustomTargetType`` objects will be
+            returned. The maximum value is 1000; values above 1000 will
+            be set to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListCustomTargetTypes`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other provided parameters match the
+            call that provided the page token.
+        filter (str):
+            Optional. Filter custom target types to be
+            returned. See https://google.aip.dev/160 for
+            more details.
+        order_by (str):
+            Optional. Field to sort by. See
+            https://google.aip.dev/132#ordering for more
+            details.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListCustomTargetTypesResponse(proto.Message):
+    r"""The response object from ``ListCustomTargetTypes.``
+
+    Attributes:
+        custom_target_types (MutableSequence[google.cloud.deploy_v1.types.CustomTargetType]):
+            The ``CustomTargetType`` objects.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    custom_target_types: MutableSequence["CustomTargetType"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="CustomTargetType",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetCustomTargetTypeRequest(proto.Message):
+    r"""The request object for ``GetCustomTargetType``.
+
+    Attributes:
+        name (str):
+            Required. Name of the ``CustomTargetType``. Format must be
+            ``projects/{project_id}/locations/{location_name}/customTargetTypes/{custom_target_type}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateCustomTargetTypeRequest(proto.Message):
+    r"""The request object for ``CreateCustomTargetType``.
+
+    Attributes:
+        parent (str):
+            Required. The parent collection in which the
+            ``CustomTargetType`` should be created in. Format should be
+            ``projects/{project_id}/locations/{location_name}``.
+        custom_target_type_id (str):
+            Required. ID of the ``CustomTargetType``.
+        custom_target_type (google.cloud.deploy_v1.types.CustomTargetType):
+            Required. The ``CustomTargetType`` to create.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server will guarantee that for at
+            least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        validate_only (bool):
+            Optional. If set to true, the request is
+            validated and the user is provided with an
+            expected result, but no actual change is made.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    custom_target_type_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    custom_target_type: "CustomTargetType" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="CustomTargetType",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class UpdateCustomTargetTypeRequest(proto.Message):
+    r"""The request object for ``UpdateCustomTargetType``.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ``CustomTargetType`` resource by the
+            update. The fields specified in the update_mask are relative
+            to the resource, not the full request. A field will be
+            overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
+        custom_target_type (google.cloud.deploy_v1.types.CustomTargetType):
+            Required. The ``CustomTargetType`` to update.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server will guarantee that for at
+            least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        allow_missing (bool):
+            Optional. If set to true, updating a ``CustomTargetType``
+            that does not exist will result in the creation of a new
+            ``CustomTargetType``.
+        validate_only (bool):
+            Optional. If set to true, the request is
+            validated and the user is provided with an
+            expected result, but no actual change is made.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    custom_target_type: "CustomTargetType" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CustomTargetType",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class DeleteCustomTargetTypeRequest(proto.Message):
+    r"""The request object for ``DeleteCustomTargetType``.
+
+    Attributes:
+        name (str):
+            Required. The name of the ``CustomTargetType`` to delete.
+            Format must be
+            ``projects/{project_id}/locations/{location_name}/customTargetTypes/{custom_target_type}``.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server will guarantee that for at
+            least 60 minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        allow_missing (bool):
+            Optional. If set to true, then deleting an already deleted
+            or non-existing ``CustomTargetType`` will succeed.
+        validate_only (bool):
+            Optional. If set to true, the request is
+            validated but no actual change is made.
+        etag (str):
+            Optional. This checksum is computed by the
+            server based on the value of other fields, and
+            may be sent on update and delete requests to
+            ensure the client has an up-to-date value before
+            proceeding.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
 class TargetAttribute(proto.Message):
     r"""Contains criteria for selecting Targets. Attributes provided
     must match the target resource in order for policy restrictions
@@ -2170,6 +2762,10 @@ class Release(proto.Message):
         target_snapshots (MutableSequence[google.cloud.deploy_v1.types.Target]):
             Output only. Snapshot of the targets taken at
             release creation time.
+        custom_target_type_snapshots (MutableSequence[google.cloud.deploy_v1.types.CustomTargetType]):
+            Output only. Snapshot of the custom target
+            types referenced by the targets taken at release
+            creation time.
         render_state (google.cloud.deploy_v1.types.Release.RenderState):
             Output only. Current state of the render
             operation.
@@ -2284,12 +2880,19 @@ class Release(proto.Message):
                     The render operation did not complete
                     successfully because the verification stanza
                     required for verify was not found on the
-                    skaffold configuration.
+                    Skaffold configuration.
                 CUSTOM_ACTION_NOT_FOUND (5):
                     The render operation did not complete successfully because
                     the custom action required for predeploy or postdeploy was
-                    not found in the skaffold configuration. See failure_message
+                    not found in the Skaffold configuration. See failure_message
                     for additional details.
+                DEPLOYMENT_STRATEGY_NOT_SUPPORTED (6):
+                    Release failed during rendering because the
+                    release configuration is not supported with the
+                    specified deployment strategy.
+                RENDER_FEATURE_NOT_SUPPORTED (7):
+                    The render operation had a feature configured
+                    that is not supported.
             """
             FAILURE_CAUSE_UNSPECIFIED = 0
             CLOUD_BUILD_UNAVAILABLE = 1
@@ -2297,6 +2900,8 @@ class Release(proto.Message):
             CLOUD_BUILD_REQUEST_FAILED = 3
             VERIFICATION_CONFIG_NOT_FOUND = 4
             CUSTOM_ACTION_NOT_FOUND = 5
+            DEPLOYMENT_STRATEGY_NOT_SUPPORTED = 6
+            RENDER_FEATURE_NOT_SUPPORTED = 7
 
         rendering_build: str = proto.Field(
             proto.STRING,
@@ -2343,21 +2948,21 @@ class Release(proto.Message):
 
     class SkaffoldSupportedCondition(proto.Message):
         r"""SkaffoldSupportedCondition contains information about when
-        support for the release's version of skaffold ends.
+        support for the release's version of Skaffold ends.
 
         Attributes:
             status (bool):
-                True if the version of skaffold used by this
+                True if the version of Skaffold used by this
                 release is supported.
             skaffold_support_state (google.cloud.deploy_v1.types.SkaffoldSupportState):
-                The skaffold support state for this release's
-                version of skaffold.
+                The Skaffold support state for this release's
+                version of Skaffold.
             maintenance_mode_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time at which this release's version of
-                skaffold will enter maintenance mode.
+                Skaffold will enter maintenance mode.
             support_expiration_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time at which this release's version of
-                skaffold will no longer be supported.
+                Skaffold will no longer be supported.
         """
 
         status: bool = proto.Field(
@@ -2389,7 +2994,7 @@ class Release(proto.Message):
                 Details around the Releases's overall status.
             skaffold_supported_condition (google.cloud.deploy_v1.types.Release.SkaffoldSupportedCondition):
                 Details around the support state of the
-                release's skaffold version.
+                release's Skaffold version.
         """
 
         release_ready_condition: "Release.ReleaseReadyCondition" = proto.Field(
@@ -2468,6 +3073,13 @@ class Release(proto.Message):
         proto.MESSAGE,
         number=12,
         message="Target",
+    )
+    custom_target_type_snapshots: MutableSequence[
+        "CustomTargetType"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=27,
+        message="CustomTargetType",
     )
     render_state: RenderState = proto.Field(
         proto.ENUM,
@@ -2653,12 +3265,20 @@ class RenderMetadata(proto.Message):
         cloud_run (google.cloud.deploy_v1.types.CloudRunRenderMetadata):
             Output only. Metadata associated with
             rendering for Cloud Run.
+        custom (google.cloud.deploy_v1.types.CustomMetadata):
+            Output only. Custom metadata provided by user
+            defined render operation.
     """
 
     cloud_run: "CloudRunRenderMetadata" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CloudRunRenderMetadata",
+    )
+    custom: "CustomMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CustomMetadata",
     )
 
 
@@ -2995,10 +3615,13 @@ class Rollout(proto.Message):
             RELEASE_ABANDONED (5):
                 Release is abandoned.
             VERIFICATION_CONFIG_NOT_FOUND (6):
-                No skaffold verify configuration was found.
+                No Skaffold verify configuration was found.
             CLOUD_BUILD_REQUEST_FAILED (7):
                 Cloud Build failed to fulfill Cloud Deploy's request. See
                 failure_message for additional details.
+            OPERATION_FEATURE_NOT_SUPPORTED (8):
+                A Rollout operation had a feature configured
+                that is not supported.
         """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
@@ -3008,6 +3631,7 @@ class Rollout(proto.Message):
         RELEASE_ABANDONED = 5
         VERIFICATION_CONFIG_NOT_FOUND = 6
         CLOUD_BUILD_REQUEST_FAILED = 7
+        OPERATION_FEATURE_NOT_SUPPORTED = 8
 
     name: str = proto.Field(
         proto.STRING,
@@ -3122,6 +3746,9 @@ class Metadata(proto.Message):
             Output only. AutomationRolloutMetadata
             contains the information about the interactions
             between Automation service and this rollout.
+        custom (google.cloud.deploy_v1.types.CustomMetadata):
+            Output only. Custom metadata provided by user defined
+            ``Rollout`` operations.
     """
 
     cloud_run: "CloudRunMetadata" = proto.Field(
@@ -3134,6 +3761,11 @@ class Metadata(proto.Message):
         number=2,
         message="AutomationRolloutMetadata",
     )
+    custom: "CustomMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="CustomMetadata",
+    )
 
 
 class DeployJobRunMetadata(proto.Message):
@@ -3144,12 +3776,28 @@ class DeployJobRunMetadata(proto.Message):
         cloud_run (google.cloud.deploy_v1.types.CloudRunMetadata):
             Output only. The name of the Cloud Run Service that is
             associated with a ``DeployJobRun``.
+        custom_target (google.cloud.deploy_v1.types.CustomTargetDeployMetadata):
+            Output only. Custom Target metadata associated with a
+            ``DeployJobRun``.
+        custom (google.cloud.deploy_v1.types.CustomMetadata):
+            Output only. Custom metadata provided by user
+            defined deploy operation.
     """
 
     cloud_run: "CloudRunMetadata" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="CloudRunMetadata",
+    )
+    custom_target: "CustomTargetDeployMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CustomTargetDeployMetadata",
+    )
+    custom: "CustomMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="CustomMetadata",
     )
 
 
@@ -3192,6 +3840,22 @@ class CloudRunMetadata(proto.Message):
     )
 
 
+class CustomTargetDeployMetadata(proto.Message):
+    r"""CustomTargetDeployMetadata contains information from a Custom
+    Target deploy operation.
+
+    Attributes:
+        skip_message (str):
+            Output only. Skip message provided in the
+            results of a custom deploy operation.
+    """
+
+    skip_message: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class AutomationRolloutMetadata(proto.Message):
     r"""AutomationRolloutMetadata contains Automation-related actions
     that were performed on a rollout.
@@ -3219,6 +3883,23 @@ class AutomationRolloutMetadata(proto.Message):
     repair_automation_runs: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+
+
+class CustomMetadata(proto.Message):
+    r"""CustomMetadata contains information from a user defined
+    operation.
+
+    Attributes:
+        values (MutableMapping[str, str]):
+            Output only. Key-value pairs provided by the
+            user defined operation.
+    """
+
+    values: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=1,
     )
 
 
@@ -4150,6 +4831,9 @@ class DeployJobRun(proto.Message):
             CLOUD_BUILD_REQUEST_FAILED (5):
                 Cloud Build failed to fulfill Cloud Deploy's request. See
                 failure_message for additional details.
+            DEPLOY_FEATURE_NOT_SUPPORTED (6):
+                The deploy operation had a feature configured
+                that is not supported.
         """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
@@ -4157,6 +4841,7 @@ class DeployJobRun(proto.Message):
         DEADLINE_EXCEEDED = 3
         MISSING_RESOURCES_FOR_CANARY = 4
         CLOUD_BUILD_REQUEST_FAILED = 5
+        DEPLOY_FEATURE_NOT_SUPPORTED = 6
 
     build: str = proto.Field(
         proto.STRING,
@@ -4585,10 +5270,10 @@ class SkaffoldVersion(proto.Message):
             Release version number. For example,
             "1.20.3".
         maintenance_mode_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time at which this version of skaffold
+            The time at which this version of Skaffold
             will enter maintenance mode.
         support_expiration_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time at which this version of skaffold
+            The time at which this version of Skaffold
             will no longer be supported.
         support_end_date (google.type.date_pb2.Date):
             Date when this version is expected to no
@@ -4634,7 +5319,7 @@ class Automation(proto.Message):
     r"""An ``Automation`` resource in the Cloud Deploy API.
 
     An ``Automation`` enables the automation of manually driven actions
-    for a Delivery Pipeline, which includes Release promotion amongst
+    for a Delivery Pipeline, which includes Release promotion among
     Targets, Rollout repair and Rollout deployment strategy advancement.
     The intention of Automation is to reduce manual intervention in the
     continuous delivery process.
@@ -5031,7 +5716,7 @@ class Retry(proto.Message):
 
     Attributes:
         attempts (int):
-            Required. Total number of retries. Retry will
+            Required. Total number of retries. Retry is
             skipped if set to 0; The minimum value is 1, and
             the maximum value is 10.
         wait (google.protobuf.duration_pb2.Duration):
@@ -5290,8 +5975,8 @@ class ListAutomationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection of
-            automations. Format must be
+            Required. The parent ``Delivery Pipeline``, which owns this
+            collection of automations. Format must be
             ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
         page_size (int):
             The maximum number of automations to return.
@@ -5339,7 +6024,7 @@ class ListAutomationsResponse(proto.Message):
 
     Attributes:
         automations (MutableSequence[google.cloud.deploy_v1.types.Automation]):
-            The ``Automations`` objects.
+            The ``Automation`` objects.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
@@ -5385,8 +6070,8 @@ class GetAutomationRequest(proto.Message):
 class AutomationRun(proto.Message):
     r"""An ``AutomationRun`` resource in the Cloud Deploy API.
 
-    An ``AutomationRun`` represents an automation execution instance of
-    an automation rule.
+    An ``AutomationRun`` represents an execution instance of an
+    automation rule.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -5426,11 +6111,12 @@ class AutomationRun(proto.Message):
             Output only. Current state of the ``AutomationRun``.
         state_description (str):
             Output only. Explains the current state of the
-            ``AutomationRun``. Present only an explanation is needed.
+            ``AutomationRun``. Present only when an explanation is
+            needed.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time the ``AutomationRun`` will expire. An
-            ``AutomationRun`` will expire after 14 days from its
-            creation date.
+            Output only. Time the ``AutomationRun`` expires. An
+            ``AutomationRun`` expires after 14 days from its creation
+            date.
         rule_id (str):
             Output only. The ID of the automation rule
             that initiated the operation.
@@ -5614,8 +6300,8 @@ class AdvanceRolloutOperation(proto.Message):
             Output only. The name of the rollout that initiates the
             ``AutomationRun``.
         destination_phase (str):
-            Output only. The phase to which the rollout
-            will be advanced to.
+            Output only. The phase the rollout will be
+            advanced to.
     """
 
     source_phase: str = proto.Field(
@@ -5831,8 +6517,8 @@ class ListAutomationRunsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection of
-            automationRuns. Format must be
+            Required. The parent ``Delivery Pipeline``, which owns this
+            collection of automationRuns. Format must be
             ``projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}``.
         page_size (int):
             The maximum number of automationRuns to

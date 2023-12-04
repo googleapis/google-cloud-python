@@ -83,6 +83,10 @@ class CloudDeployAsyncClient:
     parse_cluster_path = staticmethod(CloudDeployClient.parse_cluster_path)
     config_path = staticmethod(CloudDeployClient.config_path)
     parse_config_path = staticmethod(CloudDeployClient.parse_config_path)
+    custom_target_type_path = staticmethod(CloudDeployClient.custom_target_type_path)
+    parse_custom_target_type_path = staticmethod(
+        CloudDeployClient.parse_custom_target_type_path
+    )
     delivery_pipeline_path = staticmethod(CloudDeployClient.delivery_pipeline_path)
     parse_delivery_pipeline_path = staticmethod(
         CloudDeployClient.parse_delivery_pipeline_path
@@ -1612,6 +1616,660 @@ class CloudDeployAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_target,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=cloud_deploy.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_custom_target_types(
+        self,
+        request: Optional[
+            Union[cloud_deploy.ListCustomTargetTypesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListCustomTargetTypesAsyncPager:
+        r"""Lists CustomTargetTypes in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_list_custom_target_types():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.ListCustomTargetTypesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_custom_target_types(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.ListCustomTargetTypesRequest, dict]]):
+                The request object. The request object for ``ListCustomTargetTypes``.
+            parent (:class:`str`):
+                Required. The parent that owns this collection of custom
+                target types. Format must be
+                ``projects/{project_id}/locations/{location_name}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.deploy_v1.services.cloud_deploy.pagers.ListCustomTargetTypesAsyncPager:
+                The response object from ListCustomTargetTypes.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.ListCustomTargetTypesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_custom_target_types,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListCustomTargetTypesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_custom_target_type(
+        self,
+        request: Optional[Union[cloud_deploy.GetCustomTargetTypeRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_deploy.CustomTargetType:
+        r"""Gets details of a single CustomTargetType.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_get_custom_target_type():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.GetCustomTargetTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_custom_target_type(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.GetCustomTargetTypeRequest, dict]]):
+                The request object. The request object for ``GetCustomTargetType``.
+            name (:class:`str`):
+                Required. Name of the ``CustomTargetType``. Format must
+                be
+                ``projects/{project_id}/locations/{location_name}/customTargetTypes/{custom_target_type}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.deploy_v1.types.CustomTargetType:
+                A CustomTargetType resource in the Cloud Deploy API.
+
+                   A CustomTargetType defines a type of custom target
+                   that can be referenced in a Target in order to
+                   facilitate deploying to a runtime that does not have
+                   a 1P integration with Cloud Deploy.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.GetCustomTargetTypeRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_custom_target_type,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_custom_target_type(
+        self,
+        request: Optional[
+            Union[cloud_deploy.CreateCustomTargetTypeRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        custom_target_type: Optional[cloud_deploy.CustomTargetType] = None,
+        custom_target_type_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new CustomTargetType in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_create_custom_target_type():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                custom_target_type = deploy_v1.CustomTargetType()
+                custom_target_type.custom_actions.deploy_action = "deploy_action_value"
+
+                request = deploy_v1.CreateCustomTargetTypeRequest(
+                    parent="parent_value",
+                    custom_target_type_id="custom_target_type_id_value",
+                    custom_target_type=custom_target_type,
+                )
+
+                # Make the request
+                operation = client.create_custom_target_type(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.CreateCustomTargetTypeRequest, dict]]):
+                The request object. The request object for ``CreateCustomTargetType``.
+            parent (:class:`str`):
+                Required. The parent collection in which the
+                ``CustomTargetType`` should be created in. Format should
+                be ``projects/{project_id}/locations/{location_name}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            custom_target_type (:class:`google.cloud.deploy_v1.types.CustomTargetType`):
+                Required. The ``CustomTargetType`` to create.
+                This corresponds to the ``custom_target_type`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            custom_target_type_id (:class:`str`):
+                Required. ID of the ``CustomTargetType``.
+                This corresponds to the ``custom_target_type_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.deploy_v1.types.CustomTargetType` A
+                CustomTargetType resource in the Cloud Deploy API.
+
+                   A CustomTargetType defines a type of custom target
+                   that can be referenced in a Target in order to
+                   facilitate deploying to a runtime that does not have
+                   a 1P integration with Cloud Deploy.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, custom_target_type, custom_target_type_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.CreateCustomTargetTypeRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if custom_target_type is not None:
+            request.custom_target_type = custom_target_type
+        if custom_target_type_id is not None:
+            request.custom_target_type_id = custom_target_type_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_custom_target_type,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            cloud_deploy.CustomTargetType,
+            metadata_type=cloud_deploy.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_custom_target_type(
+        self,
+        request: Optional[
+            Union[cloud_deploy.UpdateCustomTargetTypeRequest, dict]
+        ] = None,
+        *,
+        custom_target_type: Optional[cloud_deploy.CustomTargetType] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates a single CustomTargetType.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_update_custom_target_type():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                custom_target_type = deploy_v1.CustomTargetType()
+                custom_target_type.custom_actions.deploy_action = "deploy_action_value"
+
+                request = deploy_v1.UpdateCustomTargetTypeRequest(
+                    custom_target_type=custom_target_type,
+                )
+
+                # Make the request
+                operation = client.update_custom_target_type(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.UpdateCustomTargetTypeRequest, dict]]):
+                The request object. The request object for ``UpdateCustomTargetType``.
+            custom_target_type (:class:`google.cloud.deploy_v1.types.CustomTargetType`):
+                Required. The ``CustomTargetType`` to update.
+                This corresponds to the ``custom_target_type`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. Field mask is used to specify the fields to be
+                overwritten in the ``CustomTargetType`` resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask then all fields will be
+                overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.deploy_v1.types.CustomTargetType` A
+                CustomTargetType resource in the Cloud Deploy API.
+
+                   A CustomTargetType defines a type of custom target
+                   that can be referenced in a Target in order to
+                   facilitate deploying to a runtime that does not have
+                   a 1P integration with Cloud Deploy.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([custom_target_type, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.UpdateCustomTargetTypeRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if custom_target_type is not None:
+            request.custom_target_type = custom_target_type
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_custom_target_type,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("custom_target_type.name", request.custom_target_type.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            cloud_deploy.CustomTargetType,
+            metadata_type=cloud_deploy.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_custom_target_type(
+        self,
+        request: Optional[
+            Union[cloud_deploy.DeleteCustomTargetTypeRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a single CustomTargetType.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import deploy_v1
+
+            async def sample_delete_custom_target_type():
+                # Create a client
+                client = deploy_v1.CloudDeployAsyncClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.DeleteCustomTargetTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_custom_target_type(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.deploy_v1.types.DeleteCustomTargetTypeRequest, dict]]):
+                The request object. The request object for ``DeleteCustomTargetType``.
+            name (:class:`str`):
+                Required. The name of the ``CustomTargetType`` to
+                delete. Format must be
+                ``projects/{project_id}/locations/{location_name}/customTargetTypes/{custom_target_type}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = cloud_deploy.DeleteCustomTargetTypeRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_custom_target_type,
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -3573,7 +4231,7 @@ class CloudDeployAsyncClient:
 
                    An Automation enables the automation of manually
                    driven actions for a Delivery Pipeline, which
-                   includes Release promotion amongst Targets, Rollout
+                   includes Release promotion among Targets, Rollout
                    repair and Rollout deployment strategy advancement.
                    The intention of Automation is to reduce manual
                    intervention in the continuous delivery process.
@@ -3716,7 +4374,7 @@ class CloudDeployAsyncClient:
 
                    An Automation enables the automation of manually
                    driven actions for a Delivery Pipeline, which
-                   includes Release promotion amongst Targets, Rollout
+                   includes Release promotion among Targets, Rollout
                    repair and Rollout deployment strategy advancement.
                    The intention of Automation is to reduce manual
                    intervention in the continuous delivery process.
@@ -3959,7 +4617,7 @@ class CloudDeployAsyncClient:
 
                    An Automation enables the automation of manually
                    driven actions for a Delivery Pipeline, which
-                   includes Release promotion amongst Targets, Rollout
+                   includes Release promotion among Targets, Rollout
                    repair and Rollout deployment strategy advancement.
                    The intention of Automation is to reduce manual
                    intervention in the continuous delivery process.
@@ -4058,8 +4716,8 @@ class CloudDeployAsyncClient:
             request (Optional[Union[google.cloud.deploy_v1.types.ListAutomationsRequest, dict]]):
                 The request object. The request object for ``ListAutomations``.
             parent (:class:`str`):
-                Required. The parent, which owns this collection of
-                automations. Format must be
+                Required. The parent ``Delivery Pipeline``, which owns
+                this collection of automations. Format must be
                 ``projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}``.
 
                 This corresponds to the ``parent`` field
@@ -4196,8 +4854,8 @@ class CloudDeployAsyncClient:
             google.cloud.deploy_v1.types.AutomationRun:
                 An AutomationRun resource in the Cloud Deploy API.
 
-                   An AutomationRun represents an automation execution
-                   instance of an automation rule.
+                   An AutomationRun represents an execution instance of
+                   an automation rule.
 
         """
         # Create or coerce a protobuf request object.
@@ -4293,8 +4951,8 @@ class CloudDeployAsyncClient:
             request (Optional[Union[google.cloud.deploy_v1.types.ListAutomationRunsRequest, dict]]):
                 The request object. The request object for ``ListAutomationRuns``.
             parent (:class:`str`):
-                Required. The parent, which owns this collection of
-                automationRuns. Format must be
+                Required. The parent ``Delivery Pipeline``, which owns
+                this collection of automationRuns. Format must be
                 ``projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}``.
 
                 This corresponds to the ``parent`` field
