@@ -20,7 +20,9 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     ClientSideStatementType,
 )
 
+RE_BEGIN = re.compile(r"^\s*(BEGIN|START)(TRANSACTION)?", re.IGNORECASE)
 RE_COMMIT = re.compile(r"^\s*(COMMIT)(TRANSACTION)?", re.IGNORECASE)
+RE_ROLLBACK = re.compile(r"^\s*(ROLLBACK)(TRANSACTION)?", re.IGNORECASE)
 
 
 def parse_stmt(query):
@@ -38,5 +40,13 @@ def parse_stmt(query):
     if RE_COMMIT.match(query):
         return ParsedStatement(
             StatementType.CLIENT_SIDE, query, ClientSideStatementType.COMMIT
+        )
+    if RE_BEGIN.match(query):
+        return ParsedStatement(
+            StatementType.CLIENT_SIDE, query, ClientSideStatementType.BEGIN
+        )
+    if RE_ROLLBACK.match(query):
+        return ParsedStatement(
+            StatementType.CLIENT_SIDE, query, ClientSideStatementType.ROLLBACK
         )
     return None

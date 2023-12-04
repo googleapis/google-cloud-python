@@ -27,6 +27,7 @@ class StatementType(Enum):
 class ClientSideStatementType(Enum):
     COMMIT = 1
     BEGIN = 2
+    ROLLBACK = 3
 
 
 @dataclass

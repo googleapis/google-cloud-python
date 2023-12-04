@@ -250,7 +250,7 @@ class Cursor(object):
                 )
             if parsed_statement.statement_type == StatementType.DDL:
                 self._batch_DDLs(sql)
-                if self.connection.autocommit:
+                if not self.connection._client_transaction_started:
                     self.connection.run_prior_DDL_statements()
                 return
 
@@ -264,7 +264,7 @@ class Cursor(object):
 
             sql, args = sql_pyformat_args_to_spanner(sql, args or None)
 
-            if not self.connection.autocommit:
+            if self.connection._client_transaction_started:
                 statement = Statement(
                     sql,
                     args,
@@ -348,7 +348,7 @@ class Cursor(object):
                 )
                 statements.append((sql, params, get_param_types(params)))
 
-            if self.connection.autocommit:
+            if not self.connection._client_transaction_started:
                 self.connection.database.run_in_transaction(
                     self._do_batch_update, statements, many_result_set
                 )
@@ -396,7 +396,10 @@ class Cursor(object):
         sequence, or None when no more data is available."""
         try:
             res = next(self)
-            if not self.connection.autocommit and not self.connection.read_only:
+            if (
+                self.connection._client_transaction_started
+                and not self.connection.read_only
+            ):
                 self._checksum.consume_result(res)
             return res
         except StopIteration:
@@ -414,7 +417,10 @@ class Cursor(object):
         res = []
         try:
             for row in self:
-                if not self.connection.autocommit and not self.connection.read_only:
+                if (
+                    self.connection._client_transaction_started
+                    and not self.connection.read_only
+                ):
                     self._checksum.consume_result(row)
                 res.append(row)
         except Aborted:
@@ -443,7 +449,10 @@ class Cursor(object):
         for _ in range(size):
             try:
                 res = next(self)
-                if not self.connection.autocommit and not self.connection.read_only:
+                if (
+                    self.connection._client_transaction_started
+                    and not self.connection.read_only
+                ):
                     self._checksum.consume_result(res)
                 items.append(res)
             except StopIteration:
@@ -473,7 +482,7 @@ class Cursor(object):
         if self.connection.database is None:
             raise ValueError("Database needs to be passed for this operation")
         sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, params)
-        if self.connection.read_only and not self.connection.autocommit:
+        if self.connection.read_only and self.connection._client_transaction_started:
             # initiate or use the existing multi-use snapshot
             self._handle_DQL_with_snapshot(
                 self.connection.snapshot_checkout(), sql, params

@@ -19,6 +19,7 @@ import mock
 import unittest
 import warnings
 import pytest
+from google.cloud.spanner_dbapi.exceptions import InterfaceError, OperationalError
 
 PROJECT = "test-project"
 INSTANCE = "test-instance"
@@ -36,6 +37,9 @@ def _make_credentials():
 
 
 class TestConnection(unittest.TestCase):
+    def setUp(self):
+        self._under_test = self._make_connection()
+
     def _get_client_info(self):
         from google.api_core.gapic_v1.client_info import ClientInfo
 
@@ -226,6 +230,8 @@ class TestConnection(unittest.TestCase):
 
         session_checkout = mock.MagicMock(autospec=True)
         connection._session_checkout = session_checkout
+        release_session = mock.MagicMock()
+        connection._release_session = release_session
 
         snapshot = connection.snapshot_checkout()
         session_checkout.assert_called_once()
@@ -234,6 +240,7 @@ class TestConnection(unittest.TestCase):
 
         connection.commit()
         self.assertIsNone(connection._snapshot)
+        release_session.assert_called_once()
 
         connection.snapshot_checkout()
         self.assertIsNotNone(connection._snapshot)
@@ -280,7 +287,9 @@ class TestConnection(unittest.TestCase):
     @mock.patch.object(warnings, "warn")
     def test_commit(self, mock_warn):
         from google.cloud.spanner_dbapi import Connection
-        from google.cloud.spanner_dbapi.connection import AUTOCOMMIT_MODE_WARNING
+        from google.cloud.spanner_dbapi.connection import (
+            CLIENT_TRANSACTION_NOT_STARTED_WARNING,
+        )
 
         connection = Connection(INSTANCE, DATABASE)
 
@@ -307,7 +316,7 @@ class TestConnection(unittest.TestCase):
         connection._autocommit = True
         connection.commit()
         mock_warn.assert_called_once_with(
-            AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2
+            CLIENT_TRANSACTION_NOT_STARTED_WARNING, UserWarning, stacklevel=2
         )
 
     def test_commit_database_error(self):
@@ -321,7 +330,9 @@ class TestConnection(unittest.TestCase):
     @mock.patch.object(warnings, "warn")
     def test_rollback(self, mock_warn):
         from google.cloud.spanner_dbapi import Connection
-        from google.cloud.spanner_dbapi.connection import AUTOCOMMIT_MODE_WARNING
+        from google.cloud.spanner_dbapi.connection import (
+            CLIENT_TRANSACTION_NOT_STARTED_WARNING,
+        )
 
         connection = Connection(INSTANCE, DATABASE)
 
@@ -333,6 +344,7 @@ class TestConnection(unittest.TestCase):
         mock_release.assert_not_called()
 
         mock_transaction = mock.MagicMock()
+        mock_transaction.committed = mock_transaction.rolled_back = False
         connection._transaction = mock_transaction
         mock_rollback = mock.MagicMock()
         mock_transaction.rollback = mock_rollback
@@ -348,7 +360,7 @@ class TestConnection(unittest.TestCase):
         connection._autocommit = True
         connection.rollback()
         mock_warn.assert_called_once_with(
-            AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2
+            CLIENT_TRANSACTION_NOT_STARTED_WARNING, UserWarning, stacklevel=2
         )
 
     @mock.patch("google.cloud.spanner_v1.database.Database", autospec=True)
@@ -384,6 +396,35 @@ class TestConnection(unittest.TestCase):
             self.assertEqual(conn, connection)
 
         self.assertTrue(connection.is_closed)
+
+    def test_begin_cursor_closed(self):
+        self._under_test.close()
+
+        with self.assertRaises(InterfaceError):
+            self._under_test.begin()
+
+        self.assertEqual(self._under_test._transaction_begin_marked, False)
+
+    def test_begin_transaction_begin_marked(self):
+        self._under_test._transaction_begin_marked = True
+
+        with self.assertRaises(OperationalError):
+            self._under_test.begin()
+
+    def test_begin_transaction_started(self):
+        mock_transaction = mock.MagicMock()
+        mock_transaction.committed = mock_transaction.rolled_back = False
+        self._under_test._transaction = mock_transaction
+
+        with self.assertRaises(OperationalError):
+            self._under_test.begin()
+
+        self.assertEqual(self._under_test._transaction_begin_marked, False)
+
+    def test_begin(self):
+        self._under_test.begin()
+
+        self.assertEqual(self._under_test._transaction_begin_marked, True)
 
     def test_run_statement_wo_retried(self):
         """Check that Connection remembers executed statements."""
@@ -485,7 +526,8 @@ class TestConnection(unittest.TestCase):
         cleared, when the transaction is roll backed.
         """
         connection = self._make_connection()
-        connection._transaction = mock.Mock()
+        mock_transaction.committed = mock_transaction.rolled_back = False
+        connection._transaction = mock_transaction
         connection._statements = [{}, {}]
 
         self.assertEqual(len(connection._statements), 2)
