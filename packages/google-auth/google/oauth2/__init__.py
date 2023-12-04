@@ -35,6 +35,4 @@ if sys.version_info.major == 3 and sys.version_info.minor == 7:  # pragma: NO CO
         "for Python 3.7. More details about Python 3.7 support "
         "can be found at https://cloud.google.com/python/docs/python37-sunset/"
     )
-    # Configure the Python37DeprecationWarning warning so that it is only emitted once.
-    warnings.simplefilter("once", Python37DeprecationWarning)
     warnings.warn(message, Python37DeprecationWarning)
