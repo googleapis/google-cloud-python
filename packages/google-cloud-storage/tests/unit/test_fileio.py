@@ -346,6 +346,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         blob = mock.Mock()
         upload = mock.Mock()
         transport = mock.Mock()
+        timeout = 600
 
         blob._initiate_resumable_upload.return_value = (upload, transport)
 
@@ -354,7 +355,10 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
             # arguments are used.
             # It would be normal to use a context manager here, but not doing so
             # gives us more control over close() for test purposes.
-            upload_kwargs = {"if_metageneration_match": 1}
+            upload_kwargs = {
+                "if_metageneration_match": 1,
+                "timeout": timeout,
+            }
             chunk_size = 8  # Note: Real upload requires a multiple of 256KiB.
             writer = self._make_blob_writer(
                 blob,
@@ -366,7 +370,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
 
         # The transmit_next_chunk method must actually consume bytes from the
         # sliding buffer for the flush() feature to work properly.
-        upload.transmit_next_chunk.side_effect = lambda _: writer._buffer.read(
+        upload.transmit_next_chunk.side_effect = lambda _, timeout: writer._buffer.read(
             chunk_size
         )
 
@@ -388,7 +392,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
             retry=None,
             **upload_kwargs
         )
-        upload.transmit_next_chunk.assert_called_with(transport)
+        upload.transmit_next_chunk.assert_called_with(transport, timeout=timeout)
         self.assertEqual(upload.transmit_next_chunk.call_count, 4)
 
         # Write another byte, finalize and close.

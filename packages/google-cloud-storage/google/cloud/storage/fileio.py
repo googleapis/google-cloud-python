@@ -406,9 +406,15 @@ class BlobWriter(io.BufferedIOBase):
 
         upload, transport = self._upload_and_transport
 
+        # Attach timeout if specified in the keyword arguments.
+        # Otherwise, the default timeout will be used from the media library.
+        kwargs = {}
+        if "timeout" in self._upload_kwargs:
+            kwargs = {"timeout": self._upload_kwargs.get("timeout")}
+
         # Upload chunks. The SlidingBuffer class will manage seek position.
         for _ in range(num_chunks):
-            upload.transmit_next_chunk(transport)
+            upload.transmit_next_chunk(transport, **kwargs)
 
         # Wipe the buffer of chunks uploaded, preserving any remaining data.
         self._buffer.flush()
