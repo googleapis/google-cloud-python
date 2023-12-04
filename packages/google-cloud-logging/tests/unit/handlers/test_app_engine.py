@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import logging
+import pytest
 import unittest
 
 import mock
@@ -46,6 +47,9 @@ class TestAppEngineHandler(unittest.TestCase):
         ), mock.patch(
             "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
             return_value=self.PROJECT,
+        ), pytest.warns(
+            DeprecationWarning,
+            match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
         ):
             handler = self._make_one(client, transport=_Transport)
 
@@ -78,6 +82,9 @@ class TestAppEngineHandler(unittest.TestCase):
         ), mock.patch(
             "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
             return_value=self.PROJECT,
+        ), pytest.warns(
+            DeprecationWarning,
+            match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
         ):
             handler = self._make_one(
                 client, name=name, transport=_Transport, stream=stream
@@ -99,7 +106,10 @@ class TestAppEngineHandler(unittest.TestCase):
             "google.cloud.logging_v2.handlers.app_engine.get_request_data",
             return_value=(expected_http_request, trace_id, None, None),
         )
-        with get_request_patch:
+        with get_request_patch, pytest.warns(
+            DeprecationWarning,
+            match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+        ):
             # library integrations mocked to return test data
             client = mock.Mock(project=self.PROJECT, spec=["project"])
             handler = self._make_one(client, transport=_Transport)
@@ -137,7 +147,10 @@ class TestAppEngineHandler(unittest.TestCase):
             "google.cloud.logging_v2.handlers.app_engine.get_request_data",
             return_value=(inferred_http_request, inferred_trace_id, None, None),
         )
-        with get_request_patch:
+        with get_request_patch, pytest.warns(
+            DeprecationWarning,
+            match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+        ):
             # library integrations mocked to return test data
             client = mock.Mock(project=self.PROJECT, spec=["project"])
             handler = self._make_one(client, transport=_Transport)
@@ -197,12 +210,20 @@ class TestAppEngineHandler(unittest.TestCase):
         from google.cloud.logging_v2.handlers import app_engine
 
         trace_id = "test-gae-trace-id"
-        gae_labels = self._get_gae_labels_helper(trace_id)
+        with pytest.warns(
+            DeprecationWarning,
+            match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+        ):
+            gae_labels = self._get_gae_labels_helper(trace_id)
         expected_labels = {app_engine._TRACE_ID_LABEL: trace_id}
         self.assertEqual(gae_labels, expected_labels)
 
     def test_get_gae_labels_without_label(self):
-        gae_labels = self._get_gae_labels_helper(None)
+        with pytest.warns(
+            DeprecationWarning,
+            match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+        ):
+            gae_labels = self._get_gae_labels_helper(None)
         self.assertEqual(gae_labels, {})
 
 

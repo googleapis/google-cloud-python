@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 import unittest
 
 
@@ -27,18 +28,30 @@ class TestContainerEngineHandler(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        handler = self._make_one()
+        with pytest.warns(
+            DeprecationWarning,
+            match="ContainerEngineHandler is deprecated. Use StructuredLogHandler instead",
+        ):
+            handler = self._make_one()
         self.assertIsNone(handler.name)
 
     def test_ctor_w_name(self):
-        handler = self._make_one(name="foo")
+        with pytest.warns(
+            DeprecationWarning,
+            match="ContainerEngineHandler is deprecated. Use StructuredLogHandler instead",
+        ):
+            handler = self._make_one(name="foo")
         self.assertEqual(handler.name, "foo")
 
     def test_format(self):
         import logging
         import json
 
-        handler = self._make_one()
+        with pytest.warns(
+            DeprecationWarning,
+            match="ContainerEngineHandler is deprecated. Use StructuredLogHandler instead",
+        ):
+            handler = self._make_one()
         logname = "loggername"
         message = "hello world，嗨 世界"
         record = logging.LogRecord(
@@ -51,6 +64,10 @@ class TestContainerEngineHandler(unittest.TestCase):
             "thread": record.thread,
             "severity": record.levelname,
         }
-        payload = handler.format(record)
+        with pytest.warns(
+            DeprecationWarning,
+            match="format_stackdriver_json is deprecated. Use StructuredLogHandler instead",
+        ):
+            payload = handler.format(record)
 
         self.assertEqual(payload, json.dumps(expected_payload, ensure_ascii=False))
