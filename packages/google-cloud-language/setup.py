@@ -29,7 +29,7 @@ description = "Google Cloud Language API client library"
 version = None
 
 with open(os.path.join(package_root, "google/cloud/language/gapic_version.py")) as fp:
-    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+rc\d+", fp.read())
     assert len(version_candidates) == 1
     version = version_candidates[0]
 

@@ -33,7 +33,7 @@ with open(
         package_root, "google/cloud/beyondcorp_clientconnectorservices/gapic_version.py"
     )
 ) as fp:
-    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+rc\d+", fp.read())
     assert len(version_candidates) == 1
     version = version_candidates[0]
 
