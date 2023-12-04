@@ -813,7 +813,7 @@ class TestLogging(unittest.TestCase):
         # Stackdriver Logging to write into it.
         retry = RetryErrors((TooManyRequests, BadGateway, ServiceUnavailable))
         bigquery_client = bigquery.Client()
-        dataset_ref = bigquery_client.dataset(dataset_name)
+        dataset_ref = bigquery.DatasetReference(Config.CLIENT.project, dataset_name)
         dataset = retry(bigquery_client.create_dataset)(bigquery.Dataset(dataset_ref))
         self.to_delete.append((bigquery_client, dataset))
         bigquery_client.get_dataset(dataset)
