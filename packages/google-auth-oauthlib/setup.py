@@ -33,7 +33,7 @@ setup(
     name="google-auth-oauthlib",
     version=version,
     author="Google Cloud Platform",
-    author_email="jonwayne+google-auth@google.com",
+    author_email="googleapis-packages@google.com",
     description="Google Authentication Library",
     long_description=long_description,
     url="https://github.com/GoogleCloudPlatform/google-auth-library-python-oauthlib",
