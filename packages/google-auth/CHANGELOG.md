@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.25.0](https://github.com/googleapis/google-auth-library-python/compare/v2.24.0...v2.25.0) (2023-12-04)
+
+
+### Features
+
+* Add custom tls signer for ECP Provider. ([39eb287](https://github.com/googleapis/google-auth-library-python/commit/39eb2877a45f0a6264442a059f7ffe8acbd7c29e))
+* Add custom tls signer for ECP Provider. ([#1402](https://github.com/googleapis/google-auth-library-python/issues/1402)) ([39eb287](https://github.com/googleapis/google-auth-library-python/commit/39eb2877a45f0a6264442a059f7ffe8acbd7c29e))
+
+
+### Bug Fixes
+
+* Add with_universe_domain ([#1408](https://github.com/googleapis/google-auth-library-python/issues/1408)) ([505910c](https://github.com/googleapis/google-auth-library-python/commit/505910c6a0bb2472284a52cd69db212aa8555119))
+* Fixes issue where Python37DeprecationWarning cannot be filtered ([#1428](https://github.com/googleapis/google-auth-library-python/issues/1428)) ([f22f767](https://github.com/googleapis/google-auth-library-python/commit/f22f767a22a3b567c3784c2fb5c7f5ae11d3e10f))
+* Remove broken link in Python37DeprecationWarning ([#1430](https://github.com/googleapis/google-auth-library-python/issues/1430)) ([e2db602](https://github.com/googleapis/google-auth-library-python/commit/e2db602a4fe8aee7f2eb8b59e2eaf23f1ced1b24))
+
 ## [2.24.0](https://github.com/googleapis/google-auth-library-python/compare/v2.23.4...v2.24.0) (2023-11-29)
 
 
