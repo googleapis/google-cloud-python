@@ -14,9 +14,19 @@
 
 import datetime
 from typing import NoReturn, Optional
+import warnings
 
 
 def utcnow():
+    """
+    google.cloud.firestore_v1.rate_limiter.utcnow() is deprecated.
+    Use datetime.datetime.now(datetime.timezone.utc) instead.
+    """
+    warnings.warn(
+        "google.cloud.firestore_v1.rate_limiter.utcnow() is deprecated. "
+        "Use datetime.datetime.now(datetime.timezone.utc) instead.",
+        DeprecationWarning,
+    )
     return datetime.datetime.utcnow()
 
 
@@ -96,8 +106,9 @@ class RateLimiter:
         self._phase: int = 0
 
     def _start_clock(self):
-        self._start = self._start or utcnow()
-        self._last_refill = self._last_refill or utcnow()
+        utcnow = datetime.datetime.now(datetime.timezone.utc)
+        self._start = self._start or utcnow
+        self._last_refill = self._last_refill or utcnow
 
     def take_tokens(self, num: Optional[int] = 1, allow_less: bool = False) -> int:
         """Returns the number of available tokens, up to the amount requested."""
@@ -123,7 +134,9 @@ class RateLimiter:
         This is a no-op unless a new [_phase_length] number of seconds since the
         start was crossed since it was last called.
         """
-        age: datetime.timedelta = utcnow() - self._start
+        age: datetime.timedelta = (
+            datetime.datetime.now(datetime.timezone.utc) - self._start
+        )
 
         # Uses integer division to calculate the expected phase. We start in
         # Phase 0, so until [_phase_length] seconds have passed, this will
@@ -152,7 +165,7 @@ class RateLimiter:
     def _refill(self) -> NoReturn:
         """Replenishes any tokens that should have regenerated since the last
         operation."""
-        now: datetime.datetime = utcnow()
+        now: datetime.datetime = datetime.datetime.now(datetime.timezone.utc)
         time_since_last_refill: datetime.timedelta = now - self._last_refill
 
         if time_since_last_refill:

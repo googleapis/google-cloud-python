@@ -191,7 +191,9 @@ class AsyncBulkWriterMixin:
         elif self._options.retry == BulkRetry.linear:
             delay = operation.attempts
 
-        run_at = datetime.datetime.utcnow() + datetime.timedelta(seconds=delay)
+        run_at = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
+            seconds=delay
+        )
 
         # Use of `bisect.insort` maintains the requirement that `self._retries`
         # always remain sorted by each object's `run_at` time. Note that it is
@@ -495,7 +497,9 @@ class BulkWriter(AsyncBulkWriterMixin):
         # ever adding to it via `bisect.insort`), and because `OperationRetry`
         # objects are comparable against `datetime` objects, this bisect functionally
         # returns the number of retires that are ready for immediate reenlistment.
-        take_until_index = bisect.bisect(self._retries, datetime.datetime.utcnow())
+        take_until_index = bisect.bisect(
+            self._retries, datetime.datetime.now(tz=datetime.timezone.utc)
+        )
 
         for _ in range(take_until_index):
             retry: OperationRetry = self._retries.popleft()

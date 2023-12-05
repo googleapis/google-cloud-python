@@ -139,7 +139,7 @@ s.remove_staging_dirs()
 templated_files = common.py_library(
     samples=False,  # set to True only if there are samples
     system_test_python_versions=["3.7"],
-    unit_test_external_dependencies=["aiounittest", "six"],
+    unit_test_external_dependencies=["aiounittest", "six", "freezegun"],
     system_test_external_dependencies=["pytest-asyncio", "six"],
     microgenerator=True,
     cov_level=100,

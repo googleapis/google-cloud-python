@@ -45,6 +45,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "aiounittest",
     "six",
+    "freezegun",
 ]
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []

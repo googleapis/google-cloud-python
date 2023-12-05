@@ -404,7 +404,7 @@ def test__parse_batch_get_found():
     from google.cloud.firestore_v1.document import DocumentSnapshot
     from google.cloud.firestore_v1.base_client import _parse_batch_get
 
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(tz=datetime.timezone.utc)
     read_time = _datetime_to_pb_timestamp(now)
     delta = datetime.timedelta(seconds=100)
     update_time = _datetime_to_pb_timestamp(now - delta)

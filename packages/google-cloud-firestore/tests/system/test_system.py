@@ -26,7 +26,6 @@ from google.api_core.exceptions import FailedPrecondition
 from google.api_core.exceptions import InvalidArgument
 from google.api_core.exceptions import NotFound
 from google.cloud._helpers import _datetime_to_pb_timestamp
-from google.cloud._helpers import UTC
 from google.cloud import firestore_v1 as firestore
 from google.cloud.firestore_v1.base_query import FieldFilter, And, Or
 
@@ -101,7 +100,7 @@ def test_collections_w_import(database):
 
 @pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
 def test_create_document(client, cleanup, database):
-    now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    now = datetime.datetime.now(tz=datetime.timezone.utc)
     collection_id = "doc-create" + UNIQUE_RESOURCE_ID
     document_id = "doc" + UNIQUE_RESOURCE_ID
     document = client.document(collection_id, document_id)
@@ -384,7 +383,7 @@ def check_snapshot(snapshot, document, data, write_result):
 
 @pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
 def test_document_get(client, cleanup, database):
-    now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    now = datetime.datetime.now(tz=datetime.timezone.utc)
     document_id = "for-get" + UNIQUE_RESOURCE_ID
     document = client.document("created", document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
@@ -1701,7 +1700,7 @@ def test_watch_query_order(client, cleanup, database):
 @pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
 def test_repro_429(client, cleanup, database):
     # See: https://github.com/googleapis/python-firestore/issues/429
-    now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    now = datetime.datetime.now(tz=datetime.timezone.utc)
     collection = client.collection("repro-429" + UNIQUE_RESOURCE_ID)
 
     for document_id in [f"doc-{doc_id:02d}" for doc_id in range(30)]:
@@ -1729,7 +1728,7 @@ def test_repro_429(client, cleanup, database):
 @pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
 def test_repro_391(client, cleanup, database):
     # See: https://github.com/googleapis/python-firestore/issues/391
-    now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    now = datetime.datetime.now(tz=datetime.timezone.utc)
     collection = client.collection("repro-391" + UNIQUE_RESOURCE_ID)
 
     document_ids = [f"doc-{doc_id:02d}" for doc_id in range(30)]

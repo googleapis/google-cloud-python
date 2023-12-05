@@ -205,7 +205,9 @@ def test_encode_value_w_datetime_wo_nanos():
     dt_nanos = 458816000
     # Make sure precision is valid in microseconds too.
     assert dt_nanos % 1000 == 0
-    dt_val = datetime.datetime.utcfromtimestamp(dt_seconds + 1e-9 * dt_nanos)
+    dt_val = datetime.datetime.fromtimestamp(
+        dt_seconds + 1e-9 * dt_nanos, tz=datetime.timezone.utc
+    )
 
     result = encode_value(dt_val)
     timestamp_pb = timestamp_pb2.Timestamp(seconds=dt_seconds, nanos=dt_nanos)
@@ -304,7 +306,9 @@ def test_encode_dict_w_many_types():
     dt_nanos = 465964000
     # Make sure precision is valid in microseconds too.
     assert dt_nanos % 1000 == 0
-    dt_val = datetime.datetime.utcfromtimestamp(dt_seconds + 1e-9 * dt_nanos)
+    dt_val = datetime.datetime.fromtimestamp(
+        dt_seconds + 1e-9 * dt_nanos, tz=datetime.timezone.utc
+    )
 
     client = _make_client()
     document = client.document("most", "adjective", "thing", "here")
@@ -646,7 +650,6 @@ def test_decode_dict_w_many_types():
     from google.protobuf import timestamp_pb2
     from google.cloud.firestore_v1.types.document import ArrayValue
     from google.cloud.firestore_v1.types.document import MapValue
-    from google.cloud._helpers import UTC
     from google.cloud.firestore_v1.field_path import FieldPath
     from google.cloud.firestore_v1._helpers import decode_dict
 
@@ -654,8 +657,8 @@ def test_decode_dict_w_many_types():
     dt_nanos = 667285000
     # Make sure precision is valid in microseconds too.
     assert dt_nanos % 1000 == 0
-    dt_val = datetime.datetime.utcfromtimestamp(dt_seconds + 1e-9 * dt_nanos).replace(
-        tzinfo=UTC
+    dt_val = datetime.datetime.fromtimestamp(
+        dt_seconds + 1e-9 * dt_nanos, tz=datetime.timezone.utc
     )
 
     value_fields = {

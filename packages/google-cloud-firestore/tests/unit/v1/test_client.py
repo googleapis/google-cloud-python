@@ -606,7 +606,7 @@ def _doc_get_info(ref_string, values):
     from google.cloud._helpers import _datetime_to_pb_timestamp
     from google.cloud.firestore_v1 import _helpers
 
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(tz=datetime.timezone.utc)
     read_time = _datetime_to_pb_timestamp(now)
     delta = datetime.timedelta(seconds=100)
     update_time = _datetime_to_pb_timestamp(now - delta)
