@@ -588,6 +588,35 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
             )
         return self._stubs["test_iam_permissions"]
 
+    @property
+    def move_billing_account(
+        self,
+    ) -> Callable[
+        [cloud_billing.MoveBillingAccountRequest], cloud_billing.BillingAccount
+    ]:
+        r"""Return a callable for the move billing account method over gRPC.
+
+        Changes which parent organization a billing account
+        belongs to.
+
+        Returns:
+            Callable[[~.MoveBillingAccountRequest],
+                    ~.BillingAccount]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "move_billing_account" not in self._stubs:
+            self._stubs["move_billing_account"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/MoveBillingAccount",
+                request_serializer=cloud_billing.MoveBillingAccountRequest.serialize,
+                response_deserializer=cloud_billing.BillingAccount.deserialize,
+            )
+        return self._stubs["move_billing_account"]
+
     def close(self):
         self.grpc_channel.close()
 
