@@ -3434,7 +3434,26 @@ class DataFrame(NDFrame):
 
     def nunique(self):
         """
-        Count number of distinct elements in specified axis.
+        Count number of distinct elements in each column.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [3, 1, 2], "B": [1, 2, 2]})
+            >>> df
+                A	B
+            0	3	1
+            1	1	2
+            2	2	2
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+            >>> df.nunique()
+            A    3.0
+            B    2.0
+            dtype: Float64
 
         Returns:
             bigframes.series.Series: Series with number of distinct elements.
@@ -3578,6 +3597,40 @@ class DataFrame(NDFrame):
         Calculates the difference of a DataFrame element compared with another
         element in the DataFrame (default is element in previous row).
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [3, 1, 2], "B": [1, 2, 3]})
+            >>> df
+                A	B
+            0	3	1
+            1	1	2
+            2	2	3
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+        Calculating difference with default periods=1:
+
+            >>> df.diff()
+                   A	   B
+            0	<NA>	<NA>
+            1	  -2	   1
+            2	   1	   1
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+        Calculating difference with periods=-1:
+
+            >>> df.diff(periods=-1)
+                   A	   B
+            0	   2	  -1
+            1	  -1	  -1
+            2	<NA>	<NA>
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
         Args:
             periods (int, default 1):
                 Periods to shift for calculating difference, accepts negative
@@ -3590,7 +3643,37 @@ class DataFrame(NDFrame):
 
     def agg(self, func):
         """
-        Aggregate using one or more operations over the specified axis.
+        Aggregate using one or more operations over columns.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [3, 1, 2], "B": [1, 2, 3]})
+            >>> df
+                A	B
+            0	3	1
+            1	1	2
+            2	2	3
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+        Using a single function:
+
+            >>> df.agg('sum')
+            A    6.0
+            B    6.0
+            dtype: Float64
+
+        Using a list of functions:
+
+            >>> df.agg(['sum', 'mean'])
+                      A	  B
+            sum	    6.0	6.0
+            mean	2.0	2.0
+            <BLANKLINE>
+            [2 rows x 2 columns]
 
         Args:
             func (function):
@@ -3622,6 +3705,33 @@ class DataFrame(NDFrame):
             upper percentiles. By default the lower percentile is ``25`` and the
             upper percentile is ``75``. The ``50`` percentile is the
             same as the median.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [3, 1, 2], "B": [0, 2, 8]})
+            >>> df
+                A	B
+            0	3	0
+            1	1	2
+            2	2	8
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+            >>> df.describe()
+                          A	          B
+            count       3.0	        3.0
+            mean        2.0	   3.333333
+            std	        1.0	   4.163332
+            min	        1.0	        0.0
+            25%	        1.0	        0.0
+            50%	        2.0	        2.0
+            75%	        3.0	        8.0
+            max	        3.0	        8.0
+            <BLANKLINE>
+            [8 rows x 2 columns]
 
         Returns:
             bigframes.dataframe.DataFrame: Summary statistics of the Series or Dataframe provided.
