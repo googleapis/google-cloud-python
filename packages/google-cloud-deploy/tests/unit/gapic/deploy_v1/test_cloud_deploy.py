@@ -3793,6 +3793,1471 @@ async def test_delete_target_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloud_deploy.ListCustomTargetTypesRequest,
+        dict,
+    ],
+)
+def test_list_custom_target_types(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_target_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.ListCustomTargetTypesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_custom_target_types(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.ListCustomTargetTypesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomTargetTypesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_custom_target_types_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_target_types), "__call__"
+    ) as call:
+        client.list_custom_target_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.ListCustomTargetTypesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_custom_target_types_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_deploy.ListCustomTargetTypesRequest,
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_target_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.ListCustomTargetTypesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_custom_target_types(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.ListCustomTargetTypesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomTargetTypesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_custom_target_types_async_from_dict():
+    await test_list_custom_target_types_async(request_type=dict)
+
+
+def test_list_custom_target_types_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.ListCustomTargetTypesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_target_types), "__call__"
+    ) as call:
+        call.return_value = cloud_deploy.ListCustomTargetTypesResponse()
+        client.list_custom_target_types(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_custom_target_types_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.ListCustomTargetTypesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_target_types), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.ListCustomTargetTypesResponse()
+        )
+        await client.list_custom_target_types(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_custom_target_types_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_target_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.ListCustomTargetTypesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_custom_target_types(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_custom_target_types_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_custom_target_types(
+            cloud_deploy.ListCustomTargetTypesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_custom_target_types_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_target_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.ListCustomTargetTypesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.ListCustomTargetTypesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_custom_target_types(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_custom_target_types_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_custom_target_types(
+            cloud_deploy.ListCustomTargetTypesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_custom_target_types_pager(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_target_types), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_custom_target_types(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_deploy.CustomTargetType) for i in results)
+
+
+def test_list_custom_target_types_pages(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_target_types), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_custom_target_types(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_custom_target_types_async_pager():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_target_types),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_custom_target_types(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, cloud_deploy.CustomTargetType) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_custom_target_types_async_pages():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_target_types),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_custom_target_types(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetCustomTargetTypeRequest,
+        dict,
+    ],
+)
+def test_get_custom_target_type(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.CustomTargetType(
+            name="name_value",
+            custom_target_type_id="custom_target_type_id_value",
+            uid="uid_value",
+            description="description_value",
+            etag="etag_value",
+        )
+        response = client.get_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.GetCustomTargetTypeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.CustomTargetType)
+    assert response.name == "name_value"
+    assert response.custom_target_type_id == "custom_target_type_id_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.etag == "etag_value"
+
+
+def test_get_custom_target_type_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_target_type), "__call__"
+    ) as call:
+        client.get_custom_target_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.GetCustomTargetTypeRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_custom_target_type_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_deploy.GetCustomTargetTypeRequest,
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.CustomTargetType(
+                name="name_value",
+                custom_target_type_id="custom_target_type_id_value",
+                uid="uid_value",
+                description="description_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.GetCustomTargetTypeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.CustomTargetType)
+    assert response.name == "name_value"
+    assert response.custom_target_type_id == "custom_target_type_id_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.asyncio
+async def test_get_custom_target_type_async_from_dict():
+    await test_get_custom_target_type_async(request_type=dict)
+
+
+def test_get_custom_target_type_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.GetCustomTargetTypeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_target_type), "__call__"
+    ) as call:
+        call.return_value = cloud_deploy.CustomTargetType()
+        client.get_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_custom_target_type_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.GetCustomTargetTypeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_target_type), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.CustomTargetType()
+        )
+        await client.get_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_custom_target_type_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.CustomTargetType()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_custom_target_type(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_custom_target_type_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_custom_target_type(
+            cloud_deploy.GetCustomTargetTypeRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_custom_target_type_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.CustomTargetType()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.CustomTargetType()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_custom_target_type(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_custom_target_type_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_custom_target_type(
+            cloud_deploy.GetCustomTargetTypeRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateCustomTargetTypeRequest,
+        dict,
+    ],
+)
+def test_create_custom_target_type(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CreateCustomTargetTypeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_custom_target_type_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_target_type), "__call__"
+    ) as call:
+        client.create_custom_target_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CreateCustomTargetTypeRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_custom_target_type_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_deploy.CreateCustomTargetTypeRequest,
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CreateCustomTargetTypeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_custom_target_type_async_from_dict():
+    await test_create_custom_target_type_async(request_type=dict)
+
+
+def test_create_custom_target_type_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.CreateCustomTargetTypeRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_target_type), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_custom_target_type_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.CreateCustomTargetTypeRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_target_type), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_custom_target_type_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_custom_target_type(
+            parent="parent_value",
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            custom_target_type_id="custom_target_type_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].custom_target_type
+        mock_val = cloud_deploy.CustomTargetType(name="name_value")
+        assert arg == mock_val
+        arg = args[0].custom_target_type_id
+        mock_val = "custom_target_type_id_value"
+        assert arg == mock_val
+
+
+def test_create_custom_target_type_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_custom_target_type(
+            cloud_deploy.CreateCustomTargetTypeRequest(),
+            parent="parent_value",
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            custom_target_type_id="custom_target_type_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_custom_target_type_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_custom_target_type(
+            parent="parent_value",
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            custom_target_type_id="custom_target_type_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].custom_target_type
+        mock_val = cloud_deploy.CustomTargetType(name="name_value")
+        assert arg == mock_val
+        arg = args[0].custom_target_type_id
+        mock_val = "custom_target_type_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_custom_target_type_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_custom_target_type(
+            cloud_deploy.CreateCustomTargetTypeRequest(),
+            parent="parent_value",
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            custom_target_type_id="custom_target_type_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.UpdateCustomTargetTypeRequest,
+        dict,
+    ],
+)
+def test_update_custom_target_type(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.UpdateCustomTargetTypeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_custom_target_type_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_target_type), "__call__"
+    ) as call:
+        client.update_custom_target_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.UpdateCustomTargetTypeRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_custom_target_type_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_deploy.UpdateCustomTargetTypeRequest,
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.UpdateCustomTargetTypeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_custom_target_type_async_from_dict():
+    await test_update_custom_target_type_async(request_type=dict)
+
+
+def test_update_custom_target_type_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.UpdateCustomTargetTypeRequest()
+
+    request.custom_target_type.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_target_type), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "custom_target_type.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_custom_target_type_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.UpdateCustomTargetTypeRequest()
+
+    request.custom_target_type.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_target_type), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "custom_target_type.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_custom_target_type_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_custom_target_type(
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].custom_target_type
+        mock_val = cloud_deploy.CustomTargetType(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_custom_target_type_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_custom_target_type(
+            cloud_deploy.UpdateCustomTargetTypeRequest(),
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_custom_target_type_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_custom_target_type(
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].custom_target_type
+        mock_val = cloud_deploy.CustomTargetType(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_custom_target_type_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_custom_target_type(
+            cloud_deploy.UpdateCustomTargetTypeRequest(),
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.DeleteCustomTargetTypeRequest,
+        dict,
+    ],
+)
+def test_delete_custom_target_type(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.DeleteCustomTargetTypeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_custom_target_type_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_target_type), "__call__"
+    ) as call:
+        client.delete_custom_target_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.DeleteCustomTargetTypeRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_target_type_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_deploy.DeleteCustomTargetTypeRequest,
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.DeleteCustomTargetTypeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_target_type_async_from_dict():
+    await test_delete_custom_target_type_async(request_type=dict)
+
+
+def test_delete_custom_target_type_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.DeleteCustomTargetTypeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_target_type), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_target_type_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.DeleteCustomTargetTypeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_target_type), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_custom_target_type(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_custom_target_type_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_custom_target_type(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_custom_target_type_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_custom_target_type(
+            cloud_deploy.DeleteCustomTargetTypeRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_target_type_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_target_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_custom_target_type(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_target_type_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_custom_target_type(
+            cloud_deploy.DeleteCustomTargetTypeRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloud_deploy.ListReleasesRequest,
         dict,
     ],
@@ -11317,7 +12782,21 @@ def test_create_delivery_pipeline_rest(request_type):
                                         "disable_pod_overprovisioning": True,
                                     },
                                 },
-                                "cloud_run": {"automatic_traffic_control": True},
+                                "cloud_run": {
+                                    "automatic_traffic_control": True,
+                                    "canary_revision_tags": [
+                                        "canary_revision_tags_value1",
+                                        "canary_revision_tags_value2",
+                                    ],
+                                    "prior_revision_tags": [
+                                        "prior_revision_tags_value1",
+                                        "prior_revision_tags_value2",
+                                    ],
+                                    "stable_revision_tags": [
+                                        "stable_revision_tags_value1",
+                                        "stable_revision_tags_value2",
+                                    ],
+                                },
                             },
                             "canary_deployment": {
                                 "percentages": [1170, 1171],
@@ -11781,7 +13260,21 @@ def test_update_delivery_pipeline_rest(request_type):
                                         "disable_pod_overprovisioning": True,
                                     },
                                 },
-                                "cloud_run": {"automatic_traffic_control": True},
+                                "cloud_run": {
+                                    "automatic_traffic_control": True,
+                                    "canary_revision_tags": [
+                                        "canary_revision_tags_value1",
+                                        "canary_revision_tags_value2",
+                                    ],
+                                    "prior_revision_tags": [
+                                        "prior_revision_tags_value1",
+                                        "prior_revision_tags_value2",
+                                    ],
+                                    "stable_revision_tags": [
+                                        "stable_revision_tags_value1",
+                                        "stable_revision_tags_value2",
+                                    ],
+                                },
                             },
                             "canary_deployment": {
                                 "percentages": [1170, 1171],
@@ -13407,6 +14900,7 @@ def test_create_target_rest(request_type):
         "anthos_cluster": {"membership": "membership_value"},
         "run": {"location": "location_value"},
         "multi_target": {"target_ids": ["target_ids_value1", "target_ids_value2"]},
+        "custom_target": {"custom_target_type": "custom_target_type_value"},
         "etag": "etag_value",
         "execution_configs": [
             {
@@ -13814,6 +15308,7 @@ def test_update_target_rest(request_type):
         "anthos_cluster": {"membership": "membership_value"},
         "run": {"location": "location_value"},
         "multi_target": {"target_ids": ["target_ids_value1", "target_ids_value2"]},
+        "custom_target": {"custom_target_type": "custom_target_type_value"},
         "etag": "etag_value",
         "execution_configs": [
             {
@@ -14452,6 +15947,1727 @@ def test_delete_target_rest_flattened_error(transport: str = "rest"):
 
 
 def test_delete_target_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.ListCustomTargetTypesRequest,
+        dict,
+    ],
+)
+def test_list_custom_target_types_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListCustomTargetTypesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListCustomTargetTypesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_custom_target_types(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomTargetTypesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_custom_target_types_rest_required_fields(
+    request_type=cloud_deploy.ListCustomTargetTypesRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_custom_target_types._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_custom_target_types._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.ListCustomTargetTypesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.ListCustomTargetTypesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_custom_target_types(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_custom_target_types_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_custom_target_types._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_custom_target_types_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_list_custom_target_types"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_list_custom_target_types"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.ListCustomTargetTypesRequest.pb(
+            cloud_deploy.ListCustomTargetTypesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.ListCustomTargetTypesResponse.to_json(
+            cloud_deploy.ListCustomTargetTypesResponse()
+        )
+
+        request = cloud_deploy.ListCustomTargetTypesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.ListCustomTargetTypesResponse()
+
+        client.list_custom_target_types(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_custom_target_types_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.ListCustomTargetTypesRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_custom_target_types(request)
+
+
+def test_list_custom_target_types_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.ListCustomTargetTypesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListCustomTargetTypesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_custom_target_types(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/customTargetTypes"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_custom_target_types_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_custom_target_types(
+            cloud_deploy.ListCustomTargetTypesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_custom_target_types_rest_pager(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[],
+                next_page_token="def",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_deploy.ListCustomTargetTypesResponse(
+                custom_target_types=[
+                    cloud_deploy.CustomTargetType(),
+                    cloud_deploy.CustomTargetType(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cloud_deploy.ListCustomTargetTypesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_custom_target_types(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_deploy.CustomTargetType) for i in results)
+
+        pages = list(client.list_custom_target_types(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.GetCustomTargetTypeRequest,
+        dict,
+    ],
+)
+def test_get_custom_target_type_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/customTargetTypes/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.CustomTargetType(
+            name="name_value",
+            custom_target_type_id="custom_target_type_id_value",
+            uid="uid_value",
+            description="description_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.CustomTargetType.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_custom_target_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.CustomTargetType)
+    assert response.name == "name_value"
+    assert response.custom_target_type_id == "custom_target_type_id_value"
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+    assert response.etag == "etag_value"
+
+
+def test_get_custom_target_type_rest_required_fields(
+    request_type=cloud_deploy.GetCustomTargetTypeRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_custom_target_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_custom_target_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.CustomTargetType()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.CustomTargetType.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_custom_target_type(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_custom_target_type_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_custom_target_type._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_custom_target_type_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_get_custom_target_type"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_get_custom_target_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.GetCustomTargetTypeRequest.pb(
+            cloud_deploy.GetCustomTargetTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.CustomTargetType.to_json(
+            cloud_deploy.CustomTargetType()
+        )
+
+        request = cloud_deploy.GetCustomTargetTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.CustomTargetType()
+
+        client.get_custom_target_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_custom_target_type_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.GetCustomTargetTypeRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/customTargetTypes/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_custom_target_type(request)
+
+
+def test_get_custom_target_type_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.CustomTargetType()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/customTargetTypes/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.CustomTargetType.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_custom_target_type(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/customTargetTypes/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_custom_target_type_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_custom_target_type(
+            cloud_deploy.GetCustomTargetTypeRequest(),
+            name="name_value",
+        )
+
+
+def test_get_custom_target_type_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CreateCustomTargetTypeRequest,
+        dict,
+    ],
+)
+def test_create_custom_target_type_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["custom_target_type"] = {
+        "name": "name_value",
+        "custom_target_type_id": "custom_target_type_id_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "custom_actions": {
+            "render_action": "render_action_value",
+            "deploy_action": "deploy_action_value",
+            "include_skaffold_modules": [
+                {
+                    "configs": ["configs_value1", "configs_value2"],
+                    "git": {
+                        "repo": "repo_value",
+                        "path": "path_value",
+                        "ref": "ref_value",
+                    },
+                    "google_cloud_storage": {
+                        "source": "source_value",
+                        "path": "path_value",
+                    },
+                }
+            ],
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_deploy.CreateCustomTargetTypeRequest.meta.fields[
+        "custom_target_type"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["custom_target_type"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["custom_target_type"][field])):
+                    del request_init["custom_target_type"][field][i][subfield]
+            else:
+                del request_init["custom_target_type"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_custom_target_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_custom_target_type_rest_required_fields(
+    request_type=cloud_deploy.CreateCustomTargetTypeRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["custom_target_type_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "customTargetTypeId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_target_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "customTargetTypeId" in jsonified_request
+    assert (
+        jsonified_request["customTargetTypeId"] == request_init["custom_target_type_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["customTargetTypeId"] = "custom_target_type_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_target_type._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "custom_target_type_id",
+            "request_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "customTargetTypeId" in jsonified_request
+    assert jsonified_request["customTargetTypeId"] == "custom_target_type_id_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_custom_target_type(request)
+
+            expected_params = [
+                (
+                    "customTargetTypeId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_custom_target_type_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_custom_target_type._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "customTargetTypeId",
+                "requestId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "customTargetTypeId",
+                "customTargetType",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_custom_target_type_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_create_custom_target_type"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_create_custom_target_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.CreateCustomTargetTypeRequest.pb(
+            cloud_deploy.CreateCustomTargetTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.CreateCustomTargetTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_custom_target_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_custom_target_type_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.CreateCustomTargetTypeRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_custom_target_type(request)
+
+
+def test_create_custom_target_type_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            custom_target_type_id="custom_target_type_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_custom_target_type(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/customTargetTypes"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_custom_target_type_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_custom_target_type(
+            cloud_deploy.CreateCustomTargetTypeRequest(),
+            parent="parent_value",
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            custom_target_type_id="custom_target_type_id_value",
+        )
+
+
+def test_create_custom_target_type_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.UpdateCustomTargetTypeRequest,
+        dict,
+    ],
+)
+def test_update_custom_target_type_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "custom_target_type": {
+            "name": "projects/sample1/locations/sample2/customTargetTypes/sample3"
+        }
+    }
+    request_init["custom_target_type"] = {
+        "name": "projects/sample1/locations/sample2/customTargetTypes/sample3",
+        "custom_target_type_id": "custom_target_type_id_value",
+        "uid": "uid_value",
+        "description": "description_value",
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "etag": "etag_value",
+        "custom_actions": {
+            "render_action": "render_action_value",
+            "deploy_action": "deploy_action_value",
+            "include_skaffold_modules": [
+                {
+                    "configs": ["configs_value1", "configs_value2"],
+                    "git": {
+                        "repo": "repo_value",
+                        "path": "path_value",
+                        "ref": "ref_value",
+                    },
+                    "google_cloud_storage": {
+                        "source": "source_value",
+                        "path": "path_value",
+                    },
+                }
+            ],
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_deploy.UpdateCustomTargetTypeRequest.meta.fields[
+        "custom_target_type"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["custom_target_type"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["custom_target_type"][field])):
+                    del request_init["custom_target_type"][field][i][subfield]
+            else:
+                del request_init["custom_target_type"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_custom_target_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_custom_target_type_rest_required_fields(
+    request_type=cloud_deploy.UpdateCustomTargetTypeRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_custom_target_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_custom_target_type._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "request_id",
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_custom_target_type(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_custom_target_type_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_custom_target_type._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "requestId",
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "customTargetType",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_custom_target_type_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_update_custom_target_type"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_update_custom_target_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.UpdateCustomTargetTypeRequest.pb(
+            cloud_deploy.UpdateCustomTargetTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.UpdateCustomTargetTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_custom_target_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_custom_target_type_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.UpdateCustomTargetTypeRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "custom_target_type": {
+            "name": "projects/sample1/locations/sample2/customTargetTypes/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_custom_target_type(request)
+
+
+def test_update_custom_target_type_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "custom_target_type": {
+                "name": "projects/sample1/locations/sample2/customTargetTypes/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_custom_target_type(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{custom_target_type.name=projects/*/locations/*/customTargetTypes/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_custom_target_type_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_custom_target_type(
+            cloud_deploy.UpdateCustomTargetTypeRequest(),
+            custom_target_type=cloud_deploy.CustomTargetType(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_custom_target_type_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.DeleteCustomTargetTypeRequest,
+        dict,
+    ],
+)
+def test_delete_custom_target_type_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/customTargetTypes/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_custom_target_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_custom_target_type_rest_required_fields(
+    request_type=cloud_deploy.DeleteCustomTargetTypeRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_custom_target_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_custom_target_type._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "etag",
+            "request_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_custom_target_type(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_custom_target_type_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_custom_target_type._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "etag",
+                "requestId",
+                "validateOnly",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_custom_target_type_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_delete_custom_target_type"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_delete_custom_target_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.DeleteCustomTargetTypeRequest.pb(
+            cloud_deploy.DeleteCustomTargetTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = cloud_deploy.DeleteCustomTargetTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_custom_target_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_custom_target_type_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.DeleteCustomTargetTypeRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/customTargetTypes/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_custom_target_type(request)
+
+
+def test_delete_custom_target_type_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/customTargetTypes/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_custom_target_type(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/customTargetTypes/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_custom_target_type_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_custom_target_type(
+            cloud_deploy.DeleteCustomTargetTypeRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_custom_target_type_rest_error():
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -15170,7 +18386,21 @@ def test_create_release_rest(request_type):
                                             "disable_pod_overprovisioning": True,
                                         },
                                     },
-                                    "cloud_run": {"automatic_traffic_control": True},
+                                    "cloud_run": {
+                                        "automatic_traffic_control": True,
+                                        "canary_revision_tags": [
+                                            "canary_revision_tags_value1",
+                                            "canary_revision_tags_value2",
+                                        ],
+                                        "prior_revision_tags": [
+                                            "prior_revision_tags_value1",
+                                            "prior_revision_tags_value2",
+                                        ],
+                                        "stable_revision_tags": [
+                                            "stable_revision_tags_value1",
+                                            "stable_revision_tags_value2",
+                                        ],
+                                    },
                                 },
                                 "canary_deployment": {
                                     "percentages": [1170, 1171],
@@ -15236,6 +18466,7 @@ def test_create_release_rest(request_type):
                 "multi_target": {
                     "target_ids": ["target_ids_value1", "target_ids_value2"]
                 },
+                "custom_target": {"custom_target_type": "custom_target_type_value"},
                 "etag": "etag_value",
                 "execution_configs": [
                     {
@@ -15256,6 +18487,37 @@ def test_create_release_rest(request_type):
                     }
                 ],
                 "deploy_parameters": {},
+            }
+        ],
+        "custom_target_type_snapshots": [
+            {
+                "name": "name_value",
+                "custom_target_type_id": "custom_target_type_id_value",
+                "uid": "uid_value",
+                "description": "description_value",
+                "annotations": {},
+                "labels": {},
+                "create_time": {},
+                "update_time": {},
+                "etag": "etag_value",
+                "custom_actions": {
+                    "render_action": "render_action_value",
+                    "deploy_action": "deploy_action_value",
+                    "include_skaffold_modules": [
+                        {
+                            "configs": ["configs_value1", "configs_value2"],
+                            "git": {
+                                "repo": "repo_value",
+                                "path": "path_value",
+                                "ref": "ref_value",
+                            },
+                            "google_cloud_storage": {
+                                "source": "source_value",
+                                "path": "path_value",
+                            },
+                        }
+                    ],
+                },
             }
         ],
         "render_state": 1,
@@ -17498,6 +20760,7 @@ def test_create_rollout_rest(request_type):
                     "repair_automation_runs_value2",
                 ],
             },
+            "custom": {"values": {}},
         },
         "controller_rollout": "controller_rollout_value",
         "rollback_of_rollout": "rollback_of_rollout_value",
@@ -22481,6 +25744,11 @@ def test_cloud_deploy_base_transport():
         "create_target",
         "update_target",
         "delete_target",
+        "list_custom_target_types",
+        "get_custom_target_type",
+        "create_custom_target_type",
+        "update_custom_target_type",
+        "delete_custom_target_type",
         "list_releases",
         "get_release",
         "create_release",
@@ -22823,6 +26091,21 @@ def test_cloud_deploy_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.delete_target._session
     session2 = client2.transport.delete_target._session
+    assert session1 != session2
+    session1 = client1.transport.list_custom_target_types._session
+    session2 = client2.transport.list_custom_target_types._session
+    assert session1 != session2
+    session1 = client1.transport.get_custom_target_type._session
+    session2 = client2.transport.get_custom_target_type._session
+    assert session1 != session2
+    session1 = client1.transport.create_custom_target_type._session
+    session2 = client2.transport.create_custom_target_type._session
+    assert session1 != session2
+    session1 = client1.transport.update_custom_target_type._session
+    session2 = client2.transport.update_custom_target_type._session
+    assert session1 != session2
+    session1 = client1.transport.delete_custom_target_type._session
+    session2 = client2.transport.delete_custom_target_type._session
     assert session1 != session2
     session1 = client1.transport.list_releases._session
     session2 = client2.transport.list_releases._session
@@ -23187,10 +26470,38 @@ def test_parse_config_path():
     assert expected == actual
 
 
-def test_delivery_pipeline_path():
+def test_custom_target_type_path():
     project = "winkle"
     location = "nautilus"
-    delivery_pipeline = "scallop"
+    custom_target_type = "scallop"
+    expected = "projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}".format(
+        project=project,
+        location=location,
+        custom_target_type=custom_target_type,
+    )
+    actual = CloudDeployClient.custom_target_type_path(
+        project, location, custom_target_type
+    )
+    assert expected == actual
+
+
+def test_parse_custom_target_type_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "custom_target_type": "clam",
+    }
+    path = CloudDeployClient.custom_target_type_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudDeployClient.parse_custom_target_type_path(path)
+    assert expected == actual
+
+
+def test_delivery_pipeline_path():
+    project = "whelk"
+    location = "octopus"
+    delivery_pipeline = "oyster"
     expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}".format(
         project=project,
         location=location,
@@ -23204,9 +26515,9 @@ def test_delivery_pipeline_path():
 
 def test_parse_delivery_pipeline_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "delivery_pipeline": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "delivery_pipeline": "mussel",
     }
     path = CloudDeployClient.delivery_pipeline_path(**expected)
 
@@ -23216,9 +26527,9 @@ def test_parse_delivery_pipeline_path():
 
 
 def test_job_path():
-    project = "whelk"
-    location = "octopus"
-    job = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    job = "scallop"
     expected = "projects/{project}/locations/{location}/jobs/{job}".format(
         project=project,
         location=location,
@@ -23230,9 +26541,9 @@ def test_job_path():
 
 def test_parse_job_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "job": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "job": "clam",
     }
     path = CloudDeployClient.job_path(**expected)
 
@@ -23242,12 +26553,12 @@ def test_parse_job_path():
 
 
 def test_job_run_path():
-    project = "winkle"
-    location = "nautilus"
-    delivery_pipeline = "scallop"
-    release = "abalone"
-    rollout = "squid"
-    job_run = "clam"
+    project = "whelk"
+    location = "octopus"
+    delivery_pipeline = "oyster"
+    release = "nudibranch"
+    rollout = "cuttlefish"
+    job_run = "mussel"
     expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}/rollouts/{rollout}/jobRuns/{job_run}".format(
         project=project,
         location=location,
@@ -23264,12 +26575,12 @@ def test_job_run_path():
 
 def test_parse_job_run_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "delivery_pipeline": "oyster",
-        "release": "nudibranch",
-        "rollout": "cuttlefish",
-        "job_run": "mussel",
+        "project": "winkle",
+        "location": "nautilus",
+        "delivery_pipeline": "scallop",
+        "release": "abalone",
+        "rollout": "squid",
+        "job_run": "clam",
     }
     path = CloudDeployClient.job_run_path(**expected)
 
@@ -23279,9 +26590,9 @@ def test_parse_job_run_path():
 
 
 def test_membership_path():
-    project = "winkle"
-    location = "nautilus"
-    membership = "scallop"
+    project = "whelk"
+    location = "octopus"
+    membership = "oyster"
     expected = (
         "projects/{project}/locations/{location}/memberships/{membership}".format(
             project=project,
@@ -23295,9 +26606,9 @@ def test_membership_path():
 
 def test_parse_membership_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "membership": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "membership": "mussel",
     }
     path = CloudDeployClient.membership_path(**expected)
 
@@ -23307,10 +26618,10 @@ def test_parse_membership_path():
 
 
 def test_release_path():
-    project = "whelk"
-    location = "octopus"
-    delivery_pipeline = "oyster"
-    release = "nudibranch"
+    project = "winkle"
+    location = "nautilus"
+    delivery_pipeline = "scallop"
+    release = "abalone"
     expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}".format(
         project=project,
         location=location,
@@ -23325,10 +26636,10 @@ def test_release_path():
 
 def test_parse_release_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "delivery_pipeline": "winkle",
-        "release": "nautilus",
+        "project": "squid",
+        "location": "clam",
+        "delivery_pipeline": "whelk",
+        "release": "octopus",
     }
     path = CloudDeployClient.release_path(**expected)
 
@@ -23338,11 +26649,11 @@ def test_parse_release_path():
 
 
 def test_rollout_path():
-    project = "scallop"
-    location = "abalone"
-    delivery_pipeline = "squid"
-    release = "clam"
-    rollout = "whelk"
+    project = "oyster"
+    location = "nudibranch"
+    delivery_pipeline = "cuttlefish"
+    release = "mussel"
+    rollout = "winkle"
     expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}/rollouts/{rollout}".format(
         project=project,
         location=location,
@@ -23358,11 +26669,11 @@ def test_rollout_path():
 
 def test_parse_rollout_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "delivery_pipeline": "nudibranch",
-        "release": "cuttlefish",
-        "rollout": "mussel",
+        "project": "nautilus",
+        "location": "scallop",
+        "delivery_pipeline": "abalone",
+        "release": "squid",
+        "rollout": "clam",
     }
     path = CloudDeployClient.rollout_path(**expected)
 
@@ -23372,9 +26683,9 @@ def test_parse_rollout_path():
 
 
 def test_service_path():
-    project = "winkle"
-    location = "nautilus"
-    service = "scallop"
+    project = "whelk"
+    location = "octopus"
+    service = "oyster"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project,
         location=location,
@@ -23386,9 +26697,9 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "service": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "service": "mussel",
     }
     path = CloudDeployClient.service_path(**expected)
 
@@ -23398,9 +26709,9 @@ def test_parse_service_path():
 
 
 def test_target_path():
-    project = "whelk"
-    location = "octopus"
-    target = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    target = "scallop"
     expected = "projects/{project}/locations/{location}/targets/{target}".format(
         project=project,
         location=location,
@@ -23412,9 +26723,9 @@ def test_target_path():
 
 def test_parse_target_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "target": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "target": "clam",
     }
     path = CloudDeployClient.target_path(**expected)
 
@@ -23424,9 +26735,9 @@ def test_parse_target_path():
 
 
 def test_worker_pool_path():
-    project = "winkle"
-    location = "nautilus"
-    worker_pool = "scallop"
+    project = "whelk"
+    location = "octopus"
+    worker_pool = "oyster"
     expected = (
         "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
             project=project,
@@ -23440,9 +26751,9 @@ def test_worker_pool_path():
 
 def test_parse_worker_pool_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "worker_pool": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "worker_pool": "mussel",
     }
     path = CloudDeployClient.worker_pool_path(**expected)
 
@@ -23452,7 +26763,7 @@ def test_parse_worker_pool_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -23462,7 +26773,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = CloudDeployClient.common_billing_account_path(**expected)
 
@@ -23472,7 +26783,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -23482,7 +26793,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = CloudDeployClient.common_folder_path(**expected)
 
@@ -23492,7 +26803,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -23502,7 +26813,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = CloudDeployClient.common_organization_path(**expected)
 
@@ -23512,7 +26823,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -23522,7 +26833,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = CloudDeployClient.common_project_path(**expected)
 
@@ -23532,8 +26843,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -23544,8 +26855,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = CloudDeployClient.common_location_path(**expected)
 

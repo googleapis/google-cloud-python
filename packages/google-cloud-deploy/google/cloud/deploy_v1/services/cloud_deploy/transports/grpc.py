@@ -551,6 +551,149 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["delete_target"]
 
     @property
+    def list_custom_target_types(
+        self,
+    ) -> Callable[
+        [cloud_deploy.ListCustomTargetTypesRequest],
+        cloud_deploy.ListCustomTargetTypesResponse,
+    ]:
+        r"""Return a callable for the list custom target types method over gRPC.
+
+        Lists CustomTargetTypes in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListCustomTargetTypesRequest],
+                    ~.ListCustomTargetTypesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_custom_target_types" not in self._stubs:
+            self._stubs["list_custom_target_types"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/ListCustomTargetTypes",
+                request_serializer=cloud_deploy.ListCustomTargetTypesRequest.serialize,
+                response_deserializer=cloud_deploy.ListCustomTargetTypesResponse.deserialize,
+            )
+        return self._stubs["list_custom_target_types"]
+
+    @property
+    def get_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.GetCustomTargetTypeRequest], cloud_deploy.CustomTargetType
+    ]:
+        r"""Return a callable for the get custom target type method over gRPC.
+
+        Gets details of a single CustomTargetType.
+
+        Returns:
+            Callable[[~.GetCustomTargetTypeRequest],
+                    ~.CustomTargetType]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_custom_target_type" not in self._stubs:
+            self._stubs["get_custom_target_type"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/GetCustomTargetType",
+                request_serializer=cloud_deploy.GetCustomTargetTypeRequest.serialize,
+                response_deserializer=cloud_deploy.CustomTargetType.deserialize,
+            )
+        return self._stubs["get_custom_target_type"]
+
+    @property
+    def create_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.CreateCustomTargetTypeRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create custom target type method over gRPC.
+
+        Creates a new CustomTargetType in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateCustomTargetTypeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_custom_target_type" not in self._stubs:
+            self._stubs["create_custom_target_type"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/CreateCustomTargetType",
+                request_serializer=cloud_deploy.CreateCustomTargetTypeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_custom_target_type"]
+
+    @property
+    def update_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.UpdateCustomTargetTypeRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update custom target type method over gRPC.
+
+        Updates a single CustomTargetType.
+
+        Returns:
+            Callable[[~.UpdateCustomTargetTypeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_custom_target_type" not in self._stubs:
+            self._stubs["update_custom_target_type"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/UpdateCustomTargetType",
+                request_serializer=cloud_deploy.UpdateCustomTargetTypeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_custom_target_type"]
+
+    @property
+    def delete_custom_target_type(
+        self,
+    ) -> Callable[
+        [cloud_deploy.DeleteCustomTargetTypeRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete custom target type method over gRPC.
+
+        Deletes a single CustomTargetType.
+
+        Returns:
+            Callable[[~.DeleteCustomTargetTypeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_custom_target_type" not in self._stubs:
+            self._stubs["delete_custom_target_type"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/DeleteCustomTargetType",
+                request_serializer=cloud_deploy.DeleteCustomTargetTypeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_custom_target_type"]
+
+    @property
     def list_releases(
         self,
     ) -> Callable[

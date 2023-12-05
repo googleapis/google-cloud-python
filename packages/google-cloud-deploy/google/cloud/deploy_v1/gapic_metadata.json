@@ -40,6 +40,11 @@
                 "create_automation"
               ]
             },
+            "CreateCustomTargetType": {
+              "methods": [
+                "create_custom_target_type"
+              ]
+            },
             "CreateDeliveryPipeline": {
               "methods": [
                 "create_delivery_pipeline"
@@ -65,6 +70,11 @@
                 "delete_automation"
               ]
             },
+            "DeleteCustomTargetType": {
+              "methods": [
+                "delete_custom_target_type"
+              ]
+            },
             "DeleteDeliveryPipeline": {
               "methods": [
                 "delete_delivery_pipeline"
@@ -88,6 +98,11 @@
             "GetConfig": {
               "methods": [
                 "get_config"
+              ]
+            },
+            "GetCustomTargetType": {
+              "methods": [
+                "get_custom_target_type"
               ]
             },
             "GetDeliveryPipeline": {
@@ -128,6 +143,11 @@
             "ListAutomations": {
               "methods": [
                 "list_automations"
+              ]
+            },
+            "ListCustomTargetTypes": {
+              "methods": [
+                "list_custom_target_types"
               ]
             },
             "ListDeliveryPipelines": {
@@ -173,6 +193,11 @@
             "UpdateAutomation": {
               "methods": [
                 "update_automation"
+              ]
+            },
+            "UpdateCustomTargetType": {
+              "methods": [
+                "update_custom_target_type"
               ]
             },
             "UpdateDeliveryPipeline": {
@@ -220,6 +245,11 @@
                 "create_automation"
               ]
             },
+            "CreateCustomTargetType": {
+              "methods": [
+                "create_custom_target_type"
+              ]
+            },
             "CreateDeliveryPipeline": {
               "methods": [
                 "create_delivery_pipeline"
@@ -245,6 +275,11 @@
                 "delete_automation"
               ]
             },
+            "DeleteCustomTargetType": {
+              "methods": [
+                "delete_custom_target_type"
+              ]
+            },
             "DeleteDeliveryPipeline": {
               "methods": [
                 "delete_delivery_pipeline"
@@ -268,6 +303,11 @@
             "GetConfig": {
               "methods": [
                 "get_config"
+              ]
+            },
+            "GetCustomTargetType": {
+              "methods": [
+                "get_custom_target_type"
               ]
             },
             "GetDeliveryPipeline": {
@@ -308,6 +348,11 @@
             "ListAutomations": {
               "methods": [
                 "list_automations"
+              ]
+            },
+            "ListCustomTargetTypes": {
+              "methods": [
+                "list_custom_target_types"
               ]
             },
             "ListDeliveryPipelines": {
@@ -353,6 +398,11 @@
             "UpdateAutomation": {
               "methods": [
                 "update_automation"
+              ]
+            },
+            "UpdateCustomTargetType": {
+              "methods": [
+                "update_custom_target_type"
               ]
             },
             "UpdateDeliveryPipeline": {
@@ -400,6 +450,11 @@
                 "create_automation"
               ]
             },
+            "CreateCustomTargetType": {
+              "methods": [
+                "create_custom_target_type"
+              ]
+            },
             "CreateDeliveryPipeline": {
               "methods": [
                 "create_delivery_pipeline"
@@ -425,6 +480,11 @@
                 "delete_automation"
               ]
             },
+            "DeleteCustomTargetType": {
+              "methods": [
+                "delete_custom_target_type"
+              ]
+            },
             "DeleteDeliveryPipeline": {
               "methods": [
                 "delete_delivery_pipeline"
@@ -448,6 +508,11 @@
             "GetConfig": {
               "methods": [
                 "get_config"
+              ]
+            },
+            "GetCustomTargetType": {
+              "methods": [
+                "get_custom_target_type"
               ]
             },
             "GetDeliveryPipeline": {
@@ -488,6 +553,11 @@
             "ListAutomations": {
               "methods": [
                 "list_automations"
+              ]
+            },
+            "ListCustomTargetTypes": {
+              "methods": [
+                "list_custom_target_types"
               ]
             },
             "ListDeliveryPipelines": {
@@ -533,6 +603,11 @@
             "UpdateAutomation": {
               "methods": [
                 "update_automation"
+              ]
+            },
+            "UpdateCustomTargetType": {
+              "methods": [
+                "update_custom_target_type"
               ]
             },
             "UpdateDeliveryPipeline": {
