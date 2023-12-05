@@ -226,7 +226,7 @@ class DataFrame(NDFrame):
                 if used with ``orient='columns'`` or ``orient='tight'``.
 
         Returns:
-            DataFrame
+            DataFrame: DataFrame.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -267,7 +267,7 @@ class DataFrame(NDFrame):
                 Number of rows to read if data is an iterator.
 
         Returns:
-            DataFrame
+            DataFrame: DataFrame.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -717,7 +717,7 @@ class DataFrame(NDFrame):
                 These parameters will be passed to `tabulate <https://pypi.org/project/tabulate>`_.
 
         Returns:
-            DataFrame in Markdown-friendly format.
+            DataFrame: DataFrame in Markdown-friendly format.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1272,7 +1272,7 @@ class DataFrame(NDFrame):
              if `first`; `last` puts NaNs at the end.
 
         Returns:
-            DataFrame with sorted values.
+            DataFrame: DataFrame with sorted values.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1282,7 +1282,7 @@ class DataFrame(NDFrame):
         """Sort object by labels (along an axis).
 
         Returns:
-            The original DataFrame sorted by the labels.
+            DataFrame: The original DataFrame sorted by the labels.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1330,7 +1330,7 @@ class DataFrame(NDFrame):
                 (1 or 'columns').
 
         Returns:
-            Result of the comparison.
+            DataFrame: Result of the comparison.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1861,7 +1861,7 @@ class DataFrame(NDFrame):
                 (1 or 'columns'). For Series input, axis to match Series index on.
 
         Returns:
-            DataFrame result of the arithmetic operation.
+            DataFrame: DataFrame result of the arithmetic operation.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -2796,7 +2796,7 @@ class DataFrame(NDFrame):
                 Include only boolean columns.
 
         Returns:
-            Series
+            bigframes.series.Series: Series indicating if any element is True per column.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -2843,7 +2843,7 @@ class DataFrame(NDFrame):
                 Include only boolean columns.
 
         Returns:
-            bigframes.series.Series: Series if all elements are True.
+            bigframes.series.Series: Series indicating if all elements are True per column.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -3184,7 +3184,7 @@ class DataFrame(NDFrame):
                 Include only float, int, boolean columns.
 
         Returns:
-            Series
+            Series: Series.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -3225,7 +3225,7 @@ class DataFrame(NDFrame):
                 Include only float, int, boolean columns.
 
         Returns:
-            Series
+            Series: Series.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -3770,7 +3770,7 @@ class DataFrame(NDFrame):
                 have hierarchically indexed columns.
 
         Returns:
-            Returns reshaped DataFrame.
+            DataFrame: Returns reshaped DataFrame.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -3808,7 +3808,7 @@ class DataFrame(NDFrame):
         (the analogue of stack when the columns are not a MultiIndex).
 
         Returns:
-            DataFrame or Series
+            DataFrame or Series: DataFrame or Series.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -3866,7 +3866,7 @@ class DataFrame(NDFrame):
                 dtype=object)
 
         Returns:
-            The index labels of the DataFrame.
+            Index: The index object of the DataFrame.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -4115,7 +4115,7 @@ class DataFrame(NDFrame):
                 The other object to compute the matrix product with.
 
         Returns:
-            Series or DataFrame
+            Series or DataFrame:
                 If `other` is a Series, return the matrix product between self and
                 other as a Series. If other is a DataFrame, return
                 the matrix product of self and other in a DataFrame.
