@@ -47,10 +47,10 @@ class VertexAIModel(base.BaseEstimator):
     Args:
         endpoint (str):
             Vertex AI https endpoint.
-        input ({column_name: column_type}):
-            Input schema. Supported types are "bool", "string", "int64", "float64", "array<bool>", "array<string>", "array<int64>", "array<float64>".
-        output ({column_name: column_type}):
-            Output label schema. Supported the same types as the input.
+        input (Mapping):
+            Input schema: `{column_name: column_type}`. Supported types are "bool", "string", "int64", "float64", "array<bool>", "array<string>", "array<int64>", "array<float64>".
+        output (Mapping):
+            Output label schema: `{column_name: column_type}`. Supported the same types as the input.
         session (bigframes.Session or None):
             BQ session to create the model. If None, use the global default session.
         connection_name (str or None):
