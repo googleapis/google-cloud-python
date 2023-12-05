@@ -605,7 +605,7 @@ class TestLogging(unittest.TestCase):
             "resource": Resource(type="cloudiot_device", labels={}),
             "labels": {"test-label": "manual"},
         }
-        cloud_logger.warn(LOG_MESSAGE, extra=extra)
+        cloud_logger.warning(LOG_MESSAGE, extra=extra)
 
         entries = _list_entries(logger)
         self.assertEqual(len(entries), 1)
@@ -634,7 +634,7 @@ class TestLogging(unittest.TestCase):
         cloud_logger = logging.getLogger(LOGGER_NAME)
         cloud_logger.addHandler(handler)
         extra = {"json_fields": {"hello": "world", "two": 2}}
-        cloud_logger.warn(LOG_MESSAGE, extra=extra)
+        cloud_logger.warning(LOG_MESSAGE, extra=extra)
 
         entries = _list_entries(logger)
         self.assertEqual(len(entries), 1)
