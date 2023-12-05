@@ -69,11 +69,13 @@ def test_dataframe_groupby_median(scalars_df_index, scalars_pandas_df_index):
     ("operator"),
     [
         (lambda x: x.count()),
+        (lambda x: x.nunique()),
         (lambda x: x.any()),
         (lambda x: x.all()),
     ],
     ids=[
         "count",
+        "nunique",
         "any",
         "all",
     ],

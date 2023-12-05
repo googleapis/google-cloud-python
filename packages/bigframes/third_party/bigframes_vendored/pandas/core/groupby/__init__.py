@@ -363,6 +363,15 @@ class SeriesGroupBy(GroupBy):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def nunique(self):
+        """
+        Return number of unique elements in the group.
+
+        Returns:
+            Series: Number of unique values within each group.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
 
 class DataFrameGroupBy(GroupBy):
     def agg(self, func, **kwargs):
@@ -386,6 +395,15 @@ class DataFrameGroupBy(GroupBy):
             kwargs
                 If ``func`` is None, ``**kwargs`` are used to define the output names and
                 aggregations via Named Aggregation. See ``func`` entry.
+
+        Returns:
+            DataFrame
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def nunique(self):
+        """
+        Return DataFrame with counts of unique elements in each position.
 
         Returns:
             DataFrame

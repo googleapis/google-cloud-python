@@ -179,6 +179,9 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
     def count(self) -> df.DataFrame:
         return self._aggregate_all(agg_ops.count_op)
 
+    def nunique(self) -> df.DataFrame:
+        return self._aggregate_all(agg_ops.nunique_op)
+
     def cumsum(self, *args, numeric_only: bool = False, **kwargs) -> df.DataFrame:
         if not numeric_only:
             self._raise_on_non_numeric("cumsum")
@@ -441,6 +444,9 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     def count(self) -> series.Series:
         return self._aggregate(agg_ops.count_op)
+
+    def nunique(self) -> series.Series:
+        return self._aggregate(agg_ops.nunique_op)
 
     def sum(self, *args) -> series.Series:
         return self._aggregate(agg_ops.sum_op)
