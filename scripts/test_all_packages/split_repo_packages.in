@@ -1,0 +1,42 @@
+google-api-python-client
+google-auth
+google-auth-httplib2
+google-auth-oauthlib
+google-events
+google-cloud-happybase
+google-resumable-media
+proto-plus
+google-cloud-access-context-manager
+google-cloud-aiplatform
+googleapis-common-protos
+google-api-core
+google-cloud-audit-log
+google-cloud-bigquery
+# See https://github.com/googleapis/python-bigquery-dataframes/pull/231#issuecomment-1836064907
+bigframes; python_version>="3.9"
+bigframes; python_version<"3.12"
+pandas-gbq
+sqlalchemy-bigquery
+google-cloud-bigquery-storage
+google-cloud-bigtable
+google-cloud-core
+# See https://github.com/googleapis/python-crc32c/issues/178
+google-crc32c; python_version<"3.12"
+google-cloud-datastore
+db-dtypes
+google-cloud-dns
+google-cloud-documentai-toolbox
+google-cloud-error-reporting
+google-cloud-firestore
+grpc-google-iam-v1
+google-cloud-logging
+google-cloud-ndb
+google-cloud-org-policy
+google-cloud-pubsub
+google-cloud-pubsublite
+google-cloud-runtimeconfig
+google-cloud-spanner
+django-google-spanner
+google-cloud-storage
+google-cloud-testutils
+google-ads; python_version<"3.12"

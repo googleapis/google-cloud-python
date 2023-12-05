@@ -1,0 +1,55 @@
+on:
+  pull_request:
+    branches:
+      - main
+name: allpackages
+
+permissions:
+  contents: read
+
+jobs:
+  test-all-packages-normal:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # python 3.12 is only available in pre-release versions
+        python: ['3.7', '3.8', '3.9', '3.10', '3.11']
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install packages (normal)
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install -r scripts/test_all_packages/all_packages_${{ matrix.python }}.txt
+    - name: Generate test code
+      run: |
+        ./scripts/test_all_packages/generate_test_code.sh
+    - name: Run test code
+      run: |
+        python3 scripts/test_all_packages/test_modules.py
+  test-all-packages-prerelease:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install packages (pre-release)
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install -r scripts/test_all_packages/all_packages_pre_release_${{ matrix.python }}.txt
+    - name: Generate test code
+      run: |
+        ./scripts/test_all_packages/generate_test_code.sh
+    - name: Run test code
+      run: |
+        python3 scripts/test_all_packages/test_modules.py
