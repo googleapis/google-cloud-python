@@ -473,7 +473,8 @@ def publish_avro_records(project_id: str, topic_id: str, avsc_file: str) -> None
     topic_path = publisher_client.topic_path(project_id, topic_id)
 
     # Prepare to write Avro records to the binary output stream.
-    avro_schema = schema.parse(open(avsc_file, "rb").read())
+    with open(avsc_file, "rb") as file:
+        avro_schema = schema.parse(file.read())
     writer = DatumWriter(avro_schema)
     bout = io.BytesIO()
 
@@ -579,7 +580,8 @@ def subscribe_with_avro_schema(
     subscriber = SubscriberClient()
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
-    avro_schema = schema.parse(open(avsc_file, "rb").read())
+    with open(avsc_file, "rb") as file:
+        avro_schema = schema.parse(file.read())
 
     def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         # Get the message serialization type.
@@ -642,7 +644,8 @@ def subscribe_with_avro_schema_with_revisions(
     subscriber = SubscriberClient()
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
-    writer_avro_schema = schema.parse(open(avsc_file, "rb").read())
+    with open(avsc_file, "rb") as file:
+        writer_avro_schema = schema.parse(file.read())
     # Dict to keep readers for different schema revisions.
     revisions_to_readers = {}
 

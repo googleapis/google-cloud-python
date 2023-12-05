@@ -2888,7 +2888,6 @@ def test_pull_flattened_error():
         client.pull(
             pubsub.PullRequest(),
             subscription="subscription_value",
-            return_immediately=True,
             max_messages=1277,
         )
 
@@ -2942,7 +2941,6 @@ async def test_pull_flattened_error_async():
         await client.pull(
             pubsub.PullRequest(),
             subscription="subscription_value",
-            return_immediately=True,
             max_messages=1277,
         )
 
@@ -6993,7 +6991,6 @@ def test_pull_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             subscription="subscription_value",
-            return_immediately=True,
             max_messages=1277,
         )
         mock_args.update(sample_request)
@@ -7032,7 +7029,6 @@ def test_pull_rest_flattened_error(transport: str = "rest"):
         client.pull(
             pubsub.PullRequest(),
             subscription="subscription_value",
-            return_immediately=True,
             max_messages=1277,
         )
 

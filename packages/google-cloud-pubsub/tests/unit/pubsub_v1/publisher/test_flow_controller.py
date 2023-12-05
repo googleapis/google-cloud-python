@@ -19,7 +19,6 @@ import time
 from typing import Callable
 from typing import Sequence
 from typing import Union
-import warnings
 
 import pytest
 
@@ -179,7 +178,10 @@ def test_incorrectly_releasing_too_many_messages():
     msg3 = grpc_types.PubsubMessage(data=b"z" * 100)
 
     # Releasing a message that would make the load negative should result in a warning.
-    with warnings.catch_warnings(record=True) as warned:
+    with pytest.warns(
+        RuntimeWarning,
+        match="Releasing a message that was never added or already released",
+    ) as warned:
         flow_controller.release(msg1)
 
     assert len(warned) == 1
@@ -438,7 +440,7 @@ def test_warning_on_internal_reservation_stats_error_when_unblocking():
     assert reservation is not None, "No messages blocked by flow controller."
     reservation.bytes_reserved = reservation.bytes_needed + 1
 
-    with warnings.catch_warnings(record=True) as warned:
+    with pytest.warns(RuntimeWarning, match="Too many bytes reserved.") as warned:
         _run_in_daemon(flow_controller.release, [msg1], releasing_1_done)
         if not releasing_1_done.wait(timeout=0.1):
             pytest.fail("Releasing a message blocked or errored.")  # pragma: NO COVER

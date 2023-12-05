@@ -14,10 +14,10 @@
 
 import concurrent.futures
 import queue
+import pytest
 import sys
 import threading
 import time
-import warnings
 
 # special case python < 3.8
 if sys.version_info.major == 3 and sys.version_info.minor < 8:
@@ -76,7 +76,9 @@ def test_schedule_after_executor_shutdown_warning():
     scheduler_.schedule(callback, "arg1", kwarg1="meep")
     scheduler_._executor.shutdown()
 
-    with warnings.catch_warnings(record=True) as warned:
+    with pytest.warns(
+        RuntimeWarning, match="Scheduling a callback after executor shutdown"
+    ) as warned:
         scheduler_.schedule(callback, "arg2", kwarg2="boop")
 
     assert len(warned) == 1
