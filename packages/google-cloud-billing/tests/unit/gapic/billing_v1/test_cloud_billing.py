@@ -725,6 +725,7 @@ def test_get_billing_account(request_type, transport: str = "grpc"):
             open_=True,
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
+            parent="parent_value",
         )
         response = client.get_billing_account(request)
 
@@ -739,6 +740,7 @@ def test_get_billing_account(request_type, transport: str = "grpc"):
     assert response.open_ is True
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
 
 
 def test_get_billing_account_empty_call():
@@ -783,6 +785,7 @@ async def test_get_billing_account_async(
                 open_=True,
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
+                parent="parent_value",
             )
         )
         response = await client.get_billing_account(request)
@@ -798,6 +801,7 @@ async def test_get_billing_account_async(
     assert response.open_ is True
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
 
 
 @pytest.mark.asyncio
@@ -1052,6 +1056,92 @@ async def test_list_billing_accounts_async_from_dict():
     await test_list_billing_accounts_async(request_type=dict)
 
 
+def test_list_billing_accounts_flattened():
+    client = CloudBillingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_billing_accounts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_billing.ListBillingAccountsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_billing_accounts(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_billing_accounts_flattened_error():
+    client = CloudBillingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_billing_accounts(
+            cloud_billing.ListBillingAccountsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_billing_accounts_flattened_async():
+    client = CloudBillingAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_billing_accounts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_billing.ListBillingAccountsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_billing.ListBillingAccountsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_billing_accounts(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_billing_accounts_flattened_error_async():
+    client = CloudBillingAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_billing_accounts(
+            cloud_billing.ListBillingAccountsRequest(),
+            parent="parent_value",
+        )
+
+
 def test_list_billing_accounts_pager(transport_name: str = "grpc"):
     client = CloudBillingClient(
         credentials=ga_credentials.AnonymousCredentials,
@@ -1274,6 +1364,7 @@ def test_update_billing_account(request_type, transport: str = "grpc"):
             open_=True,
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
+            parent="parent_value",
         )
         response = client.update_billing_account(request)
 
@@ -1288,6 +1379,7 @@ def test_update_billing_account(request_type, transport: str = "grpc"):
     assert response.open_ is True
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
 
 
 def test_update_billing_account_empty_call():
@@ -1333,6 +1425,7 @@ async def test_update_billing_account_async(
                 open_=True,
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
+                parent="parent_value",
             )
         )
         response = await client.update_billing_account(request)
@@ -1348,6 +1441,7 @@ async def test_update_billing_account_async(
     assert response.open_ is True
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
 
 
 @pytest.mark.asyncio
@@ -1543,6 +1637,7 @@ def test_create_billing_account(request_type, transport: str = "grpc"):
             open_=True,
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
+            parent="parent_value",
         )
         response = client.create_billing_account(request)
 
@@ -1557,6 +1652,7 @@ def test_create_billing_account(request_type, transport: str = "grpc"):
     assert response.open_ is True
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
 
 
 def test_create_billing_account_empty_call():
@@ -1602,6 +1698,7 @@ async def test_create_billing_account_async(
                 open_=True,
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
+                parent="parent_value",
             )
         )
         response = await client.create_billing_account(request)
@@ -1617,6 +1714,7 @@ async def test_create_billing_account_async(
     assert response.open_ is True
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
 
 
 @pytest.mark.asyncio
@@ -1639,6 +1737,7 @@ def test_create_billing_account_flattened():
         # using the keyword arguments to the method.
         client.create_billing_account(
             billing_account=cloud_billing.BillingAccount(name="name_value"),
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1647,6 +1746,9 @@ def test_create_billing_account_flattened():
         _, args, _ = call.mock_calls[0]
         arg = args[0].billing_account
         mock_val = cloud_billing.BillingAccount(name="name_value")
+        assert arg == mock_val
+        arg = args[0].parent
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -1661,6 +1763,7 @@ def test_create_billing_account_flattened_error():
         client.create_billing_account(
             cloud_billing.CreateBillingAccountRequest(),
             billing_account=cloud_billing.BillingAccount(name="name_value"),
+            parent="parent_value",
         )
 
 
@@ -1684,6 +1787,7 @@ async def test_create_billing_account_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_billing_account(
             billing_account=cloud_billing.BillingAccount(name="name_value"),
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1692,6 +1796,9 @@ async def test_create_billing_account_flattened_async():
         _, args, _ = call.mock_calls[0]
         arg = args[0].billing_account
         mock_val = cloud_billing.BillingAccount(name="name_value")
+        assert arg == mock_val
+        arg = args[0].parent
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -1707,6 +1814,7 @@ async def test_create_billing_account_flattened_error_async():
         await client.create_billing_account(
             cloud_billing.CreateBillingAccountRequest(),
             billing_account=cloud_billing.BillingAccount(name="name_value"),
+            parent="parent_value",
         )
 
 
@@ -3461,6 +3569,183 @@ async def test_test_iam_permissions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloud_billing.MoveBillingAccountRequest,
+        dict,
+    ],
+)
+def test_move_billing_account(request_type, transport: str = "grpc"):
+    client = CloudBillingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.move_billing_account), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_billing.BillingAccount(
+            name="name_value",
+            open_=True,
+            display_name="display_name_value",
+            master_billing_account="master_billing_account_value",
+            parent="parent_value",
+        )
+        response = client.move_billing_account(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_billing.MoveBillingAccountRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_billing.BillingAccount)
+    assert response.name == "name_value"
+    assert response.open_ is True
+    assert response.display_name == "display_name_value"
+    assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
+
+
+def test_move_billing_account_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudBillingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.move_billing_account), "__call__"
+    ) as call:
+        client.move_billing_account()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_billing.MoveBillingAccountRequest()
+
+
+@pytest.mark.asyncio
+async def test_move_billing_account_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_billing.MoveBillingAccountRequest,
+):
+    client = CloudBillingAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.move_billing_account), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_billing.BillingAccount(
+                name="name_value",
+                open_=True,
+                display_name="display_name_value",
+                master_billing_account="master_billing_account_value",
+                parent="parent_value",
+            )
+        )
+        response = await client.move_billing_account(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_billing.MoveBillingAccountRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_billing.BillingAccount)
+    assert response.name == "name_value"
+    assert response.open_ is True
+    assert response.display_name == "display_name_value"
+    assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
+
+
+@pytest.mark.asyncio
+async def test_move_billing_account_async_from_dict():
+    await test_move_billing_account_async(request_type=dict)
+
+
+def test_move_billing_account_field_headers():
+    client = CloudBillingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_billing.MoveBillingAccountRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.move_billing_account), "__call__"
+    ) as call:
+        call.return_value = cloud_billing.BillingAccount()
+        client.move_billing_account(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_move_billing_account_field_headers_async():
+    client = CloudBillingAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_billing.MoveBillingAccountRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.move_billing_account), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_billing.BillingAccount()
+        )
+        await client.move_billing_account(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloud_billing.GetBillingAccountRequest,
         dict,
     ],
@@ -3483,6 +3768,7 @@ def test_get_billing_account_rest(request_type):
             open_=True,
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
+            parent="parent_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -3502,6 +3788,7 @@ def test_get_billing_account_rest(request_type):
     assert response.open_ is True
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
 
 
 def test_get_billing_account_rest_required_fields(
@@ -3854,6 +4141,61 @@ def test_list_billing_accounts_rest_bad_request(
         client.list_billing_accounts(request)
 
 
+def test_list_billing_accounts_rest_flattened():
+    client = CloudBillingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_billing.ListBillingAccountsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_billing.ListBillingAccountsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_billing_accounts(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/billingAccounts" % client.transport._host, args[1]
+        )
+
+
+def test_list_billing_accounts_rest_flattened_error(transport: str = "rest"):
+    client = CloudBillingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_billing_accounts(
+            cloud_billing.ListBillingAccountsRequest(),
+            parent="parent_value",
+        )
+
+
 def test_list_billing_accounts_rest_pager(transport: str = "rest"):
     client = CloudBillingClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3937,6 +4279,7 @@ def test_update_billing_account_rest(request_type):
         "open_": True,
         "display_name": "display_name_value",
         "master_billing_account": "master_billing_account_value",
+        "parent": "parent_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4015,6 +4358,7 @@ def test_update_billing_account_rest(request_type):
             open_=True,
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
+            parent="parent_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -4034,6 +4378,7 @@ def test_update_billing_account_rest(request_type):
     assert response.open_ is True
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
 
 
 def test_update_billing_account_rest_required_fields(
@@ -4298,6 +4643,7 @@ def test_create_billing_account_rest(request_type):
         "open_": True,
         "display_name": "display_name_value",
         "master_billing_account": "master_billing_account_value",
+        "parent": "parent_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4378,6 +4724,7 @@ def test_create_billing_account_rest(request_type):
             open_=True,
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
+            parent="parent_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -4397,6 +4744,7 @@ def test_create_billing_account_rest(request_type):
     assert response.open_ is True
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
 
 
 def test_create_billing_account_rest_required_fields(
@@ -4427,6 +4775,8 @@ def test_create_billing_account_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).create_billing_account._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("parent",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4479,7 +4829,7 @@ def test_create_billing_account_rest_unset_required_fields():
     )
 
     unset_fields = transport.create_billing_account._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("billingAccount",)))
+    assert set(unset_fields) == (set(("parent",)) & set(("billingAccount",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4580,6 +4930,7 @@ def test_create_billing_account_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             billing_account=cloud_billing.BillingAccount(name="name_value"),
+            parent="parent_value",
         )
         mock_args.update(sample_request)
 
@@ -4615,6 +4966,7 @@ def test_create_billing_account_rest_flattened_error(transport: str = "rest"):
         client.create_billing_account(
             cloud_billing.CreateBillingAccountRequest(),
             billing_account=cloud_billing.BillingAccount(name="name_value"),
+            parent="parent_value",
         )
 
 
@@ -6410,6 +6762,241 @@ def test_test_iam_permissions_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_billing.MoveBillingAccountRequest,
+        dict,
+    ],
+)
+def test_move_billing_account_rest(request_type):
+    client = CloudBillingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "billingAccounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_billing.BillingAccount(
+            name="name_value",
+            open_=True,
+            display_name="display_name_value",
+            master_billing_account="master_billing_account_value",
+            parent="parent_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_billing.BillingAccount.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.move_billing_account(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_billing.BillingAccount)
+    assert response.name == "name_value"
+    assert response.open_ is True
+    assert response.display_name == "display_name_value"
+    assert response.master_billing_account == "master_billing_account_value"
+    assert response.parent == "parent_value"
+
+
+def test_move_billing_account_rest_required_fields(
+    request_type=cloud_billing.MoveBillingAccountRequest,
+):
+    transport_class = transports.CloudBillingRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["destination_parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).move_billing_account._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["destinationParent"] = "destination_parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).move_billing_account._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "destinationParent" in jsonified_request
+    assert jsonified_request["destinationParent"] == "destination_parent_value"
+
+    client = CloudBillingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_billing.BillingAccount()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_billing.BillingAccount.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.move_billing_account(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_move_billing_account_rest_unset_required_fields():
+    transport = transports.CloudBillingRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.move_billing_account._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "destinationParent",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_move_billing_account_rest_interceptors(null_interceptor):
+    transport = transports.CloudBillingRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudBillingRestInterceptor(),
+    )
+    client = CloudBillingClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudBillingRestInterceptor, "post_move_billing_account"
+    ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor, "pre_move_billing_account"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_billing.MoveBillingAccountRequest.pb(
+            cloud_billing.MoveBillingAccountRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_billing.BillingAccount.to_json(
+            cloud_billing.BillingAccount()
+        )
+
+        request = cloud_billing.MoveBillingAccountRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_billing.BillingAccount()
+
+        client.move_billing_account(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_move_billing_account_rest_bad_request(
+    transport: str = "rest", request_type=cloud_billing.MoveBillingAccountRequest
+):
+    client = CloudBillingClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "billingAccounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.move_billing_account(request)
+
+
+def test_move_billing_account_rest_error():
+    client = CloudBillingClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudBillingGrpcTransport(
@@ -6559,6 +7146,7 @@ def test_cloud_billing_base_transport():
         "get_iam_policy",
         "set_iam_policy",
         "test_iam_permissions",
+        "move_billing_account",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -6860,6 +7448,9 @@ def test_cloud_billing_client_transport_session_collision(transport_name):
     session1 = client1.transport.test_iam_permissions._session
     session2 = client2.transport.test_iam_permissions._session
     assert session1 != session2
+    session1 = client1.transport.move_billing_account._session
+    session2 = client2.transport.move_billing_account._session
+    assert session1 != session2
 
 
 def test_cloud_billing_grpc_transport_channel():
@@ -6980,8 +7571,68 @@ def test_cloud_billing_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_billing_account_path():
+    billing_account = "squid"
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = CloudBillingClient.billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_billing_account_path():
+    expected = {
+        "billing_account": "clam",
+    }
+    path = CloudBillingClient.billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudBillingClient.parse_billing_account_path(path)
+    assert expected == actual
+
+
+def test_organization_path():
+    organization = "whelk"
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
+    actual = CloudBillingClient.organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_organization_path():
+    expected = {
+        "organization": "octopus",
+    }
+    path = CloudBillingClient.organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudBillingClient.parse_organization_path(path)
+    assert expected == actual
+
+
+def test_project_path():
+    project = "oyster"
+    expected = "projects/{project}".format(
+        project=project,
+    )
+    actual = CloudBillingClient.project_path(project)
+    assert expected == actual
+
+
+def test_parse_project_path():
+    expected = {
+        "project": "nudibranch",
+    }
+    path = CloudBillingClient.project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudBillingClient.parse_project_path(path)
+    assert expected == actual
+
+
 def test_project_billing_info_path():
-    project = "squid"
+    project = "cuttlefish"
     expected = "projects/{project}/billingInfo".format(
         project=project,
     )
@@ -6991,7 +7642,7 @@ def test_project_billing_info_path():
 
 def test_parse_project_billing_info_path():
     expected = {
-        "project": "clam",
+        "project": "mussel",
     }
     path = CloudBillingClient.project_billing_info_path(**expected)
 
@@ -7001,7 +7652,7 @@ def test_parse_project_billing_info_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -7011,7 +7662,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = CloudBillingClient.common_billing_account_path(**expected)
 
@@ -7021,7 +7672,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -7031,7 +7682,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = CloudBillingClient.common_folder_path(**expected)
 
@@ -7041,7 +7692,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -7051,7 +7702,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = CloudBillingClient.common_organization_path(**expected)
 
@@ -7061,7 +7712,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -7071,7 +7722,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = CloudBillingClient.common_project_path(**expected)
 
@@ -7081,8 +7732,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -7093,8 +7744,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = CloudBillingClient.common_location_path(**expected)
 

@@ -268,6 +268,11 @@ class CloudBillingTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.move_billing_account: gapic_v1.method.wrap_method(
+                self.move_billing_account,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -381,6 +386,15 @@ class CloudBillingTransport(abc.ABC):
             iam_policy_pb2.TestIamPermissionsResponse,
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def move_billing_account(
+        self,
+    ) -> Callable[
+        [cloud_billing.MoveBillingAccountRequest],
+        Union[cloud_billing.BillingAccount, Awaitable[cloud_billing.BillingAccount]],
     ]:
         raise NotImplementedError()
 

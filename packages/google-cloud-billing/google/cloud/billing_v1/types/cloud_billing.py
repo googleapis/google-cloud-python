@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "ListProjectBillingInfoResponse",
         "GetProjectBillingInfoRequest",
         "UpdateProjectBillingInfoRequest",
+        "MoveBillingAccountRequest",
     },
 )
 
@@ -67,6 +68,16 @@ class BillingAccount(proto.Message):
             then this will be the resource name of the parent billing
             account that it is being resold through. Otherwise this will
             be empty.
+        parent (str):
+            Output only. The billing account's parent resource
+            identifier. Use the ``MoveBillingAccount`` method to update
+            the account's parent resource if it is a organization.
+            Format:
+
+            -  ``organizations/{organization_id}``, for example,
+               ``organizations/12345678``
+            -  ``billingAccounts/{billing_account_id}``, for example,
+               ``billingAccounts/012345-567890-ABCDEF``
     """
 
     name: str = proto.Field(
@@ -84,6 +95,10 @@ class BillingAccount(proto.Message):
     master_billing_account: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -170,10 +185,19 @@ class ListBillingAccountsRequest(proto.Message):
             Options for how to filter the returned billing accounts.
             This only supports filtering for
             `subaccounts <https://cloud.google.com/billing/docs/concepts>`__
-            under a single provided parent billing account. (e.g.
-            "master_billing_account=billingAccounts/012345-678901-ABCDEF").
+            under a single provided parent billing account. (for
+            example,
+            ``master_billing_account=billingAccounts/012345-678901-ABCDEF``).
             Boolean algebra and other fields are not currently
             supported.
+        parent (str):
+            Optional. The parent resource to list billing accounts from.
+            Format:
+
+            -  ``organizations/{organization_id}``, for example,
+               ``organizations/12345678``
+            -  ``billingAccounts/{billing_account_id}``, for example,
+               ``billingAccounts/012345-567890-ABCDEF``
     """
 
     page_size: int = proto.Field(
@@ -187,6 +211,10 @@ class ListBillingAccountsRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -228,12 +256,24 @@ class CreateBillingAccountRequest(proto.Message):
             supports subaccount creation, so any created
             billing accounts must be under a provided parent
             billing account.
+        parent (str):
+            Optional. The parent to create a billing account from.
+            Format:
+
+            -  ``organizations/{organization_id}``, for example,
+               ``organizations/12345678``
+            -  ``billingAccounts/{billing_account_id}``, for example,
+               ``billingAccounts/012345-567890-ABCDEF``
     """
 
     billing_account: "BillingAccount" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="BillingAccount",
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -367,6 +407,33 @@ class UpdateProjectBillingInfoRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message="ProjectBillingInfo",
+    )
+
+
+class MoveBillingAccountRequest(proto.Message):
+    r"""Request message for ``MoveBillingAccount`` RPC.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the billing account to move.
+            Must be of the form
+            ``billingAccounts/{billing_account_id}``. The specified
+            billing account cannot be a subaccount, since a subaccount
+            always belongs to the same organization as its parent
+            account.
+        destination_parent (str):
+            Required. The resource name of the Organization to reparent
+            the billing account under. Must be of the form
+            ``organizations/{organization_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    destination_parent: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

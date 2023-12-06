@@ -181,6 +181,51 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         return self._transport
 
     @staticmethod
+    def billing_account_path(
+        billing_account: str,
+    ) -> str:
+        """Returns a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_billing_account_path(path: str) -> Dict[str, str]:
+        """Parses a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def organization_path(
+        organization: str,
+    ) -> str:
+        """Returns a fully-qualified organization string."""
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
+
+    @staticmethod
+    def parse_organization_path(path: str) -> Dict[str, str]:
+        """Parses a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def project_path(
+        project: str,
+    ) -> str:
+        """Returns a fully-qualified project string."""
+        return "projects/{project}".format(
+            project=project,
+        )
+
+    @staticmethod
+    def parse_project_path(path: str) -> Dict[str, str]:
+        """Parses a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def project_billing_info_path(
         project: str,
     ) -> str:
@@ -549,6 +594,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         self,
         request: Optional[Union[cloud_billing.ListBillingAccountsRequest, dict]] = None,
         *,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -586,6 +632,18 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         Args:
             request (Union[google.cloud.billing_v1.types.ListBillingAccountsRequest, dict]):
                 The request object. Request message for ``ListBillingAccounts``.
+            parent (str):
+                Optional. The parent resource to list billing accounts
+                from. Format:
+
+                -  ``organizations/{organization_id}``, for example,
+                   ``organizations/12345678``
+                -  ``billingAccounts/{billing_account_id}``, for
+                   example, ``billingAccounts/012345-567890-ABCDEF``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -601,12 +659,25 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
         # in a cloud_billing.ListBillingAccountsRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
         if not isinstance(request, cloud_billing.ListBillingAccountsRequest):
             request = cloud_billing.ListBillingAccountsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -760,6 +831,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         ] = None,
         *,
         billing_account: Optional[cloud_billing.BillingAccount] = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -818,6 +890,18 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 This corresponds to the ``billing_account`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+            parent (str):
+                Optional. The parent to create a billing account from.
+                Format:
+
+                -  ``organizations/{organization_id}``, for example,
+                   ``organizations/12345678``
+                -  ``billingAccounts/{billing_account_id}``, for
+                   example, ``billingAccounts/012345-567890-ABCDEF``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -835,7 +919,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([billing_account])
+        has_flattened_params = any([billing_account, parent])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -852,6 +936,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             # request, apply these.
             if billing_account is not None:
                 request.billing_account = billing_account
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1633,6 +1719,90 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def move_billing_account(
+        self,
+        request: Optional[Union[cloud_billing.MoveBillingAccountRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_billing.BillingAccount:
+        r"""Changes which parent organization a billing account
+        belongs to.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import billing_v1
+
+            def sample_move_billing_account():
+                # Create a client
+                client = billing_v1.CloudBillingClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.MoveBillingAccountRequest(
+                    name="name_value",
+                    destination_parent="destination_parent_value",
+                )
+
+                # Make the request
+                response = client.move_billing_account(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.billing_v1.types.MoveBillingAccountRequest, dict]):
+                The request object. Request message for ``MoveBillingAccount`` RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.billing_v1.types.BillingAccount:
+                A billing account in the
+                   [Google Cloud
+                   Console](\ https://console.cloud.google.com/). You
+                   can assign a billing account to one or more projects.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_billing.MoveBillingAccountRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_billing.MoveBillingAccountRequest):
+            request = cloud_billing.MoveBillingAccountRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.move_billing_account]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.

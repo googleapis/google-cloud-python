@@ -40,6 +40,11 @@
                 "list_project_billing_info"
               ]
             },
+            "MoveBillingAccount": {
+              "methods": [
+                "move_billing_account"
+              ]
+            },
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
@@ -95,6 +100,11 @@
                 "list_project_billing_info"
               ]
             },
+            "MoveBillingAccount": {
+              "methods": [
+                "move_billing_account"
+              ]
+            },
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
@@ -148,6 +158,11 @@
             "ListProjectBillingInfo": {
               "methods": [
                 "list_project_billing_info"
+              ]
+            },
+            "MoveBillingAccount": {
+              "methods": [
+                "move_billing_account"
               ]
             },
             "SetIamPolicy": {
