@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.25.1](https://github.com/googleapis/google-auth-library-python/compare/v2.25.0...v2.25.1) (2023-12-06)
+
+
+### Bug Fixes
+
+* Fix vm universe_domain bug ([#1433](https://github.com/googleapis/google-auth-library-python/issues/1433)) ([8683520](https://github.com/googleapis/google-auth-library-python/commit/8683520af48e1b501076ef16013b6a27cc173af0))
+
 ## [2.25.0](https://github.com/googleapis/google-auth-library-python/compare/v2.24.0...v2.25.0) (2023-12-04)
 
 
