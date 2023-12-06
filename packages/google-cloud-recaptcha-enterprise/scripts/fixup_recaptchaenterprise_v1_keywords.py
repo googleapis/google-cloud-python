@@ -54,7 +54,7 @@ class recaptchaenterpriseCallTransformer(cst.CSTTransformer):
         'list_related_account_groups': ('parent', 'page_size', 'page_token', ),
         'migrate_key': ('name', 'skip_billing_check', ),
         'retrieve_legacy_secret_key': ('key', ),
-        'search_related_account_group_memberships': ('project', 'hashed_account_id', 'page_size', 'page_token', ),
+        'search_related_account_group_memberships': ('project', 'account_id', 'hashed_account_id', 'page_size', 'page_token', ),
         'update_firewall_policy': ('firewall_policy', 'update_mask', ),
         'update_key': ('key', 'update_mask', ),
     }

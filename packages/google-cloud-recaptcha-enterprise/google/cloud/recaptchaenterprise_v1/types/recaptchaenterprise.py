@@ -638,8 +638,9 @@ class Assessment(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for the Assessment in the
-            format ``projects/{project}/assessments/{assessment}``.
+            Output only. Identifier. The resource name for the
+            Assessment in the format
+            ``projects/{project}/assessments/{assessment}``.
         event (google.cloud.recaptchaenterprise_v1.types.Event):
             Optional. The event being assessed.
         risk_analysis (google.cloud.recaptchaenterprise_v1.types.RiskAnalysis):
@@ -1956,8 +1957,8 @@ class Metrics(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The name of the metrics, in the format
-            ``projects/{project}/keys/{key}/metrics``.
+            Output only. Identifier. The name of the metrics, in the
+            format ``projects/{project}/keys/{key}/metrics``.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Inclusive start time aligned to a day (UTC).
         score_metrics (MutableSequence[google.cloud.recaptchaenterprise_v1.types.ScoreMetrics]):
@@ -2025,7 +2026,7 @@ class Key(proto.Message):
 
     Attributes:
         name (str):
-            The resource name for the Key in the format
+            Identifier. The resource name for the Key in the format
             ``projects/{project}/keys/{key}``.
         display_name (str):
             Required. Human-readable display name of this
@@ -2603,7 +2604,8 @@ class FirewallPolicy(proto.Message):
 
     Attributes:
         name (str):
-            The resource name for the FirewallPolicy in the format
+            Identifier. The resource name for the FirewallPolicy in the
+            format
             ``projects/{project}/firewallpolicies/{firewallpolicy}``.
         description (str):
             Optional. A description of what this policy
@@ -2804,11 +2806,19 @@ class SearchRelatedAccountGroupMembershipsRequest(proto.Message):
             Required. The name of the project to search related account
             group memberships from. Specify the project name in the
             following format: ``projects/{project}``.
+        account_id (str):
+            Optional. The unique stable account identifier used to
+            search connections. The identifier should correspond to an
+            ``account_id`` provided in a previous ``CreateAssessment``
+            or ``AnnotateAssessment`` call. Either hashed_account_id or
+            account_id must be set, but not both.
         hashed_account_id (bytes):
-            Optional. The unique stable hashed user identifier used to
-            search connections. The identifier should correspond to a
-            ``hashed_account_id`` provided in a previous
-            ``CreateAssessment`` or ``AnnotateAssessment`` call.
+            Optional. Deprecated: use ``account_id`` instead. The unique
+            stable hashed account identifier used to search connections.
+            The identifier should correspond to a ``hashed_account_id``
+            provided in a previous ``CreateAssessment`` or
+            ``AnnotateAssessment`` call. Either hashed_account_id or
+            account_id must be set, but not both.
         page_size (int):
             Optional. The maximum number of groups to
             return. The service might return fewer than this
@@ -2828,6 +2838,10 @@ class SearchRelatedAccountGroupMembershipsRequest(proto.Message):
     project: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    account_id: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
     hashed_account_id: bytes = proto.Field(
         proto.BYTES,
@@ -2877,19 +2891,29 @@ class RelatedAccountGroupMembership(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name for this membership in the
-            format
+            Required. Identifier. The resource name for this membership
+            in the format
             ``projects/{project}/relatedaccountgroups/{relatedaccountgroup}/memberships/{membership}``.
+        account_id (str):
+            The unique stable account identifier of the member. The
+            identifier corresponds to an ``account_id`` provided in a
+            previous ``CreateAssessment`` or ``AnnotateAssessment``
+            call.
         hashed_account_id (bytes):
-            The unique stable hashed user identifier of the member. The
-            identifier corresponds to a ``hashed_account_id`` provided
-            in a previous ``CreateAssessment`` or ``AnnotateAssessment``
+            Deprecated: use ``account_id`` instead. The unique stable
+            hashed account identifier of the member. The identifier
+            corresponds to a ``hashed_account_id`` provided in a
+            previous ``CreateAssessment`` or ``AnnotateAssessment``
             call.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    account_id: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
     hashed_account_id: bytes = proto.Field(
         proto.BYTES,
@@ -2902,8 +2926,8 @@ class RelatedAccountGroup(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name for the related account group in
-            the format
+            Required. Identifier. The resource name for the related
+            account group in the format
             ``projects/{project}/relatedaccountgroups/{related_account_group}``.
     """
 
