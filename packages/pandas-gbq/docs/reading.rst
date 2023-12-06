@@ -28,7 +28,7 @@ destination DataFrame as well as a preferred column order as follows:
        'SELECT * FROM `test_dataset.test_table`',
        project_id=projectid,
        index_col='index_column_name',
-       col_order=['col1', 'col2', 'col3'])
+       columns=['col1', 'col2'])
 
 Querying with legacy SQL syntax
 -------------------------------

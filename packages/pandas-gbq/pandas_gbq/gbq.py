@@ -734,7 +734,7 @@ def read_gbq(
     query_or_table,
     project_id=None,
     index_col=None,
-    col_order=None,
+    columns=None,
     reauth=False,
     auth_local_webserver=True,
     dialect=None,
@@ -750,6 +750,8 @@ def read_gbq(
     auth_redirect_uri=None,
     client_id=None,
     client_secret=None,
+    *,
+    col_order=None,
 ):
     r"""Load data from Google BigQuery using google-cloud-python
 
@@ -773,7 +775,7 @@ def read_gbq(
         the environment.
     index_col : str, optional
         Name of result column to use for index in results DataFrame.
-    col_order : list(str), optional
+    columns : list(str), optional
         List of BigQuery column names in the desired order for results
         DataFrame.
     reauth : boolean, default False
@@ -888,6 +890,8 @@ def read_gbq(
     client_secret : str
         The Client Secret associated with the Client ID for the Google Cloud Project
         the user is attempting to connect to.
+    col_order : list(str), optional
+        Alias for columns, retained for backwards compatibility.
 
     Returns
     -------
@@ -966,10 +970,19 @@ def read_gbq(
                 'Index column "{0}" does not exist in DataFrame.'.format(index_col)
             )
 
+    # Using columns as an alias for col_order, raising an error if both provided
+    if col_order and not columns:
+        columns = col_order
+    elif col_order and columns:
+        raise ValueError(
+            "Must specify either columns (preferred) or col_order, not both"
+        )
+
     # Change the order of columns in the DataFrame based on provided list
-    if col_order is not None:
-        if sorted(col_order) == sorted(final_df.columns):
-            final_df = final_df[col_order]
+    # TODO(kiraksi): allow columns to be a subset of all columns in the table, with follow up PR
+    if columns is not None:
+        if sorted(columns) == sorted(final_df.columns):
+            final_df = final_df[columns]
         else:
             raise InvalidColumnOrder("Column order does not match this DataFrame.")
 

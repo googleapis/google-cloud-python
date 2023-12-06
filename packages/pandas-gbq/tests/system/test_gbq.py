@@ -600,6 +600,40 @@ class TestReadGBQIntegration(object):
         )
         assert df["max_year"][0] >= 2000
 
+    def test_columns_as_alias(self, project_id):
+        query = "SELECT 'a' AS string_1, 'b' AS string_2, 'c' AS string_3"
+        columns = ["string_2", "string_1", "string_3"]
+
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            columns=columns,
+            credentials=self.credentials,
+            dialect="standard",
+        )
+
+        expected = DataFrame({"string_1": ["a"], "string_2": ["b"], "string_3": ["c"]})[
+            columns
+        ]
+
+        # Verify that the result_frame matches the expected DataFrame
+        tm.assert_frame_equal(df, expected)
+
+    def test_columns_and_col_order_raises_error(self, project_id):
+        query = "SELECT 'a' AS string_1, 'b' AS string_2, 'c' AS string_3"
+        columns = ["string_2", "string_1"]
+        col_order = ["string_3", "string_1", "string_2"]
+
+        with pytest.raises(ValueError):
+            gbq.read_gbq(
+                query,
+                project_id=project_id,
+                columns=columns,
+                col_order=col_order,
+                credentials=self.credentials,
+                dialect="standard",
+            )
+
 
 class TestToGBQIntegration(object):
     @pytest.fixture(autouse=True, scope="function")
