@@ -353,7 +353,9 @@ def value_counts(
                 )
             ]
         )
-    return block.select_column(count_id).with_column_labels(["count"])
+    return block.select_column(count_id).with_column_labels(
+        ["proportion" if normalize else "count"]
+    )
 
 
 def pct_change(block: blocks.Block, periods: int = 1) -> blocks.Block:
