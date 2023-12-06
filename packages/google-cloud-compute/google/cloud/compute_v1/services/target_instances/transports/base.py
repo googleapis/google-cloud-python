@@ -152,6 +152,11 @@ class TargetInstancesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.set_security_policy: gapic_v1.method.wrap_method(
+                self.set_security_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -208,6 +213,15 @@ class TargetInstancesTransport(abc.ABC):
     ) -> Callable[
         [compute.ListTargetInstancesRequest],
         Union[compute.TargetInstanceList, Awaitable[compute.TargetInstanceList]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_security_policy(
+        self,
+    ) -> Callable[
+        [compute.SetSecurityPolicyTargetInstanceRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

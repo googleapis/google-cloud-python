@@ -172,6 +172,11 @@ class BackendServicesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_usable: gapic_v1.method.wrap_method(
+                self.list_usable,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.patch: gapic_v1.method.wrap_method(
                 self.patch,
                 default_timeout=None,
@@ -189,6 +194,11 @@ class BackendServicesTransport(abc.ABC):
             ),
             self.set_security_policy: gapic_v1.method.wrap_method(
                 self.set_security_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: gapic_v1.method.wrap_method(
+                self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -296,6 +306,18 @@ class BackendServicesTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_usable(
+        self,
+    ) -> Callable[
+        [compute.ListUsableBackendServicesRequest],
+        Union[
+            compute.BackendServiceListUsable,
+            Awaitable[compute.BackendServiceListUsable],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def patch(
         self,
     ) -> Callable[
@@ -328,6 +350,17 @@ class BackendServicesTransport(abc.ABC):
     ) -> Callable[
         [compute.SetSecurityPolicyBackendServiceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [compute.TestIamPermissionsBackendServiceRequest],
+        Union[
+            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
+        ],
     ]:
         raise NotImplementedError()
 

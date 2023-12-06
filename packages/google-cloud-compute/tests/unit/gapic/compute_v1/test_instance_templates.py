@@ -664,6 +664,7 @@ def test_aggregated_list_rest_required_fields(
             "order_by",
             "page_token",
             "return_partial_success",
+            "service_project_number",
         )
     )
     jsonified_request.update(unset_fields)
@@ -728,6 +729,7 @@ def test_aggregated_list_rest_unset_required_fields():
                 "orderBy",
                 "pageToken",
                 "returnPartialSuccess",
+                "serviceProjectNumber",
             )
         )
         & set(("project",))
@@ -2281,6 +2283,7 @@ def test_insert_rest(request_type):
                             "nat_i_p": "nat_i_p_value",
                             "network_tier": "network_tier_value",
                             "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "security_policy": "security_policy_value",
                             "set_public_ptr": True,
                             "type_": "type__value",
                         }
@@ -2867,6 +2870,7 @@ def test_insert_unary_rest(request_type):
                             "nat_i_p": "nat_i_p_value",
                             "network_tier": "network_tier_value",
                             "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "security_policy": "security_policy_value",
                             "set_public_ptr": True,
                             "type_": "type__value",
                         }

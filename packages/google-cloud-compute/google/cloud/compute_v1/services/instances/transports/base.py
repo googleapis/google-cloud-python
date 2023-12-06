@@ -287,6 +287,11 @@ class InstancesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.set_security_policy: gapic_v1.method.wrap_method(
+                self.set_security_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.set_service_account: gapic_v1.method.wrap_method(
                 self.set_service_account,
                 default_timeout=None,
@@ -663,6 +668,15 @@ class InstancesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.SetSchedulingInstanceRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_security_policy(
+        self,
+    ) -> Callable[
+        [compute.SetSecurityPolicyInstanceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

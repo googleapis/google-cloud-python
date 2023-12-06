@@ -617,6 +617,18 @@ def test_add_rule_rest(request_type):
             },
             "versioned_expr": "versioned_expr_value",
         },
+        "network_match": {
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+            "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+            "src_asns": [861, 862],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_ports": ["src_ports_value1", "src_ports_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+            "user_defined_fields": [
+                {"name": "name_value", "values": ["values_value1", "values_value2"]}
+            ],
+        },
         "preconfigured_waf_config": {
             "exclusions": [
                 {
@@ -1090,6 +1102,18 @@ def test_add_rule_unary_rest(request_type):
                 "title": "title_value",
             },
             "versioned_expr": "versioned_expr_value",
+        },
+        "network_match": {
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+            "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+            "src_asns": [861, 862],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_ports": ["src_ports_value1", "src_ports_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+            "user_defined_fields": [
+                {"name": "name_value", "values": ["values_value1", "values_value2"]}
+            ],
         },
         "preconfigured_waf_config": {
             "exclusions": [
@@ -1594,6 +1618,7 @@ def test_aggregated_list_rest_required_fields(
             "order_by",
             "page_token",
             "return_partial_success",
+            "service_project_number",
         )
     )
     jsonified_request.update(unset_fields)
@@ -1658,6 +1683,7 @@ def test_aggregated_list_rest_unset_required_fields():
                 "orderBy",
                 "pageToken",
                 "returnPartialSuccess",
+                "serviceProjectNumber",
             )
         )
         & set(("project",))
@@ -3123,6 +3149,15 @@ def test_insert_rest(request_type):
             "layer7_ddos_defense_config": {
                 "enable": True,
                 "rule_visibility": "rule_visibility_value",
+                "threshold_configs": [
+                    {
+                        "auto_deploy_confidence_threshold": 0.339,
+                        "auto_deploy_expiration_sec": 2785,
+                        "auto_deploy_impacted_baseline_threshold": 0.4121,
+                        "auto_deploy_load_threshold": 0.2768,
+                        "name": "name_value",
+                    }
+                ],
             }
         },
         "advanced_options_config": {
@@ -3131,6 +3166,10 @@ def test_insert_rest(request_type):
             },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
+            "user_ip_request_headers": [
+                "user_ip_request_headers_value1",
+                "user_ip_request_headers_value2",
+            ],
         },
         "creation_timestamp": "creation_timestamp_value",
         "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
@@ -3170,6 +3209,27 @@ def test_insert_rest(request_type):
                         "title": "title_value",
                     },
                     "versioned_expr": "versioned_expr_value",
+                },
+                "network_match": {
+                    "dest_ip_ranges": [
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
+                    ],
+                    "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+                    "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+                    "src_asns": [861, 862],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_ports": ["src_ports_value1", "src_ports_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
+                    "user_defined_fields": [
+                        {
+                            "name": "name_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
                 },
                 "preconfigured_waf_config": {
                     "exclusions": [
@@ -3214,6 +3274,15 @@ def test_insert_rest(request_type):
         ],
         "self_link": "self_link_value",
         "type_": "type__value",
+        "user_defined_fields": [
+            {
+                "base": "base_value",
+                "mask": "mask_value",
+                "name": "name_value",
+                "offset": 647,
+                "size": 443,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3635,6 +3704,15 @@ def test_insert_unary_rest(request_type):
             "layer7_ddos_defense_config": {
                 "enable": True,
                 "rule_visibility": "rule_visibility_value",
+                "threshold_configs": [
+                    {
+                        "auto_deploy_confidence_threshold": 0.339,
+                        "auto_deploy_expiration_sec": 2785,
+                        "auto_deploy_impacted_baseline_threshold": 0.4121,
+                        "auto_deploy_load_threshold": 0.2768,
+                        "name": "name_value",
+                    }
+                ],
             }
         },
         "advanced_options_config": {
@@ -3643,6 +3721,10 @@ def test_insert_unary_rest(request_type):
             },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
+            "user_ip_request_headers": [
+                "user_ip_request_headers_value1",
+                "user_ip_request_headers_value2",
+            ],
         },
         "creation_timestamp": "creation_timestamp_value",
         "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
@@ -3682,6 +3764,27 @@ def test_insert_unary_rest(request_type):
                         "title": "title_value",
                     },
                     "versioned_expr": "versioned_expr_value",
+                },
+                "network_match": {
+                    "dest_ip_ranges": [
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
+                    ],
+                    "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+                    "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+                    "src_asns": [861, 862],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_ports": ["src_ports_value1", "src_ports_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
+                    "user_defined_fields": [
+                        {
+                            "name": "name_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
                 },
                 "preconfigured_waf_config": {
                     "exclusions": [
@@ -3726,6 +3829,15 @@ def test_insert_unary_rest(request_type):
         ],
         "self_link": "self_link_value",
         "type_": "type__value",
+        "user_defined_fields": [
+            {
+                "base": "base_value",
+                "mask": "mask_value",
+                "name": "name_value",
+                "offset": 647,
+                "size": 443,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4790,6 +4902,15 @@ def test_patch_rest(request_type):
             "layer7_ddos_defense_config": {
                 "enable": True,
                 "rule_visibility": "rule_visibility_value",
+                "threshold_configs": [
+                    {
+                        "auto_deploy_confidence_threshold": 0.339,
+                        "auto_deploy_expiration_sec": 2785,
+                        "auto_deploy_impacted_baseline_threshold": 0.4121,
+                        "auto_deploy_load_threshold": 0.2768,
+                        "name": "name_value",
+                    }
+                ],
             }
         },
         "advanced_options_config": {
@@ -4798,6 +4919,10 @@ def test_patch_rest(request_type):
             },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
+            "user_ip_request_headers": [
+                "user_ip_request_headers_value1",
+                "user_ip_request_headers_value2",
+            ],
         },
         "creation_timestamp": "creation_timestamp_value",
         "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
@@ -4837,6 +4962,27 @@ def test_patch_rest(request_type):
                         "title": "title_value",
                     },
                     "versioned_expr": "versioned_expr_value",
+                },
+                "network_match": {
+                    "dest_ip_ranges": [
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
+                    ],
+                    "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+                    "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+                    "src_asns": [861, 862],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_ports": ["src_ports_value1", "src_ports_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
+                    "user_defined_fields": [
+                        {
+                            "name": "name_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
                 },
                 "preconfigured_waf_config": {
                     "exclusions": [
@@ -4881,6 +5027,15 @@ def test_patch_rest(request_type):
         ],
         "self_link": "self_link_value",
         "type_": "type__value",
+        "user_defined_fields": [
+            {
+                "base": "base_value",
+                "mask": "mask_value",
+                "name": "name_value",
+                "offset": 647,
+                "size": 443,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5052,7 +5207,12 @@ def test_patch_rest_required_fields(request_type=compute.PatchSecurityPolicyRequ
         credentials=ga_credentials.AnonymousCredentials()
     ).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5110,7 +5270,12 @@ def test_patch_rest_unset_required_fields():
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
         & set(
             (
                 "project",
@@ -5299,6 +5464,15 @@ def test_patch_unary_rest(request_type):
             "layer7_ddos_defense_config": {
                 "enable": True,
                 "rule_visibility": "rule_visibility_value",
+                "threshold_configs": [
+                    {
+                        "auto_deploy_confidence_threshold": 0.339,
+                        "auto_deploy_expiration_sec": 2785,
+                        "auto_deploy_impacted_baseline_threshold": 0.4121,
+                        "auto_deploy_load_threshold": 0.2768,
+                        "name": "name_value",
+                    }
+                ],
             }
         },
         "advanced_options_config": {
@@ -5307,6 +5481,10 @@ def test_patch_unary_rest(request_type):
             },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
+            "user_ip_request_headers": [
+                "user_ip_request_headers_value1",
+                "user_ip_request_headers_value2",
+            ],
         },
         "creation_timestamp": "creation_timestamp_value",
         "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
@@ -5346,6 +5524,27 @@ def test_patch_unary_rest(request_type):
                         "title": "title_value",
                     },
                     "versioned_expr": "versioned_expr_value",
+                },
+                "network_match": {
+                    "dest_ip_ranges": [
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
+                    ],
+                    "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+                    "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+                    "src_asns": [861, 862],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_ports": ["src_ports_value1", "src_ports_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
+                    "user_defined_fields": [
+                        {
+                            "name": "name_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
                 },
                 "preconfigured_waf_config": {
                     "exclusions": [
@@ -5390,6 +5589,15 @@ def test_patch_unary_rest(request_type):
         ],
         "self_link": "self_link_value",
         "type_": "type__value",
+        "user_defined_fields": [
+            {
+                "base": "base_value",
+                "mask": "mask_value",
+                "name": "name_value",
+                "offset": 647,
+                "size": 443,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5541,7 +5749,12 @@ def test_patch_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5599,7 +5812,12 @@ def test_patch_unary_rest_unset_required_fields():
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
         & set(
             (
                 "project",
@@ -5806,6 +6024,18 @@ def test_patch_rule_rest(request_type):
                 "title": "title_value",
             },
             "versioned_expr": "versioned_expr_value",
+        },
+        "network_match": {
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+            "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+            "src_asns": [861, 862],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_ports": ["src_ports_value1", "src_ports_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+            "user_defined_fields": [
+                {"name": "name_value", "values": ["values_value1", "values_value2"]}
+            ],
         },
         "preconfigured_waf_config": {
             "exclusions": [
@@ -6026,6 +6256,7 @@ def test_patch_rule_rest_required_fields(
     assert not set(unset_fields) - set(
         (
             "priority",
+            "update_mask",
             "validate_only",
         )
     )
@@ -6089,6 +6320,7 @@ def test_patch_rule_rest_unset_required_fields():
         set(
             (
                 "priority",
+                "updateMask",
                 "validateOnly",
             )
         )
@@ -6291,6 +6523,18 @@ def test_patch_rule_unary_rest(request_type):
             },
             "versioned_expr": "versioned_expr_value",
         },
+        "network_match": {
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+            "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+            "src_asns": [861, 862],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_ports": ["src_ports_value1", "src_ports_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+            "user_defined_fields": [
+                {"name": "name_value", "values": ["values_value1", "values_value2"]}
+            ],
+        },
         "preconfigured_waf_config": {
             "exclusions": [
                 {
@@ -6488,6 +6732,7 @@ def test_patch_rule_unary_rest_required_fields(
     assert not set(unset_fields) - set(
         (
             "priority",
+            "update_mask",
             "validate_only",
         )
     )
@@ -6551,6 +6796,7 @@ def test_patch_rule_unary_rest_unset_required_fields():
         set(
             (
                 "priority",
+                "updateMask",
                 "validateOnly",
             )
         )

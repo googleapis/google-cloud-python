@@ -644,7 +644,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -738,12 +738,16 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
                 \*
                 `Regional </compute/docs/reference/rest/v1/regionTargetHttpsProxies>`__
                 A target HTTPS proxy is a component of GCP HTTPS load
-                balancers. \* targetHttpsProxies are used by external
-                HTTPS load balancers. \* regionTargetHttpsProxies are
-                used by internal HTTPS load balancers. Forwarding rules
-                reference a target HTTPS proxy, and the target proxy
-                then references a URL map. For more information, read
-                Using Target Proxies and Forwarding rule concepts.
+                balancers. \* targetHttpProxies are used by global
+                external Application Load Balancers, classic Application
+                Load Balancers, cross-region internal Application Load
+                Balancers, and Traffic Director. \*
+                regionTargetHttpProxies are used by regional internal
+                Application Load Balancers and regional external
+                Application Load Balancers. Forwarding rules reference a
+                target HTTPS proxy, and the target proxy then references
+                a URL map. For more information, read Using Target
+                Proxies and Forwarding rule concepts.
 
             """
 
@@ -843,7 +847,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1041,7 +1045,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1151,7 +1155,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1263,7 +1267,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1375,7 +1379,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1487,7 +1491,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1597,7 +1601,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """

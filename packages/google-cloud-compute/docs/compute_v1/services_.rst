@@ -77,6 +77,7 @@ Services for Google Cloud Compute v1 API
     security_policies
     service_attachments
     snapshots
+    snapshot_settings_service
     ssl_certificates
     ssl_policies
     subnetworks

@@ -591,6 +591,994 @@ def test_region_security_policies_client_client_options_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
+        compute.AddRuleRegionSecurityPolicyRequest,
+        dict,
+    ],
+)
+def test_add_rule_rest(request_type):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request_init["security_policy_rule_resource"] = {
+        "action": "action_value",
+        "description": "description_value",
+        "header_action": {
+            "request_headers_to_adds": [
+                {
+                    "header_name": "header_name_value",
+                    "header_value": "header_value_value",
+                }
+            ]
+        },
+        "kind": "kind_value",
+        "match": {
+            "config": {
+                "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"]
+            },
+            "expr": {
+                "description": "description_value",
+                "expression": "expression_value",
+                "location": "location_value",
+                "title": "title_value",
+            },
+            "versioned_expr": "versioned_expr_value",
+        },
+        "network_match": {
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+            "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+            "src_asns": [861, 862],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_ports": ["src_ports_value1", "src_ports_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+            "user_defined_fields": [
+                {"name": "name_value", "values": ["values_value1", "values_value2"]}
+            ],
+        },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
+        },
+        "preview": True,
+        "priority": 898,
+        "rate_limit_options": {
+            "ban_duration_sec": 1680,
+            "ban_threshold": {"count": 553, "interval_sec": 1279},
+            "conform_action": "conform_action_value",
+            "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
+            "enforce_on_key_name": "enforce_on_key_name_value",
+            "exceed_action": "exceed_action_value",
+            "exceed_redirect_options": {
+                "target": "target_value",
+                "type_": "type__value",
+            },
+            "rate_limit_threshold": {},
+        },
+        "redirect_options": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.AddRuleRegionSecurityPolicyRequest.meta.fields[
+        "security_policy_rule_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "security_policy_rule_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["security_policy_rule_resource"][field])
+                ):
+                    del request_init["security_policy_rule_resource"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["security_policy_rule_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.add_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_add_rule_rest_required_fields(
+    request_type=compute.AddRuleRegionSecurityPolicyRequest,
+):
+    transport_class = transports.RegionSecurityPoliciesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["security_policy"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["securityPolicy"] = "security_policy_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("validate_only",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "securityPolicy" in jsonified_request
+    assert jsonified_request["securityPolicy"] == "security_policy_value"
+
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.add_rule(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_add_rule_rest_unset_required_fields():
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.add_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("validateOnly",))
+        & set(
+            (
+                "project",
+                "region",
+                "securityPolicy",
+                "securityPolicyRuleResource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_add_rule_rest_interceptors(null_interceptor):
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionSecurityPoliciesRestInterceptor(),
+    )
+    client = RegionSecurityPoliciesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "post_add_rule"
+    ) as post, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "pre_add_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.AddRuleRegionSecurityPolicyRequest.pb(
+            compute.AddRuleRegionSecurityPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.AddRuleRegionSecurityPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.add_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_add_rule_rest_bad_request(
+    transport: str = "rest", request_type=compute.AddRuleRegionSecurityPolicyRequest
+):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.add_rule(request)
+
+
+def test_add_rule_rest_flattened():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "security_policy": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+            security_policy_rule_resource=compute.SecurityPolicyRule(
+                action="action_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.add_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}/addRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_add_rule_rest_flattened_error(transport: str = "rest"):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.add_rule(
+            compute.AddRuleRegionSecurityPolicyRequest(),
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+            security_policy_rule_resource=compute.SecurityPolicyRule(
+                action="action_value"
+            ),
+        )
+
+
+def test_add_rule_rest_error():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.AddRuleRegionSecurityPolicyRequest,
+        dict,
+    ],
+)
+def test_add_rule_unary_rest(request_type):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request_init["security_policy_rule_resource"] = {
+        "action": "action_value",
+        "description": "description_value",
+        "header_action": {
+            "request_headers_to_adds": [
+                {
+                    "header_name": "header_name_value",
+                    "header_value": "header_value_value",
+                }
+            ]
+        },
+        "kind": "kind_value",
+        "match": {
+            "config": {
+                "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"]
+            },
+            "expr": {
+                "description": "description_value",
+                "expression": "expression_value",
+                "location": "location_value",
+                "title": "title_value",
+            },
+            "versioned_expr": "versioned_expr_value",
+        },
+        "network_match": {
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+            "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+            "src_asns": [861, 862],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_ports": ["src_ports_value1", "src_ports_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+            "user_defined_fields": [
+                {"name": "name_value", "values": ["values_value1", "values_value2"]}
+            ],
+        },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
+        },
+        "preview": True,
+        "priority": 898,
+        "rate_limit_options": {
+            "ban_duration_sec": 1680,
+            "ban_threshold": {"count": 553, "interval_sec": 1279},
+            "conform_action": "conform_action_value",
+            "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
+            "enforce_on_key_name": "enforce_on_key_name_value",
+            "exceed_action": "exceed_action_value",
+            "exceed_redirect_options": {
+                "target": "target_value",
+                "type_": "type__value",
+            },
+            "rate_limit_threshold": {},
+        },
+        "redirect_options": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.AddRuleRegionSecurityPolicyRequest.meta.fields[
+        "security_policy_rule_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "security_policy_rule_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["security_policy_rule_resource"][field])
+                ):
+                    del request_init["security_policy_rule_resource"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["security_policy_rule_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.add_rule_unary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+
+
+def test_add_rule_unary_rest_required_fields(
+    request_type=compute.AddRuleRegionSecurityPolicyRequest,
+):
+    transport_class = transports.RegionSecurityPoliciesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["security_policy"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["securityPolicy"] = "security_policy_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("validate_only",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "securityPolicy" in jsonified_request
+    assert jsonified_request["securityPolicy"] == "security_policy_value"
+
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.add_rule_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_add_rule_unary_rest_unset_required_fields():
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.add_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("validateOnly",))
+        & set(
+            (
+                "project",
+                "region",
+                "securityPolicy",
+                "securityPolicyRuleResource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_add_rule_unary_rest_interceptors(null_interceptor):
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionSecurityPoliciesRestInterceptor(),
+    )
+    client = RegionSecurityPoliciesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "post_add_rule"
+    ) as post, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "pre_add_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.AddRuleRegionSecurityPolicyRequest.pb(
+            compute.AddRuleRegionSecurityPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.AddRuleRegionSecurityPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.add_rule_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_add_rule_unary_rest_bad_request(
+    transport: str = "rest", request_type=compute.AddRuleRegionSecurityPolicyRequest
+):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.add_rule_unary(request)
+
+
+def test_add_rule_unary_rest_flattened():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "security_policy": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+            security_policy_rule_resource=compute.SecurityPolicyRule(
+                action="action_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.add_rule_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}/addRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_add_rule_unary_rest_flattened_error(transport: str = "rest"):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.add_rule_unary(
+            compute.AddRuleRegionSecurityPolicyRequest(),
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+            security_policy_rule_resource=compute.SecurityPolicyRule(
+                action="action_value"
+            ),
+        )
+
+
+def test_add_rule_unary_rest_error():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         compute.DeleteRegionSecurityPolicyRequest,
         dict,
     ],
@@ -1581,6 +2569,320 @@ def test_get_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        compute.GetRuleRegionSecurityPolicyRequest,
+        dict,
+    ],
+)
+def test_get_rule_rest(request_type):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.SecurityPolicyRule(
+            action="action_value",
+            description="description_value",
+            kind="kind_value",
+            preview=True,
+            priority=898,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.SecurityPolicyRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.SecurityPolicyRule)
+    assert response.action == "action_value"
+    assert response.description == "description_value"
+    assert response.kind == "kind_value"
+    assert response.preview is True
+    assert response.priority == 898
+
+
+def test_get_rule_rest_required_fields(
+    request_type=compute.GetRuleRegionSecurityPolicyRequest,
+):
+    transport_class = transports.RegionSecurityPoliciesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["security_policy"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["securityPolicy"] = "security_policy_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("priority",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "securityPolicy" in jsonified_request
+    assert jsonified_request["securityPolicy"] == "security_policy_value"
+
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.SecurityPolicyRule()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.SecurityPolicyRule.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_rule(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_rule_rest_unset_required_fields():
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("priority",))
+        & set(
+            (
+                "project",
+                "region",
+                "securityPolicy",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rule_rest_interceptors(null_interceptor):
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionSecurityPoliciesRestInterceptor(),
+    )
+    client = RegionSecurityPoliciesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "post_get_rule"
+    ) as post, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "pre_get_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.GetRuleRegionSecurityPolicyRequest.pb(
+            compute.GetRuleRegionSecurityPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.SecurityPolicyRule.to_json(
+            compute.SecurityPolicyRule()
+        )
+
+        request = compute.GetRuleRegionSecurityPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.SecurityPolicyRule()
+
+        client.get_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_rule_rest_bad_request(
+    transport: str = "rest", request_type=compute.GetRuleRegionSecurityPolicyRequest
+):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_rule(request)
+
+
+def test_get_rule_rest_flattened():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.SecurityPolicyRule()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "security_policy": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.SecurityPolicyRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}/getRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_rule_rest_flattened_error(transport: str = "rest"):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_rule(
+            compute.GetRuleRegionSecurityPolicyRequest(),
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+        )
+
+
+def test_get_rule_rest_error():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         compute.InsertRegionSecurityPolicyRequest,
         dict,
     ],
@@ -1598,6 +2900,15 @@ def test_insert_rest(request_type):
             "layer7_ddos_defense_config": {
                 "enable": True,
                 "rule_visibility": "rule_visibility_value",
+                "threshold_configs": [
+                    {
+                        "auto_deploy_confidence_threshold": 0.339,
+                        "auto_deploy_expiration_sec": 2785,
+                        "auto_deploy_impacted_baseline_threshold": 0.4121,
+                        "auto_deploy_load_threshold": 0.2768,
+                        "name": "name_value",
+                    }
+                ],
             }
         },
         "advanced_options_config": {
@@ -1606,6 +2917,10 @@ def test_insert_rest(request_type):
             },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
+            "user_ip_request_headers": [
+                "user_ip_request_headers_value1",
+                "user_ip_request_headers_value2",
+            ],
         },
         "creation_timestamp": "creation_timestamp_value",
         "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
@@ -1645,6 +2960,27 @@ def test_insert_rest(request_type):
                         "title": "title_value",
                     },
                     "versioned_expr": "versioned_expr_value",
+                },
+                "network_match": {
+                    "dest_ip_ranges": [
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
+                    ],
+                    "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+                    "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+                    "src_asns": [861, 862],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_ports": ["src_ports_value1", "src_ports_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
+                    "user_defined_fields": [
+                        {
+                            "name": "name_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
                 },
                 "preconfigured_waf_config": {
                     "exclusions": [
@@ -1689,6 +3025,15 @@ def test_insert_rest(request_type):
         ],
         "self_link": "self_link_value",
         "type_": "type__value",
+        "user_defined_fields": [
+            {
+                "base": "base_value",
+                "mask": "mask_value",
+                "name": "name_value",
+                "offset": 647,
+                "size": 443,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -2119,6 +3464,15 @@ def test_insert_unary_rest(request_type):
             "layer7_ddos_defense_config": {
                 "enable": True,
                 "rule_visibility": "rule_visibility_value",
+                "threshold_configs": [
+                    {
+                        "auto_deploy_confidence_threshold": 0.339,
+                        "auto_deploy_expiration_sec": 2785,
+                        "auto_deploy_impacted_baseline_threshold": 0.4121,
+                        "auto_deploy_load_threshold": 0.2768,
+                        "name": "name_value",
+                    }
+                ],
             }
         },
         "advanced_options_config": {
@@ -2127,6 +3481,10 @@ def test_insert_unary_rest(request_type):
             },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
+            "user_ip_request_headers": [
+                "user_ip_request_headers_value1",
+                "user_ip_request_headers_value2",
+            ],
         },
         "creation_timestamp": "creation_timestamp_value",
         "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
@@ -2166,6 +3524,27 @@ def test_insert_unary_rest(request_type):
                         "title": "title_value",
                     },
                     "versioned_expr": "versioned_expr_value",
+                },
+                "network_match": {
+                    "dest_ip_ranges": [
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
+                    ],
+                    "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+                    "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+                    "src_asns": [861, 862],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_ports": ["src_ports_value1", "src_ports_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
+                    "user_defined_fields": [
+                        {
+                            "name": "name_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
                 },
                 "preconfigured_waf_config": {
                     "exclusions": [
@@ -2210,6 +3589,15 @@ def test_insert_unary_rest(request_type):
         ],
         "self_link": "self_link_value",
         "type_": "type__value",
+        "user_defined_fields": [
+            {
+                "base": "base_value",
+                "mask": "mask_value",
+                "name": "name_value",
+                "offset": 647,
+                "size": 443,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -2984,6 +4372,15 @@ def test_patch_rest(request_type):
             "layer7_ddos_defense_config": {
                 "enable": True,
                 "rule_visibility": "rule_visibility_value",
+                "threshold_configs": [
+                    {
+                        "auto_deploy_confidence_threshold": 0.339,
+                        "auto_deploy_expiration_sec": 2785,
+                        "auto_deploy_impacted_baseline_threshold": 0.4121,
+                        "auto_deploy_load_threshold": 0.2768,
+                        "name": "name_value",
+                    }
+                ],
             }
         },
         "advanced_options_config": {
@@ -2992,6 +4389,10 @@ def test_patch_rest(request_type):
             },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
+            "user_ip_request_headers": [
+                "user_ip_request_headers_value1",
+                "user_ip_request_headers_value2",
+            ],
         },
         "creation_timestamp": "creation_timestamp_value",
         "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
@@ -3031,6 +4432,27 @@ def test_patch_rest(request_type):
                         "title": "title_value",
                     },
                     "versioned_expr": "versioned_expr_value",
+                },
+                "network_match": {
+                    "dest_ip_ranges": [
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
+                    ],
+                    "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+                    "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+                    "src_asns": [861, 862],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_ports": ["src_ports_value1", "src_ports_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
+                    "user_defined_fields": [
+                        {
+                            "name": "name_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
                 },
                 "preconfigured_waf_config": {
                     "exclusions": [
@@ -3075,6 +4497,15 @@ def test_patch_rest(request_type):
         ],
         "self_link": "self_link_value",
         "type_": "type__value",
+        "user_defined_fields": [
+            {
+                "base": "base_value",
+                "mask": "mask_value",
+                "name": "name_value",
+                "offset": 647,
+                "size": 443,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3250,7 +4681,12 @@ def test_patch_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3310,7 +4746,12 @@ def test_patch_rest_unset_required_fields():
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
         & set(
             (
                 "project",
@@ -3514,6 +4955,15 @@ def test_patch_unary_rest(request_type):
             "layer7_ddos_defense_config": {
                 "enable": True,
                 "rule_visibility": "rule_visibility_value",
+                "threshold_configs": [
+                    {
+                        "auto_deploy_confidence_threshold": 0.339,
+                        "auto_deploy_expiration_sec": 2785,
+                        "auto_deploy_impacted_baseline_threshold": 0.4121,
+                        "auto_deploy_load_threshold": 0.2768,
+                        "name": "name_value",
+                    }
+                ],
             }
         },
         "advanced_options_config": {
@@ -3522,6 +4972,10 @@ def test_patch_unary_rest(request_type):
             },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
+            "user_ip_request_headers": [
+                "user_ip_request_headers_value1",
+                "user_ip_request_headers_value2",
+            ],
         },
         "creation_timestamp": "creation_timestamp_value",
         "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
@@ -3561,6 +5015,27 @@ def test_patch_unary_rest(request_type):
                         "title": "title_value",
                     },
                     "versioned_expr": "versioned_expr_value",
+                },
+                "network_match": {
+                    "dest_ip_ranges": [
+                        "dest_ip_ranges_value1",
+                        "dest_ip_ranges_value2",
+                    ],
+                    "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+                    "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+                    "src_asns": [861, 862],
+                    "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_ports": ["src_ports_value1", "src_ports_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
+                    "user_defined_fields": [
+                        {
+                            "name": "name_value",
+                            "values": ["values_value1", "values_value2"],
+                        }
+                    ],
                 },
                 "preconfigured_waf_config": {
                     "exclusions": [
@@ -3605,6 +5080,15 @@ def test_patch_unary_rest(request_type):
         ],
         "self_link": "self_link_value",
         "type_": "type__value",
+        "user_defined_fields": [
+            {
+                "base": "base_value",
+                "mask": "mask_value",
+                "name": "name_value",
+                "offset": 647,
+                "size": 443,
+            }
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3758,7 +5242,12 @@ def test_patch_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3818,7 +5307,12 @@ def test_patch_unary_rest_unset_required_fields():
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
         & set(
             (
                 "project",
@@ -3998,6 +5492,1688 @@ def test_patch_unary_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.PatchRuleRegionSecurityPolicyRequest,
+        dict,
+    ],
+)
+def test_patch_rule_rest(request_type):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request_init["security_policy_rule_resource"] = {
+        "action": "action_value",
+        "description": "description_value",
+        "header_action": {
+            "request_headers_to_adds": [
+                {
+                    "header_name": "header_name_value",
+                    "header_value": "header_value_value",
+                }
+            ]
+        },
+        "kind": "kind_value",
+        "match": {
+            "config": {
+                "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"]
+            },
+            "expr": {
+                "description": "description_value",
+                "expression": "expression_value",
+                "location": "location_value",
+                "title": "title_value",
+            },
+            "versioned_expr": "versioned_expr_value",
+        },
+        "network_match": {
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+            "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+            "src_asns": [861, 862],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_ports": ["src_ports_value1", "src_ports_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+            "user_defined_fields": [
+                {"name": "name_value", "values": ["values_value1", "values_value2"]}
+            ],
+        },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
+        },
+        "preview": True,
+        "priority": 898,
+        "rate_limit_options": {
+            "ban_duration_sec": 1680,
+            "ban_threshold": {"count": 553, "interval_sec": 1279},
+            "conform_action": "conform_action_value",
+            "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
+            "enforce_on_key_name": "enforce_on_key_name_value",
+            "exceed_action": "exceed_action_value",
+            "exceed_redirect_options": {
+                "target": "target_value",
+                "type_": "type__value",
+            },
+            "rate_limit_threshold": {},
+        },
+        "redirect_options": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.PatchRuleRegionSecurityPolicyRequest.meta.fields[
+        "security_policy_rule_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "security_policy_rule_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["security_policy_rule_resource"][field])
+                ):
+                    del request_init["security_policy_rule_resource"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["security_policy_rule_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.patch_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_patch_rule_rest_required_fields(
+    request_type=compute.PatchRuleRegionSecurityPolicyRequest,
+):
+    transport_class = transports.RegionSecurityPoliciesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["security_policy"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["securityPolicy"] = "security_policy_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "priority",
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "securityPolicy" in jsonified_request
+    assert jsonified_request["securityPolicy"] == "security_policy_value"
+
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.patch_rule(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_patch_rule_rest_unset_required_fields():
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.patch_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "priority",
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "project",
+                "region",
+                "securityPolicy",
+                "securityPolicyRuleResource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_patch_rule_rest_interceptors(null_interceptor):
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionSecurityPoliciesRestInterceptor(),
+    )
+    client = RegionSecurityPoliciesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "post_patch_rule"
+    ) as post, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "pre_patch_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.PatchRuleRegionSecurityPolicyRequest.pb(
+            compute.PatchRuleRegionSecurityPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.PatchRuleRegionSecurityPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.patch_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_patch_rule_rest_bad_request(
+    transport: str = "rest", request_type=compute.PatchRuleRegionSecurityPolicyRequest
+):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.patch_rule(request)
+
+
+def test_patch_rule_rest_flattened():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "security_policy": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+            security_policy_rule_resource=compute.SecurityPolicyRule(
+                action="action_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.patch_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}/patchRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_patch_rule_rest_flattened_error(transport: str = "rest"):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.patch_rule(
+            compute.PatchRuleRegionSecurityPolicyRequest(),
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+            security_policy_rule_resource=compute.SecurityPolicyRule(
+                action="action_value"
+            ),
+        )
+
+
+def test_patch_rule_rest_error():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.PatchRuleRegionSecurityPolicyRequest,
+        dict,
+    ],
+)
+def test_patch_rule_unary_rest(request_type):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request_init["security_policy_rule_resource"] = {
+        "action": "action_value",
+        "description": "description_value",
+        "header_action": {
+            "request_headers_to_adds": [
+                {
+                    "header_name": "header_name_value",
+                    "header_value": "header_value_value",
+                }
+            ]
+        },
+        "kind": "kind_value",
+        "match": {
+            "config": {
+                "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"]
+            },
+            "expr": {
+                "description": "description_value",
+                "expression": "expression_value",
+                "location": "location_value",
+                "title": "title_value",
+            },
+            "versioned_expr": "versioned_expr_value",
+        },
+        "network_match": {
+            "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
+            "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
+            "src_asns": [861, 862],
+            "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_ports": ["src_ports_value1", "src_ports_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+            "user_defined_fields": [
+                {"name": "name_value", "values": ["values_value1", "values_value2"]}
+            ],
+        },
+        "preconfigured_waf_config": {
+            "exclusions": [
+                {
+                    "request_cookies_to_exclude": [
+                        {"op": "op_value", "val": "val_value"}
+                    ],
+                    "request_headers_to_exclude": {},
+                    "request_query_params_to_exclude": {},
+                    "request_uris_to_exclude": {},
+                    "target_rule_ids": [
+                        "target_rule_ids_value1",
+                        "target_rule_ids_value2",
+                    ],
+                    "target_rule_set": "target_rule_set_value",
+                }
+            ]
+        },
+        "preview": True,
+        "priority": 898,
+        "rate_limit_options": {
+            "ban_duration_sec": 1680,
+            "ban_threshold": {"count": 553, "interval_sec": 1279},
+            "conform_action": "conform_action_value",
+            "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
+            "enforce_on_key_name": "enforce_on_key_name_value",
+            "exceed_action": "exceed_action_value",
+            "exceed_redirect_options": {
+                "target": "target_value",
+                "type_": "type__value",
+            },
+            "rate_limit_threshold": {},
+        },
+        "redirect_options": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.PatchRuleRegionSecurityPolicyRequest.meta.fields[
+        "security_policy_rule_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "security_policy_rule_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["security_policy_rule_resource"][field])
+                ):
+                    del request_init["security_policy_rule_resource"][field][i][
+                        subfield
+                    ]
+            else:
+                del request_init["security_policy_rule_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.patch_rule_unary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+
+
+def test_patch_rule_unary_rest_required_fields(
+    request_type=compute.PatchRuleRegionSecurityPolicyRequest,
+):
+    transport_class = transports.RegionSecurityPoliciesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["security_policy"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["securityPolicy"] = "security_policy_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "priority",
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "securityPolicy" in jsonified_request
+    assert jsonified_request["securityPolicy"] == "security_policy_value"
+
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.patch_rule_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_patch_rule_unary_rest_unset_required_fields():
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.patch_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "priority",
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "project",
+                "region",
+                "securityPolicy",
+                "securityPolicyRuleResource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_patch_rule_unary_rest_interceptors(null_interceptor):
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionSecurityPoliciesRestInterceptor(),
+    )
+    client = RegionSecurityPoliciesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "post_patch_rule"
+    ) as post, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "pre_patch_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.PatchRuleRegionSecurityPolicyRequest.pb(
+            compute.PatchRuleRegionSecurityPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.PatchRuleRegionSecurityPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.patch_rule_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_patch_rule_unary_rest_bad_request(
+    transport: str = "rest", request_type=compute.PatchRuleRegionSecurityPolicyRequest
+):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.patch_rule_unary(request)
+
+
+def test_patch_rule_unary_rest_flattened():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "security_policy": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+            security_policy_rule_resource=compute.SecurityPolicyRule(
+                action="action_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.patch_rule_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}/patchRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_patch_rule_unary_rest_flattened_error(transport: str = "rest"):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.patch_rule_unary(
+            compute.PatchRuleRegionSecurityPolicyRequest(),
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+            security_policy_rule_resource=compute.SecurityPolicyRule(
+                action="action_value"
+            ),
+        )
+
+
+def test_patch_rule_unary_rest_error():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.RemoveRuleRegionSecurityPolicyRequest,
+        dict,
+    ],
+)
+def test_remove_rule_rest(request_type):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.remove_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_remove_rule_rest_required_fields(
+    request_type=compute.RemoveRuleRegionSecurityPolicyRequest,
+):
+    transport_class = transports.RegionSecurityPoliciesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["security_policy"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["securityPolicy"] = "security_policy_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("priority",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "securityPolicy" in jsonified_request
+    assert jsonified_request["securityPolicy"] == "security_policy_value"
+
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.remove_rule(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_remove_rule_rest_unset_required_fields():
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.remove_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("priority",))
+        & set(
+            (
+                "project",
+                "region",
+                "securityPolicy",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_remove_rule_rest_interceptors(null_interceptor):
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionSecurityPoliciesRestInterceptor(),
+    )
+    client = RegionSecurityPoliciesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "post_remove_rule"
+    ) as post, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "pre_remove_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.RemoveRuleRegionSecurityPolicyRequest.pb(
+            compute.RemoveRuleRegionSecurityPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.RemoveRuleRegionSecurityPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.remove_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_remove_rule_rest_bad_request(
+    transport: str = "rest", request_type=compute.RemoveRuleRegionSecurityPolicyRequest
+):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.remove_rule(request)
+
+
+def test_remove_rule_rest_flattened():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "security_policy": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.remove_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}/removeRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_remove_rule_rest_flattened_error(transport: str = "rest"):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.remove_rule(
+            compute.RemoveRuleRegionSecurityPolicyRequest(),
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+        )
+
+
+def test_remove_rule_rest_error():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.RemoveRuleRegionSecurityPolicyRequest,
+        dict,
+    ],
+)
+def test_remove_rule_unary_rest(request_type):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.remove_rule_unary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+
+
+def test_remove_rule_unary_rest_required_fields(
+    request_type=compute.RemoveRuleRegionSecurityPolicyRequest,
+):
+    transport_class = transports.RegionSecurityPoliciesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["security_policy"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["securityPolicy"] = "security_policy_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("priority",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "securityPolicy" in jsonified_request
+    assert jsonified_request["securityPolicy"] == "security_policy_value"
+
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.remove_rule_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_remove_rule_unary_rest_unset_required_fields():
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.remove_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("priority",))
+        & set(
+            (
+                "project",
+                "region",
+                "securityPolicy",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_remove_rule_unary_rest_interceptors(null_interceptor):
+    transport = transports.RegionSecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionSecurityPoliciesRestInterceptor(),
+    )
+    client = RegionSecurityPoliciesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "post_remove_rule"
+    ) as post, mock.patch.object(
+        transports.RegionSecurityPoliciesRestInterceptor, "pre_remove_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.RemoveRuleRegionSecurityPolicyRequest.pb(
+            compute.RemoveRuleRegionSecurityPolicyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.RemoveRuleRegionSecurityPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.remove_rule_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_remove_rule_unary_rest_bad_request(
+    transport: str = "rest", request_type=compute.RemoveRuleRegionSecurityPolicyRequest
+):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "security_policy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.remove_rule_unary(request)
+
+
+def test_remove_rule_unary_rest_flattened():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "security_policy": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.remove_rule_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}/removeRule"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_remove_rule_unary_rest_flattened_error(transport: str = "rest"):
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.remove_rule_unary(
+            compute.RemoveRuleRegionSecurityPolicyRequest(),
+            project="project_value",
+            region="region_value",
+            security_policy="security_policy_value",
+        )
+
+
+def test_remove_rule_unary_rest_error():
+    client = RegionSecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RegionSecurityPoliciesRestTransport(
@@ -4108,11 +7284,15 @@ def test_region_security_policies_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
+        "add_rule",
         "delete",
         "get",
+        "get_rule",
         "insert",
         "list",
         "patch",
+        "patch_rule",
+        "remove_rule",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -4250,11 +7430,17 @@ def test_region_security_policies_client_transport_session_collision(transport_n
         credentials=creds2,
         transport=transport_name,
     )
+    session1 = client1.transport.add_rule._session
+    session2 = client2.transport.add_rule._session
+    assert session1 != session2
     session1 = client1.transport.delete._session
     session2 = client2.transport.delete._session
     assert session1 != session2
     session1 = client1.transport.get._session
     session2 = client2.transport.get._session
+    assert session1 != session2
+    session1 = client1.transport.get_rule._session
+    session2 = client2.transport.get_rule._session
     assert session1 != session2
     session1 = client1.transport.insert._session
     session2 = client2.transport.insert._session
@@ -4264,6 +7450,12 @@ def test_region_security_policies_client_transport_session_collision(transport_n
     assert session1 != session2
     session1 = client1.transport.patch._session
     session2 = client2.transport.patch._session
+    assert session1 != session2
+    session1 = client1.transport.patch_rule._session
+    session2 = client2.transport.patch_rule._session
+    assert session1 != session2
+    session1 = client1.transport.remove_rule._session
+    session2 = client2.transport.remove_rule._session
     assert session1 != session2
 
 

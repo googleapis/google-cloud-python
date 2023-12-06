@@ -584,7 +584,7 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -783,29 +783,11 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                 learn which resources support conditions in their IAM
                 policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
-                **JSON example:** { "bindings": [ { "role":
-                "roles/resourcemanager.organizationAdmin", "members": [
-                "user:mike@example.com", "group:admins@example.com",
-                "domain:google.com",
-                "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                ] }, { "role":
-                "roles/resourcemanager.organizationViewer", "members": [
-                "user:eve@example.com" ], "condition": { "title":
-                "expirable access", "description": "Does not grant
-                access after Sep 2020", "expression": "request.time <
-                timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag":
-                "BwWWja0YfJA=", "version": 3 } **YAML example:**
-                bindings: - members: - user:mike@example.com -
-                group:admins@example.com - domain:google.com -
-                serviceAccount:my-project-id@appspot.gserviceaccount.com
-                role: roles/resourcemanager.organizationAdmin - members:
-                - user:eve@example.com role:
-                roles/resourcemanager.organizationViewer condition:
-                title: expirable access description: Does not grant
-                access after Sep 2020 expression: request.time <
-                timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA=
-                version: 3 For a description of IAM and its features,
-                see the `IAM
+                **JSON example:**
+                ``{ "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }``
+                **YAML example:**
+                ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``
+                For a description of IAM and its features, see the `IAM
                 documentation <https://cloud.google.com/iam/docs/>`__.
 
             """
@@ -906,7 +888,7 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1102,7 +1084,7 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1216,29 +1198,11 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                 learn which resources support conditions in their IAM
                 policies, see the `IAM
                 documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
-                **JSON example:** { "bindings": [ { "role":
-                "roles/resourcemanager.organizationAdmin", "members": [
-                "user:mike@example.com", "group:admins@example.com",
-                "domain:google.com",
-                "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                ] }, { "role":
-                "roles/resourcemanager.organizationViewer", "members": [
-                "user:eve@example.com" ], "condition": { "title":
-                "expirable access", "description": "Does not grant
-                access after Sep 2020", "expression": "request.time <
-                timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag":
-                "BwWWja0YfJA=", "version": 3 } **YAML example:**
-                bindings: - members: - user:mike@example.com -
-                group:admins@example.com - domain:google.com -
-                serviceAccount:my-project-id@appspot.gserviceaccount.com
-                role: roles/resourcemanager.organizationAdmin - members:
-                - user:eve@example.com role:
-                roles/resourcemanager.organizationViewer condition:
-                title: expirable access description: Does not grant
-                access after Sep 2020 expression: request.time <
-                timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA=
-                version: 3 For a description of IAM and its features,
-                see the `IAM
+                **JSON example:**
+                ``{ "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }``
+                **YAML example:**
+                ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``
+                For a description of IAM and its features, see the `IAM
                 documentation <https://cloud.google.com/iam/docs/>`__.
 
             """

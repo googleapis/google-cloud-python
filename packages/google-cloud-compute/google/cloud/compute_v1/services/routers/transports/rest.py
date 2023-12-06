@@ -87,6 +87,14 @@ class RoutersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_nat_ip_info(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_nat_ip_info(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_nat_mapping_info(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -203,6 +211,29 @@ class RoutersRestInterceptor:
 
     def post_get(self, response: compute.Router) -> compute.Router:
         """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_nat_ip_info(
+        self,
+        request: compute.GetNatIpInfoRouterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetNatIpInfoRouterRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_nat_ip_info
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_get_nat_ip_info(
+        self, response: compute.NatIpInfoResponse
+    ) -> compute.NatIpInfoResponse:
+        """Post-rpc interceptor for get_nat_ip_info
 
         Override in a subclass to manipulate the response
         after it is returned by the Routers server but before
@@ -592,7 +623,7 @@ class RoutersRestTransport(RoutersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -729,6 +760,92 @@ class RoutersRestTransport(RoutersTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get(resp)
+            return resp
+
+    class _GetNatIpInfo(RoutersRestStub):
+        def __hash__(self):
+            return hash("GetNatIpInfo")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.GetNatIpInfoRouterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.NatIpInfoResponse:
+            r"""Call the get nat ip info method over HTTP.
+
+            Args:
+                request (~.compute.GetNatIpInfoRouterRequest):
+                    The request object. A request message for
+                Routers.GetNatIpInfo. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.NatIpInfoResponse:
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/routers/{router}/getNatIpInfo",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_nat_ip_info(request, metadata)
+            pb_request = compute.GetNatIpInfoRouterRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.NatIpInfoResponse()
+            pb_resp = compute.NatIpInfoResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_nat_ip_info(resp)
             return resp
 
     class _GetNatMappingInfo(RoutersRestStub):
@@ -958,7 +1075,7 @@ class RoutersRestTransport(RoutersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1152,7 +1269,7 @@ class RoutersRestTransport(RoutersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1356,7 +1473,7 @@ class RoutersRestTransport(RoutersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1435,6 +1552,14 @@ class RoutersRestTransport(RoutersTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_nat_ip_info(
+        self,
+    ) -> Callable[[compute.GetNatIpInfoRouterRequest], compute.NatIpInfoResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetNatIpInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_nat_mapping_info(

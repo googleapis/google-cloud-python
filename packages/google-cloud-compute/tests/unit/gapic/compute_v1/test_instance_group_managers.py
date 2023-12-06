@@ -1532,6 +1532,7 @@ def test_aggregated_list_rest_required_fields(
             "order_by",
             "page_token",
             "return_partial_success",
+            "service_project_number",
         )
     )
     jsonified_request.update(unset_fields)
@@ -1596,6 +1597,7 @@ def test_aggregated_list_rest_unset_required_fields():
                 "orderBy",
                 "pageToken",
                 "returnPartialSuccess",
+                "serviceProjectNumber",
             )
         )
         & set(("project",))
@@ -2704,7 +2706,12 @@ def test_create_instances_rest(request_type):
             {
                 "fingerprint": "fingerprint_value",
                 "name": "name_value",
-                "preserved_state": {"disks": {}, "metadata": {}},
+                "preserved_state": {
+                    "disks": {},
+                    "external_i_ps": {},
+                    "internal_i_ps": {},
+                    "metadata": {},
+                },
                 "status": "status_value",
             }
         ]
@@ -3151,7 +3158,12 @@ def test_create_instances_unary_rest(request_type):
             {
                 "fingerprint": "fingerprint_value",
                 "name": "name_value",
-                "preserved_state": {"disks": {}, "metadata": {}},
+                "preserved_state": {
+                    "disks": {},
+                    "external_i_ps": {},
+                    "internal_i_ps": {},
+                    "metadata": {},
+                },
                 "status": "status_value",
             }
         ]
@@ -6333,7 +6345,9 @@ def test_insert_rest(request_type):
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
         "self_link": "self_link_value",
-        "stateful_policy": {"preserved_state": {"disks": {}}},
+        "stateful_policy": {
+            "preserved_state": {"disks": {}, "external_i_ps": {}, "internal_i_ps": {}}
+        },
         "status": {
             "autoscaler": "autoscaler_value",
             "is_stable": True,
@@ -6820,7 +6834,9 @@ def test_insert_unary_rest(request_type):
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
         "self_link": "self_link_value",
-        "stateful_policy": {"preserved_state": {"disks": {}}},
+        "stateful_policy": {
+            "preserved_state": {"disks": {}, "external_i_ps": {}, "internal_i_ps": {}}
+        },
         "status": {
             "autoscaler": "autoscaler_value",
             "is_stable": True,
@@ -8827,7 +8843,9 @@ def test_patch_rest(request_type):
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
         "self_link": "self_link_value",
-        "stateful_policy": {"preserved_state": {"disks": {}}},
+        "stateful_policy": {
+            "preserved_state": {"disks": {}, "external_i_ps": {}, "internal_i_ps": {}}
+        },
         "status": {
             "autoscaler": "autoscaler_value",
             "is_stable": True,
@@ -9333,7 +9351,9 @@ def test_patch_unary_rest(request_type):
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
         "self_link": "self_link_value",
-        "stateful_policy": {"preserved_state": {"disks": {}}},
+        "stateful_policy": {
+            "preserved_state": {"disks": {}, "external_i_ps": {}, "internal_i_ps": {}}
+        },
         "status": {
             "autoscaler": "autoscaler_value",
             "is_stable": True,
@@ -9783,7 +9803,12 @@ def test_patch_per_instance_configs_rest(request_type):
             {
                 "fingerprint": "fingerprint_value",
                 "name": "name_value",
-                "preserved_state": {"disks": {}, "metadata": {}},
+                "preserved_state": {
+                    "disks": {},
+                    "external_i_ps": {},
+                    "internal_i_ps": {},
+                    "metadata": {},
+                },
                 "status": "status_value",
             }
         ]
@@ -10236,7 +10261,12 @@ def test_patch_per_instance_configs_unary_rest(request_type):
             {
                 "fingerprint": "fingerprint_value",
                 "name": "name_value",
-                "preserved_state": {"disks": {}, "metadata": {}},
+                "preserved_state": {
+                    "disks": {},
+                    "external_i_ps": {},
+                    "internal_i_ps": {},
+                    "metadata": {},
+                },
                 "status": "status_value",
             }
         ]
@@ -13963,7 +13993,12 @@ def test_update_per_instance_configs_rest(request_type):
             {
                 "fingerprint": "fingerprint_value",
                 "name": "name_value",
-                "preserved_state": {"disks": {}, "metadata": {}},
+                "preserved_state": {
+                    "disks": {},
+                    "external_i_ps": {},
+                    "internal_i_ps": {},
+                    "metadata": {},
+                },
                 "status": "status_value",
             }
         ]
@@ -14418,7 +14453,12 @@ def test_update_per_instance_configs_unary_rest(request_type):
             {
                 "fingerprint": "fingerprint_value",
                 "name": "name_value",
-                "preserved_state": {"disks": {}, "metadata": {}},
+                "preserved_state": {
+                    "disks": {},
+                    "external_i_ps": {},
+                    "internal_i_ps": {},
+                    "metadata": {},
+                },
                 "status": "status_value",
             }
         ]

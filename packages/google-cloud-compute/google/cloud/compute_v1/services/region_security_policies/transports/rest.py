@@ -63,6 +63,14 @@ class RegionSecurityPoliciesRestInterceptor:
 
     .. code-block:: python
         class MyCustomRegionSecurityPoliciesInterceptor(RegionSecurityPoliciesRestInterceptor):
+            def pre_add_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_add_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -76,6 +84,14 @@ class RegionSecurityPoliciesRestInterceptor:
                 return request, metadata
 
             def post_get(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_rule(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -103,11 +119,48 @@ class RegionSecurityPoliciesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_patch_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_remove_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_remove_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = RegionSecurityPoliciesRestTransport(interceptor=MyCustomRegionSecurityPoliciesInterceptor())
         client = RegionSecurityPoliciesClient(transport=transport)
 
 
     """
+
+    def pre_add_rule(
+        self,
+        request: compute.AddRuleRegionSecurityPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.AddRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for add_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RegionSecurityPolicies server.
+        """
+        return request, metadata
+
+    def post_add_rule(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for add_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the RegionSecurityPolicies server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_delete(
         self,
@@ -144,6 +197,29 @@ class RegionSecurityPoliciesRestInterceptor:
 
     def post_get(self, response: compute.SecurityPolicy) -> compute.SecurityPolicy:
         """Post-rpc interceptor for get
+
+        Override in a subclass to manipulate the response
+        after it is returned by the RegionSecurityPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_rule(
+        self,
+        request: compute.GetRuleRegionSecurityPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RegionSecurityPolicies server.
+        """
+        return request, metadata
+
+    def post_get_rule(
+        self, response: compute.SecurityPolicyRule
+    ) -> compute.SecurityPolicyRule:
+        """Post-rpc interceptor for get_rule
 
         Override in a subclass to manipulate the response
         after it is returned by the RegionSecurityPolicies server but before
@@ -209,6 +285,50 @@ class RegionSecurityPoliciesRestInterceptor:
 
     def post_patch(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for patch
+
+        Override in a subclass to manipulate the response
+        after it is returned by the RegionSecurityPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_patch_rule(
+        self,
+        request: compute.PatchRuleRegionSecurityPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.PatchRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for patch_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RegionSecurityPolicies server.
+        """
+        return request, metadata
+
+    def post_patch_rule(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for patch_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the RegionSecurityPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_remove_rule(
+        self,
+        request: compute.RemoveRuleRegionSecurityPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.RemoveRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for remove_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RegionSecurityPolicies server.
+        """
+        return request, metadata
+
+    def post_remove_rule(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for remove_rule
 
         Override in a subclass to manipulate the response
         after it is returned by the RegionSecurityPolicies server but before
@@ -320,6 +440,116 @@ class RegionSecurityPoliciesRestTransport(RegionSecurityPoliciesTransport):
         self._interceptor = interceptor or RegionSecurityPoliciesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
+    class _AddRule(RegionSecurityPoliciesRestStub):
+        def __hash__(self):
+            return hash("AddRule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.AddRuleRegionSecurityPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the add rule method over HTTP.
+
+            Args:
+                request (~.compute.AddRuleRegionSecurityPolicyRequest):
+                    The request object. A request message for
+                RegionSecurityPolicies.AddRule. See the
+                method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}/addRule",
+                    "body": "security_policy_rule_resource",
+                },
+            ]
+            request, metadata = self._interceptor.pre_add_rule(request, metadata)
+            pb_request = compute.AddRuleRegionSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_add_rule(resp)
+            return resp
+
     class _Delete(RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("Delete")
@@ -370,7 +600,7 @@ class RegionSecurityPoliciesRestTransport(RegionSecurityPoliciesTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -513,6 +743,96 @@ class RegionSecurityPoliciesRestTransport(RegionSecurityPoliciesTransport):
             resp = self._interceptor.post_get(resp)
             return resp
 
+    class _GetRule(RegionSecurityPoliciesRestStub):
+        def __hash__(self):
+            return hash("GetRule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.GetRuleRegionSecurityPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.SecurityPolicyRule:
+            r"""Call the get rule method over HTTP.
+
+            Args:
+                request (~.compute.GetRuleRegionSecurityPolicyRequest):
+                    The request object. A request message for
+                RegionSecurityPolicies.GetRule. See the
+                method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.SecurityPolicyRule:
+                    Represents a rule that describes one
+                or more match conditions along with the
+                action to be taken when traffic matches
+                this condition (allow or deny).
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}/getRule",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_rule(request, metadata)
+            pb_request = compute.GetRuleRegionSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.SecurityPolicyRule()
+            pb_resp = compute.SecurityPolicyRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_rule(resp)
+            return resp
+
     class _Insert(RegionSecurityPoliciesRestStub):
         def __hash__(self):
             return hash("Insert")
@@ -563,7 +883,7 @@ class RegionSecurityPoliciesRestTransport(RegionSecurityPoliciesTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -759,7 +1079,7 @@ class RegionSecurityPoliciesRestTransport(RegionSecurityPoliciesTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -819,6 +1139,225 @@ class RegionSecurityPoliciesRestTransport(RegionSecurityPoliciesTransport):
             resp = self._interceptor.post_patch(resp)
             return resp
 
+    class _PatchRule(RegionSecurityPoliciesRestStub):
+        def __hash__(self):
+            return hash("PatchRule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.PatchRuleRegionSecurityPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the patch rule method over HTTP.
+
+            Args:
+                request (~.compute.PatchRuleRegionSecurityPolicyRequest):
+                    The request object. A request message for
+                RegionSecurityPolicies.PatchRule. See
+                the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}/patchRule",
+                    "body": "security_policy_rule_resource",
+                },
+            ]
+            request, metadata = self._interceptor.pre_patch_rule(request, metadata)
+            pb_request = compute.PatchRuleRegionSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_patch_rule(resp)
+            return resp
+
+    class _RemoveRule(RegionSecurityPoliciesRestStub):
+        def __hash__(self):
+            return hash("RemoveRule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.RemoveRuleRegionSecurityPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the remove rule method over HTTP.
+
+            Args:
+                request (~.compute.RemoveRuleRegionSecurityPolicyRequest):
+                    The request object. A request message for
+                RegionSecurityPolicies.RemoveRule. See
+                the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/securityPolicies/{security_policy}/removeRule",
+                },
+            ]
+            request, metadata = self._interceptor.pre_remove_rule(request, metadata)
+            pb_request = compute.RemoveRuleRegionSecurityPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_remove_rule(resp)
+            return resp
+
+    @property
+    def add_rule(
+        self,
+    ) -> Callable[[compute.AddRuleRegionSecurityPolicyRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._AddRule(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def delete(
         self,
@@ -834,6 +1373,16 @@ class RegionSecurityPoliciesRestTransport(RegionSecurityPoliciesTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_rule(
+        self,
+    ) -> Callable[
+        [compute.GetRuleRegionSecurityPolicyRequest], compute.SecurityPolicyRule
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(
@@ -860,6 +1409,22 @@ class RegionSecurityPoliciesRestTransport(RegionSecurityPoliciesTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def patch_rule(
+        self,
+    ) -> Callable[[compute.PatchRuleRegionSecurityPolicyRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._PatchRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def remove_rule(
+        self,
+    ) -> Callable[[compute.RemoveRuleRegionSecurityPolicyRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RemoveRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

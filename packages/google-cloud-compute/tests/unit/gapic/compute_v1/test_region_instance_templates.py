@@ -1692,6 +1692,7 @@ def test_insert_rest(request_type):
                             "nat_i_p": "nat_i_p_value",
                             "network_tier": "network_tier_value",
                             "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "security_policy": "security_policy_value",
                             "set_public_ptr": True,
                             "type_": "type__value",
                         }
@@ -2285,6 +2286,7 @@ def test_insert_unary_rest(request_type):
                             "nat_i_p": "nat_i_p_value",
                             "network_tier": "network_tier_value",
                             "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "security_policy": "security_policy_value",
                             "set_public_ptr": True,
                             "type_": "type__value",
                         }

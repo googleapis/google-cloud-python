@@ -486,9 +486,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.AbandonInstancesInstanceGroupManagerRequest, dict]):
-                The request object. Messages
-
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.AbandonInstances.
                 See the method description for details.
             project (str):
@@ -653,9 +651,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.AbandonInstancesInstanceGroupManagerRequest, dict]):
-                The request object. Messages
-
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.AbandonInstances.
                 See the method description for details.
             project (str):

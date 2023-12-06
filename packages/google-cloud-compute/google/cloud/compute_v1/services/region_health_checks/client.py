@@ -779,25 +779,30 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.HealthCheck:
-                Represents a Health Check resource. Google Compute
-                Engine has two Health Check resources: \*
-                [Global](/compute/docs/reference/rest/v1/healthChecks)
-                \*
+                Represents a health check resource. Google Compute
+                Engine has two health check resources: \*
                 [Regional](/compute/docs/reference/rest/v1/regionHealthChecks)
-                Internal HTTP(S) load balancers must use regional health
-                checks (compute.v1.regionHealthChecks). Traffic Director
-                must use global health checks (compute.v1.healthChecks).
-                Internal TCP/UDP load balancers can use either regional
-                or global health checks (compute.v1.regionHealthChecks
-                or compute.v1.healthChecks). External HTTP(S), TCP
-                proxy, and SSL proxy load balancers as well as managed
-                instance group auto-healing must use global health
-                checks (compute.v1.healthChecks). Backend service-based
-                network load balancers must use regional health checks
-                (compute.v1.regionHealthChecks). Target pool-based
-                network load balancers must use legacy HTTP health
-                checks (compute.v1.httpHealthChecks). For more
-                information, see Health checks overview.
+                \*
+                [Global](/compute/docs/reference/rest/v1/healthChecks)
+                These health check resources can be used for load
+                balancing and for autohealing VMs in a managed instance
+                group (MIG). **Load balancing** The following load
+                balancer can use either regional or global health check:
+                \* Internal TCP/UDP load balancer The following load
+                balancers require regional health check: \* Internal
+                HTTP(S) load balancer \* Backend service-based network
+                load balancer Traffic Director and the following load
+                balancers require global health check: \* External
+                HTTP(S) load balancer \* TCP proxy load balancer \* SSL
+                proxy load balancer The following load balancer require
+                [legacy HTTP health
+                checks](/compute/docs/reference/rest/v1/httpHealthChecks):
+                \* Target pool-based network load balancer **Autohealing
+                in MIGs** The health checks that you use for autohealing
+                VMs in a MIG can be either regional or global. For more
+                information, see Set up an application health check and
+                autohealing. For more information, see Health checks
+                overview.
 
         """
         # Create or coerce a protobuf request object.

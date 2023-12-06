@@ -867,14 +867,17 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
                 [Global](/compute/docs/reference/rest/v1/targetHttpProxies)
                 \*
                 [Regional](/compute/docs/reference/rest/v1/regionTargetHttpProxies)
-                A target HTTP proxy is a component of GCP HTTP load
-                balancers. \* targetHttpProxies are used by external
-                HTTP load balancers and Traffic Director. \*
-                regionTargetHttpProxies are used by internal HTTP load
-                balancers. Forwarding rules reference a target HTTP
-                proxy, and the target proxy then references a URL map.
-                For more information, read Using Target Proxies and
-                Forwarding rule concepts.
+                A target HTTP proxy is a component of Google Cloud HTTP
+                load balancers. \* targetHttpProxies are used by global
+                external Application Load Balancers, classic Application
+                Load Balancers, cross-region internal Application Load
+                Balancers, and Traffic Director. \*
+                regionTargetHttpProxies are used by regional internal
+                Application Load Balancers and regional external
+                Application Load Balancers. Forwarding rules reference a
+                target HTTP proxy, and the target proxy then references
+                a URL map. For more information, read Using Target
+                Proxies and Forwarding rule concepts.
 
         """
         # Create or coerce a protobuf request object.

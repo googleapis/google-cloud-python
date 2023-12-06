@@ -1091,29 +1091,11 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
                 learn which resources support conditions in their IAM
                 policies, see the [IAM
                 documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:** { "bindings": [ { "role":
-                "roles/resourcemanager.organizationAdmin", "members": [
-                "user:mike@example.com", "group:admins@example.com",
-                "domain:google.com",
-                "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                ] }, { "role":
-                "roles/resourcemanager.organizationViewer", "members": [
-                "user:eve@example.com" ], "condition": { "title":
-                "expirable access", "description": "Does not grant
-                access after Sep 2020", "expression": "request.time <
-                timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag":
-                "BwWWja0YfJA=", "version": 3 } **YAML example:**
-                bindings: - members: - user:\ mike@example.com -
-                group:\ admins@example.com - domain:google.com -
-                serviceAccount:\ my-project-id@appspot.gserviceaccount.com
-                role: roles/resourcemanager.organizationAdmin - members:
-                - user:\ eve@example.com role:
-                roles/resourcemanager.organizationViewer condition:
-                title: expirable access description: Does not grant
-                access after Sep 2020 expression: request.time <
-                timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA=
-                version: 3 For a description of IAM and its features,
-                see the [IAM
+                **JSON example:**
+                :literal:`\` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\ \`
+                **YAML example:**
+                :literal:`\` bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3`\ \`
+                For a description of IAM and its features, see the [IAM
                 documentation](\ https://cloud.google.com/iam/docs/).
 
         """
@@ -1586,6 +1568,140 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         # Done; return the response.
         return response
 
+    def list_usable(
+        self,
+        request: Optional[
+            Union[compute.ListUsableRegionBackendServicesRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListUsablePager:
+        r"""Retrieves an aggregated list of all usable backend
+        services in the specified project in the given region.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list_usable():
+                # Create a client
+                client = compute_v1.RegionBackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListUsableRegionBackendServicesRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list_usable(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.ListUsableRegionBackendServicesRequest, dict]):
+                The request object. A request message for
+                RegionBackendServices.ListUsable. See
+                the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request. It must be a string that meets
+                the requirements in RFC1035.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.compute_v1.services.region_backend_services.pagers.ListUsablePager:
+                Contains a list of usable
+                BackendService resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, region])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.ListUsableRegionBackendServicesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.ListUsableRegionBackendServicesRequest):
+            request = compute.ListUsableRegionBackendServicesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_usable]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListUsablePager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def patch_unary(
         self,
         request: Optional[Union[compute.PatchRegionBackendServiceRequest, dict]] = None,
@@ -1997,29 +2113,11 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
                 learn which resources support conditions in their IAM
                 policies, see the [IAM
                 documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:** { "bindings": [ { "role":
-                "roles/resourcemanager.organizationAdmin", "members": [
-                "user:mike@example.com", "group:admins@example.com",
-                "domain:google.com",
-                "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                ] }, { "role":
-                "roles/resourcemanager.organizationViewer", "members": [
-                "user:eve@example.com" ], "condition": { "title":
-                "expirable access", "description": "Does not grant
-                access after Sep 2020", "expression": "request.time <
-                timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag":
-                "BwWWja0YfJA=", "version": 3 } **YAML example:**
-                bindings: - members: - user:\ mike@example.com -
-                group:\ admins@example.com - domain:google.com -
-                serviceAccount:\ my-project-id@appspot.gserviceaccount.com
-                role: roles/resourcemanager.organizationAdmin - members:
-                - user:\ eve@example.com role:
-                roles/resourcemanager.organizationViewer condition:
-                title: expirable access description: Does not grant
-                access after Sep 2020 expression: request.time <
-                timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA=
-                version: 3 For a description of IAM and its features,
-                see the [IAM
+                **JSON example:**
+                :literal:`\` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\ \`
+                **YAML example:**
+                :literal:`\` bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3`\ \`
+                For a description of IAM and its features, see the [IAM
                 documentation](\ https://cloud.google.com/iam/docs/).
 
         """
@@ -2057,6 +2155,477 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("resource", request.resource),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def set_security_policy_unary(
+        self,
+        request: Optional[
+            Union[compute.SetSecurityPolicyRegionBackendServiceRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        backend_service: Optional[str] = None,
+        security_policy_reference_resource: Optional[
+            compute.SecurityPolicyReference
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.Operation:
+        r"""Sets the Google Cloud Armor security policy for the
+        specified backend service. For more information, see
+        Google Cloud Armor Overview
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_security_policy():
+                # Create a client
+                client = compute_v1.RegionBackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetSecurityPolicyRegionBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.set_security_policy(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SetSecurityPolicyRegionBackendServiceRequest, dict]):
+                The request object. A request message for
+                RegionBackendServices.SetSecurityPolicy.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backend_service (str):
+                Name of the BackendService resource
+                to which the security policy should be
+                set. The name should conform to RFC1035.
+
+                This corresponds to the ``backend_service`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy_reference_resource (google.cloud.compute_v1.types.SecurityPolicyReference):
+                The body resource for this request
+                This corresponds to the ``security_policy_reference_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, region, backend_service, security_policy_reference_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SetSecurityPolicyRegionBackendServiceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.SetSecurityPolicyRegionBackendServiceRequest
+        ):
+            request = compute.SetSecurityPolicyRegionBackendServiceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if backend_service is not None:
+                request.backend_service = backend_service
+            if security_policy_reference_resource is not None:
+                request.security_policy_reference_resource = (
+                    security_policy_reference_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_security_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def set_security_policy(
+        self,
+        request: Optional[
+            Union[compute.SetSecurityPolicyRegionBackendServiceRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        backend_service: Optional[str] = None,
+        security_policy_reference_resource: Optional[
+            compute.SecurityPolicyReference
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Sets the Google Cloud Armor security policy for the
+        specified backend service. For more information, see
+        Google Cloud Armor Overview
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_security_policy():
+                # Create a client
+                client = compute_v1.RegionBackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetSecurityPolicyRegionBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.set_security_policy(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SetSecurityPolicyRegionBackendServiceRequest, dict]):
+                The request object. A request message for
+                RegionBackendServices.SetSecurityPolicy.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backend_service (str):
+                Name of the BackendService resource
+                to which the security policy should be
+                set. The name should conform to RFC1035.
+
+                This corresponds to the ``backend_service`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy_reference_resource (google.cloud.compute_v1.types.SecurityPolicyReference):
+                The body resource for this request
+                This corresponds to the ``security_policy_reference_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, region, backend_service, security_policy_reference_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SetSecurityPolicyRegionBackendServiceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.SetSecurityPolicyRegionBackendServiceRequest
+        ):
+            request = compute.SetSecurityPolicyRegionBackendServiceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if backend_service is not None:
+                request.backend_service = backend_service
+            if security_policy_reference_resource is not None:
+                request.security_policy_reference_resource = (
+                    security_policy_reference_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_security_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("backend_service", request.backend_service),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
+    def test_iam_permissions(
+        self,
+        request: Optional[
+            Union[compute.TestIamPermissionsRegionBackendServiceRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        resource: Optional[str] = None,
+        test_permissions_request_resource: Optional[
+            compute.TestPermissionsRequest
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.TestPermissionsResponse:
+        r"""Returns permissions that a caller has on the
+        specified resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = compute_v1.RegionBackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.TestIamPermissionsRegionBackendServiceRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsRegionBackendServiceRequest, dict]):
+                The request object. A request message for
+                RegionBackendServices.TestIamPermissions.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                The name of the region for this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            resource (str):
+                Name or id of the resource for this
+                request.
+
+                This corresponds to the ``resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            test_permissions_request_resource (google.cloud.compute_v1.types.TestPermissionsRequest):
+                The body resource for this request
+                This corresponds to the ``test_permissions_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.compute_v1.types.TestPermissionsResponse:
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, region, resource, test_permissions_request_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.TestIamPermissionsRegionBackendServiceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.TestIamPermissionsRegionBackendServiceRequest
+        ):
+            request = compute.TestIamPermissionsRegionBackendServiceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if resource is not None:
+                request.resource = resource
+            if test_permissions_request_resource is not None:
+                request.test_permissions_request_resource = (
+                    test_permissions_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

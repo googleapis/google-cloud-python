@@ -50,7 +50,8 @@ class computeCallTransformer(cst.CSTTransformer):
         'add_resource_policies': ('disk', 'disks_add_resource_policies_request_resource', 'project', 'zone', 'request_id', ),
         'add_rule': ('firewall_policy', 'firewall_policy_rule_resource', 'request_id', ),
         'add_signed_url_key': ('backend_bucket', 'project', 'signed_url_key_resource', 'request_id', ),
-        'aggregated_list': ('project', 'filter', 'include_all_scopes', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
+        'aggregated_list': ('project', 'filter', 'include_all_scopes', 'max_results', 'order_by', 'page_token', 'return_partial_success', 'service_project_number', ),
+        'announce': ('project', 'public_advertised_prefix', 'request_id', ),
         'apply_updates_to_instances': ('instance_group_manager', 'instance_group_managers_apply_updates_request_resource', 'project', 'zone', ),
         'attach_disk': ('attached_disk_resource', 'instance', 'project', 'zone', 'force_attach', 'request_id', ),
         'attach_network_endpoints': ('global_network_endpoint_groups_attach_endpoints_request_resource', 'network_endpoint_group', 'project', 'request_id', ),
@@ -80,6 +81,8 @@ class computeCallTransformer(cst.CSTTransformer):
         'get_guest_attributes': ('instance', 'project', 'zone', 'query_path', 'variable_key', ),
         'get_health': ('backend_service', 'project', 'resource_group_reference_resource', ),
         'get_iam_policy': ('project', 'resource', 'options_requested_policy_version', ),
+        'get_macsec_config': ('interconnect', 'project', ),
+        'get_nat_ip_info': ('project', 'region', 'router', 'nat_name', ),
         'get_nat_mapping_info': ('project', 'region', 'router', 'filter', 'max_results', 'nat_name', 'order_by', 'page_token', 'return_partial_success', ),
         'get_router_status': ('project', 'region', 'router', ),
         'get_rule': ('firewall_policy', 'priority', ),
@@ -165,7 +168,7 @@ class computeCallTransformer(cst.CSTTransformer):
         'stop_group_async_replication': ('disks_stop_group_async_replication_resource_resource', 'project', 'zone', 'request_id', ),
         'suspend': ('instance', 'project', 'zone', 'discard_local_ssd', 'request_id', ),
         'switch_to_custom_mode': ('network', 'project', 'request_id', ),
-        'test_iam_permissions': ('project', 'resource', 'test_permissions_request_resource', 'zone', ),
+        'test_iam_permissions': ('project', 'resource', 'test_permissions_request_resource', ),
         'update': ('autoscaler_resource', 'project', 'zone', 'autoscaler', 'request_id', ),
         'update_access_config': ('access_config_resource', 'instance', 'network_interface', 'project', 'zone', 'request_id', ),
         'update_display_device': ('display_device_resource', 'instance', 'project', 'zone', 'request_id', ),
@@ -175,6 +178,7 @@ class computeCallTransformer(cst.CSTTransformer):
         'update_shielded_instance_config': ('instance', 'project', 'shielded_instance_config_resource', 'zone', 'request_id', ),
         'validate': ('project', 'region', 'region_url_maps_validate_request_resource', 'url_map', ),
         'wait': ('operation', 'project', ),
+        'withdraw': ('project', 'public_advertised_prefix', 'request_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

@@ -87,6 +87,14 @@ class InterconnectsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_macsec_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_macsec_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -183,6 +191,29 @@ class InterconnectsRestInterceptor:
         self, response: compute.InterconnectsGetDiagnosticsResponse
     ) -> compute.InterconnectsGetDiagnosticsResponse:
         """Post-rpc interceptor for get_diagnostics
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Interconnects server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_macsec_config(
+        self,
+        request: compute.GetMacsecConfigInterconnectRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.GetMacsecConfigInterconnectRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_macsec_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Interconnects server.
+        """
+        return request, metadata
+
+    def post_get_macsec_config(
+        self, response: compute.InterconnectsGetMacsecConfigResponse
+    ) -> compute.InterconnectsGetMacsecConfigResponse:
+        """Post-rpc interceptor for get_macsec_config
 
         Override in a subclass to manipulate the response
         after it is returned by the Interconnects server but before
@@ -428,7 +459,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -659,6 +690,96 @@ class InterconnectsRestTransport(InterconnectsTransport):
             resp = self._interceptor.post_get_diagnostics(resp)
             return resp
 
+    class _GetMacsecConfig(InterconnectsRestStub):
+        def __hash__(self):
+            return hash("GetMacsecConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.GetMacsecConfigInterconnectRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.InterconnectsGetMacsecConfigResponse:
+            r"""Call the get macsec config method over HTTP.
+
+            Args:
+                request (~.compute.GetMacsecConfigInterconnectRequest):
+                    The request object. A request message for
+                Interconnects.GetMacsecConfig. See the
+                method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.InterconnectsGetMacsecConfigResponse:
+                    Response for the
+                InterconnectsGetMacsecConfigRequest.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/global/interconnects/{interconnect}/getMacsecConfig",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_macsec_config(
+                request, metadata
+            )
+            pb_request = compute.GetMacsecConfigInterconnectRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.InterconnectsGetMacsecConfigResponse()
+            pb_resp = compute.InterconnectsGetMacsecConfigResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_macsec_config(resp)
+            return resp
+
     class _Insert(InterconnectsRestStub):
         def __hash__(self):
             return hash("Insert")
@@ -709,7 +830,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -907,7 +1028,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1017,7 +1138,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1101,6 +1222,17 @@ class InterconnectsRestTransport(InterconnectsTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDiagnostics(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_macsec_config(
+        self,
+    ) -> Callable[
+        [compute.GetMacsecConfigInterconnectRequest],
+        compute.InterconnectsGetMacsecConfigResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetMacsecConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(

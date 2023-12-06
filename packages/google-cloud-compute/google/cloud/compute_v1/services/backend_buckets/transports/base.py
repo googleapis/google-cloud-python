@@ -147,6 +147,11 @@ class BackendBucketsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_iam_policy: gapic_v1.method.wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
                 default_timeout=None,
@@ -164,6 +169,16 @@ class BackendBucketsTransport(abc.ABC):
             ),
             self.set_edge_security_policy: gapic_v1.method.wrap_method(
                 self.set_edge_security_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method.wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: gapic_v1.method.wrap_method(
+                self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -220,6 +235,15 @@ class BackendBucketsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.GetIamPolicyBackendBucketRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def insert(
         self,
     ) -> Callable[
@@ -252,6 +276,26 @@ class BackendBucketsTransport(abc.ABC):
     ) -> Callable[
         [compute.SetEdgeSecurityPolicyBackendBucketRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.SetIamPolicyBackendBucketRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [compute.TestIamPermissionsBackendBucketRequest],
+        Union[
+            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
+        ],
     ]:
         raise NotImplementedError()
 

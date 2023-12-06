@@ -127,6 +127,11 @@ class PublicAdvertisedPrefixesTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.announce: gapic_v1.method.wrap_method(
+                self.announce,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
                 default_timeout=None,
@@ -152,6 +157,11 @@ class PublicAdvertisedPrefixesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.withdraw: gapic_v1.method.wrap_method(
+                self.withdraw,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -161,6 +171,15 @@ class PublicAdvertisedPrefixesTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def announce(
+        self,
+    ) -> Callable[
+        [compute.AnnouncePublicAdvertisedPrefixeRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
@@ -209,6 +228,15 @@ class PublicAdvertisedPrefixesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.PatchPublicAdvertisedPrefixeRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def withdraw(
+        self,
+    ) -> Callable[
+        [compute.WithdrawPublicAdvertisedPrefixeRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
