@@ -17,11 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import any_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.compute.v1",
     manifest={
+        "AWSV4Signature",
         "AbandonInstancesInstanceGroupManagerRequest",
         "AbandonInstancesRegionInstanceGroupManagerRequest",
         "AcceleratorConfig",
@@ -46,6 +48,7 @@ __protobuf__ = proto.module(
         "AddRuleFirewallPolicyRequest",
         "AddRuleNetworkFirewallPolicyRequest",
         "AddRuleRegionNetworkFirewallPolicyRequest",
+        "AddRuleRegionSecurityPolicyRequest",
         "AddRuleSecurityPolicyRequest",
         "AddSignedUrlKeyBackendBucketRequest",
         "AddSignedUrlKeyBackendServiceRequest",
@@ -102,11 +105,14 @@ __protobuf__ = proto.module(
         "AllocationSpecificSKUAllocationReservedInstanceProperties",
         "AllocationSpecificSKUReservation",
         "Allowed",
+        "AnnouncePublicAdvertisedPrefixeRequest",
+        "AnnouncePublicDelegatedPrefixeRequest",
         "ApplyUpdatesToInstancesInstanceGroupManagerRequest",
         "ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest",
         "AttachDiskInstanceRequest",
         "AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest",
         "AttachNetworkEndpointsNetworkEndpointGroupRequest",
+        "AttachNetworkEndpointsRegionNetworkEndpointGroupRequest",
         "AttachedDisk",
         "AttachedDiskInitializeParams",
         "AuditConfig",
@@ -140,11 +146,13 @@ __protobuf__ = proto.module(
         "BackendServiceGroupHealth",
         "BackendServiceIAP",
         "BackendServiceList",
+        "BackendServiceListUsable",
         "BackendServiceLocalityLoadBalancingPolicyConfig",
         "BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy",
         "BackendServiceLocalityLoadBalancingPolicyConfigPolicy",
         "BackendServiceLogConfig",
         "BackendServiceReference",
+        "BackendServiceUsedBy",
         "BackendServicesScopedList",
         "BfdPacket",
         "BfdStatus",
@@ -155,6 +163,7 @@ __protobuf__ = proto.module(
         "BulkInsertInstanceRequest",
         "BulkInsertInstanceResource",
         "BulkInsertInstanceResourcePerInstanceProperties",
+        "BulkInsertOperationStatus",
         "BulkInsertRegionDiskRequest",
         "BulkInsertRegionInstanceRequest",
         "CacheInvalidationRule",
@@ -273,6 +282,7 @@ __protobuf__ = proto.module(
         "DetachDiskInstanceRequest",
         "DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest",
         "DetachNetworkEndpointsNetworkEndpointGroupRequest",
+        "DetachNetworkEndpointsRegionNetworkEndpointGroupRequest",
         "DisableXpnHostProjectRequest",
         "DisableXpnResourceProjectRequest",
         "Disk",
@@ -362,6 +372,7 @@ __protobuf__ = proto.module(
         "GetHealthCheckRequest",
         "GetHealthRegionBackendServiceRequest",
         "GetHealthTargetPoolRequest",
+        "GetIamPolicyBackendBucketRequest",
         "GetIamPolicyBackendServiceRequest",
         "GetIamPolicyDiskRequest",
         "GetIamPolicyFirewallPolicyRequest",
@@ -396,6 +407,8 @@ __protobuf__ = proto.module(
         "GetLicenseRequest",
         "GetMachineImageRequest",
         "GetMachineTypeRequest",
+        "GetMacsecConfigInterconnectRequest",
+        "GetNatIpInfoRouterRequest",
         "GetNatMappingInfoRoutersRequest",
         "GetNetworkAttachmentRequest",
         "GetNetworkEdgeSecurityServiceRequest",
@@ -439,6 +452,7 @@ __protobuf__ = proto.module(
         "GetRuleFirewallPolicyRequest",
         "GetRuleNetworkFirewallPolicyRequest",
         "GetRuleRegionNetworkFirewallPolicyRequest",
+        "GetRuleRegionSecurityPolicyRequest",
         "GetRuleSecurityPolicyRequest",
         "GetScreenshotInstanceRequest",
         "GetSecurityPolicyRequest",
@@ -446,6 +460,7 @@ __protobuf__ = proto.module(
         "GetServiceAttachmentRequest",
         "GetShieldedInstanceIdentityInstanceRequest",
         "GetSnapshotRequest",
+        "GetSnapshotSettingRequest",
         "GetSslCertificateRequest",
         "GetSslPolicyRequest",
         "GetStatusVpnGatewayRequest",
@@ -634,6 +649,7 @@ __protobuf__ = proto.module(
         "InstanceTemplatesScopedList",
         "InstanceWithNamedPorts",
         "InstancesAddResourcePoliciesRequest",
+        "InstancesBulkInsertOperationMetadata",
         "InstancesGetEffectiveFirewallsResponse",
         "InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy",
         "InstancesRemoveResourcePoliciesRequest",
@@ -643,6 +659,7 @@ __protobuf__ = proto.module(
         "InstancesSetMachineTypeRequest",
         "InstancesSetMinCpuPlatformRequest",
         "InstancesSetNameRequest",
+        "InstancesSetSecurityPolicyRequest",
         "InstancesSetServiceAccountRequest",
         "InstancesStartWithEncryptionKeyRequest",
         "Int64RangeMatch",
@@ -661,10 +678,15 @@ __protobuf__ = proto.module(
         "InterconnectDiagnosticsLinkLACPStatus",
         "InterconnectDiagnosticsLinkOpticalPower",
         "InterconnectDiagnosticsLinkStatus",
+        "InterconnectDiagnosticsMacsecStatus",
         "InterconnectList",
         "InterconnectLocation",
         "InterconnectLocationList",
         "InterconnectLocationRegionInfo",
+        "InterconnectMacsec",
+        "InterconnectMacsecConfig",
+        "InterconnectMacsecConfigPreSharedKey",
+        "InterconnectMacsecPreSharedKey",
         "InterconnectOutageNotification",
         "InterconnectRemoteLocation",
         "InterconnectRemoteLocationConstraints",
@@ -672,6 +694,7 @@ __protobuf__ = proto.module(
         "InterconnectRemoteLocationList",
         "InterconnectRemoteLocationPermittedConnections",
         "InterconnectsGetDiagnosticsResponse",
+        "InterconnectsGetMacsecConfigResponse",
         "InvalidateCacheUrlMapRequest",
         "Items",
         "License",
@@ -723,6 +746,7 @@ __protobuf__ = proto.module(
         "ListNetworkEndpointGroupsRequest",
         "ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest",
         "ListNetworkEndpointsNetworkEndpointGroupsRequest",
+        "ListNetworkEndpointsRegionNetworkEndpointGroupsRequest",
         "ListNetworkFirewallPoliciesRequest",
         "ListNetworksRequest",
         "ListNodeGroupsRequest",
@@ -778,6 +802,8 @@ __protobuf__ = proto.module(
         "ListTargetTcpProxiesRequest",
         "ListTargetVpnGatewaysRequest",
         "ListUrlMapsRequest",
+        "ListUsableBackendServicesRequest",
+        "ListUsableRegionBackendServicesRequest",
         "ListUsableSubnetworksRequest",
         "ListVpnGatewaysRequest",
         "ListVpnTunnelsRequest",
@@ -813,6 +839,9 @@ __protobuf__ = proto.module(
         "MoveGlobalAddressRequest",
         "MoveInstanceProjectRequest",
         "NamedPort",
+        "NatIpInfo",
+        "NatIpInfoNatIpInfoMapping",
+        "NatIpInfoResponse",
         "Network",
         "NetworkAttachment",
         "NetworkAttachmentAggregatedList",
@@ -899,6 +928,7 @@ __protobuf__ = proto.module(
         "PatchInstanceGroupManagerRequest",
         "PatchInterconnectAttachmentRequest",
         "PatchInterconnectRequest",
+        "PatchNetworkAttachmentRequest",
         "PatchNetworkEdgeSecurityServiceRequest",
         "PatchNetworkFirewallPolicyRequest",
         "PatchNetworkRequest",
@@ -923,9 +953,11 @@ __protobuf__ = proto.module(
         "PatchRuleFirewallPolicyRequest",
         "PatchRuleNetworkFirewallPolicyRequest",
         "PatchRuleRegionNetworkFirewallPolicyRequest",
+        "PatchRuleRegionSecurityPolicyRequest",
         "PatchRuleSecurityPolicyRequest",
         "PatchSecurityPolicyRequest",
         "PatchServiceAttachmentRequest",
+        "PatchSnapshotSettingRequest",
         "PatchSslPolicyRequest",
         "PatchSubnetworkRequest",
         "PatchTargetGrpcProxyRequest",
@@ -939,6 +971,8 @@ __protobuf__ = proto.module(
         "PreconfiguredWafSet",
         "PreservedState",
         "PreservedStatePreservedDisk",
+        "PreservedStatePreservedNetworkIp",
+        "PreservedStatePreservedNetworkIpIpAddress",
         "PreviewRouterRequest",
         "Project",
         "ProjectsDisableXpnResourceRequest",
@@ -987,6 +1021,8 @@ __protobuf__ = proto.module(
         "RegionInstanceGroupsListInstancesRequest",
         "RegionInstanceGroupsSetNamedPortsRequest",
         "RegionList",
+        "RegionNetworkEndpointGroupsAttachEndpointsRequest",
+        "RegionNetworkEndpointGroupsDetachEndpointsRequest",
         "RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse",
         "RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFirewallPolicy",
         "RegionSetLabelsRequest",
@@ -1006,6 +1042,7 @@ __protobuf__ = proto.module(
         "RemoveRuleFirewallPolicyRequest",
         "RemoveRuleNetworkFirewallPolicyRequest",
         "RemoveRuleRegionNetworkFirewallPolicyRequest",
+        "RemoveRuleRegionSecurityPolicyRequest",
         "RemoveRuleSecurityPolicyRequest",
         "RequestMirrorPolicy",
         "Reservation",
@@ -1083,6 +1120,7 @@ __protobuf__ = proto.module(
         "SecurityPolicy",
         "SecurityPolicyAdaptiveProtectionConfig",
         "SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig",
+        "SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig",
         "SecurityPolicyAdvancedOptionsConfig",
         "SecurityPolicyAdvancedOptionsConfigJsonCustomConfig",
         "SecurityPolicyDdosProtectionConfig",
@@ -1094,6 +1132,8 @@ __protobuf__ = proto.module(
         "SecurityPolicyRuleHttpHeaderActionHttpHeaderOption",
         "SecurityPolicyRuleMatcher",
         "SecurityPolicyRuleMatcherConfig",
+        "SecurityPolicyRuleNetworkMatcher",
+        "SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch",
         "SecurityPolicyRulePreconfiguredWafConfig",
         "SecurityPolicyRulePreconfiguredWafConfigExclusion",
         "SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams",
@@ -1101,6 +1141,7 @@ __protobuf__ = proto.module(
         "SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig",
         "SecurityPolicyRuleRateLimitOptionsThreshold",
         "SecurityPolicyRuleRedirectOptions",
+        "SecurityPolicyUserDefinedField",
         "SecuritySettings",
         "SendDiagnosticInterruptInstanceRequest",
         "SendDiagnosticInterruptInstanceResponse",
@@ -1118,12 +1159,15 @@ __protobuf__ = proto.module(
         "SetBackupTargetPoolRequest",
         "SetCertificateMapTargetHttpsProxyRequest",
         "SetCertificateMapTargetSslProxyRequest",
+        "SetCommonInstanceMetadataOperationMetadata",
+        "SetCommonInstanceMetadataOperationMetadataPerLocationOperationInfo",
         "SetCommonInstanceMetadataProjectRequest",
         "SetDefaultNetworkTierProjectRequest",
         "SetDeletionProtectionInstanceRequest",
         "SetDiskAutoDeleteInstanceRequest",
         "SetEdgeSecurityPolicyBackendBucketRequest",
         "SetEdgeSecurityPolicyBackendServiceRequest",
+        "SetIamPolicyBackendBucketRequest",
         "SetIamPolicyBackendServiceRequest",
         "SetIamPolicyDiskRequest",
         "SetIamPolicyFirewallPolicyRequest",
@@ -1176,6 +1220,10 @@ __protobuf__ = proto.module(
         "SetQuicOverrideTargetHttpsProxyRequest",
         "SetSchedulingInstanceRequest",
         "SetSecurityPolicyBackendServiceRequest",
+        "SetSecurityPolicyInstanceRequest",
+        "SetSecurityPolicyRegionBackendServiceRequest",
+        "SetSecurityPolicyTargetInstanceRequest",
+        "SetSecurityPolicyTargetPoolRequest",
         "SetServiceAccountInstanceRequest",
         "SetShieldedInstanceIntegrityPolicyInstanceRequest",
         "SetSslCertificatesRegionTargetHttpsProxyRequest",
@@ -1204,6 +1252,9 @@ __protobuf__ = proto.module(
         "SimulateMaintenanceEventNodeGroupRequest",
         "Snapshot",
         "SnapshotList",
+        "SnapshotSettings",
+        "SnapshotSettingsStorageLocationSettings",
+        "SnapshotSettingsStorageLocationSettingsStorageLocationPreference",
         "SourceDiskEncryptionKey",
         "SourceInstanceParams",
         "SourceInstanceProperties",
@@ -1226,6 +1277,8 @@ __protobuf__ = proto.module(
         "StatefulPolicy",
         "StatefulPolicyPreservedState",
         "StatefulPolicyPreservedStateDiskDevice",
+        "StatefulPolicyPreservedStateNetworkIp",
+        "Status",
         "StopAsyncReplicationDiskRequest",
         "StopAsyncReplicationRegionDiskRequest",
         "StopGroupAsyncReplicationDiskRequest",
@@ -1288,6 +1341,8 @@ __protobuf__ = proto.module(
         "TargetVpnGatewayList",
         "TargetVpnGatewaysScopedList",
         "TestFailure",
+        "TestIamPermissionsBackendBucketRequest",
+        "TestIamPermissionsBackendServiceRequest",
         "TestIamPermissionsDiskRequest",
         "TestIamPermissionsExternalVpnGatewayRequest",
         "TestIamPermissionsFirewallPolicyRequest",
@@ -1303,6 +1358,7 @@ __protobuf__ = proto.module(
         "TestIamPermissionsNodeGroupRequest",
         "TestIamPermissionsNodeTemplateRequest",
         "TestIamPermissionsPacketMirroringRequest",
+        "TestIamPermissionsRegionBackendServiceRequest",
         "TestIamPermissionsRegionDiskRequest",
         "TestIamPermissionsRegionNetworkFirewallPolicyRequest",
         "TestIamPermissionsReservationRequest",
@@ -1314,6 +1370,7 @@ __protobuf__ = proto.module(
         "TestPermissionsRequest",
         "TestPermissionsResponse",
         "Uint128",
+        "UpcomingMaintenance",
         "UpdateAccessConfigInstanceRequest",
         "UpdateAutoscalerRequest",
         "UpdateBackendBucketRequest",
@@ -1380,6 +1437,8 @@ __protobuf__ = proto.module(
         "Warning",
         "Warnings",
         "WeightedBackendService",
+        "WithdrawPublicAdvertisedPrefixeRequest",
+        "WithdrawPublicDelegatedPrefixeRequest",
         "XpnHostList",
         "XpnResourceId",
         "Zone",
@@ -1390,10 +1449,72 @@ __protobuf__ = proto.module(
 )
 
 
-class AbandonInstancesInstanceGroupManagerRequest(proto.Message):
+class AWSV4Signature(proto.Message):
     r"""Messages
 
-    A request message for InstanceGroupManagers.AbandonInstances.
+    Contains the configurations necessary to generate a signature
+    for access to private storage buckets that support Signature
+    Version 4 for authentication. The service name for generating
+    the authentication header will always default to 's3'.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        access_key (str):
+            The access key used for s3 bucket
+            authentication. Required for updating or
+            creating a backend that uses AWS v4 signature
+            authentication, but will not be returned as part
+            of the configuration when queried with a REST
+            API GET request. @InputOnly
+
+            This field is a member of `oneof`_ ``_access_key``.
+        access_key_id (str):
+            The identifier of an access key used for s3
+            bucket authentication.
+
+            This field is a member of `oneof`_ ``_access_key_id``.
+        access_key_version (str):
+            The optional version identifier for the
+            access key. You can use this to keep track of
+            different iterations of your access key.
+
+            This field is a member of `oneof`_ ``_access_key_version``.
+        origin_region (str):
+            The name of the cloud region of your origin.
+            This is a free-form field with the name of the
+            region your cloud uses to host your origin. For
+            example, "us-east-1" for AWS or "us-ashburn-1"
+            for OCI.
+
+            This field is a member of `oneof`_ ``_origin_region``.
+    """
+
+    access_key: str = proto.Field(
+        proto.STRING,
+        number=468922628,
+        optional=True,
+    )
+    access_key_id: str = proto.Field(
+        proto.STRING,
+        number=292975158,
+        optional=True,
+    )
+    access_key_version: str = proto.Field(
+        proto.STRING,
+        number=80261277,
+        optional=True,
+    )
+    origin_region: str = proto.Field(
+        proto.STRING,
+        number=265305645,
+        optional=True,
+    )
+
+
+class AbandonInstancesInstanceGroupManagerRequest(proto.Message):
+    r"""A request message for InstanceGroupManagers.AbandonInstances.
     See the method description for details.
 
 
@@ -1948,6 +2069,11 @@ class AccessConfig(proto.Message):
             first IP in associated external IPv6 range.
 
             This field is a member of `oneof`_ ``_public_ptr_domain_name``.
+        security_policy (str):
+            [Output Only] The resource URL for the security policy
+            associated with this access config.
+
+            This field is a member of `oneof`_ ``_security_policy``.
         set_public_ptr (bool):
             Specifies whether a public DNS 'PTR' record
             should be created to map the external IP address
@@ -2049,6 +2175,11 @@ class AccessConfig(proto.Message):
     public_ptr_domain_name: str = proto.Field(
         proto.STRING,
         number=316599167,
+        optional=True,
+    )
+    security_policy: str = proto.Field(
+        proto.STRING,
+        number=171082513,
         optional=True,
     )
     set_public_ptr: bool = proto.Field(
@@ -3024,6 +3155,52 @@ class AddRuleRegionNetworkFirewallPolicyRequest(proto.Message):
     )
 
 
+class AddRuleRegionSecurityPolicyRequest(proto.Message):
+    r"""A request message for RegionSecurityPolicies.AddRule. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region scoping this request.
+        security_policy (str):
+            Name of the security policy to update.
+        security_policy_rule_resource (google.cloud.compute_v1.types.SecurityPolicyRule):
+            The body resource for this request
+        validate_only (bool):
+            If true, the request will not be committed.
+
+            This field is a member of `oneof`_ ``_validate_only``.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    security_policy: str = proto.Field(
+        proto.STRING,
+        number=171082513,
+    )
+    security_policy_rule_resource: "SecurityPolicyRule" = proto.Field(
+        proto.MESSAGE,
+        number=402693443,
+        message="SecurityPolicyRule",
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=242744629,
+        optional=True,
+    )
+
+
 class AddRuleSecurityPolicyRequest(proto.Message):
     r"""A request message for SecurityPolicies.AddRule. See the
     method description for details.
@@ -3890,16 +4067,15 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -3926,7 +4102,8 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -3978,6 +4155,9 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -4012,6 +4192,11 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -4029,16 +4214,15 @@ class AggregatedListAddressesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -4065,7 +4249,8 @@ class AggregatedListAddressesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4117,6 +4302,9 @@ class AggregatedListAddressesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -4151,6 +4339,11 @@ class AggregatedListAddressesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -4168,16 +4361,15 @@ class AggregatedListAutoscalersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -4204,7 +4396,8 @@ class AggregatedListAutoscalersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4256,6 +4449,9 @@ class AggregatedListAutoscalersRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -4290,6 +4486,11 @@ class AggregatedListAutoscalersRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -4307,16 +4508,15 @@ class AggregatedListBackendServicesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -4343,7 +4543,8 @@ class AggregatedListBackendServicesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4395,6 +4596,9 @@ class AggregatedListBackendServicesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -4429,6 +4633,11 @@ class AggregatedListBackendServicesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -4446,16 +4655,15 @@ class AggregatedListDiskTypesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -4482,7 +4690,8 @@ class AggregatedListDiskTypesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4534,6 +4743,9 @@ class AggregatedListDiskTypesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -4568,6 +4780,11 @@ class AggregatedListDiskTypesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -4585,16 +4802,15 @@ class AggregatedListDisksRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -4621,7 +4837,8 @@ class AggregatedListDisksRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4673,6 +4890,9 @@ class AggregatedListDisksRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -4707,6 +4927,11 @@ class AggregatedListDisksRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -4724,16 +4949,15 @@ class AggregatedListForwardingRulesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -4760,7 +4984,8 @@ class AggregatedListForwardingRulesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4812,6 +5037,9 @@ class AggregatedListForwardingRulesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -4846,6 +5074,11 @@ class AggregatedListForwardingRulesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -4863,16 +5096,15 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -4899,7 +5131,8 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -4951,6 +5184,9 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -4985,6 +5221,11 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -5002,16 +5243,15 @@ class AggregatedListHealthChecksRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -5038,7 +5278,8 @@ class AggregatedListHealthChecksRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5090,6 +5331,9 @@ class AggregatedListHealthChecksRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -5124,6 +5368,11 @@ class AggregatedListHealthChecksRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -5141,16 +5390,15 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -5177,7 +5425,8 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5229,6 +5478,9 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -5263,6 +5515,11 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -5280,16 +5537,15 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -5316,7 +5572,8 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5368,6 +5625,9 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -5404,6 +5664,11 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
         number=517198390,
         optional=True,
     )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
+        optional=True,
+    )
 
 
 class AggregatedListInstanceTemplatesRequest(proto.Message):
@@ -5419,16 +5684,15 @@ class AggregatedListInstanceTemplatesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -5455,7 +5719,8 @@ class AggregatedListInstanceTemplatesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5507,6 +5772,9 @@ class AggregatedListInstanceTemplatesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -5541,6 +5809,11 @@ class AggregatedListInstanceTemplatesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -5558,16 +5831,15 @@ class AggregatedListInstancesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -5594,7 +5866,8 @@ class AggregatedListInstancesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5646,6 +5919,9 @@ class AggregatedListInstancesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -5680,6 +5956,11 @@ class AggregatedListInstancesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -5697,16 +5978,15 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -5733,7 +6013,8 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5785,6 +6066,9 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -5819,6 +6103,11 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -5836,16 +6125,15 @@ class AggregatedListMachineTypesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -5872,7 +6160,8 @@ class AggregatedListMachineTypesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -5924,6 +6213,9 @@ class AggregatedListMachineTypesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -5958,6 +6250,11 @@ class AggregatedListMachineTypesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -5975,16 +6272,15 @@ class AggregatedListNetworkAttachmentsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -6011,7 +6307,8 @@ class AggregatedListNetworkAttachmentsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6063,6 +6360,9 @@ class AggregatedListNetworkAttachmentsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -6097,6 +6397,11 @@ class AggregatedListNetworkAttachmentsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -6115,16 +6420,15 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -6151,7 +6455,8 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6203,6 +6508,9 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -6237,6 +6545,11 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -6254,16 +6567,15 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -6290,7 +6602,8 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6342,6 +6655,9 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -6376,6 +6692,11 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -6393,16 +6714,15 @@ class AggregatedListNodeGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -6429,7 +6749,8 @@ class AggregatedListNodeGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6481,6 +6802,9 @@ class AggregatedListNodeGroupsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -6515,6 +6839,11 @@ class AggregatedListNodeGroupsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -6532,16 +6861,15 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -6568,7 +6896,8 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6620,6 +6949,9 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -6654,6 +6986,11 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -6671,16 +7008,15 @@ class AggregatedListNodeTypesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -6707,7 +7043,8 @@ class AggregatedListNodeTypesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6759,6 +7096,9 @@ class AggregatedListNodeTypesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -6793,6 +7133,11 @@ class AggregatedListNodeTypesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -6810,16 +7155,15 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -6846,7 +7190,8 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -6898,6 +7243,9 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -6932,6 +7280,11 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -6949,16 +7302,15 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -6985,7 +7337,8 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7037,6 +7390,9 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -7071,6 +7427,11 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -7088,16 +7449,15 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -7124,7 +7484,8 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7176,6 +7537,9 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -7210,6 +7574,11 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -7227,16 +7596,15 @@ class AggregatedListReservationsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -7263,7 +7631,8 @@ class AggregatedListReservationsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7315,6 +7684,9 @@ class AggregatedListReservationsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -7349,6 +7721,11 @@ class AggregatedListReservationsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -7366,16 +7743,15 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -7402,7 +7778,8 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7454,6 +7831,9 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -7488,6 +7868,11 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -7505,16 +7890,15 @@ class AggregatedListRoutersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -7541,7 +7925,8 @@ class AggregatedListRoutersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7593,6 +7978,9 @@ class AggregatedListRoutersRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -7627,6 +8015,11 @@ class AggregatedListRoutersRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -7644,16 +8037,15 @@ class AggregatedListSecurityPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -7680,7 +8072,8 @@ class AggregatedListSecurityPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7732,6 +8125,9 @@ class AggregatedListSecurityPoliciesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -7766,6 +8162,11 @@ class AggregatedListSecurityPoliciesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -7783,16 +8184,15 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -7819,7 +8219,8 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -7871,6 +8272,9 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -7905,6 +8309,11 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -7922,16 +8331,15 @@ class AggregatedListSslCertificatesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -7958,7 +8366,8 @@ class AggregatedListSslCertificatesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -8010,6 +8419,9 @@ class AggregatedListSslCertificatesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -8044,6 +8456,11 @@ class AggregatedListSslCertificatesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -8061,16 +8478,15 @@ class AggregatedListSslPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -8097,7 +8513,8 @@ class AggregatedListSslPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -8149,6 +8566,9 @@ class AggregatedListSslPoliciesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -8183,6 +8603,11 @@ class AggregatedListSslPoliciesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -8200,16 +8625,15 @@ class AggregatedListSubnetworksRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -8236,7 +8660,8 @@ class AggregatedListSubnetworksRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -8288,6 +8713,9 @@ class AggregatedListSubnetworksRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -8322,6 +8750,11 @@ class AggregatedListSubnetworksRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -8339,16 +8772,15 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -8375,7 +8807,8 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -8427,6 +8860,9 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -8461,6 +8897,11 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -8478,16 +8919,15 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -8514,7 +8954,8 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -8566,6 +9007,9 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -8600,6 +9044,11 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -8617,16 +9066,15 @@ class AggregatedListTargetInstancesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -8653,7 +9101,8 @@ class AggregatedListTargetInstancesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -8705,6 +9154,9 @@ class AggregatedListTargetInstancesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -8739,6 +9191,11 @@ class AggregatedListTargetInstancesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -8756,16 +9213,15 @@ class AggregatedListTargetPoolsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -8792,7 +9248,8 @@ class AggregatedListTargetPoolsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -8844,6 +9301,9 @@ class AggregatedListTargetPoolsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -8878,6 +9338,11 @@ class AggregatedListTargetPoolsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -8895,16 +9360,15 @@ class AggregatedListTargetTcpProxiesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -8931,7 +9395,8 @@ class AggregatedListTargetTcpProxiesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -8983,6 +9448,9 @@ class AggregatedListTargetTcpProxiesRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -9017,6 +9485,11 @@ class AggregatedListTargetTcpProxiesRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -9034,16 +9507,15 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -9070,7 +9542,8 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -9122,6 +9595,9 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -9158,6 +9634,11 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
         number=517198390,
         optional=True,
     )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
+        optional=True,
+    )
 
 
 class AggregatedListUrlMapsRequest(proto.Message):
@@ -9173,16 +9654,15 @@ class AggregatedListUrlMapsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -9209,7 +9689,8 @@ class AggregatedListUrlMapsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -9261,6 +9742,9 @@ class AggregatedListUrlMapsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -9295,6 +9779,11 @@ class AggregatedListUrlMapsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -9312,16 +9801,15 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -9348,7 +9836,8 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -9400,6 +9889,9 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -9434,6 +9926,11 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -9451,16 +9948,15 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -9487,7 +9983,8 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         include_all_scopes (bool):
@@ -9539,6 +10036,9 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
             default value is false.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+
+            This field is a member of `oneof`_ ``_service_project_number``.
     """
 
     filter: str = proto.Field(
@@ -9573,6 +10073,11 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
     return_partial_success: bool = proto.Field(
         proto.BOOL,
         number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
         optional=True,
     )
 
@@ -9879,6 +10384,110 @@ class Allowed(proto.Message):
     )
 
 
+class AnnouncePublicAdvertisedPrefixeRequest(proto.Message):
+    r"""A request message for PublicAdvertisedPrefixes.Announce. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_advertised_prefix (str):
+            The name of the public advertised prefix. It
+            should comply with RFC1035.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    public_advertised_prefix: str = proto.Field(
+        proto.STRING,
+        number=101874590,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
+class AnnouncePublicDelegatedPrefixeRequest(proto.Message):
+    r"""A request message for PublicDelegatedPrefixes.Announce. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_delegated_prefix (str):
+            The name of the public delegated prefix. It
+            should comply with RFC1035.
+        region (str):
+            The name of the region where the public
+            delegated prefix is located. It should comply
+            with RFC1035.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    public_delegated_prefix: str = proto.Field(
+        proto.STRING,
+        number=204238440,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
 class ApplyUpdatesToInstancesInstanceGroupManagerRequest(proto.Message):
     r"""A request message for
     InstanceGroupManagers.ApplyUpdatesToInstances. See the method
@@ -10145,6 +10754,71 @@ class AttachNetworkEndpointsNetworkEndpointGroupRequest(proto.Message):
     zone: str = proto.Field(
         proto.STRING,
         number=3744684,
+    )
+
+
+class AttachNetworkEndpointsRegionNetworkEndpointGroupRequest(proto.Message):
+    r"""A request message for
+    RegionNetworkEndpointGroups.AttachNetworkEndpoints. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        network_endpoint_group (str):
+            The name of the network endpoint group where
+            you are attaching network endpoints to. It
+            should comply with RFC1035.
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region where you want to
+            create the network endpoint group. It should
+            comply with RFC1035.
+        region_network_endpoint_groups_attach_endpoints_request_resource (google.cloud.compute_v1.types.RegionNetworkEndpointGroupsAttachEndpointsRequest):
+            The body resource for this request
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    network_endpoint_group: str = proto.Field(
+        proto.STRING,
+        number=433907078,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    region_network_endpoint_groups_attach_endpoints_request_resource: "RegionNetworkEndpointGroupsAttachEndpointsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=334986492,
+        message="RegionNetworkEndpointGroupsAttachEndpointsRequest",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
     )
 
 
@@ -10591,8 +11265,7 @@ class AttachedDiskInitializeParams(proto.Message):
             with the instance. Specify the URLs of the zones
             where the disk should be replicated to. You must
             provide exactly two replica zones, and one zone
-            must be the same as the instance zone. You can't
-            use this option with boot disks.
+            must be the same as the instance zone.
         resource_manager_tags (MutableMapping[str, str]):
             Resource manager tags to be bound to the disk. Tag keys and
             values have the same definition as resource manager tags.
@@ -12056,8 +12729,8 @@ class AutoscalingPolicyScalingSchedule(proto.Message):
         time_zone (str):
             The time zone to use when interpreting the schedule. The
             value of this field must be a time zone name from the tz
-            database: http://en.wikipedia.org/wiki/Tz_database. This
-            field is assigned a default value of “UTC” if left empty.
+            database: https://en.wikipedia.org/wiki/Tz_database. This
+            field is assigned a default value of "UTC" if left empty.
 
             This field is a member of `oneof`_ ``_time_zone``.
     """
@@ -13088,9 +13761,10 @@ class BackendService(proto.Message):
             service_protocol set to HTTP, HTTPS, or HTTP2, and
             load_balancing_scheme set to INTERNAL_MANAGED. - A global
             backend service with the load_balancing_scheme set to
-            INTERNAL_SELF_MANAGED. If sessionAffinity is not NONE, and
-            this field is not set to MAGLEV or RING_HASH, session
-            affinity settings will not take effect. Only ROUND_ROBIN and
+            INTERNAL_SELF_MANAGED, INTERNAL_MANAGED, or
+            EXTERNAL_MANAGED. If sessionAffinity is not NONE, and this
+            field is not set to MAGLEV or RING_HASH, session affinity
+            settings will not take effect. Only ROUND_ROBIN and
             RING_HASH are supported when the backend service is
             referenced by a URL map that is bound to target gRPC proxy
             that has validateForProxyless field set to true. Check the
@@ -13260,6 +13934,8 @@ class BackendService(proto.Message):
             set to true. Instead, use maxStreamDuration.
 
             This field is a member of `oneof`_ ``_timeout_sec``.
+        used_by (MutableSequence[google.cloud.compute_v1.types.BackendServiceUsedBy]):
+
     """
 
     class CompressionMode(proto.Enum):
@@ -13341,11 +14017,12 @@ class BackendService(proto.Message):
         either: - A regional backend service with the service_protocol set
         to HTTP, HTTPS, or HTTP2, and load_balancing_scheme set to
         INTERNAL_MANAGED. - A global backend service with the
-        load_balancing_scheme set to INTERNAL_SELF_MANAGED. If
-        sessionAffinity is not NONE, and this field is not set to MAGLEV or
-        RING_HASH, session affinity settings will not take effect. Only
-        ROUND_ROBIN and RING_HASH are supported when the backend service is
-        referenced by a URL map that is bound to target gRPC proxy that has
+        load_balancing_scheme set to INTERNAL_SELF_MANAGED,
+        INTERNAL_MANAGED, or EXTERNAL_MANAGED. If sessionAffinity is not
+        NONE, and this field is not set to MAGLEV or RING_HASH, session
+        affinity settings will not take effect. Only ROUND_ROBIN and
+        RING_HASH are supported when the backend service is referenced by a
+        URL map that is bound to target gRPC proxy that has
         validateForProxyless field set to true.
 
         Values:
@@ -13727,6 +14404,11 @@ class BackendService(proto.Message):
         proto.INT32,
         number=79994995,
         optional=True,
+    )
+    used_by: MutableSequence["BackendServiceUsedBy"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=389320729,
+        message="BackendServiceUsedBy",
     )
 
 
@@ -14404,8 +15086,7 @@ class BackendServiceIAP(proto.Message):
         enabled (bool):
             Whether the serving infrastructure will
             authenticate and authorize all incoming
-            requests. If true, the oauth2ClientId and
-            oauth2ClientSecret fields must be non-empty.
+            requests.
 
             This field is a member of `oneof`_ ``_enabled``.
         oauth2_client_id (str):
@@ -14466,6 +15147,81 @@ class BackendServiceList(proto.Message):
         kind (str):
             [Output Only] Type of resource. Always
             compute#backendServiceList for lists of backend services.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["BackendService"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="BackendService",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class BackendServiceListUsable(proto.Message):
+    r"""Contains a list of usable BackendService resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.BackendService]):
+            A list of BackendService resources.
+        kind (str):
+            [Output Only] Type of resource. Always
+            compute#usableBackendServiceList for lists of usable backend
+            services.
 
             This field is a member of `oneof`_ ``_kind``.
         next_page_token (str):
@@ -14790,6 +15546,24 @@ class BackendServiceReference(proto.Message):
     backend_service: str = proto.Field(
         proto.STRING,
         number=306946058,
+        optional=True,
+    )
+
+
+class BackendServiceUsedBy(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        reference (str):
+
+            This field is a member of `oneof`_ ``_reference``.
+    """
+
+    reference: str = proto.Field(
+        proto.STRING,
+        number=148586315,
         optional=True,
     )
 
@@ -15702,6 +16476,11 @@ class BulkInsertInstanceResourcePerInstanceProperties(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        hostname (str):
+            Specifies the hostname of the instance. More details in:
+            https://cloud.google.com/compute/docs/instances/custom-hostname-vm#naming_convention
+
+            This field is a member of `oneof`_ ``_hostname``.
         name (str):
             This field is only temporary. It will be
             removed. Do not use it.
@@ -15709,9 +16488,95 @@ class BulkInsertInstanceResourcePerInstanceProperties(proto.Message):
             This field is a member of `oneof`_ ``_name``.
     """
 
+    hostname: str = proto.Field(
+        proto.STRING,
+        number=237067315,
+        optional=True,
+    )
     name: str = proto.Field(
         proto.STRING,
         number=3373707,
+        optional=True,
+    )
+
+
+class BulkInsertOperationStatus(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        created_vm_count (int):
+            [Output Only] Count of VMs successfully created so far.
+
+            This field is a member of `oneof`_ ``_created_vm_count``.
+        deleted_vm_count (int):
+            [Output Only] Count of VMs that got deleted during rollback.
+
+            This field is a member of `oneof`_ ``_deleted_vm_count``.
+        failed_to_create_vm_count (int):
+            [Output Only] Count of VMs that started creating but
+            encountered an error.
+
+            This field is a member of `oneof`_ ``_failed_to_create_vm_count``.
+        status (str):
+            [Output Only] Creation status of BulkInsert operation -
+            information if the flow is rolling forward or rolling back.
+            Check the Status enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_status``.
+        target_vm_count (int):
+            [Output Only] Count of VMs originally planned to be created.
+
+            This field is a member of `oneof`_ ``_target_vm_count``.
+    """
+
+    class Status(proto.Enum):
+        r"""[Output Only] Creation status of BulkInsert operation - information
+        if the flow is rolling forward or rolling back.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                Rolling forward - creating VMs.
+            DONE (2104194):
+                Done
+            ROLLING_BACK (259411649):
+                Rolling back - cleaning up after an error.
+            STATUS_UNSPECIFIED (42133066):
+                No description available.
+        """
+        UNDEFINED_STATUS = 0
+        CREATING = 455564985
+        DONE = 2104194
+        ROLLING_BACK = 259411649
+        STATUS_UNSPECIFIED = 42133066
+
+    created_vm_count: int = proto.Field(
+        proto.INT32,
+        number=396924158,
+        optional=True,
+    )
+    deleted_vm_count: int = proto.Field(
+        proto.INT32,
+        number=271756013,
+        optional=True,
+    )
+    failed_to_create_vm_count: int = proto.Field(
+        proto.INT32,
+        number=58384104,
+        optional=True,
+    )
+    status: str = proto.Field(
+        proto.STRING,
+        number=181260274,
+        optional=True,
+    )
+    target_vm_count: int = proto.Field(
+        proto.INT32,
+        number=532975733,
         optional=True,
     )
 
@@ -16275,7 +17140,8 @@ class Commitment(proto.Message):
 
             This field is a member of `oneof`_ ``_region``.
         reservations (MutableSequence[google.cloud.compute_v1.types.Reservation]):
-            List of reservations in this commitment.
+            List of create-on-create reseravtions for
+            this commitment.
         resources (MutableSequence[google.cloud.compute_v1.types.ResourceCommitment]):
             A list of commitment amounts for particular
             resources. Note that VCPU and MEMORY resource
@@ -16404,11 +17270,17 @@ class Commitment(proto.Message):
                 set.
             ACCELERATOR_OPTIMIZED (280848403):
                 No description available.
+            ACCELERATOR_OPTIMIZED_A3 (158574526):
+                No description available.
             COMPUTE_OPTIMIZED (158349023):
                 No description available.
             COMPUTE_OPTIMIZED_C2D (383246453):
                 No description available.
             COMPUTE_OPTIMIZED_C3 (428004784):
+                No description available.
+            COMPUTE_OPTIMIZED_C3D (383246484):
+                No description available.
+            COMPUTE_OPTIMIZED_H3 (428004939):
                 No description available.
             GENERAL_PURPOSE (299793543):
                 No description available.
@@ -16431,9 +17303,12 @@ class Commitment(proto.Message):
         """
         UNDEFINED_TYPE = 0
         ACCELERATOR_OPTIMIZED = 280848403
+        ACCELERATOR_OPTIMIZED_A3 = 158574526
         COMPUTE_OPTIMIZED = 158349023
         COMPUTE_OPTIMIZED_C2D = 383246453
         COMPUTE_OPTIMIZED_C3 = 428004784
+        COMPUTE_OPTIMIZED_C3D = 383246484
+        COMPUTE_OPTIMIZED_H3 = 428004939
         GENERAL_PURPOSE = 299793543
         GENERAL_PURPOSE_E2 = 301911877
         GENERAL_PURPOSE_N2 = 301912156
@@ -22091,6 +22966,69 @@ class DetachNetworkEndpointsNetworkEndpointGroupRequest(proto.Message):
     )
 
 
+class DetachNetworkEndpointsRegionNetworkEndpointGroupRequest(proto.Message):
+    r"""A request message for
+    RegionNetworkEndpointGroups.DetachNetworkEndpoints. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        network_endpoint_group (str):
+            The name of the network endpoint group you
+            are detaching network endpoints from. It should
+            comply with RFC1035.
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region where the network
+            endpoint group is located. It should comply with
+            RFC1035.
+        region_network_endpoint_groups_detach_endpoints_request_resource (google.cloud.compute_v1.types.RegionNetworkEndpointGroupsDetachEndpointsRequest):
+            The body resource for this request
+        request_id (str):
+            An optional request ID to identify requests. Specify a
+            unique request ID so that if you must retry your request,
+            the server will know to ignore the request if it has already
+            been completed. For example, consider a situation where you
+            make an initial request and the request times out. If you
+            make the request again with the same request ID, the server
+            can check if original operation with the same request ID was
+            received, and if so, will ignore the second request. This
+            prevents clients from accidentally creating duplicate
+            commitments. The request ID must be a valid UUID with the
+            exception that zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000). end_interface:
+            MixerMutationRequestBuilder
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    network_endpoint_group: str = proto.Field(
+        proto.STRING,
+        number=433907078,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    region_network_endpoint_groups_detach_endpoints_request_resource: "RegionNetworkEndpointGroupsDetachEndpointsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=313193198,
+        message="RegionNetworkEndpointGroupsDetachEndpointsRequest",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
 class DisableXpnHostProjectRequest(proto.Message):
     r"""A request message for Projects.DisableXpnHost. See the method
     description for details.
@@ -22374,8 +23312,7 @@ class Disk(proto.Message):
             create an empty persistent disk. If you specify
             this field along with a source, the value of
             sizeGb must not be less than the size of the
-            source. Acceptable values are 1 to 65536,
-            inclusive.
+            source. Acceptable values are greater than 0.
 
             This field is a member of `oneof`_ ``_size_gb``.
         source_consistency_group_policy (str):
@@ -26065,15 +27002,21 @@ class ForwardingRule(proto.Message):
 
             This field is a member of `oneof`_ ``_I_p_protocol``.
         all_ports (bool):
-            This field can only be used: - If IPProtocol is one of TCP,
-            UDP, or SCTP. - By internal TCP/UDP load balancers, backend
-            service-based network load balancers, and internal and
-            external protocol forwarding. Set this field to true to
-            allow packets addressed to any port or packets lacking
+            The ports, portRange, and allPorts fields are mutually
+            exclusive. Only packets addressed to ports in the specified
+            range will be forwarded to the backends configured with this
+            forwarding rule. The allPorts field has the following
+            limitations: - It requires that the forwarding rule
+            IPProtocol be TCP, UDP, SCTP, or L3_DEFAULT. - It's
+            applicable only to the following products: internal
+            passthrough Network Load Balancers, backend service-based
+            external passthrough Network Load Balancers, and internal
+            and external protocol forwarding. - Set this field to true
+            to allow packets addressed to any port or packets lacking
             destination port information (for example, UDP fragments
             after the first fragment) to be forwarded to the backends
-            configured with this forwarding rule. The ports, port_range,
-            and allPorts fields are mutually exclusive.
+            configured with this forwarding rule. The L3_DEFAULT
+            protocol requires allPorts be set to true.
 
             This field is a member of `oneof`_ ``_all_ports``.
         allow_global_access (bool):
@@ -26224,17 +27167,17 @@ class ForwardingRule(proto.Message):
 
             This field is a member of `oneof`_ ``_name``.
         network (str):
-            This field is not used for external load
-            balancing. For Internal TCP/UDP Load Balancing,
-            this field identifies the network that the load
-            balanced IP should belong to for this Forwarding
-            Rule. If the subnetwork is specified, the
-            network of the subnetwork will be used. If
-            neither subnetwork nor this field is specified,
-            the default network will be used. For Private
-            Service Connect forwarding rules that forward
-            traffic to Google APIs, a network must be
-            provided.
+            This field is not used for global external
+            load balancing. For Internal TCP/UDP Load
+            Balancing, this field identifies the network
+            that the load balanced IP should belong to for
+            this Forwarding Rule. If the subnetwork is
+            specified, the network of the subnetwork will be
+            used. If neither subnetwork nor this field is
+            specified, the default network will be used. For
+            Private Service Connect forwarding rules that
+            forward traffic to Google APIs, a network must
+            be provided.
 
             This field is a member of `oneof`_ ``_network``.
         network_tier (str):
@@ -26255,45 +27198,50 @@ class ForwardingRule(proto.Message):
             This is used in PSC consumer ForwardingRule
             to control whether it should try to
             auto-generate a DNS zone or not. Non-PSC
-            forwarding rules do not use this field.
+            forwarding rules do not use this field. Once
+            set, this field is not mutable.
 
             This field is a member of `oneof`_ ``_no_automate_dns_zone``.
         port_range (str):
-            This field can only be used: - If IPProtocol is one of TCP,
-            UDP, or SCTP. - By backend service-based network load
-            balancers, target pool-based network load balancers,
-            internal proxy load balancers, external proxy load
-            balancers, Traffic Director, external protocol forwarding,
-            and Classic VPN. Some products have restrictions on what
-            ports can be used. See port specifications for details. Only
-            packets addressed to ports in the specified range will be
-            forwarded to the backends configured with this forwarding
-            rule. The ports, port_range, and allPorts fields are
-            mutually exclusive. For external forwarding rules, two or
-            more forwarding rules cannot use the same [IPAddress,
-            IPProtocol] pair, and cannot have overlapping portRanges.
-            For internal forwarding rules within the same VPC network,
-            two or more forwarding rules cannot use the same [IPAddress,
-            IPProtocol] pair, and cannot have overlapping portRanges.
-            @pattern: \\d+(?:-\d+)?
+            The ports, portRange, and allPorts fields are mutually
+            exclusive. Only packets addressed to ports in the specified
+            range will be forwarded to the backends configured with this
+            forwarding rule. The portRange field has the following
+            limitations: - It requires that the forwarding rule
+            IPProtocol be TCP, UDP, or SCTP, and - It's applicable only
+            to the following products: external passthrough Network Load
+            Balancers, internal and external proxy Network Load
+            Balancers, internal and external Application Load Balancers,
+            external protocol forwarding, and Classic VPN. - Some
+            products have restrictions on what ports can be used. See
+            port specifications for details. For external forwarding
+            rules, two or more forwarding rules cannot use the same
+            [IPAddress, IPProtocol] pair, and cannot have overlapping
+            portRanges. For internal forwarding rules within the same
+            VPC network, two or more forwarding rules cannot use the
+            same [IPAddress, IPProtocol] pair, and cannot have
+            overlapping portRanges. @pattern: \\d+(?:-\d+)?
 
             This field is a member of `oneof`_ ``_port_range``.
         ports (MutableSequence[str]):
-            This field can only be used: - If IPProtocol is one of TCP,
-            UDP, or SCTP. - By internal TCP/UDP load balancers, backend
-            service-based network load balancers, and internal protocol
-            forwarding. You can specify a list of up to five ports by
-            number, separated by commas. The ports can be contiguous or
-            discontiguous. Only packets addressed to these ports will be
-            forwarded to the backends configured with this forwarding
-            rule. For external forwarding rules, two or more forwarding
-            rules cannot use the same [IPAddress, IPProtocol] pair, and
-            cannot share any values defined in ports. For internal
+            The ports, portRange, and allPorts fields are mutually
+            exclusive. Only packets addressed to ports in the specified
+            range will be forwarded to the backends configured with this
+            forwarding rule. The ports field has the following
+            limitations: - It requires that the forwarding rule
+            IPProtocol be TCP, UDP, or SCTP, and - It's applicable only
+            to the following products: internal passthrough Network Load
+            Balancers, backend service-based external passthrough
+            Network Load Balancers, and internal protocol forwarding. -
+            You can specify a list of up to five ports by number,
+            separated by commas. The ports can be contiguous or
+            discontiguous. For external forwarding rules, two or more
+            forwarding rules cannot use the same [IPAddress, IPProtocol]
+            pair if they share at least one port number. For internal
             forwarding rules within the same VPC network, two or more
             forwarding rules cannot use the same [IPAddress, IPProtocol]
-            pair, and cannot share any values defined in ports. The
-            ports, port_range, and allPorts fields are mutually
-            exclusive. @pattern: \\d+(?:-\d+)?
+            pair if they share at least one port number. @pattern:
+            \\d+(?:-\d+)?
         psc_connection_id (int):
             [Output Only] The PSC connection id of the PSC Forwarding
             Rule.
@@ -26375,6 +27323,7 @@ class ForwardingRule(proto.Message):
             Controls. - all-apis - All supported Google APIs. - For
             Private Service Connect forwarding rules that forward
             traffic to managed services, the target must be a service
+            attachment. The target is not mutable once set as a service
             attachment.
 
             This field is a member of `oneof`_ ``_target``.
@@ -27878,6 +28827,39 @@ class GetHealthTargetPoolRequest(proto.Message):
     )
 
 
+class GetIamPolicyBackendBucketRequest(proto.Message):
+    r"""A request message for BackendBuckets.GetIamPolicy. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        options_requested_policy_version (int):
+            Requested IAM Policy version.
+
+            This field is a member of `oneof`_ ``_options_requested_policy_version``.
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    options_requested_policy_version: int = proto.Field(
+        proto.INT32,
+        number=499220029,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+
+
 class GetIamPolicyBackendServiceRequest(proto.Message):
     r"""A request message for BackendServices.GetIamPolicy. See the
     method description for details.
@@ -28940,6 +29922,71 @@ class GetMachineTypeRequest(proto.Message):
     )
 
 
+class GetMacsecConfigInterconnectRequest(proto.Message):
+    r"""A request message for Interconnects.GetMacsecConfig. See the
+    method description for details.
+
+    Attributes:
+        interconnect (str):
+            Name of the interconnect resource to query.
+        project (str):
+            Project ID for this request.
+    """
+
+    interconnect: str = proto.Field(
+        proto.STRING,
+        number=224601230,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+
+
+class GetNatIpInfoRouterRequest(proto.Message):
+    r"""A request message for Routers.GetNatIpInfo. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        nat_name (str):
+            Name of the nat service to filter the NAT IP
+            information. If it is omitted, all nats for this
+            router will be returned. Name should conform to
+            RFC1035.
+
+            This field is a member of `oneof`_ ``_nat_name``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+        router (str):
+            Name of the Router resource to query for Nat
+            IP information. The name should conform to
+            RFC1035.
+    """
+
+    nat_name: str = proto.Field(
+        proto.STRING,
+        number=425596649,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    router: str = proto.Field(
+        proto.STRING,
+        number=148608841,
+    )
+
+
 class GetNatMappingInfoRoutersRequest(proto.Message):
     r"""A request message for Routers.GetNatMappingInfo. See the
     method description for details.
@@ -28953,16 +30000,15 @@ class GetNatMappingInfoRoutersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -28989,7 +30035,8 @@ class GetNatMappingInfoRoutersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -30225,6 +31272,47 @@ class GetRuleRegionNetworkFirewallPolicyRequest(proto.Message):
     )
 
 
+class GetRuleRegionSecurityPolicyRequest(proto.Message):
+    r"""A request message for RegionSecurityPolicies.GetRule. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        priority (int):
+            The priority of the rule to get from the
+            security policy.
+
+            This field is a member of `oneof`_ ``_priority``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region scoping this request.
+        security_policy (str):
+            Name of the security policy to which the
+            queried rule belongs.
+    """
+
+    priority: int = proto.Field(
+        proto.INT32,
+        number=445151652,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    security_policy: str = proto.Field(
+        proto.STRING,
+        number=171082513,
+    )
+
+
 class GetRuleSecurityPolicyRequest(proto.Message):
     r"""A request message for SecurityPolicies.GetRule. See the
     method description for details.
@@ -30445,6 +31533,21 @@ class GetSnapshotRequest(proto.Message):
     snapshot: str = proto.Field(
         proto.STRING,
         number=284874180,
+    )
+
+
+class GetSnapshotSettingRequest(proto.Message):
+    r"""A request message for SnapshotSettingsService.Get. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
     )
 
 
@@ -30842,16 +31945,15 @@ class GetXpnResourcesProjectsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -30878,7 +31980,8 @@ class GetXpnResourcesProjectsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -31356,6 +32459,8 @@ class GuestOsFeature(proto.Message):
                 No description available.
             SEV_LIVE_MIGRATABLE (392039820):
                 No description available.
+            SEV_LIVE_MIGRATABLE_V2 (168551983):
+                No description available.
             SEV_SNP_CAPABLE (426919):
                 No description available.
             UEFI_COMPATIBLE (195865408):
@@ -31372,6 +32477,7 @@ class GuestOsFeature(proto.Message):
         SECURE_BOOT = 376811194
         SEV_CAPABLE = 87083793
         SEV_LIVE_MIGRATABLE = 392039820
+        SEV_LIVE_MIGRATABLE_V2 = 168551983
         SEV_SNP_CAPABLE = 426919
         UEFI_COMPATIBLE = 195865408
         VIRTIO_SCSI_MULTIQUEUE = 201597069
@@ -31923,23 +33029,26 @@ class HTTPSHealthCheck(proto.Message):
 
 
 class HealthCheck(proto.Message):
-    r"""Represents a Health Check resource. Google Compute Engine has two
-    Health Check resources: \*
-    `Global </compute/docs/reference/rest/v1/healthChecks>`__ \*
-    `Regional </compute/docs/reference/rest/v1/regionHealthChecks>`__
-    Internal HTTP(S) load balancers must use regional health checks
-    (``compute.v1.regionHealthChecks``). Traffic Director must use
-    global health checks (``compute.v1.healthChecks``). Internal TCP/UDP
-    load balancers can use either regional or global health checks
-    (``compute.v1.regionHealthChecks`` or ``compute.v1.healthChecks``).
-    External HTTP(S), TCP proxy, and SSL proxy load balancers as well as
-    managed instance group auto-healing must use global health checks
-    (``compute.v1.healthChecks``). Backend service-based network load
-    balancers must use regional health checks
-    (``compute.v1.regionHealthChecks``). Target pool-based network load
-    balancers must use legacy HTTP health checks
-    (``compute.v1.httpHealthChecks``). For more information, see Health
-    checks overview.
+    r"""Represents a health check resource. Google Compute Engine has two
+    health check resources: \*
+    `Regional </compute/docs/reference/rest/v1/regionHealthChecks>`__ \*
+    `Global </compute/docs/reference/rest/v1/healthChecks>`__ These
+    health check resources can be used for load balancing and for
+    autohealing VMs in a managed instance group (MIG). **Load
+    balancing** The following load balancer can use either regional or
+    global health check: \* Internal TCP/UDP load balancer The following
+    load balancers require regional health check: \* Internal HTTP(S)
+    load balancer \* Backend service-based network load balancer Traffic
+    Director and the following load balancers require global health
+    check: \* External HTTP(S) load balancer \* TCP proxy load balancer
+    \* SSL proxy load balancer The following load balancer require
+    `legacy HTTP health
+    checks </compute/docs/reference/rest/v1/httpHealthChecks>`__: \*
+    Target pool-based network load balancer **Autohealing in MIGs** The
+    health checks that you use for autohealing VMs in a MIG can be
+    either regional or global. For more information, see Set up an
+    application health check and autohealing. For more information, see
+    Health checks overview.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -33668,9 +34777,9 @@ class HttpRouteAction(proto.Message):
             by clients that are configured with a fault_injection_policy
             if: 1. The traffic is generated by fault injection AND 2.
             The fault injection is not a delay fault injection. Fault
-            injection is not supported with the global external HTTP(S)
-            load balancer (classic). To see which load balancers support
-            fault injection, see Load balancing: Routing and traffic
+            injection is not supported with the classic Application Load
+            Balancer . To see which load balancers support fault
+            injection, see Load balancing: Routing and traffic
             management features.
 
             This field is a member of `oneof`_ ``_fault_injection_policy``.
@@ -33721,9 +34830,9 @@ class HttpRouteAction(proto.Message):
             The spec to modify the URL of the request,
             before forwarding the request to the matched
             service. urlRewrite is the only action supported
-            in UrlMaps for external HTTP(S) load balancers.
-            Not supported when the URL map is bound to a
-            target gRPC proxy that has the
+            in UrlMaps for classic Application Load
+            Balancers. Not supported when the URL map is
+            bound to a target gRPC proxy that has the
             validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_url_rewrite``.
@@ -33861,9 +34970,9 @@ class HttpRouteRule(proto.Message):
             cannot contain any weightedBackendServices. Only
             one of urlRedirect, service or
             routeAction.weightedBackendService must be set.
-            URL maps for Classic external HTTP(S) load
-            balancers only support the urlRewrite action
-            within a route rule's routeAction.
+            URL maps for classic Application Load Balancers
+            only support the urlRewrite action within a
+            route rule's routeAction.
 
             This field is a member of `oneof`_ ``_route_action``.
         service (str):
@@ -42192,9 +43301,17 @@ class InstanceReference(proto.Message):
 
 
 class InstanceTemplate(proto.Message):
-    r"""Represents an Instance Template resource. You can use
-    instance templates to create VM instances and managed instance
-    groups. For more information, read Instance Templates.
+    r"""Represents an Instance Template resource. Google Compute Engine has
+    two Instance Template resources: \*
+    `Global </compute/docs/reference/rest/v1/instanceTemplates>`__ \*
+    `Regional </compute/docs/reference/rest/v1/regionInstanceTemplates>`__
+    You can reuse a global instance template in different regions
+    whereas you can use a regional instance template in a specified
+    region only. If you want to reduce cross-region dependency or
+    achieve data residency, use a regional instance template. To create
+    VMs, managed instance groups, and reservations, you can use either
+    global or regional instance templates. For more information, read
+    Instance Templates.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -42595,6 +43712,25 @@ class InstancesAddResourcePoliciesRequest(proto.Message):
     )
 
 
+class InstancesBulkInsertOperationMetadata(proto.Message):
+    r"""
+
+    Attributes:
+        per_location_status (MutableMapping[str, google.cloud.compute_v1.types.BulkInsertOperationStatus]):
+            Status information per location (location
+            name is key). Example key: zones/us-central1-a
+    """
+
+    per_location_status: MutableMapping[
+        str, "BulkInsertOperationStatus"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=167851162,
+        message="BulkInsertOperationStatus",
+    )
+
+
 class InstancesGetEffectiveFirewallsResponse(proto.Message):
     r"""
 
@@ -42859,6 +43995,38 @@ class InstancesSetNameRequest(proto.Message):
     )
 
 
+class InstancesSetSecurityPolicyRequest(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        network_interfaces (MutableSequence[str]):
+            The network interfaces that the security
+            policy will be applied to. Network interfaces
+            use the nicN naming format. You can only set a
+            security policy for network interfaces with an
+            access config.
+        security_policy (str):
+            A full or partial URL to a security policy to
+            add to this instance. If this field is set to an
+            empty string it will remove the associated
+            security policy.
+
+            This field is a member of `oneof`_ ``_security_policy``.
+    """
+
+    network_interfaces: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=52735243,
+    )
+    security_policy: str = proto.Field(
+        proto.STRING,
+        number=171082513,
+        optional=True,
+    )
+
+
 class InstancesSetServiceAccountRequest(proto.Message):
     r"""
 
@@ -42957,6 +44125,15 @@ class Interconnect(proto.Message):
             over it. By default, the status is set to true.
 
             This field is a member of `oneof`_ ``_admin_enabled``.
+        available_features (MutableSequence[str]):
+            [Output only] List of features available for this
+            Interconnect connection, which can take one of the following
+            values: - MACSEC If present then the Interconnect connection
+            is provisioned on MACsec capable hardware ports. If not
+            present then the Interconnect connection is provisioned on
+            non-MACsec capable ports and MACsec isn't supported and
+            enabling MACsec fails. Check the AvailableFeatures enum for
+            the list of possible values.
         circuit_infos (MutableSequence[google.cloud.compute_v1.types.InterconnectCircuitInfo]):
             [Output Only] A list of CircuitInfo objects, that describe
             the individual circuits in this LAG.
@@ -43048,6 +44225,19 @@ class Interconnect(proto.Message):
             provisioned.
 
             This field is a member of `oneof`_ ``_location``.
+        macsec (google.cloud.compute_v1.types.InterconnectMacsec):
+            Configuration that enables Media Access
+            Control security (MACsec) on the Cloud
+            Interconnect connection between Google and your
+            on-premises router.
+
+            This field is a member of `oneof`_ ``_macsec``.
+        macsec_enabled (bool):
+            Enable or disable MACsec on this Interconnect
+            connection. MACsec enablement fails if the
+            MACsec object is not specified.
+
+            This field is a member of `oneof`_ ``_macsec_enabled``.
         name (str):
             Name of the resource. Provided by the client when the
             resource is created. The name must be 1-63 characters long,
@@ -43103,6 +44293,18 @@ class Interconnect(proto.Message):
             interconnect is connected to.
 
             This field is a member of `oneof`_ ``_remote_location``.
+        requested_features (MutableSequence[str]):
+            Optional. List of features requested for this
+            Interconnect connection, which can take one of
+            the following values: - MACSEC If specified then
+            the connection is created on MACsec capable
+            hardware ports. If not specified, the default
+            value is false, which allocates non-MACsec
+            capable ports first if available. This parameter
+            can be provided only with Interconnect INSERT.
+            It isn't valid for Interconnect PATCH. Check the
+            RequestedFeatures enum for the list of possible
+            values.
         requested_link_count (int):
             Target number of physical links in the link
             bundle, as requested by the customer.
@@ -43130,6 +44332,17 @@ class Interconnect(proto.Message):
 
             This field is a member of `oneof`_ ``_state``.
     """
+
+    class AvailableFeatures(proto.Enum):
+        r"""Additional supported values which may be not listed in the enum
+        directly due to technical reasons: IF_MACSEC
+
+        Values:
+            UNDEFINED_AVAILABLE_FEATURES (0):
+                A value indicating that the enum field is not
+                set.
+        """
+        UNDEFINED_AVAILABLE_FEATURES = 0
 
     class InterconnectType(proto.Enum):
         r"""Type of interconnect, which can take one of the following values: -
@@ -43205,6 +44418,17 @@ class Interconnect(proto.Message):
         OS_ACTIVE = 55721409
         OS_UNPROVISIONED = 239771840
 
+    class RequestedFeatures(proto.Enum):
+        r"""Additional supported values which may be not listed in the enum
+        directly due to technical reasons: IF_MACSEC
+
+        Values:
+            UNDEFINED_REQUESTED_FEATURES (0):
+                A value indicating that the enum field is not
+                set.
+        """
+        UNDEFINED_REQUESTED_FEATURES = 0
+
     class State(proto.Enum):
         r"""[Output Only] The current state of Interconnect functionality, which
         can take one of the following values: - ACTIVE: The Interconnect is
@@ -43236,6 +44460,10 @@ class Interconnect(proto.Message):
         proto.BOOL,
         number=445675089,
         optional=True,
+    )
+    available_features: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=496344307,
     )
     circuit_infos: MutableSequence["InterconnectCircuitInfo"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -43313,6 +44541,17 @@ class Interconnect(proto.Message):
         number=290430901,
         optional=True,
     )
+    macsec: "InterconnectMacsec" = proto.Field(
+        proto.MESSAGE,
+        number=528867490,
+        optional=True,
+        message="InterconnectMacsec",
+    )
+    macsec_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=194203812,
+        optional=True,
+    )
     name: str = proto.Field(
         proto.STRING,
         number=3373707,
@@ -43342,6 +44581,10 @@ class Interconnect(proto.Message):
         proto.STRING,
         number=324388750,
         optional=True,
+    )
+    requested_features: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=461240814,
     )
     requested_link_count: int = proto.Field(
         proto.INT32,
@@ -43586,7 +44829,7 @@ class InterconnectAttachment(proto.Message):
         pairing_key (str):
             [Output only for type PARTNER. Input only for
             PARTNER_PROVIDER. Not present for DEDICATED]. The opaque
-            identifier of an PARTNER attachment used to initiate
+            identifier of a PARTNER attachment used to initiate
             provisioning with a selected partner. Of the form
             "XXXXX/region/domain".
 
@@ -43600,9 +44843,9 @@ class InterconnectAttachment(proto.Message):
             This field is a member of `oneof`_ ``_partner_asn``.
         partner_metadata (google.cloud.compute_v1.types.InterconnectAttachmentPartnerMetadata):
             Informational metadata about Partner attachments from
-            Partners to display to customers. Output only for for
-            PARTNER type, mutable for PARTNER_PROVIDER, not available
-            for DEDICATED.
+            Partners to display to customers. Output only for PARTNER
+            type, mutable for PARTNER_PROVIDER, not available for
+            DEDICATED.
 
             This field is a member of `oneof`_ ``_partner_metadata``.
         private_interconnect_info (google.cloud.compute_v1.types.InterconnectAttachmentPrivateInfo):
@@ -44876,6 +46119,11 @@ class InterconnectDiagnosticsLinkStatus(proto.Message):
         lacp_status (google.cloud.compute_v1.types.InterconnectDiagnosticsLinkLACPStatus):
 
             This field is a member of `oneof`_ ``_lacp_status``.
+        macsec (google.cloud.compute_v1.types.InterconnectDiagnosticsMacsecStatus):
+            Describes the status of MACsec encryption on
+            this link.
+
+            This field is a member of `oneof`_ ``_macsec``.
         operational_status (str):
             The operational status of the link.
             Check the OperationalStatus enum for the list of
@@ -44937,6 +46185,12 @@ class InterconnectDiagnosticsLinkStatus(proto.Message):
         optional=True,
         message="InterconnectDiagnosticsLinkLACPStatus",
     )
+    macsec: "InterconnectDiagnosticsMacsecStatus" = proto.Field(
+        proto.MESSAGE,
+        number=528867490,
+        optional=True,
+        message="InterconnectDiagnosticsMacsecStatus",
+    )
     operational_status: str = proto.Field(
         proto.STRING,
         number=201070847,
@@ -44953,6 +46207,37 @@ class InterconnectDiagnosticsLinkStatus(proto.Message):
         number=459431197,
         optional=True,
         message="InterconnectDiagnosticsLinkOpticalPower",
+    )
+
+
+class InterconnectDiagnosticsMacsecStatus(proto.Message):
+    r"""Describes the status of MACsec encryption on the link.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        ckn (str):
+            Indicates the Connectivity Association Key
+            Name (CKN) currently being used if MACsec is
+            operational.
+
+            This field is a member of `oneof`_ ``_ckn``.
+        operational (bool):
+            Indicates whether or not MACsec is
+            operational on this link.
+
+            This field is a member of `oneof`_ ``_operational``.
+    """
+
+    ckn: str = proto.Field(
+        proto.STRING,
+        number=98566,
+        optional=True,
+    )
+    operational: bool = proto.Field(
+        proto.BOOL,
+        number=129704914,
+        optional=True,
     )
 
 
@@ -45055,6 +46340,17 @@ class InterconnectLocation(proto.Message):
             than one availability zone. Example: "zone1" or "zone2".
 
             This field is a member of `oneof`_ ``_availability_zone``.
+        available_features (MutableSequence[str]):
+            [Output only] List of features available at this
+            InterconnectLocation, which can take one of the following
+            values: - MACSEC Check the AvailableFeatures enum for the
+            list of possible values.
+        available_link_types (MutableSequence[str]):
+            [Output only] List of link types available at this
+            InterconnectLocation, which can take one of the following
+            values: - LINK_TYPE_ETHERNET_10G_LR -
+            LINK_TYPE_ETHERNET_100G_LR Check the AvailableLinkTypes enum
+            for the list of possible values.
         city (str):
             [Output Only] Metropolitan area designator that indicates
             which city an interconnect is located. For example:
@@ -45130,6 +46426,35 @@ class InterconnectLocation(proto.Message):
             This field is a member of `oneof`_ ``_supports_pzs``.
     """
 
+    class AvailableFeatures(proto.Enum):
+        r"""
+
+        Values:
+            UNDEFINED_AVAILABLE_FEATURES (0):
+                A value indicating that the enum field is not
+                set.
+            IF_MACSEC (396279300):
+                Media Access Control security (MACsec)
+        """
+        UNDEFINED_AVAILABLE_FEATURES = 0
+        IF_MACSEC = 396279300
+
+    class AvailableLinkTypes(proto.Enum):
+        r"""
+
+        Values:
+            UNDEFINED_AVAILABLE_LINK_TYPES (0):
+                A value indicating that the enum field is not
+                set.
+            LINK_TYPE_ETHERNET_100G_LR (337672551):
+                100G Ethernet, LR Optics.
+            LINK_TYPE_ETHERNET_10G_LR (236739749):
+                10G Ethernet, LR Optics. [(rate_bps) = 10000000000];
+        """
+        UNDEFINED_AVAILABLE_LINK_TYPES = 0
+        LINK_TYPE_ETHERNET_100G_LR = 337672551
+        LINK_TYPE_ETHERNET_10G_LR = 236739749
+
     class Continent(proto.Enum):
         r"""[Output Only] Continent for this location, which can take one of the
         following values: - AFRICA - ASIA_PAC - EUROPE - NORTH_AMERICA -
@@ -45203,6 +46528,14 @@ class InterconnectLocation(proto.Message):
         proto.STRING,
         number=158459920,
         optional=True,
+    )
+    available_features: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=496344307,
+    )
+    available_link_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=509504298,
     )
     city: str = proto.Field(
         proto.STRING,
@@ -45421,6 +46754,170 @@ class InterconnectLocationRegionInfo(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
+        optional=True,
+    )
+
+
+class InterconnectMacsec(proto.Message):
+    r"""Configuration information for enabling Media Access Control
+    security (MACsec) on this Cloud Interconnect connection between
+    Google and your on-premises router.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        fail_open (bool):
+            If set to true, the Interconnect connection
+            is configured with a should-secure MACsec
+            security policy, that allows the Google router
+            to fallback to cleartext traffic if the MKA
+            session cannot be established. By default, the
+            Interconnect connection is configured with a
+            must-secure security policy that drops all
+            traffic if the MKA session cannot be established
+            with your router.
+
+            This field is a member of `oneof`_ ``_fail_open``.
+        pre_shared_keys (MutableSequence[google.cloud.compute_v1.types.InterconnectMacsecPreSharedKey]):
+            Required. A keychain placeholder describing a
+            set of named key objects along with their start
+            times. A MACsec CKN/CAK is generated for each
+            key in the key chain. Google router
+            automatically picks the key with the most recent
+            startTime when establishing or re-establishing a
+            MACsec secure link.
+    """
+
+    fail_open: bool = proto.Field(
+        proto.BOOL,
+        number=532597451,
+        optional=True,
+    )
+    pre_shared_keys: MutableSequence[
+        "InterconnectMacsecPreSharedKey"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=420308466,
+        message="InterconnectMacsecPreSharedKey",
+    )
+
+
+class InterconnectMacsecConfig(proto.Message):
+    r"""MACsec configuration information for the Interconnect
+    connection. Contains the generated Connectivity Association Key
+    Name (CKN) and the key (CAK) for this Interconnect connection.
+
+    Attributes:
+        pre_shared_keys (MutableSequence[google.cloud.compute_v1.types.InterconnectMacsecConfigPreSharedKey]):
+            A keychain placeholder describing a set of
+            named key objects along with their start times.
+            A MACsec CKN/CAK is generated for each key in
+            the key chain. Google router automatically picks
+            the key with the most recent startTime when
+            establishing or re-establishing a MACsec secure
+            link.
+    """
+
+    pre_shared_keys: MutableSequence[
+        "InterconnectMacsecConfigPreSharedKey"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=420308466,
+        message="InterconnectMacsecConfigPreSharedKey",
+    )
+
+
+class InterconnectMacsecConfigPreSharedKey(proto.Message):
+    r"""Describes a pre-shared key used to setup MACsec in static
+    connectivity association key (CAK) mode.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        cak (str):
+            An auto-generated Connectivity Association
+            Key (CAK) for this key.
+
+            This field is a member of `oneof`_ ``_cak``.
+        ckn (str):
+            An auto-generated Connectivity Association
+            Key Name (CKN) for this key.
+
+            This field is a member of `oneof`_ ``_ckn``.
+        name (str):
+            User provided name for this pre-shared key.
+
+            This field is a member of `oneof`_ ``_name``.
+        start_time (str):
+            User provided timestamp on or after which
+            this key is valid.
+
+            This field is a member of `oneof`_ ``_start_time``.
+    """
+
+    cak: str = proto.Field(
+        proto.STRING,
+        number=98253,
+        optional=True,
+    )
+    ckn: str = proto.Field(
+        proto.STRING,
+        number=98566,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    start_time: str = proto.Field(
+        proto.STRING,
+        number=37467274,
+        optional=True,
+    )
+
+
+class InterconnectMacsecPreSharedKey(proto.Message):
+    r"""Describes a pre-shared key used to setup MACsec in static
+    connectivity association key (CAK) mode.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Required. A name for this pre-shared key. The name must be
+            1-63 characters long, and comply with RFC1035. Specifically,
+            the name must be 1-63 characters long and match the regular
+            expression ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the
+            first character must be a lowercase letter, and all
+            following characters must be a dash, lowercase letter, or
+            digit, except the last character, which cannot be a dash.
+
+            This field is a member of `oneof`_ ``_name``.
+        start_time (str):
+            A RFC3339 timestamp on or after which the key
+            is valid. startTime can be in the future. If the
+            keychain has a single key, startTime can be
+            omitted. If the keychain has multiple keys,
+            startTime is mandatory for each key. The start
+            times of keys must be in increasing order. The
+            start times of two consecutive keys must be at
+            least 6 hours apart.
+
+            This field is a member of `oneof`_ ``_start_time``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    start_time: str = proto.Field(
+        proto.STRING,
+        number=37467274,
         optional=True,
     )
 
@@ -46184,6 +47681,34 @@ class InterconnectsGetDiagnosticsResponse(proto.Message):
     )
 
 
+class InterconnectsGetMacsecConfigResponse(proto.Message):
+    r"""Response for the InterconnectsGetMacsecConfigRequest.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        etag (str):
+            end_interface: MixerGetResponseWithEtagBuilder
+
+            This field is a member of `oneof`_ ``_etag``.
+        result (google.cloud.compute_v1.types.InterconnectMacsecConfig):
+
+            This field is a member of `oneof`_ ``_result``.
+    """
+
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3123477,
+        optional=True,
+    )
+    result: "InterconnectMacsecConfig" = proto.Field(
+        proto.MESSAGE,
+        number=139315229,
+        optional=True,
+        message="InterconnectMacsecConfig",
+    )
+
+
 class InvalidateCacheUrlMapRequest(proto.Message):
     r"""A request message for UrlMaps.InvalidateCache. See the method
     description for details.
@@ -46694,16 +48219,15 @@ class ListAcceleratorTypesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -46730,7 +48254,8 @@ class ListAcceleratorTypesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46821,16 +48346,15 @@ class ListAddressesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -46857,7 +48381,8 @@ class ListAddressesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -46970,16 +48495,15 @@ class ListAutoscalersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -47006,7 +48530,8 @@ class ListAutoscalersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47098,16 +48623,15 @@ class ListAvailableFeaturesRegionSslPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -47134,7 +48658,8 @@ class ListAvailableFeaturesRegionSslPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47225,16 +48750,15 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -47261,7 +48785,8 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47346,16 +48871,15 @@ class ListBackendBucketsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -47382,7 +48906,8 @@ class ListBackendBucketsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47467,16 +48992,15 @@ class ListBackendServicesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -47503,7 +49027,8 @@ class ListBackendServicesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47588,16 +49113,15 @@ class ListDiskTypesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -47624,7 +49148,8 @@ class ListDiskTypesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47715,16 +49240,15 @@ class ListDisksRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -47751,7 +49275,8 @@ class ListDisksRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -47842,16 +49367,15 @@ class ListErrorsInstanceGroupManagersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -47878,7 +49402,8 @@ class ListErrorsInstanceGroupManagersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -47980,16 +49505,15 @@ class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -48016,7 +49540,8 @@ class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -48117,16 +49642,15 @@ class ListExternalVpnGatewaysRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -48153,7 +49677,8 @@ class ListExternalVpnGatewaysRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48238,16 +49763,15 @@ class ListFirewallPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -48274,7 +49798,8 @@ class ListFirewallPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48365,16 +49890,15 @@ class ListFirewallsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -48401,7 +49925,8 @@ class ListFirewallsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48486,16 +50011,15 @@ class ListForwardingRulesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -48522,7 +50046,8 @@ class ListForwardingRulesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48613,16 +50138,15 @@ class ListGlobalAddressesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -48649,7 +50173,8 @@ class ListGlobalAddressesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48734,16 +50259,15 @@ class ListGlobalForwardingRulesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -48770,7 +50294,8 @@ class ListGlobalForwardingRulesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48855,16 +50380,15 @@ class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -48891,7 +50415,8 @@ class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -48976,16 +50501,15 @@ class ListGlobalOperationsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -49012,7 +50536,8 @@ class ListGlobalOperationsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -49097,16 +50622,15 @@ class ListGlobalOrganizationOperationsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -49133,7 +50657,8 @@ class ListGlobalOrganizationOperationsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -49221,16 +50746,15 @@ class ListGlobalPublicDelegatedPrefixesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -49257,7 +50781,8 @@ class ListGlobalPublicDelegatedPrefixesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -49342,16 +50867,15 @@ class ListHealthChecksRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -49378,7 +50902,8 @@ class ListHealthChecksRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -49463,16 +50988,15 @@ class ListImagesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -49499,7 +51023,8 @@ class ListImagesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -49584,16 +51109,15 @@ class ListInstanceGroupManagersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -49620,7 +51144,8 @@ class ListInstanceGroupManagersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -49712,16 +51237,15 @@ class ListInstanceGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -49748,7 +51272,8 @@ class ListInstanceGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -49840,16 +51365,15 @@ class ListInstanceTemplatesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -49876,7 +51400,8 @@ class ListInstanceTemplatesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -49961,16 +51486,15 @@ class ListInstancesInstanceGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -49997,7 +51521,8 @@ class ListInstancesInstanceGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group (str):
@@ -50103,16 +51628,15 @@ class ListInstancesRegionInstanceGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -50139,7 +51663,8 @@ class ListInstancesRegionInstanceGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group (str):
@@ -50244,16 +51769,15 @@ class ListInstancesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -50280,7 +51804,8 @@ class ListInstancesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -50371,16 +51896,15 @@ class ListInterconnectAttachmentsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -50407,7 +51931,8 @@ class ListInterconnectAttachmentsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -50498,16 +52023,15 @@ class ListInterconnectLocationsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -50534,7 +52058,8 @@ class ListInterconnectLocationsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -50619,16 +52144,15 @@ class ListInterconnectRemoteLocationsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -50655,7 +52179,8 @@ class ListInterconnectRemoteLocationsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -50740,16 +52265,15 @@ class ListInterconnectsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -50776,7 +52300,8 @@ class ListInterconnectsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -50861,16 +52386,15 @@ class ListLicensesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -50897,7 +52421,8 @@ class ListLicensesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -50982,16 +52507,15 @@ class ListMachineImagesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -51018,7 +52542,8 @@ class ListMachineImagesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -51103,16 +52628,15 @@ class ListMachineTypesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -51139,7 +52663,8 @@ class ListMachineTypesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -51231,16 +52756,15 @@ class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -51267,7 +52791,8 @@ class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -51366,16 +52891,15 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -51402,7 +52926,8 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -51499,16 +53024,15 @@ class ListNetworkAttachmentsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -51535,7 +53059,8 @@ class ListNetworkAttachmentsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -51626,16 +53151,15 @@ class ListNetworkEndpointGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -51662,7 +53186,8 @@ class ListNetworkEndpointGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -51756,16 +53281,15 @@ class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -51792,7 +53316,8 @@ class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -51887,16 +53412,15 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -51923,7 +53447,8 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -52019,9 +53544,10 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
     )
 
 
-class ListNetworkFirewallPoliciesRequest(proto.Message):
-    r"""A request message for NetworkFirewallPolicies.List. See the
-    method description for details.
+class ListNetworkEndpointsRegionNetworkEndpointGroupsRequest(proto.Message):
+    r"""A request message for
+    RegionNetworkEndpointGroups.ListNetworkEndpoints. See the method
+    description for details.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -52032,16 +53558,15 @@ class ListNetworkFirewallPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -52068,7 +53593,146 @@ class ListNetworkFirewallPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        network_endpoint_group (str):
+            The name of the network endpoint group from
+            which you want to generate a list of included
+            network endpoints. It should comply with
+            RFC1035.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region where the network
+            endpoint group is located. It should comply with
+            RFC1035.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    network_endpoint_group: str = proto.Field(
+        proto.STRING,
+        number=433907078,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+
+
+class ListNetworkFirewallPoliciesRequest(proto.Message):
+    r"""A request message for NetworkFirewallPolicies.List. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -52153,16 +53817,15 @@ class ListNetworksRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -52189,7 +53852,8 @@ class ListNetworksRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -52274,16 +53938,15 @@ class ListNodeGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -52310,7 +53973,8 @@ class ListNodeGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -52401,16 +54065,15 @@ class ListNodeTemplatesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -52437,7 +54100,8 @@ class ListNodeTemplatesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -52528,16 +54192,15 @@ class ListNodeTypesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -52564,7 +54227,8 @@ class ListNodeTypesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -52655,16 +54319,15 @@ class ListNodesNodeGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -52691,7 +54354,8 @@ class ListNodesNodeGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -52789,16 +54453,15 @@ class ListPacketMirroringsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -52825,7 +54488,8 @@ class ListPacketMirroringsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -52922,16 +54586,15 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -52958,7 +54621,8 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -53092,16 +54756,15 @@ class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -53128,7 +54791,8 @@ class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -53229,16 +54893,15 @@ class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -53265,7 +54928,8 @@ class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         instance_group_manager (str):
@@ -53365,16 +55029,15 @@ class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -53401,7 +55064,8 @@ class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -53486,16 +55150,15 @@ class ListPublicAdvertisedPrefixesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -53522,7 +55185,8 @@ class ListPublicAdvertisedPrefixesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -53607,16 +55271,15 @@ class ListPublicDelegatedPrefixesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -53643,7 +55306,8 @@ class ListPublicDelegatedPrefixesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -53734,16 +55398,15 @@ class ListReferrersInstancesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -53770,7 +55433,8 @@ class ListReferrersInstancesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         instance (str):
@@ -53869,16 +55533,15 @@ class ListRegionAutoscalersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -53905,7 +55568,8 @@ class ListRegionAutoscalersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -53996,16 +55660,15 @@ class ListRegionBackendServicesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -54032,7 +55695,8 @@ class ListRegionBackendServicesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -54123,16 +55787,15 @@ class ListRegionCommitmentsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -54159,7 +55822,8 @@ class ListRegionCommitmentsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -54250,16 +55914,15 @@ class ListRegionDiskTypesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -54286,7 +55949,8 @@ class ListRegionDiskTypesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -54377,16 +56041,15 @@ class ListRegionDisksRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -54413,7 +56076,8 @@ class ListRegionDisksRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -54504,16 +56168,15 @@ class ListRegionHealthCheckServicesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -54540,7 +56203,8 @@ class ListRegionHealthCheckServicesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -54631,16 +56295,15 @@ class ListRegionHealthChecksRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -54667,7 +56330,8 @@ class ListRegionHealthChecksRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -54758,16 +56422,15 @@ class ListRegionInstanceGroupManagersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -54794,7 +56457,8 @@ class ListRegionInstanceGroupManagersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -54885,16 +56549,15 @@ class ListRegionInstanceGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -54921,7 +56584,8 @@ class ListRegionInstanceGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -55012,16 +56676,15 @@ class ListRegionInstanceTemplatesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -55048,7 +56711,8 @@ class ListRegionInstanceTemplatesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -55139,16 +56803,15 @@ class ListRegionNetworkEndpointGroupsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -55175,7 +56838,8 @@ class ListRegionNetworkEndpointGroupsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -55268,16 +56932,15 @@ class ListRegionNetworkFirewallPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -55304,7 +56967,8 @@ class ListRegionNetworkFirewallPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -55395,16 +57059,15 @@ class ListRegionNotificationEndpointsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -55431,7 +57094,8 @@ class ListRegionNotificationEndpointsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -55522,16 +57186,15 @@ class ListRegionOperationsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -55558,7 +57221,8 @@ class ListRegionOperationsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -55649,16 +57313,15 @@ class ListRegionSecurityPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -55685,7 +57348,8 @@ class ListRegionSecurityPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -55776,16 +57440,15 @@ class ListRegionSslCertificatesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -55812,7 +57475,8 @@ class ListRegionSslCertificatesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -55903,16 +57567,15 @@ class ListRegionSslPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -55939,7 +57602,8 @@ class ListRegionSslPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -56030,16 +57694,15 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -56066,7 +57729,8 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -56157,16 +57821,15 @@ class ListRegionTargetHttpsProxiesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -56193,7 +57856,8 @@ class ListRegionTargetHttpsProxiesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -56284,16 +57948,15 @@ class ListRegionTargetTcpProxiesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -56320,7 +57983,8 @@ class ListRegionTargetTcpProxiesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -56411,16 +58075,15 @@ class ListRegionUrlMapsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -56447,7 +58110,8 @@ class ListRegionUrlMapsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -56538,16 +58202,15 @@ class ListRegionsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -56574,7 +58237,8 @@ class ListRegionsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -56659,16 +58323,15 @@ class ListReservationsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -56695,7 +58358,8 @@ class ListReservationsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -56786,16 +58450,15 @@ class ListResourcePoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -56822,7 +58485,8 @@ class ListResourcePoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -56913,16 +58577,15 @@ class ListRoutersRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -56949,7 +58612,8 @@ class ListRoutersRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -57040,16 +58704,15 @@ class ListRoutesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -57076,7 +58739,8 @@ class ListRoutesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -57161,16 +58825,15 @@ class ListSecurityPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -57197,7 +58860,8 @@ class ListSecurityPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -57282,16 +58946,15 @@ class ListServiceAttachmentsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -57318,7 +58981,8 @@ class ListServiceAttachmentsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -57409,16 +59073,15 @@ class ListSnapshotsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -57445,7 +59108,8 @@ class ListSnapshotsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -57530,16 +59194,15 @@ class ListSslCertificatesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -57566,7 +59229,8 @@ class ListSslCertificatesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -57651,16 +59315,15 @@ class ListSslPoliciesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -57687,7 +59350,8 @@ class ListSslPoliciesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -57772,16 +59436,15 @@ class ListSubnetworksRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -57808,7 +59471,8 @@ class ListSubnetworksRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -57899,16 +59563,15 @@ class ListTargetGrpcProxiesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -57935,7 +59598,8 @@ class ListTargetGrpcProxiesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -58020,16 +59684,15 @@ class ListTargetHttpProxiesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -58056,7 +59719,8 @@ class ListTargetHttpProxiesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -58141,16 +59805,15 @@ class ListTargetHttpsProxiesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -58177,7 +59840,8 @@ class ListTargetHttpsProxiesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -58262,16 +59926,15 @@ class ListTargetInstancesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -58298,7 +59961,8 @@ class ListTargetInstancesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -58389,16 +60053,15 @@ class ListTargetPoolsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -58425,7 +60088,8 @@ class ListTargetPoolsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -58516,16 +60180,15 @@ class ListTargetSslProxiesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -58552,7 +60215,8 @@ class ListTargetSslProxiesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -58637,16 +60301,15 @@ class ListTargetTcpProxiesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -58673,7 +60336,8 @@ class ListTargetTcpProxiesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -58758,16 +60422,15 @@ class ListTargetVpnGatewaysRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -58794,7 +60457,8 @@ class ListTargetVpnGatewaysRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -58885,16 +60549,15 @@ class ListUrlMapsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -58921,7 +60584,8 @@ class ListUrlMapsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -58993,9 +60657,9 @@ class ListUrlMapsRequest(proto.Message):
     )
 
 
-class ListUsableSubnetworksRequest(proto.Message):
-    r"""A request message for Subnetworks.ListUsable. See the method
-    description for details.
+class ListUsableBackendServicesRequest(proto.Message):
+    r"""A request message for BackendServices.ListUsable. See the
+    method description for details.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -59006,16 +60670,15 @@ class ListUsableSubnetworksRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -59042,7 +60705,258 @@ class ListUsableSubnetworksRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+
+
+class ListUsableRegionBackendServicesRequest(proto.Message):
+    r"""A request message for RegionBackendServices.ListUsable. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region scoping this request. It
+            must be a string that meets the requirements in
+            RFC1035.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+
+
+class ListUsableSubnetworksRequest(proto.Message):
+    r"""A request message for Subnetworks.ListUsable. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -59127,16 +61041,15 @@ class ListVpnGatewaysRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -59163,7 +61076,8 @@ class ListVpnGatewaysRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -59254,16 +61168,15 @@ class ListVpnTunnelsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -59290,7 +61203,8 @@ class ListVpnTunnelsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -59381,16 +61295,15 @@ class ListXpnHostsProjectsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -59417,7 +61330,8 @@ class ListXpnHostsProjectsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -59511,16 +61425,15 @@ class ListZoneOperationsRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -59547,7 +61460,8 @@ class ListZoneOperationsRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -59638,16 +61552,15 @@ class ListZonesRequest(proto.Message):
             response. Most Compute resources support two types of filter
             expressions: expressions that support regular expressions
             and expressions that follow API improvement proposal
-            AIP-160. If you want to use AIP-160, your expression must
-            specify the field name, an operator, and the value that you
-            want to use for filtering. The value must be a string, a
-            number, or a boolean. The operator must be either ``=``,
-            ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``. For example,
-            if you are filtering Compute Engine instances, you can
-            exclude instances named ``example-instance`` by specifying
-            ``name != example-instance``. The ``:`` operator can be used
-            with string fields to match substrings. For non-string
-            fields it is equivalent to the ``=`` operator. The ``:*``
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
             comparison can be used to test whether a key has been
             defined. For example, to find all objects with ``owner``
             label use: ``labels.owner:*`` You can also filter nested
@@ -59674,7 +61587,8 @@ class ListZonesRequest(proto.Message):
             Google RE2 library syntax. The literal value must match the
             entire field. For example, to filter for instances that do
             not end with name "instance", you would use
-            ``name ne .*instance``.
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
 
             This field is a member of `oneof`_ ``_filter``.
         max_results (int):
@@ -60891,6 +62805,11 @@ class ManagedInstance(proto.Message):
             or delete the instance.
 
             This field is a member of `oneof`_ ``_last_attempt``.
+        name (str):
+            [Output Only] The name of the instance. The name always
+            exists even if the instance has not yet been created.
+
+            This field is a member of `oneof`_ ``_name``.
         preserved_state_from_config (google.cloud.compute_v1.types.PreservedState):
             [Output Only] Preserved state applied from per-instance
             config for this instance.
@@ -61081,6 +63000,11 @@ class ManagedInstance(proto.Message):
         number=434771492,
         optional=True,
         message="ManagedInstanceLastAttempt",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
     )
     preserved_state_from_config: "PreservedState" = proto.Field(
         proto.MESSAGE,
@@ -61673,6 +63597,127 @@ class NamedPort(proto.Message):
     )
 
 
+class NatIpInfo(proto.Message):
+    r"""Contains NAT IP information of a NAT config (i.e. usage
+    status, mode).
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        nat_ip_info_mappings (MutableSequence[google.cloud.compute_v1.types.NatIpInfoNatIpInfoMapping]):
+            A list of all NAT IPs assigned to this NAT
+            config.
+        nat_name (str):
+            Name of the NAT config which the NAT IP
+            belongs to.
+
+            This field is a member of `oneof`_ ``_nat_name``.
+    """
+
+    nat_ip_info_mappings: MutableSequence[
+        "NatIpInfoNatIpInfoMapping"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=241401884,
+        message="NatIpInfoNatIpInfoMapping",
+    )
+    nat_name: str = proto.Field(
+        proto.STRING,
+        number=425596649,
+        optional=True,
+    )
+
+
+class NatIpInfoNatIpInfoMapping(proto.Message):
+    r"""Contains information of a NAT IP.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        mode (str):
+            Specifies whether NAT IP is auto or manual.
+            Check the Mode enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_mode``.
+        nat_ip (str):
+            NAT IP address. For example: 203.0.113.11.
+
+            This field is a member of `oneof`_ ``_nat_ip``.
+        usage (str):
+            Specifies whether NAT IP is currently serving
+            at least one endpoint or not. Check the Usage
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_usage``.
+    """
+
+    class Mode(proto.Enum):
+        r"""Specifies whether NAT IP is auto or manual.
+
+        Values:
+            UNDEFINED_MODE (0):
+                A value indicating that the enum field is not
+                set.
+            AUTO (2020783):
+                No description available.
+            MANUAL (119397318):
+                No description available.
+        """
+        UNDEFINED_MODE = 0
+        AUTO = 2020783
+        MANUAL = 119397318
+
+    class Usage(proto.Enum):
+        r"""Specifies whether NAT IP is currently serving at least one
+        endpoint or not.
+
+        Values:
+            UNDEFINED_USAGE (0):
+                A value indicating that the enum field is not
+                set.
+            IN_USE (17393485):
+                No description available.
+            UNUSED (360643030):
+                No description available.
+        """
+        UNDEFINED_USAGE = 0
+        IN_USE = 17393485
+        UNUSED = 360643030
+
+    mode: str = proto.Field(
+        proto.STRING,
+        number=3357091,
+        optional=True,
+    )
+    nat_ip: str = proto.Field(
+        proto.STRING,
+        number=21113093,
+        optional=True,
+    )
+    usage: str = proto.Field(
+        proto.STRING,
+        number=111574433,
+        optional=True,
+    )
+
+
+class NatIpInfoResponse(proto.Message):
+    r"""
+
+    Attributes:
+        result (MutableSequence[google.cloud.compute_v1.types.NatIpInfo]):
+            [Output Only] A list of NAT IP information.
+    """
+
+    result: MutableSequence["NatIpInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=139315229,
+        message="NatIpInfo",
+    )
+
+
 class Network(proto.Message):
     r"""Represents a VPC Network resource. Networks connect resources
     to each other and to the internet. For more information, read
@@ -62186,6 +64231,13 @@ class NetworkAttachmentConnectedEndpoint(proto.Message):
             range in case of Serverless.
 
             This field is a member of `oneof`_ ``_ip_address``.
+        ipv6_address (str):
+            The IPv6 address assigned to the producer instance network
+            interface. This is only assigned when the stack types of
+            both the instance network interface and the consumer subnet
+            are IPv4_IPv6.
+
+            This field is a member of `oneof`_ ``_ipv6_address``.
         project_id_or_num (str):
             The project id or number of the interface to
             which the IP was assigned.
@@ -62204,6 +64256,11 @@ class NetworkAttachmentConnectedEndpoint(proto.Message):
             producer instance network interface.
 
             This field is a member of `oneof`_ ``_subnetwork``.
+        subnetwork_cidr_range (str):
+            [Output Only] The CIDR range of the subnet from which the
+            IPv4 internal IP was allocated from.
+
+            This field is a member of `oneof`_ ``_subnetwork_cidr_range``.
     """
 
     class Status(proto.Enum):
@@ -62245,6 +64302,11 @@ class NetworkAttachmentConnectedEndpoint(proto.Message):
         number=406272220,
         optional=True,
     )
+    ipv6_address: str = proto.Field(
+        proto.STRING,
+        number=341563804,
+        optional=True,
+    )
     project_id_or_num: str = proto.Field(
         proto.STRING,
         number=349783336,
@@ -62262,6 +64324,11 @@ class NetworkAttachmentConnectedEndpoint(proto.Message):
     subnetwork: str = proto.Field(
         proto.STRING,
         number=307827694,
+        optional=True,
+    )
+    subnetwork_cidr_range: str = proto.Field(
+        proto.STRING,
+        number=383249827,
         optional=True,
     )
 
@@ -62693,10 +64760,8 @@ class NetworkEndpointGroup(proto.Message):
     r"""Represents a collection of network endpoints. A network
     endpoint group (NEG) defines how a set of endpoints should be
     reached, whether they are reachable, and where they are located.
-    For more information about using NEGs, see Setting up external
-    HTTP(S) Load Balancing with internet NEGs, Setting up zonal
-    NEGs, or Setting up external HTTP(S) Load Balancing with
-    serverless NEGs.
+    For more information about using NEGs for different use cases,
+    see Network endpoint groups overview.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -66271,7 +68336,7 @@ class Operation(proto.Message):
     global, regional or zonal. - For global operations, use the
     ``globalOperations`` resource. - For regional operations, use the
     ``regionOperations`` resource. - For zonal operations, use the
-    ``zonalOperations`` resource. For more information, read Global,
+    ``zoneOperations`` resource. For more information, read Global,
     Regional, and Zonal Resources.
 
 
@@ -66324,6 +68389,9 @@ class Operation(proto.Message):
             This value is in RFC3339 text format.
 
             This field is a member of `oneof`_ ``_insert_time``.
+        instances_bulk_insert_operation_metadata (google.cloud.compute_v1.types.InstancesBulkInsertOperationMetadata):
+
+            This field is a member of `oneof`_ ``_instances_bulk_insert_operation_metadata``.
         kind (str):
             [Output Only] Type of the resource. Always
             ``compute#operation`` for Operation resources.
@@ -66363,6 +68431,12 @@ class Operation(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
+        set_common_instance_metadata_operation_metadata (google.cloud.compute_v1.types.SetCommonInstanceMetadataOperationMetadata):
+            [Output Only] If the operation is for
+            projects.setCommonInstanceMetadata, this field will contain
+            information on all underlying zonal actions and their state.
+
+            This field is a member of `oneof`_ ``_set_common_instance_metadata_operation_metadata``.
         start_time (str):
             [Output Only] The time that this operation was started by
             the server. This value is in RFC3339 text format.
@@ -66392,7 +68466,8 @@ class Operation(proto.Message):
             This field is a member of `oneof`_ ``_target_link``.
         user (str):
             [Output Only] User who requested the operation, for example:
-            ``user@example.com``.
+            ``user@example.com`` or
+            ``alice_smith_identifier (global/workforcePools/example-com-us-employees)``.
 
             This field is a member of `oneof`_ ``_user``.
         warnings (MutableSequence[google.cloud.compute_v1.types.Warnings]):
@@ -66472,6 +68547,14 @@ class Operation(proto.Message):
         number=433722515,
         optional=True,
     )
+    instances_bulk_insert_operation_metadata: "InstancesBulkInsertOperationMetadata" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=89146177,
+            optional=True,
+            message="InstancesBulkInsertOperationMetadata",
+        )
+    )
     kind: str = proto.Field(
         proto.STRING,
         number=3292052,
@@ -66506,6 +68589,12 @@ class Operation(proto.Message):
         proto.STRING,
         number=456214797,
         optional=True,
+    )
+    set_common_instance_metadata_operation_metadata: "SetCommonInstanceMetadataOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=490378980,
+        optional=True,
+        message="SetCommonInstanceMetadataOperationMetadata",
     )
     start_time: str = proto.Field(
         proto.STRING,
@@ -68364,6 +70453,65 @@ class PatchInterconnectRequest(proto.Message):
     )
 
 
+class PatchNetworkAttachmentRequest(proto.Message):
+    r"""A request message for NetworkAttachments.Patch. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        network_attachment (str):
+            Name of the NetworkAttachment resource to
+            patch.
+        network_attachment_resource (google.cloud.compute_v1.types.NetworkAttachment):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+        request_id (str):
+            An optional request ID to identify requests. Specify a
+            unique request ID so that if you must retry your request,
+            the server will know to ignore the request if it has already
+            been completed. For example, consider a situation where you
+            make an initial request and the request times out. If you
+            make the request again with the same request ID, the server
+            can check if original operation with the same request ID was
+            received, and if so, will ignore the second request. This
+            prevents clients from accidentally creating duplicate
+            commitments. The request ID must be a valid UUID with the
+            exception that zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000). end_interface:
+            MixerMutationRequestBuilder
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    network_attachment: str = proto.Field(
+        proto.STRING,
+        number=224644052,
+    )
+    network_attachment_resource: "NetworkAttachment" = proto.Field(
+        proto.MESSAGE,
+        number=210974745,
+        message="NetworkAttachment",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
 class PatchNetworkEdgeSecurityServiceRequest(proto.Message):
     r"""A request message for NetworkEdgeSecurityServices.Patch. See
     the method description for details.
@@ -69314,6 +71462,11 @@ class PatchRegionSecurityPolicyRequest(proto.Message):
             Name of the security policy to update.
         security_policy_resource (google.cloud.compute_v1.types.SecurityPolicy):
             The body resource for this request
+        update_mask (str):
+            Indicates fields to be cleared as part of
+            this request.
+
+            This field is a member of `oneof`_ ``_update_mask``.
     """
 
     project: str = proto.Field(
@@ -69337,6 +71490,11 @@ class PatchRegionSecurityPolicyRequest(proto.Message):
         proto.MESSAGE,
         number=216159612,
         message="SecurityPolicy",
+    )
+    update_mask: str = proto.Field(
+        proto.STRING,
+        number=500079778,
+        optional=True,
     )
 
 
@@ -69830,6 +71988,71 @@ class PatchRuleRegionNetworkFirewallPolicyRequest(proto.Message):
     )
 
 
+class PatchRuleRegionSecurityPolicyRequest(proto.Message):
+    r"""A request message for RegionSecurityPolicies.PatchRule. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        priority (int):
+            The priority of the rule to patch.
+
+            This field is a member of `oneof`_ ``_priority``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region scoping this request.
+        security_policy (str):
+            Name of the security policy to update.
+        security_policy_rule_resource (google.cloud.compute_v1.types.SecurityPolicyRule):
+            The body resource for this request
+        update_mask (str):
+            Indicates fields to be cleared as part of
+            this request.
+
+            This field is a member of `oneof`_ ``_update_mask``.
+        validate_only (bool):
+            If true, the request will not be committed.
+
+            This field is a member of `oneof`_ ``_validate_only``.
+    """
+
+    priority: int = proto.Field(
+        proto.INT32,
+        number=445151652,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    security_policy: str = proto.Field(
+        proto.STRING,
+        number=171082513,
+    )
+    security_policy_rule_resource: "SecurityPolicyRule" = proto.Field(
+        proto.MESSAGE,
+        number=402693443,
+        message="SecurityPolicyRule",
+    )
+    update_mask: str = proto.Field(
+        proto.STRING,
+        number=500079778,
+        optional=True,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=242744629,
+        optional=True,
+    )
+
+
 class PatchRuleSecurityPolicyRequest(proto.Message):
     r"""A request message for SecurityPolicies.PatchRule. See the
     method description for details.
@@ -69848,6 +72071,11 @@ class PatchRuleSecurityPolicyRequest(proto.Message):
             Name of the security policy to update.
         security_policy_rule_resource (google.cloud.compute_v1.types.SecurityPolicyRule):
             The body resource for this request
+        update_mask (str):
+            Indicates fields to be cleared as part of
+            this request.
+
+            This field is a member of `oneof`_ ``_update_mask``.
         validate_only (bool):
             If true, the request will not be committed.
 
@@ -69871,6 +72099,11 @@ class PatchRuleSecurityPolicyRequest(proto.Message):
         proto.MESSAGE,
         number=402693443,
         message="SecurityPolicyRule",
+    )
+    update_mask: str = proto.Field(
+        proto.STRING,
+        number=500079778,
+        optional=True,
     )
     validate_only: bool = proto.Field(
         proto.BOOL,
@@ -69911,6 +72144,11 @@ class PatchSecurityPolicyRequest(proto.Message):
             Name of the security policy to update.
         security_policy_resource (google.cloud.compute_v1.types.SecurityPolicy):
             The body resource for this request
+        update_mask (str):
+            Indicates fields to be cleared as part of
+            this request.
+
+            This field is a member of `oneof`_ ``_update_mask``.
     """
 
     project: str = proto.Field(
@@ -69930,6 +72168,11 @@ class PatchSecurityPolicyRequest(proto.Message):
         proto.MESSAGE,
         number=216159612,
         message="SecurityPolicy",
+    )
+    update_mask: str = proto.Field(
+        proto.STRING,
+        number=500079778,
+        optional=True,
     )
 
 
@@ -69994,6 +72237,64 @@ class PatchServiceAttachmentRequest(proto.Message):
         proto.MESSAGE,
         number=472980256,
         message="ServiceAttachment",
+    )
+
+
+class PatchSnapshotSettingRequest(proto.Message):
+    r"""A request message for SnapshotSettingsService.Patch. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        snapshot_settings_resource (google.cloud.compute_v1.types.SnapshotSettings):
+            The body resource for this request
+        update_mask (str):
+            update_mask indicates fields to be updated as part of this
+            request.
+
+            This field is a member of `oneof`_ ``_update_mask``.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    snapshot_settings_resource: "SnapshotSettings" = proto.Field(
+        proto.MESSAGE,
+        number=357664495,
+        message="SnapshotSettings",
+    )
+    update_mask: str = proto.Field(
+        proto.STRING,
+        number=500079778,
+        optional=True,
     )
 
 
@@ -70371,8 +72672,8 @@ class PathMatcher(proto.Message):
             defaultRouteAction cannot contain any
             weightedBackendServices. Only one of
             defaultRouteAction or defaultUrlRedirect must be
-            set. URL maps for Classic external HTTP(S) load
-            balancers only support the urlRewrite action
+            set. URL maps for classic Application Load
+            Balancers only support the urlRewrite action
             within a path matcher's defaultRouteAction.
 
             This field is a member of `oneof`_ ``_default_route_action``.
@@ -70524,9 +72825,9 @@ class PathRule(proto.Message):
             set. Conversely if service is set, routeAction
             cannot contain any weightedBackendServices. Only
             one of routeAction or urlRedirect must be set.
-            URL maps for Classic external HTTP(S) load
-            balancers only support the urlRewrite action
-            within a path rule's routeAction.
+            URL maps for classic Application Load Balancers
+            only support the urlRewrite action within a path
+            rule's routeAction.
 
             This field is a member of `oneof`_ ``_route_action``.
         service (str):
@@ -70698,25 +72999,10 @@ class Policy(proto.Message):
     resource, or both. To learn which resources support conditions in
     their IAM policies, see the `IAM
     documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
-    **JSON example:** { "bindings": [ { "role":
-    "roles/resourcemanager.organizationAdmin", "members": [
-    "user:mike@example.com", "group:admins@example.com",
-    "domain:google.com",
-    "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, {
-    "role": "roles/resourcemanager.organizationViewer", "members": [
-    "user:eve@example.com" ], "condition": { "title": "expirable
-    access", "description": "Does not grant access after Sep 2020",
-    "expression": "request.time <
-    timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag":
-    "BwWWja0YfJA=", "version": 3 } **YAML example:** bindings: -
-    members: - user:mike@example.com - group:admins@example.com -
-    domain:google.com -
-    serviceAccount:my-project-id@appspot.gserviceaccount.com role:
-    roles/resourcemanager.organizationAdmin - members: -
-    user:eve@example.com role: roles/resourcemanager.organizationViewer
-    condition: title: expirable access description: Does not grant
-    access after Sep 2020 expression: request.time <
-    timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3
+    **JSON example:**
+    ``{ "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }``
+    **YAML example:**
+    ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``
     For a description of IAM and its features, see the `IAM
     documentation <https://cloud.google.com/iam/docs/>`__.
 
@@ -70843,6 +73129,14 @@ class PreservedState(proto.Message):
             Preserved disks defined for this instance.
             This map is keyed with the device names of the
             disks.
+        external_i_ps (MutableMapping[str, google.cloud.compute_v1.types.PreservedStatePreservedNetworkIp]):
+            Preserved external IPs defined for this
+            instance. This map is keyed with the name of the
+            network interface.
+        internal_i_ps (MutableMapping[str, google.cloud.compute_v1.types.PreservedStatePreservedNetworkIp]):
+            Preserved internal IPs defined for this
+            instance. This map is keyed with the name of the
+            network interface.
         metadata (MutableMapping[str, str]):
             Preserved metadata defined for this instance.
     """
@@ -70852,6 +73146,22 @@ class PreservedState(proto.Message):
         proto.MESSAGE,
         number=95594102,
         message="PreservedStatePreservedDisk",
+    )
+    external_i_ps: MutableMapping[
+        str, "PreservedStatePreservedNetworkIp"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=532687245,
+        message="PreservedStatePreservedNetworkIp",
+    )
+    internal_i_ps: MutableMapping[
+        str, "PreservedStatePreservedNetworkIp"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=215731675,
+        message="PreservedStatePreservedNetworkIp",
     )
     metadata: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -70944,6 +73254,92 @@ class PreservedStatePreservedDisk(proto.Message):
     source: str = proto.Field(
         proto.STRING,
         number=177235995,
+        optional=True,
+    )
+
+
+class PreservedStatePreservedNetworkIp(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        auto_delete (str):
+            These stateful IPs will never be released
+            during autohealing, update or VM instance
+            recreate operations. This flag is used to
+            configure if the IP reservation should be
+            deleted after it is no longer used by the group,
+            e.g. when the given instance or the whole group
+            is deleted. Check the AutoDelete enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_auto_delete``.
+        ip_address (google.cloud.compute_v1.types.PreservedStatePreservedNetworkIpIpAddress):
+            Ip address representation
+
+            This field is a member of `oneof`_ ``_ip_address``.
+    """
+
+    class AutoDelete(proto.Enum):
+        r"""These stateful IPs will never be released during autohealing,
+        update or VM instance recreate operations. This flag is used to
+        configure if the IP reservation should be deleted after it is no
+        longer used by the group, e.g. when the given instance or the
+        whole group is deleted.
+
+        Values:
+            UNDEFINED_AUTO_DELETE (0):
+                A value indicating that the enum field is not
+                set.
+            NEVER (74175084):
+                No description available.
+            ON_PERMANENT_INSTANCE_DELETION (95727719):
+                No description available.
+        """
+        UNDEFINED_AUTO_DELETE = 0
+        NEVER = 74175084
+        ON_PERMANENT_INSTANCE_DELETION = 95727719
+
+    auto_delete: str = proto.Field(
+        proto.STRING,
+        number=464761403,
+        optional=True,
+    )
+    ip_address: "PreservedStatePreservedNetworkIpIpAddress" = proto.Field(
+        proto.MESSAGE,
+        number=406272220,
+        optional=True,
+        message="PreservedStatePreservedNetworkIpIpAddress",
+    )
+
+
+class PreservedStatePreservedNetworkIpIpAddress(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        address (str):
+            The URL of the reservation for this IP
+            address.
+
+            This field is a member of `oneof`_ ``_address``.
+        literal (str):
+            An IPv4 internal network address to assign to
+            the instance for this network interface.
+
+            This field is a member of `oneof`_ ``_literal``.
+    """
+
+    address: str = proto.Field(
+        proto.STRING,
+        number=462920692,
+        optional=True,
+    )
+    literal: str = proto.Field(
+        proto.STRING,
+        number=182460591,
         optional=True,
     )
 
@@ -71377,6 +73773,11 @@ class PublicAdvertisedPrefix(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        byoip_api_version (str):
+            [Output Only] The version of BYOIP API. Check the
+            ByoipApiVersion enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_byoip_api_version``.
         creation_timestamp (str):
             [Output Only] Creation timestamp in RFC3339 text format.
 
@@ -71433,6 +73834,18 @@ class PublicAdvertisedPrefix(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
+        pdp_scope (str):
+            Specifies how child public delegated prefix will be scoped.
+            It could be one of following values: - ``REGIONAL``: The
+            public delegated prefix is regional only. The provisioning
+            will take a few minutes. - ``GLOBAL``: The public delegated
+            prefix is global only. The provisioning will take ~4 weeks.
+            - ``GLOBAL_AND_REGIONAL`` [output only]: The public
+            delegated prefixes is BYOIP V1 legacy prefix. This is output
+            only value and no longer supported in BYOIP V2. Check the
+            PdpScope enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_pdp_scope``.
         public_delegated_prefixs (MutableSequence[google.cloud.compute_v1.types.PublicAdvertisedPrefixPublicDelegatedPrefix]):
             [Output Only] The list of public delegated prefixes that
             exist for this public advertised prefix.
@@ -71460,6 +73873,59 @@ class PublicAdvertisedPrefix(proto.Message):
             This field is a member of `oneof`_ ``_status``.
     """
 
+    class ByoipApiVersion(proto.Enum):
+        r"""[Output Only] The version of BYOIP API.
+
+        Values:
+            UNDEFINED_BYOIP_API_VERSION (0):
+                A value indicating that the enum field is not
+                set.
+            V1 (2715):
+                This public advertised prefix can be used to
+                create both regional and global public delegated
+                prefixes. It usually takes 4 weeks to create or
+                delete a public delegated prefix. The BGP status
+                cannot be changed.
+            V2 (2716):
+                This public advertised prefix can only be
+                used to create regional public delegated
+                prefixes. Public delegated prefix creation and
+                deletion takes minutes and the BGP status can be
+                modified.
+        """
+        UNDEFINED_BYOIP_API_VERSION = 0
+        V1 = 2715
+        V2 = 2716
+
+    class PdpScope(proto.Enum):
+        r"""Specifies how child public delegated prefix will be scoped. It could
+        be one of following values: - ``REGIONAL``: The public delegated
+        prefix is regional only. The provisioning will take a few minutes. -
+        ``GLOBAL``: The public delegated prefix is global only. The
+        provisioning will take ~4 weeks. - ``GLOBAL_AND_REGIONAL`` [output
+        only]: The public delegated prefixes is BYOIP V1 legacy prefix. This
+        is output only value and no longer supported in BYOIP V2.
+
+        Values:
+            UNDEFINED_PDP_SCOPE (0):
+                A value indicating that the enum field is not
+                set.
+            GLOBAL (494663587):
+                The public delegated prefix is global only.
+                The provisioning will take ~4 weeks.
+            GLOBAL_AND_REGIONAL (318053059):
+                The public delegated prefixes is BYOIP V1
+                legacy prefix. This is output only value and no
+                longer supported in BYOIP V2.
+            REGIONAL (92288543):
+                The public delegated prefix is regional only.
+                The provisioning will take a few minutes.
+        """
+        UNDEFINED_PDP_SCOPE = 0
+        GLOBAL = 494663587
+        GLOBAL_AND_REGIONAL = 318053059
+        REGIONAL = 92288543
+
     class Status(proto.Enum):
         r"""The status of the public advertised prefix. Possible values include:
         - ``INITIAL``: RPKI validation is complete. - ``PTR_CONFIGURED``:
@@ -71474,6 +73940,8 @@ class PublicAdvertisedPrefix(proto.Message):
             UNDEFINED_STATUS (0):
                 A value indicating that the enum field is not
                 set.
+            ANNOUNCED_TO_INTERNET (177880897):
+                The prefix is announced to Internet.
             INITIAL (518841124):
                 RPKI validation is complete.
             PREFIX_CONFIGURATION_COMPLETE (480889551):
@@ -71484,20 +73952,30 @@ class PublicAdvertisedPrefix(proto.Message):
                 The prefix is being removed.
             PTR_CONFIGURED (513497167):
                 User has configured the PTR.
+            READY_TO_ANNOUNCE (64641265):
+                The prefix is currently withdrawn but ready
+                to be announced.
             REVERSE_DNS_LOOKUP_FAILED (295755183):
                 Reverse DNS lookup failed.
             VALIDATED (66197998):
                 Reverse DNS lookup is successful.
         """
         UNDEFINED_STATUS = 0
+        ANNOUNCED_TO_INTERNET = 177880897
         INITIAL = 518841124
         PREFIX_CONFIGURATION_COMPLETE = 480889551
         PREFIX_CONFIGURATION_IN_PROGRESS = 378550961
         PREFIX_REMOVAL_IN_PROGRESS = 284375783
         PTR_CONFIGURED = 513497167
+        READY_TO_ANNOUNCE = 64641265
         REVERSE_DNS_LOOKUP_FAILED = 295755183
         VALIDATED = 66197998
 
+    byoip_api_version: str = proto.Field(
+        proto.STRING,
+        number=162683283,
+        optional=True,
+    )
     creation_timestamp: str = proto.Field(
         proto.STRING,
         number=30525366,
@@ -71536,6 +74014,11 @@ class PublicAdvertisedPrefix(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=3373707,
+        optional=True,
+    )
+    pdp_scope: str = proto.Field(
+        proto.STRING,
+        number=524264785,
         optional=True,
     )
     public_delegated_prefixs: MutableSequence[
@@ -71713,6 +74196,11 @@ class PublicDelegatedPrefix(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        byoip_api_version (str):
+            [Output Only] The version of BYOIP API. Check the
+            ByoipApiVersion enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_byoip_api_version``.
         creation_timestamp (str):
             [Output Only] Creation timestamp in RFC3339 text format.
 
@@ -71800,6 +74288,27 @@ class PublicDelegatedPrefix(proto.Message):
             This field is a member of `oneof`_ ``_status``.
     """
 
+    class ByoipApiVersion(proto.Enum):
+        r"""[Output Only] The version of BYOIP API.
+
+        Values:
+            UNDEFINED_BYOIP_API_VERSION (0):
+                A value indicating that the enum field is not
+                set.
+            V1 (2715):
+                This public delegated prefix usually takes 4
+                weeks to delete, and the BGP status cannot be
+                changed. Announce and Withdraw APIs can not be
+                used on this prefix.
+            V2 (2716):
+                This public delegated prefix takes minutes to
+                delete. Announce and Withdraw APIs can be used
+                on this prefix to change the BGP status.
+        """
+        UNDEFINED_BYOIP_API_VERSION = 0
+        V1 = 2715
+        V2 = 2716
+
     class Status(proto.Enum):
         r"""[Output Only] The status of the public delegated prefix, which can
         be one of following values: - ``INITIALIZING`` The public delegated
@@ -71815,6 +74324,12 @@ class PublicDelegatedPrefix(proto.Message):
                 set.
             ANNOUNCED (365103355):
                 The public delegated prefix is active.
+            ANNOUNCED_TO_GOOGLE (454875705):
+                The prefix is announced within Google
+                network.
+            ANNOUNCED_TO_INTERNET (177880897):
+                The prefix is announced to Internet and
+                within Google.
             DELETING (528602024):
                 The public delegated prefix is being
                 deprovsioned.
@@ -71827,10 +74342,17 @@ class PublicDelegatedPrefix(proto.Message):
         """
         UNDEFINED_STATUS = 0
         ANNOUNCED = 365103355
+        ANNOUNCED_TO_GOOGLE = 454875705
+        ANNOUNCED_TO_INTERNET = 177880897
         DELETING = 528602024
         INITIALIZING = 306588749
         READY_TO_ANNOUNCE = 64641265
 
+    byoip_api_version: str = proto.Field(
+        proto.STRING,
+        number=162683283,
+        optional=True,
+    )
     creation_timestamp: str = proto.Field(
         proto.STRING,
         number=30525366,
@@ -74212,6 +76734,36 @@ class RegionList(proto.Message):
     )
 
 
+class RegionNetworkEndpointGroupsAttachEndpointsRequest(proto.Message):
+    r"""
+
+    Attributes:
+        network_endpoints (MutableSequence[google.cloud.compute_v1.types.NetworkEndpoint]):
+            The list of network endpoints to be attached.
+    """
+
+    network_endpoints: MutableSequence["NetworkEndpoint"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=149850285,
+        message="NetworkEndpoint",
+    )
+
+
+class RegionNetworkEndpointGroupsDetachEndpointsRequest(proto.Message):
+    r"""
+
+    Attributes:
+        network_endpoints (MutableSequence[google.cloud.compute_v1.types.NetworkEndpoint]):
+            The list of network endpoints to be detached.
+    """
+
+    network_endpoints: MutableSequence["NetworkEndpoint"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=149850285,
+        message="NetworkEndpoint",
+    )
+
+
 class RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse(proto.Message):
     r"""
 
@@ -75180,6 +77732,46 @@ class RemoveRuleRegionNetworkFirewallPolicyRequest(proto.Message):
         proto.STRING,
         number=37109963,
         optional=True,
+    )
+
+
+class RemoveRuleRegionSecurityPolicyRequest(proto.Message):
+    r"""A request message for RegionSecurityPolicies.RemoveRule. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        priority (int):
+            The priority of the rule to remove from the
+            security policy.
+
+            This field is a member of `oneof`_ ``_priority``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region scoping this request.
+        security_policy (str):
+            Name of the security policy to update.
+    """
+
+    priority: int = proto.Field(
+        proto.INT32,
+        number=445151652,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    security_policy: str = proto.Field(
+        proto.STRING,
+        number=171082513,
     )
 
 
@@ -77155,12 +79747,21 @@ class ResourceStatus(proto.Message):
             running.
 
             This field is a member of `oneof`_ ``_physical_host``.
+        upcoming_maintenance (google.cloud.compute_v1.types.UpcomingMaintenance):
+
+            This field is a member of `oneof`_ ``_upcoming_maintenance``.
     """
 
     physical_host: str = proto.Field(
         proto.STRING,
         number=464370704,
         optional=True,
+    )
+    upcoming_maintenance: "UpcomingMaintenance" = proto.Field(
+        proto.MESSAGE,
+        number=227348592,
+        optional=True,
+        message="UpcomingMaintenance",
     )
 
 
@@ -77241,7 +79842,10 @@ class Route(proto.Message):
         dest_range (str):
             The destination range of outgoing packets
             that this route applies to. Both IPv4 and IPv6
-            are supported.
+            are supported. Must specify an IPv4 range (e.g.
+            192.0.2.0/24) or an IPv6 range in RFC 4291
+            format (e.g. 2001:db8::/32). IPv6 range will be
+            displayed using RFC 5952 compressed format.
 
             This field is a member of `oneof`_ ``_dest_range``.
         id (int):
@@ -77304,8 +79908,15 @@ class Route(proto.Message):
             This field is a member of `oneof`_ ``_next_hop_instance``.
         next_hop_ip (str):
             The network IP address of an instance that
-            should handle matching packets. Only IPv4 is
-            supported.
+            should handle matching packets. Both IPv6
+            address and IPv4 addresses are supported. Must
+            specify an IPv4 address in dot-decimal notation
+            (e.g. 192.0.2.99) or an IPv6 address in RFC 4291
+            format (e.g. 2001:db8::2d9:51:0:0 or
+            2001:db8:0:0:2d9:51:0:0). IPv6 addresses will be
+            displayed using RFC 5952 compressed format (e.g.
+            2001:db8::2d9:51:0:0). Should never be an
+            IPv4-mapped IPv6 address.
 
             This field is a member of `oneof`_ ``_next_hop_ip``.
         next_hop_network (str):
@@ -77702,10 +80313,14 @@ class Router(proto.Message):
 
             This field is a member of `oneof`_ ``_id``.
         interfaces (MutableSequence[google.cloud.compute_v1.types.RouterInterface]):
-            Router interfaces. Each interface requires
-            either one linked resource, (for example,
-            linkedVpnTunnel), or IP address and IP address
-            range (for example, ipRange), or both.
+            Router interfaces. To create a BGP peer that
+            uses a router interface, the interface must have
+            one of the following fields specified: -
+            linkedVpnTunnel - linkedInterconnectAttachment -
+            subnetwork You can create a router interface
+            without any of these fields specified. However,
+            you cannot create a BGP peer that uses that
+            interface.
         kind (str):
             [Output Only] Type of resource. Always compute#router for
             routers.
@@ -78500,15 +81115,15 @@ class RouterInterface(proto.Message):
             must be in the same region as the router. Each
             interface can have one linked resource, which
             can be a VPN tunnel, an Interconnect attachment,
-            or a virtual machine instance.
+            or a subnetwork.
 
             This field is a member of `oneof`_ ``_linked_interconnect_attachment``.
         linked_vpn_tunnel (str):
             URI of the linked VPN tunnel, which must be
             in the same region as the router. Each interface
             can have one linked resource, which can be a VPN
-            tunnel, an Interconnect attachment, or a virtual
-            machine instance.
+            tunnel, an Interconnect attachment, or a
+            subnetwork.
 
             This field is a member of `oneof`_ ``_linked_vpn_tunnel``.
         management_type (str):
@@ -78731,7 +81346,7 @@ class RouterMd5AuthenticationKey(proto.Message):
             This field is a member of `oneof`_ ``_key``.
         name (str):
             Name used to identify the key. Must be unique
-            within a router. Must be referenced by at least
+            within a router. Must be referenced by exactly
             one bgpPeer. Must comply with RFC1035.
 
             This field is a member of `oneof`_ ``_name``.
@@ -78763,10 +81378,11 @@ class RouterNat(proto.Message):
     Attributes:
         auto_network_tier (str):
             The network tier to use when automatically
-            reserving IP addresses. Must be one of: PREMIUM,
-            STANDARD. If not specified, PREMIUM tier will be
-            used. Check the AutoNetworkTier enum for the
-            list of possible values.
+            reserving NAT IP addresses. Must be one of:
+            PREMIUM, STANDARD. If not specified, then the
+            current project-level default tier is used.
+            Check the AutoNetworkTier enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_auto_network_tier``.
         drain_nat_ips (MutableSequence[str]):
@@ -78888,6 +81504,13 @@ class RouterNat(proto.Message):
             connections. Defaults to 30s if not set.
 
             This field is a member of `oneof`_ ``_tcp_transitory_idle_timeout_sec``.
+        type_ (str):
+            Indicates whether this NAT is used for public
+            or private IP translation. If unspecified, it
+            defaults to PUBLIC. Check the Type enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_type``.
         udp_idle_timeout_sec (int):
             Timeout (in seconds) for UDP connections.
             Defaults to 30s if not set.
@@ -78896,9 +81519,9 @@ class RouterNat(proto.Message):
     """
 
     class AutoNetworkTier(proto.Enum):
-        r"""The network tier to use when automatically reserving IP
+        r"""The network tier to use when automatically reserving NAT IP
         addresses. Must be one of: PREMIUM, STANDARD. If not specified,
-        PREMIUM tier will be used.
+        then the current project-level default tier is used.
 
         Values:
             UNDEFINED_AUTO_NETWORK_TIER (0):
@@ -78929,6 +81552,11 @@ class RouterNat(proto.Message):
             UNDEFINED_ENDPOINT_TYPES (0):
                 A value indicating that the enum field is not
                 set.
+            ENDPOINT_TYPE_MANAGED_PROXY_LB (439196930):
+                This is used for regional Application Load
+                Balancers (internal and external) and regional
+                proxy Network Load Balancers (internal and
+                external) endpoints.
             ENDPOINT_TYPE_SWG (159344456):
                 This is used for Secure Web Gateway
                 endpoints.
@@ -78936,6 +81564,7 @@ class RouterNat(proto.Message):
                 This is the default.
         """
         UNDEFINED_ENDPOINT_TYPES = 0
+        ENDPOINT_TYPE_MANAGED_PROXY_LB = 439196930
         ENDPOINT_TYPE_SWG = 159344456
         ENDPOINT_TYPE_VM = 57095474
 
@@ -78994,6 +81623,24 @@ class RouterNat(proto.Message):
         ALL_SUBNETWORKS_ALL_IP_RANGES = 179964376
         ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES = 185573819
         LIST_OF_SUBNETWORKS = 517542270
+
+    class Type(proto.Enum):
+        r"""Indicates whether this NAT is used for public or private IP
+        translation. If unspecified, it defaults to PUBLIC.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            PRIVATE (403485027):
+                NAT used for private IP translation.
+            PUBLIC (223389289):
+                NAT used for public IP translation. This is
+                the default.
+        """
+        UNDEFINED_TYPE = 0
+        PRIVATE = 403485027
+        PUBLIC = 223389289
 
     auto_network_tier: str = proto.Field(
         proto.STRING,
@@ -79081,6 +81728,11 @@ class RouterNat(proto.Message):
     tcp_transitory_idle_timeout_sec: int = proto.Field(
         proto.INT32,
         number=205028774,
+        optional=True,
+    )
+    type_: str = proto.Field(
+        proto.STRING,
+        number=3575610,
         optional=True,
     )
     udp_idle_timeout_sec: int = proto.Field(
@@ -79176,7 +81828,7 @@ class RouterNatRule(proto.Message):
             '1.1.0.1' \|\| destination.ip == '8.8.8.8'" The following
             example is a valid match expression for private NAT:
             "nexthop.hub ==
-            'https://networkconnectivity.googleapis.com/v1alpha1/projects/my-project/global/hub/hub-1'".
+            '//networkconnectivity.googleapis.com/projects/my-project/locations/global/hubs/hub-1'".
 
             This field is a member of `oneof`_ ``_match``.
         rule_number (int):
@@ -79220,21 +81872,40 @@ class RouterNatRuleAction(proto.Message):
             this NAT rule. These IP addresses must be valid
             static external IP addresses assigned to the
             project. This field is used for public NAT.
+        source_nat_active_ranges (MutableSequence[str]):
+            A list of URLs of the subnetworks used as source ranges for
+            this NAT Rule. These subnetworks must have purpose set to
+            PRIVATE_NAT. This field is used for private NAT.
         source_nat_drain_ips (MutableSequence[str]):
             A list of URLs of the IP resources to be
             drained. These IPs must be valid static external
             IPs that have been assigned to the NAT. These
             IPs should be used for updating/patching a NAT
             rule only. This field is used for public NAT.
+        source_nat_drain_ranges (MutableSequence[str]):
+            A list of URLs of subnetworks representing
+            source ranges to be drained. This is only
+            supported on patch/update, and these subnetworks
+            must have previously been used as active ranges
+            in this NAT Rule. This field is used for private
+            NAT.
     """
 
     source_nat_active_ips: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=210378229,
     )
+    source_nat_active_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=190556269,
+    )
     source_nat_drain_ips: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=340812451,
+    )
+    source_nat_drain_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=84802815,
     )
 
 
@@ -81061,6 +83732,15 @@ class SecurityPolicy(proto.Message):
             possible values.
 
             This field is a member of `oneof`_ ``_type``.
+        user_defined_fields (MutableSequence[google.cloud.compute_v1.types.SecurityPolicyUserDefinedField]):
+            Definitions of user-defined fields for CLOUD_ARMOR_NETWORK
+            policies. A user-defined field consists of up to 4 bytes
+            extracted from a fixed offset in the packet, relative to the
+            IPv4, IPv6, TCP, or UDP header, with an optional mask to
+            select certain bits. Rules may then specify matching values
+            for these fields. Example: userDefinedFields: - name:
+            "ipv4_fragment_offset" base: IPV4 offset: 6 size: 2 mask:
+            "0x1fff".
     """
 
     class Type(proto.Enum):
@@ -81183,6 +83863,13 @@ class SecurityPolicy(proto.Message):
         number=3575610,
         optional=True,
     )
+    user_defined_fields: MutableSequence[
+        "SecurityPolicyUserDefinedField"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=28312739,
+        message="SecurityPolicyUserDefinedField",
+    )
 
 
 class SecurityPolicyAdaptiveProtectionConfig(proto.Message):
@@ -81230,6 +83917,9 @@ class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(proto.Messag
             possible values.
 
             This field is a member of `oneof`_ ``_rule_visibility``.
+        threshold_configs (MutableSequence[google.cloud.compute_v1.types.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig]):
+            Configuration options for layer7 adaptive
+            protection for various customizable thresholds.
     """
 
     class RuleVisibility(proto.Enum):
@@ -81260,6 +83950,68 @@ class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(proto.Messag
         number=453258293,
         optional=True,
     )
+    threshold_configs: MutableSequence[
+        "SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=60347805,
+        message="SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig",
+    )
+
+
+class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig(
+    proto.Message
+):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        auto_deploy_confidence_threshold (float):
+
+            This field is a member of `oneof`_ ``_auto_deploy_confidence_threshold``.
+        auto_deploy_expiration_sec (int):
+
+            This field is a member of `oneof`_ ``_auto_deploy_expiration_sec``.
+        auto_deploy_impacted_baseline_threshold (float):
+
+            This field is a member of `oneof`_ ``_auto_deploy_impacted_baseline_threshold``.
+        auto_deploy_load_threshold (float):
+
+            This field is a member of `oneof`_ ``_auto_deploy_load_threshold``.
+        name (str):
+            The name must be 1-63 characters long, and
+            comply with RFC1035. The name must be unique
+            within the security policy.
+
+            This field is a member of `oneof`_ ``_name``.
+    """
+
+    auto_deploy_confidence_threshold: float = proto.Field(
+        proto.FLOAT,
+        number=84309694,
+        optional=True,
+    )
+    auto_deploy_expiration_sec: int = proto.Field(
+        proto.INT32,
+        number=69638793,
+        optional=True,
+    )
+    auto_deploy_impacted_baseline_threshold: float = proto.Field(
+        proto.FLOAT,
+        number=292441667,
+        optional=True,
+    )
+    auto_deploy_load_threshold: float = proto.Field(
+        proto.FLOAT,
+        number=522227738,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
 
 
 class SecurityPolicyAdvancedOptionsConfig(proto.Message):
@@ -81283,6 +84035,10 @@ class SecurityPolicyAdvancedOptionsConfig(proto.Message):
             possible values.
 
             This field is a member of `oneof`_ ``_log_level``.
+        user_ip_request_headers (MutableSequence[str]):
+            An optional list of case-insensitive request
+            header names to use for resolving the callers
+            client IP address.
     """
 
     class JsonParsing(proto.Enum):
@@ -81296,10 +84052,13 @@ class SecurityPolicyAdvancedOptionsConfig(proto.Message):
                 No description available.
             STANDARD (484642493):
                 No description available.
+            STANDARD_WITH_GRAPHQL (106979218):
+                No description available.
         """
         UNDEFINED_JSON_PARSING = 0
         DISABLED = 516696700
         STANDARD = 484642493
+        STANDARD_WITH_GRAPHQL = 106979218
 
     class LogLevel(proto.Enum):
         r"""
@@ -81334,6 +84093,10 @@ class SecurityPolicyAdvancedOptionsConfig(proto.Message):
         proto.STRING,
         number=140582601,
         optional=True,
+    )
+    user_ip_request_headers: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=421050290,
     )
 
 
@@ -81553,6 +84316,36 @@ class SecurityPolicyRule(proto.Message):
             corresponding 'action' is enforced.
 
             This field is a member of `oneof`_ ``_match``.
+        network_match (google.cloud.compute_v1.types.SecurityPolicyRuleNetworkMatcher):
+            A match condition that incoming packets are evaluated
+            against for CLOUD_ARMOR_NETWORK security policies. If it
+            matches, the corresponding 'action' is enforced. The match
+            criteria for a rule consists of built-in match fields (like
+            'srcIpRanges') and potentially multiple user-defined match
+            fields ('userDefinedFields'). Field values may be extracted
+            directly from the packet or derived from it (e.g.
+            'srcRegionCodes'). Some fields may not be present in every
+            packet (e.g. 'srcPorts'). A user-defined field is only
+            present if the base header is found in the packet and the
+            entire field is in bounds. Each match field may specify
+            which values can match it, listing one or more ranges,
+            prefixes, or exact values that are considered a match for
+            the field. A field value must be present in order to match a
+            specified match field. If no match values are specified for
+            a match field, then any field value is considered to match
+            it, and it's not required to be present. For strings
+            specifying '*' is also equivalent to match all. For a packet
+            to match a rule, all specified match fields must match the
+            corresponding field values derived from the packet. Example:
+            networkMatch: srcIpRanges: - "192.0.2.0/24" -
+            "198.51.100.0/24" userDefinedFields: - name:
+            "ipv4_fragment_offset" values: - "1-0x1fff" The above match
+            condition matches packets with a source IP in 192.0.2.0/24
+            or 198.51.100.0/24 and a user-defined field named
+            "ipv4_fragment_offset" with a value between 1 and 0x1fff
+            inclusive.
+
+            This field is a member of `oneof`_ ``_network_match``.
         preconfigured_waf_config (google.cloud.compute_v1.types.SecurityPolicyRulePreconfiguredWafConfig):
             Preconfigured WAF configuration to be applied
             for the rule. If the rule does not evaluate
@@ -81614,6 +84407,12 @@ class SecurityPolicyRule(proto.Message):
         number=103668165,
         optional=True,
         message="SecurityPolicyRuleMatcher",
+    )
+    network_match: "SecurityPolicyRuleNetworkMatcher" = proto.Field(
+        proto.MESSAGE,
+        number=463387764,
+        optional=True,
+        message="SecurityPolicyRuleNetworkMatcher",
     )
     preconfigured_waf_config: "SecurityPolicyRulePreconfiguredWafConfig" = proto.Field(
         proto.MESSAGE,
@@ -81777,6 +84576,110 @@ class SecurityPolicyRuleMatcherConfig(proto.Message):
     src_ip_ranges: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=432128083,
+    )
+
+
+class SecurityPolicyRuleNetworkMatcher(proto.Message):
+    r"""Represents a match condition that incoming network traffic is
+    evaluated against.
+
+    Attributes:
+        dest_ip_ranges (MutableSequence[str]):
+            Destination IPv4/IPv6 addresses or CIDR
+            prefixes, in standard text format.
+        dest_ports (MutableSequence[str]):
+            Destination port numbers for TCP/UDP/SCTP.
+            Each element can be a 16-bit unsigned decimal
+            number (e.g. "80") or range (e.g. "0-1023").
+        ip_protocols (MutableSequence[str]):
+            IPv4 protocol / IPv6 next header (after
+            extension headers). Each element can be an 8-bit
+            unsigned decimal number (e.g. "6"), range (e.g.
+            "253-254"), or one of the following protocol
+            names: "tcp", "udp", "icmp", "esp", "ah",
+            "ipip", or "sctp".
+        src_asns (MutableSequence[int]):
+            BGP Autonomous System Number associated with
+            the source IP address.
+        src_ip_ranges (MutableSequence[str]):
+            Source IPv4/IPv6 addresses or CIDR prefixes,
+            in standard text format.
+        src_ports (MutableSequence[str]):
+            Source port numbers for TCP/UDP/SCTP. Each
+            element can be a 16-bit unsigned decimal number
+            (e.g. "80") or range (e.g. "0-1023").
+        src_region_codes (MutableSequence[str]):
+            Two-letter ISO 3166-1 alpha-2 country code
+            associated with the source IP address.
+        user_defined_fields (MutableSequence[google.cloud.compute_v1.types.SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch]):
+            User-defined fields. Each element names a
+            defined field and lists the matching values for
+            that field.
+    """
+
+    dest_ip_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=337357713,
+    )
+    dest_ports: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=379902005,
+    )
+    ip_protocols: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=259213251,
+    )
+    src_asns: MutableSequence[int] = proto.RepeatedField(
+        proto.UINT32,
+        number=117825266,
+    )
+    src_ip_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=432128083,
+    )
+    src_ports: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=445095415,
+    )
+    src_region_codes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=99086742,
+    )
+    user_defined_fields: MutableSequence[
+        "SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=28312739,
+        message="SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch",
+    )
+
+
+class SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Name of the user-defined field, as given in
+            the definition.
+
+            This field is a member of `oneof`_ ``_name``.
+        values (MutableSequence[str]):
+            Matching values of the field. Each element
+            can be a 32-bit unsigned decimal or hexadecimal
+            (starting with "0x") number (e.g. "64") or range
+            (e.g. "0x400-0x7ff").
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    values: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=249928994,
     )
 
 
@@ -82326,6 +85229,109 @@ class SecurityPolicyRuleRedirectOptions(proto.Message):
     )
 
 
+class SecurityPolicyUserDefinedField(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        base (str):
+            The base relative to which 'offset' is
+            measured. Possible values are: - IPV4: Points to
+            the beginning of the IPv4 header. - IPV6: Points
+            to the beginning of the IPv6 header. - TCP:
+            Points to the beginning of the TCP header,
+            skipping over any IPv4 options or IPv6 extension
+            headers. Not present for non-first fragments. -
+            UDP: Points to the beginning of the UDP header,
+            skipping over any IPv4 options or IPv6 extension
+            headers. Not present for non-first fragments.
+            required Check the Base enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_base``.
+        mask (str):
+            If specified, apply this mask (bitwise AND)
+            to the field to ignore bits before matching.
+            Encoded as a hexadecimal number (starting with
+            "0x"). The last byte of the field (in network
+            byte order) corresponds to the least significant
+            byte of the mask.
+
+            This field is a member of `oneof`_ ``_mask``.
+        name (str):
+            The name of this field. Must be unique within
+            the policy.
+
+            This field is a member of `oneof`_ ``_name``.
+        offset (int):
+            Offset of the first byte of the field (in
+            network byte order) relative to 'base'.
+
+            This field is a member of `oneof`_ ``_offset``.
+        size (int):
+            Size of the field in bytes. Valid values:
+            1-4.
+
+            This field is a member of `oneof`_ ``_size``.
+    """
+
+    class Base(proto.Enum):
+        r"""The base relative to which 'offset' is measured. Possible
+        values are: - IPV4: Points to the beginning of the IPv4 header.
+        - IPV6: Points to the beginning of the IPv6 header. - TCP:
+        Points to the beginning of the TCP header, skipping over any
+        IPv4 options or IPv6 extension headers. Not present for
+        non-first fragments. - UDP: Points to the beginning of the UDP
+        header, skipping over any IPv4 options or IPv6 extension
+        headers. Not present for non-first fragments. required
+
+        Values:
+            UNDEFINED_BASE (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4 (2254341):
+                No description available.
+            IPV6 (2254343):
+                No description available.
+            TCP (82881):
+                No description available.
+            UDP (83873):
+                No description available.
+        """
+        UNDEFINED_BASE = 0
+        IPV4 = 2254341
+        IPV6 = 2254343
+        TCP = 82881
+        UDP = 83873
+
+    base: str = proto.Field(
+        proto.STRING,
+        number=3016401,
+        optional=True,
+    )
+    mask: str = proto.Field(
+        proto.STRING,
+        number=3344108,
+        optional=True,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    offset: int = proto.Field(
+        proto.INT32,
+        number=53961875,
+        optional=True,
+    )
+    size: int = proto.Field(
+        proto.INT32,
+        number=3530753,
+        optional=True,
+    )
+
+
 class SecuritySettings(proto.Message):
     r"""The authentication and authorization settings for a
     BackendService.
@@ -82334,6 +85340,13 @@ class SecuritySettings(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        aws_v4_authentication (google.cloud.compute_v1.types.AWSV4Signature):
+            The configuration needed to generate a signature for access
+            to private storage buckets that support AWS's Signature
+            Version 4 for authentication. Allowed only for
+            INTERNET_IP_PORT and INTERNET_FQDN_PORT NEG backends.
+
+            This field is a member of `oneof`_ ``_aws_v4_authentication``.
         client_tls_policy (str):
             Optional. A URL referring to a
             networksecurity.ClientTlsPolicy resource that describes how
@@ -82362,6 +85375,12 @@ class SecuritySettings(proto.Message):
             mode).
     """
 
+    aws_v4_authentication: "AWSV4Signature" = proto.Field(
+        proto.MESSAGE,
+        number=433993111,
+        optional=True,
+        message="AWSV4Signature",
+    )
     client_tls_policy: str = proto.Field(
         proto.STRING,
         number=462325226,
@@ -82654,7 +85673,7 @@ class ServiceAttachment(proto.Message):
             example, an ACCEPTED PSC endpoint will be moved
             to REJECTED if its project is added to the
             reject list. For newly created service
-            attachment, this boolean defaults to true.
+            attachment, this boolean defaults to false.
 
             This field is a member of `oneof`_ ``_reconcile_connections``.
         region (str):
@@ -83396,6 +86415,101 @@ class SetCertificateMapTargetSslProxyRequest(proto.Message):
     )
 
 
+class SetCommonInstanceMetadataOperationMetadata(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        client_operation_id (str):
+            [Output Only] The client operation id.
+
+            This field is a member of `oneof`_ ``_client_operation_id``.
+        per_location_operations (MutableMapping[str, google.cloud.compute_v1.types.SetCommonInstanceMetadataOperationMetadataPerLocationOperationInfo]):
+            [Output Only] Status information per location (location name
+            is key). Example key: zones/us-central1-a
+    """
+
+    client_operation_id: str = proto.Field(
+        proto.STRING,
+        number=297240295,
+        optional=True,
+    )
+    per_location_operations: MutableMapping[
+        str, "SetCommonInstanceMetadataOperationMetadataPerLocationOperationInfo"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=408987796,
+        message="SetCommonInstanceMetadataOperationMetadataPerLocationOperationInfo",
+    )
+
+
+class SetCommonInstanceMetadataOperationMetadataPerLocationOperationInfo(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        error (google.cloud.compute_v1.types.Status):
+            [Output Only] If state is ``ABANDONED`` or ``FAILED``, this
+            field is populated.
+
+            This field is a member of `oneof`_ ``_error``.
+        state (str):
+            [Output Only] Status of the action, which can be one of the
+            following: ``PROPAGATING``, ``PROPAGATED``, ``ABANDONED``,
+            ``FAILED``, or ``DONE``. Check the State enum for the list
+            of possible values.
+
+            This field is a member of `oneof`_ ``_state``.
+    """
+
+    class State(proto.Enum):
+        r"""[Output Only] Status of the action, which can be one of the
+        following: ``PROPAGATING``, ``PROPAGATED``, ``ABANDONED``,
+        ``FAILED``, or ``DONE``.
+
+        Values:
+            UNDEFINED_STATE (0):
+                A value indicating that the enum field is not
+                set.
+            ABANDONED (81797556):
+                Operation not tracked in this location e.g.
+                zone is marked as DOWN.
+            DONE (2104194):
+                Operation has completed successfully.
+            FAILED (455706685):
+                Operation is in an error state.
+            PROPAGATED (507550299):
+                Operation is confirmed to be in the location.
+            PROPAGATING (164807046):
+                Operation is not yet confirmed to have been
+                created in the location.
+            UNSPECIFIED (526786327):
+                No description available.
+        """
+        UNDEFINED_STATE = 0
+        ABANDONED = 81797556
+        DONE = 2104194
+        FAILED = 455706685
+        PROPAGATED = 507550299
+        PROPAGATING = 164807046
+        UNSPECIFIED = 526786327
+
+    error: "Status" = proto.Field(
+        proto.MESSAGE,
+        number=96784904,
+        optional=True,
+        message="Status",
+    )
+    state: str = proto.Field(
+        proto.STRING,
+        number=109757585,
+        optional=True,
+    )
+
+
 class SetCommonInstanceMetadataProjectRequest(proto.Message):
     r"""A request message for Projects.SetCommonInstanceMetadata. See
     the method description for details.
@@ -83732,6 +86846,34 @@ class SetEdgeSecurityPolicyBackendServiceRequest(proto.Message):
         proto.MESSAGE,
         number=204135024,
         message="SecurityPolicyReference",
+    )
+
+
+class SetIamPolicyBackendBucketRequest(proto.Message):
+    r"""A request message for BackendBuckets.SetIamPolicy. See the
+    method description for details.
+
+    Attributes:
+        global_set_policy_request_resource (google.cloud.compute_v1.types.GlobalSetPolicyRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    global_set_policy_request_resource: "GlobalSetPolicyRequest" = proto.Field(
+        proto.MESSAGE,
+        number=337048498,
+        message="GlobalSetPolicyRequest",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
     )
 
 
@@ -86048,6 +89190,255 @@ class SetSecurityPolicyBackendServiceRequest(proto.Message):
     )
 
 
+class SetSecurityPolicyInstanceRequest(proto.Message):
+    r"""A request message for Instances.SetSecurityPolicy. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance (str):
+            Name of the Instance resource to which the
+            security policy should be set. The name should
+            conform to RFC1035.
+        instances_set_security_policy_request_resource (google.cloud.compute_v1.types.InstancesSetSecurityPolicyRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            Name of the zone scoping this request.
+    """
+
+    instance: str = proto.Field(
+        proto.STRING,
+        number=18257045,
+    )
+    instances_set_security_policy_request_resource: "InstancesSetSecurityPolicyRequest" = proto.Field(
+        proto.MESSAGE,
+        number=248424586,
+        message="InstancesSetSecurityPolicyRequest",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class SetSecurityPolicyRegionBackendServiceRequest(proto.Message):
+    r"""A request message for
+    RegionBackendServices.SetSecurityPolicy. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        backend_service (str):
+            Name of the BackendService resource to which
+            the security policy should be set. The name
+            should conform to RFC1035.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region scoping this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        security_policy_reference_resource (google.cloud.compute_v1.types.SecurityPolicyReference):
+            The body resource for this request
+    """
+
+    backend_service: str = proto.Field(
+        proto.STRING,
+        number=306946058,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    security_policy_reference_resource: "SecurityPolicyReference" = proto.Field(
+        proto.MESSAGE,
+        number=204135024,
+        message="SecurityPolicyReference",
+    )
+
+
+class SetSecurityPolicyTargetInstanceRequest(proto.Message):
+    r"""A request message for TargetInstances.SetSecurityPolicy. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        security_policy_reference_resource (google.cloud.compute_v1.types.SecurityPolicyReference):
+            The body resource for this request
+        target_instance (str):
+            Name of the TargetInstance resource to which
+            the security policy should be set. The name
+            should conform to RFC1035.
+        zone (str):
+            Name of the zone scoping this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    security_policy_reference_resource: "SecurityPolicyReference" = proto.Field(
+        proto.MESSAGE,
+        number=204135024,
+        message="SecurityPolicyReference",
+    )
+    target_instance: str = proto.Field(
+        proto.STRING,
+        number=289769347,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class SetSecurityPolicyTargetPoolRequest(proto.Message):
+    r"""A request message for TargetPools.SetSecurityPolicy. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region scoping this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        security_policy_reference_resource (google.cloud.compute_v1.types.SecurityPolicyReference):
+            The body resource for this request
+        target_pool (str):
+            Name of the TargetPool resource to which the
+            security policy should be set. The name should
+            conform to RFC1035.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    security_policy_reference_resource: "SecurityPolicyReference" = proto.Field(
+        proto.MESSAGE,
+        number=204135024,
+        message="SecurityPolicyReference",
+    )
+    target_pool: str = proto.Field(
+        proto.STRING,
+        number=62796298,
+    )
+
+
 class SetServiceAccountInstanceRequest(proto.Message):
     r"""A request message for Instances.SetServiceAccount. See the
     method description for details.
@@ -87455,6 +90846,11 @@ class Snapshot(proto.Message):
             snapshot to a disk.
 
             This field is a member of `oneof`_ ``_download_bytes``.
+        guest_os_features (MutableSequence[google.cloud.compute_v1.types.GuestOsFeature]):
+            [Output Only] A list of features to enable on the guest
+            operating system. Applicable only for bootable images. Read
+            Enabling guest operating system features to see a list of
+            available options.
         id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -87549,6 +90945,11 @@ class Snapshot(proto.Message):
             protected by a customer-supplied encryption key.
 
             This field is a member of `oneof`_ ``_source_disk_encryption_key``.
+        source_disk_for_recovery_checkpoint (str):
+            The source disk whose recovery checkpoint
+            will be used to create this snapshot.
+
+            This field is a member of `oneof`_ ``_source_disk_for_recovery_checkpoint``.
         source_disk_id (str):
             [Output Only] The ID value of the disk used to create this
             snapshot. This value may be used to determine whether the
@@ -87716,6 +91117,11 @@ class Snapshot(proto.Message):
         number=435054068,
         optional=True,
     )
+    guest_os_features: MutableSequence["GuestOsFeature"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=79294545,
+        message="GuestOsFeature",
+    )
     id: int = proto.Field(
         proto.UINT64,
         number=3355,
@@ -87785,6 +91191,11 @@ class Snapshot(proto.Message):
         number=531501153,
         optional=True,
         message="CustomerEncryptionKey",
+    )
+    source_disk_for_recovery_checkpoint: str = proto.Field(
+        proto.STRING,
+        number=359837950,
+        optional=True,
     )
     source_disk_id: str = proto.Field(
         proto.STRING,
@@ -87892,6 +91303,110 @@ class SnapshotList(proto.Message):
         number=50704284,
         optional=True,
         message="Warning",
+    )
+
+
+class SnapshotSettings(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        storage_location (google.cloud.compute_v1.types.SnapshotSettingsStorageLocationSettings):
+            Policy of which storage location is going to
+            be resolved, and additional data that
+            particularizes how the policy is going to be
+            carried out.
+
+            This field is a member of `oneof`_ ``_storage_location``.
+    """
+
+    storage_location: "SnapshotSettingsStorageLocationSettings" = proto.Field(
+        proto.MESSAGE,
+        number=460859641,
+        optional=True,
+        message="SnapshotSettingsStorageLocationSettings",
+    )
+
+
+class SnapshotSettingsStorageLocationSettings(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        locations (MutableMapping[str, google.cloud.compute_v1.types.SnapshotSettingsStorageLocationSettingsStorageLocationPreference]):
+            When the policy is SPECIFIC_LOCATIONS, snapshots will be
+            stored in the locations listed in this field. Keys are GCS
+            bucket locations.
+        policy (str):
+            The chosen location policy.
+            Check the Policy enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_policy``.
+    """
+
+    class Policy(proto.Enum):
+        r"""The chosen location policy.
+
+        Values:
+            UNDEFINED_POLICY (0):
+                A value indicating that the enum field is not
+                set.
+            LOCAL_REGION (403535464):
+                Store snapshot in the same region as with the
+                originating disk. No additional parameters are
+                needed.
+            NEAREST_MULTI_REGION (212467515):
+                Store snapshot to the nearest multi region
+                GCS bucket, relative to the originating disk. No
+                additional parameters are needed.
+            SPECIFIC_LOCATIONS (280093809):
+                Store snapshot in the specific locations, as specified by
+                the user. The list of regions to store must be defined under
+                the ``locations`` field.
+            STORAGE_LOCATION_POLICY_UNSPECIFIED (250644592):
+                No description available.
+        """
+        UNDEFINED_POLICY = 0
+        LOCAL_REGION = 403535464
+        NEAREST_MULTI_REGION = 212467515
+        SPECIFIC_LOCATIONS = 280093809
+        STORAGE_LOCATION_POLICY_UNSPECIFIED = 250644592
+
+    locations: MutableMapping[
+        str, "SnapshotSettingsStorageLocationSettingsStorageLocationPreference"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=413423454,
+        message="SnapshotSettingsStorageLocationSettingsStorageLocationPreference",
+    )
+    policy: str = proto.Field(
+        proto.STRING,
+        number=91071794,
+        optional=True,
+    )
+
+
+class SnapshotSettingsStorageLocationSettingsStorageLocationPreference(proto.Message):
+    r"""A structure for specifying storage locations.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Name of the location. It should be one of the
+            GCS buckets.
+
+            This field is a member of `oneof`_ ``_name``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
     )
 
 
@@ -88153,13 +91668,16 @@ class SourceInstanceProperties(proto.Message):
 
 
 class SslCertificate(proto.Message):
-    r"""Represents an SSL Certificate resource. Google Compute Engine has
-    two SSL Certificate resources: \*
+    r"""Represents an SSL certificate resource. Google Compute Engine has
+    two SSL certificate resources: \*
     `Global </compute/docs/reference/rest/v1/sslCertificates>`__ \*
     `Regional </compute/docs/reference/rest/v1/regionSslCertificates>`__
-    The sslCertificates are used by: - external HTTPS load balancers -
-    SSL proxy load balancers The regionSslCertificates are used by
-    internal HTTPS load balancers. Optionally, certificate file contents
+    The global SSL certificates (sslCertificates) are used by: - Global
+    external Application Load Balancers - Classic Application Load
+    Balancers - Proxy Network Load Balancers (with target SSL proxies)
+    The regional SSL certificates (regionSslCertificates) are used by: -
+    Regional external Application Load Balancers - Regional internal
+    Application Load Balancers Optionally, certificate file contents
     that you upload can contain a set of up to five PEM-encoded
     certificates. The API call creates an object (sslCertificate) that
     holds this data. You can use SSL keys and certificates to secure
@@ -89346,6 +92864,16 @@ class StatefulPolicyPreservedState(proto.Message):
             Disks created on the instances that will be
             preserved on instance delete, update, etc. This
             map is keyed with the device names of the disks.
+        external_i_ps (MutableMapping[str, google.cloud.compute_v1.types.StatefulPolicyPreservedStateNetworkIp]):
+            External network IPs assigned to the
+            instances that will be preserved on instance
+            delete, update, etc. This map is keyed with the
+            network interface name.
+        internal_i_ps (MutableMapping[str, google.cloud.compute_v1.types.StatefulPolicyPreservedStateNetworkIp]):
+            Internal network IPs assigned to the
+            instances that will be preserved on instance
+            delete, update, etc. This map is keyed with the
+            network interface name.
     """
 
     disks: MutableMapping[
@@ -89355,6 +92883,22 @@ class StatefulPolicyPreservedState(proto.Message):
         proto.MESSAGE,
         number=95594102,
         message="StatefulPolicyPreservedStateDiskDevice",
+    )
+    external_i_ps: MutableMapping[
+        str, "StatefulPolicyPreservedStateNetworkIp"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=532687245,
+        message="StatefulPolicyPreservedStateNetworkIp",
+    )
+    internal_i_ps: MutableMapping[
+        str, "StatefulPolicyPreservedStateNetworkIp"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=215731675,
+        message="StatefulPolicyPreservedStateNetworkIp",
     )
 
 
@@ -89400,6 +92944,101 @@ class StatefulPolicyPreservedStateDiskDevice(proto.Message):
     auto_delete: str = proto.Field(
         proto.STRING,
         number=464761403,
+        optional=True,
+    )
+
+
+class StatefulPolicyPreservedStateNetworkIp(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        auto_delete (str):
+            These stateful IPs will never be released
+            during autohealing, update or VM instance
+            recreate operations. This flag is used to
+            configure if the IP reservation should be
+            deleted after it is no longer used by the group,
+            e.g. when the given instance or the whole group
+            is deleted. Check the AutoDelete enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_auto_delete``.
+    """
+
+    class AutoDelete(proto.Enum):
+        r"""These stateful IPs will never be released during autohealing,
+        update or VM instance recreate operations. This flag is used to
+        configure if the IP reservation should be deleted after it is no
+        longer used by the group, e.g. when the given instance or the
+        whole group is deleted.
+
+        Values:
+            UNDEFINED_AUTO_DELETE (0):
+                A value indicating that the enum field is not
+                set.
+            NEVER (74175084):
+                No description available.
+            ON_PERMANENT_INSTANCE_DELETION (95727719):
+                No description available.
+        """
+        UNDEFINED_AUTO_DELETE = 0
+        NEVER = 74175084
+        ON_PERMANENT_INSTANCE_DELETION = 95727719
+
+    auto_delete: str = proto.Field(
+        proto.STRING,
+        number=464761403,
+        optional=True,
+    )
+
+
+class Status(proto.Message):
+    r"""The ``Status`` type defines a logical error model that is suitable
+    for different programming environments, including REST APIs and RPC
+    APIs. It is used by `gRPC <https://github.com/grpc>`__. Each
+    ``Status`` message contains three pieces of data: error code, error
+    message, and error details. You can find out more about this error
+    model and how to work with it in the `API Design
+    Guide <https://cloud.google.com/apis/design/errors>`__.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        code (int):
+            The status code, which should be an enum
+            value of google.rpc.Code.
+
+            This field is a member of `oneof`_ ``_code``.
+        details (MutableSequence[google.protobuf.any_pb2.Any]):
+            A list of messages that carry the error
+            details. There is a common set of message types
+            for APIs to use.
+        message (str):
+            A developer-facing error message, which
+            should be in English. Any user-facing error
+            message should be localized and sent in the
+            google.rpc.Status.details field, or localized by
+            the client.
+
+            This field is a member of `oneof`_ ``_message``.
+    """
+
+    code: int = proto.Field(
+        proto.INT32,
+        number=3059181,
+        optional=True,
+    )
+    details: MutableSequence[any_pb2.Any] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=483979842,
+        message=any_pb2.Any,
+    )
+    message: str = proto.Field(
+        proto.STRING,
+        number=418054151,
         optional=True,
     )
 
@@ -89959,12 +93598,18 @@ class Subnetwork(proto.Message):
             UNDEFINED_PURPOSE (0):
                 A value indicating that the enum field is not
                 set.
+            GLOBAL_MANAGED_PROXY (236463602):
+                Subnet reserved for Global Envoy-based Load
+                Balancing.
             INTERNAL_HTTPS_LOAD_BALANCER (248748889):
                 Subnet reserved for Internal HTTP(S) Load
                 Balancing.
             PRIVATE (403485027):
                 Regular user created or automatically created
                 subnet.
+            PRIVATE_NAT (367764517):
+                Subnetwork used as source range for Private
+                NAT Gateways.
             PRIVATE_RFC_1918 (254902107):
                 Regular user created or automatically created
                 subnet.
@@ -89972,12 +93617,14 @@ class Subnetwork(proto.Message):
                 Subnetworks created for Private Service
                 Connect in the producer network.
             REGIONAL_MANAGED_PROXY (153049966):
-                Subnetwork used for Regional
-                Internal/External HTTP(S) Load Balancing.
+                Subnetwork used for Regional Envoy-based Load
+                Balancing.
         """
         UNDEFINED_PURPOSE = 0
+        GLOBAL_MANAGED_PROXY = 236463602
         INTERNAL_HTTPS_LOAD_BALANCER = 248748889
         PRIVATE = 403485027
+        PRIVATE_NAT = 367764517
         PRIVATE_RFC_1918 = 254902107
         PRIVATE_SERVICE_CONNECT = 48134724
         REGIONAL_MANAGED_PROXY = 153049966
@@ -91192,12 +94839,15 @@ class TargetHttpProxy(proto.Message):
     two Target HTTP Proxy resources: \*
     `Global </compute/docs/reference/rest/v1/targetHttpProxies>`__ \*
     `Regional </compute/docs/reference/rest/v1/regionTargetHttpProxies>`__
-    A target HTTP proxy is a component of GCP HTTP load balancers. \*
-    targetHttpProxies are used by external HTTP load balancers and
-    Traffic Director. \* regionTargetHttpProxies are used by internal
-    HTTP load balancers. Forwarding rules reference a target HTTP proxy,
-    and the target proxy then references a URL map. For more
-    information, read Using Target Proxies and Forwarding rule concepts.
+    A target HTTP proxy is a component of Google Cloud HTTP load
+    balancers. \* targetHttpProxies are used by global external
+    Application Load Balancers, classic Application Load Balancers,
+    cross-region internal Application Load Balancers, and Traffic
+    Director. \* regionTargetHttpProxies are used by regional internal
+    Application Load Balancers and regional external Application Load
+    Balancers. Forwarding rules reference a target HTTP proxy, and the
+    target proxy then references a URL map. For more information, read
+    Using Target Proxies and Forwarding rule concepts.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -91231,12 +94881,11 @@ class TargetHttpProxy(proto.Message):
             after completing a response, while there is no
             matching traffic (in seconds). If an HTTP
             keep-alive is not specified, a default value
-            (610 seconds) will be used. For Global external
-            HTTP(S) load balancer, the minimum allowed value
-            is 5 seconds and the maximum allowed value is
-            1200 seconds. For Global external HTTP(S) load
-            balancer (classic), this option is not available
-            publicly.
+            (610 seconds) will be used. For global external
+            Application Load Balancers, the minimum allowed
+            value is 5 seconds and the maximum allowed value
+            is 1200 seconds. For classic Application Load
+            Balancers, this option is not supported.
 
             This field is a member of `oneof`_ ``_http_keep_alive_timeout_sec``.
         id (int):
@@ -91614,8 +95263,11 @@ class TargetHttpsProxy(proto.Message):
     `Global </compute/docs/reference/rest/v1/targetHttpsProxies>`__ \*
     `Regional </compute/docs/reference/rest/v1/regionTargetHttpsProxies>`__
     A target HTTPS proxy is a component of GCP HTTPS load balancers. \*
-    targetHttpsProxies are used by external HTTPS load balancers. \*
-    regionTargetHttpsProxies are used by internal HTTPS load balancers.
+    targetHttpProxies are used by global external Application Load
+    Balancers, classic Application Load Balancers, cross-region internal
+    Application Load Balancers, and Traffic Director. \*
+    regionTargetHttpProxies are used by regional internal Application
+    Load Balancers and regional external Application Load Balancers.
     Forwarding rules reference a target HTTPS proxy, and the target
     proxy then references a URL map. For more information, read Using
     Target Proxies and Forwarding rule concepts.
@@ -91674,12 +95326,11 @@ class TargetHttpsProxy(proto.Message):
             after completing a response, while there is no
             matching traffic (in seconds). If an HTTP
             keep-alive is not specified, a default value
-            (610 seconds) will be used. For Global external
-            HTTP(S) load balancer, the minimum allowed value
-            is 5 seconds and the maximum allowed value is
-            1200 seconds. For Global external HTTP(S) load
-            balancer (classic), this option is not available
-            publicly.
+            (610 seconds) will be used. For global external
+            Application Load Balancers, the minimum allowed
+            value is 5 seconds and the maximum allowed value
+            is 1200 seconds. For classic Application Load
+            Balancers, this option is not supported.
 
             This field is a member of `oneof`_ ``_http_keep_alive_timeout_sec``.
         id (int):
@@ -92128,6 +95779,11 @@ class TargetInstance(proto.Message):
             the default network interface belongs to.
 
             This field is a member of `oneof`_ ``_network``.
+        security_policy (str):
+            [Output Only] The resource URL for the security policy
+            associated with this target instance.
+
+            This field is a member of `oneof`_ ``_security_policy``.
         self_link (str):
             [Output Only] Server-defined URL for the resource.
 
@@ -92194,6 +95850,11 @@ class TargetInstance(proto.Message):
     network: str = proto.Field(
         proto.STRING,
         number=232872494,
+        optional=True,
+    )
+    security_policy: str = proto.Field(
+        proto.STRING,
+        number=171082513,
         optional=True,
     )
     self_link: str = proto.Field(
@@ -92482,6 +96143,11 @@ class TargetPool(proto.Message):
             resides.
 
             This field is a member of `oneof`_ ``_region``.
+        security_policy (str):
+            [Output Only] The resource URL for the security policy
+            associated with this target pool.
+
+            This field is a member of `oneof`_ ``_security_policy``.
         self_link (str):
             [Output Only] Server-defined URL for the resource.
 
@@ -92614,6 +96280,11 @@ class TargetPool(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
+        optional=True,
+    )
+    security_policy: str = proto.Field(
+        proto.STRING,
+        number=171082513,
         optional=True,
     )
     self_link: str = proto.Field(
@@ -94113,6 +97784,62 @@ class TestFailure(proto.Message):
     )
 
 
+class TestIamPermissionsBackendBucketRequest(proto.Message):
+    r"""A request message for BackendBuckets.TestIamPermissions. See
+    the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        test_permissions_request_resource (google.cloud.compute_v1.types.TestPermissionsRequest):
+            The body resource for this request
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    test_permissions_request_resource: "TestPermissionsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=439214758,
+        message="TestPermissionsRequest",
+    )
+
+
+class TestIamPermissionsBackendServiceRequest(proto.Message):
+    r"""A request message for BackendServices.TestIamPermissions. See
+    the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        test_permissions_request_resource (google.cloud.compute_v1.types.TestPermissionsRequest):
+            The body resource for this request
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    test_permissions_request_resource: "TestPermissionsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=439214758,
+        message="TestPermissionsRequest",
+    )
+
+
 class TestIamPermissionsDiskRequest(proto.Message):
     r"""A request message for Disks.TestIamPermissions. See the
     method description for details.
@@ -94571,6 +98298,41 @@ class TestIamPermissionsPacketMirroringRequest(proto.Message):
     )
 
 
+class TestIamPermissionsRegionBackendServiceRequest(proto.Message):
+    r"""A request message for
+    RegionBackendServices.TestIamPermissions. See the method
+    description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        test_permissions_request_resource (google.cloud.compute_v1.types.TestPermissionsRequest):
+            The body resource for this request
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    test_permissions_request_resource: "TestPermissionsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=439214758,
+        message="TestPermissionsRequest",
+    )
+
+
 class TestIamPermissionsRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.TestIamPermissions. See the
     method description for details.
@@ -94891,6 +98653,121 @@ class Uint128(proto.Message):
     low: int = proto.Field(
         proto.UINT64,
         number=107348,
+        optional=True,
+    )
+
+
+class UpcomingMaintenance(proto.Message):
+    r"""Upcoming Maintenance notification information.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        can_reschedule (bool):
+            Indicates if the maintenance can be customer
+            triggered.
+
+            This field is a member of `oneof`_ ``_can_reschedule``.
+        latest_window_start_time (str):
+            The latest time for the planned maintenance
+            window to start. This timestamp value is in
+            RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_latest_window_start_time``.
+        maintenance_status (str):
+            Check the MaintenanceStatus enum for the list
+            of possible values.
+
+            This field is a member of `oneof`_ ``_maintenance_status``.
+        type_ (str):
+            Defines the type of maintenance.
+            Check the Type enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_type``.
+        window_end_time (str):
+            The time by which the maintenance disruption
+            will be completed. This timestamp value is in
+            RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_window_end_time``.
+        window_start_time (str):
+            The current start time of the maintenance
+            window. This timestamp value is in RFC3339 text
+            format.
+
+            This field is a member of `oneof`_ ``_window_start_time``.
+    """
+
+    class MaintenanceStatus(proto.Enum):
+        r"""
+
+        Values:
+            UNDEFINED_MAINTENANCE_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ONGOING (473158491):
+                There is ongoing maintenance on this VM.
+            PENDING (35394935):
+                There is pending maintenance.
+            UNKNOWN (433141802):
+                Unknown maintenance status. Do not use this
+                value.
+        """
+        UNDEFINED_MAINTENANCE_STATUS = 0
+        ONGOING = 473158491
+        PENDING = 35394935
+        UNKNOWN = 433141802
+
+    class Type(proto.Enum):
+        r"""Defines the type of maintenance.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            SCHEDULED (478400653):
+                Scheduled maintenance (e.g. maintenance after
+                uptime guarantee is complete).
+            UNKNOWN_TYPE (490705455):
+                No type specified. Do not use this value.
+            UNSCHEDULED (450077204):
+                Unscheduled maintenance (e.g. emergency
+                maintenance during uptime guarantee).
+        """
+        UNDEFINED_TYPE = 0
+        SCHEDULED = 478400653
+        UNKNOWN_TYPE = 490705455
+        UNSCHEDULED = 450077204
+
+    can_reschedule: bool = proto.Field(
+        proto.BOOL,
+        number=95981977,
+        optional=True,
+    )
+    latest_window_start_time: str = proto.Field(
+        proto.STRING,
+        number=128032129,
+        optional=True,
+    )
+    maintenance_status: str = proto.Field(
+        proto.STRING,
+        number=81645214,
+        optional=True,
+    )
+    type_: str = proto.Field(
+        proto.STRING,
+        number=3575610,
+        optional=True,
+    )
+    window_end_time: str = proto.Field(
+        proto.STRING,
+        number=271816480,
+        optional=True,
+    )
+    window_start_time: str = proto.Field(
+        proto.STRING,
+        number=473061433,
         optional=True,
     )
 
@@ -96397,19 +100274,22 @@ class UrlMap(proto.Message):
     resources: \* `Global </compute/docs/reference/rest/v1/urlMaps>`__
     \* `Regional </compute/docs/reference/rest/v1/regionUrlMaps>`__ A
     URL map resource is a component of certain types of cloud load
-    balancers and Traffic Director: \* urlMaps are used by external
-    HTTP(S) load balancers and Traffic Director. \* regionUrlMaps are
-    used by internal HTTP(S) load balancers. For a list of supported URL
-    map features by the load balancer type, see the Load balancing
-    features: Routing and traffic management table. For a list of
-    supported URL map features for Traffic Director, see the Traffic
-    Director features: Routing and traffic management table. This
-    resource defines mappings from hostnames and URL paths to either a
-    backend service or a backend bucket. To use the global urlMaps
-    resource, the backend service must have a loadBalancingScheme of
-    either EXTERNAL or INTERNAL_SELF_MANAGED. To use the regionUrlMaps
-    resource, the backend service must have a loadBalancingScheme of
-    INTERNAL_MANAGED. For more information, read URL Map Concepts.
+    balancers and Traffic Director: \* urlMaps are used by global
+    external Application Load Balancers, classic Application Load
+    Balancers, and cross-region internal Application Load Balancers. \*
+    regionUrlMaps are used by internal Application Load Balancers,
+    regional external Application Load Balancers and regional internal
+    Application Load Balancers. For a list of supported URL map features
+    by the load balancer type, see the Load balancing features: Routing
+    and traffic management table. For a list of supported URL map
+    features for Traffic Director, see the Traffic Director features:
+    Routing and traffic management table. This resource defines mappings
+    from hostnames and URL paths to either a backend service or a
+    backend bucket. To use the global urlMaps resource, the backend
+    service must have a loadBalancingScheme of either EXTERNAL or
+    INTERNAL_SELF_MANAGED. To use the regionUrlMaps resource, the
+    backend service must have a loadBalancingScheme of INTERNAL_MANAGED.
+    For more information, read URL Map Concepts.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -96431,8 +100311,8 @@ class UrlMap(proto.Message):
             defaultRouteAction cannot contain any
             weightedBackendServices. Only one of
             defaultRouteAction or defaultUrlRedirect must be
-            set. URL maps for Classic external HTTP(S) load
-            balancers only support the urlRewrite action
+            set. URL maps for classic Application Load
+            Balancers only support the urlRewrite action
             within defaultRouteAction. defaultRouteAction
             has no effect when the URL map is bound to a
             target gRPC proxy that has the
@@ -97002,20 +100882,21 @@ class UrlMapsValidateRequest(proto.Message):
     Attributes:
         load_balancing_schemes (MutableSequence[str]):
             Specifies the load balancer type(s) this validation request
-            is for. Use EXTERNAL_MANAGED for HTTP/HTTPS External Global
-            Load Balancer with Advanced Traffic Management. Use EXTERNAL
-            for Classic HTTP/HTTPS External Global Load Balancer. Other
-            load balancer types are not supported. For more information,
-            refer to Choosing a load balancer. If unspecified, the load
-            balancing scheme will be inferred from the backend service
-            resources this URL map references. If that can not be
-            inferred (for example, this URL map only references backend
-            buckets, or this Url map is for rewrites and redirects only
-            and doesn't reference any backends), EXTERNAL will be used
-            as the default type. If specified, the scheme(s) must not
-            conflict with the load balancing scheme of the backend
-            service resources this Url map references. Check the
-            LoadBalancingSchemes enum for the list of possible values.
+            is for. Use EXTERNAL_MANAGED for global external Application
+            Load Balancers and regional external Application Load
+            Balancers. Use EXTERNAL for classic Application Load
+            Balancers. Use INTERNAL_MANAGED for internal Application
+            Load Balancers. For more information, refer to Choosing a
+            load balancer. If unspecified, the load balancing scheme
+            will be inferred from the backend service resources this URL
+            map references. If that can not be inferred (for example,
+            this URL map only references backend buckets, or this Url
+            map is for rewrites and redirects only and doesn't reference
+            any backends), EXTERNAL will be used as the default type. If
+            specified, the scheme(s) must not conflict with the load
+            balancing scheme of the backend service resources this Url
+            map references. Check the LoadBalancingSchemes enum for the
+            list of possible values.
         resource (google.cloud.compute_v1.types.UrlMap):
             Content of the UrlMap to be validated.
 
@@ -97030,17 +100911,18 @@ class UrlMapsValidateRequest(proto.Message):
                 A value indicating that the enum field is not
                 set.
             EXTERNAL (35607499):
-                Signifies that this will be used for Classic
-                L7 External Load Balancing.
+                Signifies that this will be used for classic
+                Application Load Balancers.
             EXTERNAL_MANAGED (512006923):
                 Signifies that this will be used for
-                Envoy-based L7 External Load Balancing.
+                Envoy-based global external Application Load
+                Balancers.
             LOAD_BALANCING_SCHEME_UNSPECIFIED (526507452):
                 If unspecified, the validation will try to
                 infer the scheme from the backend service
                 resources this Url map references. If the
-                inferrence is not possible, EXTERNAL will be
-                used as the default type.
+                inference is not possible, EXTERNAL will be used
+                as the default type.
         """
         UNDEFINED_LOAD_BALANCING_SCHEMES = 0
         EXTERNAL = 35607499
@@ -97266,12 +101148,18 @@ class UsableSubnetwork(proto.Message):
             UNDEFINED_PURPOSE (0):
                 A value indicating that the enum field is not
                 set.
+            GLOBAL_MANAGED_PROXY (236463602):
+                Subnet reserved for Global Envoy-based Load
+                Balancing.
             INTERNAL_HTTPS_LOAD_BALANCER (248748889):
                 Subnet reserved for Internal HTTP(S) Load
                 Balancing.
             PRIVATE (403485027):
                 Regular user created or automatically created
                 subnet.
+            PRIVATE_NAT (367764517):
+                Subnetwork used as source range for Private
+                NAT Gateways.
             PRIVATE_RFC_1918 (254902107):
                 Regular user created or automatically created
                 subnet.
@@ -97279,12 +101167,14 @@ class UsableSubnetwork(proto.Message):
                 Subnetworks created for Private Service
                 Connect in the producer network.
             REGIONAL_MANAGED_PROXY (153049966):
-                Subnetwork used for Regional
-                Internal/External HTTP(S) Load Balancing.
+                Subnetwork used for Regional Envoy-based Load
+                Balancing.
         """
         UNDEFINED_PURPOSE = 0
+        GLOBAL_MANAGED_PROXY = 236463602
         INTERNAL_HTTPS_LOAD_BALANCER = 248748889
         PRIVATE = 403485027
+        PRIVATE_NAT = 367764517
         PRIVATE_RFC_1918 = 254902107
         PRIVATE_SERVICE_CONNECT = 48134724
         REGIONAL_MANAGED_PROXY = 153049966
@@ -98567,15 +102457,15 @@ class VpnTunnel(proto.Message):
 
             This field is a member of `oneof`_ ``_peer_external_gateway_interface``.
         peer_gcp_gateway (str):
-            URL of the peer side HA GCP VPN gateway to
-            which this VPN tunnel is connected. Provided by
-            the client when the VPN tunnel is created. This
+            URL of the peer side HA VPN gateway to which
+            this VPN tunnel is connected. Provided by the
+            client when the VPN tunnel is created. This
             field can be used when creating highly available
             VPN from VPC network to VPC network, the field
             is exclusive with the field peerExternalGateway.
             If provided, the VPN tunnel will automatically
             use the same vpnGatewayInterface ID in the peer
-            GCP VPN gateway.
+            Google Cloud VPN gateway.
 
             This field is a member of `oneof`_ ``_peer_gcp_gateway``.
         peer_ip (str):
@@ -99595,6 +103485,110 @@ class WeightedBackendService(proto.Message):
     weight: int = proto.Field(
         proto.UINT32,
         number=282149496,
+        optional=True,
+    )
+
+
+class WithdrawPublicAdvertisedPrefixeRequest(proto.Message):
+    r"""A request message for PublicAdvertisedPrefixes.Withdraw. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_advertised_prefix (str):
+            The name of the public advertised prefix. It
+            should comply with RFC1035.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    public_advertised_prefix: str = proto.Field(
+        proto.STRING,
+        number=101874590,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
+class WithdrawPublicDelegatedPrefixeRequest(proto.Message):
+    r"""A request message for PublicDelegatedPrefixes.Withdraw. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_delegated_prefix (str):
+            The name of the public delegated prefix. It
+            should comply with RFC1035.
+        region (str):
+            The name of the region where the public
+            delegated prefix is located. It should comply
+            with RFC1035.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    public_delegated_prefix: str = proto.Field(
+        proto.STRING,
+        number=204238440,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
         optional=True,
     )
 

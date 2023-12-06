@@ -423,6 +423,313 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
                 api_audience=client_options.api_audience,
             )
 
+    def add_rule_unary(
+        self,
+        request: Optional[
+            Union[compute.AddRuleRegionSecurityPolicyRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        security_policy_rule_resource: Optional[compute.SecurityPolicyRule] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.Operation:
+        r"""Inserts a rule into a security policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_rule():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddRuleRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.add_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.AddRuleRegionSecurityPolicyRequest, dict]):
+                The request object. A request message for
+                RegionSecurityPolicies.AddRule. See the
+                method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy (str):
+                Name of the security policy to
+                update.
+
+                This corresponds to the ``security_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy_rule_resource (google.cloud.compute_v1.types.SecurityPolicyRule):
+                The body resource for this request
+                This corresponds to the ``security_policy_rule_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, region, security_policy, security_policy_rule_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.AddRuleRegionSecurityPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.AddRuleRegionSecurityPolicyRequest):
+            request = compute.AddRuleRegionSecurityPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if security_policy is not None:
+                request.security_policy = security_policy
+            if security_policy_rule_resource is not None:
+                request.security_policy_rule_resource = security_policy_rule_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.add_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("security_policy", request.security_policy),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def add_rule(
+        self,
+        request: Optional[
+            Union[compute.AddRuleRegionSecurityPolicyRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        security_policy_rule_resource: Optional[compute.SecurityPolicyRule] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Inserts a rule into a security policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_rule():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddRuleRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.add_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.AddRuleRegionSecurityPolicyRequest, dict]):
+                The request object. A request message for
+                RegionSecurityPolicies.AddRule. See the
+                method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy (str):
+                Name of the security policy to
+                update.
+
+                This corresponds to the ``security_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy_rule_resource (google.cloud.compute_v1.types.SecurityPolicyRule):
+                The body resource for this request
+                This corresponds to the ``security_policy_rule_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, region, security_policy, security_policy_rule_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.AddRuleRegionSecurityPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.AddRuleRegionSecurityPolicyRequest):
+            request = compute.AddRuleRegionSecurityPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if security_policy is not None:
+                request.security_policy = security_policy
+            if security_policy_rule_resource is not None:
+                request.security_policy_rule_resource = security_policy_rule_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.add_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("security_policy", request.security_policy),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
     def delete_unary(
         self,
         request: Optional[
@@ -818,6 +1125,139 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("security_policy", request.security_policy),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_rule(
+        self,
+        request: Optional[
+            Union[compute.GetRuleRegionSecurityPolicyRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.SecurityPolicyRule:
+        r"""Gets a rule at the specified priority.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_rule():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetRuleRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.get_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.GetRuleRegionSecurityPolicyRequest, dict]):
+                The request object. A request message for
+                RegionSecurityPolicies.GetRule. See the
+                method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy (str):
+                Name of the security policy to which
+                the queried rule belongs.
+
+                This corresponds to the ``security_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.compute_v1.types.SecurityPolicyRule:
+                Represents a rule that describes one
+                or more match conditions along with the
+                action to be taken when traffic matches
+                this condition (allow or deny).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, region, security_policy])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.GetRuleRegionSecurityPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.GetRuleRegionSecurityPolicyRequest):
+            request = compute.GetRuleRegionSecurityPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if security_policy is not None:
+                request.security_policy = security_policy
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1518,6 +1958,604 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.patch]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("security_policy", request.security_policy),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
+    def patch_rule_unary(
+        self,
+        request: Optional[
+            Union[compute.PatchRuleRegionSecurityPolicyRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        security_policy_rule_resource: Optional[compute.SecurityPolicyRule] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.Operation:
+        r"""Patches a rule at the specified priority. To clear
+        fields in the rule, leave the fields empty and specify
+        them in the updateMask.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch_rule():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchRuleRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.patch_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.PatchRuleRegionSecurityPolicyRequest, dict]):
+                The request object. A request message for
+                RegionSecurityPolicies.PatchRule. See
+                the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy (str):
+                Name of the security policy to
+                update.
+
+                This corresponds to the ``security_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy_rule_resource (google.cloud.compute_v1.types.SecurityPolicyRule):
+                The body resource for this request
+                This corresponds to the ``security_policy_rule_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, region, security_policy, security_policy_rule_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.PatchRuleRegionSecurityPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.PatchRuleRegionSecurityPolicyRequest):
+            request = compute.PatchRuleRegionSecurityPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if security_policy is not None:
+                request.security_policy = security_policy
+            if security_policy_rule_resource is not None:
+                request.security_policy_rule_resource = security_policy_rule_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.patch_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("security_policy", request.security_policy),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def patch_rule(
+        self,
+        request: Optional[
+            Union[compute.PatchRuleRegionSecurityPolicyRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        security_policy_rule_resource: Optional[compute.SecurityPolicyRule] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Patches a rule at the specified priority. To clear
+        fields in the rule, leave the fields empty and specify
+        them in the updateMask.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch_rule():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchRuleRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.patch_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.PatchRuleRegionSecurityPolicyRequest, dict]):
+                The request object. A request message for
+                RegionSecurityPolicies.PatchRule. See
+                the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy (str):
+                Name of the security policy to
+                update.
+
+                This corresponds to the ``security_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy_rule_resource (google.cloud.compute_v1.types.SecurityPolicyRule):
+                The body resource for this request
+                This corresponds to the ``security_policy_rule_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, region, security_policy, security_policy_rule_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.PatchRuleRegionSecurityPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.PatchRuleRegionSecurityPolicyRequest):
+            request = compute.PatchRuleRegionSecurityPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if security_policy is not None:
+                request.security_policy = security_policy
+            if security_policy_rule_resource is not None:
+                request.security_policy_rule_resource = security_policy_rule_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.patch_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("security_policy", request.security_policy),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
+    def remove_rule_unary(
+        self,
+        request: Optional[
+            Union[compute.RemoveRuleRegionSecurityPolicyRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.Operation:
+        r"""Deletes a rule at the specified priority.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_remove_rule():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.RemoveRuleRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.remove_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.RemoveRuleRegionSecurityPolicyRequest, dict]):
+                The request object. A request message for
+                RegionSecurityPolicies.RemoveRule. See
+                the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy (str):
+                Name of the security policy to
+                update.
+
+                This corresponds to the ``security_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, region, security_policy])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.RemoveRuleRegionSecurityPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.RemoveRuleRegionSecurityPolicyRequest):
+            request = compute.RemoveRuleRegionSecurityPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if security_policy is not None:
+                request.security_policy = security_policy
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.remove_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project", request.project),
+                    ("region", request.region),
+                    ("security_policy", request.security_policy),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def remove_rule(
+        self,
+        request: Optional[
+            Union[compute.RemoveRuleRegionSecurityPolicyRequest, dict]
+        ] = None,
+        *,
+        project: Optional[str] = None,
+        region: Optional[str] = None,
+        security_policy: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Deletes a rule at the specified priority.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_remove_rule():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.RemoveRuleRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.remove_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.RemoveRuleRegionSecurityPolicyRequest, dict]):
+                The request object. A request message for
+                RegionSecurityPolicies.RemoveRule. See
+                the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_policy (str):
+                Name of the security policy to
+                update.
+
+                This corresponds to the ``security_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, region, security_policy])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.RemoveRuleRegionSecurityPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.RemoveRuleRegionSecurityPolicyRequest):
+            request = compute.RemoveRuleRegionSecurityPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if security_policy is not None:
+                request.security_policy = security_policy
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.remove_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

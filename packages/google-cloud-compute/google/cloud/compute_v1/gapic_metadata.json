@@ -142,6 +142,11 @@
                 "get"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "Insert": {
               "methods": [
                 "insert"
@@ -160,6 +165,16 @@
             "SetEdgeSecurityPolicy": {
               "methods": [
                 "set_edge_security_policy"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             },
             "Update": {
@@ -221,6 +236,11 @@
                 "list"
               ]
             },
+            "ListUsable": {
+              "methods": [
+                "list_usable"
+              ]
+            },
             "Patch": {
               "methods": [
                 "patch"
@@ -239,6 +259,11 @@
             "SetSecurityPolicy": {
               "methods": [
                 "set_security_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             },
             "Update": {
@@ -1317,6 +1342,11 @@
                 "set_scheduling"
               ]
             },
+            "SetSecurityPolicy": {
+              "methods": [
+                "set_security_policy"
+              ]
+            },
             "SetServiceAccount": {
               "methods": [
                 "set_service_account"
@@ -1491,6 +1521,11 @@
             "GetDiagnostics": {
               "methods": [
                 "get_diagnostics"
+              ]
+            },
+            "GetMacsecConfig": {
+              "methods": [
+                "get_macsec_config"
               ]
             },
             "Insert": {
@@ -1681,6 +1716,11 @@
             "List": {
               "methods": [
                 "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
               ]
             },
             "SetIamPolicy": {
@@ -2213,6 +2253,11 @@
         "rest": {
           "libraryClient": "PublicAdvertisedPrefixesClient",
           "rpcs": {
+            "Announce": {
+              "methods": [
+                "announce"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
@@ -2236,6 +2281,11 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "Withdraw": {
+              "methods": [
+                "withdraw"
               ]
             }
           }
@@ -2252,6 +2302,11 @@
                 "aggregated_list"
               ]
             },
+            "Announce": {
+              "methods": [
+                "announce"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
@@ -2275,6 +2330,11 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "Withdraw": {
+              "methods": [
+                "withdraw"
               ]
             }
           }
@@ -2355,6 +2415,11 @@
                 "list"
               ]
             },
+            "ListUsable": {
+              "methods": [
+                "list_usable"
+              ]
+            },
             "Patch": {
               "methods": [
                 "patch"
@@ -2363,6 +2428,16 @@
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SetSecurityPolicy": {
+              "methods": [
+                "set_security_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             },
             "Update": {
@@ -2775,9 +2850,19 @@
         "rest": {
           "libraryClient": "RegionNetworkEndpointGroupsClient",
           "rpcs": {
+            "AttachNetworkEndpoints": {
+              "methods": [
+                "attach_network_endpoints"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
+              ]
+            },
+            "DetachNetworkEndpoints": {
+              "methods": [
+                "detach_network_endpoints"
               ]
             },
             "Get": {
@@ -2793,6 +2878,11 @@
             "List": {
               "methods": [
                 "list"
+              ]
+            },
+            "ListNetworkEndpoints": {
+              "methods": [
+                "list_network_endpoints"
               ]
             }
           }
@@ -2956,6 +3046,11 @@
         "rest": {
           "libraryClient": "RegionSecurityPoliciesClient",
           "rpcs": {
+            "AddRule": {
+              "methods": [
+                "add_rule"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
@@ -2964,6 +3059,11 @@
             "Get": {
               "methods": [
                 "get"
+              ]
+            },
+            "GetRule": {
+              "methods": [
+                "get_rule"
               ]
             },
             "Insert": {
@@ -2979,6 +3079,16 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "PatchRule": {
+              "methods": [
+                "patch_rule"
+              ]
+            },
+            "RemoveRule": {
+              "methods": [
+                "remove_rule"
               ]
             }
           }
@@ -3356,6 +3466,11 @@
                 "get"
               ]
             },
+            "GetNatIpInfo": {
+              "methods": [
+                "get_nat_ip_info"
+              ]
+            },
             "GetNatMappingInfo": {
               "methods": [
                 "get_nat_mapping_info"
@@ -3541,6 +3656,25 @@
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "SnapshotSettingsService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "SnapshotSettingsServiceClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
               ]
             }
           }
@@ -3914,6 +4048,11 @@
               "methods": [
                 "list"
               ]
+            },
+            "SetSecurityPolicy": {
+              "methods": [
+                "set_security_policy"
+              ]
             }
           }
         }
@@ -3977,6 +4116,11 @@
             "SetBackup": {
               "methods": [
                 "set_backup"
+              ]
+            },
+            "SetSecurityPolicy": {
+              "methods": [
+                "set_security_policy"
               ]
             }
           }

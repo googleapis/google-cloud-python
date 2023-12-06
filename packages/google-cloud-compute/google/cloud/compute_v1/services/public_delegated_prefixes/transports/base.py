@@ -132,6 +132,11 @@ class PublicDelegatedPrefixesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.announce: gapic_v1.method.wrap_method(
+                self.announce,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
                 default_timeout=None,
@@ -157,6 +162,11 @@ class PublicDelegatedPrefixesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.withdraw: gapic_v1.method.wrap_method(
+                self.withdraw,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -177,6 +187,15 @@ class PublicDelegatedPrefixesTransport(abc.ABC):
             compute.PublicDelegatedPrefixAggregatedList,
             Awaitable[compute.PublicDelegatedPrefixAggregatedList],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def announce(
+        self,
+    ) -> Callable[
+        [compute.AnnouncePublicDelegatedPrefixeRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -224,6 +243,15 @@ class PublicDelegatedPrefixesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.PatchPublicDelegatedPrefixeRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def withdraw(
+        self,
+    ) -> Callable[
+        [compute.WithdrawPublicDelegatedPrefixeRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

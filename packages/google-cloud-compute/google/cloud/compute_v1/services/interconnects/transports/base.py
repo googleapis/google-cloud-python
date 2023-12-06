@@ -142,6 +142,11 @@ class InterconnectsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_macsec_config: gapic_v1.method.wrap_method(
+                self.get_macsec_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.insert: gapic_v1.method.wrap_method(
                 self.insert,
                 default_timeout=None,
@@ -199,6 +204,18 @@ class InterconnectsTransport(abc.ABC):
         Union[
             compute.InterconnectsGetDiagnosticsResponse,
             Awaitable[compute.InterconnectsGetDiagnosticsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_macsec_config(
+        self,
+    ) -> Callable[
+        [compute.GetMacsecConfigInterconnectRequest],
+        Union[
+            compute.InterconnectsGetMacsecConfigResponse,
+            Awaitable[compute.InterconnectsGetMacsecConfigResponse],
         ],
     ]:
         raise NotImplementedError()

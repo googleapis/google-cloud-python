@@ -869,11 +869,19 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.InstanceTemplate:
-                Represents an Instance Template
-                resource. You can use instance templates
-                to create VM instances and managed
-                instance groups. For more information,
-                read Instance Templates.
+                Represents an Instance Template resource. Google Compute
+                Engine has two Instance Template resources: \*
+                [Global](/compute/docs/reference/rest/v1/instanceTemplates)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionInstanceTemplates)
+                You can reuse a global instance template in different
+                regions whereas you can use a regional instance template
+                in a specified region only. If you want to reduce
+                cross-region dependency or achieve data residency, use a
+                regional instance template. To create VMs, managed
+                instance groups, and reservations, you can use either
+                global or regional instance templates. For more
+                information, read Instance Templates.
 
         """
         # Create or coerce a protobuf request object.
@@ -1008,29 +1016,11 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
                 learn which resources support conditions in their IAM
                 policies, see the [IAM
                 documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:** { "bindings": [ { "role":
-                "roles/resourcemanager.organizationAdmin", "members": [
-                "user:mike@example.com", "group:admins@example.com",
-                "domain:google.com",
-                "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                ] }, { "role":
-                "roles/resourcemanager.organizationViewer", "members": [
-                "user:eve@example.com" ], "condition": { "title":
-                "expirable access", "description": "Does not grant
-                access after Sep 2020", "expression": "request.time <
-                timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag":
-                "BwWWja0YfJA=", "version": 3 } **YAML example:**
-                bindings: - members: - user:\ mike@example.com -
-                group:\ admins@example.com - domain:google.com -
-                serviceAccount:\ my-project-id@appspot.gserviceaccount.com
-                role: roles/resourcemanager.organizationAdmin - members:
-                - user:\ eve@example.com role:
-                roles/resourcemanager.organizationViewer condition:
-                title: expirable access description: Does not grant
-                access after Sep 2020 expression: request.time <
-                timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA=
-                version: 3 For a description of IAM and its features,
-                see the [IAM
+                **JSON example:**
+                :literal:`\` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\ \`
+                **YAML example:**
+                :literal:`\` bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3`\ \`
+                For a description of IAM and its features, see the [IAM
                 documentation](\ https://cloud.google.com/iam/docs/).
 
         """
@@ -1541,29 +1531,11 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
                 learn which resources support conditions in their IAM
                 policies, see the [IAM
                 documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:** { "bindings": [ { "role":
-                "roles/resourcemanager.organizationAdmin", "members": [
-                "user:mike@example.com", "group:admins@example.com",
-                "domain:google.com",
-                "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                ] }, { "role":
-                "roles/resourcemanager.organizationViewer", "members": [
-                "user:eve@example.com" ], "condition": { "title":
-                "expirable access", "description": "Does not grant
-                access after Sep 2020", "expression": "request.time <
-                timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag":
-                "BwWWja0YfJA=", "version": 3 } **YAML example:**
-                bindings: - members: - user:\ mike@example.com -
-                group:\ admins@example.com - domain:google.com -
-                serviceAccount:\ my-project-id@appspot.gserviceaccount.com
-                role: roles/resourcemanager.organizationAdmin - members:
-                - user:\ eve@example.com role:
-                roles/resourcemanager.organizationViewer condition:
-                title: expirable access description: Does not grant
-                access after Sep 2020 expression: request.time <
-                timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA=
-                version: 3 For a description of IAM and its features,
-                see the [IAM
+                **JSON example:**
+                :literal:`\` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\ \`
+                **YAML example:**
+                :literal:`\` bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3`\ \`
+                For a description of IAM and its features, see the [IAM
                 documentation](\ https://cloud.google.com/iam/docs/).
 
         """

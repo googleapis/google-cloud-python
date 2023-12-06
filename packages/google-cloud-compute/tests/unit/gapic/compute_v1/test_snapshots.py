@@ -1205,6 +1205,7 @@ def test_get_rest(request_type):
             self_link="self_link_value",
             snapshot_type="snapshot_type_value",
             source_disk="source_disk_value",
+            source_disk_for_recovery_checkpoint="source_disk_for_recovery_checkpoint_value",
             source_disk_id="source_disk_id_value",
             source_snapshot_schedule_policy="source_snapshot_schedule_policy_value",
             source_snapshot_schedule_policy_id="source_snapshot_schedule_policy_id_value",
@@ -1246,6 +1247,10 @@ def test_get_rest(request_type):
     assert response.self_link == "self_link_value"
     assert response.snapshot_type == "snapshot_type_value"
     assert response.source_disk == "source_disk_value"
+    assert (
+        response.source_disk_for_recovery_checkpoint
+        == "source_disk_for_recovery_checkpoint_value"
+    )
     assert response.source_disk_id == "source_disk_id_value"
     assert (
         response.source_snapshot_schedule_policy
@@ -1809,6 +1814,7 @@ def test_insert_rest(request_type):
         "description": "description_value",
         "disk_size_gb": 1261,
         "download_bytes": 1502,
+        "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
@@ -1829,6 +1835,7 @@ def test_insert_rest(request_type):
         "snapshot_type": "snapshot_type_value",
         "source_disk": "source_disk_value",
         "source_disk_encryption_key": {},
+        "source_disk_for_recovery_checkpoint": "source_disk_for_recovery_checkpoint_value",
         "source_disk_id": "source_disk_id_value",
         "source_snapshot_schedule_policy": "source_snapshot_schedule_policy_value",
         "source_snapshot_schedule_policy_id": "source_snapshot_schedule_policy_id_value",
@@ -2231,6 +2238,7 @@ def test_insert_unary_rest(request_type):
         "description": "description_value",
         "disk_size_gb": 1261,
         "download_bytes": 1502,
+        "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
@@ -2251,6 +2259,7 @@ def test_insert_unary_rest(request_type):
         "snapshot_type": "snapshot_type_value",
         "source_disk": "source_disk_value",
         "source_disk_encryption_key": {},
+        "source_disk_for_recovery_checkpoint": "source_disk_for_recovery_checkpoint_value",
         "source_disk_id": "source_disk_id_value",
         "source_snapshot_schedule_policy": "source_snapshot_schedule_policy_value",
         "source_snapshot_schedule_policy_id": "source_snapshot_schedule_policy_id_value",

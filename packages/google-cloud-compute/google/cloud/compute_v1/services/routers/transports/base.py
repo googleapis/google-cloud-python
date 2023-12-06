@@ -142,6 +142,11 @@ class RoutersTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_nat_ip_info: gapic_v1.method.wrap_method(
+                self.get_nat_ip_info,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_nat_mapping_info: gapic_v1.method.wrap_method(
                 self.get_nat_mapping_info,
                 default_timeout=None,
@@ -211,6 +216,15 @@ class RoutersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.GetRouterRequest], Union[compute.Router, Awaitable[compute.Router]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_nat_ip_info(
+        self,
+    ) -> Callable[
+        [compute.GetNatIpInfoRouterRequest],
+        Union[compute.NatIpInfoResponse, Awaitable[compute.NatIpInfoResponse]],
     ]:
         raise NotImplementedError()
 

@@ -836,9 +836,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             Args:
                 request (~.compute.AbandonInstancesInstanceGroupManagerRequest):
-                    The request object. Messages
-
-                A request message for
+                    The request object. A request message for
                 InstanceGroupManagers.AbandonInstances.
                 See the method description for details.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -862,7 +860,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1061,7 +1059,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     - For global operations, use the ``globalOperations``
                     resource. - For regional operations, use the
                     ``regionOperations`` resource. - For zonal operations,
-                    use the ``zonalOperations`` resource. For more
+                    use the ``zoneOperations`` resource. For more
                     information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1175,7 +1173,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1287,7 +1285,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1388,7 +1386,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1501,7 +1499,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     - For global operations, use the ``globalOperations``
                     resource. - For regional operations, use the
                     ``regionOperations`` resource. - For zonal operations,
-                    use the ``zonalOperations`` resource. For more
+                    use the ``zoneOperations`` resource. For more
                     information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1710,7 +1708,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -2172,7 +2170,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -2283,7 +2281,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     - For global operations, use the ``globalOperations``
                     resource. - For regional operations, use the
                     ``regionOperations`` resource. - For zonal operations,
-                    use the ``zonalOperations`` resource. For more
+                    use the ``zoneOperations`` resource. For more
                     information, read Global, Regional, and Zonal Resources.
 
             """
@@ -2397,7 +2395,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -2513,7 +2511,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -2614,7 +2612,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -2728,7 +2726,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -2841,7 +2839,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     - For global operations, use the ``globalOperations``
                     resource. - For regional operations, use the
                     ``regionOperations`` resource. - For zonal operations,
-                    use the ``zonalOperations`` resource. For more
+                    use the ``zoneOperations`` resource. For more
                     information, read Global, Regional, and Zonal Resources.
 
             """

@@ -561,7 +561,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -654,19 +654,23 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 `Regional </compute/docs/reference/rest/v1/regionUrlMaps>`__
                 A URL map resource is a component of certain types of
                 cloud load balancers and Traffic Director: \* urlMaps
-                are used by external HTTP(S) load balancers and Traffic
-                Director. \* regionUrlMaps are used by internal HTTP(S)
-                load balancers. For a list of supported URL map features
-                by the load balancer type, see the Load balancing
-                features: Routing and traffic management table. For a
-                list of supported URL map features for Traffic Director,
-                see the Traffic Director features: Routing and traffic
-                management table. This resource defines mappings from
-                hostnames and URL paths to either a backend service or a
-                backend bucket. To use the global urlMaps resource, the
-                backend service must have a loadBalancingScheme of
-                either EXTERNAL or INTERNAL_SELF_MANAGED. To use the
-                regionUrlMaps resource, the backend service must have a
+                are used by global external Application Load Balancers,
+                classic Application Load Balancers, and cross-region
+                internal Application Load Balancers. \* regionUrlMaps
+                are used by internal Application Load Balancers,
+                regional external Application Load Balancers and
+                regional internal Application Load Balancers. For a list
+                of supported URL map features by the load balancer type,
+                see the Load balancing features: Routing and traffic
+                management table. For a list of supported URL map
+                features for Traffic Director, see the Traffic Director
+                features: Routing and traffic management table. This
+                resource defines mappings from hostnames and URL paths
+                to either a backend service or a backend bucket. To use
+                the global urlMaps resource, the backend service must
+                have a loadBalancingScheme of either EXTERNAL or
+                INTERNAL_SELF_MANAGED. To use the regionUrlMaps
+                resource, the backend service must have a
                 loadBalancingScheme of INTERNAL_MANAGED. For more
                 information, read URL Map Concepts.
 
@@ -767,7 +771,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -877,7 +881,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1073,7 +1077,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """
@@ -1182,7 +1186,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 - For global operations, use the ``globalOperations``
                 resource. - For regional operations, use the
                 ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
+                use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
             """

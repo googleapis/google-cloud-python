@@ -1251,6 +1251,7 @@ def test_get_rest(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.PublicDelegatedPrefix(
+            byoip_api_version="byoip_api_version_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             fingerprint="fingerprint_value",
@@ -1278,6 +1279,7 @@ def test_get_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.PublicDelegatedPrefix)
+    assert response.byoip_api_version == "byoip_api_version_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.fingerprint == "fingerprint_value"
@@ -1553,6 +1555,7 @@ def test_insert_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request_init["public_delegated_prefix_resource"] = {
+        "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -1915,7 +1918,7 @@ def test_insert_rest_flattened():
         mock_args = dict(
             project="project_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                creation_timestamp="creation_timestamp_value"
+                byoip_api_version="byoip_api_version_value"
             ),
         )
         mock_args.update(sample_request)
@@ -1955,7 +1958,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             compute.InsertGlobalPublicDelegatedPrefixeRequest(),
             project="project_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                creation_timestamp="creation_timestamp_value"
+                byoip_api_version="byoip_api_version_value"
             ),
         )
 
@@ -1982,6 +1985,7 @@ def test_insert_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request_init["public_delegated_prefix_resource"] = {
+        "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -2322,7 +2326,7 @@ def test_insert_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                creation_timestamp="creation_timestamp_value"
+                byoip_api_version="byoip_api_version_value"
             ),
         )
         mock_args.update(sample_request)
@@ -2362,7 +2366,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             compute.InsertGlobalPublicDelegatedPrefixeRequest(),
             project="project_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                creation_timestamp="creation_timestamp_value"
+                byoip_api_version="byoip_api_version_value"
             ),
         )
 
@@ -2743,6 +2747,7 @@ def test_patch_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "public_delegated_prefix": "sample2"}
     request_init["public_delegated_prefix_resource"] = {
+        "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -3111,7 +3116,7 @@ def test_patch_rest_flattened():
             project="project_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                creation_timestamp="creation_timestamp_value"
+                byoip_api_version="byoip_api_version_value"
             ),
         )
         mock_args.update(sample_request)
@@ -3152,7 +3157,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                creation_timestamp="creation_timestamp_value"
+                byoip_api_version="byoip_api_version_value"
             ),
         )
 
@@ -3179,6 +3184,7 @@ def test_patch_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "public_delegated_prefix": "sample2"}
     request_init["public_delegated_prefix_resource"] = {
+        "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
@@ -3525,7 +3531,7 @@ def test_patch_unary_rest_flattened():
             project="project_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                creation_timestamp="creation_timestamp_value"
+                byoip_api_version="byoip_api_version_value"
             ),
         )
         mock_args.update(sample_request)
@@ -3566,7 +3572,7 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             public_delegated_prefix="public_delegated_prefix_value",
             public_delegated_prefix_resource=compute.PublicDelegatedPrefix(
-                creation_timestamp="creation_timestamp_value"
+                byoip_api_version="byoip_api_version_value"
             ),
         )
 

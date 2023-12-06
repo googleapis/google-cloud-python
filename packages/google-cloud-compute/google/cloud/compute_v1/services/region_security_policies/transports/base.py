@@ -127,6 +127,11 @@ class RegionSecurityPoliciesTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.add_rule: gapic_v1.method.wrap_method(
+                self.add_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
                 default_timeout=None,
@@ -134,6 +139,11 @@ class RegionSecurityPoliciesTransport(abc.ABC):
             ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_rule: gapic_v1.method.wrap_method(
+                self.get_rule,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -152,6 +162,16 @@ class RegionSecurityPoliciesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.patch_rule: gapic_v1.method.wrap_method(
+                self.patch_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.remove_rule: gapic_v1.method.wrap_method(
+                self.remove_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -161,6 +181,15 @@ class RegionSecurityPoliciesTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def add_rule(
+        self,
+    ) -> Callable[
+        [compute.AddRuleRegionSecurityPolicyRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
@@ -178,6 +207,15 @@ class RegionSecurityPoliciesTransport(abc.ABC):
     ) -> Callable[
         [compute.GetRegionSecurityPolicyRequest],
         Union[compute.SecurityPolicy, Awaitable[compute.SecurityPolicy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_rule(
+        self,
+    ) -> Callable[
+        [compute.GetRuleRegionSecurityPolicyRequest],
+        Union[compute.SecurityPolicyRule, Awaitable[compute.SecurityPolicyRule]],
     ]:
         raise NotImplementedError()
 
@@ -204,6 +242,24 @@ class RegionSecurityPoliciesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.PatchRegionSecurityPolicyRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def patch_rule(
+        self,
+    ) -> Callable[
+        [compute.PatchRuleRegionSecurityPolicyRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def remove_rule(
+        self,
+    ) -> Callable[
+        [compute.RemoveRuleRegionSecurityPolicyRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

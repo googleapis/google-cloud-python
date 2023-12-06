@@ -1210,6 +1210,7 @@ def test_get_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.Interconnect(
             admin_enabled=True,
+            available_features=["available_features_value"],
             creation_timestamp="creation_timestamp_value",
             customer_name="customer_name_value",
             description="description_value",
@@ -1222,12 +1223,14 @@ def test_get_rest(request_type):
             label_fingerprint="label_fingerprint_value",
             link_type="link_type_value",
             location="location_value",
+            macsec_enabled=True,
             name="name_value",
             noc_contact_email="noc_contact_email_value",
             operational_status="operational_status_value",
             peer_ip_address="peer_ip_address_value",
             provisioned_link_count=2375,
             remote_location="remote_location_value",
+            requested_features=["requested_features_value"],
             requested_link_count=2151,
             satisfies_pzs=True,
             self_link="self_link_value",
@@ -1248,6 +1251,7 @@ def test_get_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Interconnect)
     assert response.admin_enabled is True
+    assert response.available_features == ["available_features_value"]
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.customer_name == "customer_name_value"
     assert response.description == "description_value"
@@ -1260,12 +1264,14 @@ def test_get_rest(request_type):
     assert response.label_fingerprint == "label_fingerprint_value"
     assert response.link_type == "link_type_value"
     assert response.location == "location_value"
+    assert response.macsec_enabled is True
     assert response.name == "name_value"
     assert response.noc_contact_email == "noc_contact_email_value"
     assert response.operational_status == "operational_status_value"
     assert response.peer_ip_address == "peer_ip_address_value"
     assert response.provisioned_link_count == 2375
     assert response.remote_location == "remote_location_value"
+    assert response.requested_features == ["requested_features_value"]
     assert response.requested_link_count == 2151
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
@@ -1796,6 +1802,293 @@ def test_get_diagnostics_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        compute.GetMacsecConfigInterconnectRequest,
+        dict,
+    ],
+)
+def test_get_macsec_config_rest(request_type):
+    client = InterconnectsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "interconnect": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.InterconnectsGetMacsecConfigResponse(
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.InterconnectsGetMacsecConfigResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_macsec_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.InterconnectsGetMacsecConfigResponse)
+    assert response.etag == "etag_value"
+
+
+def test_get_macsec_config_rest_required_fields(
+    request_type=compute.GetMacsecConfigInterconnectRequest,
+):
+    transport_class = transports.InterconnectsRestTransport
+
+    request_init = {}
+    request_init["interconnect"] = ""
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_macsec_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["interconnect"] = "interconnect_value"
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_macsec_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "interconnect" in jsonified_request
+    assert jsonified_request["interconnect"] == "interconnect_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = InterconnectsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.InterconnectsGetMacsecConfigResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.InterconnectsGetMacsecConfigResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_macsec_config(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_macsec_config_rest_unset_required_fields():
+    transport = transports.InterconnectsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_macsec_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "interconnect",
+                "project",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_macsec_config_rest_interceptors(null_interceptor):
+    transport = transports.InterconnectsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.InterconnectsRestInterceptor(),
+    )
+    client = InterconnectsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.InterconnectsRestInterceptor, "post_get_macsec_config"
+    ) as post, mock.patch.object(
+        transports.InterconnectsRestInterceptor, "pre_get_macsec_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.GetMacsecConfigInterconnectRequest.pb(
+            compute.GetMacsecConfigInterconnectRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            compute.InterconnectsGetMacsecConfigResponse.to_json(
+                compute.InterconnectsGetMacsecConfigResponse()
+            )
+        )
+
+        request = compute.GetMacsecConfigInterconnectRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.InterconnectsGetMacsecConfigResponse()
+
+        client.get_macsec_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_macsec_config_rest_bad_request(
+    transport: str = "rest", request_type=compute.GetMacsecConfigInterconnectRequest
+):
+    client = InterconnectsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "interconnect": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_macsec_config(request)
+
+
+def test_get_macsec_config_rest_flattened():
+    client = InterconnectsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.InterconnectsGetMacsecConfigResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "interconnect": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            interconnect="interconnect_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.InterconnectsGetMacsecConfigResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_macsec_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/interconnects/{interconnect}/getMacsecConfig"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_macsec_config_rest_flattened_error(transport: str = "rest"):
+    client = InterconnectsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_macsec_config(
+            compute.GetMacsecConfigInterconnectRequest(),
+            project="project_value",
+            interconnect="interconnect_value",
+        )
+
+
+def test_get_macsec_config_rest_error():
+    client = InterconnectsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         compute.InsertInterconnectRequest,
         dict,
     ],
@@ -1810,6 +2103,10 @@ def test_insert_rest(request_type):
     request_init = {"project": "sample1"}
     request_init["interconnect_resource"] = {
         "admin_enabled": True,
+        "available_features": [
+            "available_features_value1",
+            "available_features_value2",
+        ],
         "circuit_infos": [
             {
                 "customer_demarc_id": "customer_demarc_id_value",
@@ -1848,12 +2145,23 @@ def test_insert_rest(request_type):
         "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
+        "macsec": {
+            "fail_open": True,
+            "pre_shared_keys": [
+                {"name": "name_value", "start_time": "start_time_value"}
+            ],
+        },
+        "macsec_enabled": True,
         "name": "name_value",
         "noc_contact_email": "noc_contact_email_value",
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
         "remote_location": "remote_location_value",
+        "requested_features": [
+            "requested_features_value1",
+            "requested_features_value2",
+        ],
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -2252,6 +2560,10 @@ def test_insert_unary_rest(request_type):
     request_init = {"project": "sample1"}
     request_init["interconnect_resource"] = {
         "admin_enabled": True,
+        "available_features": [
+            "available_features_value1",
+            "available_features_value2",
+        ],
         "circuit_infos": [
             {
                 "customer_demarc_id": "customer_demarc_id_value",
@@ -2290,12 +2602,23 @@ def test_insert_unary_rest(request_type):
         "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
+        "macsec": {
+            "fail_open": True,
+            "pre_shared_keys": [
+                {"name": "name_value", "start_time": "start_time_value"}
+            ],
+        },
+        "macsec_enabled": True,
         "name": "name_value",
         "noc_contact_email": "noc_contact_email_value",
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
         "remote_location": "remote_location_value",
+        "requested_features": [
+            "requested_features_value1",
+            "requested_features_value2",
+        ],
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -3025,6 +3348,10 @@ def test_patch_rest(request_type):
     request_init = {"project": "sample1", "interconnect": "sample2"}
     request_init["interconnect_resource"] = {
         "admin_enabled": True,
+        "available_features": [
+            "available_features_value1",
+            "available_features_value2",
+        ],
         "circuit_infos": [
             {
                 "customer_demarc_id": "customer_demarc_id_value",
@@ -3063,12 +3390,23 @@ def test_patch_rest(request_type):
         "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
+        "macsec": {
+            "fail_open": True,
+            "pre_shared_keys": [
+                {"name": "name_value", "start_time": "start_time_value"}
+            ],
+        },
+        "macsec_enabled": True,
         "name": "name_value",
         "noc_contact_email": "noc_contact_email_value",
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
         "remote_location": "remote_location_value",
+        "requested_features": [
+            "requested_features_value1",
+            "requested_features_value2",
+        ],
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -3474,6 +3812,10 @@ def test_patch_unary_rest(request_type):
     request_init = {"project": "sample1", "interconnect": "sample2"}
     request_init["interconnect_resource"] = {
         "admin_enabled": True,
+        "available_features": [
+            "available_features_value1",
+            "available_features_value2",
+        ],
         "circuit_infos": [
             {
                 "customer_demarc_id": "customer_demarc_id_value",
@@ -3512,12 +3854,23 @@ def test_patch_unary_rest(request_type):
         "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
+        "macsec": {
+            "fail_open": True,
+            "pre_shared_keys": [
+                {"name": "name_value", "start_time": "start_time_value"}
+            ],
+        },
+        "macsec_enabled": True,
         "name": "name_value",
         "noc_contact_email": "noc_contact_email_value",
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
         "remote_location": "remote_location_value",
+        "requested_features": [
+            "requested_features_value1",
+            "requested_features_value2",
+        ],
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -4801,6 +5154,7 @@ def test_interconnects_base_transport():
         "delete",
         "get",
         "get_diagnostics",
+        "get_macsec_config",
         "insert",
         "list",
         "patch",
@@ -4950,6 +5304,9 @@ def test_interconnects_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.get_diagnostics._session
     session2 = client2.transport.get_diagnostics._session
+    assert session1 != session2
+    session1 = client1.transport.get_macsec_config._session
+    session2 = client2.transport.get_macsec_config._session
     assert session1 != session2
     session1 = client1.transport.insert._session
     session2 = client2.transport.insert._session

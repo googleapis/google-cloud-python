@@ -182,6 +182,11 @@ class TargetPoolsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.set_security_policy: gapic_v1.method.wrap_method(
+                self.set_security_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -294,6 +299,15 @@ class TargetPoolsTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.SetBackupTargetPoolRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_security_policy(
+        self,
+    ) -> Callable[
+        [compute.SetSecurityPolicyTargetPoolRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

@@ -127,8 +127,18 @@ class RegionNetworkEndpointGroupsTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.attach_network_endpoints: gapic_v1.method.wrap_method(
+                self.attach_network_endpoints,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.detach_network_endpoints: gapic_v1.method.wrap_method(
+                self.detach_network_endpoints,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -147,6 +157,11 @@ class RegionNetworkEndpointGroupsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_network_endpoints: gapic_v1.method.wrap_method(
+                self.list_network_endpoints,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -159,10 +174,28 @@ class RegionNetworkEndpointGroupsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def attach_network_endpoints(
+        self,
+    ) -> Callable[
+        [compute.AttachNetworkEndpointsRegionNetworkEndpointGroupRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def delete(
         self,
     ) -> Callable[
         [compute.DeleteRegionNetworkEndpointGroupRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def detach_network_endpoints(
+        self,
+    ) -> Callable[
+        [compute.DetachNetworkEndpointsRegionNetworkEndpointGroupRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
@@ -193,6 +226,18 @@ class RegionNetworkEndpointGroupsTransport(abc.ABC):
         Union[
             compute.NetworkEndpointGroupList,
             Awaitable[compute.NetworkEndpointGroupList],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_network_endpoints(
+        self,
+    ) -> Callable[
+        [compute.ListNetworkEndpointsRegionNetworkEndpointGroupsRequest],
+        Union[
+            compute.NetworkEndpointGroupsListNetworkEndpoints,
+            Awaitable[compute.NetworkEndpointGroupsListNetworkEndpoints],
         ],
     ]:
         raise NotImplementedError()

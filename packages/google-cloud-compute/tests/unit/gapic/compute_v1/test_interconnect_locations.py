@@ -602,6 +602,8 @@ def test_get_rest(request_type):
         return_value = compute.InterconnectLocation(
             address="address_value",
             availability_zone="availability_zone_value",
+            available_features=["available_features_value"],
+            available_link_types=["available_link_types_value"],
             city="city_value",
             continent="continent_value",
             creation_timestamp="creation_timestamp_value",
@@ -632,6 +634,8 @@ def test_get_rest(request_type):
     assert isinstance(response, compute.InterconnectLocation)
     assert response.address == "address_value"
     assert response.availability_zone == "availability_zone_value"
+    assert response.available_features == ["available_features_value"]
+    assert response.available_link_types == ["available_link_types_value"]
     assert response.city == "city_value"
     assert response.continent == "continent_value"
     assert response.creation_timestamp == "creation_timestamp_value"
