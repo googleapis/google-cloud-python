@@ -221,12 +221,16 @@ class TestCredentials(object):
         assert self.credentials.universe_domain == "fake_universe_domain"
         assert self.credentials._universe_domain == "fake_universe_domain"
         assert self.credentials._universe_domain_cached
-        get_universe_domain.assert_called_once()
+        get_universe_domain.assert_called_once_with(
+            self.credentials._universe_domain_request
+        )
 
         # calling the universe_domain property the second time should use the
         # cached value instead of calling get_universe_domain
         assert self.credentials.universe_domain == "fake_universe_domain"
-        get_universe_domain.assert_called_once()
+        get_universe_domain.assert_called_once_with(
+            self.credentials._universe_domain_request
+        )
 
 
 class TestIDTokenCredentials(object):
