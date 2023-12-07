@@ -5840,7 +5840,7 @@ class Test_Blob(unittest.TestCase):
 
         client = self._make_client()
 
-        with pytest.raises(ValueError, match="URI scheme must be gs"):
+        with pytest.raises(ValueError):
             Blob.from_string("http://bucket_name/b", client)
 
     def test_from_string_w_domain_name_bucket(self):

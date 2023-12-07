@@ -394,7 +394,8 @@ class Blob(_PropertyMixin):
             blob = Blob.from_string("gs://bucket/object", client=client)
 
         :type uri: str
-        :param uri: The blob uri pass to get blob object.
+        :param uri: The blob uri following a gs://bucket/object pattern.
+          Both a bucket and object name is required to construct a blob object.
 
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client:
@@ -408,7 +409,7 @@ class Blob(_PropertyMixin):
 
         match = _GS_URL_REGEX_PATTERN.match(uri)
         if not match:
-            raise ValueError("URI scheme must be gs")
+            raise ValueError("URI pattern must be gs://bucket/object")
         bucket = Bucket(client, name=match.group("bucket_name"))
         return cls(match.group("object_name"), bucket)
 

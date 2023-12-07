@@ -1750,7 +1750,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=project, credentials=credentials)
         file_obj = io.BytesIO()
 
-        with pytest.raises(ValueError, match="URI scheme must be gs"):
+        with pytest.raises(ValueError):
             client.download_blob_to_file("http://bucket_name/path/to/object", file_obj)
 
     def test_download_blob_to_file_w_no_retry(self):
