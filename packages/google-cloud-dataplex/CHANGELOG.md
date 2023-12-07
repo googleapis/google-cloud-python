@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.9.0...google-cloud-dataplex-v1.10.0) (2023-12-07)
+
+
+### Features
+
+* [google-cloud-dataplex] add data quality score to DataQualityResult ([#12080](https://github.com/googleapis/google-cloud-python/issues/12080)) ([777891d](https://github.com/googleapis/google-cloud-python/commit/777891df576c55a740f3c2496263ec71dc63c123))
+* Add support for python 3.12 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Introduce compatibility with native namespace packages ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Use `retry_async` instead of `retry` in async client ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
 ## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.8.1...google-cloud-dataplex-v1.9.0) (2023-11-29)
 
 
