@@ -290,6 +290,7 @@ class _PropertyMixin(object):
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+        override_unlocked_retention=False,
     ):
         """Sends all changed properties in a PATCH request.
 
@@ -326,12 +327,21 @@ class _PropertyMixin(object):
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
+
+        :type override_unlocked_retention: bool
+        :param override_unlocked_retention:
+            (Optional) override_unlocked_retention must be set to True if the operation includes
+            a retention property that changes the mode from Unlocked to Locked, reduces the
+            retainUntilTime, or removes the retention configuration from the object. See:
+            https://cloud.google.com/storage/docs/json_api/v1/objects/patch
         """
         client = self._require_client(client)
         query_params = self._query_params
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
         query_params["projection"] = "full"
+        if override_unlocked_retention:
+            query_params["overrideUnlockedRetention"] = override_unlocked_retention
         _add_generation_match_parameters(
             query_params,
             if_generation_match=if_generation_match,
@@ -361,6 +371,7 @@ class _PropertyMixin(object):
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+        override_unlocked_retention=False,
     ):
         """Sends all properties in a PUT request.
 
@@ -397,11 +408,20 @@ class _PropertyMixin(object):
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
+
+        :type override_unlocked_retention: bool
+        :param override_unlocked_retention:
+            (Optional) override_unlocked_retention must be set to True if the operation includes
+            a retention property that changes the mode from Unlocked to Locked, reduces the
+            retainUntilTime, or removes the retention configuration from the object. See:
+            https://cloud.google.com/storage/docs/json_api/v1/objects/patch
         """
         client = self._require_client(client)
 
         query_params = self._query_params
         query_params["projection"] = "full"
+        if override_unlocked_retention:
+            query_params["overrideUnlockedRetention"] = override_unlocked_retention
         _add_generation_match_parameters(
             query_params,
             if_generation_match=if_generation_match,

@@ -102,6 +102,7 @@ _WRITABLE_FIELDS = (
     "md5Hash",
     "metadata",
     "name",
+    "retention",
     "storageClass",
 )
 _READ_LESS_THAN_SIZE = (
@@ -1700,6 +1701,7 @@ class Blob(_PropertyMixin):
         * ``md5Hash``
         * ``metadata``
         * ``name``
+        * ``retention``
         * ``storageClass``
 
         For now, we don't support ``acl``, access control lists should be
@@ -4667,6 +4669,16 @@ class Blob(_PropertyMixin):
 
         self._patch_property("customTime", value)
 
+    @property
+    def retention(self):
+        """Retrieve the retention configuration for this object.
+
+        :rtype: :class:`Retention`
+        :returns: an instance for managing the object's retention configuration.
+        """
+        info = self._properties.get("retention", {})
+        return Retention.from_api_repr(info, self)
+
 
 def _get_host_name(connection):
     """Returns the host name from the given connection.
@@ -4797,3 +4809,126 @@ def _add_query_parameters(base_url, name_value_pairs):
     query = parse_qsl(query)
     query.extend(name_value_pairs)
     return urlunsplit((scheme, netloc, path, urlencode(query), frag))
+
+
+class Retention(dict):
+    """Map an object's retention configuration.
+
+    :type blob: :class:`Blob`
+    :params blob: blob for which this retention configuration applies to.
+
+    :type mode: str or ``NoneType``
+    :params mode:
+        (Optional) The mode of the retention configuration, which can be either Unlocked or Locked.
+        See: https://cloud.google.com/storage/docs/object-lock
+
+    :type retain_until_time: :class:`datetime.datetime` or ``NoneType``
+    :params retain_until_time:
+        (Optional) The earliest time that the object can be deleted or replaced, which is the
+        retention configuration set for this object.
+
+    :type retention_expiration_time: :class:`datetime.datetime` or ``NoneType``
+    :params retention_expiration_time:
+        (Optional) The earliest time that the object can be deleted, which depends on any
+        retention configuration set for the object and any retention policy set for the bucket
+        that contains the object. This value should normally only be set by the back-end API.
+    """
+
+    def __init__(
+        self,
+        blob,
+        mode=None,
+        retain_until_time=None,
+        retention_expiration_time=None,
+    ):
+        data = {"mode": mode}
+        if retain_until_time is not None:
+            retain_until_time = _datetime_to_rfc3339(retain_until_time)
+        data["retainUntilTime"] = retain_until_time
+
+        if retention_expiration_time is not None:
+            retention_expiration_time = _datetime_to_rfc3339(retention_expiration_time)
+        data["retentionExpirationTime"] = retention_expiration_time
+
+        super(Retention, self).__init__(data)
+        self._blob = blob
+
+    @classmethod
+    def from_api_repr(cls, resource, blob):
+        """Factory:  construct instance from resource.
+
+        :type blob: :class:`Blob`
+        :params blob: Blob for which this retention configuration applies to.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`Retention`
+        :returns: Retention configuration created from resource.
+        """
+        instance = cls(blob)
+        instance.update(resource)
+        return instance
+
+    @property
+    def blob(self):
+        """Blob for which this retention configuration applies to.
+
+        :rtype: :class:`Blob`
+        :returns: the instance's blob.
+        """
+        return self._blob
+
+    @property
+    def mode(self):
+        """The mode of the retention configuration. Options are 'Unlocked' or 'Locked'.
+
+        :rtype: string
+        :returns: The mode of the retention configuration, which can be either set to 'Unlocked' or 'Locked'.
+        """
+        return self.get("mode")
+
+    @mode.setter
+    def mode(self, value):
+        self["mode"] = value
+        self.blob._patch_property("retention", self)
+
+    @property
+    def retain_until_time(self):
+        """The earliest time that the object can be deleted or replaced, which is the
+        retention configuration set for this object.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp, or
+                  ``None`` if the blob's resource has not been loaded from
+                  the server (see :meth:`reload`).
+        """
+        value = self.get("retainUntilTime")
+        if value is not None:
+            return _rfc3339_nanos_to_datetime(value)
+
+    @retain_until_time.setter
+    def retain_until_time(self, value):
+        """Set the retain_until_time for the object retention configuration.
+
+        :type value: :class:`datetime.datetime`
+        :param value: The earliest time that the object can be deleted or replaced.
+        """
+        if value is not None:
+            value = _datetime_to_rfc3339(value)
+        self["retainUntilTime"] = value
+        self.blob._patch_property("retention", self)
+
+    @property
+    def retention_expiration_time(self):
+        """The earliest time that the object can be deleted, which depends on any
+        retention configuration set for the object and any retention policy set for
+        the bucket that contains the object.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns:
+            (readonly) The earliest time that the object can be deleted.
+        """
+        retention_expiration_time = self.get("retentionExpirationTime")
+        if retention_expiration_time is not None:
+            return _rfc3339_nanos_to_datetime(retention_expiration_time)

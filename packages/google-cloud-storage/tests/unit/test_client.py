@@ -1614,11 +1614,14 @@ class TestClient(unittest.TestCase):
         bucket.requester_pays = True
         bucket.labels = labels
 
-        client.create_bucket(bucket, location=location)
+        client.create_bucket(bucket, location=location, enable_object_retention=True)
 
         expected_path = "/b"
         expected_data = api_response
-        expected_query_params = {"project": project}
+        expected_query_params = {
+            "project": project,
+            "enableObjectRetention": True,
+        }
         client._post_resource.assert_called_once_with(
             expected_path,
             expected_data,

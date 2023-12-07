@@ -917,6 +917,7 @@ class Bucket(_PropertyMixin):
         location=None,
         predefined_acl=None,
         predefined_default_object_acl=None,
+        enable_object_retention=False,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
     ):
@@ -956,6 +957,11 @@ class Bucket(_PropertyMixin):
             (Optional) Name of predefined ACL to apply to bucket's objects. See:
             https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
 
+        :type enable_object_retention: bool
+        :param enable_object_retention:
+            (Optional) Whether object retention should be enabled on this bucket. See:
+            https://cloud.google.com/storage/docs/object-lock
+
         :type timeout: float or tuple
         :param timeout:
             (Optional) The amount of time, in seconds, to wait
@@ -974,6 +980,7 @@ class Bucket(_PropertyMixin):
             location=location,
             predefined_acl=predefined_acl,
             predefined_default_object_acl=predefined_default_object_acl,
+            enable_object_retention=enable_object_retention,
             timeout=timeout,
             retry=retry,
         )
@@ -2749,6 +2756,18 @@ class Bucket(_PropertyMixin):
             timestamp = autoclass.get("terminalStorageClassUpdateTime")
             if timestamp is not None:
                 return _rfc3339_nanos_to_datetime(timestamp)
+
+    @property
+    def object_retention_mode(self):
+        """Retrieve the object retention mode set on the bucket.
+
+        :rtype: str
+        :returns: When set to Enabled, retention configurations can be
+                  set on objects in the bucket.
+        """
+        object_retention = self._properties.get("objectRetention")
+        if object_retention is not None:
+            return object_retention.get("mode")
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.

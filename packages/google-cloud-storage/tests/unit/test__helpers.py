@@ -353,12 +353,14 @@ class Test_PropertyMixin(unittest.TestCase):
         retry = mock.Mock(spec=[])
         generation_number = 9
         metageneration_number = 6
+        override_unlocked_retention = True
 
         derived.patch(
             if_generation_match=generation_number,
             if_metageneration_match=metageneration_number,
             timeout=timeout,
             retry=retry,
+            override_unlocked_retention=override_unlocked_retention,
         )
 
         self.assertEqual(derived._properties, {"foo": "Foo"})
@@ -370,6 +372,7 @@ class Test_PropertyMixin(unittest.TestCase):
             "projection": "full",
             "ifGenerationMatch": generation_number,
             "ifMetagenerationMatch": metageneration_number,
+            "overrideUnlockedRetention": override_unlocked_retention,
         }
         client._patch_resource.assert_called_once_with(
             path,
@@ -454,10 +457,12 @@ class Test_PropertyMixin(unittest.TestCase):
         client = derived.client = mock.Mock(spec=["_put_resource"])
         client._put_resource.return_value = api_response
         timeout = 42
+        override_unlocked_retention = True
 
         derived.update(
             if_metageneration_not_match=generation_number,
             timeout=timeout,
+            override_unlocked_retention=override_unlocked_retention,
         )
 
         self.assertEqual(derived._properties, {"foo": "Foo"})
@@ -467,6 +472,7 @@ class Test_PropertyMixin(unittest.TestCase):
         expected_query_params = {
             "projection": "full",
             "ifMetagenerationNotMatch": generation_number,
+            "overrideUnlockedRetention": override_unlocked_retention,
         }
         client._put_resource.assert_called_once_with(
             path,

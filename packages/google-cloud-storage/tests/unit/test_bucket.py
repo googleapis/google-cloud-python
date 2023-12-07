@@ -3000,6 +3000,7 @@ class Test_Bucket(unittest.TestCase):
             location=None,
             predefined_acl=None,
             predefined_default_object_acl=None,
+            enable_object_retention=False,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
         )
@@ -3011,6 +3012,7 @@ class Test_Bucket(unittest.TestCase):
         bucket_name = "bucket-name"
         predefined_acl = "authenticatedRead"
         predefined_default_object_acl = "bucketOwnerFullControl"
+        enable_object_retention = True
         api_response = {"name": bucket_name}
         client = mock.Mock(spec=["create_bucket"])
         client.create_bucket.return_value = api_response
@@ -3025,6 +3027,7 @@ class Test_Bucket(unittest.TestCase):
             location=location,
             predefined_acl=predefined_acl,
             predefined_default_object_acl=predefined_default_object_acl,
+            enable_object_retention=enable_object_retention,
             timeout=timeout,
             retry=retry,
         )
@@ -3036,6 +3039,7 @@ class Test_Bucket(unittest.TestCase):
             location=location,
             predefined_acl=predefined_acl,
             predefined_default_object_acl=predefined_default_object_acl,
+            enable_object_retention=enable_object_retention,
             timeout=timeout,
             retry=retry,
         )
@@ -3064,6 +3068,14 @@ class Test_Bucket(unittest.TestCase):
         self.assertFalse(bucket.requester_pays)
         bucket.requester_pays = True
         self.assertTrue(bucket.requester_pays)
+
+    def test_object_retention_mode_getter(self):
+        bucket = self._make_one()
+        self.assertIsNone(bucket.object_retention_mode)
+        mode = "Enabled"
+        properties = {"objectRetention": {"mode": mode}}
+        bucket = self._make_one(properties=properties)
+        self.assertEqual(bucket.object_retention_mode, mode)
 
     def test_configure_website_defaults(self):
         NAME = "name"

@@ -845,6 +845,7 @@ class Client(ClientWithProject):
         data_locations=None,
         predefined_acl=None,
         predefined_default_object_acl=None,
+        enable_object_retention=False,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
     ):
@@ -883,6 +884,9 @@ class Client(ClientWithProject):
             predefined_default_object_acl (str):
                 (Optional) Name of predefined ACL to apply to bucket's objects. See:
                 https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
+            enable_object_retention (bool):
+                (Optional) Whether object retention should be enabled on this bucket. See:
+                https://cloud.google.com/storage/docs/object-lock
             timeout (Optional[Union[float, Tuple[float, float]]]):
                 The amount of time, in seconds, to wait for the server response.
 
@@ -950,6 +954,9 @@ class Client(ClientWithProject):
 
         if user_project is not None:
             query_params["userProject"] = user_project
+
+        if enable_object_retention:
+            query_params["enableObjectRetention"] = enable_object_retention
 
         properties = {key: bucket._properties[key] for key in bucket._changes}
         properties["name"] = bucket.name

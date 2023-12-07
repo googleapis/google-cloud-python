@@ -5925,6 +5925,81 @@ class Test_Blob(unittest.TestCase):
                 self.assertIsInstance(called_headers, dict)
                 self.assertLessEqual(custom_headers.items(), called_headers.items())
 
+    def test_object_lock_retention_configuration(self):
+        from google.cloud.storage.blob import Retention
+
+        BLOB_NAME = "blob-name"
+        BUCKET = object()
+        blob = self._make_one(BLOB_NAME, bucket=BUCKET)
+
+        retention = blob.retention
+
+        self.assertIsInstance(retention, Retention)
+        self.assertIs(retention.blob, blob)
+        self.assertIsNone(retention.mode)
+        self.assertIsNone(retention.retain_until_time)
+        self.assertIsNone(retention.retention_expiration_time)
+
+    def test_object_lock_retention_configuration_w_entry(self):
+        import datetime
+        from google.cloud._helpers import _RFC3339_MICROS
+        from google.cloud._helpers import UTC
+        from google.cloud.storage.blob import Retention
+
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        expiration_time = now + datetime.timedelta(hours=1)
+        expiration = expiration_time.strftime(_RFC3339_MICROS)
+        mode = "Locked"
+        properties = {
+            "retention": {
+                "mode": mode,
+                "retainUntilTime": expiration,
+                "retentionExpirationTime": expiration,
+            }
+        }
+        BLOB_NAME = "blob-name"
+        BUCKET = object()
+        blob = self._make_one(BLOB_NAME, bucket=BUCKET, properties=properties)
+        retention_config = Retention(
+            blob=blob,
+            mode=mode,
+            retain_until_time=expiration_time,
+            retention_expiration_time=expiration_time,
+        )
+
+        retention = blob.retention
+
+        self.assertIsInstance(retention, Retention)
+        self.assertEqual(retention, retention_config)
+        self.assertIs(retention.blob, blob)
+        self.assertEqual(retention.mode, mode)
+        self.assertEqual(retention.retain_until_time, expiration_time)
+        self.assertEqual(retention.retention_expiration_time, expiration_time)
+
+    def test_object_lock_retention_configuration_setter(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud.storage.blob import Retention
+
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertIsInstance(blob.retention, Retention)
+
+        mode = "Locked"
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        expiration_time = now + datetime.timedelta(hours=1)
+        retention_config = Retention(
+            blob=blob, mode=mode, retain_until_time=expiration_time
+        )
+        blob.retention.mode = mode
+        blob.retention.retain_until_time = expiration_time
+        self.assertEqual(blob.retention, retention_config)
+        self.assertIn("retention", blob._changes)
+        blob.retention.retain_until_time = None
+        self.assertIsNone(blob.retention.retain_until_time)
+        self.assertIn("retention", blob._changes)
+
 
 class Test__quote(unittest.TestCase):
     @staticmethod
