@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.15.0](https://github.com/googleapis/python-api-core/compare/v2.14.0...v2.15.0) (2023-12-07)
+
+
+### Features
+
+* Add support for Python 3.12 ([#557](https://github.com/googleapis/python-api-core/issues/557)) ([091b4f1](https://github.com/googleapis/python-api-core/commit/091b4f1c7fcc59c3f2a02ee44fd3c30b78423f12))
+* Add type annotations to wrapped grpc calls ([#554](https://github.com/googleapis/python-api-core/issues/554)) ([fc12b40](https://github.com/googleapis/python-api-core/commit/fc12b40bfc6e0c4bb313196e2e3a9c9374ce1c45))
+* Add universe_domain argument to ClientOptions ([3069ef4](https://github.com/googleapis/python-api-core/commit/3069ef4b9123ddb64841cbb7bbb183b53d502e0a))
+* Introduce compatibility with native namespace packages ([#561](https://github.com/googleapis/python-api-core/issues/561)) ([bd82827](https://github.com/googleapis/python-api-core/commit/bd82827108f1eeb6c05cfacf6c044b2afacc18a2))
+
+
+### Bug Fixes
+
+* Fix regression in `bidi` causing `Thread-ConsumeBidirectionalStream caught unexpected exception  and will exit` ([#562](https://github.com/googleapis/python-api-core/issues/562)) ([40c8ae0](https://github.com/googleapis/python-api-core/commit/40c8ae0cf1f797e31e106461164e22db4fb2d3d9))
+* Replace deprecated `datetime.datetime.utcnow()` ([#552](https://github.com/googleapis/python-api-core/issues/552)) ([448923a](https://github.com/googleapis/python-api-core/commit/448923acf277a70e8704c949311bf4feaef8cab6)), closes [#540](https://github.com/googleapis/python-api-core/issues/540)
+
 ## [2.14.0](https://github.com/googleapis/python-api-core/compare/v2.13.1...v2.14.0) (2023-11-09)
 
 
