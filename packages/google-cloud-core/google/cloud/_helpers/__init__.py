@@ -38,8 +38,8 @@ try:
 except ImportError:  # pragma: NO COVER
     grpc = None
 
-
-_NOW = datetime.datetime.now(datetime.timezone.utc)
+# `google.cloud._helpers._NOW` is deprecated
+_NOW = datetime.datetime.utcnow
 UTC = datetime.timezone.utc  # Singleton instance to be used throughout.
 _EPOCH = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
 
