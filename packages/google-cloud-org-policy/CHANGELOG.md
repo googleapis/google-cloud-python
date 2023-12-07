@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-org-policy/compare/v1.8.3...v1.9.0) (2023-12-07)
+
+
+### Features
+
+* Add support for Python 3.12 ([#242](https://github.com/googleapis/python-org-policy/issues/242)) ([400b684](https://github.com/googleapis/python-org-policy/commit/400b6843a6cc929ad9f22d79ad34acb172ca92fe))
+* Introduce compatibility with native namespace packages ([#241](https://github.com/googleapis/python-org-policy/issues/241)) ([bac1c15](https://github.com/googleapis/python-org-policy/commit/bac1c150be981f6275ef3717187fcac4aba55eed))
+
+
+### Bug Fixes
+
+* Use `retry_async` instead of `retry` in async client ([78d90a3](https://github.com/googleapis/python-org-policy/commit/78d90a37c03a8ac0825ac3890f61e2496a86bab6))
+
 ## [1.8.3](https://github.com/googleapis/python-org-policy/compare/v1.8.2...v1.8.3) (2023-11-09)
 
 
