@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-trace-v1.11.3...google-cloud-trace-v1.12.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([f920d22](https://github.com/googleapis/google-cloud-python/commit/f920d22f59fbd31822252b9677416a6cd436eba2))
+* Introduce compatibility with native namespace packages ([f920d22](https://github.com/googleapis/google-cloud-python/commit/f920d22f59fbd31822252b9677416a6cd436eba2))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([f920d22](https://github.com/googleapis/google-cloud-python/commit/f920d22f59fbd31822252b9677416a6cd436eba2))
+* Use `retry_async` instead of `retry` in async client ([f920d22](https://github.com/googleapis/google-cloud-python/commit/f920d22f59fbd31822252b9677416a6cd436eba2))
+
 ## [1.11.3](https://github.com/googleapis/python-trace/compare/v1.11.2...v1.11.3) (2023-10-09)
 
 

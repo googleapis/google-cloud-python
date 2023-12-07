@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.7.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.4...google-cloud-video-stitcher-v0.7.5) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+* Introduce compatibility with native namespace packages ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+* Use `retry_async` instead of `retry` in async client ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+
 ## [0.7.4](https://github.com/googleapis/python-video-stitcher/compare/v0.7.3...v0.7.4) (2023-09-19)
 
 
