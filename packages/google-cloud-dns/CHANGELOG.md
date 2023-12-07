@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+## [0.35.0](https://github.com/googleapis/python-dns/compare/v0.34.2...v0.35.0) (2023-11-30)
+
+
+### Features
+
+* Add support for Python 3.12 ([#233](https://github.com/googleapis/python-dns/issues/233)) ([2e60d57](https://github.com/googleapis/python-dns/commit/2e60d57f5fa58f4bbf86fe9a698a773d3ebc415f))
+* Introduce compatibility with native namespace packages ([#232](https://github.com/googleapis/python-dns/issues/232)) ([8e9f0be](https://github.com/googleapis/python-dns/commit/8e9f0bef3ad042ba93d46a9ff0f5a7a0fd1ced16))
+
 ## [0.34.2](https://github.com/googleapis/python-dns/compare/v0.34.1...v0.34.2) (2023-11-09)
 
 
