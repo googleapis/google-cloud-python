@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.0](https://github.com/googleapis/python-grpc-google-iam-v1/compare/v0.12.7...v0.13.0) (2023-11-29)
+
+
+### Features
+
+* Add support for Python 3.12 ([#64](https://github.com/googleapis/python-grpc-google-iam-v1/issues/64)) ([f0fc9e2](https://github.com/googleapis/python-grpc-google-iam-v1/commit/f0fc9e2dcdf67912d7186f15832779fd18f8fb81))
+* Introduce compatibility with native namespace packages ([#59](https://github.com/googleapis/python-grpc-google-iam-v1/issues/59)) ([93217c3](https://github.com/googleapis/python-grpc-google-iam-v1/commit/93217c31871168a904064aeedb6d9b91fbda5668))
+
 ## [0.12.7](https://github.com/googleapis/python-grpc-google-iam-v1/compare/v0.12.6...v0.12.7) (2023-11-09)
 
 
