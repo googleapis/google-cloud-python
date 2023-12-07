@@ -41,10 +41,10 @@ class Permission(proto.Message):
     There are three concentric roles. Each role is a superset of the
     previous role's permitted operations:
 
-     - reader can use the resource (e.g. tuned model) for inference
-     - writer has reader's permissions and additionally can edit and
+    - reader can use the resource (e.g. tuned model) for inference
+    - writer has reader's permissions and additionally can edit and
       share
-     - owner has writer's permissions and additionally can delete
+    - owner has writer's permissions and additionally can delete
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
