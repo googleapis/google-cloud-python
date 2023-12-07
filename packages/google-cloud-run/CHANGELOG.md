@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.0...google-cloud-run-v0.10.1) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+* Introduce compatibility with native namespace packages ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+* Use `retry_async` instead of `retry` in async client ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+
 ## [0.10.0](https://github.com/googleapis/python-run/compare/v0.9.1...v0.10.0) (2023-10-09)
 
 
