@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.14.0...google-cloud-deploy-v1.15.0) (2023-12-07)
+
+
+### Features
+
+* Add custom target type support ([f4938c0](https://github.com/googleapis/google-cloud-python/commit/f4938c05ef84a93bf05b6012053baece659caa63))
+* Add revision tagging for one of the Cloud Run deployment strategies ([f4938c0](https://github.com/googleapis/google-cloud-python/commit/f4938c05ef84a93bf05b6012053baece659caa63))
+* Add support for python 3.12 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Introduce compatibility with native namespace packages ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Use `retry_async` instead of `retry` in async client ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
+
+### Documentation
+
+* Fixed a number of comments. ([f4938c0](https://github.com/googleapis/google-cloud-python/commit/f4938c05ef84a93bf05b6012053baece659caa63))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.13.0...google-cloud-deploy-v1.14.0) (2023-11-02)
 
 
