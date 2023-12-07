@@ -153,14 +153,12 @@ class ModelCreationSqlGenerator(BaseSqlGenerator):
     ) -> str:
         """Encode the CREATE OR REPLACE MODEL statement for BQML"""
         source_sql = source_df.sql
-        transform_sql = self.transform(*transforms) if transforms is not None else None
-        options_sql = self.options(**options)
 
         parts = [f"CREATE OR REPLACE MODEL {self._model_id_sql(model_ref)}"]
-        if transform_sql:
-            parts.append(transform_sql)
-        if options_sql:
-            parts.append(options_sql)
+        if transforms:
+            parts.append(self.transform(*transforms))
+        if options:
+            parts.append(self.options(**options))
         parts.append(f"AS {source_sql}")
         return "\n".join(parts)
 
@@ -189,11 +187,10 @@ class ModelCreationSqlGenerator(BaseSqlGenerator):
         options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
     ) -> str:
         """Encode the CREATE OR REPLACE MODEL statement for BQML remote model."""
-        options_sql = self.options(**options)
 
         parts = [f"CREATE OR REPLACE MODEL {self._model_id_sql(model_ref)}"]
-        if options_sql:
-            parts.append(options_sql)
+        if options:
+            parts.append(self.options(**options))
         return "\n".join(parts)
 
 
