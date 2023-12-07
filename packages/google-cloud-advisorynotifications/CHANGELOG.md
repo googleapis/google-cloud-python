@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.2...google-cloud-advisorynotifications-v0.3.3) (2023-12-07)
+
+
+### Features
+
+* Adding GetNotification and ListNotifications methods for notifications parented at the project level ([d250ab3](https://github.com/googleapis/google-cloud-python/commit/d250ab3f1c9ed29a530360899445f2d8714fc157))
+* Adding project level methods to advisorynotifications.googleapis.com ([d250ab3](https://github.com/googleapis/google-cloud-python/commit/d250ab3f1c9ed29a530360899445f2d8714fc157))
+
+
+### Documentation
+
+* Adding docs for new project level methods ([d250ab3](https://github.com/googleapis/google-cloud-python/commit/d250ab3f1c9ed29a530360899445f2d8714fc157))
+
 ## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.1...google-cloud-advisorynotifications-v0.3.2) (2023-12-07)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.5...google-maps-places-v0.1.6) (2023-12-07)
+
+
+### Features
+
+* Add new primary type fields ([a74938f](https://github.com/googleapis/google-cloud-python/commit/a74938fa2ed19348d703d23ffb13545423e8b736))
+* Add new short formatted address field ([a74938f](https://github.com/googleapis/google-cloud-python/commit/a74938fa2ed19348d703d23ffb13545423e8b736))
+* Add new wheelchair accessibility fields ([a74938f](https://github.com/googleapis/google-cloud-python/commit/a74938fa2ed19348d703d23ffb13545423e8b736))
+
+
+### Documentation
+
+* Change comments for some fields in Places API ([a74938f](https://github.com/googleapis/google-cloud-python/commit/a74938fa2ed19348d703d23ffb13545423e8b736))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.4...google-maps-places-v0.1.5) (2023-12-07)
 
 
