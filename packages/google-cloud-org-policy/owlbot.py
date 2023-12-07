@@ -73,6 +73,10 @@ templated_files = gcp.CommonTemplates().py_library(
 )
 s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "noxfile.py"])
 
+s.replace("setup.py",
+    "url = \"https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-org-policy\"",
+    "url = \"https://github.com/googleapis/python-org-policy\""
+)
 python.py_samples(skip_readmes=True)
 
 # Generate _pb2.py files and format them
