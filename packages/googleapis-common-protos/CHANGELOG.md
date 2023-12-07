@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.62.0](https://github.com/googleapis/python-api-common-protos/compare/v1.61.0...v1.62.0) (2023-12-01)
+
+
+### Features
+
+* Add `auto_populated_fields` field of `MethodSettings` in `google/api/client_pb2` ([#194](https://github.com/googleapis/python-api-common-protos/issues/194)) ([4b0c73a](https://github.com/googleapis/python-api-common-protos/commit/4b0c73a40f9bf5337fe451c0210f73eadd196b99))
+* Add support for Python 3.12 ([#192](https://github.com/googleapis/python-api-common-protos/issues/192)) ([336cdf3](https://github.com/googleapis/python-api-common-protos/commit/336cdf351d4e87891d735837817d2cfc4e5a9fc7))
+
+
+### Bug Fixes
+
+* Migrate to native namespace packages ([#187](https://github.com/googleapis/python-api-common-protos/issues/187)) ([713e388](https://github.com/googleapis/python-api-common-protos/commit/713e3887a3293aea314060e84bdcf8a12eda3d6c))
+
 ## [1.61.0](https://github.com/googleapis/python-api-common-protos/compare/v1.60.0...v1.61.0) (2023-10-09)
 
 
