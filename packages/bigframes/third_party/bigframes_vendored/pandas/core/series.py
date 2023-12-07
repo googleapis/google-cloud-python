@@ -96,7 +96,20 @@ class Series(NDFrame):  # type: ignore[misc]
 
     @property
     def shape(self):
-        """Return a tuple of the shape of the underlying data."""
+        """Return a tuple of the shape of the underlying data.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([1, 4, 9, 16])
+            >>> s.shape
+            (4,)
+            >>> s = bpd.Series(['Alice', 'Bob', bpd.NA])
+            >>> s.shape
+            (3,)
+        """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property

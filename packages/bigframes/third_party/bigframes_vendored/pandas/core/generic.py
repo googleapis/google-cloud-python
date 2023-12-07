@@ -272,17 +272,73 @@ class NDFrame(indexing.IndexingMixin):
         on position. It is useful for quickly testing if your object
         has the right type of data in it.
 
-        **Not yet supported** For negative values of `n`, this function returns
+        For negative values of `n`, this function returns
         all rows except the last `|n|` rows, equivalent to ``df[:n]``.
 
         If n is larger than the number of rows, this function returns all rows.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'animal': ['alligator', 'bee', 'falcon', 'lion',
+            ...                     'monkey', 'parrot', 'shark', 'whale', 'zebra']})
+            >>> df
+                animal
+            0  alligator
+            1        bee
+            2     falcon
+            3       lion
+            4     monkey
+            5     parrot
+            6      shark
+            7      whale
+            8      zebra
+            <BLANKLINE>
+            [9 rows x 1 columns]
+
+        Viewing the first 5 lines:
+
+            >>> df.head()
+                animal
+            0  alligator
+            1        bee
+            2     falcon
+            3       lion
+            4     monkey
+            <BLANKLINE>
+            [5 rows x 1 columns]
+
+        Viewing the first `n` lines (three in this case):
+
+            >>> df.head(3)
+                animal
+            0  alligator
+            1        bee
+            2     falcon
+            <BLANKLINE>
+            [3 rows x 1 columns]
+
+        For negative values of `n`:
+
+            >>> df.head(-3)
+                animal
+            0  alligator
+            1        bee
+            2     falcon
+            3       lion
+            4     monkey
+            5     parrot
+            <BLANKLINE>
+            [6 rows x 1 columns]
 
         Args:
             n (int, default 5):
                 Default 5. Number of rows to select.
 
         Returns:
-            The first `n` rows of the caller object.
+            same type as caller: The first ``n`` rows of the caller object.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
