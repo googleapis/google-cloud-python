@@ -2458,10 +2458,13 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             hashed_account_id (bytes):
-                Optional. The unique stable hashed user identifier used
-                to search connections. The identifier should correspond
-                to a ``hashed_account_id`` provided in a previous
+                Optional. Deprecated: use ``account_id`` instead. The
+                unique stable hashed account identifier used to search
+                connections. The identifier should correspond to a
+                ``hashed_account_id`` provided in a previous
                 ``CreateAssessment`` or ``AnnotateAssessment`` call.
+                Either hashed_account_id or account_id must be set, but
+                not both.
 
                 This corresponds to the ``hashed_account_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
