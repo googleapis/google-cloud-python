@@ -1094,9 +1094,11 @@ def test_get_place(request_type, transport: str = "grpc"):
             name="name_value",
             id="id_value",
             types=["types_value"],
+            primary_type="primary_type_value",
             national_phone_number="national_phone_number_value",
             international_phone_number="international_phone_number_value",
             formatted_address="formatted_address_value",
+            short_formatted_address="short_formatted_address_value",
             rating=0.645,
             google_maps_uri="google_maps_uri_value",
             website_uri="website_uri_value",
@@ -1143,9 +1145,11 @@ def test_get_place(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.id == "id_value"
     assert response.types == ["types_value"]
+    assert response.primary_type == "primary_type_value"
     assert response.national_phone_number == "national_phone_number_value"
     assert response.international_phone_number == "international_phone_number_value"
     assert response.formatted_address == "formatted_address_value"
+    assert response.short_formatted_address == "short_formatted_address_value"
     assert math.isclose(response.rating, 0.645, rel_tol=1e-6)
     assert response.google_maps_uri == "google_maps_uri_value"
     assert response.website_uri == "website_uri_value"
@@ -1218,9 +1222,11 @@ async def test_get_place_async(
                 name="name_value",
                 id="id_value",
                 types=["types_value"],
+                primary_type="primary_type_value",
                 national_phone_number="national_phone_number_value",
                 international_phone_number="international_phone_number_value",
                 formatted_address="formatted_address_value",
+                short_formatted_address="short_formatted_address_value",
                 rating=0.645,
                 google_maps_uri="google_maps_uri_value",
                 website_uri="website_uri_value",
@@ -1268,9 +1274,11 @@ async def test_get_place_async(
     assert response.name == "name_value"
     assert response.id == "id_value"
     assert response.types == ["types_value"]
+    assert response.primary_type == "primary_type_value"
     assert response.national_phone_number == "national_phone_number_value"
     assert response.international_phone_number == "international_phone_number_value"
     assert response.formatted_address == "formatted_address_value"
+    assert response.short_formatted_address == "short_formatted_address_value"
     assert math.isclose(response.rating, 0.645, rel_tol=1e-6)
     assert response.google_maps_uri == "google_maps_uri_value"
     assert response.website_uri == "website_uri_value"
@@ -2175,9 +2183,11 @@ def test_get_place_rest(request_type):
             name="name_value",
             id="id_value",
             types=["types_value"],
+            primary_type="primary_type_value",
             national_phone_number="national_phone_number_value",
             international_phone_number="international_phone_number_value",
             formatted_address="formatted_address_value",
+            short_formatted_address="short_formatted_address_value",
             rating=0.645,
             google_maps_uri="google_maps_uri_value",
             website_uri="website_uri_value",
@@ -2229,9 +2239,11 @@ def test_get_place_rest(request_type):
     assert response.name == "name_value"
     assert response.id == "id_value"
     assert response.types == ["types_value"]
+    assert response.primary_type == "primary_type_value"
     assert response.national_phone_number == "national_phone_number_value"
     assert response.international_phone_number == "international_phone_number_value"
     assert response.formatted_address == "formatted_address_value"
+    assert response.short_formatted_address == "short_formatted_address_value"
     assert math.isclose(response.rating, 0.645, rel_tol=1e-6)
     assert response.google_maps_uri == "google_maps_uri_value"
     assert response.website_uri == "website_uri_value"

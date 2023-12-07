@@ -102,7 +102,7 @@ class PlacesClientMeta(type):
 
 class PlacesClient(metaclass=PlacesClientMeta):
     """Service definition for the Places API. Note: every request actually
-    requires a field mask set outside of the request proto (all/'*' is
+    requires a field mask set outside of the request proto (all/'*', is
     not assumed). That can be set via either a side channel
     (SystemParameterContext) over RPC, or a header (X-Goog-FieldMask)
     over HTTP. See: https://cloud.google.com/apis/docs/system-parameters
@@ -691,9 +691,15 @@ class PlacesClient(metaclass=PlacesClientMeta):
                 The request object. Request for fetching a photo of a
                 place using a photo resource name.
             name (str):
-                Required. The resource name of a photo. It is returned
-                in Place's photos.name field. Format:
-                places/<place_id>/photos/<photo_reference>/media.
+                Required. The resource name of a photo media in the
+                format:
+                ``places/{place_id}/photos/{photo_reference}/media``.
+
+                The resource name of a photo as returned in a Place
+                object's ``photos.name`` field comes with the format
+                ``places/{place_id}/photos/{photo_reference}``. You need
+                to append ``/media`` at the end of the photo resource to
+                get the photo media resource name.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -759,7 +765,7 @@ class PlacesClient(metaclass=PlacesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> place.Place:
-        r"""Get a Place with a place id (in a name) string.
+        r"""Get place details with a place id (in a name) string.
 
         .. code-block:: python
 
@@ -792,9 +798,9 @@ class PlacesClient(metaclass=PlacesClientMeta):
                 The request object. Request for fetching a Place with a
                 place id (in a name) string.
             name (str):
-                Required. A place_id returned in a Place (with "places/"
+                Required. A place ID returned in a Place (with "places/"
                 prefix), or equivalently the name in the same Place.
-                Format: places/<place_id>.
+                Format: ``places/{place_id}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

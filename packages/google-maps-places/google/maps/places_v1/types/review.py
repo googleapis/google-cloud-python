@@ -36,28 +36,24 @@ class Review(proto.Message):
 
     Attributes:
         name (str):
-            Output only. A reference representing this place review
-            which may be used to look up this place review again (a.k.a.
-            the API "resource" name:
-            places/{place_id}/reviews/{review}).
+            A reference representing this place review which may be used
+            to look up this place review again (also called the API
+            "resource" name: ``places/{place_id}/reviews/{review}``).
         relative_publish_time_description (str):
-            Output only. A string of formatted recent
-            time, expressing the review time relative to the
-            current time in a form appropriate for the
-            language and country.
+            A string of formatted recent time, expressing
+            the review time relative to the current time in
+            a form appropriate for the language and country.
         text (google.type.localized_text_pb2.LocalizedText):
-            Output only. The localized text of the
-            review.
+            The localized text of the review.
         original_text (google.type.localized_text_pb2.LocalizedText):
-            Output only. The review text in its original
-            language.
+            The review text in its original language.
         rating (float):
-            Output only. A number between 1.0 and 5.0,
-            a.k.a. the number of stars.
+            A number between 1.0 and 5.0, also called the
+            number of stars.
         author_attribution (google.maps.places_v1.types.AuthorAttribution):
-            Output only. This review's author.
+            This review's author.
         publish_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Timestamp for the review.
+            Timestamp for the review.
     """
 
     name: str = proto.Field(

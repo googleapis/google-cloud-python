@@ -34,15 +34,15 @@ class AuthorAttribution(proto.Message):
 
     Attributes:
         display_name (str):
-            Output only. Name of the author of the
+            Name of the author of the
             [Photo][google.maps.places.v1.Photo] or
             [Review][google.maps.places.v1.Review].
         uri (str):
-            Output only. URI of the author of the
+            URI of the author of the
             [Photo][google.maps.places.v1.Photo] or
             [Review][google.maps.places.v1.Review].
         photo_uri (str):
-            Output only. Profile photo URI of the author of the
+            Profile photo URI of the author of the
             [Photo][google.maps.places.v1.Photo] or
             [Review][google.maps.places.v1.Review].
     """
