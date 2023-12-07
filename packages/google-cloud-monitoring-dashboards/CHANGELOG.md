@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.12.3...google-cloud-monitoring-dashboards-v2.13.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+* Introduce compatibility with native namespace packages ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+* Use `retry_async` instead of `retry` in async client ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+
 ## [2.12.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.12.2...google-cloud-monitoring-dashboards-v2.12.3) (2023-11-15)
 
 
