@@ -35,9 +35,9 @@ logger = logging.getLogger(__name__)
 
 def _test_google_api_imports():
     try:
-        import pkg_resources  # noqa
+        import packaging  # noqa
     except ImportError as ex:  # pragma: NO COVER
-        raise ImportError("pandas-gbq requires setuptools") from ex
+        raise ImportError("pandas-gbq requires db-dtypes") from ex
 
     try:
         import db_dtypes  # noqa

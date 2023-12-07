@@ -41,6 +41,7 @@ dependencies = [
     # indefinitely. https://github.com/pydata/pandas-gbq/issues/343
     "google-cloud-bigquery >=3.3.5,<4.0.0dev,!=2.4.*",
     "google-cloud-bigquery-storage >=2.16.2,<3.0.0dev",
+    "packaging >=20.0.0",
 ]
 extras = {
     "tqdm": "tqdm>=4.23.0",
@@ -63,7 +64,7 @@ version = version["__version__"]
 # benchmarks, etc.
 packages = [
     package
-    for package in setuptools.PEP420PackageFinder.find()
+    for package in setuptools.find_namespace_packages()
     if package.startswith("pandas_gbq")
 ]
 

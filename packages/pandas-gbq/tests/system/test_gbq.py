@@ -14,19 +14,15 @@ import pandas.api.types
 import pandas.testing as tm
 from pandas import DataFrame
 
-try:
-    import pkg_resources  # noqa
-except ImportError:
-    raise ImportError("Could not import pkg_resources (setuptools).")
-import pytest
 import pytz
+import pytest
 
 from pandas_gbq import gbq
 import pandas_gbq.schema
 
 
 TABLE_ID = "new_test"
-PANDAS_VERSION = pkg_resources.parse_version(pandas.__version__)
+PANDAS_VERSION = packaging.version.parse(pandas.__version__)
 
 
 def test_imports():
