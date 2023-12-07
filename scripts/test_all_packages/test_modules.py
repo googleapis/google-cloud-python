@@ -3750,15 +3750,21 @@ not issubclass(ReportServiceClient, proto.Enum) and not issubclass(ReportService
 import google.shopping.merchant_reports
 not issubclass(ReportServiceClient, proto.Enum) and not issubclass(ReportServiceClient, proto.Message) and google.shopping.merchant_reports.ReportServiceClient(credentials=creds)
 from grafeas.grafeas_v1.services.grafeas import GrafeasClient
-not issubclass(GrafeasClient, proto.Enum) and not issubclass(GrafeasClient, proto.Message) and GrafeasClient()
+from grafeas.grafeas_v1.services.grafeas.transports.base import GrafeasTransport
+transport=GrafeasTransport(credentials=creds)
+not issubclass(GrafeasClient, proto.Enum) and not issubclass(GrafeasClient, proto.Message) and GrafeasClient(transport=transport)
 import grafeas.grafeas_v1.services.grafeas
-not issubclass(GrafeasClient, proto.Enum) and not issubclass(GrafeasClient, proto.Message) and grafeas.grafeas_v1.services.grafeas.GrafeasClient()
+not issubclass(GrafeasClient, proto.Enum) and not issubclass(GrafeasClient, proto.Message) and grafeas.grafeas_v1.services.grafeas.GrafeasClient(transport=transport)
 from grafeas.grafeas_v1 import GrafeasAsyncClient
-not issubclass(GrafeasAsyncClient, proto.Enum) and not issubclass(GrafeasAsyncClient, proto.Message) and GrafeasAsyncClient()
+from grafeas.grafeas_v1.services.grafeas.transports.base import GrafeasTransport
+transport=GrafeasTransport(credentials=creds)
+not issubclass(GrafeasAsyncClient, proto.Enum) and not issubclass(GrafeasAsyncClient, proto.Message) and GrafeasAsyncClient(transport=transport)
 import grafeas.grafeas_v1
-not issubclass(GrafeasAsyncClient, proto.Enum) and not issubclass(GrafeasAsyncClient, proto.Message) and grafeas.grafeas_v1.GrafeasAsyncClient()
+not issubclass(GrafeasAsyncClient, proto.Enum) and not issubclass(GrafeasAsyncClient, proto.Message) and grafeas.grafeas_v1.GrafeasAsyncClient(transport=transport)
 from grafeas.grafeas import GrafeasClient
-not issubclass(GrafeasClient, proto.Enum) and not issubclass(GrafeasClient, proto.Message) and GrafeasClient()
+from grafeas.grafeas_v1.services.grafeas.transports.base import GrafeasTransport
+transport=GrafeasTransport(credentials=creds)
+not issubclass(GrafeasClient, proto.Enum) and not issubclass(GrafeasClient, proto.Message) and GrafeasClient(transport=transport)
 import grafeas.grafeas
-not issubclass(GrafeasClient, proto.Enum) and not issubclass(GrafeasClient, proto.Message) and grafeas.grafeas.GrafeasClient()
+not issubclass(GrafeasClient, proto.Enum) and not issubclass(GrafeasClient, proto.Message) and grafeas.grafeas.GrafeasClient(transport=transport)
 

@@ -26,11 +26,12 @@ for package in $SCRIPT_ROOT/../../packages/*/ ; do
                 # See https://github.com/googleapis/python-vision/blob/4ed30260420a240700d10b32b4cb611d01ed31c7/google/cloud/vision_helpers/__init__.py#L33
                 if [[ ! $import_path = @(google.cloud.alloydb*|google.cloud.billing*|google.cloud.dialogflowcx_v3*.services.generators*|google.monitoring*|google.cloud.securitycentermanagement*|google.cloud.vision_helper*) ]]; then
                     output+="from $import_path import $module_name\n"
-                    # Grafeas client does not support credentials argument
-                    # Must initialize credentials via transport
+                    # Grafeas client does not support credentials argument, use transport instead
                     # See https://github.com/googleapis/google-cloud-python/pull/8186
                     if [[ $import_path = @(grafeas*) ]]; then
-                        arguments=""
+                        output+="from grafeas.grafeas_v1.services.grafeas.transports.base import GrafeasTransport\n"
+                        output+="transport=GrafeasTransport(credentials=creds)\n"
+                        arguments="transport=transport"
                     else
                         arguments="credentials=creds"
                     fi
