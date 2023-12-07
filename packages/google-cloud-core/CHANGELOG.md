@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.4.0](https://github.com/googleapis/python-cloud-core/compare/v2.3.3...v2.4.0) (2023-12-07)
+
+
+### Features
+
+* Add support for Python 3.12 ([#256](https://github.com/googleapis/python-cloud-core/issues/256)) ([988a8af](https://github.com/googleapis/python-cloud-core/commit/988a8af3fe5cf2c5f37e08c62b10dcd89e6333c1))
+* Introduce compatibility with native namespace packages ([#260](https://github.com/googleapis/python-cloud-core/issues/260)) ([fd1ef6e](https://github.com/googleapis/python-cloud-core/commit/fd1ef6e03252edca3641cc26ec227a00b4f44221))
+
 ## [2.3.3](https://github.com/googleapis/python-cloud-core/compare/v2.3.2...v2.3.3) (2023-06-29)
 
 
