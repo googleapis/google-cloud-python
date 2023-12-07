@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.6...google-maps-addressvalidation-v0.3.7) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+* Introduce compatibility with native namespace packages ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+* Use `retry_async` instead of `retry` in async client ([31d043d](https://github.com/googleapis/google-cloud-python/commit/31d043de5a0b8bd329e8d5a36e7811d5ea7bd7a1))
+
 ## [0.3.6](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.5...google-maps-addressvalidation-v0.3.6) (2023-09-19)
 
 
