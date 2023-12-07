@@ -517,7 +517,9 @@ class AdvisoryNotificationsServiceClient(
                 Required. The parent, which owns this
                 collection of notifications. Must be of
                 the form
-                "organizations/{organization}/locations/{location}".
+                "organizations/{organization}/locations/{location}"
+                or
+                "projects/{project}/locations/{location}"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -632,7 +634,9 @@ class AdvisoryNotificationsServiceClient(
                 Required. A name of the notification
                 to retrieve. Format:
 
-                organizations/{organization}/locations/{location}/notifications/{notification}.
+                organizations/{organization}/locations/{location}/notifications/{notification}
+                or
+                projects/{projects}/locations/{location}/notifications/{notification}.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
