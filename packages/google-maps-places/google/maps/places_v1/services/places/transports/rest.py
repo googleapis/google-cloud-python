@@ -203,7 +203,7 @@ class PlacesRestTransport(PlacesTransport):
     """REST backend transport for Places.
 
     Service definition for the Places API. Note: every request actually
-    requires a field mask set outside of the request proto (all/'*' is
+    requires a field mask set outside of the request proto (all/'*', is
     not assumed). That can be set via either a side channel
     (SystemParameterContext) over RPC, or a header (X-Goog-FieldMask)
     over HTTP. See: https://cloud.google.com/apis/docs/system-parameters

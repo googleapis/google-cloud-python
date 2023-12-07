@@ -34,17 +34,16 @@ class Photo(proto.Message):
 
     Attributes:
         name (str):
-            Output only. A reference representing this place photo which
-            may be used to look up this place photo again (a.k.a. the
-            API "resource" name: places/{place_id}/photos/{photo}).
+            Identifier. A reference representing this place photo which
+            may be used to look up this place photo again (also called
+            the API "resource" name:
+            ``places/{place_id}/photos/{photo}``).
         width_px (int):
-            Output only. The maximum available width, in
-            pixels.
+            The maximum available width, in pixels.
         height_px (int):
-            Output only. The maximum available height, in
-            pixels.
+            The maximum available height, in pixels.
         author_attributions (MutableSequence[google.maps.places_v1.types.AuthorAttribution]):
-            Output only. This photo's authors.
+            This photo's authors.
     """
 
     name: str = proto.Field(

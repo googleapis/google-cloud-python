@@ -32,7 +32,7 @@ class PlacesGrpcAsyncIOTransport(PlacesTransport):
     """gRPC AsyncIO backend transport for Places.
 
     Service definition for the Places API. Note: every request actually
-    requires a field mask set outside of the request proto (all/'*' is
+    requires a field mask set outside of the request proto (all/'*', is
     not assumed). That can be set via either a side channel
     (SystemParameterContext) over RPC, or a header (X-Goog-FieldMask)
     over HTTP. See: https://cloud.google.com/apis/docs/system-parameters
@@ -326,7 +326,7 @@ class PlacesGrpcAsyncIOTransport(PlacesTransport):
     ) -> Callable[[places_service.GetPlaceRequest], Awaitable[place.Place]]:
         r"""Return a callable for the get place method over gRPC.
 
-        Get a Place with a place id (in a name) string.
+        Get place details with a place id (in a name) string.
 
         Returns:
             Callable[[~.GetPlaceRequest],

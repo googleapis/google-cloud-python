@@ -58,12 +58,16 @@ class SearchNearbyRequest(proto.Message):
             applicable law.
 
             For more information, see
-            http://www.unicode.org/reports/tr35/#unicode_region_subtag.
+            https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.
 
             Note that 3-digit region codes are not currently supported.
         included_types (MutableSequence[str]):
             Included Place type (eg, "restaurant" or "gas_station") from
-            https://developers.google.com/places/supported_types.
+            https://developers.google.com/maps/documentation/places/web-service/place-types.
+
+            Up to 50 types from `Table
+            A <https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>`__
+            may be specified.
 
             If there are any conflicting types, i.e. a type appears in
             both included_types and excluded_types, an INVALID_ARGUMENT
@@ -73,12 +77,16 @@ class SearchNearbyRequest(proto.Message):
             restrictions, only places that satisfy all of the
             restrictions are returned. For example, if we have
             {included_types = ["restaurant"], excluded_primary_types =
-            ["restaurant"]}, the returned places are POIs that provide
-            "restaurant" related services but do not operate primarily
-            as "restaurants".
+            ["restaurant"]}, the returned places provide "restaurant"
+            related services but do not operate primarily as
+            "restaurants".
         excluded_types (MutableSequence[str]):
             Excluded Place type (eg, "restaurant" or "gas_station") from
-            https://developers.google.com/places/supported_types.
+            https://developers.google.com/maps/documentation/places/web-service/place-types.
+
+            Up to 50 types from `Table
+            A <https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>`__
+            may be specified.
 
             If the client provides both included_types (e.g. restaurant)
             and excluded_types (e.g. cafe), then the response should
@@ -94,13 +102,19 @@ class SearchNearbyRequest(proto.Message):
             restrictions, only places that satisfy all of the
             restrictions are returned. For example, if we have
             {included_types = ["restaurant"], excluded_primary_types =
-            ["restaurant"]}, the returned places are POIs that provide
-            "restaurant" related services but do not operate primarily
-            as "restaurants".
+            ["restaurant"]}, the returned places provide "restaurant"
+            related services but do not operate primarily as
+            "restaurants".
         included_primary_types (MutableSequence[str]):
             Included primary Place type (e.g. "restaurant" or
             "gas_station") from
-            https://developers.google.com/places/supported_types.
+            https://developers.google.com/maps/documentation/places/web-service/place-types.
+            A place can only have a single primary type from the
+            supported types table associated with it.
+
+            Up to 50 types from `Table
+            A <https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>`__
+            may be specified.
 
             If there are any conflicting primary types, i.e. a type
             appears in both included_primary_types and
@@ -111,13 +125,17 @@ class SearchNearbyRequest(proto.Message):
             restrictions, only places that satisfy all of the
             restrictions are returned. For example, if we have
             {included_types = ["restaurant"], excluded_primary_types =
-            ["restaurant"]}, the returned places are POIs that provide
-            "restaurant" related services but do not operate primarily
-            as "restaurants".
+            ["restaurant"]}, the returned places provide "restaurant"
+            related services but do not operate primarily as
+            "restaurants".
         excluded_primary_types (MutableSequence[str]):
             Excluded primary Place type (e.g. "restaurant" or
             "gas_station") from
-            https://developers.google.com/places/supported_types.
+            https://developers.google.com/maps/documentation/places/web-service/place-types.
+
+            Up to 50 types from `Table
+            A <https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>`__
+            may be specified.
 
             If there are any conflicting primary types, i.e. a type
             appears in both included_primary_types and
@@ -128,15 +146,15 @@ class SearchNearbyRequest(proto.Message):
             restrictions, only places that satisfy all of the
             restrictions are returned. For example, if we have
             {included_types = ["restaurant"], excluded_primary_types =
-            ["restaurant"]}, the returned places are POIs that provide
-            "restaurant" related services but do not operate primarily
-            as "restaurants".
+            ["restaurant"]}, the returned places provide "restaurant"
+            related services but do not operate primarily as
+            "restaurants".
         max_result_count (int):
             Maximum number of results to return. It must be between 1
-            and 20, inclusively. If the number is unset, it falls back
-            to the upper limit. If the number is set to negative or
-            exceeds the upper limit, an INVALID_ARGUMENT error is
-            returned.
+            and 20 (default), inclusively. If the number is unset, it
+            falls back to the upper limit. If the number is set to
+            negative or exceeds the upper limit, an INVALID_ARGUMENT
+            error is returned.
         location_restriction (google.maps.places_v1.types.SearchNearbyRequest.LocationRestriction):
             Required. The region to search.
         rank_preference (google.maps.places_v1.types.SearchNearbyRequest.RankPreference):
@@ -223,9 +241,9 @@ class SearchNearbyResponse(proto.Message):
 
     Attributes:
         places (MutableSequence[google.maps.places_v1.types.Place]):
-            A list of interesting places that meets
-            user's requirements like places types, number of
-            places and specific location restriction.
+            A list of places that meets user's
+            requirements like places types, number of places
+            and specific location restriction.
     """
 
     places: MutableSequence[place.Place] = proto.RepeatedField(
@@ -259,33 +277,32 @@ class SearchTextRequest(proto.Message):
             applicable law.
 
             For more information, see
-            http://www.unicode.org/reports/tr35/#unicode_region_subtag.
+            https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.
 
             Note that 3-digit region codes are not currently supported.
         rank_preference (google.maps.places_v1.types.SearchTextRequest.RankPreference):
             How results will be ranked in the response.
         included_type (str):
-            The requested place type. Full list of types supported:
-            https://developers.google.com/places/supported_types. Only
-            support one included type.
+            The requested place type. Full list of types
+            supported:
+            https://developers.google.com/maps/documentation/places/web-service/place-types.
+            Only support one included type.
         open_now (bool):
-            Used to restrict the search to places that are open at a
-            specific time. open_now marks if a business is currently
-            open.
+            Used to restrict the search to places that
+            are currently open.  The default is false.
         min_rating (float):
             Filter out results whose average user rating is strictly
-            less than this limit. A valid value must be an float between
+            less than this limit. A valid value must be a float between
             0 and 5 (inclusively) at a 0.5 cadence i.e. [0, 0.5, 1.0,
-            ... , 5.0] inclusively. This is to keep parity with
-            LocalRefinement_UserRating. The input rating will round up
-            to the nearest 0.5(ceiling). For instance, a rating of 0.6
-            will eliminate all results with a less than 1.0 rating.
+            ... , 5.0] inclusively. The input rating will round up to
+            the nearest 0.5(ceiling). For instance, a rating of 0.6 will
+            eliminate all results with a less than 1.0 rating.
         max_result_count (int):
             Maximum number of results to return. It must be between 1
-            and 20, inclusively. If the number is unset, it falls back
-            to the upper limit. If the number is set to negative or
-            exceeds the upper limit, an INVALID_ARGUMENT error is
-            returned.
+            and 20, inclusively. The default is 20. If the number is
+            unset, it falls back to the upper limit. If the number is
+            set to negative or exceeds the upper limit, an
+            INVALID_ARGUMENT error is returned.
         price_levels (MutableSequence[google.maps.places_v1.types.PriceLevel]):
             Used to restrict the search to places that
             are marked as certain price levels. Users can
@@ -316,8 +333,7 @@ class SearchTextRequest(proto.Message):
                 Ranks results by distance.
             RELEVANCE (2):
                 Ranks results by relevance. Sort order
-                determined by normal ranking stack. See
-                SortRefinement::RELEVANCE.
+                determined by normal ranking stack.
         """
         RANK_PREFERENCE_UNSPECIFIED = 0
         DISTANCE = 1
@@ -336,8 +352,14 @@ class SearchTextRequest(proto.Message):
 
         Attributes:
             rectangle (google.geo.type.types.Viewport):
-                A rectangle box defined by northeast and
-                southwest corner.
+                A rectangle box defined by northeast and southwest corner.
+                ``rectangle.high()`` must be the northeast point of the
+                rectangle viewport. ``rectangle.low()`` must be the
+                southwest point of the rectangle viewport.
+                ``rectangle.low().latitude()`` cannot be greater than
+                ``rectangle.high().latitude()``. This will result in an
+                empty latitude range. A rectangle viewport cannot be wider
+                than 180 degrees.
 
                 This field is a member of `oneof`_ ``type``.
             circle (google.maps.places_v1.types.Circle):
@@ -368,8 +390,14 @@ class SearchTextRequest(proto.Message):
 
         Attributes:
             rectangle (google.geo.type.types.Viewport):
-                A rectangle box defined by northeast and
-                southwest corner.
+                A rectangle box defined by northeast and southwest corner.
+                ``rectangle.high()`` must be the northeast point of the
+                rectangle viewport. ``rectangle.low()`` must be the
+                southwest point of the rectangle viewport.
+                ``rectangle.low().latitude()`` cannot be greater than
+                ``rectangle.high().latitude()``. This will result in an
+                empty latitude range. A rectangle viewport cannot be wider
+                than 180 degrees.
 
                 This field is a member of `oneof`_ ``type``.
         """
@@ -457,9 +485,14 @@ class GetPhotoMediaRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of a photo. It is returned in
-            Place's photos.name field. Format:
-            places/<place_id>/photos/<photo_reference>/media.
+            Required. The resource name of a photo media in the format:
+            ``places/{place_id}/photos/{photo_reference}/media``.
+
+            The resource name of a photo as returned in a Place object's
+            ``photos.name`` field comes with the format
+            ``places/{place_id}/photos/{photo_reference}``. You need to
+            append ``/media`` at the end of the photo resource to get
+            the photo media resource name.
         max_width_px (int):
             Optional. Specifies the maximum desired width, in pixels, of
             the image. If the image is smaller than the values
@@ -493,7 +526,7 @@ class GetPhotoMediaRequest(proto.Message):
             redirect behavior and render a text format (for
             example, in JSON format for HTTP use case)
             response. If not set, an HTTP redirect will be
-            issued to redirect the call to the image midea.
+            issued to redirect the call to the image media.
             This option is ignored for non-HTTP requests.
     """
 
@@ -520,9 +553,8 @@ class PhotoMedia(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of a photo. It is returned in Place's
-            photos.name field. Format:
-            places/<place_id>/photos/<photo_reference>/media.
+            The resource name of a photo media in the format:
+            ``places/{place_id}/photos/{photo_reference}/media``.
         photo_uri (str):
             A short-lived uri that can be used to render
             the photo.
@@ -544,9 +576,9 @@ class GetPlaceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. A place_id returned in a Place (with "places/"
+            Required. A place ID returned in a Place (with "places/"
             prefix), or equivalently the name in the same Place. Format:
-            places/<place_id>.
+            ``places/{place_id}``.
         language_code (str):
             Optional. Place details will be displayed
             with the preferred language if available.
@@ -560,7 +592,7 @@ class GetPlaceRequest(proto.Message):
             used to display the place details, like region-specific
             place name, if available. The parameter can affect results
             based on applicable law. For more information, see
-            http://www.unicode.org/reports/tr35/#unicode_region_subtag.
+            https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.
 
             Note that 3-digit region codes are not currently supported.
     """

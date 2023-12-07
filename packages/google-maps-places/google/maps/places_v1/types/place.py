@@ -68,249 +68,270 @@ class Place(proto.Message):
 
     Attributes:
         name (str):
-            Output only. An ID representing this place which may be used
-            to look up this place again (a.k.a. the API "resource" name:
-            places/<place_id>).
+            An ID representing this place which may be used to look up
+            this place again (a.k.a. the API "resource" name:
+            places/place_id).
         id (str):
-            Output only. The unique identifier of a
-            place.
+            The unique identifier of a place.
         display_name (google.type.localized_text_pb2.LocalizedText):
-            Output only. The localized name of the place,
-            suitable as a short human-readable description.
-            For example, "Google Sydney", "Starbucks",
-            "Pyrmont", etc.
+            The localized name of the place, suitable as
+            a short human-readable description. For example,
+            "Google Sydney", "Starbucks", "Pyrmont", etc.
         types (MutableSequence[str]):
-            Output only. A set of type tags for this
-            result. For example, "political" and "locality".
+            A set of type tags for this result. For
+            example, "political" and "locality".  For the
+            complete list of possible values, see Table A
+            and Table B at
+            https://developers.google.com/maps/documentation/places/web-service/place-types
+        primary_type (str):
+            The primary type of the given result. This
+            type must one of the Places API supported types.
+            For example, "restaurant", "cafe", "airport",
+            etc.  A place can only have a single primary
+            type.  For the complete list of possible values,
+            see Table A and Table B at
+            https://developers.google.com/maps/documentation/places/web-service/place-types
+        primary_type_display_name (google.type.localized_text_pb2.LocalizedText):
+            The display name of the primary type,
+            localized to the request language if applicable.
+            For the complete list of possible values, see
+            Table A and Table B at
+            https://developers.google.com/maps/documentation/places/web-service/place-types
         national_phone_number (str):
-            Output only. A human-readable phone number
-            for the place, in national format.
+            A human-readable phone number for the place,
+            in national format.
         international_phone_number (str):
-            Output only. A human-readable phone number
-            for the place, in international format.
+            A human-readable phone number for the place,
+            in international format.
         formatted_address (str):
-            Output only. A full, human-readable address
-            for this place.
-        address_components (MutableSequence[google.maps.places_v1.types.Place.AddressComponent]):
-            Output only. Repeated components for each
-            locality level.
-        plus_code (google.maps.places_v1.types.Place.PlusCode):
-            Output only. Plus code of the place location
-            lat/long.
-        location (google.type.latlng_pb2.LatLng):
-            Output only. The position of this place.
-        viewport (google.geo.type.types.Viewport):
-            Output only. A viewport suitable for
-            displaying the place on an average-sized map.
-        rating (float):
-            Output only. A rating between 1.0 and 5.0,
-            based on user reviews of this place.
-        google_maps_uri (str):
-            Output only. A URL providing more information
-            about this place.
-        website_uri (str):
-            Output only. The authoritative website for
-            this place, e.g. a business' homepage. Note that
-            for places that are part of a chain (e.g. an
-            IKEA store), this will usually be the website
-            for the individual store, not the overall chain.
-        reviews (MutableSequence[google.maps.places_v1.types.Review]):
-            Output only. List of reviews about this
+            A full, human-readable address for this
             place.
+        short_formatted_address (str):
+            A short, human-readable address for this
+            place.
+        address_components (MutableSequence[google.maps.places_v1.types.Place.AddressComponent]):
+            Repeated components for each locality level. Note the
+            following facts about the address_components[] array:
+
+            -  The array of address components may contain more
+               components than the formatted_address.
+            -  The array does not necessarily include all the political
+               entities that contain an address, apart from those
+               included in the formatted_address. To retrieve all the
+               political entities that contain a specific address, you
+               should use reverse geocoding, passing the
+               latitude/longitude of the address as a parameter to the
+               request.
+            -  The format of the response is not guaranteed to remain
+               the same between requests. In particular, the number of
+               address_components varies based on the address requested
+               and can change over time for the same address. A
+               component can change position in the array. The type of
+               the component can change. A particular component may be
+               missing in a later response.
+        plus_code (google.maps.places_v1.types.Place.PlusCode):
+            Plus code of the place location lat/long.
+        location (google.type.latlng_pb2.LatLng):
+            The position of this place.
+        viewport (google.geo.type.types.Viewport):
+            A viewport suitable for displaying the place
+            on an average-sized map.
+        rating (float):
+            A rating between 1.0 and 5.0, based on user
+            reviews of this place.
+        google_maps_uri (str):
+            A URL providing more information about this
+            place.
+        website_uri (str):
+            The authoritative website for this place,
+            e.g. a business' homepage. Note that for places
+            that are part of a chain (e.g. an IKEA store),
+            this will usually be the website for the
+            individual store, not the overall chain.
+        reviews (MutableSequence[google.maps.places_v1.types.Review]):
+            List of reviews about this place, sorted by
+            relevance.
         regular_opening_hours (google.maps.places_v1.types.Place.OpeningHours):
-            Output only. The regular hours of operation.
+            The regular hours of operation.
         utc_offset_minutes (int):
-            Output only. Number of minutes this place's
-            timezone is currently offset from UTC. This is
-            expressed in minutes to support timezones that
-            are offset by fractions of an hour, e.g. X hours
-            and 15 minutes.
+            Number of minutes this place's timezone is
+            currently offset from UTC. This is expressed in
+            minutes to support timezones that are offset by
+            fractions of an hour, e.g. X hours and 15
+            minutes.
 
             This field is a member of `oneof`_ ``_utc_offset_minutes``.
         photos (MutableSequence[google.maps.places_v1.types.Photo]):
-            Output only. Information (including
-            references) about photos of this place.
+            Information (including references) about
+            photos of this place.
         adr_format_address (str):
-            Output only. The place's address in adr
-            microformat: http://microformats.org/wiki/adr.
+            The place's address in adr microformat:
+            http://microformats.org/wiki/adr.
         business_status (google.maps.places_v1.types.Place.BusinessStatus):
-            Output only. The business status for the
-            place.
+            The business status for the place.
         price_level (google.maps.places_v1.types.PriceLevel):
-            Output only. Price level of the place.
+            Price level of the place.
         attributions (MutableSequence[google.maps.places_v1.types.Place.Attribution]):
-            Output only. A set of data provider that must
-            be shown with this result.
+            A set of data provider that must be shown
+            with this result.
         user_rating_count (int):
-            Output only. The total number of reviews
-            (with or without text) for this place.
+            The total number of reviews (with or without
+            text) for this place.
 
             This field is a member of `oneof`_ ``_user_rating_count``.
         icon_mask_base_uri (str):
-            Output only. A truncated URL to an v2 icon
-            mask. User can access different icon type by
-            appending type suffix to the end (eg, ".svg" or
-            ".png").
+            A truncated URL to an icon mask. User can
+            access different icon type by appending type
+            suffix to the end (eg, ".svg" or ".png").
         icon_background_color (str):
-            Output only. Background color for icon_mask in hex format,
-            e.g. #909CE1.
+            Background color for icon_mask in hex format, e.g. #909CE1.
         takeout (bool):
-            Output only. Specifies if the business
-            supports takeout.
+            Specifies if the business supports takeout.
 
             This field is a member of `oneof`_ ``_takeout``.
         delivery (bool):
-            Output only. Specifies if the business
-            supports delivery.
+            Specifies if the business supports delivery.
 
             This field is a member of `oneof`_ ``_delivery``.
         dine_in (bool):
-            Output only. Specifies if the business
-            supports indoor or outdoor seating options.
+            Specifies if the business supports indoor or
+            outdoor seating options.
 
             This field is a member of `oneof`_ ``_dine_in``.
         curbside_pickup (bool):
-            Output only. Specifies if the business
-            supports curbside pickup.
+            Specifies if the business supports curbside
+            pickup.
 
             This field is a member of `oneof`_ ``_curbside_pickup``.
         reservable (bool):
-            Output only. Specifies if the place supports
-            reservations.
+            Specifies if the place supports reservations.
 
             This field is a member of `oneof`_ ``_reservable``.
         serves_breakfast (bool):
-            Output only. Specifies if the place serves
-            breakfast.
+            Specifies if the place serves breakfast.
 
             This field is a member of `oneof`_ ``_serves_breakfast``.
         serves_lunch (bool):
-            Output only. Specifies if the place serves
-            lunch.
+            Specifies if the place serves lunch.
 
             This field is a member of `oneof`_ ``_serves_lunch``.
         serves_dinner (bool):
-            Output only. Specifies if the place serves
-            dinner.
+            Specifies if the place serves dinner.
 
             This field is a member of `oneof`_ ``_serves_dinner``.
         serves_beer (bool):
-            Output only. Specifies if the place serves
-            beer.
+            Specifies if the place serves beer.
 
             This field is a member of `oneof`_ ``_serves_beer``.
         serves_wine (bool):
-            Output only. Specifies if the place serves
-            wine.
+            Specifies if the place serves wine.
 
             This field is a member of `oneof`_ ``_serves_wine``.
         serves_brunch (bool):
-            Output only. Specifies if the place serves
-            brunch.
+            Specifies if the place serves brunch.
 
             This field is a member of `oneof`_ ``_serves_brunch``.
         serves_vegetarian_food (bool):
-            Output only. Specifies if the place serves
-            vegetarian food.
+            Specifies if the place serves vegetarian
+            food.
 
             This field is a member of `oneof`_ ``_serves_vegetarian_food``.
         current_opening_hours (google.maps.places_v1.types.Place.OpeningHours):
-            Output only. The hours of operation for the next seven days
-            (including today). The time period starts at midnight on the
-            date of the request and ends at 11:59 pm six days later.
-            This field includes the special_days subfield of all hours,
-            set for dates that have exceptional hours.
+            The hours of operation for the next seven days (including
+            today). The time period starts at midnight on the date of
+            the request and ends at 11:59 pm six days later. This field
+            includes the special_days subfield of all hours, set for
+            dates that have exceptional hours.
         current_secondary_opening_hours (MutableSequence[google.maps.places_v1.types.Place.OpeningHours]):
-            Output only. Contains an array of entries for the next seven
-            days including information about secondary hours of a
-            business. Secondary hours are different from a business's
-            main hours. For example, a restaurant can specify drive
-            through hours or delivery hours as its secondary hours. This
-            field populates the type subfield, which draws from a
-            predefined list of opening hours types (such as
-            DRIVE_THROUGH, PICKUP, or TAKEOUT) based on the types of the
-            place. This field includes the special_days subfield of all
-            hours, set for dates that have exceptional hours.
+            Contains an array of entries for the next seven days
+            including information about secondary hours of a business.
+            Secondary hours are different from a business's main hours.
+            For example, a restaurant can specify drive through hours or
+            delivery hours as its secondary hours. This field populates
+            the type subfield, which draws from a predefined list of
+            opening hours types (such as DRIVE_THROUGH, PICKUP, or
+            TAKEOUT) based on the types of the place. This field
+            includes the special_days subfield of all hours, set for
+            dates that have exceptional hours.
         regular_secondary_opening_hours (MutableSequence[google.maps.places_v1.types.Place.OpeningHours]):
-            Output only. Contains an array of entries for information
-            about regular secondary hours of a business. Secondary hours
-            are different from a business's main hours. For example, a
-            restaurant can specify drive through hours or delivery hours
-            as its secondary hours. This field populates the type
-            subfield, which draws from a predefined list of opening
-            hours types (such as DRIVE_THROUGH, PICKUP, or TAKEOUT)
-            based on the types of the place.
+            Contains an array of entries for information about regular
+            secondary hours of a business. Secondary hours are different
+            from a business's main hours. For example, a restaurant can
+            specify drive through hours or delivery hours as its
+            secondary hours. This field populates the type subfield,
+            which draws from a predefined list of opening hours types
+            (such as DRIVE_THROUGH, PICKUP, or TAKEOUT) based on the
+            types of the place.
         editorial_summary (google.type.localized_text_pb2.LocalizedText):
-            Output only. Contains a summary of the place.
-            A summary is comprised of a textual overview,
-            and also includes the language code for these if
+            Contains a summary of the place. A summary is
+            comprised of a textual overview, and also
+            includes the language code for these if
             applicable. Summary text must be presented as-is
             and can not be modified or altered.
         outdoor_seating (bool):
-            Output only. Place provides outdoor seating.
+            Place provides outdoor seating.
 
             This field is a member of `oneof`_ ``_outdoor_seating``.
         live_music (bool):
-            Output only. Place provides live music.
+            Place provides live music.
 
             This field is a member of `oneof`_ ``_live_music``.
         menu_for_children (bool):
-            Output only. Place has a children's menu.
+            Place has a children's menu.
 
             This field is a member of `oneof`_ ``_menu_for_children``.
         serves_cocktails (bool):
-            Output only. Place serves cocktails.
+            Place serves cocktails.
 
             This field is a member of `oneof`_ ``_serves_cocktails``.
         serves_dessert (bool):
-            Output only. Place serves dessert.
+            Place serves dessert.
 
             This field is a member of `oneof`_ ``_serves_dessert``.
         serves_coffee (bool):
-            Output only. Place serves coffee.
+            Place serves coffee.
 
             This field is a member of `oneof`_ ``_serves_coffee``.
         good_for_children (bool):
-            Output only. Place is good for children.
+            Place is good for children.
 
             This field is a member of `oneof`_ ``_good_for_children``.
         allows_dogs (bool):
-            Output only. Place allows dogs.
+            Place allows dogs.
 
             This field is a member of `oneof`_ ``_allows_dogs``.
         restroom (bool):
-            Output only. Place has restroom.
+            Place has restroom.
 
             This field is a member of `oneof`_ ``_restroom``.
         good_for_groups (bool):
-            Output only. Place accommodates groups.
+            Place accommodates groups.
 
             This field is a member of `oneof`_ ``_good_for_groups``.
         good_for_watching_sports (bool):
-            Output only. Place is suitable for watching
-            sports.
+            Place is suitable for watching sports.
 
             This field is a member of `oneof`_ ``_good_for_watching_sports``.
         payment_options (google.maps.places_v1.types.Place.PaymentOptions):
-
+            Payment options the place accepts. If a
+            payment option data is not available, the
+            payment option field will be unset.
         parking_options (google.maps.places_v1.types.Place.ParkingOptions):
-            Output only. Options of parking provided by
-            the place.
+            Options of parking provided by the place.
         sub_destinations (MutableSequence[google.maps.places_v1.types.Place.SubDestination]):
-            Output only. A list of sub destinations
-            related to the place.
+            A list of sub destinations related to the
+            place.
         accessibility_options (google.maps.places_v1.types.Place.AccessibilityOptions):
-            Output only. Information about the
-            accessibility options a place offers.
+            Information about the accessibility options a
+            place offers.
 
             This field is a member of `oneof`_ ``_accessibility_options``.
         fuel_options (google.maps.places_v1.types.FuelOptions):
-            Output only. The most recent information
-            about fuel options in a gas station. This
-            information is updated regularly.
+            The most recent information about fuel
+            options in a gas station. This information is
+            updated regularly.
         ev_charge_options (google.maps.places_v1.types.EVChargeOptions):
-            Output only. Information of ev charging
-            options.
+            Information of ev charging options.
     """
 
     class BusinessStatus(proto.Enum):
@@ -338,19 +359,19 @@ class Place(proto.Message):
 
         Attributes:
             long_text (str):
-                Output only. The full text description or name of the
-                address component. For example, an address component for the
-                country Australia may have a long_name of "Australia".
+                The full text description or name of the address component.
+                For example, an address component for the country Australia
+                may have a long_name of "Australia".
             short_text (str):
-                Output only. An abbreviated textual name for the address
-                component, if available. For example, an address component
-                for the country of Australia may have a short_name of "AU".
+                An abbreviated textual name for the address component, if
+                available. For example, an address component for the country
+                of Australia may have a short_name of "AU".
             types (MutableSequence[str]):
-                Output only. An array indicating the type(s)
-                of the address component.
+                An array indicating the type(s) of the
+                address component.
             language_code (str):
-                Output only. The language used to format this
-                components, in CLDR notation.
+                The language used to format this components,
+                in CLDR notation.
         """
 
         long_text: str = proto.Field(
@@ -378,15 +399,14 @@ class Place(proto.Message):
 
         Attributes:
             global_code (str):
-                Output only. Place's global (full) code, such
-                as "9FWM33GV+HQ", representing an 1/8000 by
-                1/8000 degree area (~14 by 14 meters).
+                Place's global (full) code, such as
+                "9FWM33GV+HQ", representing an 1/8000 by 1/8000
+                degree area (~14 by 14 meters).
             compound_code (str):
-                Output only. Place's compound code, such as
-                "33GV+HQ, Ramberg, Norway", containing the
-                suffix of the global code and replacing the
-                prefix with a formatted name of a reference
-                entity.
+                Place's compound code, such as "33GV+HQ,
+                Ramberg, Norway", containing the suffix of the
+                global code and replacing the prefix with a
+                formatted name of a reference entity.
         """
 
         global_code: str = proto.Field(
@@ -405,37 +425,35 @@ class Place(proto.Message):
 
         Attributes:
             open_now (bool):
-                Output only. Is this place open right now?
-                Always present unless we lack time-of-day or
-                timezone data for these opening hours.
+                Is this place open right now?  Always present
+                unless we lack time-of-day or timezone data for
+                these opening hours.
 
                 This field is a member of `oneof`_ ``_open_now``.
             periods (MutableSequence[google.maps.places_v1.types.Place.OpeningHours.Period]):
-                Output only. The periods that this place is
-                open during the week. The periods are in
-                chronological order, starting with Sunday in the
-                place-local timezone. An empty (but not absent)
-                value indicates a place that is never open, e.g.
+                The periods that this place is open during
+                the week. The periods are in chronological
+                order, starting with Sunday in the place-local
+                timezone. An empty (but not absent) value
+                indicates a place that is never open, e.g.
                 because it is closed temporarily for
                 renovations.
             weekday_descriptions (MutableSequence[str]):
-                Output only. Localized strings describing the
-                opening hours of this place, one string for each
-                day of the week.  Will be empty if the hours are
+                Localized strings describing the opening
+                hours of this place, one string for each day of
+                the week.  Will be empty if the hours are
                 unknown or could not be converted to localized
-                text. Example: "Sun:
-
-                18:00–06:00".
+                text. Example: "Sun: 18:00–06:00".
             secondary_hours_type (google.maps.places_v1.types.Place.OpeningHours.SecondaryHoursType):
-                Output only. A type string used to identify
-                the type of secondary hours.
+                A type string used to identify the type of
+                secondary hours.
             special_days (MutableSequence[google.maps.places_v1.types.Place.OpeningHours.SpecialDay]):
-                Output only. Structured information for special days that
-                fall within the period that the returned opening hours
-                cover. Special days are days that could impact the business
-                hours of a place, e.g. Christmas day. Set for
-                current_opening_hours and current_secondary_opening_hours if
-                there are exceptional hours.
+                Structured information for special days that fall within the
+                period that the returned opening hours cover. Special days
+                are days that could impact the business hours of a place,
+                e.g. Christmas day. Set for current_opening_hours and
+                current_secondary_opening_hours if there are exceptional
+                hours.
         """
 
         class SecondaryHoursType(proto.Enum):
@@ -493,11 +511,9 @@ class Place(proto.Message):
 
             Attributes:
                 open_ (google.maps.places_v1.types.Place.OpeningHours.Period.Point):
-                    Output only. The time that the place starts
-                    to be open.
+                    The time that the place starts to be open.
                 close (google.maps.places_v1.types.Place.OpeningHours.Period.Point):
-                    Output only. The time that the place starts
-                    to be closed.
+                    The time that the place starts to be closed.
             """
 
             class Point(proto.Message):
@@ -507,31 +523,26 @@ class Place(proto.Message):
 
                 Attributes:
                     day (int):
-                        Output only. A day of the week, as an integer
-                        in the range 0-6.  0 is Sunday, 1 is Monday,
-                        etc.
+                        A day of the week, as an integer in the range
+                        0-6.  0 is Sunday, 1 is Monday, etc.
 
                         This field is a member of `oneof`_ ``_day``.
                     hour (int):
-                        Output only. The hour in 2 digits. Ranges
-                        from 00 to 23.
+                        The hour in 2 digits. Ranges from 00 to 23.
 
                         This field is a member of `oneof`_ ``_hour``.
                     minute (int):
-                        Output only. The minute in 2 digits. Ranges
-                        from 00 to 59.
+                        The minute in 2 digits. Ranges from 00 to 59.
 
                         This field is a member of `oneof`_ ``_minute``.
                     date (google.type.date_pb2.Date):
-                        Output only. Date in the local timezone for
-                        the place.
+                        Date in the local timezone for the place.
                     truncated (bool):
-                        Output only. Whether or not this endpoint was truncated.
-                        Truncation occurs when the real hours are outside the times
-                        we are willing to return hours between, so we truncate the
-                        hours back to these boundaries. This ensures that at most 24
-                        \* 7 hours from midnight of the day of the request are
-                        returned.
+                        Whether or not this endpoint was truncated. Truncation
+                        occurs when the real hours are outside the times we are
+                        willing to return hours between, so we truncate the hours
+                        back to these boundaries. This ensures that at most 24 \* 7
+                        hours from midnight of the day of the request are returned.
                 """
 
                 day: int = proto.Field(
@@ -578,7 +589,7 @@ class Place(proto.Message):
 
             Attributes:
                 date (google.type.date_pb2.Date):
-                    Output only. The date of this special day.
+                    The date of this special day.
             """
 
             date: date_pb2.Date = proto.Field(
@@ -619,11 +630,9 @@ class Place(proto.Message):
 
         Attributes:
             provider (str):
-                Output only. Name of the Place's data
-                provider.
+                Name of the Place's data provider.
             provider_uri (str):
-                Output only. URI to the Place's data
-                provider.
+                URI to the Place's data provider.
         """
 
         provider: str = proto.Field(
@@ -783,15 +792,42 @@ class Place(proto.Message):
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
+            wheelchair_accessible_parking (bool):
+                Place offers wheelchair accessible parking.
+
+                This field is a member of `oneof`_ ``_wheelchair_accessible_parking``.
             wheelchair_accessible_entrance (bool):
                 Places has wheelchair accessible entrance.
 
                 This field is a member of `oneof`_ ``_wheelchair_accessible_entrance``.
+            wheelchair_accessible_restroom (bool):
+                Place has wheelchair accessible restroom.
+
+                This field is a member of `oneof`_ ``_wheelchair_accessible_restroom``.
+            wheelchair_accessible_seating (bool):
+                Place has wheelchair accessible seating.
+
+                This field is a member of `oneof`_ ``_wheelchair_accessible_seating``.
         """
 
+        wheelchair_accessible_parking: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+            optional=True,
+        )
         wheelchair_accessible_entrance: bool = proto.Field(
             proto.BOOL,
             number=2,
+            optional=True,
+        )
+        wheelchair_accessible_restroom: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+            optional=True,
+        )
+        wheelchair_accessible_seating: bool = proto.Field(
+            proto.BOOL,
+            number=4,
             optional=True,
         )
 
@@ -812,6 +848,15 @@ class Place(proto.Message):
         proto.STRING,
         number=5,
     )
+    primary_type: str = proto.Field(
+        proto.STRING,
+        number=50,
+    )
+    primary_type_display_name: localized_text_pb2.LocalizedText = proto.Field(
+        proto.MESSAGE,
+        number=32,
+        message=localized_text_pb2.LocalizedText,
+    )
     national_phone_number: str = proto.Field(
         proto.STRING,
         number=7,
@@ -823,6 +868,10 @@ class Place(proto.Message):
     formatted_address: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    short_formatted_address: str = proto.Field(
+        proto.STRING,
+        number=51,
     )
     address_components: MutableSequence[AddressComponent] = proto.RepeatedField(
         proto.MESSAGE,
