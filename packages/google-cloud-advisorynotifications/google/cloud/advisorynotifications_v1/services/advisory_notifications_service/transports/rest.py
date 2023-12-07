@@ -330,6 +330,10 @@ class AdvisoryNotificationsServiceRestTransport(AdvisoryNotificationsServiceTran
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*/notifications/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/notifications/*}",
+                },
             ]
             request, metadata = self._interceptor.pre_get_notification(
                 request, metadata
@@ -506,6 +510,10 @@ class AdvisoryNotificationsServiceRestTransport(AdvisoryNotificationsServiceTran
                 {
                     "method": "get",
                     "uri": "/v1/{parent=organizations/*/locations/*}/notifications",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/notifications",
                 },
             ]
             request, metadata = self._interceptor.pre_list_notifications(

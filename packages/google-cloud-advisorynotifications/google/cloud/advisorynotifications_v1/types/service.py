@@ -123,7 +123,9 @@ class Notification(proto.Message):
             The resource name of the notification.
             Format:
 
-            organizations/{organization}/locations/{location}/notifications/{notification}.
+            organizations/{organization}/locations/{location}/notifications/{notification}
+            or
+            projects/{project}/locations/{location}/notifications/{notification}.
         subject (google.cloud.advisorynotifications_v1.types.Subject):
             The subject line of the notification.
         messages (MutableSequence[google.cloud.advisorynotifications_v1.types.Message]):
@@ -327,7 +329,8 @@ class ListNotificationsRequest(proto.Message):
         parent (str):
             Required. The parent, which owns this
             collection of notifications. Must be of the form
-            "organizations/{organization}/locations/{location}".
+            "organizations/{organization}/locations/{location}"
+            or "projects/{project}/locations/{location}".
         page_size (int):
             The maximum number of notifications to
             return. The service may return fewer than this
@@ -418,7 +421,9 @@ class GetNotificationRequest(proto.Message):
             Required. A name of the notification to
             retrieve. Format:
 
-            organizations/{organization}/locations/{location}/notifications/{notification}.
+            organizations/{organization}/locations/{location}/notifications/{notification}
+            or
+            projects/{projects}/locations/{location}/notifications/{notification}.
         language_code (str):
             ISO code for requested localization language.
             If unset, will be interpereted as "en". If the
