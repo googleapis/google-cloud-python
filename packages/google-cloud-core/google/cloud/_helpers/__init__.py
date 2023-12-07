@@ -39,7 +39,7 @@ except ImportError:  # pragma: NO COVER
     grpc = None
 
 
-_NOW = datetime.datetime.utcnow  # To be replaced by tests.
+_NOW = datetime.datetime.now(datetime.timezone.utc)
 UTC = datetime.timezone.utc  # Singleton instance to be used throughout.
 _EPOCH = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
 

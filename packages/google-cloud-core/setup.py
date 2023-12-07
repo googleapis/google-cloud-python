@@ -32,8 +32,12 @@ dependencies = [
     "google-auth >= 1.25.0, < 3.0dev",
     "importlib-metadata > 1.0.0; python_version<'3.8'",
 ]
-extras = {"grpc": "grpcio >= 1.38.0, < 2.0dev"}
-
+extras = {
+    "grpc": [
+        "grpcio >= 1.38.0, < 2.0dev",
+        "grpcio-status >= 1.38.0, < 2.0.dev0",
+    ],
+}
 
 # Setup boilerplate below this line.
 

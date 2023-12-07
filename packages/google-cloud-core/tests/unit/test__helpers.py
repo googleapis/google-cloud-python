@@ -138,7 +138,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _microseconds_from_datetime
 
-        NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        NOW = datetime.datetime.now().replace(tzinfo=UTC)
         NOW_MICROS = _microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._call_fut(NOW)
@@ -163,7 +163,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _microseconds_from_datetime
 
-        NOW = datetime.datetime.utcnow()
+        NOW = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
         UTC_NOW = NOW.replace(tzinfo=UTC)
         UTC_NOW_MICROS = _microseconds_from_datetime(UTC_NOW)
         MILLIS = UTC_NOW_MICROS // 1000
