@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.4.1](https://github.com/googleapis/python-cloud-core/compare/v2.4.0...v2.4.1) (2023-12-07)
+
+
+### Bug Fixes
+
+* Fix regression with `google.cloud._helpers._NOW` ([#266](https://github.com/googleapis/python-cloud-core/issues/266)) ([5310aef](https://github.com/googleapis/python-cloud-core/commit/5310aef5b387aecd87d53acb7beb758dc9acb7e3))
+
 ## [2.4.0](https://github.com/googleapis/python-cloud-core/compare/v2.3.3...v2.4.0) (2023-12-07)
 
 
