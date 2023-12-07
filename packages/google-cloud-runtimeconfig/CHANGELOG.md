@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## [0.34.0](https://github.com/googleapis/python-runtimeconfig/compare/v0.33.3...v0.34.0) (2023-12-07)
+
+
+### Features
+
+* Add support for Python 3.12 ([a565b8e](https://github.com/googleapis/python-runtimeconfig/commit/a565b8ef0b2d0c78d28a2fb68732fe60daa9b78e))
+* Introduce compatibility with native namespace packages ([#231](https://github.com/googleapis/python-runtimeconfig/issues/231)) ([1aaee60](https://github.com/googleapis/python-runtimeconfig/commit/1aaee609a9ae2c89079719f69c10d81a6b4e79c1))
+
+
+### Bug Fixes
+
+* Use version.py instead of pkg_resources.get_distribution ([#184](https://github.com/googleapis/python-runtimeconfig/issues/184)) ([2a7b9d0](https://github.com/googleapis/python-runtimeconfig/commit/2a7b9d04a27833f0bb0813b16842554005bfa847))
+
 ## [0.33.3](https://github.com/googleapis/python-runtimeconfig/compare/v0.33.2...v0.33.3) (2023-11-09)
 
 
