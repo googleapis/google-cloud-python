@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datalabeling-v1.8.4...google-cloud-datalabeling-v1.9.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Introduce compatibility with native namespace packages ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Use `retry_async` instead of `retry` in async client ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
 ## [1.8.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datalabeling-v1.8.3...google-cloud-datalabeling-v1.8.4) (2023-09-19)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.2.0...google-cloud-network-connectivity-v2.3.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+* Introduce compatibility with native namespace packages ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+* Use `retry_async` instead of `retry` in async client ([f46b37f](https://github.com/googleapis/google-cloud-python/commit/f46b37f825f96add7b127282414346c1a1a96231))
+
 ## [2.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.1.0...google-cloud-network-connectivity-v2.2.0) (2023-09-30)
 
 

@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.12.1...google-cloud-recommender-v2.13.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+* Introduce compatibility with native namespace packages ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+* Use `retry_async` instead of `retry` in async client ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+
 ## [2.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.12.0...google-cloud-recommender-v2.12.1) (2023-09-19)
 
 

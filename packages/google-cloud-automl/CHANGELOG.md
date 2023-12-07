@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.11.4...google-cloud-automl-v2.12.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([ea6cfc2](https://github.com/googleapis/google-cloud-python/commit/ea6cfc2f86e77757b8cb05f7fd0d9c0b7ccaf7cf))
+* Introduce compatibility with native namespace packages ([ea6cfc2](https://github.com/googleapis/google-cloud-python/commit/ea6cfc2f86e77757b8cb05f7fd0d9c0b7ccaf7cf))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([ea6cfc2](https://github.com/googleapis/google-cloud-python/commit/ea6cfc2f86e77757b8cb05f7fd0d9c0b7ccaf7cf))
+* Use `retry_async` instead of `retry` in async client ([ea6cfc2](https://github.com/googleapis/google-cloud-python/commit/ea6cfc2f86e77757b8cb05f7fd0d9c0b7ccaf7cf))
+
 ## [2.11.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.11.3...google-cloud-automl-v2.11.4) (2023-11-15)
 
 

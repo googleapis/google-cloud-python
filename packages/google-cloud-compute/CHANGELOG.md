@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.14.1...google-cloud-compute-v1.15.0) (2023-12-07)
+
+
+### Features
+
+* [google-cloud-compute] Update Compute Engine API to revision 20231110 ([#868](https://github.com/googleapis/google-cloud-python/issues/868)) ([#12092](https://github.com/googleapis/google-cloud-python/issues/12092)) ([51e1478](https://github.com/googleapis/google-cloud-python/commit/51e1478ef98713c15aea956dd82bbc779af361f5))
+* Add support for python 3.12 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Introduce compatibility with native namespace packages ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Use `retry_async` instead of `retry` in async client ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
 ## [1.14.1](https://github.com/googleapis/python-compute/compare/v1.14.0...v1.14.1) (2023-09-13)
 
 

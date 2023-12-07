@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.6.1...google-cloud-service-management-v1.7.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([0e3a902](https://github.com/googleapis/google-cloud-python/commit/0e3a9027360f73b64c68ced4d079fcd2eaf3120d))
+* Introduce compatibility with native namespace packages ([0e3a902](https://github.com/googleapis/google-cloud-python/commit/0e3a9027360f73b64c68ced4d079fcd2eaf3120d))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([0e3a902](https://github.com/googleapis/google-cloud-python/commit/0e3a9027360f73b64c68ced4d079fcd2eaf3120d))
+* Use `retry_async` instead of `retry` in async client ([0e3a902](https://github.com/googleapis/google-cloud-python/commit/0e3a9027360f73b64c68ced4d079fcd2eaf3120d))
+
 ## [1.6.1](https://github.com/googleapis/python-service-management/compare/v1.6.0...v1.6.1) (2023-03-23)
 
 

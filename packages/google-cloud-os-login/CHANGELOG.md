@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.11.0...google-cloud-os-login-v2.12.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+* Introduce compatibility with native namespace packages ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+* Use `retry_async` instead of `retry` in async client ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+
 ## [2.11.0](https://github.com/googleapis/python-oslogin/compare/v2.10.0...v2.11.0) (2023-10-25)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.12.4...google-cloud-containeranalysis-v2.13.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Introduce compatibility with native namespace packages ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Use `retry_async` instead of `retry` in async client ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
 ## [2.12.4](https://github.com/googleapis/python-containeranalysis/compare/v2.12.3...v2.12.4) (2023-10-09)
 
 

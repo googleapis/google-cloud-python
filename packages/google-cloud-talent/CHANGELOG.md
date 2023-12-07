@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.11.2...google-cloud-talent-v2.12.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+* Introduce compatibility with native namespace packages ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+* Use `retry_async` instead of `retry` in async client ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+
 ## [2.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.11.1...google-cloud-talent-v2.11.2) (2023-09-19)
 
 

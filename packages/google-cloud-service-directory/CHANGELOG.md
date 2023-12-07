@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-directory-v1.9.2...google-cloud-service-directory-v1.10.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+* Introduce compatibility with native namespace packages ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+* Use `retry_async` instead of `retry` in async client ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+
 ## [1.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-directory-v1.9.1...google-cloud-service-directory-v1.9.2) (2023-09-19)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.5.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.2...google-cloud-gke-backup-v0.5.3) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([fb6f9db](https://github.com/googleapis/google-cloud-python/commit/fb6f9dbfadfe1a8ca3b236e0cae5c85cf2862f3e))
+* Introduce compatibility with native namespace packages ([fb6f9db](https://github.com/googleapis/google-cloud-python/commit/fb6f9dbfadfe1a8ca3b236e0cae5c85cf2862f3e))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([fb6f9db](https://github.com/googleapis/google-cloud-python/commit/fb6f9dbfadfe1a8ca3b236e0cae5c85cf2862f3e))
+* Use `retry_async` instead of `retry` in async client ([fb6f9db](https://github.com/googleapis/google-cloud-python/commit/fb6f9dbfadfe1a8ca3b236e0cae5c85cf2862f3e))
+
 ## [0.5.2](https://github.com/googleapis/python-gke-backup/compare/v0.5.1...v0.5.2) (2023-09-13)
 
 

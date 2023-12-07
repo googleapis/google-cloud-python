@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.15.0...google-cloud-recaptcha-enterprise-v1.16.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+* added stable account identifier to related group membership resources, and deprecated hashed identifier field ([f942e71](https://github.com/googleapis/google-cloud-python/commit/f942e71a6e014c62d521e954190746bc4d3455ca))
+* Introduce compatibility with native namespace packages ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+* Use `retry_async` instead of `retry` in async client ([9a629e1](https://github.com/googleapis/google-cloud-python/commit/9a629e1c9f7858f55c82ac21e60f22acf781db15))
+
+
+### Documentation
+
+* noted applicable fields as resource identifiers ([f942e71](https://github.com/googleapis/google-cloud-python/commit/f942e71a6e014c62d521e954190746bc4d3455ca))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.14.0...google-cloud-recaptcha-enterprise-v1.15.0) (2023-11-29)
 
 

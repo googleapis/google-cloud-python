@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.18.1](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.0...google-analytics-data-v0.18.1) (2023-12-07)
+
+
+### Features
+
+* Add `CreateRecurringAudienceList`, `GetRecurringAudienceList`, `ListRecurringAudienceLists` methods to the Data API v1 alpha ([48c0978](https://github.com/googleapis/google-cloud-python/commit/48c097893c1e356be3d3cc2a403658a1904f03c7))
+* Add `percentage_completed`, `recurring_audience_list` fields to the `AudienceList` resource ([48c0978](https://github.com/googleapis/google-cloud-python/commit/48c097893c1e356be3d3cc2a403658a1904f03c7))
+* Add support for python 3.12 ([48c0978](https://github.com/googleapis/google-cloud-python/commit/48c097893c1e356be3d3cc2a403658a1904f03c7))
+* Add the `RecurringAudienceList` type ([48c0978](https://github.com/googleapis/google-cloud-python/commit/48c097893c1e356be3d3cc2a403658a1904f03c7))
+* Introduce compatibility with native namespace packages ([48c0978](https://github.com/googleapis/google-cloud-python/commit/48c097893c1e356be3d3cc2a403658a1904f03c7))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([48c0978](https://github.com/googleapis/google-cloud-python/commit/48c097893c1e356be3d3cc2a403658a1904f03c7))
+* Use `retry_async` instead of `retry` in async client ([48c0978](https://github.com/googleapis/google-cloud-python/commit/48c097893c1e356be3d3cc2a403658a1904f03c7))
+
 ## [0.18.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.17.2...google-analytics-data-v0.18.0) (2023-11-13)
 
 

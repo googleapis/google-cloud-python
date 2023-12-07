@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.11.3...google-cloud-scheduler-v2.12.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+* Introduce compatibility with native namespace packages ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+* Use `retry_async` instead of `retry` in async client ([e9655df](https://github.com/googleapis/google-cloud-python/commit/e9655dff9f393bf3382c668ea2a31dd3332ed192))
+
 ## [2.11.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.11.2...google-cloud-scheduler-v2.11.3) (2023-11-13)
 
 

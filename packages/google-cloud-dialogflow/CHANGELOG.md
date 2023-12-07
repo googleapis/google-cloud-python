@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.25.0...google-cloud-dialogflow-v2.26.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([fb6f9db](https://github.com/googleapis/google-cloud-python/commit/fb6f9dbfadfe1a8ca3b236e0cae5c85cf2862f3e))
+* Introduce compatibility with native namespace packages ([fb6f9db](https://github.com/googleapis/google-cloud-python/commit/fb6f9dbfadfe1a8ca3b236e0cae5c85cf2862f3e))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([fb6f9db](https://github.com/googleapis/google-cloud-python/commit/fb6f9dbfadfe1a8ca3b236e0cae5c85cf2862f3e))
+* Use `retry_async` instead of `retry` in async client ([fb6f9db](https://github.com/googleapis/google-cloud-python/commit/fb6f9dbfadfe1a8ca3b236e0cae5c85cf2862f3e))
+
 ## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.24.1...google-cloud-dialogflow-v2.25.0) (2023-09-30)
 
 
