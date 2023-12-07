@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.11.5...google-cloud-billing-v1.12.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+* added field BillingAccount.parent ([facc8ef](https://github.com/googleapis/google-cloud-python/commit/facc8ef7db22ce90a2459832bce8d3b9d034c5dc))
+* added the MoveBillingAccount method, which allows changing which organization a billing account belongs to ([facc8ef](https://github.com/googleapis/google-cloud-python/commit/facc8ef7db22ce90a2459832bce8d3b9d034c5dc))
+* Introduce compatibility with native namespace packages ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+* Use `retry_async` instead of `retry` in async client ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+
 ## [1.11.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.11.4...google-cloud-billing-v1.11.5) (2023-09-21)
 
 

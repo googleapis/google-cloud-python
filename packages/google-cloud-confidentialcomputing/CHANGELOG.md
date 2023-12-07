@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.2...google-cloud-confidentialcomputing-v0.4.3) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Introduce compatibility with native namespace packages ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+* Use `retry_async` instead of `retry` in async client ([b96013d](https://github.com/googleapis/google-cloud-python/commit/b96013d2c31e3602bb885bf8d7296cc49c3a4642))
+
 ## [0.4.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.1...google-cloud-confidentialcomputing-v0.4.2) (2023-11-13)
 
 

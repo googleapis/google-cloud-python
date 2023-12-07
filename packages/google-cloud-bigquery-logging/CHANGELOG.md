@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-logging-v1.3.0...google-cloud-bigquery-logging-v1.4.0) (2023-12-07)
+
+
+### Features
+
+* Add support for python 3.12 ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+* Introduce compatibility with native namespace packages ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+
+
+### Bug Fixes
+
+* Require proto-plus &gt;= 1.22.3 ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+* Use `retry_async` instead of `retry` in async client ([0d1a592](https://github.com/googleapis/google-cloud-python/commit/0d1a59258112158cea5e55b554b0fe6b6b71fc75))
+
 ## [1.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-logging-v1.2.2...google-cloud-bigquery-logging-v1.3.0) (2023-09-19)
 
 
