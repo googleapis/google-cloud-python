@@ -13,7 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator
+from typing import (
+    Any,
+    AsyncIterator,
+    Awaitable,
+    Callable,
+    Iterator,
+    Optional,
+    Sequence,
+    Tuple,
+)
 
 from google.analytics.data_v1beta.types import analytics_data_api
 
@@ -35,12 +44,15 @@ class ListAudienceExportsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., analytics_data_api.ListAudienceExportsResponse],
-            request: analytics_data_api.ListAudienceExportsRequest,
-            response: analytics_data_api.ListAudienceExportsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_data_api.ListAudienceExportsResponse],
+        request: analytics_data_api.ListAudienceExportsRequest,
+        response: analytics_data_api.ListAudienceExportsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -74,7 +86,7 @@ class ListAudienceExportsPager:
             yield from page.audience_exports
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListAudienceExportsAsyncPager:
@@ -94,12 +106,17 @@ class ListAudienceExportsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[analytics_data_api.ListAudienceExportsResponse]],
-            request: analytics_data_api.ListAudienceExportsRequest,
-            response: analytics_data_api.ListAudienceExportsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[analytics_data_api.ListAudienceExportsResponse]
+        ],
+        request: analytics_data_api.ListAudienceExportsRequest,
+        response: analytics_data_api.ListAudienceExportsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -121,12 +138,15 @@ class ListAudienceExportsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterator[analytics_data_api.ListAudienceExportsResponse]:
+    async def pages(
+        self,
+    ) -> AsyncIterator[analytics_data_api.ListAudienceExportsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[analytics_data_api.AudienceExport]:
         async def async_generator():
             async for page in self.pages:
@@ -136,4 +156,4 @@ class ListAudienceExportsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

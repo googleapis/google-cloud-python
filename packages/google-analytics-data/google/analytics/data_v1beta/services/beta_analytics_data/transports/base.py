@@ -18,10 +18,11 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.analytics.data_v1beta import gapic_version as package_version
@@ -160,6 +161,26 @@ class BetaAnalyticsDataTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_audience_export: gapic_v1.method.wrap_method(
+                self.create_audience_export,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_audience_export: gapic_v1.method.wrap_method(
+                self.query_audience_export,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_audience_export: gapic_v1.method.wrap_method(
+                self.get_audience_export,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_audience_exports: gapic_v1.method.wrap_method(
+                self.list_audience_exports,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -169,6 +190,11 @@ class BetaAnalyticsDataTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 
     @property
@@ -248,6 +274,51 @@ class BetaAnalyticsDataTransport(abc.ABC):
         Union[
             analytics_data_api.CheckCompatibilityResponse,
             Awaitable[analytics_data_api.CheckCompatibilityResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_audience_export(
+        self,
+    ) -> Callable[
+        [analytics_data_api.CreateAudienceExportRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_audience_export(
+        self,
+    ) -> Callable[
+        [analytics_data_api.QueryAudienceExportRequest],
+        Union[
+            analytics_data_api.QueryAudienceExportResponse,
+            Awaitable[analytics_data_api.QueryAudienceExportResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_audience_export(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetAudienceExportRequest],
+        Union[
+            analytics_data_api.AudienceExport,
+            Awaitable[analytics_data_api.AudienceExport],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_audience_exports(
+        self,
+    ) -> Callable[
+        [analytics_data_api.ListAudienceExportsRequest],
+        Union[
+            analytics_data_api.ListAudienceExportsResponse,
+            Awaitable[analytics_data_api.ListAudienceExportsResponse],
         ],
     ]:
         raise NotImplementedError()

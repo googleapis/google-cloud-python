@@ -42,6 +42,12 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
+from google.analytics.data_v1beta.services.beta_analytics_data import pagers
 from google.analytics.data_v1beta.types import analytics_data_api, data
 
 from .client import BetaAnalyticsDataClient
@@ -57,6 +63,10 @@ class BetaAnalyticsDataAsyncClient:
     DEFAULT_ENDPOINT = BetaAnalyticsDataClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = BetaAnalyticsDataClient.DEFAULT_MTLS_ENDPOINT
 
+    audience_export_path = staticmethod(BetaAnalyticsDataClient.audience_export_path)
+    parse_audience_export_path = staticmethod(
+        BetaAnalyticsDataClient.parse_audience_export_path
+    )
     metadata_path = staticmethod(BetaAnalyticsDataClient.metadata_path)
     parse_metadata_path = staticmethod(BetaAnalyticsDataClient.parse_metadata_path)
     common_billing_account_path = staticmethod(
@@ -626,8 +636,9 @@ class BetaAnalyticsDataAsyncClient:
 
         Returns:
             google.analytics.data_v1beta.types.Metadata:
-                The dimensions and metrics currently
-                accepted in reporting methods.
+                The dimensions, metrics and
+                comparisons currently accepted in
+                reporting methods.
 
         """
         # Create or coerce a protobuf request object.
@@ -853,6 +864,544 @@ class BetaAnalyticsDataAsyncClient:
             request,
             retry=retry,
             timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_audience_export(
+        self,
+        request: Optional[
+            Union[analytics_data_api.CreateAudienceExportRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        audience_export: Optional[analytics_data_api.AudienceExport] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates an audience export for later retrieval. This method
+        quickly returns the audience export's resource name and
+        initiates a long running asynchronous request to form an
+        audience export. To export the users in an audience export,
+        first create the audience export through this method and then
+        send the audience resource name to the ``QueryAudienceExport``
+        method.
+
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Exports with examples.
+
+        An audience export is a snapshot of the users currently in the
+        audience at the time of audience export creation. Creating
+        audience exports for one audience on different days will return
+        different results as users enter and exit the audience.
+
+        Audiences in Google Analytics 4 allow you to segment your users
+        in the ways that are important to your business. To learn more,
+        see https://support.google.com/analytics/answer/9267572.
+        Audience exports contain the users in each audience.
+
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1beta
+
+            async def sample_create_audience_export():
+                # Create a client
+                client = data_v1beta.BetaAnalyticsDataAsyncClient()
+
+                # Initialize request argument(s)
+                audience_export = data_v1beta.AudienceExport()
+                audience_export.audience = "audience_value"
+
+                request = data_v1beta.CreateAudienceExportRequest(
+                    parent="parent_value",
+                    audience_export=audience_export,
+                )
+
+                # Make the request
+                operation = client.create_audience_export(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.data_v1beta.types.CreateAudienceExportRequest, dict]]):
+                The request object. A request to create a new audience
+                export.
+            parent (:class:`str`):
+                Required. The parent resource where this audience export
+                will be created. Format: ``properties/{property}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            audience_export (:class:`google.analytics.data_v1beta.types.AudienceExport`):
+                Required. The audience export to
+                create.
+
+                This corresponds to the ``audience_export`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.analytics.data_v1beta.types.AudienceExport` An audience export is a list of users in an audience at the time of the
+                   list's creation. One audience may have multiple
+                   audience exports created for different days.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, audience_export])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_data_api.CreateAudienceExportRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if audience_export is not None:
+            request.audience_export = audience_export
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_audience_export,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            analytics_data_api.AudienceExport,
+            metadata_type=analytics_data_api.AudienceExportMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def query_audience_export(
+        self,
+        request: Optional[
+            Union[analytics_data_api.QueryAudienceExportRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_data_api.QueryAudienceExportResponse:
+        r"""Retrieves an audience export of users. After creating an
+        audience, the users are not immediately available for exporting.
+        First, a request to ``CreateAudienceExport`` is necessary to
+        create an audience export of users, and then second, this method
+        is used to retrieve the users in the audience export.
+
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Exports with examples.
+
+        Audiences in Google Analytics 4 allow you to segment your users
+        in the ways that are important to your business. To learn more,
+        see https://support.google.com/analytics/answer/9267572.
+
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1beta
+
+            async def sample_query_audience_export():
+                # Create a client
+                client = data_v1beta.BetaAnalyticsDataAsyncClient()
+
+                # Initialize request argument(s)
+                request = data_v1beta.QueryAudienceExportRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.query_audience_export(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.data_v1beta.types.QueryAudienceExportRequest, dict]]):
+                The request object. A request to list users in an
+                audience export.
+            name (:class:`str`):
+                Required. The name of the audience export to retrieve
+                users from. Format:
+                ``properties/{property}/audienceExports/{audience_export}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1beta.types.QueryAudienceExportResponse:
+                A list of users in an audience
+                export.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_data_api.QueryAudienceExportRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.query_audience_export,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_audience_export(
+        self,
+        request: Optional[
+            Union[analytics_data_api.GetAudienceExportRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_data_api.AudienceExport:
+        r"""Gets configuration metadata about a specific audience export.
+        This method can be used to understand an audience export after
+        it has been created.
+
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Exports with examples.
+
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1beta
+
+            async def sample_get_audience_export():
+                # Create a client
+                client = data_v1beta.BetaAnalyticsDataAsyncClient()
+
+                # Initialize request argument(s)
+                request = data_v1beta.GetAudienceExportRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_audience_export(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.data_v1beta.types.GetAudienceExportRequest, dict]]):
+                The request object. A request to retrieve configuration
+                metadata about a specific audience
+                export.
+            name (:class:`str`):
+                Required. The audience export resource name. Format:
+                ``properties/{property}/audienceExports/{audience_export}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1beta.types.AudienceExport:
+                An audience export is a list of users
+                in an audience at the time of the list's
+                creation. One audience may have multiple
+                audience exports created for different
+                days.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_data_api.GetAudienceExportRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_audience_export,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_audience_exports(
+        self,
+        request: Optional[
+            Union[analytics_data_api.ListAudienceExportsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAudienceExportsAsyncPager:
+        r"""Lists all audience exports for a property. This method can be
+        used for you to find and reuse existing audience exports rather
+        than creating unnecessary new audience exports. The same
+        audience can have multiple audience exports that represent the
+        export of users that were in an audience on different days.
+
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Exports with examples.
+
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1beta
+
+            async def sample_list_audience_exports():
+                # Create a client
+                client = data_v1beta.BetaAnalyticsDataAsyncClient()
+
+                # Initialize request argument(s)
+                request = data_v1beta.ListAudienceExportsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_audience_exports(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.data_v1beta.types.ListAudienceExportsRequest, dict]]):
+                The request object. A request to list all audience
+                exports for a property.
+            parent (:class:`str`):
+                Required. All audience exports for this property will be
+                listed in the response. Format:
+                ``properties/{property}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1beta.services.beta_analytics_data.pagers.ListAudienceExportsAsyncPager:
+                A list of all audience exports for a
+                property.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_data_api.ListAudienceExportsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_audience_exports,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAudienceExportsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
             metadata=metadata,
         )
 
