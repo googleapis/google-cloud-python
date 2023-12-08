@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.25.2](https://github.com/googleapis/google-auth-library-python/compare/v2.25.1...v2.25.2) (2023-12-08)
+
+
+### Bug Fixes
+
+* Fix user cred universe domain issue ([#1436](https://github.com/googleapis/google-auth-library-python/issues/1436)) ([ae314a8](https://github.com/googleapis/google-auth-library-python/commit/ae314a8f8c63ada4e31683464c24e28df0f5af7f))
+
 ## [2.25.1](https://github.com/googleapis/google-auth-library-python/compare/v2.25.0...v2.25.1) (2023-12-06)
 
 
