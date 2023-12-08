@@ -2201,9 +2201,18 @@ class TestRowIterator(unittest.TestCase):
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": rows})
         row_iterator = self._make_one(
-            _mock_client(), api_request, path, schema, first_page_response=first_page
+            _mock_client(),
+            api_request,
+            path,
+            schema,
+            first_page_response=first_page,
+            total_rows=4,
         )
+        self.assertEqual(row_iterator.total_rows, 4)
         rows = list(row_iterator)
+        # Total rows should be maintained, even though subsequent API calls
+        # don't include it.
+        self.assertEqual(row_iterator.total_rows, 4)
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0].age, 27)
         self.assertEqual(rows[1].age, 28)

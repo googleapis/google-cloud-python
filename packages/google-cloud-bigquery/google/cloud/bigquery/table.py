@@ -2997,9 +2997,9 @@ def _rows_page_start(iterator, page, response):
     page._columns = _row_iterator_page_columns(iterator._schema, response)
 
     total_rows = response.get("totalRows")
+    # Don't reset total_rows if it's not present in the next API response.
     if total_rows is not None:
-        total_rows = int(total_rows)
-    iterator._total_rows = total_rows
+        iterator._total_rows = int(total_rows)
 
 
 # pylint: enable=unused-argument
