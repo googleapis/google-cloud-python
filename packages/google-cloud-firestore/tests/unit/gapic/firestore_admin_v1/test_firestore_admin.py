@@ -67,8 +67,10 @@ from google.cloud.firestore_admin_v1.types import operation as gfa_operation
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
 
 
@@ -3443,6 +3445,7 @@ def test_get_database(request_type, transport: str = "grpc"):
             location_id="location_id_value",
             type_=database.Database.DatabaseType.FIRESTORE_NATIVE,
             concurrency_mode=database.Database.ConcurrencyMode.OPTIMISTIC,
+            point_in_time_recovery_enablement=database.Database.PointInTimeRecoveryEnablement.POINT_IN_TIME_RECOVERY_ENABLED,
             app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
             key_prefix="key_prefix_value",
             etag="etag_value",
@@ -3460,6 +3463,10 @@ def test_get_database(request_type, transport: str = "grpc"):
     assert response.location_id == "location_id_value"
     assert response.type_ == database.Database.DatabaseType.FIRESTORE_NATIVE
     assert response.concurrency_mode == database.Database.ConcurrencyMode.OPTIMISTIC
+    assert (
+        response.point_in_time_recovery_enablement
+        == database.Database.PointInTimeRecoveryEnablement.POINT_IN_TIME_RECOVERY_ENABLED
+    )
     assert (
         response.app_engine_integration_mode
         == database.Database.AppEngineIntegrationMode.ENABLED
@@ -3506,6 +3513,7 @@ async def test_get_database_async(
                 location_id="location_id_value",
                 type_=database.Database.DatabaseType.FIRESTORE_NATIVE,
                 concurrency_mode=database.Database.ConcurrencyMode.OPTIMISTIC,
+                point_in_time_recovery_enablement=database.Database.PointInTimeRecoveryEnablement.POINT_IN_TIME_RECOVERY_ENABLED,
                 app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
                 key_prefix="key_prefix_value",
                 etag="etag_value",
@@ -3524,6 +3532,10 @@ async def test_get_database_async(
     assert response.location_id == "location_id_value"
     assert response.type_ == database.Database.DatabaseType.FIRESTORE_NATIVE
     assert response.concurrency_mode == database.Database.ConcurrencyMode.OPTIMISTIC
+    assert (
+        response.point_in_time_recovery_enablement
+        == database.Database.PointInTimeRecoveryEnablement.POINT_IN_TIME_RECOVERY_ENABLED
+    )
     assert (
         response.app_engine_integration_mode
         == database.Database.AppEngineIntegrationMode.ENABLED
@@ -6921,6 +6933,9 @@ def test_create_database_rest(request_type):
         "location_id": "location_id_value",
         "type_": 1,
         "concurrency_mode": 1,
+        "version_retention_period": {"seconds": 751, "nanos": 543},
+        "earliest_version_time": {"seconds": 751, "nanos": 543},
+        "point_in_time_recovery_enablement": 1,
         "app_engine_integration_mode": 1,
         "key_prefix": "key_prefix_value",
         "etag": "etag_value",
@@ -7292,6 +7307,7 @@ def test_get_database_rest(request_type):
             location_id="location_id_value",
             type_=database.Database.DatabaseType.FIRESTORE_NATIVE,
             concurrency_mode=database.Database.ConcurrencyMode.OPTIMISTIC,
+            point_in_time_recovery_enablement=database.Database.PointInTimeRecoveryEnablement.POINT_IN_TIME_RECOVERY_ENABLED,
             app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
             key_prefix="key_prefix_value",
             etag="etag_value",
@@ -7314,6 +7330,10 @@ def test_get_database_rest(request_type):
     assert response.location_id == "location_id_value"
     assert response.type_ == database.Database.DatabaseType.FIRESTORE_NATIVE
     assert response.concurrency_mode == database.Database.ConcurrencyMode.OPTIMISTIC
+    assert (
+        response.point_in_time_recovery_enablement
+        == database.Database.PointInTimeRecoveryEnablement.POINT_IN_TIME_RECOVERY_ENABLED
+    )
     assert (
         response.app_engine_integration_mode
         == database.Database.AppEngineIntegrationMode.ENABLED
@@ -7835,6 +7855,9 @@ def test_update_database_rest(request_type):
         "location_id": "location_id_value",
         "type_": 1,
         "concurrency_mode": 1,
+        "version_retention_period": {"seconds": 751, "nanos": 543},
+        "earliest_version_time": {"seconds": 751, "nanos": 543},
+        "point_in_time_recovery_enablement": 1,
         "app_engine_integration_mode": 1,
         "key_prefix": "key_prefix_value",
         "etag": "etag_value",

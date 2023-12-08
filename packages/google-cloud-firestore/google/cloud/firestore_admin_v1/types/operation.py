@@ -199,7 +199,7 @@ class FieldOperationMetadata(proto.Message):
         )
 
     class TtlConfigDelta(proto.Message):
-        r"""Information about an TTL configuration change.
+        r"""Information about a TTL configuration change.
 
         Attributes:
             change_type (google.cloud.firestore_admin_v1.types.FieldOperationMetadata.TtlConfigDelta.ChangeType):
@@ -291,7 +291,14 @@ class ExportDocumentsMetadata(proto.Message):
         collection_ids (MutableSequence[str]):
             Which collection ids are being exported.
         output_uri_prefix (str):
-            Where the entities are being exported to.
+            Where the documents are being exported to.
+        namespace_ids (MutableSequence[str]):
+            Which namespace ids are being exported.
+        snapshot_time (google.protobuf.timestamp_pb2.Timestamp):
+            The timestamp that corresponds to the version
+            of the database that is being exported. If
+            unspecified, there are no guarantees about the
+            consistency of the documents being exported.
     """
 
     start_time: timestamp_pb2.Timestamp = proto.Field(
@@ -327,6 +334,15 @@ class ExportDocumentsMetadata(proto.Message):
         proto.STRING,
         number=7,
     )
+    namespace_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
+    snapshot_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ImportDocumentsMetadata(proto.Message):
@@ -352,6 +368,8 @@ class ImportDocumentsMetadata(proto.Message):
             Which collection ids are being imported.
         input_uri_prefix (str):
             The location of the documents being imported.
+        namespace_ids (MutableSequence[str]):
+            Which namespace ids are being imported.
     """
 
     start_time: timestamp_pb2.Timestamp = proto.Field(
@@ -386,6 +404,10 @@ class ImportDocumentsMetadata(proto.Message):
     input_uri_prefix: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    namespace_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=8,
     )
 
 

@@ -55,8 +55,10 @@ from google.cloud.firestore_admin_v1.types import index as gfa_index
 from google.cloud.firestore_admin_v1.types import operation as gfa_operation
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import FirestoreAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import FirestoreAdminGrpcAsyncIOTransport
 from .client import FirestoreAdminClient
@@ -1201,11 +1203,8 @@ class FirestoreAdminAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.firestore_admin_v1.types.ExportDocumentsResponse`
-                Returned in the
-                [google.longrunning.Operation][google.longrunning.Operation]
-                response field.
+                The result type for the operation will be :class:`google.cloud.firestore_admin_v1.types.ExportDocumentsResponse` Returned in the [google.longrunning.Operation][google.longrunning.Operation]
+                   response field.
 
         """
         # Create or coerce a protobuf request object.

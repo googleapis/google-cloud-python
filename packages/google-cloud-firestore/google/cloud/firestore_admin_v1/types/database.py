@@ -19,6 +19,9 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.firestore.admin.v1",
@@ -39,7 +42,7 @@ class Database(proto.Message):
             ``projects/{project}/databases/{database}``
         location_id (str):
             The location of the database. Available
-            databases are listed at
+            locations are listed at
             https://cloud.google.com/firestore/docs/locations.
         type_ (google.cloud.firestore_admin_v1.types.Database.DatabaseType):
             The type of the database.
@@ -48,6 +51,32 @@ class Database(proto.Message):
             for information about how to choose.
         concurrency_mode (google.cloud.firestore_admin_v1.types.Database.ConcurrencyMode):
             The concurrency control mode to use for this
+            database.
+        version_retention_period (google.protobuf.duration_pb2.Duration):
+            Output only. The period during which past versions of data
+            are retained in the database.
+
+            Any [read][google.firestore.v1.GetDocumentRequest.read_time]
+            or
+            [query][google.firestore.v1.ListDocumentsRequest.read_time]
+            can specify a ``read_time`` within this window, and will
+            read the state of the database at that time.
+
+            If the PITR feature is enabled, the retention period is 7
+            days. Otherwise, the retention period is 1 hour.
+        earliest_version_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The earliest timestamp at which older versions
+            of the data can be read from the database. See
+            [version_retention_period] above; this field is populated
+            with ``now - version_retention_period``.
+
+            This value is continuously updated, and becomes stale the
+            moment it is queried. If you are using this value to recover
+            data, make sure to account for the time from the moment when
+            the value is queried to the moment when you initiate the
+            recovery.
+        point_in_time_recovery_enablement (google.cloud.firestore_admin_v1.types.Database.PointInTimeRecoveryEnablement):
+            Whether to enable the PITR feature on this
             database.
         app_engine_integration_mode (google.cloud.firestore_admin_v1.types.Database.AppEngineIntegrationMode):
             The App Engine integration mode to use for
@@ -120,6 +149,30 @@ class Database(proto.Message):
         PESSIMISTIC = 2
         OPTIMISTIC_WITH_ENTITY_GROUPS = 3
 
+    class PointInTimeRecoveryEnablement(proto.Enum):
+        r"""Point In Time Recovery feature enablement.
+
+        Values:
+            POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED (0):
+                Not used.
+            POINT_IN_TIME_RECOVERY_ENABLED (1):
+                Reads are supported on selected versions of the data from
+                within the past 7 days:
+
+                -  Reads against any timestamp within the past hour
+                -  Reads against 1-minute snapshots beyond 1 hour and within
+                   7 days
+
+                ``version_retention_period`` and ``earliest_version_time``
+                can be used to determine the supported versions.
+            POINT_IN_TIME_RECOVERY_DISABLED (2):
+                Reads are supported on any version of the
+                data from within the past 1 hour.
+        """
+        POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED = 0
+        POINT_IN_TIME_RECOVERY_ENABLED = 1
+        POINT_IN_TIME_RECOVERY_DISABLED = 2
+
     class AppEngineIntegrationMode(proto.Enum):
         r"""The type of App Engine integration mode.
 
@@ -134,8 +187,11 @@ class Database(proto.Message):
                 database, as well as disabling writes to the
                 database.
             DISABLED (2):
-                Appengine has no affect on the ability of
+                App Engine has no effect on the ability of
                 this database to serve requests.
+
+                This is the default setting for databases
+                created with the Firestore API.
         """
         APP_ENGINE_INTEGRATION_MODE_UNSPECIFIED = 0
         ENABLED = 1
@@ -158,6 +214,21 @@ class Database(proto.Message):
         proto.ENUM,
         number=15,
         enum=ConcurrencyMode,
+    )
+    version_retention_period: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=duration_pb2.Duration,
+    )
+    earliest_version_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=timestamp_pb2.Timestamp,
+    )
+    point_in_time_recovery_enablement: PointInTimeRecoveryEnablement = proto.Field(
+        proto.ENUM,
+        number=21,
+        enum=PointInTimeRecoveryEnablement,
     )
     app_engine_integration_mode: AppEngineIntegrationMode = proto.Field(
         proto.ENUM,
