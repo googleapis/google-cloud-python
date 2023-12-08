@@ -11,11 +11,12 @@ class option_context(contextlib.ContextDecorator):
 
     You need to invoke as ``option_context(pat, val, [(pat, val), ...])``.
 
-    Examples
-    --------
-    >>> import bigframes
-    >>> with bigframes.option_context('display.max_rows', 10, 'display.max_columns', 5):
-    ...     pass
+    **Examples:**
+
+        >>> import bigframes
+
+        >>> with bigframes.option_context('display.max_rows', 10, 'display.max_columns', 5):
+        ...     pass
     """
 
     def __init__(self, *args) -> None:
