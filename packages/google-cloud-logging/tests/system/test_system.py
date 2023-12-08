@@ -336,7 +336,7 @@ class TestLogging(unittest.TestCase):
         text_payload = "System test: test_log_text_with_timestamp"
         gapic_logger = Config.CLIENT.logger(self._logger_name("log_text_ts"))
         http_logger = Config.HTTP_CLIENT.logger(self._logger_name("log_text_ts_http"))
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         loggers = (
             [gapic_logger]
             if Config.use_mtls == "always"
@@ -356,7 +356,7 @@ class TestLogging(unittest.TestCase):
 
         gapic_logger = Config.CLIENT.logger(self._logger_name("log_text_res"))
         http_logger = Config.HTTP_CLIENT.logger(self._logger_name("log_text_res_http"))
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         loggers = (
             [gapic_logger]
             if Config.use_mtls == "always"

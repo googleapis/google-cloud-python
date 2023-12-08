@@ -122,9 +122,9 @@ class Test_LoggingAPI(unittest.TestCase):
     @staticmethod
     def _make_timestamp():
         import datetime
-        from google.cloud._helpers import UTC
+        from datetime import timezone
 
-        NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        NOW = datetime.datetime.now(timezone.utc)
         return NOW, _datetime_to_rfc3339_w_nanos(NOW)
 
     def test_list_entries_with_limits(self):
