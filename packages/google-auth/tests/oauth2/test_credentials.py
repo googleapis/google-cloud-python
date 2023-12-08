@@ -913,6 +913,17 @@ class TestCredentials(object):
         for attr in list(creds.__dict__):
             assert getattr(creds, attr) == getattr(unpickled, attr)
 
+    def test_pickle_and_unpickle_universe_domain(self):
+        # old version of auth lib doesn't have _universe_domain, so the pickled
+        # cred doesn't have such a field.
+        creds = self.make_credentials()
+        del creds._universe_domain
+
+        unpickled = pickle.loads(pickle.dumps(creds))
+
+        # make sure the unpickled cred sets _universe_domain to default.
+        assert unpickled.universe_domain == "googleapis.com"
+
     def test_pickle_and_unpickle_with_refresh_handler(self):
         expected_expiry = _helpers.utcnow() + datetime.timedelta(seconds=2800)
         refresh_handler = mock.Mock(return_value=("TOKEN", expected_expiry))
