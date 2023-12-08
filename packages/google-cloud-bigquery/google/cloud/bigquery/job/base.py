@@ -21,15 +21,13 @@ import threading
 import typing
 from typing import ClassVar, Dict, Optional, Sequence
 
+from google.api_core import retry as retries
 from google.api_core import exceptions
 import google.api_core.future.polling
 
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _int_or_none
-
-if typing.TYPE_CHECKING:  # pragma: NO COVER
-    from google.api_core import retry as retries
 
 
 _DONE_STATE = "DONE"
@@ -825,7 +823,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def cancel(
         self,
         client=None,
-        retry: "retries.Retry" = DEFAULT_RETRY,
+        retry: Optional[retries.Retry] = DEFAULT_RETRY,
         timeout: Optional[float] = None,
     ) -> bool:
         """API call:  cancel job via a POST request
@@ -921,9 +919,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             self.reload(retry=retry, timeout=timeout)
         return self.state == _DONE_STATE
 
-    def result(  # type: ignore  # (signature complaint)
+    def result(  # type: ignore  # (incompatible with supertype)
         self,
-        retry: "retries.Retry" = DEFAULT_RETRY,
+        retry: Optional[retries.Retry] = DEFAULT_RETRY,
         timeout: Optional[float] = None,
     ) -> "_AsyncJob":
         """Start the job and wait for it to complete and get the result.

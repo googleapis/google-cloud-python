@@ -912,6 +912,18 @@ class _QueryResults(object):
         return self._properties.get("jobReference", {}).get("jobId")
 
     @property
+    def location(self):
+        """Location of the query job these results are from.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.job_reference
+
+        Returns:
+            str: Job ID of the query job.
+        """
+        return self._properties.get("jobReference", {}).get("location")
+
+    @property
     def query_id(self) -> Optional[str]:
         """[Preview] ID of a completed query.
 

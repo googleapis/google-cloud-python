@@ -1375,6 +1375,16 @@ class Test_QueryResults(unittest.TestCase):
         query = self._make_one(resource)
         self.assertEqual(query.job_id, "custom-job")
 
+    def test_location_missing(self):
+        query = self._make_one({})
+        self.assertIsNone(query.location)
+
+    def test_location_present(self):
+        resource = self._make_resource()
+        resource["jobReference"]["location"] = "test-location"
+        query = self._make_one(resource)
+        self.assertEqual(query.location, "test-location")
+
     def test_page_token_missing(self):
         query = self._make_one(self._make_resource())
         self.assertIsNone(query.page_token)

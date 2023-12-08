@@ -70,8 +70,9 @@ from google.cloud import bigquery
 
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import exceptions
-from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
 from google.cloud.bigquery import ParquetOptions
+from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
+import google.cloud.bigquery.table
 
 try:
     from google.cloud import bigquery_storage
@@ -4953,20 +4954,17 @@ class TestClient(unittest.TestCase):
         )
 
     def test_query_w_invalid_default_job_config(self):
-        job_id = "some-job-id"
-        query = "select count(*) from persons"
         creds = _make_credentials()
         http = object()
         default_job_config = object()
-        client = self._make_one(
-            project=self.PROJECT,
-            credentials=creds,
-            _http=http,
-            default_query_job_config=default_job_config,
-        )
 
         with self.assertRaises(TypeError) as exc:
-            client.query(query, job_id=job_id, location=self.LOCATION)
+            self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+                _http=http,
+                default_query_job_config=default_job_config,
+            )
         self.assertIn("Expected an instance of QueryJobConfig", exc.exception.args[0])
 
     def test_query_w_client_location(self):
@@ -5212,6 +5210,150 @@ class TestClient(unittest.TestCase):
             result = client.query("SELECT 1;", job_id=None)
 
         assert result is mock.sentinel.query_job
+
+    def test_query_and_wait_defaults(self):
+        query = "select count(*) from `bigquery-public-data.usa_names.usa_1910_2013`"
+        jobs_query_response = {
+            "jobComplete": True,
+            "schema": {
+                "fields": [
+                    {
+                        "name": "f0_",
+                        "type": "INTEGER",
+                        "mode": "NULLABLE",
+                    },
+                ],
+            },
+            "totalRows": "1",
+            "rows": [{"f": [{"v": "5552452"}]}],
+            "queryId": "job_abcDEF_",
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(jobs_query_response)
+
+        rows = client.query_and_wait(query)
+
+        self.assertIsInstance(rows, google.cloud.bigquery.table.RowIterator)
+        self.assertEqual(rows.query_id, "job_abcDEF_")
+        self.assertEqual(rows.total_rows, 1)
+        # No job reference in the response should be OK for completed query.
+        self.assertIsNone(rows.job_id)
+        self.assertIsNone(rows.project)
+        self.assertIsNone(rows.location)
+
+        # Verify the request we send is to jobs.query.
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], "/projects/PROJECT/queries")
+        self.assertEqual(req["timeout"], DEFAULT_TIMEOUT)
+        sent = req["data"]
+        self.assertEqual(sent["query"], query)
+        self.assertFalse(sent["useLegacySql"])
+
+    def test_query_and_wait_w_default_query_job_config(self):
+        from google.cloud.bigquery import job
+
+        query = "select count(*) from `bigquery-public-data.usa_names.usa_1910_2013`"
+        jobs_query_response = {
+            "jobComplete": True,
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            default_query_job_config=job.QueryJobConfig(
+                labels={
+                    "default-label": "default-value",
+                },
+            ),
+        )
+        conn = client._connection = make_connection(jobs_query_response)
+
+        _ = client.query_and_wait(query)
+
+        # Verify the request we send is to jobs.query.
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], f"/projects/{self.PROJECT}/queries")
+        sent = req["data"]
+        self.assertEqual(sent["labels"], {"default-label": "default-value"})
+
+    def test_query_and_wait_w_job_config(self):
+        from google.cloud.bigquery import job
+
+        query = "select count(*) from `bigquery-public-data.usa_names.usa_1910_2013`"
+        jobs_query_response = {
+            "jobComplete": True,
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+        )
+        conn = client._connection = make_connection(jobs_query_response)
+
+        _ = client.query_and_wait(
+            query,
+            job_config=job.QueryJobConfig(
+                labels={
+                    "job_config-label": "job_config-value",
+                },
+            ),
+        )
+
+        # Verify the request we send is to jobs.query.
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], f"/projects/{self.PROJECT}/queries")
+        sent = req["data"]
+        self.assertEqual(sent["labels"], {"job_config-label": "job_config-value"})
+
+    def test_query_and_wait_w_location(self):
+        query = "select count(*) from `bigquery-public-data.usa_names.usa_1910_2013`"
+        jobs_query_response = {
+            "jobComplete": True,
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(jobs_query_response)
+
+        _ = client.query_and_wait(query, location="not-the-client-location")
+
+        # Verify the request we send is to jobs.query.
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], f"/projects/{self.PROJECT}/queries")
+        sent = req["data"]
+        self.assertEqual(sent["location"], "not-the-client-location")
+
+    def test_query_and_wait_w_project(self):
+        query = "select count(*) from `bigquery-public-data.usa_names.usa_1910_2013`"
+        jobs_query_response = {
+            "jobComplete": True,
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(jobs_query_response)
+
+        _ = client.query_and_wait(query, project="not-the-client-project")
+
+        # Verify the request we send is to jobs.query.
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["path"], "/projects/not-the-client-project/queries")
 
     def test_insert_rows_w_timeout(self):
         from google.cloud.bigquery.schema import SchemaField

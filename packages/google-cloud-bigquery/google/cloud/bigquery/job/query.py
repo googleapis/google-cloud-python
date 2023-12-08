@@ -22,6 +22,7 @@ from typing import Any, Dict, Iterable, List, Optional, Union
 
 from google.api_core import exceptions
 from google.api_core.future import polling as polling_future
+from google.api_core import retry as retries
 import requests
 
 from google.cloud.bigquery.dataset import Dataset
@@ -69,7 +70,6 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
     import pandas  # type: ignore
     import geopandas  # type: ignore
     import pyarrow  # type: ignore
-    from google.api_core import retry as retries
     from google.cloud import bigquery_storage
     from google.cloud.bigquery.client import Client
     from google.cloud.bigquery.table import RowIterator
@@ -779,7 +779,7 @@ class QueryJobConfig(_JobConfig):
         resource = copy.deepcopy(self._properties)
         # Query parameters have an addition property associated with them
         # to indicate if the query is using named or positional parameters.
-        query_parameters = resource["query"].get("queryParameters")
+        query_parameters = resource.get("query", {}).get("queryParameters")
         if query_parameters:
             if query_parameters[0].get("name") is None:
                 resource["query"]["parameterMode"] = "POSITIONAL"
@@ -1469,14 +1469,14 @@ class QueryJob(_AsyncJob):
             except exceptions.GoogleAPIError as exc:
                 self.set_exception(exc)
 
-    def result(  # type: ignore  # (complaints about the overloaded signature)
+    def result(  # type: ignore  # (incompatible with supertype)
         self,
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
-        retry: "retries.Retry" = DEFAULT_RETRY,
+        retry: Optional[retries.Retry] = DEFAULT_RETRY,
         timeout: Optional[float] = None,
         start_index: Optional[int] = None,
-        job_retry: "retries.Retry" = DEFAULT_JOB_RETRY,
+        job_retry: Optional[retries.Retry] = DEFAULT_JOB_RETRY,
     ) -> Union["RowIterator", _EmptyRowIterator]:
         """Start the job and wait for it to complete and get the result.
 

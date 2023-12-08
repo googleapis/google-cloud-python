@@ -205,12 +205,14 @@ def system(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy_samples(session):
     """Run type checks with mypy."""
-    session.install("-e", ".[all]")
-
     session.install("pytest")
     for requirements_path in CURRENT_DIRECTORY.glob("samples/*/requirements.txt"):
-        session.install("-r", requirements_path)
+        session.install("-r", str(requirements_path))
     session.install(MYPY_VERSION)
+
+    # requirements.txt might include this package. Install from source so that
+    # we can author samples with unreleased features.
+    session.install("-e", ".[all]")
 
     # Just install the dependencies' type info directly, since "mypy --install-types"
     # might require an additional pass.
