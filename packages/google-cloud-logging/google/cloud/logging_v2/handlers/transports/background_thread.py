@@ -240,7 +240,9 @@ class _Worker(object):
         queue_entry = {
             "message": message,
             "severity": _helpers._normalize_severity(record.levelno),
-            "timestamp": datetime.datetime.utcfromtimestamp(record.created),
+            "timestamp": datetime.datetime.fromtimestamp(
+                record.created, datetime.timezone.utc
+            ),
         }
         queue_entry.update(kwargs)
         self._queue.put_nowait(queue_entry)
