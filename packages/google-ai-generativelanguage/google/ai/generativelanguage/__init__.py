@@ -18,35 +18,60 @@ from google.ai.generativelanguage import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.ai.generativelanguage_v1beta3.services.discuss_service.async_client import (
+from google.ai.generativelanguage_v1beta.services.discuss_service.async_client import (
     DiscussServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta3.services.discuss_service.client import (
+from google.ai.generativelanguage_v1beta.services.discuss_service.client import (
     DiscussServiceClient,
 )
-from google.ai.generativelanguage_v1beta3.services.model_service.async_client import (
+from google.ai.generativelanguage_v1beta.services.generative_service.async_client import (
+    GenerativeServiceAsyncClient,
+)
+from google.ai.generativelanguage_v1beta.services.generative_service.client import (
+    GenerativeServiceClient,
+)
+from google.ai.generativelanguage_v1beta.services.model_service.async_client import (
     ModelServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta3.services.model_service.client import (
+from google.ai.generativelanguage_v1beta.services.model_service.client import (
     ModelServiceClient,
 )
-from google.ai.generativelanguage_v1beta3.services.permission_service.async_client import (
+from google.ai.generativelanguage_v1beta.services.permission_service.async_client import (
     PermissionServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta3.services.permission_service.client import (
+from google.ai.generativelanguage_v1beta.services.permission_service.client import (
     PermissionServiceClient,
 )
-from google.ai.generativelanguage_v1beta3.services.text_service.async_client import (
+from google.ai.generativelanguage_v1beta.services.retriever_service.async_client import (
+    RetrieverServiceAsyncClient,
+)
+from google.ai.generativelanguage_v1beta.services.retriever_service.client import (
+    RetrieverServiceClient,
+)
+from google.ai.generativelanguage_v1beta.services.text_service.async_client import (
     TextServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta3.services.text_service.client import (
+from google.ai.generativelanguage_v1beta.services.text_service.client import (
     TextServiceClient,
 )
-from google.ai.generativelanguage_v1beta3.types.citation import (
+from google.ai.generativelanguage_v1beta.types.citation import (
     CitationMetadata,
     CitationSource,
 )
-from google.ai.generativelanguage_v1beta3.types.discuss_service import (
+from google.ai.generativelanguage_v1beta.types.content import (
+    Blob,
+    Content,
+    FunctionCall,
+    FunctionDeclaration,
+    FunctionResponse,
+    GroundingPassage,
+    GroundingPassages,
+    Part,
+    Schema,
+    Tool,
+    Type,
+)
+from google.ai.generativelanguage_v1beta.types.discuss_service import (
     CountMessageTokensRequest,
     CountMessageTokensResponse,
     Example,
@@ -55,8 +80,27 @@ from google.ai.generativelanguage_v1beta3.types.discuss_service import (
     Message,
     MessagePrompt,
 )
-from google.ai.generativelanguage_v1beta3.types.model import Model
-from google.ai.generativelanguage_v1beta3.types.model_service import (
+from google.ai.generativelanguage_v1beta.types.generative_service import (
+    AttributionSourceId,
+    BatchEmbedContentsRequest,
+    BatchEmbedContentsResponse,
+    Candidate,
+    ContentEmbedding,
+    CountTokensRequest,
+    CountTokensResponse,
+    EmbedContentRequest,
+    EmbedContentResponse,
+    GenerateAnswerRequest,
+    GenerateAnswerResponse,
+    GenerateContentRequest,
+    GenerateContentResponse,
+    GenerationConfig,
+    GroundingAttribution,
+    SemanticRetrieverConfig,
+    TaskType,
+)
+from google.ai.generativelanguage_v1beta.types.model import Model
+from google.ai.generativelanguage_v1beta.types.model_service import (
     CreateTunedModelMetadata,
     CreateTunedModelRequest,
     DeleteTunedModelRequest,
@@ -68,8 +112,8 @@ from google.ai.generativelanguage_v1beta3.types.model_service import (
     ListTunedModelsResponse,
     UpdateTunedModelRequest,
 )
-from google.ai.generativelanguage_v1beta3.types.permission import Permission
-from google.ai.generativelanguage_v1beta3.types.permission_service import (
+from google.ai.generativelanguage_v1beta.types.permission import Permission
+from google.ai.generativelanguage_v1beta.types.permission_service import (
     CreatePermissionRequest,
     DeletePermissionRequest,
     GetPermissionRequest,
@@ -79,14 +123,54 @@ from google.ai.generativelanguage_v1beta3.types.permission_service import (
     TransferOwnershipResponse,
     UpdatePermissionRequest,
 )
-from google.ai.generativelanguage_v1beta3.types.safety import (
+from google.ai.generativelanguage_v1beta.types.retriever import (
+    Chunk,
+    ChunkData,
+    Condition,
+    Corpus,
+    CustomMetadata,
+    Document,
+    MetadataFilter,
+    StringList,
+)
+from google.ai.generativelanguage_v1beta.types.retriever_service import (
+    BatchCreateChunksRequest,
+    BatchCreateChunksResponse,
+    BatchDeleteChunksRequest,
+    BatchUpdateChunksRequest,
+    BatchUpdateChunksResponse,
+    CreateChunkRequest,
+    CreateCorpusRequest,
+    CreateDocumentRequest,
+    DeleteChunkRequest,
+    DeleteCorpusRequest,
+    DeleteDocumentRequest,
+    GetChunkRequest,
+    GetCorpusRequest,
+    GetDocumentRequest,
+    ListChunksRequest,
+    ListChunksResponse,
+    ListCorporaRequest,
+    ListCorporaResponse,
+    ListDocumentsRequest,
+    ListDocumentsResponse,
+    QueryCorpusRequest,
+    QueryCorpusResponse,
+    QueryDocumentRequest,
+    QueryDocumentResponse,
+    RelevantChunk,
+    UpdateChunkRequest,
+    UpdateCorpusRequest,
+    UpdateDocumentRequest,
+)
+from google.ai.generativelanguage_v1beta.types.safety import (
     ContentFilter,
     HarmCategory,
     SafetyFeedback,
     SafetyRating,
     SafetySetting,
 )
-from google.ai.generativelanguage_v1beta3.types.text_service import (
+from google.ai.generativelanguage_v1beta.types.text_service import (
     BatchEmbedTextRequest,
     BatchEmbedTextResponse,
     CountTextTokensRequest,
@@ -99,7 +183,7 @@ from google.ai.generativelanguage_v1beta3.types.text_service import (
     TextCompletion,
     TextPrompt,
 )
-from google.ai.generativelanguage_v1beta3.types.tuned_model import (
+from google.ai.generativelanguage_v1beta.types.tuned_model import (
     Dataset,
     Hyperparameters,
     TunedModel,
@@ -113,14 +197,29 @@ from google.ai.generativelanguage_v1beta3.types.tuned_model import (
 __all__ = (
     "DiscussServiceClient",
     "DiscussServiceAsyncClient",
+    "GenerativeServiceClient",
+    "GenerativeServiceAsyncClient",
     "ModelServiceClient",
     "ModelServiceAsyncClient",
     "PermissionServiceClient",
     "PermissionServiceAsyncClient",
+    "RetrieverServiceClient",
+    "RetrieverServiceAsyncClient",
     "TextServiceClient",
     "TextServiceAsyncClient",
     "CitationMetadata",
     "CitationSource",
+    "Blob",
+    "Content",
+    "FunctionCall",
+    "FunctionDeclaration",
+    "FunctionResponse",
+    "GroundingPassage",
+    "GroundingPassages",
+    "Part",
+    "Schema",
+    "Tool",
+    "Type",
     "CountMessageTokensRequest",
     "CountMessageTokensResponse",
     "Example",
@@ -128,6 +227,23 @@ __all__ = (
     "GenerateMessageResponse",
     "Message",
     "MessagePrompt",
+    "AttributionSourceId",
+    "BatchEmbedContentsRequest",
+    "BatchEmbedContentsResponse",
+    "Candidate",
+    "ContentEmbedding",
+    "CountTokensRequest",
+    "CountTokensResponse",
+    "EmbedContentRequest",
+    "EmbedContentResponse",
+    "GenerateAnswerRequest",
+    "GenerateAnswerResponse",
+    "GenerateContentRequest",
+    "GenerateContentResponse",
+    "GenerationConfig",
+    "GroundingAttribution",
+    "SemanticRetrieverConfig",
+    "TaskType",
     "Model",
     "CreateTunedModelMetadata",
     "CreateTunedModelRequest",
@@ -148,6 +264,42 @@ __all__ = (
     "TransferOwnershipRequest",
     "TransferOwnershipResponse",
     "UpdatePermissionRequest",
+    "Chunk",
+    "ChunkData",
+    "Condition",
+    "Corpus",
+    "CustomMetadata",
+    "Document",
+    "MetadataFilter",
+    "StringList",
+    "BatchCreateChunksRequest",
+    "BatchCreateChunksResponse",
+    "BatchDeleteChunksRequest",
+    "BatchUpdateChunksRequest",
+    "BatchUpdateChunksResponse",
+    "CreateChunkRequest",
+    "CreateCorpusRequest",
+    "CreateDocumentRequest",
+    "DeleteChunkRequest",
+    "DeleteCorpusRequest",
+    "DeleteDocumentRequest",
+    "GetChunkRequest",
+    "GetCorpusRequest",
+    "GetDocumentRequest",
+    "ListChunksRequest",
+    "ListChunksResponse",
+    "ListCorporaRequest",
+    "ListCorporaResponse",
+    "ListDocumentsRequest",
+    "ListDocumentsResponse",
+    "QueryCorpusRequest",
+    "QueryCorpusResponse",
+    "QueryDocumentRequest",
+    "QueryDocumentResponse",
+    "RelevantChunk",
+    "UpdateChunkRequest",
+    "UpdateCorpusRequest",
+    "UpdateDocumentRequest",
     "ContentFilter",
     "SafetyFeedback",
     "SafetyRating",
