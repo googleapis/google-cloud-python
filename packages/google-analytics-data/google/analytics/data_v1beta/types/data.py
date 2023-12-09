@@ -41,6 +41,7 @@ __protobuf__ = proto.module(
         "CohortsRange",
         "CohortReportSettings",
         "ResponseMetaData",
+        "SamplingMetadata",
         "DimensionHeader",
         "MetricHeader",
         "PivotHeader",
@@ -284,7 +285,15 @@ class Dimension(proto.Message):
         name (str):
             The name of the dimension. See the `API
             Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions>`__
-            for the list of dimension names.
+            for the list of dimension names supported by core reporting
+            methods such as ``runReport`` and ``batchRunReports``. See
+            `Realtime
+            Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-api-schema#dimensions>`__
+            for the list of dimension names supported by the
+            ``runRealtimeReport`` method. See `Funnel
+            Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/exploration-api-schema#dimensions>`__
+            for the list of dimension names supported by the
+            ``runFunnelReport`` method.
 
             If ``dimensionExpression`` is specified, ``name`` can be any
             string that you would like within the allowed character set.
@@ -418,7 +427,15 @@ class Metric(proto.Message):
         name (str):
             The name of the metric. See the `API
             Metrics <https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics>`__
-            for the list of metric names.
+            for the list of metric names supported by core reporting
+            methods such as ``runReport`` and ``batchRunReports``. See
+            `Realtime
+            Metrics <https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-api-schema#metrics>`__
+            for the list of metric names supported by the
+            ``runRealtimeReport`` method. See `Funnel
+            Metrics <https://developers.google.com/analytics/devguides/reporting/data/v1/exploration-api-schema#metrics>`__
+            for the list of metric names supported by the
+            ``runFunnelReport`` method.
 
             If ``expression`` is specified, ``name`` can be any string
             that you would like within the allowed character set. For
@@ -1255,11 +1272,19 @@ class ResponseMetaData(proto.Message):
             subject to thresholding thresholding and no data is absent
             from the report, and this happens when all data is above the
             thresholds. To learn more, see `Data
-            thresholds <https://support.google.com/analytics/answer/9383630>`__
-            and `About Demographics and
-            Interests <https://support.google.com/analytics/answer/2799357>`__.
+            thresholds <https://support.google.com/analytics/answer/9383630>`__.
 
             This field is a member of `oneof`_ ``_subject_to_thresholding``.
+        sampling_metadatas (MutableSequence[google.analytics.data_v1beta.types.SamplingMetadata]):
+            If this report results is
+            `sampled <https://support.google.com/analytics/answer/13331292>`__,
+            this describes the percentage of events used in this report.
+            One ``samplingMetadatas`` is populated for each date range.
+            Each ``samplingMetadatas`` corresponds to a date range in
+            order that date ranges were specified in the request.
+
+            However if the results are not sampled, this field will not
+            be defined.
     """
 
     class SchemaRestrictionResponse(proto.Message):
@@ -1340,6 +1365,46 @@ class ResponseMetaData(proto.Message):
         proto.BOOL,
         number=8,
         optional=True,
+    )
+    sampling_metadatas: MutableSequence["SamplingMetadata"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="SamplingMetadata",
+    )
+
+
+class SamplingMetadata(proto.Message):
+    r"""If this report results is
+    `sampled <https://support.google.com/analytics/answer/13331292>`__,
+    this describes the percentage of events used in this report.
+    Sampling is the practice of analyzing a subset of all data in order
+    to uncover the meaningful information in the larger data set.
+
+    Attributes:
+        samples_read_count (int):
+            The total number of events read in this
+            sampled report for a date range. This is the
+            size of the subset this property's data that was
+            analyzed in this report.
+        sampling_space_size (int):
+            The total number of events present in this property's data
+            that could have been analyzed in this report for a date
+            range. Sampling uncovers the meaningful information about
+            the larger data set, and this is the size of the larger data
+            set.
+
+            To calculate the percentage of available data that was used
+            in this report, compute
+            ``samplesReadCount/samplingSpaceSize``.
+    """
+
+    samples_read_count: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    sampling_space_size: int = proto.Field(
+        proto.INT64,
+        number=2,
     )
 
 
@@ -1640,20 +1705,28 @@ class PropertyQuota(proto.Message):
 class QuotaStatus(proto.Message):
     r"""Current state for a particular quota group.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         consumed (int):
             Quota consumed by this request.
+
+            This field is a member of `oneof`_ ``_consumed``.
         remaining (int):
             Quota remaining after this request.
+
+            This field is a member of `oneof`_ ``_remaining``.
     """
 
     consumed: int = proto.Field(
         proto.INT32,
         number=1,
+        optional=True,
     )
     remaining: int = proto.Field(
         proto.INT32,
         number=2,
+        optional=True,
     )
 
 

@@ -16,9 +16,10 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
@@ -156,6 +157,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -230,6 +232,22 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         """
         # Return the channel from cache.
         return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self.grpc_channel
+            )
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
     def run_report(
@@ -481,6 +499,196 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
                 response_deserializer=analytics_data_api.CheckCompatibilityResponse.deserialize,
             )
         return self._stubs["check_compatibility"]
+
+    @property
+    def create_audience_export(
+        self,
+    ) -> Callable[
+        [analytics_data_api.CreateAudienceExportRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create audience export method over gRPC.
+
+        Creates an audience export for later retrieval. This method
+        quickly returns the audience export's resource name and
+        initiates a long running asynchronous request to form an
+        audience export. To export the users in an audience export,
+        first create the audience export through this method and then
+        send the audience resource name to the ``QueryAudienceExport``
+        method.
+
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Exports with examples.
+
+        An audience export is a snapshot of the users currently in the
+        audience at the time of audience export creation. Creating
+        audience exports for one audience on different days will return
+        different results as users enter and exit the audience.
+
+        Audiences in Google Analytics 4 allow you to segment your users
+        in the ways that are important to your business. To learn more,
+        see https://support.google.com/analytics/answer/9267572.
+        Audience exports contain the users in each audience.
+
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
+
+        Returns:
+            Callable[[~.CreateAudienceExportRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_audience_export" not in self._stubs:
+            self._stubs["create_audience_export"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1beta.BetaAnalyticsData/CreateAudienceExport",
+                request_serializer=analytics_data_api.CreateAudienceExportRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_audience_export"]
+
+    @property
+    def query_audience_export(
+        self,
+    ) -> Callable[
+        [analytics_data_api.QueryAudienceExportRequest],
+        Awaitable[analytics_data_api.QueryAudienceExportResponse],
+    ]:
+        r"""Return a callable for the query audience export method over gRPC.
+
+        Retrieves an audience export of users. After creating an
+        audience, the users are not immediately available for exporting.
+        First, a request to ``CreateAudienceExport`` is necessary to
+        create an audience export of users, and then second, this method
+        is used to retrieve the users in the audience export.
+
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Exports with examples.
+
+        Audiences in Google Analytics 4 allow you to segment your users
+        in the ways that are important to your business. To learn more,
+        see https://support.google.com/analytics/answer/9267572.
+
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
+
+        Returns:
+            Callable[[~.QueryAudienceExportRequest],
+                    Awaitable[~.QueryAudienceExportResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_audience_export" not in self._stubs:
+            self._stubs["query_audience_export"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1beta.BetaAnalyticsData/QueryAudienceExport",
+                request_serializer=analytics_data_api.QueryAudienceExportRequest.serialize,
+                response_deserializer=analytics_data_api.QueryAudienceExportResponse.deserialize,
+            )
+        return self._stubs["query_audience_export"]
+
+    @property
+    def get_audience_export(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetAudienceExportRequest],
+        Awaitable[analytics_data_api.AudienceExport],
+    ]:
+        r"""Return a callable for the get audience export method over gRPC.
+
+        Gets configuration metadata about a specific audience export.
+        This method can be used to understand an audience export after
+        it has been created.
+
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Exports with examples.
+
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
+
+        Returns:
+            Callable[[~.GetAudienceExportRequest],
+                    Awaitable[~.AudienceExport]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_audience_export" not in self._stubs:
+            self._stubs["get_audience_export"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1beta.BetaAnalyticsData/GetAudienceExport",
+                request_serializer=analytics_data_api.GetAudienceExportRequest.serialize,
+                response_deserializer=analytics_data_api.AudienceExport.deserialize,
+            )
+        return self._stubs["get_audience_export"]
+
+    @property
+    def list_audience_exports(
+        self,
+    ) -> Callable[
+        [analytics_data_api.ListAudienceExportsRequest],
+        Awaitable[analytics_data_api.ListAudienceExportsResponse],
+    ]:
+        r"""Return a callable for the list audience exports method over gRPC.
+
+        Lists all audience exports for a property. This method can be
+        used for you to find and reuse existing audience exports rather
+        than creating unnecessary new audience exports. The same
+        audience can have multiple audience exports that represent the
+        export of users that were in an audience on different days.
+
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
+        for an introduction to Audience Exports with examples.
+
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
+
+        Returns:
+            Callable[[~.ListAudienceExportsRequest],
+                    Awaitable[~.ListAudienceExportsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_audience_exports" not in self._stubs:
+            self._stubs["list_audience_exports"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1beta.BetaAnalyticsData/ListAudienceExports",
+                request_serializer=analytics_data_api.ListAudienceExportsRequest.serialize,
+                response_deserializer=analytics_data_api.ListAudienceExportsResponse.deserialize,
+            )
+        return self._stubs["list_audience_exports"]
 
     def close(self):
         return self.grpc_channel.close()
