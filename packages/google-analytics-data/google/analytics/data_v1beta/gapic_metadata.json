@@ -25,9 +25,29 @@
                 "check_compatibility"
               ]
             },
+            "CreateAudienceExport": {
+              "methods": [
+                "create_audience_export"
+              ]
+            },
+            "GetAudienceExport": {
+              "methods": [
+                "get_audience_export"
+              ]
+            },
             "GetMetadata": {
               "methods": [
                 "get_metadata"
+              ]
+            },
+            "ListAudienceExports": {
+              "methods": [
+                "list_audience_exports"
+              ]
+            },
+            "QueryAudienceExport": {
+              "methods": [
+                "query_audience_export"
               ]
             },
             "RunPivotReport": {
@@ -65,9 +85,29 @@
                 "check_compatibility"
               ]
             },
+            "CreateAudienceExport": {
+              "methods": [
+                "create_audience_export"
+              ]
+            },
+            "GetAudienceExport": {
+              "methods": [
+                "get_audience_export"
+              ]
+            },
             "GetMetadata": {
               "methods": [
                 "get_metadata"
+              ]
+            },
+            "ListAudienceExports": {
+              "methods": [
+                "list_audience_exports"
+              ]
+            },
+            "QueryAudienceExport": {
+              "methods": [
+                "query_audience_export"
               ]
             },
             "RunPivotReport": {
@@ -105,9 +145,29 @@
                 "check_compatibility"
               ]
             },
+            "CreateAudienceExport": {
+              "methods": [
+                "create_audience_export"
+              ]
+            },
+            "GetAudienceExport": {
+              "methods": [
+                "get_audience_export"
+              ]
+            },
             "GetMetadata": {
               "methods": [
                 "get_metadata"
+              ]
+            },
+            "ListAudienceExports": {
+              "methods": [
+                "list_audience_exports"
+              ]
+            },
+            "QueryAudienceExport": {
+              "methods": [
+                "query_audience_export"
               ]
             },
             "RunPivotReport": {

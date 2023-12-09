@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.analytics.data_v1beta.types import data
@@ -38,6 +39,17 @@ __protobuf__ = proto.module(
         "GetMetadataRequest",
         "RunRealtimeReportRequest",
         "RunRealtimeReportResponse",
+        "GetAudienceExportRequest",
+        "ListAudienceExportsRequest",
+        "ListAudienceExportsResponse",
+        "CreateAudienceExportRequest",
+        "AudienceExport",
+        "AudienceExportMetadata",
+        "QueryAudienceExportRequest",
+        "QueryAudienceExportResponse",
+        "AudienceRow",
+        "AudienceDimension",
+        "AudienceDimensionValue",
     },
 )
 
@@ -135,8 +147,8 @@ class CheckCompatibilityResponse(proto.Message):
 
 
 class Metadata(proto.Message):
-    r"""The dimensions and metrics currently accepted in reporting
-    methods.
+    r"""The dimensions, metrics and comparisons currently accepted in
+    reporting methods.
 
     Attributes:
         name (str):
@@ -988,6 +1000,411 @@ class RunRealtimeReportResponse(proto.Message):
     kind: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+
+
+class GetAudienceExportRequest(proto.Message):
+    r"""A request to retrieve configuration metadata about a specific
+    audience export.
+
+    Attributes:
+        name (str):
+            Required. The audience export resource name. Format:
+            ``properties/{property}/audienceExports/{audience_export}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListAudienceExportsRequest(proto.Message):
+    r"""A request to list all audience exports for a property.
+
+    Attributes:
+        parent (str):
+            Required. All audience exports for this property will be
+            listed in the response. Format: ``properties/{property}``
+        page_size (int):
+            Optional. The maximum number of audience
+            exports to return. The service may return fewer
+            than this value. If unspecified, at most 200
+            audience exports will be returned. The maximum
+            value is 1000 (higher values will be coerced to
+            the maximum).
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListAudienceExports`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListAudienceExports`` must match the call that provided
+            the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListAudienceExportsResponse(proto.Message):
+    r"""A list of all audience exports for a property.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        audience_exports (MutableSequence[google.analytics.data_v1beta.types.AudienceExport]):
+            Each audience export for a property.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    audience_exports: MutableSequence["AudienceExport"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AudienceExport",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+
+
+class CreateAudienceExportRequest(proto.Message):
+    r"""A request to create a new audience export.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this audience export
+            will be created. Format: ``properties/{property}``
+        audience_export (google.analytics.data_v1beta.types.AudienceExport):
+            Required. The audience export to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    audience_export: "AudienceExport" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AudienceExport",
+    )
+
+
+class AudienceExport(proto.Message):
+    r"""An audience export is a list of users in an audience at the
+    time of the list's creation. One audience may have multiple
+    audience exports created for different days.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Output only. Identifier. The audience export resource name
+            assigned during creation. This resource name identifies this
+            ``AudienceExport``.
+
+            Format:
+            ``properties/{property}/audienceExports/{audience_export}``
+        audience (str):
+            Required. The audience resource name. This resource name
+            identifies the audience being listed and is shared between
+            the Analytics Data & Admin APIs.
+
+            Format: ``properties/{property}/audiences/{audience}``
+        audience_display_name (str):
+            Output only. The descriptive display name for
+            this audience. For example, "Purchasers".
+        dimensions (MutableSequence[google.analytics.data_v1beta.types.AudienceDimension]):
+            Required. The dimensions requested and
+            displayed in the query response.
+        state (google.analytics.data_v1beta.types.AudienceExport.State):
+            Output only. The current state for this
+            AudienceExport.
+
+            This field is a member of `oneof`_ ``_state``.
+        begin_creating_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when CreateAudienceExport was called
+            and the AudienceExport began the ``CREATING`` state.
+
+            This field is a member of `oneof`_ ``_begin_creating_time``.
+        creation_quota_tokens_charged (int):
+            Output only. The total quota tokens charged during creation
+            of the AudienceExport. Because this token count is based on
+            activity from the ``CREATING`` state, this tokens charged
+            will be fixed once an AudienceExport enters the ``ACTIVE``
+            or ``FAILED`` states.
+        row_count (int):
+            Output only. The total number of rows in the
+            AudienceExport result.
+
+            This field is a member of `oneof`_ ``_row_count``.
+        error_message (str):
+            Output only. Error message is populated when
+            an audience export fails during creation. A
+            common reason for such a failure is quota
+            exhaustion.
+
+            This field is a member of `oneof`_ ``_error_message``.
+        percentage_completed (float):
+            Output only. The percentage completed for
+            this audience export ranging between 0 to 100.
+
+            This field is a member of `oneof`_ ``_percentage_completed``.
+    """
+
+    class State(proto.Enum):
+        r"""The AudienceExport currently exists in this state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified state will never be used.
+            CREATING (1):
+                The AudienceExport is currently creating and
+                will be available in the future. Creating occurs
+                immediately after the CreateAudienceExport call.
+            ACTIVE (2):
+                The AudienceExport is fully created and ready
+                for querying. An AudienceExport is updated to
+                active asynchronously from a request; this
+                occurs some time (for example 15 minutes) after
+                the initial create call.
+            FAILED (3):
+                The AudienceExport failed to be created. It
+                is possible that re-requesting this audience
+                export will succeed.
+        """
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        ACTIVE = 2
+        FAILED = 3
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    audience: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    audience_display_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    dimensions: MutableSequence["AudienceDimension"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="AudienceDimension",
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=5,
+        optional=True,
+        enum=State,
+    )
+    begin_creating_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        optional=True,
+        message=timestamp_pb2.Timestamp,
+    )
+    creation_quota_tokens_charged: int = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    row_count: int = proto.Field(
+        proto.INT32,
+        number=8,
+        optional=True,
+    )
+    error_message: str = proto.Field(
+        proto.STRING,
+        number=9,
+        optional=True,
+    )
+    percentage_completed: float = proto.Field(
+        proto.DOUBLE,
+        number=10,
+        optional=True,
+    )
+
+
+class AudienceExportMetadata(proto.Message):
+    r"""This metadata is currently blank."""
+
+
+class QueryAudienceExportRequest(proto.Message):
+    r"""A request to list users in an audience export.
+
+    Attributes:
+        name (str):
+            Required. The name of the audience export to retrieve users
+            from. Format:
+            ``properties/{property}/audienceExports/{audience_export}``
+        offset (int):
+            Optional. The row count of the start row. The first row is
+            counted as row 0.
+
+            When paging, the first request does not specify offset; or
+            equivalently, sets offset to 0; the first request returns
+            the first ``limit`` of rows. The second request sets offset
+            to the ``limit`` of the first request; the second request
+            returns the second ``limit`` of rows.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        limit (int):
+            Optional. The number of rows to return. If unspecified,
+            10,000 rows are returned. The API returns a maximum of
+            250,000 rows per request, no matter how many you ask for.
+            ``limit`` must be positive.
+
+            The API can also return fewer rows than the requested
+            ``limit``, if there aren't as many dimension values as the
+            ``limit``.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    offset: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    limit: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+
+
+class QueryAudienceExportResponse(proto.Message):
+    r"""A list of users in an audience export.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        audience_export (google.analytics.data_v1beta.types.AudienceExport):
+            Configuration data about AudienceExport being
+            queried. Returned to help interpret the audience
+            rows in this response. For example, the
+            dimensions in this AudienceExport correspond to
+            the columns in the AudienceRows.
+
+            This field is a member of `oneof`_ ``_audience_export``.
+        audience_rows (MutableSequence[google.analytics.data_v1beta.types.AudienceRow]):
+            Rows for each user in an audience export. The
+            number of rows in this response will be less
+            than or equal to request's page size.
+        row_count (int):
+            The total number of rows in the AudienceExport result.
+            ``rowCount`` is independent of the number of rows returned
+            in the response, the ``limit`` request parameter, and the
+            ``offset`` request parameter. For example if a query returns
+            175 rows and includes ``limit`` of 50 in the API request,
+            the response will contain ``rowCount`` of 175 but only 50
+            rows.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+
+            This field is a member of `oneof`_ ``_row_count``.
+    """
+
+    audience_export: "AudienceExport" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        optional=True,
+        message="AudienceExport",
+    )
+    audience_rows: MutableSequence["AudienceRow"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="AudienceRow",
+    )
+    row_count: int = proto.Field(
+        proto.INT32,
+        number=3,
+        optional=True,
+    )
+
+
+class AudienceRow(proto.Message):
+    r"""Dimension value attributes for the audience user row.
+
+    Attributes:
+        dimension_values (MutableSequence[google.analytics.data_v1beta.types.AudienceDimensionValue]):
+            Each dimension value attribute for an
+            audience user. One dimension value will be added
+            for each dimension column requested.
+    """
+
+    dimension_values: MutableSequence["AudienceDimensionValue"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AudienceDimensionValue",
+    )
+
+
+class AudienceDimension(proto.Message):
+    r"""An audience dimension is a user attribute. Specific user attributed
+    are requested and then later returned in the
+    ``QueryAudienceExportResponse``.
+
+    Attributes:
+        dimension_name (str):
+            Optional. The API name of the dimension. See the `API
+            Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-api-schema#dimensions>`__
+            for the list of dimension names.
+    """
+
+    dimension_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AudienceDimensionValue(proto.Message):
+    r"""The value of a dimension.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        value (str):
+            Value as a string if the dimension type is a
+            string.
+
+            This field is a member of `oneof`_ ``one_value``.
+    """
+
+    value: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="one_value",
     )
 
 
