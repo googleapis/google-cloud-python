@@ -1,7 +1,7 @@
 {
-    "packages/google-ai-generativelanguage": "0.3.5",
+    "packages/google-ai-generativelanguage": "0.4.0",
     "packages/google-analytics-admin": "0.22.1",
-    "packages/google-analytics-data": "0.18.1",
+    "packages/google-analytics-data": "0.18.2",
     "packages/google-apps-meet": "0.1.0",
     "packages/google-apps-script-type": "0.3.5",
     "packages/google-area120-tables": "0.11.5",
