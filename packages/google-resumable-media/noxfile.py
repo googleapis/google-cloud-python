@@ -121,7 +121,7 @@ def doctest(session):
     session.install("-e", ".[requests,aiohttp]")
     session.install("sphinx==4.0.1", "alabaster", "recommonmark")
     session.install(
-        "sphinx",
+        "sphinx==4.0.1",
         "sphinx_rtd_theme",
         "sphinx-docstring-typing >= 0.0.3",
         "mock",
