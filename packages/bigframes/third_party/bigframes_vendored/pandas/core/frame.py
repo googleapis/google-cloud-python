@@ -3414,18 +3414,75 @@ class DataFrame(NDFrame):
         the row axis, leaving just two non-identifier columns, 'variable' and
         'value'.
 
-        Parameters
-        ----------
-        id_vars (tuple, list, or ndarray, optional):
-            Column(s) to use as identifier variables.
-        value_vars (tuple, list, or ndarray, optional):
-            Column(s) to unpivot. If not specified, uses all columns that
-            are not set as `id_vars`.
-        var_name (scalar):
-            Name to use for the 'variable' column. If None it uses
-            ``frame.columns.name`` or 'variable'.
-        value_name (scalar, default 'value'):
-            Name to use for the 'value' column.
+         **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [1, None, 3, 4, 5],
+            ...                     "B": [1, 2, 3, 4, 5],
+            ...                     "C": [None, 3.5, None, 4.5, 5.0]})
+            >>> df
+                    A	    B	   C
+            0	  1.0	    1	<NA>
+            1	 <NA>	    2	 3.5
+            2     3.0	    3	<NA>
+            3	  4.0	    4	 4.5
+            4	  5.0	    5	 5.0
+            <BLANKLINE>
+            [5 rows x 3 columns]
+
+        Using `melt` without optional arguments:
+
+            >>> df.melt()
+                variable    value
+            0	       A      1.0
+            1	       A     <NA>
+            2	       A      3.0
+            3	       A      4.0
+            4	       A      5.0
+            5	       B      1.0
+            6	       B      2.0
+            7	       B      3.0
+            8	       B      4.0
+            9	       B      5.0
+            10	       C     <NA>
+            11	       C      3.5
+            12	       C     <NA>
+            13	       C      4.5
+            14	       C      5.0
+            <BLANKLINE>
+            [15 rows x 2 columns]
+
+        Using `melt` with `id_vars` and `value_vars`:
+
+            >>> df.melt(id_vars='A', value_vars=['B', 'C'])
+                   A	variable	value
+            0	 1.0	       B	    1
+            1	<NA>	       B	    2
+            2	 3.0	       B	    3
+            3	 4.0	       B	    4
+            4	 5.0	       B	    5
+            5	 1.0	       C	 <NA>
+            6	 <NA>	       C	    3
+            7	 3.0	       C	 <NA>
+            8	 4.0	       C	    4
+            9	 5.0	       C	    5
+            <BLANKLINE>
+            [10 rows x 3 columns]
+
+
+        Args:
+            id_vars (tuple, list, or ndarray, optional):
+                Column(s) to use as identifier variables.
+            value_vars (tuple, list, or ndarray, optional):
+                Column(s) to unpivot. If not specified, uses all columns that
+                are not set as `id_vars`.
+            var_name (scalar):
+                Name to use for the 'variable' column. If None it uses
+                ``frame.columns.name`` or 'variable'.
+            value_name (scalar, default 'value'):
+                Name to use for the 'value' column.
 
         Returns:
             DataFrame: Unpivoted DataFrame.
@@ -3757,6 +3814,52 @@ class DataFrame(NDFrame):
             do not together uniquely identify input rows, the output will be
             silently non-deterministic.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({
+            ...     "foo": ["one", "one", "one", "two", "two"],
+            ...     "bar": ["A", "B", "C", "A", "B"],
+            ...     "baz": [1, 2, 3, 4, 5],
+            ...     "zoo": ['x', 'y', 'z', 'q', 'w']
+            ... })
+
+            >>> df
+                foo	bar	baz	zoo
+            0	one	  A	  1	  x
+            1	one	  B	  2	  y
+            2	one	  C	  3	  z
+            3	two	  A	  4	  q
+            4	two	  B	  5	  w
+            <BLANKLINE>
+            [5 rows x 4 columns]
+
+        Using `pivot` without optional arguments:
+
+            >>> df.pivot(columns='foo')
+                    bar	            baz	            zoo
+            foo	 one	 two	 one	 two	 one	 two
+            0	   A	<NA>	   1	<NA>	   x	<NA>
+            1	   B	<NA>	   2	<NA>	   y	<NA>
+            2	   C	<NA>	   3	<NA>	   z	<NA>
+            3	<NA>	   A	<NA>	   4	<NA>	   q
+            4	<NA>	   B	<NA>	   5	<NA>	   w
+            <BLANKLINE>
+            [5 rows x 6 columns]
+
+        Using `pivot` with `index` and `values`:
+
+            >>> df.pivot(columns='foo', index='bar', values='baz')
+            foo	    one     two
+            bar
+            A	    1         4
+            B	    2	      5
+            C	    3	   <NA>
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
         Args:
             columns (str or object or a list of str):
                 Column to use to make new frame's columns.
@@ -3774,7 +3877,7 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def stack(self):
+    def stack(self, level=-1):
         """
         Stack the prescribed level(s) from columns to index.
 
@@ -3792,12 +3895,36 @@ class DataFrame(NDFrame):
             BigQuery DataFrames does not support stack operations that would
             combine columns of different dtypes.
 
+        **Example:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'A': [1, 3], 'B': [2, 4]}, index=['foo', 'bar'])
+            >>> df
+                    A	B
+            foo	    1	2
+            bar	    3	4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df.stack()
+            foo  A    1
+                 B    2
+            bar  A    3
+                 B    4
+            dtype: Int64
+
+        Args:
+            level (int, str, or list of these, default -1 (last level)):
+                Level(s) to stack from the column axis onto the index axis.
+
         Returns:
             DataFrame or Series: Stacked dataframe or series.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def unstack(self):
+    def unstack(self, level=-1):
         """
         Pivot a level of the (necessarily hierarchical) index labels.
 
@@ -3806,6 +3933,30 @@ class DataFrame(NDFrame):
 
         If the index is not a MultiIndex, the output will be a Series
         (the analogue of stack when the columns are not a MultiIndex).
+
+        **Example:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'A': [1, 3], 'B': [2, 4]}, index=['foo', 'bar'])
+            >>> df
+                    A	B
+            foo	    1	2
+            bar	    3	4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df.unstack()
+            A   foo    1
+                bar    3
+            B   foo    2
+                bar    4
+            dtype: Int64
+
+        Args:
+            level (int, str, or list of these, default -1 (last level)):
+                Level(s) of index to unstack, can pass level name.
 
         Returns:
             DataFrame or Series: DataFrame or Series.
