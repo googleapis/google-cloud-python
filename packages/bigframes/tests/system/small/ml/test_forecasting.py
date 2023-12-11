@@ -18,8 +18,10 @@ import pandas as pd
 import pyarrow as pa
 import pytz
 
+from bigframes.ml import forecasting
 
-def test_model_predict(time_series_arima_plus_model):
+
+def test_model_predict_default(time_series_arima_plus_model: forecasting.ARIMAPlus):
     utc = pytz.utc
     predictions = time_series_arima_plus_model.predict().to_pandas()
     assert predictions.shape == (3, 8)
@@ -47,7 +49,40 @@ def test_model_predict(time_series_arima_plus_model):
     )
 
 
-def test_model_score(time_series_arima_plus_model, new_time_series_df):
+def test_model_predict_params(time_series_arima_plus_model: forecasting.ARIMAPlus):
+    utc = pytz.utc
+    predictions = time_series_arima_plus_model.predict(
+        horizon=4, confidence_level=0.9
+    ).to_pandas()
+    assert predictions.shape == (4, 8)
+    result = predictions[["forecast_timestamp", "forecast_value"]]
+    expected = pd.DataFrame(
+        {
+            "forecast_timestamp": [
+                datetime(2017, 8, 2, tzinfo=utc),
+                datetime(2017, 8, 3, tzinfo=utc),
+                datetime(2017, 8, 4, tzinfo=utc),
+                datetime(2017, 8, 5, tzinfo=utc),
+            ],
+            "forecast_value": [2724.472284, 2593.368389, 2353.613034, 1781.623071],
+        }
+    )
+    expected["forecast_value"] = expected["forecast_value"].astype(pd.Float64Dtype())
+    expected["forecast_timestamp"] = expected["forecast_timestamp"].astype(
+        pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
+    )
+
+    pd.testing.assert_frame_equal(
+        result,
+        expected,
+        rtol=0.1,
+        check_index_type=False,
+    )
+
+
+def test_model_score(
+    time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
+):
     result = time_series_arima_plus_model.score(
         new_time_series_df[["parsed_date"]], new_time_series_df[["total_visits"]]
     ).to_pandas()
@@ -69,7 +104,9 @@ def test_model_score(time_series_arima_plus_model, new_time_series_df):
     )
 
 
-def test_model_score_series(time_series_arima_plus_model, new_time_series_df):
+def test_model_score_series(
+    time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
+):
     result = time_series_arima_plus_model.score(
         new_time_series_df["parsed_date"], new_time_series_df["total_visits"]
     ).to_pandas()

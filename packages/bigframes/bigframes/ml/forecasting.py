@@ -86,21 +86,38 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
             options=self._bqml_options,
         )
 
-    def predict(self, X=None) -> bpd.DataFrame:
+    def predict(
+        self, X=None, horizon: int = 3, confidence_level: float = 0.95
+    ) -> bpd.DataFrame:
         """Predict the closest cluster for each sample in X.
 
         Args:
             X (default None):
                 ignored, to be compatible with other APIs.
+            horizon (int, default: 3):
+                an int value that specifies the number of time points to forecast.
+                The default value is 3, and the maximum value is 1000.
+            confidence_level (float, default 0.95):
+                a float value that specifies percentage of the future values that fall in the prediction interval.
+                The valid input range is [0.0, 1.0).
 
         Returns:
             bigframes.dataframe.DataFrame: The predicted DataFrames. Which
                 contains 2 columns "forecast_timestamp" and "forecast_value".
         """
+        if horizon < 1 or horizon > 1000:
+            raise ValueError(f"horizon must be [1, 1000], but is {horizon}.")
+        if confidence_level < 0.0 or confidence_level >= 1.0:
+            raise ValueError(
+                f"confidence_level must be [0.0, 1.0), but is {confidence_level}."
+            )
+
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
-        return self._bqml_model.forecast()
+        return self._bqml_model.forecast(
+            options={"horizon": horizon, "confidence_level": confidence_level}
+        )
 
     def score(
         self,

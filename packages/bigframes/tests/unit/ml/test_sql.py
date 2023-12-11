@@ -293,6 +293,22 @@ def test_ml_centroids_produces_correct_sql(
     )
 
 
+def test_forecast_correct_sql(
+    model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
+    mock_df: bpd.DataFrame,
+):
+    sql = model_manipulation_sql_generator.ml_forecast(
+        struct_options={"option_key1": 1, "option_key2": 2.2},
+    )
+    assert (
+        sql
+        == """SELECT * FROM ML.FORECAST(MODEL `my_project_id.my_dataset_id.my_model_id`,
+  STRUCT(
+  1 AS option_key1,
+  2.2 AS option_key2))"""
+    )
+
+
 def test_ml_generate_text_produces_correct_sql(
     model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
     mock_df: bpd.DataFrame,

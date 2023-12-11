@@ -126,8 +126,8 @@ class BqmlModel:
             ),
         )
 
-    def forecast(self) -> bpd.DataFrame:
-        sql = self._model_manipulation_sql_generator.ml_forecast()
+    def forecast(self, options: Mapping[str, int | float]) -> bpd.DataFrame:
+        sql = self._model_manipulation_sql_generator.ml_forecast(struct_options=options)
         return self._session.read_gbq(sql, index_col="forecast_timestamp").reset_index()
 
     def evaluate(self, input_data: Optional[bpd.DataFrame] = None):

@@ -223,9 +223,11 @@ class ModelManipulationSqlGenerator(BaseSqlGenerator):
         return f"""SELECT * FROM ML.PREDICT(MODEL `{self._model_name}`,
   ({self._source_sql(source_df)}))"""
 
-    def ml_forecast(self) -> str:
+    def ml_forecast(self, struct_options: Mapping[str, Union[int, float]]) -> str:
         """Encode ML.FORECAST for BQML"""
-        return f"""SELECT * FROM ML.FORECAST(MODEL `{self._model_name}`)"""
+        struct_options_sql = self.struct_options(**struct_options)
+        return f"""SELECT * FROM ML.FORECAST(MODEL `{self._model_name}`,
+  {struct_options_sql})"""
 
     def ml_generate_text(
         self, source_df: bpd.DataFrame, struct_options: Mapping[str, Union[int, float]]

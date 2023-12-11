@@ -336,17 +336,18 @@ def test_model_generate_text(
 
 def test_model_forecast(time_series_bqml_arima_plus_model: core.BqmlModel):
     utc = pytz.utc
-    forecast = time_series_bqml_arima_plus_model.forecast().to_pandas()[
-        ["forecast_timestamp", "forecast_value"]
-    ]
+    forecast = time_series_bqml_arima_plus_model.forecast(
+        {"horizon": 4, "confidence_level": 0.8}
+    ).to_pandas()[["forecast_timestamp", "forecast_value"]]
     expected = pd.DataFrame(
         {
             "forecast_timestamp": [
                 datetime(2017, 8, 2, tzinfo=utc),
                 datetime(2017, 8, 3, tzinfo=utc),
                 datetime(2017, 8, 4, tzinfo=utc),
+                datetime(2017, 8, 5, tzinfo=utc),
             ],
-            "forecast_value": [2724.472284, 2593.368389, 2353.613034],
+            "forecast_value": [2724.472284, 2593.368389, 2353.613034, 1781.623071],
         }
     )
     expected["forecast_value"] = expected["forecast_value"].astype(pd.Float64Dtype())
