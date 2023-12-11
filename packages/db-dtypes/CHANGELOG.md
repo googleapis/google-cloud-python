@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.1.1...v1.2.0) (2023-12-10)
+
+
+### Features
+
+* Add support for Python 3.12 ([#223](https://github.com/googleapis/python-db-dtypes-pandas/issues/223)) ([1338425](https://github.com/googleapis/python-db-dtypes-pandas/commit/1338425ad765be4613bcf3fcfa7f6ce964de04a3))
+
+
+### Bug Fixes
+
+* Adds xfail marks to tests that are known to fail ([#189](https://github.com/googleapis/python-db-dtypes-pandas/issues/189)) ([4a56b76](https://github.com/googleapis/python-db-dtypes-pandas/commit/4a56b766b0ccba900a555167863f1081a76c4c0d))
+
+
+### Documentation
+
+* Update pandas extension link ([#210](https://github.com/googleapis/python-db-dtypes-pandas/issues/210)) ([668988f](https://github.com/googleapis/python-db-dtypes-pandas/commit/668988f0f1c25a9d50a7ad5523933e42553b5210))
+
 ## [1.1.1](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.1.0...v1.1.1) (2023-03-30)
 
 
