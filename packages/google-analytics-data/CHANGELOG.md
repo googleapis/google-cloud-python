@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.18.2](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.1...google-analytics-data-v0.18.2) (2023-12-09)
+
+
+### Features
+
+* [google-analytics-data] add `CreateAudienceExport`, `QueryAudienceExport`, `GetAudienceExport`, `ListAudienceExports` methods to the Data API v1 beta ([182c4cf](https://github.com/googleapis/google-cloud-python/commit/182c4cf16e7e1eef2819396a5a0b590a81af6a58))
+* add `sampling_metadatas` field to `ResponseMetaData` ([182c4cf](https://github.com/googleapis/google-cloud-python/commit/182c4cf16e7e1eef2819396a5a0b590a81af6a58))
+* add `SamplingMetadata`, `AudienceExport`, `AudienceExportMetadata`, `AudienceDimensionValue` types ([182c4cf](https://github.com/googleapis/google-cloud-python/commit/182c4cf16e7e1eef2819396a5a0b590a81af6a58))
+
+
+### Bug Fixes
+
+* add `optional` label to `consumed`, `remaining` fields of the `QuotaStatus` type ([182c4cf](https://github.com/googleapis/google-cloud-python/commit/182c4cf16e7e1eef2819396a5a0b590a81af6a58))
+
+
+### Documentation
+
+* updated comments ([182c4cf](https://github.com/googleapis/google-cloud-python/commit/182c4cf16e7e1eef2819396a5a0b590a81af6a58))
+
 ## [0.18.1](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.0...google-analytics-data-v0.18.1) (2023-12-07)
 
 

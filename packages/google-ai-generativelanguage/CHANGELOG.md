@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.3.5...google-ai-generativelanguage-v0.4.0) (2023-12-09)
+
+
+### Features
+
+* Add v1, contains only GenerativeService, nothing else ([23d8814](https://github.com/googleapis/google-cloud-python/commit/23d8814baa6288d94484d52a98714fd32755ada3))
+* Add v1beta, adds GenerativeService and RetrievalService ([23d8814](https://github.com/googleapis/google-cloud-python/commit/23d8814baa6288d94484d52a98714fd32755ada3))
+* Set `google.ai.generativelanguage_v1beta` as the default import ([23d8814](https://github.com/googleapis/google-cloud-python/commit/23d8814baa6288d94484d52a98714fd32755ada3))
+
 ## [0.3.5](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.3.4...google-ai-generativelanguage-v0.3.5) (2023-12-07)
 
 
