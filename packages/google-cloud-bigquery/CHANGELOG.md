@@ -5,6 +5,33 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.14.0](https://github.com/googleapis/python-bigquery/compare/v3.13.0...v3.14.0) (2023-12-08)
+
+
+### Features
+
+* Add `Client.query_and_wait` which directly returns a `RowIterator` of results ([#1722](https://github.com/googleapis/python-bigquery/issues/1722)) ([89a647e](https://github.com/googleapis/python-bigquery/commit/89a647e19fe5d7302c0a39bba77a155635c5c29d))
+* Add `job_id`, `location`, `project`, and `query_id` properties on `RowIterator` ([#1733](https://github.com/googleapis/python-bigquery/issues/1733)) ([494f275](https://github.com/googleapis/python-bigquery/commit/494f275ab2493dc7904f685c4d12e60bef51ab21))
+* Add `job_timeout_ms` to job configuration classes ([#1675](https://github.com/googleapis/python-bigquery/issues/1675)) ([84d64cd](https://github.com/googleapis/python-bigquery/commit/84d64cdd157afef4a7bf7807e557d59452133434))
+* Add support dataset.max_time_travel_hours ([#1683](https://github.com/googleapis/python-bigquery/issues/1683)) ([f22eff2](https://github.com/googleapis/python-bigquery/commit/f22eff25f116f1c4973ac2b8b03bc8a4ae1f3f42))
+* Add support for Dataset.isCaseInsensitive ([#1671](https://github.com/googleapis/python-bigquery/issues/1671)) ([386fa86](https://github.com/googleapis/python-bigquery/commit/386fa86c89b8cff69fc02213254a1c53c02fee42))
+* Add support for Python 3.12 ([#1736](https://github.com/googleapis/python-bigquery/issues/1736)) ([3c0976a](https://github.com/googleapis/python-bigquery/commit/3c0976aecb0f917477feef4e9ed865997c2bb106))
+* Removed pkg_resources from all test files and moved importlib into pandas extra ([#1726](https://github.com/googleapis/python-bigquery/issues/1726)) ([1f4ebb1](https://github.com/googleapis/python-bigquery/commit/1f4ebb1eca4f9380a31172fc8cb2fae125f8c5a2))
+* Support data_governance_type ([#1708](https://github.com/googleapis/python-bigquery/issues/1708)) ([eff365d](https://github.com/googleapis/python-bigquery/commit/eff365dc17755d0855338e2f273428ffe2056f67))
+
+
+### Bug Fixes
+
+* `load_table_from_dataframe` now assumes there may be local null values ([#1735](https://github.com/googleapis/python-bigquery/issues/1735)) ([f05dc69](https://github.com/googleapis/python-bigquery/commit/f05dc69a1f8c65ac32085bfcc6950c2c83f8a843))
+* Ensure query job retry has longer deadline than API request deadline ([#1734](https://github.com/googleapis/python-bigquery/issues/1734)) ([5573579](https://github.com/googleapis/python-bigquery/commit/55735791122f97b7f67cb962b489fd1f12210af5))
+* Keep `RowIterator.total_rows` populated after iteration ([#1748](https://github.com/googleapis/python-bigquery/issues/1748)) ([8482f47](https://github.com/googleapis/python-bigquery/commit/8482f4759ce3c4b00fa06a7f306a2ac4d4ee8eb7))
+* Move grpc, proto-plus and protobuf packages to extras ([#1721](https://github.com/googleapis/python-bigquery/issues/1721)) ([5ce4d13](https://github.com/googleapis/python-bigquery/commit/5ce4d136af97b91fbe1cc56bba1021e50a9c8476))
+
+
+### Performance Improvements
+
+* Use the first page a results when `query(api_method="QUERY")` ([#1723](https://github.com/googleapis/python-bigquery/issues/1723)) ([6290517](https://github.com/googleapis/python-bigquery/commit/6290517d6b153a31f20098f75aee580b7915aca9))
+
 ## [3.13.0](https://github.com/googleapis/python-bigquery/compare/v3.12.0...v3.13.0) (2023-10-30)
 
 
