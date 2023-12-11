@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.19.0](https://github.com/googleapis/python-pubsub/compare/v2.18.4...v2.19.0) (2023-12-10)
+
+
+### Features
+
+* Add `use_table_schema` field to BigQueryConfig ([#1035](https://github.com/googleapis/python-pubsub/issues/1035)) ([ac6d912](https://github.com/googleapis/python-pubsub/commit/ac6d9126413b5c8e2b00727f7d74f03b7fb9d9ed))
+* Add support for Python 3.12 ([#1025](https://github.com/googleapis/python-pubsub/issues/1025)) ([660b8ea](https://github.com/googleapis/python-pubsub/commit/660b8eaf0daf975834a8333aedf8415867a4874d))
+* Introduce compatibility with native namespace packages ([#1024](https://github.com/googleapis/python-pubsub/issues/1024)) ([0432420](https://github.com/googleapis/python-pubsub/commit/0432420dcf18304dc1912075482eff0d2dc73009))
+
+
+### Bug Fixes
+
+* Use `retry_async` instead of `retry` in async client ([#1030](https://github.com/googleapis/python-pubsub/issues/1030)) ([05dd571](https://github.com/googleapis/python-pubsub/commit/05dd571760b71ae2930072f0677616dfc19d9511))
+
 ## [2.18.4](https://github.com/googleapis/python-pubsub/compare/v2.18.3...v2.18.4) (2023-09-09)
 
 
