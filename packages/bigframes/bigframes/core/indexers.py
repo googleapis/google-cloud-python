@@ -156,7 +156,12 @@ class LocDataFrameIndexer:
                 bigframes.dataframe.DataFrame,
                 _loc_getitem_series_or_dataframe(self._dataframe, key[0]),
             )
-            return df[key[1]]
+
+            columns = key[1]
+            if isinstance(columns, pd.Series) and columns.dtype == "bool":
+                columns = df.columns[columns]
+
+            return df[columns]
 
         return typing.cast(
             bigframes.dataframe.DataFrame,
