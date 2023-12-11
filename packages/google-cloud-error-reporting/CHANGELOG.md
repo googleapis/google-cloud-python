@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.10.0](https://github.com/googleapis/python-error-reporting/compare/v1.9.2...v1.10.0) (2023-12-10)
+
+
+### Features
+
+* Add support for Python 3.12 ([#459](https://github.com/googleapis/python-error-reporting/issues/459)) ([36c1b59](https://github.com/googleapis/python-error-reporting/commit/36c1b598b35561e56815ce729884410134c3357d))
+* Use native namespaces instead of pkg_resources ([#463](https://github.com/googleapis/python-error-reporting/issues/463)) ([a63e3f2](https://github.com/googleapis/python-error-reporting/commit/a63e3f25ce5ef0cd0077838cdbb6ceff0f15ce31))
+
+
+### Bug Fixes
+
+* Use `retry_async` instead of `retry` in async client ([#462](https://github.com/googleapis/python-error-reporting/issues/462)) ([44c2b14](https://github.com/googleapis/python-error-reporting/commit/44c2b146aec92e272134ebaa6945fe78f98753bd))
+
+
+### Documentation
+
+* Minor formatting ([#448](https://github.com/googleapis/python-error-reporting/issues/448)) ([48823d4](https://github.com/googleapis/python-error-reporting/commit/48823d4529fc2a2ac7b6c3f745c3ea5cb0ec9d38))
+
 ## [1.9.2](https://github.com/googleapis/python-error-reporting/compare/v1.9.1...v1.9.2) (2023-07-04)
 
 
