@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.14.0](https://github.com/googleapis/python-storage/compare/v2.13.0...v2.14.0) (2023-12-10)
+
+
+### Features
+
+* Add support for Python 3.12 ([#1187](https://github.com/googleapis/python-storage/issues/1187)) ([ecf4150](https://github.com/googleapis/python-storage/commit/ecf41504ba7f2a2c2db2e3c7e267686283d2cab3))
+* Support object retention lock ([#1188](https://github.com/googleapis/python-storage/issues/1188)) ([a179337](https://github.com/googleapis/python-storage/commit/a1793375cf038ce79d4d4b7077f6b4dcc4b4aeec))
+
+
+### Bug Fixes
+
+* Clarify error message and docstrings in Blob class method ([#1196](https://github.com/googleapis/python-storage/issues/1196)) ([92c20d3](https://github.com/googleapis/python-storage/commit/92c20d3f7520c6b94308ebb156202fdfd1dcd482))
+* Propagate timeout in BlobWriter ([#1186](https://github.com/googleapis/python-storage/issues/1186)) ([22f36da](https://github.com/googleapis/python-storage/commit/22f36da1ce5b04408653ddbdbf35f25ed1072af8)), closes [#1184](https://github.com/googleapis/python-storage/issues/1184)
+* Use native namespace to avoid pkg_resources warnings ([#1176](https://github.com/googleapis/python-storage/issues/1176)) ([2ed915e](https://github.com/googleapis/python-storage/commit/2ed915ec4b35df6fad04f42df25e48667148fcf5))
+
 ## [2.13.0](https://github.com/googleapis/python-storage/compare/v2.12.0...v2.13.0) (2023-10-31)
 
 
