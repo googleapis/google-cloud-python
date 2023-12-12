@@ -16,7 +16,7 @@ import io
 
 from setuptools import setup
 
-version = "0.1.1"
+version = "0.2.0"
 
 DEPENDENCIES = ["google-auth", "httplib2 >= 0.19.0"]
 
