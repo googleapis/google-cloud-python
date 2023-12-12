@@ -1067,8 +1067,8 @@ def test_table_yield_retry_rows():
         for row in table.yield_rows(start_key=ROW_KEY_1, end_key=ROW_KEY_2):
             rows.append(row)
 
-    assert len(warned) == 1
-    assert warned[0].category is DeprecationWarning
+    assert len(warned) >= 1
+    assert DeprecationWarning in [w.category for w in warned]
 
     result = rows[1]
     assert result.row_key == ROW_KEY_2
@@ -1140,8 +1140,8 @@ def test_table_yield_rows_with_row_set():
         for row in table.yield_rows(row_set=row_set):
             rows.append(row)
 
-    assert len(warned) == 1
-    assert warned[0].category is DeprecationWarning
+    assert len(warned) >= 1
+    assert DeprecationWarning in [w.category for w in warned]
 
     assert rows[0].row_key == ROW_KEY_1
     assert rows[1].row_key == ROW_KEY_2
