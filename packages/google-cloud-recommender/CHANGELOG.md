@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.13.0...google-cloud-recommender-v2.14.0) (2023-12-12)
+
+
+### Features
+
+* Support cost_in_local_currency field in the cost projection ([8832a03](https://github.com/googleapis/google-cloud-python/commit/8832a03cb0de53f3e30ca53899091a0a3433a409))
+
+
+### Documentation
+
+* Add comment for targetResources ([8832a03](https://github.com/googleapis/google-cloud-python/commit/8832a03cb0de53f3e30ca53899091a0a3433a409))
+* Fix typo for the comment of reliability_projection ([8832a03](https://github.com/googleapis/google-cloud-python/commit/8832a03cb0de53f3e30ca53899091a0a3433a409))
+
 ## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.12.1...google-cloud-recommender-v2.13.0) (2023-12-07)
 
 
