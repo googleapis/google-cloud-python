@@ -18,12 +18,17 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.cloud.asset_v1p2beta1.types import assets as gca_assets
 
 __protobuf__ = proto.module(
     package="google.cloud.asset.v1p2beta1",
     manifest={
         "ContentType",
+        "ExportAssetsResponse",
+        "BatchGetAssetsHistoryResponse",
         "CreateFeedRequest",
         "GetFeedRequest",
         "ListFeedsRequest",
@@ -55,6 +60,48 @@ class ContentType(proto.Enum):
     IAM_POLICY = 2
 
 
+class ExportAssetsResponse(proto.Message):
+    r"""The export asset response. This message is returned by the
+    [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
+    method in the returned
+    [google.longrunning.Operation.response][google.longrunning.Operation.response]
+    field.
+
+    Attributes:
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
+            Time the snapshot was taken.
+        output_config (google.cloud.asset_v1p2beta1.types.OutputConfig):
+            Output configuration indicating where the
+            results were output to.
+    """
+
+    read_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    output_config: "OutputConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="OutputConfig",
+    )
+
+
+class BatchGetAssetsHistoryResponse(proto.Message):
+    r"""Batch get assets history response.
+
+    Attributes:
+        assets (MutableSequence[google.cloud.asset_v1p2beta1.types.TemporalAsset]):
+            A list of assets with valid time windows.
+    """
+
+    assets: MutableSequence[gca_assets.TemporalAsset] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gca_assets.TemporalAsset,
+    )
+
+
 class CreateFeedRequest(proto.Message):
     r"""Create asset feed request.
 
@@ -66,7 +113,7 @@ class CreateFeedRequest(proto.Message):
             organization number (such as
             "organizations/123"), a folder number (such as
             "folders/123"), a project ID (such as
-            "projects/my-project-id")", or a project number
+            "projects/my-project-id"), or a project number
             (such as "projects/12345").
         feed_id (str):
             Required. This is the client-assigned asset
@@ -218,7 +265,7 @@ class GcsDestination(proto.Message):
 
     Attributes:
         uri (str):
-            The uri of the Cloud Storage object. It's the same uri that
+            The URI of the Cloud Storage object. It's the same URI that
             is used by gsutil. For example:
             "gs://bucket_name/object_name". See `Viewing and Editing
             Object
@@ -236,12 +283,12 @@ class GcsDestination(proto.Message):
 
 
 class PubsubDestination(proto.Message):
-    r"""A Cloud Pubsub destination.
+    r"""A Pub/Sub destination.
 
     Attributes:
         topic (str):
-            The name of the Cloud Pub/Sub topic to publish to. For
-            example: ``projects/PROJECT_ID/topics/TOPIC_ID``.
+            The name of the Pub/Sub topic to publish to. For example:
+            ``projects/PROJECT_ID/topics/TOPIC_ID``.
     """
 
     topic: str = proto.Field(
@@ -257,7 +304,7 @@ class FeedOutputConfig(proto.Message):
 
     Attributes:
         pubsub_destination (google.cloud.asset_v1p2beta1.types.PubsubDestination):
-            Destination on Cloud Pubsub.
+            Destination on Pub/Sub.
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -293,7 +340,7 @@ class Feed(proto.Message):
             A list of the full names of the assets to receive updates.
             You must specify either or both of asset_names and
             asset_types. Only asset updates matching specified
-            asset_names and asset_types are exported to the feed. For
+            asset_names or asset_types are exported to the feed. For
             example:
             ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
             See `Resource
@@ -302,7 +349,7 @@ class Feed(proto.Message):
         asset_types (MutableSequence[str]):
             A list of types of the assets to receive updates. You must
             specify either or both of asset_names and asset_types. Only
-            asset updates matching specified asset_names and asset_types
+            asset updates matching specified asset_names or asset_types
             are exported to the feed. For example:
             "compute.googleapis.com/Disk" See `Introduction to Cloud
             Asset

@@ -14,9 +14,11 @@
 # limitations under the License.
 #
 from .asset_service import (
+    BatchGetAssetsHistoryResponse,
     ContentType,
     CreateFeedRequest,
     DeleteFeedRequest,
+    ExportAssetsResponse,
     Feed,
     FeedOutputConfig,
     GcsDestination,
@@ -30,8 +32,10 @@ from .asset_service import (
 from .assets import Asset, Resource, TemporalAsset, TimeWindow
 
 __all__ = (
+    "BatchGetAssetsHistoryResponse",
     "CreateFeedRequest",
     "DeleteFeedRequest",
+    "ExportAssetsResponse",
     "Feed",
     "FeedOutputConfig",
     "GcsDestination",
