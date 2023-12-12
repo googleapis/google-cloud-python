@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+## [1.2.0](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v1.1.0...v1.2.0) (2023-12-12)
+
+
+### Features
+
+* Add support for Python 3.12 ([#318](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/318)) ([ac8d3ee](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/ac8d3ee22e73bd95170091993cdbb9071b304573))
+
+
+### Bug Fixes
+
+* Use setuptools.find_namespace_packages ([#321](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/321)) ([9a0728d](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/9a0728d67df989e9d0f87734350fee1903aee11f))
+
 ## [1.1.0](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v1.0.0...v1.1.0) (2023-09-07)
 
 
