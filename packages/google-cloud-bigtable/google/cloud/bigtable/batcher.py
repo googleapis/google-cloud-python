@@ -114,6 +114,7 @@ class _FlowControl(object):
         self.inflight_size = 0
         self.event = threading.Event()
         self.event.set()
+        self._lock = threading.Lock()
 
     def is_blocked(self):
         """Returns True if:
@@ -132,8 +133,9 @@ class _FlowControl(object):
         Calculate the resources used by this batch
         """
 
-        self.inflight_mutations += batch_info.mutations_count
-        self.inflight_size += batch_info.mutations_size
+        with self._lock:
+            self.inflight_mutations += batch_info.mutations_count
+            self.inflight_size += batch_info.mutations_size
         self.set_flow_control_status()
 
     def wait(self):
@@ -158,8 +160,9 @@ class _FlowControl(object):
         Release the resources.
         Decrement the row size to allow enqueued mutations to be run.
         """
-        self.inflight_mutations -= batch_info.mutations_count
-        self.inflight_size -= batch_info.mutations_size
+        with self._lock:
+            self.inflight_mutations -= batch_info.mutations_count
+            self.inflight_size -= batch_info.mutations_size
         self.set_flow_control_status()
 
 
