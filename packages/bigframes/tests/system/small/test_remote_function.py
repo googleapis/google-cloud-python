@@ -23,40 +23,50 @@ from tests.system.utils import assert_pandas_df_equal
 
 @pytest.fixture(scope="module")
 def bq_cf_connection() -> str:
-    """Pre-created BQ connection to invoke cloud function for bigframes-dev
-    $ bq show --connection --location=us --project_id=bigframes-dev bigframes-rf-conn
+    """Pre-created BQ connection in the test project in US location, used to
+    invoke cloud function.
+
+    $ bq show --connection --location=us --project_id=PROJECT_ID bigframes-rf-conn
     """
     return "bigframes-rf-conn"
 
 
 @pytest.fixture(scope="module")
 def bq_cf_connection_location() -> str:
-    """Pre-created BQ connection to invoke cloud function for bigframes-dev
-    $ bq show --connection --location=us --project_id=bigframes-dev bigframes-rf-conn
+    """Pre-created BQ connection in the test project in US location, in format
+    PROJECT_ID.LOCATION.CONNECTION_NAME, used to invoke cloud function.
+
+    $ bq show --connection --location=us --project_id=PROJECT_ID bigframes-rf-conn
     """
     return "us.bigframes-rf-conn"
 
 
 @pytest.fixture(scope="module")
 def bq_cf_connection_location_mismatched() -> str:
-    """Pre-created BQ connection to invoke cloud function for bigframes-dev
-    $ bq show --connection --location=eu --project_id=bigframes-dev bigframes-rf-conn
+    """Pre-created BQ connection in the test project in EU location, in format
+    LOCATION.CONNECTION_NAME, used to invoke cloud function.
+
+    $ bq show --connection --location=us --project_id=PROJECT_ID bigframes-rf-conn
     """
     return "eu.bigframes-rf-conn"
 
 
 @pytest.fixture(scope="module")
-def bq_cf_connection_location_project() -> str:
-    """Pre-created BQ connection to invoke cloud function for bigframes-dev
-    $ bq show --connection --location=us --project_id=bigframes-dev bigframes-rf-conn
+def bq_cf_connection_location_project(bigquery_client) -> str:
+    """Pre-created BQ connection in the test project in US location, in format
+    PROJECT_ID.LOCATION.CONNECTION_NAME, used to invoke cloud function.
+
+    $ bq show --connection --location=us --project_id=PROJECT_ID bigframes-rf-conn
     """
-    return "bigframes-dev.us.bigframes-rf-conn"
+    return f"{bigquery_client.project}.us.bigframes-rf-conn"
 
 
 @pytest.fixture(scope="module")
 def bq_cf_connection_location_project_mismatched() -> str:
-    """Pre-created BQ connection to invoke cloud function for bigframes-dev
-    $ bq show --connection --location=eu --project_id=bigframes-metrics bigframes-rf-conn
+    """Pre-created BQ connection in the migframes-metrics project in US location,
+    in format PROJECT_ID.LOCATION.CONNECTION_NAME, used to invoke cloud function.
+
+    $ bq show --connection --location=us --project_id=PROJECT_ID bigframes-rf-conn
     """
     return "bigframes-metrics.eu.bigframes-rf-conn"
 

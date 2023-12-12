@@ -210,12 +210,12 @@ def test_pca_model_principal_components(penguins_bqml_pca_model: core.BqmlModel)
         .sort_values(["principal_component_id", "feature"])
         .reset_index(drop=True)
     )
-    pd.testing.assert_frame_equal(
+
+    tests.system.utils.assert_pandas_df_equal_pca_components(
         result,
         expected,
         check_exact=False,
         rtol=0.1,
-        # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
         check_index_type=False,
         check_dtype=False,
     )

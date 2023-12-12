@@ -29,11 +29,9 @@ def test_pca_predict(penguins_pca_model, new_penguins_df):
         dtype="Float64",
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
-    pd.testing.assert_frame_equal(
-        predictions.sort_index(),
-        expected,
-        check_exact=False,
-        rtol=0.1,
+
+    tests.system.utils.assert_pandas_df_equal_pca(
+        predictions, expected, check_exact=False, rtol=0.1
     )
 
 
@@ -115,7 +113,8 @@ def test_pca_components_(penguins_pca_model: decomposition.PCA):
         .sort_values(["principal_component_id", "feature"])
         .reset_index(drop=True)
     )
-    pd.testing.assert_frame_equal(
+
+    tests.system.utils.assert_pandas_df_equal_pca_components(
         result,
         expected,
         check_exact=False,

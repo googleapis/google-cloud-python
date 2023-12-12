@@ -161,8 +161,10 @@ def make_uniq_udf(udf):
 
 @pytest.fixture(scope="module")
 def bq_cf_connection() -> str:
-    """Pre-created BQ connection to invoke cloud function for bigframes-dev
-    $ bq show --connection --location=us --project_id=bigframes-dev bigframes-rf-conn
+    """Pre-created BQ connection in the test project in US location, used to
+    invoke cloud function.
+
+    $ bq show --connection --location=us --project_id=PROJECT_ID bigframes-rf-conn
     """
     return "bigframes-rf-conn"
 

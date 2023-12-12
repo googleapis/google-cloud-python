@@ -46,6 +46,7 @@ s.move(
         "noxfile.py",
         ".pre-commit-config.yaml",
         "README.rst",
+        "CONTRIBUTING.rst",
         ".github/release-trigger.yml",
         # BigQuery DataFrames manages its own Kokoro cluster for presubmit & continuous tests.
         ".kokoro/build.sh",

@@ -14,10 +14,16 @@
 
 
 def test_bigquery_dataframes_load_data_from_bigquery_job():
-    from google.cloud import bigquery
+    # Determine project id, in this case prefer the one set in the environment
+    # variable GOOGLE_CLOUD_PROJECT (if any)
+    import os
+
+    your_project_id = os.getenv("GOOGLE_CLOUD_PROJECT", "bigframes-dev")
 
     # Construct a BigQuery client object.
-    client = bigquery.Client(project="bigframes-dev", location="us")
+    from google.cloud import bigquery
+
+    client = bigquery.Client(project=your_project_id, location="us")
 
     query = """
         SELECT *
@@ -26,7 +32,6 @@ def test_bigquery_dataframes_load_data_from_bigquery_job():
     """
     query_job = client.query(query)
     JOB_ID = query_job.job_id
-    your_project_id = "bigframes-dev"
 
     # [START bigquery_dataframes_load_data_from_bigquery_job]
     from google.cloud import bigquery

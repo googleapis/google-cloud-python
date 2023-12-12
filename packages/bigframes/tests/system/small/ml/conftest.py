@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 from typing import cast
 import uuid
 
@@ -34,8 +35,8 @@ from bigframes.ml import (
 
 
 @pytest.fixture(scope="session")
-def bq_connection() -> str:
-    return "bigframes-dev.us.bigframes-rf-conn"
+def bq_connection(bigquery_client) -> str:
+    return f"{bigquery_client.project}.us.bigframes-rf-conn"
 
 
 @pytest.fixture(scope="session")
@@ -252,10 +253,15 @@ def palm2_embedding_generator_multilingual_model(
 def linear_remote_model_params() -> dict:
     # Pre-deployed endpoint of linear reg model in Vertex.
     # bigframes-test-linreg2 -> bigframes-test-linreg-endpoint2
+    model_vertex_endpoint = os.environ.get(
+        "BIGFRAMES_TEST_MODEL_VERTEX_ENDPOINT",
+        "https://us-central1-aiplatform.googleapis.com/v1/projects/1084210331973/locations/us-central1/endpoints/3193318217619603456",
+    )
+
     return {
         "input": {"culmen_length_mm": "float64"},
         "output": {"predicted_body_mass_g": "array<float64>"},
-        "endpoint": "https://us-central1-aiplatform.googleapis.com/v1/projects/1084210331973/locations/us-central1/endpoints/3193318217619603456",
+        "endpoint": model_vertex_endpoint,
     }
 
 

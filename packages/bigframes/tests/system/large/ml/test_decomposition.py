@@ -15,6 +15,7 @@
 import pandas as pd
 
 from bigframes.ml import decomposition
+import tests.system.utils
 
 
 def test_decomposition_configure_fit_score_predict(
@@ -66,9 +67,10 @@ def test_decomposition_configure_fit_score_predict(
         dtype="Float64",
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
-    pd.testing.assert_frame_equal(
-        abs(result.sort_index()),  # results may differ by a minus sign
-        abs(expected),
+
+    tests.system.utils.assert_pandas_df_equal_pca(
+        result,
+        expected,
         check_exact=False,
         rtol=0.1,
     )

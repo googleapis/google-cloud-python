@@ -411,13 +411,23 @@ class RemoteFunctionClient:
             create_function_request.function = function
 
             # Create the cloud function and wait for it to be ready to use
-            operation = self._cloud_functions_client.create_function(
-                request=create_function_request
-            )
-            operation.result()
+            try:
+                operation = self._cloud_functions_client.create_function(
+                    request=create_function_request
+                )
+                operation.result()
 
-            # Cleanup
-            os.remove(archive_path)
+                # Cleanup
+                os.remove(archive_path)
+            except google.api_core.exceptions.AlreadyExists:
+                # If a cloud function with the same name already exists, let's
+                # update it
+                update_function_request = functions_v2.UpdateFunctionRequest()
+                update_function_request.function = function
+                operation = self._cloud_functions_client.update_function(
+                    request=update_function_request
+                )
+                operation.result()
 
         # Fetch the endpoint of the just created function
         endpoint = self.get_cloud_function_endpoint(cf_name)

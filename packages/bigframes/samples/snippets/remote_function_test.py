@@ -25,8 +25,13 @@ def test_remote_function_and_read_gbq_function(
     # We need a fresh session since we're modifying connection options.
     bigframes.pandas.close_session()
 
-    # TODO(swast): Get project from environment so contributors can run tests.
-    remote_function.run_remote_function_and_read_gbq_function("bigframes-dev")
+    # Determine project id, in this case prefer the one set in the environment
+    # variable GOOGLE_CLOUD_PROJECT (if any)
+    import os
+
+    your_project_id = os.getenv("GOOGLE_CLOUD_PROJECT", "bigframes-dev")
+
+    remote_function.run_remote_function_and_read_gbq_function(your_project_id)
     out, _ = capsys.readouterr()
     assert "Created BQ remote function:" in out
     assert "Created cloud function:" in out

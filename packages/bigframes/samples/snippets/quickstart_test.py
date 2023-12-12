@@ -25,7 +25,12 @@ def test_quickstart(
     # We need a fresh session since we're modifying connection options.
     bigframes.pandas.close_session()
 
-    # TODO(swast): Get project from environment so contributors can run tests.
-    quickstart.run_quickstart("bigframes-dev")
+    # Determine project id, in this case prefer the one set in the environment
+    # variable GOOGLE_CLOUD_PROJECT (if any)
+    import os
+
+    your_project_id = os.getenv("GOOGLE_CLOUD_PROJECT", "bigframes-dev")
+
+    quickstart.run_quickstart(your_project_id)
     out, _ = capsys.readouterr()
     assert "average_body_mass (df_session):" in out

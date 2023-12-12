@@ -24,7 +24,7 @@ from bigframes.ml import (
     pipeline,
     preprocessing,
 )
-from tests.system.utils import assert_pandas_df_equal
+from tests.system.utils import assert_pandas_df_equal, assert_pandas_df_equal_pca
 
 
 def test_pipeline_linear_regression_fit_score_predict(
@@ -430,17 +430,16 @@ def test_pipeline_PCA_fit_score_predict(session, penguins_df_default_index):
         dtype="Float64",
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
-    pd.testing.assert_frame_equal(
-        abs(  # results may differ by a minus sign
-            predictions[
-                [
-                    "principal_component_1",
-                    "principal_component_2",
-                    "principal_component_3",
-                ]
+
+    assert_pandas_df_equal_pca(
+        predictions[
+            [
+                "principal_component_1",
+                "principal_component_2",
+                "principal_component_3",
             ]
-        ),
-        abs(expected),
+        ],
+        expected,
         check_exact=False,
         rtol=0.1,
     )

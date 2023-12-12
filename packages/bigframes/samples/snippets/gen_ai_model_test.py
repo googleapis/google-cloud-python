@@ -14,9 +14,14 @@
 
 
 def test_llm_model():
-    PROJECT_ID = "bigframes-dev"
+    # Determine project id, in this case prefer the one set in the environment
+    # variable GOOGLE_CLOUD_PROJECT (if any)
+    import os
+
+    PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT", "bigframes-dev")
     REGION = "us"
-    CONN_NAME = "bigframes-ml"
+    CONN_NAME = "bigframes-default-connection"
+
     # [START bigquery_dataframes_gen_ai_model]
     from bigframes.ml.llm import PaLM2TextGenerator
     import bigframes.pandas as bpd
