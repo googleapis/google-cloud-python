@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.20.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.19.2...v0.20.0) (2023-12-10)
+
+
+### Features
+
+* Add 'columns' as an alias for 'col_order' ([#701](https://github.com/googleapis/python-bigquery-pandas/issues/701)) ([e52e8f8](https://github.com/googleapis/python-bigquery-pandas/commit/e52e8f85e3f115ee1c9f3dc6733217b04d264f26))
+* Add support for Python 3.12 ([#702](https://github.com/googleapis/python-bigquery-pandas/issues/702)) ([edb93cc](https://github.com/googleapis/python-bigquery-pandas/commit/edb93cc1aee5e7ea931a1d620617be28b4c9a702))
+* Migrating off of circle/ci ([#638](https://github.com/googleapis/python-bigquery-pandas/issues/638)) ([08fe090](https://github.com/googleapis/python-bigquery-pandas/commit/08fe0904375077e43afc03c5529b427cfcf9aa37))
+* Removed pkg_resources for native namespace support ([#707](https://github.com/googleapis/python-bigquery-pandas/issues/707)) ([eeb1959](https://github.com/googleapis/python-bigquery-pandas/commit/eeb19593a75d55e88a2c51ae8eb258c0156d5ba6))
+
+
+### Bug Fixes
+
+* Edit units for time in tests ([#655](https://github.com/googleapis/python-bigquery-pandas/issues/655)) ([d4ebb0c](https://github.com/googleapis/python-bigquery-pandas/commit/d4ebb0cb530fde5a28663a4bec8f7f663e2f0c55))
+* Table schema change error ([#692](https://github.com/googleapis/python-bigquery-pandas/issues/692)) ([3dc8ebe](https://github.com/googleapis/python-bigquery-pandas/commit/3dc8ebed4809ad626dcf18124c38930c87750ac8))
+
+
+### Documentation
+
+* Migrate .readthedocs.yml to configuration file v2 ([#689](https://github.com/googleapis/python-bigquery-pandas/issues/689)) ([d921219](https://github.com/googleapis/python-bigquery-pandas/commit/d921219690b1b577346f5dc41c0e8d8e5ed2115c))
+
 ## [0.19.2](https://github.com/googleapis/python-bigquery-pandas/compare/v0.19.1...v0.19.2) (2023-05-10)
 
 
