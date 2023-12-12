@@ -21,6 +21,8 @@ import pytest
 from google.api_core import exceptions
 from google.api_core import retry_async
 
+from ...unit.retry.test_retry_base import Test_BaseRetry
+
 
 @mock.patch("asyncio.sleep", autospec=True)
 @mock.patch(
@@ -97,23 +99,25 @@ async def test_retry_target_non_retryable_error(utcnow, sleep):
 
 
 @mock.patch("asyncio.sleep", autospec=True)
-@mock.patch("google.api_core.datetime_helpers.utcnow", autospec=True)
+@mock.patch("time.monotonic", autospec=True)
+@pytest.mark.parametrize("use_deadline_arg", [True, False])
 @pytest.mark.asyncio
-async def test_retry_target_deadline_exceeded(utcnow, sleep):
+async def test_retry_target_timeout_exceeded(monotonic, sleep, use_deadline_arg):
     predicate = retry_async.if_exception_type(ValueError)
     exception = ValueError("meep")
     target = mock.Mock(side_effect=exception)
     # Setup the timeline so that the first call takes 5 seconds but the second
-    # call takes 6, which puts the retry over the deadline.
-    utcnow.side_effect = [
-        # The first call to utcnow establishes the start of the timeline.
-        datetime.datetime.min,
-        datetime.datetime.min + datetime.timedelta(seconds=5),
-        datetime.datetime.min + datetime.timedelta(seconds=11),
-    ]
+    # call takes 6, which puts the retry over the timeout.
+    monotonic.side_effect = [0, 5, 11]
+
+    timeout_val = 10
+    # support "deadline" as an alias for "timeout"
+    timeout_kwarg = (
+        {"timeout": timeout_val} if not use_deadline_arg else {"deadline": timeout_val}
+    )
 
     with pytest.raises(exceptions.RetryError) as exc_info:
-        await retry_async.retry_target(target, predicate, range(10), deadline=10)
+        await retry_async.retry_target(target, predicate, range(10), **timeout_kwarg)
 
     assert exc_info.value.cause == exception
     assert exc_info.match("Timeout of 10.0s exceeded")
@@ -133,108 +137,9 @@ async def test_retry_target_bad_sleep_generator():
         )
 
 
-class TestAsyncRetry:
-    def test_constructor_defaults(self):
-        retry_ = retry_async.AsyncRetry()
-        assert retry_._predicate == retry_async.if_transient_error
-        assert retry_._initial == 1
-        assert retry_._maximum == 60
-        assert retry_._multiplier == 2
-        assert retry_._deadline == 120
-        assert retry_._on_error is None
-
-    def test_constructor_options(self):
-        _some_function = mock.Mock()
-
-        retry_ = retry_async.AsyncRetry(
-            predicate=mock.sentinel.predicate,
-            initial=1,
-            maximum=2,
-            multiplier=3,
-            deadline=4,
-            on_error=_some_function,
-        )
-        assert retry_._predicate == mock.sentinel.predicate
-        assert retry_._initial == 1
-        assert retry_._maximum == 2
-        assert retry_._multiplier == 3
-        assert retry_._deadline == 4
-        assert retry_._on_error is _some_function
-
-    def test_with_deadline(self):
-        retry_ = retry_async.AsyncRetry(
-            predicate=mock.sentinel.predicate,
-            initial=1,
-            maximum=2,
-            multiplier=3,
-            deadline=4,
-            on_error=mock.sentinel.on_error,
-        )
-        new_retry = retry_.with_deadline(42)
-        assert retry_ is not new_retry
-        assert new_retry._deadline == 42
-
-        # the rest of the attributes should remain the same
-        assert new_retry._predicate is retry_._predicate
-        assert new_retry._initial == retry_._initial
-        assert new_retry._maximum == retry_._maximum
-        assert new_retry._multiplier == retry_._multiplier
-        assert new_retry._on_error is retry_._on_error
-
-    def test_with_predicate(self):
-        retry_ = retry_async.AsyncRetry(
-            predicate=mock.sentinel.predicate,
-            initial=1,
-            maximum=2,
-            multiplier=3,
-            deadline=4,
-            on_error=mock.sentinel.on_error,
-        )
-        new_retry = retry_.with_predicate(mock.sentinel.predicate)
-        assert retry_ is not new_retry
-        assert new_retry._predicate == mock.sentinel.predicate
-
-        # the rest of the attributes should remain the same
-        assert new_retry._deadline == retry_._deadline
-        assert new_retry._initial == retry_._initial
-        assert new_retry._maximum == retry_._maximum
-        assert new_retry._multiplier == retry_._multiplier
-        assert new_retry._on_error is retry_._on_error
-
-    def test_with_delay_noop(self):
-        retry_ = retry_async.AsyncRetry(
-            predicate=mock.sentinel.predicate,
-            initial=1,
-            maximum=2,
-            multiplier=3,
-            deadline=4,
-            on_error=mock.sentinel.on_error,
-        )
-        new_retry = retry_.with_delay()
-        assert retry_ is not new_retry
-        assert new_retry._initial == retry_._initial
-        assert new_retry._maximum == retry_._maximum
-        assert new_retry._multiplier == retry_._multiplier
-
-    def test_with_delay(self):
-        retry_ = retry_async.AsyncRetry(
-            predicate=mock.sentinel.predicate,
-            initial=1,
-            maximum=2,
-            multiplier=3,
-            deadline=4,
-            on_error=mock.sentinel.on_error,
-        )
-        new_retry = retry_.with_delay(initial=1, maximum=2, multiplier=3)
-        assert retry_ is not new_retry
-        assert new_retry._initial == 1
-        assert new_retry._maximum == 2
-        assert new_retry._multiplier == 3
-
-        # the rest of the attributes should remain the same
-        assert new_retry._deadline == retry_._deadline
-        assert new_retry._predicate is retry_._predicate
-        assert new_retry._on_error is retry_._on_error
+class TestAsyncRetry(Test_BaseRetry):
+    def _make_one(self, *args, **kwargs):
+        return retry_async.AsyncRetry(*args, **kwargs)
 
     def test___str__(self):
         def if_exception_type(exc):
@@ -247,7 +152,7 @@ class TestAsyncRetry:
             initial=1.0,
             maximum=60.0,
             multiplier=2.0,
-            deadline=120.0,
+            timeout=120.0,
             on_error=None,
         )
         assert re.match(
@@ -303,20 +208,17 @@ class TestAsyncRetry:
     @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n)
     @mock.patch("asyncio.sleep", autospec=True)
     @pytest.mark.asyncio
-    async def test___call___and_execute_retry_hitting_deadline(self, sleep, uniform):
+    async def test___call___and_execute_retry_hitting_timeout(self, sleep, uniform):
         on_error = mock.Mock(spec=["__call__"], side_effect=[None] * 10)
         retry_ = retry_async.AsyncRetry(
             predicate=retry_async.if_exception_type(ValueError),
             initial=1.0,
             maximum=1024.0,
             multiplier=2.0,
-            deadline=9.9,
+            timeout=30.9,
         )
 
-        utcnow = datetime.datetime.now(tz=datetime.timezone.utc)
-        utcnow_patcher = mock.patch(
-            "google.api_core.datetime_helpers.utcnow", return_value=utcnow
-        )
+        monotonic_patcher = mock.patch("time.monotonic", return_value=0)
 
         target = mock.AsyncMock(spec=["__call__"], side_effect=[ValueError()] * 10)
         # __name__ is needed by functools.partial.
@@ -325,11 +227,11 @@ class TestAsyncRetry:
         decorated = retry_(target, on_error=on_error)
         target.assert_not_called()
 
-        with utcnow_patcher as patched_utcnow:
+        with monotonic_patcher as patched_monotonic:
             # Make sure that calls to fake asyncio.sleep() also advance the mocked
             # time clock.
             def increase_time(sleep_delay):
-                patched_utcnow.return_value += datetime.timedelta(seconds=sleep_delay)
+                patched_monotonic.return_value += sleep_delay
 
             sleep.side_effect = increase_time
 
@@ -345,8 +247,17 @@ class TestAsyncRetry:
         last_wait = sleep.call_args.args[0]
         total_wait = sum(call_args.args[0] for call_args in sleep.call_args_list)
 
-        assert last_wait == 2.9  # and not 8.0, because the last delay was shortened
-        assert total_wait == 9.9  # the same as the deadline
+        assert last_wait == 8.0
+        # Next attempt would be scheduled in 16 secs, 15 + 16 = 31 > 30.9, thus
+        # we do not even wait for it to be scheduled (30.9 is configured timeout).
+        # This changes the previous logic of shortening the last attempt to fit
+        # in the timeout. The previous logic was removed to make Python retry
+        # logic consistent with the other languages and to not disrupt the
+        # randomized retry delays distribution by artificially increasing a
+        # probability of scheduling two (instead of one) last attempts with very
+        # short delay between them, while the second retry having very low chance
+        # of succeeding anyways.
+        assert total_wait == 15.0
 
     @mock.patch("asyncio.sleep", autospec=True)
     @pytest.mark.asyncio

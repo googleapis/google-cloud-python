@@ -20,3 +20,6 @@ This package contains common code and utilities used by Google client libraries.
 from google.api_core import version as api_core_version
 
 __version__ = api_core_version.__version__
+
+# for backwards compatibility, expose async unary retries as google.api_core.retry_async
+from .retry import retry_unary_async as retry_async  # noqa: F401
