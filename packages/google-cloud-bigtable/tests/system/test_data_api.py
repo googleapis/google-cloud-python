@@ -381,3 +381,39 @@ def test_access_with_non_admin_client(data_client, data_instance_id, data_table_
     instance = data_client.instance(data_instance_id)
     table = instance.table(data_table_id)
     assert table.read_row("nonesuch") is None  # no raise
+
+
+def test_mutations_batcher_threading(data_table, rows_to_delete):
+    """
+    Test the mutations batcher by sending a bunch of mutations using different
+    flush methods
+    """
+    import mock
+    import time
+    from google.cloud.bigtable.batcher import MutationsBatcher
+
+    num_sent = 20
+    all_results = []
+
+    def callback(results):
+        all_results.extend(results)
+
+    # override flow control max elements
+    with mock.patch("google.cloud.bigtable.batcher.MAX_OUTSTANDING_ELEMENTS", 2):
+        with MutationsBatcher(
+            data_table,
+            flush_count=5,
+            flush_interval=0.07,
+            batch_completed_callback=callback,
+        ) as batcher:
+            # send mutations in a way that timed flushes and count flushes interleave
+            for i in range(num_sent):
+                row = data_table.direct_row("row{}".format(i))
+                row.set_cell(
+                    COLUMN_FAMILY_ID1, COL_NAME1, "val{}".format(i).encode("utf-8")
+                )
+                rows_to_delete.append(row)
+                batcher.mutate(row)
+                time.sleep(0.01)
+    # ensure all mutations were sent
+    assert len(all_results) == num_sent
