@@ -4216,6 +4216,62 @@ class DataFrame(NDFrame):
         """
         Return a Series containing counts of unique rows in the DataFrame.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'num_legs': [2, 4, 4, 6, 7],
+            ...                     'num_wings': [2, 0, 0, 0, bpd.NA]},
+            ...                    index=['falcon', 'dog', 'cat', 'ant', 'octopus'],
+            ...                    dtype='Int64')
+            >>> df
+                     num_legs  num_wings
+            falcon          2          2
+            dog             4          0
+            cat             4          0
+            ant             6          0
+            octopus         7       <NA>
+            <BLANKLINE>
+            [5 rows x 2 columns]
+
+        ``value_counts`` sorts the result by counts in a descending order by default:
+
+            >>> df.value_counts()
+            num_legs  num_wings
+            4         0          2
+            2         2          1
+            6         0          1
+            Name: count, dtype: Int64
+
+        You can normalize the counts to return relative frequencies by setting ``normalize=True``:
+
+            >>> df.value_counts(normalize=True)
+            num_legs  num_wings
+            4         0             0.5
+            2         2            0.25
+            6         0            0.25
+            Name: proportion, dtype: Float64
+
+        You can get the rows in the ascending order of the counts by setting ``ascending=True``:
+
+            >>> df.value_counts(ascending=True)
+            num_legs  num_wings
+            2         2          1
+            6         0          1
+            4         0          2
+            Name: count, dtype: Int64
+
+        You can include the counts of the rows with ``NA`` values by setting ``dropna=False``:
+
+            >>> df.value_counts(dropna=False)
+            num_legs  num_wings
+            4         0            2
+            2         2            1
+            6         0            1
+            7         <NA>         1
+            Name: count, dtype: Int64
+
         Args:
             subset (label or list of labels, optional):
                 Columns to use when counting unique combinations.

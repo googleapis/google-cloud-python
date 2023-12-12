@@ -2035,6 +2035,59 @@ class Series(NDFrame):  # type: ignore[misc]
         first element is the most frequently-occurring element.
         Excludes NA values by default.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([3, 1, 2, 3, 4, bpd.NA], dtype="Int64")
+
+            >>> s
+            0       3
+            1       1
+            2       2
+            3       3
+            4       4
+            5    <NA>
+            dtype: Int64
+
+        ``value_counts`` sorts the result by counts in a descending order by default:
+
+            >>> s.value_counts()
+            3      2
+            1      1
+            2      1
+            4      1
+            Name: count, dtype: Int64
+
+        You can normalize the counts to return relative frequencies by setting ``normalize=True``:
+
+            >>> s.value_counts(normalize=True)
+            3    0.4
+            1    0.2
+            2    0.2
+            4    0.2
+            Name: proportion, dtype: Float64
+
+        You can get the values in the ascending order of the counts by setting ``ascending=True``:
+
+            >>> s.value_counts(ascending=True)
+            1    1
+            2    1
+            4    1
+            3    2
+            Name: count, dtype: Int64
+
+        You can include the counts of the ``NA`` values by setting ``dropna=False``:
+
+            >>> s.value_counts(dropna=False)
+            3       2
+            1       1
+            2       1
+            4       1
+            <NA>    1
+            Name: count, dtype: Int64
+
         Args:
             normalize (bool, default False):
                 If True then the object returned will contain the relative
@@ -2166,4 +2219,26 @@ class Series(NDFrame):  # type: ignore[misc]
     @property
     def at(self):
         """Access a single value for a row/column label pair."""
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def values(self):
+        """
+        Return Series as ndarray or ndarray-like depending on the dtype.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> bpd.Series([1, 2, 3]).values
+            array([1, 2, 3], dtype=object)
+
+            >>> bpd.Series(list('aabc')).values
+            array(['a', 'a', 'b', 'c'], dtype=object)
+
+        Returns:
+            numpy.ndarray or ndarray-like: Values in the Series.
+
+        """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
