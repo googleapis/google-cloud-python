@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.19.0](https://github.com/googleapis/python-datastore/compare/v2.18.0...v2.19.0) (2023-12-10)
+
+
+### Features
+
+* Add support for Python 3.12 ([#498](https://github.com/googleapis/python-datastore/issues/498)) ([d1d60fa](https://github.com/googleapis/python-datastore/commit/d1d60fa602eca2062a505a0750b0ce6dccc771cd))
+* Introduce compatibility with native namespace packages ([#497](https://github.com/googleapis/python-datastore/issues/497)) ([87b3392](https://github.com/googleapis/python-datastore/commit/87b339228896da197b0ee77e2b00994431ae8d2e))
+
+
+### Bug Fixes
+
+* Use `retry_async` instead of `retry` in async client ([4e15ce6](https://github.com/googleapis/python-datastore/commit/4e15ce640580f14fb1ee5d8ad49ea48e860ff1da))
+
+
+### Documentation
+
+* Minor formatting ([#476](https://github.com/googleapis/python-datastore/issues/476)) ([b13b15c](https://github.com/googleapis/python-datastore/commit/b13b15cd95c02c923f9991b088bb71eda777cf46))
+
 ## [2.18.0](https://github.com/googleapis/python-datastore/compare/v2.17.0...v2.18.0) (2023-09-05)
 
 
