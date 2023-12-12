@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.21.0...google-cloud-asset-v3.22.0) (2023-12-12)
+
+
+### Features
+
+* added Asset.access_policy, access_level, service_perimeter, org_policy ([0fc00b8](https://github.com/googleapis/google-cloud-python/commit/0fc00b8514fa29dd183381e5dac8f712a37c2f34))
+* added messages ExportAssetsResponse, BatchGetAssetsHistoryResponse ([0fc00b8](https://github.com/googleapis/google-cloud-python/commit/0fc00b8514fa29dd183381e5dac8f712a37c2f34))
+* added resource definitions to some messages ([0fc00b8](https://github.com/googleapis/google-cloud-python/commit/0fc00b8514fa29dd183381e5dac8f712a37c2f34))
+
+
+### Documentation
+
+* updated comments ([0fc00b8](https://github.com/googleapis/google-cloud-python/commit/0fc00b8514fa29dd183381e5dac8f712a37c2f34))
+
 ## [3.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.20.1...google-cloud-asset-v3.21.0) (2023-12-07)
 
 

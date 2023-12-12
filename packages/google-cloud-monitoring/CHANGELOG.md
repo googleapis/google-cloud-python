@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.17.0...google-cloud-monitoring-v2.18.0) (2023-12-12)
+
+
+### Features
+
+* Added support for severity in AlertPolicy ([4e817f8](https://github.com/googleapis/google-cloud-python/commit/4e817f8dac1e884e5eab4f81a43d129635d83369))
+
+
+### Documentation
+
+* add value range to comment on field forecast_horizon ([4e817f8](https://github.com/googleapis/google-cloud-python/commit/4e817f8dac1e884e5eab4f81a43d129635d83369))
+
 ## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.16.0...google-cloud-monitoring-v2.17.0) (2023-12-07)
 
 
