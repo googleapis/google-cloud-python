@@ -119,14 +119,14 @@ class DocumentSchema(proto.Message):
 
             class OccurrenceType(proto.Enum):
                 r"""Types of occurrences of the entity type in the document. This
-                represents the number of instances of instances of an entity, not
-                number of mentions of an entity. For example, a bank statement may
-                only have one ``account_number``, but this account number may be
-                mentioned in several places on the document. In this case the
-                'account_number' would be considered a ``REQUIRED_ONCE`` entity
-                type. If, on the other hand, we expect a bank statement to contain
-                the status of multiple different accounts for the customers, the
-                occurrence type will be set to ``REQUIRED_MULTIPLE``.
+                represents the number of instances of an entity, not number of
+                mentions of an entity. For example, a bank statement may only have
+                one ``account_number``, but this account number may be mentioned in
+                several places on the document. In this case the 'account_number'
+                would be considered a ``REQUIRED_ONCE`` entity type. If, on the
+                other hand, we expect a bank statement to contain the status of
+                multiple different accounts for the customers, the occurrence type
+                will be set to ``REQUIRED_MULTIPLE``.
 
                 Values:
                     OCCURRENCE_TYPE_UNSPECIFIED (0):
