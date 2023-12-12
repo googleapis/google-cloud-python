@@ -439,6 +439,9 @@ class CostProjection(proto.Message):
             prices.
         duration (google.protobuf.duration_pb2.Duration):
             Duration for which this cost applies.
+        cost_in_local_currency (google.type.money_pb2.Money):
+            The approximate cost savings in the billing
+            account's local currency.
     """
 
     cost: money_pb2.Money = proto.Field(
@@ -450,6 +453,11 @@ class CostProjection(proto.Message):
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
+    )
+    cost_in_local_currency: money_pb2.Money = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=money_pb2.Money,
     )
 
 
@@ -564,7 +572,7 @@ class Impact(proto.Message):
 
             This field is a member of `oneof`_ ``projection``.
         reliability_projection (google.cloud.recommender_v1.types.ReliabilityProjection):
-            Use with CategoryType.RELAIBILITY
+            Use with CategoryType.RELIABILITY
 
             This field is a member of `oneof`_ ``projection``.
     """
