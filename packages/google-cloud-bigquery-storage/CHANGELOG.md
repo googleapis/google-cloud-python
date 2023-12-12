@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.24.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.23.0...v2.24.0) (2023-12-12)
+
+
+### Features
+
+* Add support for Python 3.12 ([4834ed1](https://github.com/googleapis/python-bigquery-storage/commit/4834ed1f43a60634d062d25ab6fb83f40b0b7383))
+* Introduce compatibility with native namespace packages ([#706](https://github.com/googleapis/python-bigquery-storage/issues/706)) ([59f9564](https://github.com/googleapis/python-bigquery-storage/commit/59f956491f2efcdc4c801820cc0e15a4a4f286ec))
+
+
+### Bug Fixes
+
+* Use `retry_async` instead of `retry` in async client ([#713](https://github.com/googleapis/python-bigquery-storage/issues/713)) ([4e18437](https://github.com/googleapis/python-bigquery-storage/commit/4e184372322d4fe8a7ccd40986243b3f7230813a))
+
 ## [2.23.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.22.0...v2.23.0) (2023-11-17)
 
 
