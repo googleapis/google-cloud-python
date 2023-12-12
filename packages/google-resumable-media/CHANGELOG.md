@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.7.0](https://github.com/googleapis/google-resumable-media-python/compare/v2.6.0...v2.7.0) (2023-12-10)
+
+
+### Features
+
+* Add support for Python 3.12 ([#407](https://github.com/googleapis/google-resumable-media-python/issues/407)) ([4f90013](https://github.com/googleapis/google-resumable-media-python/commit/4f900139dd9f5d158342e24f9d8657ab0134a4d8))
+* Support brotli encoding ([#403](https://github.com/googleapis/google-resumable-media-python/issues/403)) ([295e40a](https://github.com/googleapis/google-resumable-media-python/commit/295e40ae414b1a6372796f3831e192fe174e45ee))
+
 ## [2.6.0](https://github.com/googleapis/google-resumable-media-python/compare/v2.5.0...v2.6.0) (2023-09-06)
 
 
