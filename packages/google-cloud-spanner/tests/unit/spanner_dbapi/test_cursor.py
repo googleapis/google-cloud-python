@@ -13,7 +13,6 @@
 # limitations under the License.
 
 """Cursor() class unit tests."""
-
 from unittest import mock
 import sys
 import unittest
@@ -107,7 +106,7 @@ class TestCursor(unittest.TestCase):
         result_set.stats = ResultSetStats(row_count_exact=1234)
 
         transaction.execute_sql.return_value = result_set
-        cursor._do_execute_update(
+        cursor._do_execute_update_in_autocommit(
             transaction=transaction,
             sql="SELECT * WHERE true",
             params={},
@@ -255,7 +254,7 @@ class TestCursor(unittest.TestCase):
             mock_db.run_in_transaction = mock_run_in = mock.MagicMock()
             cursor.execute(sql="sql")
             mock_run_in.assert_called_once_with(
-                cursor._do_execute_update, "sql WHERE 1=1", None
+                cursor._do_execute_update_in_autocommit, "sql WHERE 1=1", None
             )
 
     def test_execute_integrity_error(self):
@@ -272,6 +271,8 @@ class TestCursor(unittest.TestCase):
             with self.assertRaises(IntegrityError):
                 cursor.execute(sql="sql")
 
+        connection = self._make_connection(self.INSTANCE, mock.MagicMock())
+        cursor = self._make_one(connection)
         with mock.patch(
             "google.cloud.spanner_dbapi.parse_utils.classify_statement",
             side_effect=exceptions.FailedPrecondition("message"),
@@ -279,6 +280,8 @@ class TestCursor(unittest.TestCase):
             with self.assertRaises(IntegrityError):
                 cursor.execute(sql="sql")
 
+        connection = self._make_connection(self.INSTANCE, mock.MagicMock())
+        cursor = self._make_one(connection)
         with mock.patch(
             "google.cloud.spanner_dbapi.parse_utils.classify_statement",
             side_effect=exceptions.OutOfRange("message"),
@@ -747,8 +750,8 @@ class TestCursor(unittest.TestCase):
         with self.assertRaises(exceptions.InterfaceError):
             cursor.setoutputsize(size=None)
 
-    def test_handle_dql(self):
-        from google.cloud.spanner_dbapi import utils
+    @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
+    def test_handle_dql(self, MockedPeekIterator):
         from google.cloud.spanner_dbapi.cursor import _UNSET_COUNT
 
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
@@ -757,14 +760,15 @@ class TestCursor(unittest.TestCase):
         ) = mock.MagicMock()
         cursor = self._make_one(connection)
 
-        mock_snapshot.execute_sql.return_value = ["0"]
+        _result_set = mock.Mock()
+        mock_snapshot.execute_sql.return_value = _result_set
         cursor._handle_DQL("sql", params=None)
-        self.assertEqual(cursor._result_set, ["0"])
-        self.assertIsInstance(cursor._itr, utils.PeekIterator)
+        self.assertEqual(cursor._result_set, _result_set)
+        self.assertEqual(cursor._itr, MockedPeekIterator())
         self.assertEqual(cursor._row_count, _UNSET_COUNT)
 
-    def test_handle_dql_priority(self):
-        from google.cloud.spanner_dbapi import utils
+    @mock.patch("google.cloud.spanner_dbapi.cursor.PeekIterator")
+    def test_handle_dql_priority(self, MockedPeekIterator):
         from google.cloud.spanner_dbapi.cursor import _UNSET_COUNT
         from google.cloud.spanner_v1 import RequestOptions
 
@@ -777,10 +781,11 @@ class TestCursor(unittest.TestCase):
         cursor = self._make_one(connection)
 
         sql = "sql"
-        mock_snapshot.execute_sql.return_value = ["0"]
+        _result_set = mock.Mock()
+        mock_snapshot.execute_sql.return_value = _result_set
         cursor._handle_DQL(sql, params=None)
-        self.assertEqual(cursor._result_set, ["0"])
-        self.assertIsInstance(cursor._itr, utils.PeekIterator)
+        self.assertEqual(cursor._result_set, _result_set)
+        self.assertEqual(cursor._itr, MockedPeekIterator())
         self.assertEqual(cursor._row_count, _UNSET_COUNT)
         mock_snapshot.execute_sql.assert_called_with(
             sql, None, None, request_options=RequestOptions(priority=1)

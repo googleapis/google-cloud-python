@@ -178,7 +178,10 @@ class Cursor(object):
         """Closes this cursor."""
         self._is_closed = True
 
-    def _do_execute_update(self, transaction, sql, params):
+    def _do_execute_update_in_autocommit(self, transaction, sql, params):
+        """This function should only be used in autocommit mode."""
+        self.connection._transaction = transaction
+        self.connection._snapshot = None
         self._result_set = transaction.execute_sql(
             sql, params=params, param_types=get_param_types(params)
         )
@@ -239,65 +242,72 @@ class Cursor(object):
         self._row_count = _UNSET_COUNT
 
         try:
-            if self.connection.read_only:
-                self._handle_DQL(sql, args or None)
-                return
-
             parsed_statement = parse_utils.classify_statement(sql)
+
             if parsed_statement.statement_type == StatementType.CLIENT_SIDE:
-                return client_side_statement_executor.execute(
+                self._result_set = client_side_statement_executor.execute(
                     self.connection, parsed_statement
                 )
-            if parsed_statement.statement_type == StatementType.DDL:
+                if self._result_set is not None:
+                    self._itr = PeekIterator(self._result_set)
+            elif self.connection.read_only or (
+                not self.connection._client_transaction_started
+                and parsed_statement.statement_type == StatementType.QUERY
+            ):
+                self._handle_DQL(sql, args or None)
+            elif parsed_statement.statement_type == StatementType.DDL:
                 self._batch_DDLs(sql)
                 if not self.connection._client_transaction_started:
                     self.connection.run_prior_DDL_statements()
-                return
-
-            # For every other operation, we've got to ensure that
-            # any prior DDL statements were run.
-            # self._run_prior_DDL_statements()
-            self.connection.run_prior_DDL_statements()
-
-            if parsed_statement.statement_type == StatementType.UPDATE:
-                sql = parse_utils.ensure_where_clause(sql)
-
-            sql, args = sql_pyformat_args_to_spanner(sql, args or None)
-
-            if self.connection._client_transaction_started:
-                statement = Statement(
-                    sql,
-                    args,
-                    get_param_types(args or None),
-                    ResultsChecksum(),
-                )
-
-                (
-                    self._result_set,
-                    self._checksum,
-                ) = self.connection.run_statement(statement)
-                while True:
-                    try:
-                        self._itr = PeekIterator(self._result_set)
-                        break
-                    except Aborted:
-                        self.connection.retry_transaction()
-                return
-
-            if parsed_statement.statement_type == StatementType.QUERY:
-                self._handle_DQL(sql, args or None)
             else:
-                self.connection.database.run_in_transaction(
-                    self._do_execute_update,
-                    sql,
-                    args or None,
-                )
+                self._execute_in_rw_transaction(parsed_statement, sql, args)
+
         except (AlreadyExists, FailedPrecondition, OutOfRange) as e:
             raise IntegrityError(getattr(e, "details", e)) from e
         except InvalidArgument as e:
             raise ProgrammingError(getattr(e, "details", e)) from e
         except InternalServerError as e:
             raise OperationalError(getattr(e, "details", e)) from e
+        finally:
+            if self.connection._client_transaction_started is False:
+                self.connection._spanner_transaction_started = False
+
+    def _execute_in_rw_transaction(self, parsed_statement, sql, args):
+        # For every other operation, we've got to ensure that
+        # any prior DDL statements were run.
+        self.connection.run_prior_DDL_statements()
+        if parsed_statement.statement_type == StatementType.UPDATE:
+            sql = parse_utils.ensure_where_clause(sql)
+        sql, args = sql_pyformat_args_to_spanner(sql, args or None)
+
+        if self.connection._client_transaction_started:
+            statement = Statement(
+                sql,
+                args,
+                get_param_types(args or None),
+                ResultsChecksum(),
+            )
+
+            (
+                self._result_set,
+                self._checksum,
+            ) = self.connection.run_statement(statement)
+
+            while True:
+                try:
+                    self._itr = PeekIterator(self._result_set)
+                    break
+                except Aborted:
+                    self.connection.retry_transaction()
+                except Exception as ex:
+                    self.connection._statements.remove(statement)
+                    raise ex
+        else:
+            self.connection.database.run_in_transaction(
+                self._do_execute_update_in_autocommit,
+                sql,
+                args or None,
+            )
 
     @check_not_closed
     def executemany(self, operation, seq_of_params):
@@ -477,6 +487,10 @@ class Cursor(object):
         # Unfortunately, Spanner doesn't seem to send back
         # information about the number of rows available.
         self._row_count = _UNSET_COUNT
+        if self._result_set.metadata.transaction.read_timestamp is not None:
+            snapshot._transaction_read_timestamp = (
+                self._result_set.metadata.transaction.read_timestamp
+            )
 
     def _handle_DQL(self, sql, params):
         if self.connection.database is None:
@@ -492,6 +506,8 @@ class Cursor(object):
             with self.connection.database.snapshot(
                 **self.connection.staleness
             ) as snapshot:
+                self.connection._snapshot = snapshot
+                self.connection._transaction = None
                 self._handle_DQL_with_snapshot(snapshot, sql, params)
 
     def __enter__(self):

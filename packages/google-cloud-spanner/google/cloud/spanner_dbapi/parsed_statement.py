@@ -28,6 +28,8 @@ class ClientSideStatementType(Enum):
     COMMIT = 1
     BEGIN = 2
     ROLLBACK = 3
+    SHOW_COMMIT_TIMESTAMP = 4
+    SHOW_READ_TIMESTAMP = 5
 
 
 @dataclass

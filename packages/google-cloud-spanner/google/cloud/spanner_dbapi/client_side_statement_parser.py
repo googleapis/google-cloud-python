@@ -23,6 +23,12 @@ from google.cloud.spanner_dbapi.parsed_statement import (
 RE_BEGIN = re.compile(r"^\s*(BEGIN|START)(TRANSACTION)?", re.IGNORECASE)
 RE_COMMIT = re.compile(r"^\s*(COMMIT)(TRANSACTION)?", re.IGNORECASE)
 RE_ROLLBACK = re.compile(r"^\s*(ROLLBACK)(TRANSACTION)?", re.IGNORECASE)
+RE_SHOW_COMMIT_TIMESTAMP = re.compile(
+    r"^\s*(SHOW)\s+(VARIABLE)\s+(COMMIT_TIMESTAMP)", re.IGNORECASE
+)
+RE_SHOW_READ_TIMESTAMP = re.compile(
+    r"^\s*(SHOW)\s+(VARIABLE)\s+(READ_TIMESTAMP)", re.IGNORECASE
+)
 
 
 def parse_stmt(query):
@@ -37,16 +43,19 @@ def parse_stmt(query):
     :rtype: ParsedStatement
     :returns: ParsedStatement object.
     """
+    client_side_statement_type = None
     if RE_COMMIT.match(query):
-        return ParsedStatement(
-            StatementType.CLIENT_SIDE, query, ClientSideStatementType.COMMIT
-        )
+        client_side_statement_type = ClientSideStatementType.COMMIT
     if RE_BEGIN.match(query):
-        return ParsedStatement(
-            StatementType.CLIENT_SIDE, query, ClientSideStatementType.BEGIN
-        )
+        client_side_statement_type = ClientSideStatementType.BEGIN
     if RE_ROLLBACK.match(query):
+        client_side_statement_type = ClientSideStatementType.ROLLBACK
+    if RE_SHOW_COMMIT_TIMESTAMP.match(query):
+        client_side_statement_type = ClientSideStatementType.SHOW_COMMIT_TIMESTAMP
+    if RE_SHOW_READ_TIMESTAMP.match(query):
+        client_side_statement_type = ClientSideStatementType.SHOW_READ_TIMESTAMP
+    if client_side_statement_type is not None:
         return ParsedStatement(
-            StatementType.CLIENT_SIDE, query, ClientSideStatementType.ROLLBACK
+            StatementType.CLIENT_SIDE, query, client_side_statement_type
         )
     return None
