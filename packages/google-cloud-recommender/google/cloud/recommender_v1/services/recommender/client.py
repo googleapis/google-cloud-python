@@ -1018,6 +1018,8 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
                 -  ``priority``
 
+                -  ``targetResources``
+
                 Examples:
 
                 -  ``stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED``
@@ -1026,7 +1028,11 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
                 -  ``priority = P1 OR priority = P2``
 
+                -  ``targetResources : //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1``
+
                 -  ``stateInfo.state = ACTIVE AND (priority = P1 OR priority = P2)``
+
+                The max allowed filter length is 500 characters.
 
                 (These expressions are based on the filter language
                 described at https://google.aip.dev/160)
