@@ -20,9 +20,11 @@ __version__ = package_version.__version__
 
 from .services.asset_service import AssetServiceAsyncClient, AssetServiceClient
 from .types.asset_service import (
+    BatchGetAssetsHistoryResponse,
     ContentType,
     CreateFeedRequest,
     DeleteFeedRequest,
+    ExportAssetsResponse,
     Feed,
     FeedOutputConfig,
     GcsDestination,
@@ -39,9 +41,11 @@ __all__ = (
     "AssetServiceAsyncClient",
     "Asset",
     "AssetServiceClient",
+    "BatchGetAssetsHistoryResponse",
     "ContentType",
     "CreateFeedRequest",
     "DeleteFeedRequest",
+    "ExportAssetsResponse",
     "Feed",
     "FeedOutputConfig",
     "GcsDestination",

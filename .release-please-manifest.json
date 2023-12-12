@@ -165,6 +165,7 @@
     "packages/google-maps-mapsplatformdatasets": "0.3.3",
     "packages/google-maps-places": "0.1.6",
     "packages/google-maps-routing": "0.6.3",
+    "packages/google-shopping-css": "0.0.0",
     "packages/google-shopping-merchant-inventories": "0.1.1",
     "packages/google-shopping-merchant-reports": "0.1.1",
     "packages/google-shopping-type": "0.1.1",

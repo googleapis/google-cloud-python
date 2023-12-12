@@ -1183,6 +1183,7 @@ def test_get_alert_policy(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             combiner=alert.AlertPolicy.ConditionCombinerType.AND,
             notification_channels=["notification_channels_value"],
+            severity=alert.AlertPolicy.Severity.CRITICAL,
         )
         response = client.get_alert_policy(request)
 
@@ -1197,6 +1198,7 @@ def test_get_alert_policy(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.combiner == alert.AlertPolicy.ConditionCombinerType.AND
     assert response.notification_channels == ["notification_channels_value"]
+    assert response.severity == alert.AlertPolicy.Severity.CRITICAL
 
 
 def test_get_alert_policy_empty_call():
@@ -1237,6 +1239,7 @@ async def test_get_alert_policy_async(
                 display_name="display_name_value",
                 combiner=alert.AlertPolicy.ConditionCombinerType.AND,
                 notification_channels=["notification_channels_value"],
+                severity=alert.AlertPolicy.Severity.CRITICAL,
             )
         )
         response = await client.get_alert_policy(request)
@@ -1252,6 +1255,7 @@ async def test_get_alert_policy_async(
     assert response.display_name == "display_name_value"
     assert response.combiner == alert.AlertPolicy.ConditionCombinerType.AND
     assert response.notification_channels == ["notification_channels_value"]
+    assert response.severity == alert.AlertPolicy.Severity.CRITICAL
 
 
 @pytest.mark.asyncio
@@ -1425,6 +1429,7 @@ def test_create_alert_policy(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             combiner=alert.AlertPolicy.ConditionCombinerType.AND,
             notification_channels=["notification_channels_value"],
+            severity=alert.AlertPolicy.Severity.CRITICAL,
         )
         response = client.create_alert_policy(request)
 
@@ -1439,6 +1444,7 @@ def test_create_alert_policy(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.combiner == alert.AlertPolicy.ConditionCombinerType.AND
     assert response.notification_channels == ["notification_channels_value"]
+    assert response.severity == alert.AlertPolicy.Severity.CRITICAL
 
 
 def test_create_alert_policy_empty_call():
@@ -1483,6 +1489,7 @@ async def test_create_alert_policy_async(
                 display_name="display_name_value",
                 combiner=alert.AlertPolicy.ConditionCombinerType.AND,
                 notification_channels=["notification_channels_value"],
+                severity=alert.AlertPolicy.Severity.CRITICAL,
             )
         )
         response = await client.create_alert_policy(request)
@@ -1498,6 +1505,7 @@ async def test_create_alert_policy_async(
     assert response.display_name == "display_name_value"
     assert response.combiner == alert.AlertPolicy.ConditionCombinerType.AND
     assert response.notification_channels == ["notification_channels_value"]
+    assert response.severity == alert.AlertPolicy.Severity.CRITICAL
 
 
 @pytest.mark.asyncio
@@ -1923,6 +1931,7 @@ def test_update_alert_policy(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             combiner=alert.AlertPolicy.ConditionCombinerType.AND,
             notification_channels=["notification_channels_value"],
+            severity=alert.AlertPolicy.Severity.CRITICAL,
         )
         response = client.update_alert_policy(request)
 
@@ -1937,6 +1946,7 @@ def test_update_alert_policy(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.combiner == alert.AlertPolicy.ConditionCombinerType.AND
     assert response.notification_channels == ["notification_channels_value"]
+    assert response.severity == alert.AlertPolicy.Severity.CRITICAL
 
 
 def test_update_alert_policy_empty_call():
@@ -1981,6 +1991,7 @@ async def test_update_alert_policy_async(
                 display_name="display_name_value",
                 combiner=alert.AlertPolicy.ConditionCombinerType.AND,
                 notification_channels=["notification_channels_value"],
+                severity=alert.AlertPolicy.Severity.CRITICAL,
             )
         )
         response = await client.update_alert_policy(request)
@@ -1996,6 +2007,7 @@ async def test_update_alert_policy_async(
     assert response.display_name == "display_name_value"
     assert response.combiner == alert.AlertPolicy.ConditionCombinerType.AND
     assert response.notification_channels == ["notification_channels_value"]
+    assert response.severity == alert.AlertPolicy.Severity.CRITICAL
 
 
 @pytest.mark.asyncio
