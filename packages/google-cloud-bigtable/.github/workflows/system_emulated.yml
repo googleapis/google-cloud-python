@@ -7,7 +7,7 @@ on:
 jobs:
 
   run-systests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
 
@@ -20,7 +20,7 @@ jobs:
         python-version: '3.8'
 
     - name: Setup GCloud SDK
-      uses: google-github-actions/setup-gcloud@v1.1.0
+      uses: google-github-actions/setup-gcloud@v1.1.1
 
     - name: Install / run Nox
       run: |
