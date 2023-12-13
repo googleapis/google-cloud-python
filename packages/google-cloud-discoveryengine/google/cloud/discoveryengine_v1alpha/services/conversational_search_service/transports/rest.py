@@ -460,6 +460,11 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                     "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}:converse",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}:converse",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_converse_conversation(
                 request, metadata
@@ -569,6 +574,11 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                     "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations",
                     "body": "conversation",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/engines/*}/conversations",
+                    "body": "conversation",
+                },
             ]
             request, metadata = self._interceptor.pre_create_conversation(
                 request, metadata
@@ -668,6 +678,10 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                     "method": "delete",
                     "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}",
+                },
             ]
             request, metadata = self._interceptor.pre_delete_conversation(
                 request, metadata
@@ -755,6 +769,10 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_conversation(
@@ -851,6 +869,10 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                 {
                     "method": "get",
                     "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/engines/*}/conversations",
                 },
             ]
             request, metadata = self._interceptor.pre_list_conversations(
@@ -949,6 +971,11 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                 {
                     "method": "patch",
                     "uri": "/v1alpha/{conversation.name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
+                    "body": "conversation",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{conversation.name=projects/*/locations/*/collections/*/engines/*/conversations/*}",
                     "body": "conversation",
                 },
             ]
@@ -1102,6 +1129,10 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
                 },
                 {
@@ -1214,6 +1245,10 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                },
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",

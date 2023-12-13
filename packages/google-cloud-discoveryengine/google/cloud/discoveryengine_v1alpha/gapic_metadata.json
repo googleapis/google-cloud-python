@@ -667,14 +667,103 @@
         }
       }
     },
+    "SearchTuningService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SearchTuningServiceClient",
+          "rpcs": {
+            "TrainCustomModel": {
+              "methods": [
+                "train_custom_model"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SearchTuningServiceAsyncClient",
+          "rpcs": {
+            "TrainCustomModel": {
+              "methods": [
+                "train_custom_model"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SearchTuningServiceClient",
+          "rpcs": {
+            "TrainCustomModel": {
+              "methods": [
+                "train_custom_model"
+              ]
+            }
+          }
+        }
+      }
+    },
     "SiteSearchEngineService": {
       "clients": {
         "grpc": {
           "libraryClient": "SiteSearchEngineServiceClient",
           "rpcs": {
+            "BatchCreateTargetSites": {
+              "methods": [
+                "batch_create_target_sites"
+              ]
+            },
+            "BatchVerifyTargetSites": {
+              "methods": [
+                "batch_verify_target_sites"
+              ]
+            },
+            "CreateTargetSite": {
+              "methods": [
+                "create_target_site"
+              ]
+            },
+            "DeleteTargetSite": {
+              "methods": [
+                "delete_target_site"
+              ]
+            },
+            "DisableAdvancedSiteSearch": {
+              "methods": [
+                "disable_advanced_site_search"
+              ]
+            },
+            "EnableAdvancedSiteSearch": {
+              "methods": [
+                "enable_advanced_site_search"
+              ]
+            },
+            "FetchDomainVerificationStatus": {
+              "methods": [
+                "fetch_domain_verification_status"
+              ]
+            },
+            "GetSiteSearchEngine": {
+              "methods": [
+                "get_site_search_engine"
+              ]
+            },
+            "GetTargetSite": {
+              "methods": [
+                "get_target_site"
+              ]
+            },
+            "ListTargetSites": {
+              "methods": [
+                "list_target_sites"
+              ]
+            },
             "RecrawlUris": {
               "methods": [
                 "recrawl_uris"
+              ]
+            },
+            "UpdateTargetSite": {
+              "methods": [
+                "update_target_site"
               ]
             }
           }
@@ -682,9 +771,64 @@
         "grpc-async": {
           "libraryClient": "SiteSearchEngineServiceAsyncClient",
           "rpcs": {
+            "BatchCreateTargetSites": {
+              "methods": [
+                "batch_create_target_sites"
+              ]
+            },
+            "BatchVerifyTargetSites": {
+              "methods": [
+                "batch_verify_target_sites"
+              ]
+            },
+            "CreateTargetSite": {
+              "methods": [
+                "create_target_site"
+              ]
+            },
+            "DeleteTargetSite": {
+              "methods": [
+                "delete_target_site"
+              ]
+            },
+            "DisableAdvancedSiteSearch": {
+              "methods": [
+                "disable_advanced_site_search"
+              ]
+            },
+            "EnableAdvancedSiteSearch": {
+              "methods": [
+                "enable_advanced_site_search"
+              ]
+            },
+            "FetchDomainVerificationStatus": {
+              "methods": [
+                "fetch_domain_verification_status"
+              ]
+            },
+            "GetSiteSearchEngine": {
+              "methods": [
+                "get_site_search_engine"
+              ]
+            },
+            "GetTargetSite": {
+              "methods": [
+                "get_target_site"
+              ]
+            },
+            "ListTargetSites": {
+              "methods": [
+                "list_target_sites"
+              ]
+            },
             "RecrawlUris": {
               "methods": [
                 "recrawl_uris"
+              ]
+            },
+            "UpdateTargetSite": {
+              "methods": [
+                "update_target_site"
               ]
             }
           }
@@ -692,9 +836,64 @@
         "rest": {
           "libraryClient": "SiteSearchEngineServiceClient",
           "rpcs": {
+            "BatchCreateTargetSites": {
+              "methods": [
+                "batch_create_target_sites"
+              ]
+            },
+            "BatchVerifyTargetSites": {
+              "methods": [
+                "batch_verify_target_sites"
+              ]
+            },
+            "CreateTargetSite": {
+              "methods": [
+                "create_target_site"
+              ]
+            },
+            "DeleteTargetSite": {
+              "methods": [
+                "delete_target_site"
+              ]
+            },
+            "DisableAdvancedSiteSearch": {
+              "methods": [
+                "disable_advanced_site_search"
+              ]
+            },
+            "EnableAdvancedSiteSearch": {
+              "methods": [
+                "enable_advanced_site_search"
+              ]
+            },
+            "FetchDomainVerificationStatus": {
+              "methods": [
+                "fetch_domain_verification_status"
+              ]
+            },
+            "GetSiteSearchEngine": {
+              "methods": [
+                "get_site_search_engine"
+              ]
+            },
+            "GetTargetSite": {
+              "methods": [
+                "get_target_site"
+              ]
+            },
+            "ListTargetSites": {
+              "methods": [
+                "list_target_sites"
+              ]
+            },
             "RecrawlUris": {
               "methods": [
                 "recrawl_uris"
+              ]
+            },
+            "UpdateTargetSite": {
+              "methods": [
+                "update_target_site"
               ]
             }
           }

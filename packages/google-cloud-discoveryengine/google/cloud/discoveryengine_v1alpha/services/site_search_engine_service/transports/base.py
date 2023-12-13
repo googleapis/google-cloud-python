@@ -27,7 +27,10 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
-from google.cloud.discoveryengine_v1alpha.types import site_search_engine_service
+from google.cloud.discoveryengine_v1alpha.types import (
+    site_search_engine,
+    site_search_engine_service,
+)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -124,8 +127,63 @@ class SiteSearchEngineServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.get_site_search_engine: gapic_v1.method.wrap_method(
+                self.get_site_search_engine,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_target_site: gapic_v1.method.wrap_method(
+                self.create_target_site,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_target_sites: gapic_v1.method.wrap_method(
+                self.batch_create_target_sites,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_target_site: gapic_v1.method.wrap_method(
+                self.get_target_site,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_target_site: gapic_v1.method.wrap_method(
+                self.update_target_site,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_target_site: gapic_v1.method.wrap_method(
+                self.delete_target_site,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_target_sites: gapic_v1.method.wrap_method(
+                self.list_target_sites,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.enable_advanced_site_search: gapic_v1.method.wrap_method(
+                self.enable_advanced_site_search,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.disable_advanced_site_search: gapic_v1.method.wrap_method(
+                self.disable_advanced_site_search,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.recrawl_uris: gapic_v1.method.wrap_method(
                 self.recrawl_uris,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_verify_target_sites: gapic_v1.method.wrap_method(
+                self.batch_verify_target_sites,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_domain_verification_status: gapic_v1.method.wrap_method(
+                self.fetch_domain_verification_status,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -146,11 +204,119 @@ class SiteSearchEngineServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_site_search_engine(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.GetSiteSearchEngineRequest],
+        Union[
+            site_search_engine.SiteSearchEngine,
+            Awaitable[site_search_engine.SiteSearchEngine],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.CreateTargetSiteRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_create_target_sites(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.BatchCreateTargetSitesRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.GetTargetSiteRequest],
+        Union[site_search_engine.TargetSite, Awaitable[site_search_engine.TargetSite]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.UpdateTargetSiteRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.DeleteTargetSiteRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_target_sites(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.ListTargetSitesRequest],
+        Union[
+            site_search_engine_service.ListTargetSitesResponse,
+            Awaitable[site_search_engine_service.ListTargetSitesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def enable_advanced_site_search(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.EnableAdvancedSiteSearchRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def disable_advanced_site_search(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.DisableAdvancedSiteSearchRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def recrawl_uris(
         self,
     ) -> Callable[
         [site_search_engine_service.RecrawlUrisRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_verify_target_sites(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.BatchVerifyTargetSitesRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_domain_verification_status(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.FetchDomainVerificationStatusRequest],
+        Union[
+            site_search_engine_service.FetchDomainVerificationStatusResponse,
+            Awaitable[site_search_engine_service.FetchDomainVerificationStatusResponse],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -44,7 +44,9 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
+from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -56,9 +58,13 @@ from requests.sessions import Session
 from google.cloud.discoveryengine_v1alpha.services.site_search_engine_service import (
     SiteSearchEngineServiceAsyncClient,
     SiteSearchEngineServiceClient,
+    pagers,
     transports,
 )
-from google.cloud.discoveryengine_v1alpha.types import site_search_engine_service
+from google.cloud.discoveryengine_v1alpha.types import (
+    site_search_engine,
+    site_search_engine_service,
+)
 
 
 def client_cert_source_callback():
@@ -763,6 +769,2157 @@ def test_site_search_engine_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
+        site_search_engine_service.GetSiteSearchEngineRequest,
+        dict,
+    ],
+)
+def test_get_site_search_engine(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_site_search_engine), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = site_search_engine.SiteSearchEngine(
+            name="name_value",
+        )
+        response = client.get_site_search_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetSiteSearchEngineRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, site_search_engine.SiteSearchEngine)
+    assert response.name == "name_value"
+
+
+def test_get_site_search_engine_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_site_search_engine), "__call__"
+    ) as call:
+        client.get_site_search_engine()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetSiteSearchEngineRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_site_search_engine_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.GetSiteSearchEngineRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_site_search_engine), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine.SiteSearchEngine(
+                name="name_value",
+            )
+        )
+        response = await client.get_site_search_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetSiteSearchEngineRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, site_search_engine.SiteSearchEngine)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_site_search_engine_async_from_dict():
+    await test_get_site_search_engine_async(request_type=dict)
+
+
+def test_get_site_search_engine_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.GetSiteSearchEngineRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_site_search_engine), "__call__"
+    ) as call:
+        call.return_value = site_search_engine.SiteSearchEngine()
+        client.get_site_search_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_site_search_engine_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.GetSiteSearchEngineRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_site_search_engine), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine.SiteSearchEngine()
+        )
+        await client.get_site_search_engine(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_site_search_engine_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_site_search_engine), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = site_search_engine.SiteSearchEngine()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_site_search_engine(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_site_search_engine_flattened_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_site_search_engine(
+            site_search_engine_service.GetSiteSearchEngineRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_site_search_engine_flattened_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_site_search_engine), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = site_search_engine.SiteSearchEngine()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine.SiteSearchEngine()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_site_search_engine(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_site_search_engine_flattened_error_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_site_search_engine(
+            site_search_engine_service.GetSiteSearchEngineRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.CreateTargetSiteRequest,
+        dict,
+    ],
+)
+def test_create_target_site(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.CreateTargetSiteRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_target_site_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_target_site), "__call__"
+    ) as call:
+        client.create_target_site()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.CreateTargetSiteRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_target_site_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.CreateTargetSiteRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.CreateTargetSiteRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_target_site_async_from_dict():
+    await test_create_target_site_async(request_type=dict)
+
+
+def test_create_target_site_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.CreateTargetSiteRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_target_site), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_target_site_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.CreateTargetSiteRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_target_site), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_target_site_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_target_site(
+            parent="parent_value",
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].target_site
+        mock_val = site_search_engine.TargetSite(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_target_site_flattened_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_target_site(
+            site_search_engine_service.CreateTargetSiteRequest(),
+            parent="parent_value",
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_target_site_flattened_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_target_site(
+            parent="parent_value",
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].target_site
+        mock_val = site_search_engine.TargetSite(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_target_site_flattened_error_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_target_site(
+            site_search_engine_service.CreateTargetSiteRequest(),
+            parent="parent_value",
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.BatchCreateTargetSitesRequest,
+        dict,
+    ],
+)
+def test_batch_create_target_sites(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_target_sites), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.batch_create_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.BatchCreateTargetSitesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_batch_create_target_sites_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_target_sites), "__call__"
+    ) as call:
+        client.batch_create_target_sites()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.BatchCreateTargetSitesRequest()
+
+
+@pytest.mark.asyncio
+async def test_batch_create_target_sites_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.BatchCreateTargetSitesRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_target_sites), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.batch_create_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.BatchCreateTargetSitesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_batch_create_target_sites_async_from_dict():
+    await test_batch_create_target_sites_async(request_type=dict)
+
+
+def test_batch_create_target_sites_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.BatchCreateTargetSitesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_target_sites), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.batch_create_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_batch_create_target_sites_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.BatchCreateTargetSitesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_target_sites), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.batch_create_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.GetTargetSiteRequest,
+        dict,
+    ],
+)
+def test_get_target_site(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = site_search_engine.TargetSite(
+            name="name_value",
+            provided_uri_pattern="provided_uri_pattern_value",
+            type_=site_search_engine.TargetSite.Type.INCLUDE,
+            exact_match=True,
+            generated_uri_pattern="generated_uri_pattern_value",
+            indexing_status=site_search_engine.TargetSite.IndexingStatus.PENDING,
+        )
+        response = client.get_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetTargetSiteRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, site_search_engine.TargetSite)
+    assert response.name == "name_value"
+    assert response.provided_uri_pattern == "provided_uri_pattern_value"
+    assert response.type_ == site_search_engine.TargetSite.Type.INCLUDE
+    assert response.exact_match is True
+    assert response.generated_uri_pattern == "generated_uri_pattern_value"
+    assert (
+        response.indexing_status == site_search_engine.TargetSite.IndexingStatus.PENDING
+    )
+
+
+def test_get_target_site_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
+        client.get_target_site()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetTargetSiteRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_target_site_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.GetTargetSiteRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine.TargetSite(
+                name="name_value",
+                provided_uri_pattern="provided_uri_pattern_value",
+                type_=site_search_engine.TargetSite.Type.INCLUDE,
+                exact_match=True,
+                generated_uri_pattern="generated_uri_pattern_value",
+                indexing_status=site_search_engine.TargetSite.IndexingStatus.PENDING,
+            )
+        )
+        response = await client.get_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.GetTargetSiteRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, site_search_engine.TargetSite)
+    assert response.name == "name_value"
+    assert response.provided_uri_pattern == "provided_uri_pattern_value"
+    assert response.type_ == site_search_engine.TargetSite.Type.INCLUDE
+    assert response.exact_match is True
+    assert response.generated_uri_pattern == "generated_uri_pattern_value"
+    assert (
+        response.indexing_status == site_search_engine.TargetSite.IndexingStatus.PENDING
+    )
+
+
+@pytest.mark.asyncio
+async def test_get_target_site_async_from_dict():
+    await test_get_target_site_async(request_type=dict)
+
+
+def test_get_target_site_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.GetTargetSiteRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
+        call.return_value = site_search_engine.TargetSite()
+        client.get_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_target_site_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.GetTargetSiteRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine.TargetSite()
+        )
+        await client.get_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_target_site_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = site_search_engine.TargetSite()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_target_site(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_target_site_flattened_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_target_site(
+            site_search_engine_service.GetTargetSiteRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_target_site_flattened_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_target_site), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = site_search_engine.TargetSite()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine.TargetSite()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_target_site(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_target_site_flattened_error_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_target_site(
+            site_search_engine_service.GetTargetSiteRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.UpdateTargetSiteRequest,
+        dict,
+    ],
+)
+def test_update_target_site(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.UpdateTargetSiteRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_target_site_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_target_site), "__call__"
+    ) as call:
+        client.update_target_site()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.UpdateTargetSiteRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_target_site_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.UpdateTargetSiteRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.UpdateTargetSiteRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_target_site_async_from_dict():
+    await test_update_target_site_async(request_type=dict)
+
+
+def test_update_target_site_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.UpdateTargetSiteRequest()
+
+    request.target_site.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_target_site), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "target_site.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_target_site_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.UpdateTargetSiteRequest()
+
+    request.target_site.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_target_site), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "target_site.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_target_site_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_target_site(
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].target_site
+        mock_val = site_search_engine.TargetSite(name="name_value")
+        assert arg == mock_val
+
+
+def test_update_target_site_flattened_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_target_site(
+            site_search_engine_service.UpdateTargetSiteRequest(),
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_target_site_flattened_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_target_site(
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].target_site
+        mock_val = site_search_engine.TargetSite(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_target_site_flattened_error_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_target_site(
+            site_search_engine_service.UpdateTargetSiteRequest(),
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.DeleteTargetSiteRequest,
+        dict,
+    ],
+)
+def test_delete_target_site(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.DeleteTargetSiteRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_target_site_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_target_site), "__call__"
+    ) as call:
+        client.delete_target_site()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.DeleteTargetSiteRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_target_site_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.DeleteTargetSiteRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.DeleteTargetSiteRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_target_site_async_from_dict():
+    await test_delete_target_site_async(request_type=dict)
+
+
+def test_delete_target_site_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.DeleteTargetSiteRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_target_site), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_target_site_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.DeleteTargetSiteRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_target_site), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_target_site(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_target_site_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_target_site(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_target_site_flattened_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_target_site(
+            site_search_engine_service.DeleteTargetSiteRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_target_site_flattened_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_target_site), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_target_site(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_target_site_flattened_error_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_target_site(
+            site_search_engine_service.DeleteTargetSiteRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.ListTargetSitesRequest,
+        dict,
+    ],
+)
+def test_list_target_sites(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = site_search_engine_service.ListTargetSitesResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+        response = client.list_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.ListTargetSitesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTargetSitesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+def test_list_target_sites_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites), "__call__"
+    ) as call:
+        client.list_target_sites()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.ListTargetSitesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_target_sites_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.ListTargetSitesRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine_service.ListTargetSitesResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.ListTargetSitesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTargetSitesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+@pytest.mark.asyncio
+async def test_list_target_sites_async_from_dict():
+    await test_list_target_sites_async(request_type=dict)
+
+
+def test_list_target_sites_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.ListTargetSitesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites), "__call__"
+    ) as call:
+        call.return_value = site_search_engine_service.ListTargetSitesResponse()
+        client.list_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_target_sites_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.ListTargetSitesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine_service.ListTargetSitesResponse()
+        )
+        await client.list_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_target_sites_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = site_search_engine_service.ListTargetSitesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_target_sites(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_target_sites_flattened_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_target_sites(
+            site_search_engine_service.ListTargetSitesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_target_sites_flattened_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = site_search_engine_service.ListTargetSitesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine_service.ListTargetSitesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_target_sites(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_target_sites_flattened_error_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_target_sites(
+            site_search_engine_service.ListTargetSitesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_target_sites_pager(transport_name: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="abc",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[],
+                next_page_token="def",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="ghi",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_target_sites(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, site_search_engine.TargetSite) for i in results)
+
+
+def test_list_target_sites_pages(transport_name: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="abc",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[],
+                next_page_token="def",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="ghi",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_target_sites(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_target_sites_async_pager():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="abc",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[],
+                next_page_token="def",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="ghi",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_target_sites(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, site_search_engine.TargetSite) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_target_sites_async_pages():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_target_sites),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="abc",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[],
+                next_page_token="def",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="ghi",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_target_sites(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.EnableAdvancedSiteSearchRequest,
+        dict,
+    ],
+)
+def test_enable_advanced_site_search(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_advanced_site_search), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.enable_advanced_site_search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.EnableAdvancedSiteSearchRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_enable_advanced_site_search_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_advanced_site_search), "__call__"
+    ) as call:
+        client.enable_advanced_site_search()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.EnableAdvancedSiteSearchRequest()
+
+
+@pytest.mark.asyncio
+async def test_enable_advanced_site_search_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.EnableAdvancedSiteSearchRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_advanced_site_search), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.enable_advanced_site_search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.EnableAdvancedSiteSearchRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_enable_advanced_site_search_async_from_dict():
+    await test_enable_advanced_site_search_async(request_type=dict)
+
+
+def test_enable_advanced_site_search_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.EnableAdvancedSiteSearchRequest()
+
+    request.site_search_engine = "site_search_engine_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_advanced_site_search), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.enable_advanced_site_search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "site_search_engine=site_search_engine_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_enable_advanced_site_search_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.EnableAdvancedSiteSearchRequest()
+
+    request.site_search_engine = "site_search_engine_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_advanced_site_search), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.enable_advanced_site_search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "site_search_engine=site_search_engine_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.DisableAdvancedSiteSearchRequest,
+        dict,
+    ],
+)
+def test_disable_advanced_site_search(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_advanced_site_search), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.disable_advanced_site_search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.DisableAdvancedSiteSearchRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_disable_advanced_site_search_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_advanced_site_search), "__call__"
+    ) as call:
+        client.disable_advanced_site_search()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.DisableAdvancedSiteSearchRequest()
+
+
+@pytest.mark.asyncio
+async def test_disable_advanced_site_search_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.DisableAdvancedSiteSearchRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_advanced_site_search), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.disable_advanced_site_search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.DisableAdvancedSiteSearchRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_disable_advanced_site_search_async_from_dict():
+    await test_disable_advanced_site_search_async(request_type=dict)
+
+
+def test_disable_advanced_site_search_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.DisableAdvancedSiteSearchRequest()
+
+    request.site_search_engine = "site_search_engine_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_advanced_site_search), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.disable_advanced_site_search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "site_search_engine=site_search_engine_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_disable_advanced_site_search_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.DisableAdvancedSiteSearchRequest()
+
+    request.site_search_engine = "site_search_engine_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_advanced_site_search), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.disable_advanced_site_search(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "site_search_engine=site_search_engine_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         site_search_engine_service.RecrawlUrisRequest,
         dict,
     ],
@@ -903,6 +3060,3110 @@ async def test_recrawl_uris_field_headers_async():
         "x-goog-request-params",
         "site_search_engine=site_search_engine_value",
     ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.BatchVerifyTargetSitesRequest,
+        dict,
+    ],
+)
+def test_batch_verify_target_sites(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_verify_target_sites), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.batch_verify_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.BatchVerifyTargetSitesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_batch_verify_target_sites_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_verify_target_sites), "__call__"
+    ) as call:
+        client.batch_verify_target_sites()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.BatchVerifyTargetSitesRequest()
+
+
+@pytest.mark.asyncio
+async def test_batch_verify_target_sites_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.BatchVerifyTargetSitesRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_verify_target_sites), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.batch_verify_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == site_search_engine_service.BatchVerifyTargetSitesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_batch_verify_target_sites_async_from_dict():
+    await test_batch_verify_target_sites_async(request_type=dict)
+
+
+def test_batch_verify_target_sites_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.BatchVerifyTargetSitesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_verify_target_sites), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.batch_verify_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_batch_verify_target_sites_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.BatchVerifyTargetSitesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_verify_target_sites), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.batch_verify_target_sites(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.FetchDomainVerificationStatusRequest,
+        dict,
+    ],
+)
+def test_fetch_domain_verification_status(request_type, transport: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_domain_verification_status), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = client.fetch_domain_verification_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == site_search_engine_service.FetchDomainVerificationStatusRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FetchDomainVerificationStatusPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+def test_fetch_domain_verification_status_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_domain_verification_status), "__call__"
+    ) as call:
+        client.fetch_domain_verification_status()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == site_search_engine_service.FetchDomainVerificationStatusRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_domain_verification_status_async(
+    transport: str = "grpc_asyncio",
+    request_type=site_search_engine_service.FetchDomainVerificationStatusRequest,
+):
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_domain_verification_status), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.fetch_domain_verification_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == site_search_engine_service.FetchDomainVerificationStatusRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FetchDomainVerificationStatusAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+@pytest.mark.asyncio
+async def test_fetch_domain_verification_status_async_from_dict():
+    await test_fetch_domain_verification_status_async(request_type=dict)
+
+
+def test_fetch_domain_verification_status_field_headers():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.FetchDomainVerificationStatusRequest()
+
+    request.site_search_engine = "site_search_engine_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_domain_verification_status), "__call__"
+    ) as call:
+        call.return_value = (
+            site_search_engine_service.FetchDomainVerificationStatusResponse()
+        )
+        client.fetch_domain_verification_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "site_search_engine=site_search_engine_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_fetch_domain_verification_status_field_headers_async():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = site_search_engine_service.FetchDomainVerificationStatusRequest()
+
+    request.site_search_engine = "site_search_engine_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_domain_verification_status), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            site_search_engine_service.FetchDomainVerificationStatusResponse()
+        )
+        await client.fetch_domain_verification_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "site_search_engine=site_search_engine_value",
+    ) in kw["metadata"]
+
+
+def test_fetch_domain_verification_status_pager(transport_name: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_domain_verification_status), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="abc",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[],
+                next_page_token="def",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="ghi",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("site_search_engine", ""),)),
+        )
+        pager = client.fetch_domain_verification_status(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, site_search_engine.TargetSite) for i in results)
+
+
+def test_fetch_domain_verification_status_pages(transport_name: str = "grpc"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_domain_verification_status), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="abc",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[],
+                next_page_token="def",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="ghi",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.fetch_domain_verification_status(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_fetch_domain_verification_status_async_pager():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_domain_verification_status),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="abc",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[],
+                next_page_token="def",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="ghi",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.fetch_domain_verification_status(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, site_search_engine.TargetSite) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_fetch_domain_verification_status_async_pages():
+    client = SiteSearchEngineServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_domain_verification_status),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="abc",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[],
+                next_page_token="def",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="ghi",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.fetch_domain_verification_status(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.GetSiteSearchEngineRequest,
+        dict,
+    ],
+)
+def test_get_site_search_engine_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = site_search_engine.SiteSearchEngine(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = site_search_engine.SiteSearchEngine.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_site_search_engine(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, site_search_engine.SiteSearchEngine)
+    assert response.name == "name_value"
+
+
+def test_get_site_search_engine_rest_required_fields(
+    request_type=site_search_engine_service.GetSiteSearchEngineRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_site_search_engine._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_site_search_engine._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = site_search_engine.SiteSearchEngine()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = site_search_engine.SiteSearchEngine.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_site_search_engine(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_site_search_engine_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_site_search_engine._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_site_search_engine_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "post_get_site_search_engine"
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "pre_get_site_search_engine"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.GetSiteSearchEngineRequest.pb(
+            site_search_engine_service.GetSiteSearchEngineRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = site_search_engine.SiteSearchEngine.to_json(
+            site_search_engine.SiteSearchEngine()
+        )
+
+        request = site_search_engine_service.GetSiteSearchEngineRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = site_search_engine.SiteSearchEngine()
+
+        client.get_site_search_engine(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_site_search_engine_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.GetSiteSearchEngineRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_site_search_engine(request)
+
+
+def test_get_site_search_engine_rest_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = site_search_engine.SiteSearchEngine()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = site_search_engine.SiteSearchEngine.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_site_search_engine(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/dataStores/*/siteSearchEngine}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_site_search_engine_rest_flattened_error(transport: str = "rest"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_site_search_engine(
+            site_search_engine_service.GetSiteSearchEngineRequest(),
+            name="name_value",
+        )
+
+
+def test_get_site_search_engine_rest_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.CreateTargetSiteRequest,
+        dict,
+    ],
+)
+def test_create_target_site_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request_init["target_site"] = {
+        "name": "name_value",
+        "provided_uri_pattern": "provided_uri_pattern_value",
+        "type_": 1,
+        "exact_match": True,
+        "generated_uri_pattern": "generated_uri_pattern_value",
+        "site_verification_info": {
+            "site_verification_state": 1,
+            "verify_time": {"seconds": 751, "nanos": 543},
+        },
+        "indexing_status": 1,
+        "update_time": {},
+        "failure_reason": {"quota_failure": {}},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = site_search_engine_service.CreateTargetSiteRequest.meta.fields[
+        "target_site"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["target_site"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["target_site"][field])):
+                    del request_init["target_site"][field][i][subfield]
+            else:
+                del request_init["target_site"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_target_site(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_target_site_rest_required_fields(
+    request_type=site_search_engine_service.CreateTargetSiteRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_target_site._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_target_site._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_target_site(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_target_site_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_target_site._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "targetSite",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_target_site_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "post_create_target_site"
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "pre_create_target_site"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.CreateTargetSiteRequest.pb(
+            site_search_engine_service.CreateTargetSiteRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = site_search_engine_service.CreateTargetSiteRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_target_site(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_target_site_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.CreateTargetSiteRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_target_site(request)
+
+
+def test_create_target_site_rest_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_target_site(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*/dataStores/*/siteSearchEngine}/targetSites"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_target_site_rest_flattened_error(transport: str = "rest"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_target_site(
+            site_search_engine_service.CreateTargetSiteRequest(),
+            parent="parent_value",
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+
+
+def test_create_target_site_rest_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.BatchCreateTargetSitesRequest,
+        dict,
+    ],
+)
+def test_batch_create_target_sites_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_create_target_sites(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_batch_create_target_sites_rest_required_fields(
+    request_type=site_search_engine_service.BatchCreateTargetSitesRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_target_sites._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_create_target_sites._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_create_target_sites(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_create_target_sites_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_create_target_sites._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "requests",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_create_target_sites_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_batch_create_target_sites",
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "pre_batch_create_target_sites",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.BatchCreateTargetSitesRequest.pb(
+            site_search_engine_service.BatchCreateTargetSitesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = site_search_engine_service.BatchCreateTargetSitesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_create_target_sites(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_create_target_sites_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.BatchCreateTargetSitesRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_create_target_sites(request)
+
+
+def test_batch_create_target_sites_rest_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.GetTargetSiteRequest,
+        dict,
+    ],
+)
+def test_get_target_site_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine/targetSites/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = site_search_engine.TargetSite(
+            name="name_value",
+            provided_uri_pattern="provided_uri_pattern_value",
+            type_=site_search_engine.TargetSite.Type.INCLUDE,
+            exact_match=True,
+            generated_uri_pattern="generated_uri_pattern_value",
+            indexing_status=site_search_engine.TargetSite.IndexingStatus.PENDING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = site_search_engine.TargetSite.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_target_site(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, site_search_engine.TargetSite)
+    assert response.name == "name_value"
+    assert response.provided_uri_pattern == "provided_uri_pattern_value"
+    assert response.type_ == site_search_engine.TargetSite.Type.INCLUDE
+    assert response.exact_match is True
+    assert response.generated_uri_pattern == "generated_uri_pattern_value"
+    assert (
+        response.indexing_status == site_search_engine.TargetSite.IndexingStatus.PENDING
+    )
+
+
+def test_get_target_site_rest_required_fields(
+    request_type=site_search_engine_service.GetTargetSiteRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_target_site._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_target_site._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = site_search_engine.TargetSite()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = site_search_engine.TargetSite.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_target_site(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_target_site_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_target_site._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_target_site_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "post_get_target_site"
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "pre_get_target_site"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.GetTargetSiteRequest.pb(
+            site_search_engine_service.GetTargetSiteRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = site_search_engine.TargetSite.to_json(
+            site_search_engine.TargetSite()
+        )
+
+        request = site_search_engine_service.GetTargetSiteRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = site_search_engine.TargetSite()
+
+        client.get_target_site(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_target_site_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.GetTargetSiteRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine/targetSites/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_target_site(request)
+
+
+def test_get_target_site_rest_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = site_search_engine.TargetSite()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine/targetSites/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = site_search_engine.TargetSite.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_target_site(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/dataStores/*/siteSearchEngine/targetSites/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_target_site_rest_flattened_error(transport: str = "rest"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_target_site(
+            site_search_engine_service.GetTargetSiteRequest(),
+            name="name_value",
+        )
+
+
+def test_get_target_site_rest_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.UpdateTargetSiteRequest,
+        dict,
+    ],
+)
+def test_update_target_site_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "target_site": {
+            "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine/targetSites/sample4"
+        }
+    }
+    request_init["target_site"] = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine/targetSites/sample4",
+        "provided_uri_pattern": "provided_uri_pattern_value",
+        "type_": 1,
+        "exact_match": True,
+        "generated_uri_pattern": "generated_uri_pattern_value",
+        "site_verification_info": {
+            "site_verification_state": 1,
+            "verify_time": {"seconds": 751, "nanos": 543},
+        },
+        "indexing_status": 1,
+        "update_time": {},
+        "failure_reason": {"quota_failure": {}},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = site_search_engine_service.UpdateTargetSiteRequest.meta.fields[
+        "target_site"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["target_site"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["target_site"][field])):
+                    del request_init["target_site"][field][i][subfield]
+            else:
+                del request_init["target_site"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_target_site(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_target_site_rest_required_fields(
+    request_type=site_search_engine_service.UpdateTargetSiteRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_target_site._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_target_site._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_target_site(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_target_site_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_target_site._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("targetSite",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_target_site_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "post_update_target_site"
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "pre_update_target_site"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.UpdateTargetSiteRequest.pb(
+            site_search_engine_service.UpdateTargetSiteRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = site_search_engine_service.UpdateTargetSiteRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_target_site(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_target_site_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.UpdateTargetSiteRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "target_site": {
+            "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine/targetSites/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_target_site(request)
+
+
+def test_update_target_site_rest_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "target_site": {
+                "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine/targetSites/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_target_site(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{target_site.name=projects/*/locations/*/dataStores/*/siteSearchEngine/targetSites/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_target_site_rest_flattened_error(transport: str = "rest"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_target_site(
+            site_search_engine_service.UpdateTargetSiteRequest(),
+            target_site=site_search_engine.TargetSite(name="name_value"),
+        )
+
+
+def test_update_target_site_rest_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.DeleteTargetSiteRequest,
+        dict,
+    ],
+)
+def test_delete_target_site_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine/targetSites/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_target_site(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_target_site_rest_required_fields(
+    request_type=site_search_engine_service.DeleteTargetSiteRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_target_site._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_target_site._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_target_site(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_target_site_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_target_site._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_target_site_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "post_delete_target_site"
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "pre_delete_target_site"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.DeleteTargetSiteRequest.pb(
+            site_search_engine_service.DeleteTargetSiteRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = site_search_engine_service.DeleteTargetSiteRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_target_site(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_target_site_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.DeleteTargetSiteRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine/targetSites/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_target_site(request)
+
+
+def test_delete_target_site_rest_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine/targetSites/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_target_site(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/dataStores/*/siteSearchEngine/targetSites/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_target_site_rest_flattened_error(transport: str = "rest"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_target_site(
+            site_search_engine_service.DeleteTargetSiteRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_target_site_rest_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.ListTargetSitesRequest,
+        dict,
+    ],
+)
+def test_list_target_sites_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = site_search_engine_service.ListTargetSitesResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = site_search_engine_service.ListTargetSitesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_target_sites(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTargetSitesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+def test_list_target_sites_rest_required_fields(
+    request_type=site_search_engine_service.ListTargetSitesRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_target_sites._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_target_sites._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = site_search_engine_service.ListTargetSitesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = site_search_engine_service.ListTargetSitesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_target_sites(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_target_sites_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_target_sites._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_target_sites_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "post_list_target_sites"
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor, "pre_list_target_sites"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.ListTargetSitesRequest.pb(
+            site_search_engine_service.ListTargetSitesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            site_search_engine_service.ListTargetSitesResponse.to_json(
+                site_search_engine_service.ListTargetSitesResponse()
+            )
+        )
+
+        request = site_search_engine_service.ListTargetSitesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = site_search_engine_service.ListTargetSitesResponse()
+
+        client.list_target_sites(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_target_sites_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.ListTargetSitesRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_target_sites(request)
+
+
+def test_list_target_sites_rest_flattened():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = site_search_engine_service.ListTargetSitesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = site_search_engine_service.ListTargetSitesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_target_sites(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*/dataStores/*/siteSearchEngine}/targetSites"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_target_sites_rest_flattened_error(transport: str = "rest"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_target_sites(
+            site_search_engine_service.ListTargetSitesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_target_sites_rest_pager(transport: str = "rest"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="abc",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[],
+                next_page_token="def",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="ghi",
+            ),
+            site_search_engine_service.ListTargetSitesResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            site_search_engine_service.ListTargetSitesResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+        }
+
+        pager = client.list_target_sites(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, site_search_engine.TargetSite) for i in results)
+
+        pages = list(client.list_target_sites(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.EnableAdvancedSiteSearchRequest,
+        dict,
+    ],
+)
+def test_enable_advanced_site_search_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "site_search_engine": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.enable_advanced_site_search(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_enable_advanced_site_search_rest_required_fields(
+    request_type=site_search_engine_service.EnableAdvancedSiteSearchRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["site_search_engine"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).enable_advanced_site_search._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["siteSearchEngine"] = "site_search_engine_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).enable_advanced_site_search._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "siteSearchEngine" in jsonified_request
+    assert jsonified_request["siteSearchEngine"] == "site_search_engine_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.enable_advanced_site_search(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_enable_advanced_site_search_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.enable_advanced_site_search._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("siteSearchEngine",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_enable_advanced_site_search_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_enable_advanced_site_search",
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "pre_enable_advanced_site_search",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.EnableAdvancedSiteSearchRequest.pb(
+            site_search_engine_service.EnableAdvancedSiteSearchRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = site_search_engine_service.EnableAdvancedSiteSearchRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.enable_advanced_site_search(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_enable_advanced_site_search_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.EnableAdvancedSiteSearchRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "site_search_engine": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.enable_advanced_site_search(request)
+
+
+def test_enable_advanced_site_search_rest_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.DisableAdvancedSiteSearchRequest,
+        dict,
+    ],
+)
+def test_disable_advanced_site_search_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "site_search_engine": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.disable_advanced_site_search(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_disable_advanced_site_search_rest_required_fields(
+    request_type=site_search_engine_service.DisableAdvancedSiteSearchRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["site_search_engine"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).disable_advanced_site_search._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["siteSearchEngine"] = "site_search_engine_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).disable_advanced_site_search._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "siteSearchEngine" in jsonified_request
+    assert jsonified_request["siteSearchEngine"] == "site_search_engine_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.disable_advanced_site_search(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_disable_advanced_site_search_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.disable_advanced_site_search._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("siteSearchEngine",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_disable_advanced_site_search_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_disable_advanced_site_search",
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "pre_disable_advanced_site_search",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.DisableAdvancedSiteSearchRequest.pb(
+            site_search_engine_service.DisableAdvancedSiteSearchRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = site_search_engine_service.DisableAdvancedSiteSearchRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.disable_advanced_site_search(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_disable_advanced_site_search_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.DisableAdvancedSiteSearchRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "site_search_engine": "projects/sample1/locations/sample2/dataStores/sample3/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.disable_advanced_site_search(request)
+
+
+def test_disable_advanced_site_search_rest_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1130,6 +6391,536 @@ def test_recrawl_uris_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.BatchVerifyTargetSitesRequest,
+        dict,
+    ],
+)
+def test_batch_verify_target_sites_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_verify_target_sites(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_batch_verify_target_sites_rest_required_fields(
+    request_type=site_search_engine_service.BatchVerifyTargetSitesRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_verify_target_sites._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).batch_verify_target_sites._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.batch_verify_target_sites(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_batch_verify_target_sites_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.batch_verify_target_sites._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_verify_target_sites_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_batch_verify_target_sites",
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "pre_batch_verify_target_sites",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.BatchVerifyTargetSitesRequest.pb(
+            site_search_engine_service.BatchVerifyTargetSitesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = site_search_engine_service.BatchVerifyTargetSitesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_verify_target_sites(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_verify_target_sites_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.BatchVerifyTargetSitesRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_verify_target_sites(request)
+
+
+def test_batch_verify_target_sites_rest_error():
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        site_search_engine_service.FetchDomainVerificationStatusRequest,
+        dict,
+    ],
+)
+def test_fetch_domain_verification_status_rest(request_type):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "site_search_engine": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = site_search_engine_service.FetchDomainVerificationStatusResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            site_search_engine_service.FetchDomainVerificationStatusResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_domain_verification_status(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FetchDomainVerificationStatusPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+def test_fetch_domain_verification_status_rest_required_fields(
+    request_type=site_search_engine_service.FetchDomainVerificationStatusRequest,
+):
+    transport_class = transports.SiteSearchEngineServiceRestTransport
+
+    request_init = {}
+    request_init["site_search_engine"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_domain_verification_status._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["siteSearchEngine"] = "site_search_engine_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_domain_verification_status._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "siteSearchEngine" in jsonified_request
+    assert jsonified_request["siteSearchEngine"] == "site_search_engine_value"
+
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = site_search_engine_service.FetchDomainVerificationStatusResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                site_search_engine_service.FetchDomainVerificationStatusResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.fetch_domain_verification_status(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_fetch_domain_verification_status_rest_unset_required_fields():
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.fetch_domain_verification_status._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("siteSearchEngine",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_domain_verification_status_rest_interceptors(null_interceptor):
+    transport = transports.SiteSearchEngineServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SiteSearchEngineServiceRestInterceptor(),
+    )
+    client = SiteSearchEngineServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "post_fetch_domain_verification_status",
+    ) as post, mock.patch.object(
+        transports.SiteSearchEngineServiceRestInterceptor,
+        "pre_fetch_domain_verification_status",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = site_search_engine_service.FetchDomainVerificationStatusRequest.pb(
+            site_search_engine_service.FetchDomainVerificationStatusRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            site_search_engine_service.FetchDomainVerificationStatusResponse.to_json(
+                site_search_engine_service.FetchDomainVerificationStatusResponse()
+            )
+        )
+
+        request = site_search_engine_service.FetchDomainVerificationStatusRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            site_search_engine_service.FetchDomainVerificationStatusResponse()
+        )
+
+        client.fetch_domain_verification_status(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_domain_verification_status_rest_bad_request(
+    transport: str = "rest",
+    request_type=site_search_engine_service.FetchDomainVerificationStatusRequest,
+):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "site_search_engine": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/siteSearchEngine"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_domain_verification_status(request)
+
+
+def test_fetch_domain_verification_status_rest_pager(transport: str = "rest"):
+    client = SiteSearchEngineServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="abc",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[],
+                next_page_token="def",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                ],
+                next_page_token="ghi",
+            ),
+            site_search_engine_service.FetchDomainVerificationStatusResponse(
+                target_sites=[
+                    site_search_engine.TargetSite(),
+                    site_search_engine.TargetSite(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            site_search_engine_service.FetchDomainVerificationStatusResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "site_search_engine": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/siteSearchEngine"
+        }
+
+        pager = client.fetch_domain_verification_status(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, site_search_engine.TargetSite) for i in results)
+
+        pages = list(
+            client.fetch_domain_verification_status(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.SiteSearchEngineServiceGrpcTransport(
@@ -1269,7 +7060,18 @@ def test_site_search_engine_service_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
+        "get_site_search_engine",
+        "create_target_site",
+        "batch_create_target_sites",
+        "get_target_site",
+        "update_target_site",
+        "delete_target_site",
+        "list_target_sites",
+        "enable_advanced_site_search",
+        "disable_advanced_site_search",
         "recrawl_uris",
+        "batch_verify_target_sites",
+        "fetch_domain_verification_status",
         "get_operation",
         "list_operations",
     )
@@ -1556,8 +7358,41 @@ def test_site_search_engine_service_client_transport_session_collision(transport
         credentials=creds2,
         transport=transport_name,
     )
+    session1 = client1.transport.get_site_search_engine._session
+    session2 = client2.transport.get_site_search_engine._session
+    assert session1 != session2
+    session1 = client1.transport.create_target_site._session
+    session2 = client2.transport.create_target_site._session
+    assert session1 != session2
+    session1 = client1.transport.batch_create_target_sites._session
+    session2 = client2.transport.batch_create_target_sites._session
+    assert session1 != session2
+    session1 = client1.transport.get_target_site._session
+    session2 = client2.transport.get_target_site._session
+    assert session1 != session2
+    session1 = client1.transport.update_target_site._session
+    session2 = client2.transport.update_target_site._session
+    assert session1 != session2
+    session1 = client1.transport.delete_target_site._session
+    session2 = client2.transport.delete_target_site._session
+    assert session1 != session2
+    session1 = client1.transport.list_target_sites._session
+    session2 = client2.transport.list_target_sites._session
+    assert session1 != session2
+    session1 = client1.transport.enable_advanced_site_search._session
+    session2 = client2.transport.enable_advanced_site_search._session
+    assert session1 != session2
+    session1 = client1.transport.disable_advanced_site_search._session
+    session2 = client2.transport.disable_advanced_site_search._session
+    assert session1 != session2
     session1 = client1.transport.recrawl_uris._session
     session2 = client2.transport.recrawl_uris._session
+    assert session1 != session2
+    session1 = client1.transport.batch_verify_target_sites._session
+    session2 = client2.transport.batch_verify_target_sites._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_domain_verification_status._session
+    session2 = client2.transport.fetch_domain_verification_status._session
     assert session1 != session2
 
 
@@ -1749,8 +7584,39 @@ def test_parse_site_search_engine_path():
     assert expected == actual
 
 
+def test_target_site_path():
+    project = "cuttlefish"
+    location = "mussel"
+    data_store = "winkle"
+    target_site = "nautilus"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        target_site=target_site,
+    )
+    actual = SiteSearchEngineServiceClient.target_site_path(
+        project, location, data_store, target_site
+    )
+    assert expected == actual
+
+
+def test_parse_target_site_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "data_store": "squid",
+        "target_site": "clam",
+    }
+    path = SiteSearchEngineServiceClient.target_site_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SiteSearchEngineServiceClient.parse_target_site_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1760,7 +7626,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "octopus",
     }
     path = SiteSearchEngineServiceClient.common_billing_account_path(**expected)
 
@@ -1770,7 +7636,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -1780,7 +7646,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "nudibranch",
     }
     path = SiteSearchEngineServiceClient.common_folder_path(**expected)
 
@@ -1790,7 +7656,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -1800,7 +7666,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "mussel",
     }
     path = SiteSearchEngineServiceClient.common_organization_path(**expected)
 
@@ -1810,7 +7676,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -1820,7 +7686,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nautilus",
     }
     path = SiteSearchEngineServiceClient.common_project_path(**expected)
 
@@ -1830,8 +7696,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -1842,8 +7708,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "squid",
+        "location": "clam",
     }
     path = SiteSearchEngineServiceClient.common_location_path(**expected)
 
@@ -1900,7 +7766,7 @@ def test_get_operation_rest_bad_request(
     request = request_type()
     request = json_format.ParseDict(
         {
-            "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
+            "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector/operations/sample4"
         },
         request,
     )
@@ -1930,7 +7796,7 @@ def test_get_operation_rest(request_type):
         transport="rest",
     )
     request_init = {
-        "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
+        "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector/operations/sample4"
     }
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
@@ -1963,7 +7829,7 @@ def test_list_operations_rest_bad_request(
     request = request_type()
     request = json_format.ParseDict(
         {
-            "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5"
+            "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector"
         },
         request,
     )
@@ -1993,7 +7859,7 @@ def test_list_operations_rest(request_type):
         transport="rest",
     )
     request_init = {
-        "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5"
+        "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector"
     }
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.

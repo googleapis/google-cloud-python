@@ -104,6 +104,20 @@ class SearchRequest(proto.Message):
             For more information about filtering including syntax and
             filter operators, see
             `Filter <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
+        canonical_filter (str):
+            The default filter that is applied when a user performs a
+            search without checking any filters on the search page.
+
+            The filter applied to every search request when quality
+            improvement such as query expansion is needed. In the case a
+            query does not have a sufficient amount of results this
+            filter will be used to determine whether or not to enable
+            the query expansion flow. The original filter will still be
+            used for the query expanded search. This field is strongly
+            recommended to achieve high search quality.
+
+            For more information about filter syntax, see
+            [SearchRequest.filter][google.cloud.discoveryengine.v1alpha.SearchRequest.filter].
         order_by (str):
             The order in which documents are returned. Documents can be
             ordered by a field in an
@@ -706,11 +720,46 @@ class SearchRequest(proto.Message):
                     navigational queries. If this field is set to ``true``, we
                     skip generating summaries for non-summary seeking queries
                     and return fallback messages instead.
+                model_prompt_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec):
+                    If specified, the spec will be used to modify
+                    the prompt provided to the LLM.
                 language_code (str):
                     Language code for Summary. Use language tags defined by
                     `BCP47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__.
                     Note: This is an experimental feature.
+                model_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec):
+                    If specified, the spec will be used to modify
+                    the model specification provided to the LLM.
             """
+
+            class ModelPromptSpec(proto.Message):
+                r"""Specification of the prompt to use with the model.
+
+                Attributes:
+                    preamble (str):
+                        Text at the beginning of the prompt that
+                        instructs the assistant. Examples are available
+                        in the user guide.
+                """
+
+                preamble: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+
+            class ModelSpec(proto.Message):
+                r"""Specification of the model.
+
+                Attributes:
+                    version (str):
+                        The string format of the model version.
+                        e.g. stable, preview, etc.
+                """
+
+                version: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
 
             summary_result_count: int = proto.Field(
                 proto.INT32,
@@ -728,9 +777,21 @@ class SearchRequest(proto.Message):
                 proto.BOOL,
                 number=4,
             )
+            model_prompt_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec" = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                message="SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec",
+            )
             language_code: str = proto.Field(
                 proto.STRING,
                 number=6,
+            )
+            model_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=7,
+                    message="SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec",
+                )
             )
 
         class ExtractiveContentSpec(proto.Message):
@@ -896,6 +957,10 @@ class SearchRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    canonical_filter: str = proto.Field(
+        proto.STRING,
+        number=29,
     )
     order_by: str = proto.Field(
         proto.STRING,
@@ -1180,6 +1245,8 @@ class SearchResponse(proto.Message):
             safety_attributes (google.cloud.discoveryengine_v1alpha.types.SearchResponse.Summary.SafetyAttributes):
                 A collection of Safety Attribute categories
                 and their associated confidence scores.
+            summary_with_metadata (google.cloud.discoveryengine_v1alpha.types.SearchResponse.Summary.SummaryWithMetadata):
+
         """
 
         class SummarySkippedReason(proto.Enum):
@@ -1252,6 +1319,125 @@ class SearchResponse(proto.Message):
                 number=2,
             )
 
+        class CitationMetadata(proto.Message):
+            r"""Citation metadata.
+
+            Attributes:
+                citations (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchResponse.Summary.Citation]):
+                    Citations for segments.
+            """
+
+            citations: MutableSequence[
+                "SearchResponse.Summary.Citation"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="SearchResponse.Summary.Citation",
+            )
+
+        class Citation(proto.Message):
+            r"""Citation info for a segment.
+
+            Attributes:
+                start_index (int):
+                    Index indicates the start of the segment,
+                    measured in bytes/unicode.
+                end_index (int):
+                    End of the attributed segment, exclusive.
+                sources (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchResponse.Summary.CitationSource]):
+                    Citation sources for the attributed segment.
+            """
+
+            start_index: int = proto.Field(
+                proto.INT64,
+                number=1,
+            )
+            end_index: int = proto.Field(
+                proto.INT64,
+                number=2,
+            )
+            sources: MutableSequence[
+                "SearchResponse.Summary.CitationSource"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="SearchResponse.Summary.CitationSource",
+            )
+
+        class CitationSource(proto.Message):
+            r"""Citation source.
+
+            Attributes:
+                reference_index (int):
+                    Document reference index from
+                    SummaryWithMetadata.references. It is 0-indexed and the
+                    value will be zero if the reference_index is not set
+                    explicitly.
+            """
+
+            reference_index: int = proto.Field(
+                proto.INT64,
+                number=4,
+            )
+
+        class Reference(proto.Message):
+            r"""Document reference.
+
+            Attributes:
+                title (str):
+                    Title of the document.
+                document (str):
+                    Required.
+                    [Document.name][google.cloud.discoveryengine.v1alpha.Document.name]
+                    of the document. Full resource name of the referenced
+                    document, in the format
+                    ``projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*``.
+                uri (str):
+                    GCS or HTTP uri for the document.
+            """
+
+            title: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            document: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            uri: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+
+        class SummaryWithMetadata(proto.Message):
+            r"""Summary with metadata information.
+
+            Attributes:
+                summary (str):
+                    Summary text with no citation information.
+                citation_metadata (google.cloud.discoveryengine_v1alpha.types.SearchResponse.Summary.CitationMetadata):
+                    Citation metadata for given summary.
+                references (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchResponse.Summary.Reference]):
+                    Document References.
+            """
+
+            summary: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            citation_metadata: "SearchResponse.Summary.CitationMetadata" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="SearchResponse.Summary.CitationMetadata",
+            )
+            references: MutableSequence[
+                "SearchResponse.Summary.Reference"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="SearchResponse.Summary.Reference",
+            )
+
         summary_text: str = proto.Field(
             proto.STRING,
             number=1,
@@ -1267,6 +1453,13 @@ class SearchResponse(proto.Message):
             proto.MESSAGE,
             number=3,
             message="SearchResponse.Summary.SafetyAttributes",
+        )
+        summary_with_metadata: "SearchResponse.Summary.SummaryWithMetadata" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=4,
+                message="SearchResponse.Summary.SummaryWithMetadata",
+            )
         )
 
     class GeoSearchDebugInfo(proto.Message):

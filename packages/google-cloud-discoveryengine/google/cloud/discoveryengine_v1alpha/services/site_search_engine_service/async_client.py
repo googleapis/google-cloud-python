@@ -46,8 +46,16 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import site_search_engine_service
+from google.cloud.discoveryengine_v1alpha.services.site_search_engine_service import (
+    pagers,
+)
+from google.cloud.discoveryengine_v1alpha.types import (
+    site_search_engine,
+    site_search_engine_service,
+)
 
 from .client import SiteSearchEngineServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, SiteSearchEngineServiceTransport
@@ -67,6 +75,10 @@ class SiteSearchEngineServiceAsyncClient:
     )
     parse_site_search_engine_path = staticmethod(
         SiteSearchEngineServiceClient.parse_site_search_engine_path
+    )
+    target_site_path = staticmethod(SiteSearchEngineServiceClient.target_site_path)
+    parse_target_site_path = staticmethod(
+        SiteSearchEngineServiceClient.parse_target_site_path
     )
     common_billing_account_path = staticmethod(
         SiteSearchEngineServiceClient.common_billing_account_path
@@ -227,6 +239,1080 @@ class SiteSearchEngineServiceAsyncClient:
             client_info=client_info,
         )
 
+    async def get_site_search_engine(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.GetSiteSearchEngineRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> site_search_engine.SiteSearchEngine:
+        r"""Gets the
+        [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_get_site_search_engine():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.GetSiteSearchEngineRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_site_search_engine(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.GetSiteSearchEngineRequest, dict]]):
+                The request object. Request message for
+                [SiteSearchEngineService.GetSiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetSiteSearchEngine]
+                method.
+            name (:class:`str`):
+                Required. Resource name of
+                [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine],
+                such as
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
+
+                If the caller does not have permission to access the
+                [SiteSearchEngine], regardless of whether or not it
+                exists, a PERMISSION_DENIED error is returned.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.types.SiteSearchEngine:
+                SiteSearchEngine captures DataStore
+                level site search persisting
+                configurations. It is a singleton value
+                per data store.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = site_search_engine_service.GetSiteSearchEngineRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_site_search_engine,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_target_site(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.CreateTargetSiteRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        target_site: Optional[site_search_engine.TargetSite] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_create_target_site():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                target_site = discoveryengine_v1alpha.TargetSite()
+                target_site.provided_uri_pattern = "provided_uri_pattern_value"
+
+                request = discoveryengine_v1alpha.CreateTargetSiteRequest(
+                    parent="parent_value",
+                    target_site=target_site,
+                )
+
+                # Make the request
+                operation = client.create_target_site(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.CreateTargetSiteRequest, dict]]):
+                The request object. Request message for
+                [SiteSearchEngineService.CreateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.CreateTargetSite]
+                method.
+            parent (:class:`str`):
+                Required. Parent resource name of
+                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+                such as
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_site (:class:`google.cloud.discoveryengine_v1alpha.types.TargetSite`):
+                Required. The
+                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
+                to create.
+
+                This corresponds to the ``target_site`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.discoveryengine_v1alpha.types.TargetSite`
+                A target site for the SiteSearchEngine.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, target_site])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = site_search_engine_service.CreateTargetSiteRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if target_site is not None:
+            request.target_site = target_site
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_target_site,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            site_search_engine.TargetSite,
+            metadata_type=site_search_engine_service.CreateTargetSiteMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def batch_create_target_sites(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.BatchCreateTargetSitesRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite] in
+        a batch.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_batch_create_target_sites():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                requests = discoveryengine_v1alpha.CreateTargetSiteRequest()
+                requests.parent = "parent_value"
+                requests.target_site.provided_uri_pattern = "provided_uri_pattern_value"
+
+                request = discoveryengine_v1alpha.BatchCreateTargetSitesRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                operation = client.batch_create_target_sites(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.BatchCreateTargetSitesRequest, dict]]):
+                The request object. Request message for [SiteSearchEngineService.s][]
+                method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.BatchCreateTargetSitesResponse` Response message for
+                   [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchCreateTargetSites]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = site_search_engine_service.BatchCreateTargetSitesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.batch_create_target_sites,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            site_search_engine_service.BatchCreateTargetSitesResponse,
+            metadata_type=site_search_engine_service.BatchCreateTargetSiteMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_target_site(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.GetTargetSiteRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> site_search_engine.TargetSite:
+        r"""Gets a
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_get_target_site():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.GetTargetSiteRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_target_site(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.GetTargetSiteRequest, dict]]):
+                The request object. Request message for
+                [SiteSearchEngineService.GetTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetTargetSite]
+                method.
+            name (:class:`str`):
+                Required. Full resource name of
+                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+                such as
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
+
+                If the caller does not have permission to access the
+                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+                regardless of whether or not it exists, a
+                PERMISSION_DENIED error is returned.
+
+                If the requested
+                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
+                does not exist, a NOT_FOUND error is returned.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.types.TargetSite:
+                A target site for the
+                SiteSearchEngine.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = site_search_engine_service.GetTargetSiteRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_target_site,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_target_site(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.UpdateTargetSiteRequest, dict]
+        ] = None,
+        *,
+        target_site: Optional[site_search_engine.TargetSite] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates a
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_update_target_site():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                target_site = discoveryengine_v1alpha.TargetSite()
+                target_site.provided_uri_pattern = "provided_uri_pattern_value"
+
+                request = discoveryengine_v1alpha.UpdateTargetSiteRequest(
+                    target_site=target_site,
+                )
+
+                # Make the request
+                operation = client.update_target_site(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.UpdateTargetSiteRequest, dict]]):
+                The request object. Request message for
+                [SiteSearchEngineService.UpdateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.UpdateTargetSite]
+                method.
+            target_site (:class:`google.cloud.discoveryengine_v1alpha.types.TargetSite`):
+                Required. The target site to update. If the caller does
+                not have permission to update the
+                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+                regardless of whether or not it exists, a
+                PERMISSION_DENIED error is returned.
+
+                If the
+                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
+                to update does not exist, a NOT_FOUND error is returned.
+
+                This corresponds to the ``target_site`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.discoveryengine_v1alpha.types.TargetSite`
+                A target site for the SiteSearchEngine.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([target_site])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = site_search_engine_service.UpdateTargetSiteRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if target_site is not None:
+            request.target_site = target_site
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_target_site,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("target_site.name", request.target_site.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            site_search_engine.TargetSite,
+            metadata_type=site_search_engine_service.UpdateTargetSiteMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_target_site(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.DeleteTargetSiteRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_delete_target_site():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.DeleteTargetSiteRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_target_site(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.DeleteTargetSiteRequest, dict]]):
+                The request object. Request message for
+                [SiteSearchEngineService.DeleteTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DeleteTargetSite]
+                method.
+            name (:class:`str`):
+                Required. Full resource name of
+                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+                such as
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
+
+                If the caller does not have permission to access the
+                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+                regardless of whether or not it exists, a
+                PERMISSION_DENIED error is returned.
+
+                If the requested
+                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
+                does not exist, a NOT_FOUND error is returned.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = site_search_engine_service.DeleteTargetSiteRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_target_site,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=site_search_engine_service.DeleteTargetSiteMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_target_sites(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.ListTargetSitesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListTargetSitesAsyncPager:
+        r"""Gets a list of
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]s.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_list_target_sites():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.ListTargetSitesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_target_sites(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.ListTargetSitesRequest, dict]]):
+                The request object. Request message for
+                [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites]
+                method.
+            parent (:class:`str`):
+                Required. The parent site search engine resource name,
+                such as
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
+
+                If the caller does not have permission to list
+                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]s
+                under this site search engine, regardless of whether or
+                not this branch exists, a PERMISSION_DENIED error is
+                returned.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.services.site_search_engine_service.pagers.ListTargetSitesAsyncPager:
+                Response message for
+                   [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites]
+                   method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = site_search_engine_service.ListTargetSitesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_target_sites,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListTargetSitesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def enable_advanced_site_search(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.EnableAdvancedSiteSearchRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Upgrade from basic site search to advanced site
+        search.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_enable_advanced_site_search():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.EnableAdvancedSiteSearchRequest(
+                    site_search_engine="site_search_engine_value",
+                )
+
+                # Make the request
+                operation = client.enable_advanced_site_search(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.EnableAdvancedSiteSearchRequest, dict]]):
+                The request object. Request message for
+                [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
+                method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.EnableAdvancedSiteSearchResponse` Response message for
+                   [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = site_search_engine_service.EnableAdvancedSiteSearchRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.enable_advanced_site_search,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("site_search_engine", request.site_search_engine),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            site_search_engine_service.EnableAdvancedSiteSearchResponse,
+            metadata_type=site_search_engine_service.EnableAdvancedSiteSearchMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def disable_advanced_site_search(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.DisableAdvancedSiteSearchRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Downgrade from advanced site search to basic site
+        search.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_disable_advanced_site_search():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.DisableAdvancedSiteSearchRequest(
+                    site_search_engine="site_search_engine_value",
+                )
+
+                # Make the request
+                operation = client.disable_advanced_site_search(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.DisableAdvancedSiteSearchRequest, dict]]):
+                The request object. Request message for
+                [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
+                method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.DisableAdvancedSiteSearchResponse` Response message for
+                   [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = site_search_engine_service.DisableAdvancedSiteSearchRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.disable_advanced_site_search,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("site_search_engine", request.site_search_engine),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            site_search_engine_service.DisableAdvancedSiteSearchResponse,
+            metadata_type=site_search_engine_service.DisableAdvancedSiteSearchMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def recrawl_uris(
         self,
         request: Optional[
@@ -323,6 +1409,209 @@ class SiteSearchEngineServiceAsyncClient:
             self._client._transport.operations_client,
             site_search_engine_service.RecrawlUrisResponse,
             metadata_type=site_search_engine_service.RecrawlUrisMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def batch_verify_target_sites(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.BatchVerifyTargetSitesRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Verify target sites' ownership and validity.
+        This API sends all the target sites under site search
+        engine for verification.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_batch_verify_target_sites():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.BatchVerifyTargetSitesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.batch_verify_target_sites(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.BatchVerifyTargetSitesRequest, dict]]):
+                The request object. Request message for
+                [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites]
+                method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.BatchVerifyTargetSitesResponse` Response message for
+                   [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = site_search_engine_service.BatchVerifyTargetSitesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.batch_verify_target_sites,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            site_search_engine_service.BatchVerifyTargetSitesResponse,
+            metadata_type=site_search_engine_service.BatchVerifyTargetSitesMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def fetch_domain_verification_status(
+        self,
+        request: Optional[
+            Union[site_search_engine_service.FetchDomainVerificationStatusRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.FetchDomainVerificationStatusAsyncPager:
+        r"""Returns list of target sites with its domain verification
+        status. This method can only be called under data store with
+        BASIC_SITE_SEARCH state at the moment.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_fetch_domain_verification_status():
+                # Create a client
+                client = discoveryengine_v1alpha.SiteSearchEngineServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.FetchDomainVerificationStatusRequest(
+                    site_search_engine="site_search_engine_value",
+                )
+
+                # Make the request
+                page_result = client.fetch_domain_verification_status(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.FetchDomainVerificationStatusRequest, dict]]):
+                The request object. Request message for
+                [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
+                method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.services.site_search_engine_service.pagers.FetchDomainVerificationStatusAsyncPager:
+                Response message for
+                   [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
+                   method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = site_search_engine_service.FetchDomainVerificationStatusRequest(
+            request
+        )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.fetch_domain_verification_status,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("site_search_engine", request.site_search_engine),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.FetchDomainVerificationStatusAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
