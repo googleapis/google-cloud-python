@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 from typing import Optional
+import warnings
 
 import google.api_core.exceptions
 import google.auth.credentials
@@ -123,6 +124,11 @@ class BigQueryOptions:
     def use_regional_endpoints(self) -> bool:
         """Flag to connect to regional API endpoints.
 
+        .. deprecated:: 0.13.0
+            BigQuery regional endpoints is a feature in preview and
+            available only to selected projects.
+            Enable it only if your project has regional endpoints access.
+
         Requires ``location`` to also be set. For example, set
         ``location='asia-northeast1'`` and ``use_regional_endpoints=True`` to
         connect to asia-northeast1-bigquery.googleapis.com.
@@ -135,4 +141,12 @@ class BigQueryOptions:
             raise ValueError(
                 SESSION_STARTED_MESSAGE.format(attribute="use_regional_endpoints")
             )
+
+        if value:
+            warnings.warn(
+                "BigQuery regional endpoints is a feature in preview and "
+                "available only to selected projects. "
+                "Enable it only if your project has regional endpoints access."
+            )
+
         self._use_regional_endpoints = value
