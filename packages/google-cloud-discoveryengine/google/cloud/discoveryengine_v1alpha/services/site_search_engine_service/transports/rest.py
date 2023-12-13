@@ -45,7 +45,10 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import site_search_engine_service
+from google.cloud.discoveryengine_v1alpha.types import (
+    site_search_engine,
+    site_search_engine_service,
+)
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import SiteSearchEngineServiceTransport
@@ -72,6 +75,86 @@ class SiteSearchEngineServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomSiteSearchEngineServiceInterceptor(SiteSearchEngineServiceRestInterceptor):
+            def pre_batch_create_target_sites(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_create_target_sites(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_verify_target_sites(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_verify_target_sites(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_target_site(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_target_site(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_target_site(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_target_site(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_disable_advanced_site_search(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_disable_advanced_site_search(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_enable_advanced_site_search(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_enable_advanced_site_search(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_fetch_domain_verification_status(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_domain_verification_status(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_site_search_engine(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_site_search_engine(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_target_site(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_target_site(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_target_sites(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_target_sites(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_recrawl_uris(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -80,11 +163,274 @@ class SiteSearchEngineServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_target_site(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_target_site(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = SiteSearchEngineServiceRestTransport(interceptor=MyCustomSiteSearchEngineServiceInterceptor())
         client = SiteSearchEngineServiceClient(transport=transport)
 
 
     """
+
+    def pre_batch_create_target_sites(
+        self,
+        request: site_search_engine_service.BatchCreateTargetSitesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.BatchCreateTargetSitesRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for batch_create_target_sites
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_batch_create_target_sites(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for batch_create_target_sites
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_batch_verify_target_sites(
+        self,
+        request: site_search_engine_service.BatchVerifyTargetSitesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.BatchVerifyTargetSitesRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for batch_verify_target_sites
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_batch_verify_target_sites(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for batch_verify_target_sites
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_target_site(
+        self,
+        request: site_search_engine_service.CreateTargetSiteRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.CreateTargetSiteRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_target_site
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_create_target_site(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_target_site
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_target_site(
+        self,
+        request: site_search_engine_service.DeleteTargetSiteRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.DeleteTargetSiteRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_target_site
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_delete_target_site(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_target_site
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_disable_advanced_site_search(
+        self,
+        request: site_search_engine_service.DisableAdvancedSiteSearchRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.DisableAdvancedSiteSearchRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for disable_advanced_site_search
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_disable_advanced_site_search(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for disable_advanced_site_search
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_enable_advanced_site_search(
+        self,
+        request: site_search_engine_service.EnableAdvancedSiteSearchRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.EnableAdvancedSiteSearchRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for enable_advanced_site_search
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_enable_advanced_site_search(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for enable_advanced_site_search
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_fetch_domain_verification_status(
+        self,
+        request: site_search_engine_service.FetchDomainVerificationStatusRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.FetchDomainVerificationStatusRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for fetch_domain_verification_status
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_fetch_domain_verification_status(
+        self, response: site_search_engine_service.FetchDomainVerificationStatusResponse
+    ) -> site_search_engine_service.FetchDomainVerificationStatusResponse:
+        """Post-rpc interceptor for fetch_domain_verification_status
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_site_search_engine(
+        self,
+        request: site_search_engine_service.GetSiteSearchEngineRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.GetSiteSearchEngineRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_site_search_engine
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_get_site_search_engine(
+        self, response: site_search_engine.SiteSearchEngine
+    ) -> site_search_engine.SiteSearchEngine:
+        """Post-rpc interceptor for get_site_search_engine
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_target_site(
+        self,
+        request: site_search_engine_service.GetTargetSiteRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.GetTargetSiteRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_target_site
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_get_target_site(
+        self, response: site_search_engine.TargetSite
+    ) -> site_search_engine.TargetSite:
+        """Post-rpc interceptor for get_target_site
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_target_sites(
+        self,
+        request: site_search_engine_service.ListTargetSitesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.ListTargetSitesRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_target_sites
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_list_target_sites(
+        self, response: site_search_engine_service.ListTargetSitesResponse
+    ) -> site_search_engine_service.ListTargetSitesResponse:
+        """Post-rpc interceptor for list_target_sites
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_recrawl_uris(
         self,
@@ -104,6 +450,31 @@ class SiteSearchEngineServiceRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for recrawl_uris
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SiteSearchEngineService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_target_site(
+        self,
+        request: site_search_engine_service.UpdateTargetSiteRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        site_search_engine_service.UpdateTargetSiteRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_target_site
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SiteSearchEngineService server.
+        """
+        return request, metadata
+
+    def post_update_target_site(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_target_site
 
         Override in a subclass to manipulate the response
         after it is returned by the SiteSearchEngineService server but before
@@ -268,6 +639,10 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
                 "google.longrunning.Operations.GetOperation": [
                     {
                         "method": "get",
+                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
                     },
                     {
@@ -320,6 +695,10 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
                     },
                 ],
                 "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                    },
                     {
                         "method": "get",
                         "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
@@ -390,6 +769,1023 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
 
         # Return the client from cache.
         return self._operations_client
+
+    class _BatchCreateTargetSites(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("BatchCreateTargetSites")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.BatchCreateTargetSitesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the batch create target sites method over HTTP.
+
+            Args:
+                request (~.site_search_engine_service.BatchCreateTargetSitesRequest):
+                    The request object. Request message for [SiteSearchEngineService.s][]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*/siteSearchEngine}/targetSites:batchCreate",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/targetSites:batchCreate",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_batch_create_target_sites(
+                request, metadata
+            )
+            pb_request = site_search_engine_service.BatchCreateTargetSitesRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_batch_create_target_sites(resp)
+            return resp
+
+    class _BatchVerifyTargetSites(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("BatchVerifyTargetSites")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.BatchVerifyTargetSitesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the batch verify target sites method over HTTP.
+
+            Args:
+                request (~.site_search_engine_service.BatchVerifyTargetSitesRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}:batchVerifyTargetSites",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_batch_verify_target_sites(
+                request, metadata
+            )
+            pb_request = site_search_engine_service.BatchVerifyTargetSitesRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_batch_verify_target_sites(resp)
+            return resp
+
+    class _CreateTargetSite(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("CreateTargetSite")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.CreateTargetSiteRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create target site method over HTTP.
+
+            Args:
+                request (~.site_search_engine_service.CreateTargetSiteRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.CreateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.CreateTargetSite]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*/siteSearchEngine}/targetSites",
+                    "body": "target_site",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/targetSites",
+                    "body": "target_site",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_target_site(
+                request, metadata
+            )
+            pb_request = site_search_engine_service.CreateTargetSiteRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_target_site(resp)
+            return resp
+
+    class _DeleteTargetSite(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteTargetSite")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.DeleteTargetSiteRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete target site method over HTTP.
+
+            Args:
+                request (~.site_search_engine_service.DeleteTargetSiteRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.DeleteTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DeleteTargetSite]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/siteSearchEngine/targetSites/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_target_site(
+                request, metadata
+            )
+            pb_request = site_search_engine_service.DeleteTargetSiteRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_target_site(resp)
+            return resp
+
+    class _DisableAdvancedSiteSearch(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("DisableAdvancedSiteSearch")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.DisableAdvancedSiteSearchRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the disable advanced site
+            search method over HTTP.
+
+                Args:
+                    request (~.site_search_engine_service.DisableAdvancedSiteSearchRequest):
+                        The request object. Request message for
+                    [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{site_search_engine=projects/*/locations/*/dataStores/*/siteSearchEngine}:disableAdvancedSiteSearch",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{site_search_engine=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}:disableAdvancedSiteSearch",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_disable_advanced_site_search(
+                request, metadata
+            )
+            pb_request = site_search_engine_service.DisableAdvancedSiteSearchRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_disable_advanced_site_search(resp)
+            return resp
+
+    class _EnableAdvancedSiteSearch(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("EnableAdvancedSiteSearch")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.EnableAdvancedSiteSearchRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the enable advanced site
+            search method over HTTP.
+
+                Args:
+                    request (~.site_search_engine_service.EnableAdvancedSiteSearchRequest):
+                        The request object. Request message for
+                    [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{site_search_engine=projects/*/locations/*/dataStores/*/siteSearchEngine}:enableAdvancedSiteSearch",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{site_search_engine=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}:enableAdvancedSiteSearch",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_enable_advanced_site_search(
+                request, metadata
+            )
+            pb_request = site_search_engine_service.EnableAdvancedSiteSearchRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_enable_advanced_site_search(resp)
+            return resp
+
+    class _FetchDomainVerificationStatus(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("FetchDomainVerificationStatus")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.FetchDomainVerificationStatusRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> site_search_engine_service.FetchDomainVerificationStatusResponse:
+            r"""Call the fetch domain verification
+            status method over HTTP.
+
+                Args:
+                    request (~.site_search_engine_service.FetchDomainVerificationStatusRequest):
+                        The request object. Request message for
+                    [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.site_search_engine_service.FetchDomainVerificationStatusResponse:
+                        Response message for
+                    [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
+                    method.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{site_search_engine=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}:fetchDomainVerificationStatus",
+                },
+            ]
+            request, metadata = self._interceptor.pre_fetch_domain_verification_status(
+                request, metadata
+            )
+            pb_request = (
+                site_search_engine_service.FetchDomainVerificationStatusRequest.pb(
+                    request
+                )
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = site_search_engine_service.FetchDomainVerificationStatusResponse()
+            pb_resp = (
+                site_search_engine_service.FetchDomainVerificationStatusResponse.pb(
+                    resp
+                )
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_fetch_domain_verification_status(resp)
+            return resp
+
+    class _GetSiteSearchEngine(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("GetSiteSearchEngine")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.GetSiteSearchEngineRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> site_search_engine.SiteSearchEngine:
+            r"""Call the get site search engine method over HTTP.
+
+            Args:
+                request (~.site_search_engine_service.GetSiteSearchEngineRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.GetSiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetSiteSearchEngine]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.site_search_engine.SiteSearchEngine:
+                    SiteSearchEngine captures DataStore
+                level site search persisting
+                configurations. It is a singleton value
+                per data store.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/siteSearchEngine}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_site_search_engine(
+                request, metadata
+            )
+            pb_request = site_search_engine_service.GetSiteSearchEngineRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = site_search_engine.SiteSearchEngine()
+            pb_resp = site_search_engine.SiteSearchEngine.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_site_search_engine(resp)
+            return resp
+
+    class _GetTargetSite(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("GetTargetSite")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.GetTargetSiteRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> site_search_engine.TargetSite:
+            r"""Call the get target site method over HTTP.
+
+            Args:
+                request (~.site_search_engine_service.GetTargetSiteRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.GetTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetTargetSite]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.site_search_engine.TargetSite:
+                    A target site for the
+                SiteSearchEngine.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/siteSearchEngine/targetSites/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_target_site(request, metadata)
+            pb_request = site_search_engine_service.GetTargetSiteRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = site_search_engine.TargetSite()
+            pb_resp = site_search_engine.TargetSite.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_target_site(resp)
+            return resp
+
+    class _ListTargetSites(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("ListTargetSites")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.ListTargetSitesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> site_search_engine_service.ListTargetSitesResponse:
+            r"""Call the list target sites method over HTTP.
+
+            Args:
+                request (~.site_search_engine_service.ListTargetSitesRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.site_search_engine_service.ListTargetSitesResponse:
+                    Response message for
+                [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites]
+                method.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*/siteSearchEngine}/targetSites",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/targetSites",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_target_sites(
+                request, metadata
+            )
+            pb_request = site_search_engine_service.ListTargetSitesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = site_search_engine_service.ListTargetSitesResponse()
+            pb_resp = site_search_engine_service.ListTargetSitesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_target_sites(resp)
+            return resp
 
     class _RecrawlUris(SiteSearchEngineServiceRestStub):
         def __hash__(self):
@@ -494,6 +1890,218 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
             resp = self._interceptor.post_recrawl_uris(resp)
             return resp
 
+    class _UpdateTargetSite(SiteSearchEngineServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateTargetSite")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: site_search_engine_service.UpdateTargetSiteRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update target site method over HTTP.
+
+            Args:
+                request (~.site_search_engine_service.UpdateTargetSiteRequest):
+                    The request object. Request message for
+                [SiteSearchEngineService.UpdateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.UpdateTargetSite]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{target_site.name=projects/*/locations/*/dataStores/*/siteSearchEngine/targetSites/*}",
+                    "body": "target_site",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{target_site.name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/*}",
+                    "body": "target_site",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_target_site(
+                request, metadata
+            )
+            pb_request = site_search_engine_service.UpdateTargetSiteRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_target_site(resp)
+            return resp
+
+    @property
+    def batch_create_target_sites(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.BatchCreateTargetSitesRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchCreateTargetSites(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_verify_target_sites(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.BatchVerifyTargetSitesRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchVerifyTargetSites(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.CreateTargetSiteRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateTargetSite(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.DeleteTargetSiteRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteTargetSite(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def disable_advanced_site_search(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.DisableAdvancedSiteSearchRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DisableAdvancedSiteSearch(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def enable_advanced_site_search(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.EnableAdvancedSiteSearchRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._EnableAdvancedSiteSearch(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def fetch_domain_verification_status(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.FetchDomainVerificationStatusRequest],
+        site_search_engine_service.FetchDomainVerificationStatusResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchDomainVerificationStatus(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_site_search_engine(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.GetSiteSearchEngineRequest],
+        site_search_engine.SiteSearchEngine,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSiteSearchEngine(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.GetTargetSiteRequest], site_search_engine.TargetSite
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetTargetSite(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_target_sites(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.ListTargetSitesRequest],
+        site_search_engine_service.ListTargetSitesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListTargetSites(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def recrawl_uris(
         self,
@@ -503,6 +2111,16 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RecrawlUris(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.UpdateTargetSiteRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateTargetSite(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
@@ -533,6 +2151,10 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                },
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
@@ -647,6 +2269,10 @@ class SiteSearchEngineServiceRestTransport(SiteSearchEngineServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                },
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",

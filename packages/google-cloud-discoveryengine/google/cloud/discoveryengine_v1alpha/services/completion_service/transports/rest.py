@@ -385,6 +385,10 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
                 },
                 {
@@ -497,6 +501,10 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                },
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",

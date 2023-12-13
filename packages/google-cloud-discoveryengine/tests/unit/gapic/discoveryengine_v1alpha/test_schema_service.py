@@ -4423,7 +4423,7 @@ def test_get_operation_rest_bad_request(
     request = request_type()
     request = json_format.ParseDict(
         {
-            "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
+            "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector/operations/sample4"
         },
         request,
     )
@@ -4453,7 +4453,7 @@ def test_get_operation_rest(request_type):
         transport="rest",
     )
     request_init = {
-        "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
+        "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector/operations/sample4"
     }
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
@@ -4486,7 +4486,7 @@ def test_list_operations_rest_bad_request(
     request = request_type()
     request = json_format.ParseDict(
         {
-            "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5"
+            "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector"
         },
         request,
     )
@@ -4516,7 +4516,7 @@ def test_list_operations_rest(request_type):
         transport="rest",
     )
     request_init = {
-        "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5"
+        "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector"
     }
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
