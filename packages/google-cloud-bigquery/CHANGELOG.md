@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.14.1](https://github.com/googleapis/python-bigquery/compare/v3.14.0...v3.14.1) (2023-12-13)
+
+
+### Bug Fixes
+
+* Add missing handler for deserializing json value ([#1587](https://github.com/googleapis/python-bigquery/issues/1587)) ([09017a9](https://github.com/googleapis/python-bigquery/commit/09017a997010f78bb6e34238fab15247ed14ea7e))
+
 ## [3.14.0](https://github.com/googleapis/python-bigquery/compare/v3.13.0...v3.14.0) (2023-12-08)
 
 
