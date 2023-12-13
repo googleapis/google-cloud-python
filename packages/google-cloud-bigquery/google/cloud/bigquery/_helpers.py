@@ -17,6 +17,7 @@
 import base64
 import datetime
 import decimal
+import json
 import math
 import re
 import os
@@ -412,6 +413,12 @@ def _time_to_json(value):
     return value
 
 
+def _json_from_json(value, field):
+    """Coerce 'value' to a pythonic JSON representation, if set or not nullable."""
+    if _not_null(value, field):
+        return json.loads(value)
+
+
 # Converters used for scalar values marshalled as row data.
 _SCALAR_VALUE_TO_JSON_ROW = {
     "INTEGER": _int_to_json,
@@ -427,6 +434,7 @@ _SCALAR_VALUE_TO_JSON_ROW = {
     "DATETIME": _datetime_to_json,
     "DATE": _date_to_json,
     "TIME": _time_to_json,
+    "JSON": _json_from_json,
     # Make sure DECIMAL and BIGDECIMAL are handled, even though
     # requests for them should be converted to NUMERIC.  Better safe
     # than sorry.

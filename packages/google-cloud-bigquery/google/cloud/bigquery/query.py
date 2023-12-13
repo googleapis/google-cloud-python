@@ -469,7 +469,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         value = self.value
         converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.type_)
         if converter is not None:
-            value = converter(value)
+            value = converter(value)  # type: ignore
         resource: Dict[str, Any] = {
             "parameterType": {"type": self.type_},
             "parameterValue": {"value": value},
@@ -626,7 +626,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
 
             converter = _SCALAR_VALUE_TO_JSON_PARAM.get(a_type["type"])
             if converter is not None:
-                values = [converter(value) for value in values]
+                values = [converter(value) for value in values]  # type: ignore
             a_values = [{"value": value} for value in values]
 
         resource = {
@@ -775,7 +775,7 @@ class StructQueryParameter(_AbstractQueryParameter):
                 s_types[name] = {"name": name, "type": {"type": type_}}
                 converter = _SCALAR_VALUE_TO_JSON_PARAM.get(type_)
                 if converter is not None:
-                    value = converter(value)
+                    value = converter(value)  # type: ignore
                 values[name] = {"value": value}
 
         resource = {

@@ -58,6 +58,24 @@ class Test_int_from_json(unittest.TestCase):
         self.assertEqual(coerced, 42)
 
 
+class Test_json_from_json(unittest.TestCase):
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery._helpers import _json_from_json
+
+        return _json_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field("NULLABLE")))
+
+    def test_w_none_required(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None, _Field("REQUIRED"))
+
+    def test_w_string_value(self):
+        coerced = self._call_fut('{"foo": true}', object())
+        self.assertEqual(coerced, {"foo": True})
+
+
 class Test_float_from_json(unittest.TestCase):
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _float_from_json
