@@ -26,9 +26,18 @@ from collections.abc import Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import operation_async  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -44,12 +53,15 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.cloud.discoveryengine_v1alpha.services.completion_service import (
-    CompletionServiceAsyncClient,
-    CompletionServiceClient,
+from google.cloud.discoveryengine_v1alpha.services.search_tuning_service import (
+    SearchTuningServiceAsyncClient,
+    SearchTuningServiceClient,
     transports,
 )
-from google.cloud.discoveryengine_v1alpha.types import completion_service
+from google.cloud.discoveryengine_v1alpha.types import (
+    import_config,
+    search_tuning_service,
+)
 
 
 def client_cert_source_callback():
@@ -74,25 +86,25 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert CompletionServiceClient._get_default_mtls_endpoint(None) is None
+    assert SearchTuningServiceClient._get_default_mtls_endpoint(None) is None
     assert (
-        CompletionServiceClient._get_default_mtls_endpoint(api_endpoint)
+        SearchTuningServiceClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        CompletionServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        SearchTuningServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        CompletionServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        SearchTuningServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        CompletionServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        SearchTuningServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        CompletionServiceClient._get_default_mtls_endpoint(non_googleapi)
+        SearchTuningServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
     )
 
@@ -100,12 +112,12 @@ def test__get_default_mtls_endpoint():
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (CompletionServiceClient, "grpc"),
-        (CompletionServiceAsyncClient, "grpc_asyncio"),
-        (CompletionServiceClient, "rest"),
+        (SearchTuningServiceClient, "grpc"),
+        (SearchTuningServiceAsyncClient, "grpc_asyncio"),
+        (SearchTuningServiceClient, "rest"),
     ],
 )
-def test_completion_service_client_from_service_account_info(
+def test_search_tuning_service_client_from_service_account_info(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -128,12 +140,12 @@ def test_completion_service_client_from_service_account_info(
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.CompletionServiceGrpcTransport, "grpc"),
-        (transports.CompletionServiceGrpcAsyncIOTransport, "grpc_asyncio"),
-        (transports.CompletionServiceRestTransport, "rest"),
+        (transports.SearchTuningServiceGrpcTransport, "grpc"),
+        (transports.SearchTuningServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.SearchTuningServiceRestTransport, "rest"),
     ],
 )
-def test_completion_service_client_service_account_always_use_jwt(
+def test_search_tuning_service_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -154,12 +166,12 @@ def test_completion_service_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (CompletionServiceClient, "grpc"),
-        (CompletionServiceAsyncClient, "grpc_asyncio"),
-        (CompletionServiceClient, "rest"),
+        (SearchTuningServiceClient, "grpc"),
+        (SearchTuningServiceAsyncClient, "grpc_asyncio"),
+        (SearchTuningServiceClient, "rest"),
     ],
 )
-def test_completion_service_client_from_service_account_file(
+def test_search_tuning_service_client_from_service_account_file(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -186,51 +198,59 @@ def test_completion_service_client_from_service_account_file(
         )
 
 
-def test_completion_service_client_get_transport_class():
-    transport = CompletionServiceClient.get_transport_class()
+def test_search_tuning_service_client_get_transport_class():
+    transport = SearchTuningServiceClient.get_transport_class()
     available_transports = [
-        transports.CompletionServiceGrpcTransport,
-        transports.CompletionServiceRestTransport,
+        transports.SearchTuningServiceGrpcTransport,
+        transports.SearchTuningServiceRestTransport,
     ]
     assert transport in available_transports
 
-    transport = CompletionServiceClient.get_transport_class("grpc")
-    assert transport == transports.CompletionServiceGrpcTransport
+    transport = SearchTuningServiceClient.get_transport_class("grpc")
+    assert transport == transports.SearchTuningServiceGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (CompletionServiceClient, transports.CompletionServiceGrpcTransport, "grpc"),
         (
-            CompletionServiceAsyncClient,
-            transports.CompletionServiceGrpcAsyncIOTransport,
+            SearchTuningServiceClient,
+            transports.SearchTuningServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            SearchTuningServiceAsyncClient,
+            transports.SearchTuningServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (CompletionServiceClient, transports.CompletionServiceRestTransport, "rest"),
+        (
+            SearchTuningServiceClient,
+            transports.SearchTuningServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 @mock.patch.object(
-    CompletionServiceClient,
+    SearchTuningServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(CompletionServiceClient),
+    modify_default_endpoint(SearchTuningServiceClient),
 )
 @mock.patch.object(
-    CompletionServiceAsyncClient,
+    SearchTuningServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(CompletionServiceAsyncClient),
+    modify_default_endpoint(SearchTuningServiceAsyncClient),
 )
-def test_completion_service_client_client_options(
+def test_search_tuning_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(CompletionServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(SearchTuningServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(CompletionServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(SearchTuningServiceClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -340,55 +360,55 @@ def test_completion_service_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (
-            CompletionServiceClient,
-            transports.CompletionServiceGrpcTransport,
+            SearchTuningServiceClient,
+            transports.SearchTuningServiceGrpcTransport,
             "grpc",
             "true",
         ),
         (
-            CompletionServiceAsyncClient,
-            transports.CompletionServiceGrpcAsyncIOTransport,
+            SearchTuningServiceAsyncClient,
+            transports.SearchTuningServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
         (
-            CompletionServiceClient,
-            transports.CompletionServiceGrpcTransport,
+            SearchTuningServiceClient,
+            transports.SearchTuningServiceGrpcTransport,
             "grpc",
             "false",
         ),
         (
-            CompletionServiceAsyncClient,
-            transports.CompletionServiceGrpcAsyncIOTransport,
+            SearchTuningServiceAsyncClient,
+            transports.SearchTuningServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
         (
-            CompletionServiceClient,
-            transports.CompletionServiceRestTransport,
+            SearchTuningServiceClient,
+            transports.SearchTuningServiceRestTransport,
             "rest",
             "true",
         ),
         (
-            CompletionServiceClient,
-            transports.CompletionServiceRestTransport,
+            SearchTuningServiceClient,
+            transports.SearchTuningServiceRestTransport,
             "rest",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    CompletionServiceClient,
+    SearchTuningServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(CompletionServiceClient),
+    modify_default_endpoint(SearchTuningServiceClient),
 )
 @mock.patch.object(
-    CompletionServiceAsyncClient,
+    SearchTuningServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(CompletionServiceAsyncClient),
+    modify_default_endpoint(SearchTuningServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_completion_service_client_mtls_env_auto(
+def test_search_tuning_service_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -485,19 +505,19 @@ def test_completion_service_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
-    "client_class", [CompletionServiceClient, CompletionServiceAsyncClient]
+    "client_class", [SearchTuningServiceClient, SearchTuningServiceAsyncClient]
 )
 @mock.patch.object(
-    CompletionServiceClient,
+    SearchTuningServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(CompletionServiceClient),
+    modify_default_endpoint(SearchTuningServiceClient),
 )
 @mock.patch.object(
-    CompletionServiceAsyncClient,
+    SearchTuningServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(CompletionServiceAsyncClient),
+    modify_default_endpoint(SearchTuningServiceAsyncClient),
 )
-def test_completion_service_client_get_mtls_endpoint_and_cert_source(client_class):
+def test_search_tuning_service_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -568,16 +588,24 @@ def test_completion_service_client_get_mtls_endpoint_and_cert_source(client_clas
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (CompletionServiceClient, transports.CompletionServiceGrpcTransport, "grpc"),
         (
-            CompletionServiceAsyncClient,
-            transports.CompletionServiceGrpcAsyncIOTransport,
+            SearchTuningServiceClient,
+            transports.SearchTuningServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            SearchTuningServiceAsyncClient,
+            transports.SearchTuningServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (CompletionServiceClient, transports.CompletionServiceRestTransport, "rest"),
+        (
+            SearchTuningServiceClient,
+            transports.SearchTuningServiceRestTransport,
+            "rest",
+        ),
     ],
 )
-def test_completion_service_client_client_options_scopes(
+def test_search_tuning_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -604,26 +632,26 @@ def test_completion_service_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            CompletionServiceClient,
-            transports.CompletionServiceGrpcTransport,
+            SearchTuningServiceClient,
+            transports.SearchTuningServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            CompletionServiceAsyncClient,
-            transports.CompletionServiceGrpcAsyncIOTransport,
+            SearchTuningServiceAsyncClient,
+            transports.SearchTuningServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
         (
-            CompletionServiceClient,
-            transports.CompletionServiceRestTransport,
+            SearchTuningServiceClient,
+            transports.SearchTuningServiceRestTransport,
             "rest",
             None,
         ),
     ],
 )
-def test_completion_service_client_client_options_credentials_file(
+def test_search_tuning_service_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -645,12 +673,12 @@ def test_completion_service_client_client_options_credentials_file(
         )
 
 
-def test_completion_service_client_client_options_from_dict():
+def test_search_tuning_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.discoveryengine_v1alpha.services.completion_service.transports.CompletionServiceGrpcTransport.__init__"
+        "google.cloud.discoveryengine_v1alpha.services.search_tuning_service.transports.SearchTuningServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = CompletionServiceClient(
+        client = SearchTuningServiceClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -670,20 +698,20 @@ def test_completion_service_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            CompletionServiceClient,
-            transports.CompletionServiceGrpcTransport,
+            SearchTuningServiceClient,
+            transports.SearchTuningServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            CompletionServiceAsyncClient,
-            transports.CompletionServiceGrpcAsyncIOTransport,
+            SearchTuningServiceAsyncClient,
+            transports.SearchTuningServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_completion_service_client_create_channel_credentials_file(
+def test_search_tuning_service_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -736,12 +764,12 @@ def test_completion_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        completion_service.CompleteQueryRequest,
+        search_tuning_service.TrainCustomModelRequest,
         dict,
     ],
 )
-def test_complete_query(request_type, transport: str = "grpc"):
-    client = CompletionServiceClient(
+def test_train_custom_model(request_type, transport: str = "grpc"):
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -751,45 +779,46 @@ def test_complete_query(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.train_custom_model), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = completion_service.CompleteQueryResponse(
-            tail_match_triggered=True,
-        )
-        response = client.complete_query(request)
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.train_custom_model(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == completion_service.CompleteQueryRequest()
+        assert args[0] == search_tuning_service.TrainCustomModelRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, completion_service.CompleteQueryResponse)
-    assert response.tail_match_triggered is True
+    assert isinstance(response, future.Future)
 
 
-def test_complete_query_empty_call():
+def test_train_custom_model_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
-        client.complete_query()
+    with mock.patch.object(
+        type(client.transport.train_custom_model), "__call__"
+    ) as call:
+        client.train_custom_model()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == completion_service.CompleteQueryRequest()
+        assert args[0] == search_tuning_service.TrainCustomModelRequest()
 
 
 @pytest.mark.asyncio
-async def test_complete_query_async(
+async def test_train_custom_model_async(
     transport: str = "grpc_asyncio",
-    request_type=completion_service.CompleteQueryRequest,
+    request_type=search_tuning_service.TrainCustomModelRequest,
 ):
-    client = CompletionServiceAsyncClient(
+    client = SearchTuningServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -799,45 +828,46 @@ async def test_complete_query_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.train_custom_model), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            completion_service.CompleteQueryResponse(
-                tail_match_triggered=True,
-            )
+            operations_pb2.Operation(name="operations/spam")
         )
-        response = await client.complete_query(request)
+        response = await client.train_custom_model(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == completion_service.CompleteQueryRequest()
+        assert args[0] == search_tuning_service.TrainCustomModelRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, completion_service.CompleteQueryResponse)
-    assert response.tail_match_triggered is True
+    assert isinstance(response, future.Future)
 
 
 @pytest.mark.asyncio
-async def test_complete_query_async_from_dict():
-    await test_complete_query_async(request_type=dict)
+async def test_train_custom_model_async_from_dict():
+    await test_train_custom_model_async(request_type=dict)
 
 
-def test_complete_query_field_headers():
-    client = CompletionServiceClient(
+def test_train_custom_model_field_headers():
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = completion_service.CompleteQueryRequest()
+    request = search_tuning_service.TrainCustomModelRequest()
 
     request.data_store = "data_store_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
-        call.return_value = completion_service.CompleteQueryResponse()
-        client.complete_query(request)
+    with mock.patch.object(
+        type(client.transport.train_custom_model), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.train_custom_model(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -853,23 +883,25 @@ def test_complete_query_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_complete_query_field_headers_async():
-    client = CompletionServiceAsyncClient(
+async def test_train_custom_model_field_headers_async():
+    client = SearchTuningServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = completion_service.CompleteQueryRequest()
+    request = search_tuning_service.TrainCustomModelRequest()
 
     request.data_store = "data_store_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.train_custom_model), "__call__"
+    ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            completion_service.CompleteQueryResponse()
+            operations_pb2.Operation(name="operations/op")
         )
-        await client.complete_query(request)
+        await client.train_custom_model(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -887,53 +919,47 @@ async def test_complete_query_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        completion_service.CompleteQueryRequest,
+        search_tuning_service.TrainCustomModelRequest,
         dict,
     ],
 )
-def test_complete_query_rest(request_type):
-    client = CompletionServiceClient(
+def test_train_custom_model_rest(request_type):
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {
-        "data_store": "projects/sample1/locations/sample2/dataStores/sample3"
+        "data_store": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4"
     }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = completion_service.CompleteQueryResponse(
-            tail_match_triggered=True,
-        )
+        return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = completion_service.CompleteQueryResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.complete_query(request)
+        response = client.train_custom_model(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, completion_service.CompleteQueryResponse)
-    assert response.tail_match_triggered is True
+    assert response.operation.name == "operations/spam"
 
 
-def test_complete_query_rest_required_fields(
-    request_type=completion_service.CompleteQueryRequest,
+def test_train_custom_model_rest_required_fields(
+    request_type=search_tuning_service.TrainCustomModelRequest,
 ):
-    transport_class = transports.CompletionServiceRestTransport
+    transport_class = transports.SearchTuningServiceRestTransport
 
     request_init = {}
     request_init["data_store"] = ""
-    request_init["query"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -945,48 +971,33 @@ def test_complete_query_rest_required_fields(
     )
 
     # verify fields with default values are dropped
-    assert "query" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).complete_query._get_unset_required_fields(jsonified_request)
+    ).train_custom_model._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "query" in jsonified_request
-    assert jsonified_request["query"] == request_init["query"]
 
     jsonified_request["dataStore"] = "data_store_value"
-    jsonified_request["query"] = "query_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).complete_query._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "include_tail_suggestions",
-            "query",
-            "query_model",
-            "user_pseudo_id",
-        )
-    )
+    ).train_custom_model._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "dataStore" in jsonified_request
     assert jsonified_request["dataStore"] == "data_store_value"
-    assert "query" in jsonified_request
-    assert jsonified_request["query"] == "query_value"
 
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = completion_service.CompleteQueryResponse()
+    return_value = operations_pb2.Operation(name="operations/spam")
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -998,80 +1009,59 @@ def test_complete_query_rest_required_fields(
             pb_request = request_type.pb(request)
             transcode_result = {
                 "uri": "v1/sample_method",
-                "method": "get",
+                "method": "post",
                 "query_params": pb_request,
             }
+            transcode_result["body"] = pb_request
             transcode.return_value = transcode_result
 
             response_value = Response()
             response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = completion_service.CompleteQueryResponse.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.complete_query(request)
+            response = client.train_custom_model(request)
 
-            expected_params = [
-                (
-                    "query",
-                    "",
-                ),
-                ("$alt", "json;enum-encoding=int"),
-            ]
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_complete_query_rest_unset_required_fields():
-    transport = transports.CompletionServiceRestTransport(
+def test_train_custom_model_rest_unset_required_fields():
+    transport = transports.SearchTuningServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.complete_query._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "includeTailSuggestions",
-                "query",
-                "queryModel",
-                "userPseudoId",
-            )
-        )
-        & set(
-            (
-                "dataStore",
-                "query",
-            )
-        )
-    )
+    unset_fields = transport.train_custom_model._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("dataStore",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_complete_query_rest_interceptors(null_interceptor):
-    transport = transports.CompletionServiceRestTransport(
+def test_train_custom_model_rest_interceptors(null_interceptor):
+    transport = transports.SearchTuningServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.CompletionServiceRestInterceptor(),
+        else transports.SearchTuningServiceRestInterceptor(),
     )
-    client = CompletionServiceClient(transport=transport)
+    client = SearchTuningServiceClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.CompletionServiceRestInterceptor, "post_complete_query"
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.SearchTuningServiceRestInterceptor, "post_train_custom_model"
     ) as post, mock.patch.object(
-        transports.CompletionServiceRestInterceptor, "pre_complete_query"
+        transports.SearchTuningServiceRestInterceptor, "pre_train_custom_model"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = completion_service.CompleteQueryRequest.pb(
-            completion_service.CompleteQueryRequest()
+        pb_message = search_tuning_service.TrainCustomModelRequest.pb(
+            search_tuning_service.TrainCustomModelRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -1083,19 +1073,19 @@ def test_complete_query_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = completion_service.CompleteQueryResponse.to_json(
-            completion_service.CompleteQueryResponse()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
         )
 
-        request = completion_service.CompleteQueryRequest()
+        request = search_tuning_service.TrainCustomModelRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = completion_service.CompleteQueryResponse()
+        post.return_value = operations_pb2.Operation()
 
-        client.complete_query(
+        client.train_custom_model(
             request,
             metadata=[
                 ("key", "val"),
@@ -1107,17 +1097,17 @@ def test_complete_query_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_complete_query_rest_bad_request(
-    transport: str = "rest", request_type=completion_service.CompleteQueryRequest
+def test_train_custom_model_rest_bad_request(
+    transport: str = "rest", request_type=search_tuning_service.TrainCustomModelRequest
 ):
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
     request_init = {
-        "data_store": "projects/sample1/locations/sample2/dataStores/sample3"
+        "data_store": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4"
     }
     request = request_type(**request_init)
 
@@ -1130,44 +1120,44 @@ def test_complete_query_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.complete_query(request)
+        client.train_custom_model(request)
 
 
-def test_complete_query_rest_error():
-    client = CompletionServiceClient(
+def test_train_custom_model_rest_error():
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.CompletionServiceGrpcTransport(
+    transport = transports.SearchTuningServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = CompletionServiceClient(
+        client = SearchTuningServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.CompletionServiceGrpcTransport(
+    transport = transports.SearchTuningServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = CompletionServiceClient(
+        client = SearchTuningServiceClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.CompletionServiceGrpcTransport(
+    transport = transports.SearchTuningServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = CompletionServiceClient(
+        client = SearchTuningServiceClient(
             client_options=options,
             transport=transport,
         )
@@ -1176,16 +1166,16 @@ def test_credentials_transport_error():
     options = mock.Mock()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = CompletionServiceClient(
+        client = SearchTuningServiceClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.CompletionServiceGrpcTransport(
+    transport = transports.SearchTuningServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = CompletionServiceClient(
+        client = SearchTuningServiceClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -1193,22 +1183,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.CompletionServiceGrpcTransport(
+    transport = transports.SearchTuningServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = CompletionServiceClient(transport=transport)
+    client = SearchTuningServiceClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.CompletionServiceGrpcTransport(
+    transport = transports.SearchTuningServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.CompletionServiceGrpcAsyncIOTransport(
+    transport = transports.SearchTuningServiceGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -1218,9 +1208,9 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.CompletionServiceGrpcTransport,
-        transports.CompletionServiceGrpcAsyncIOTransport,
-        transports.CompletionServiceRestTransport,
+        transports.SearchTuningServiceGrpcTransport,
+        transports.SearchTuningServiceGrpcAsyncIOTransport,
+        transports.SearchTuningServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1239,7 +1229,7 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = CompletionServiceClient.get_transport_class(transport_name)(
+    transport = SearchTuningServiceClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
@@ -1247,38 +1237,38 @@ def test_transport_kind(transport_name):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.CompletionServiceGrpcTransport,
+        transports.SearchTuningServiceGrpcTransport,
     )
 
 
-def test_completion_service_base_transport_error():
+def test_search_tuning_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.CompletionServiceTransport(
+        transport = transports.SearchTuningServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_completion_service_base_transport():
+def test_search_tuning_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.discoveryengine_v1alpha.services.completion_service.transports.CompletionServiceTransport.__init__"
+        "google.cloud.discoveryengine_v1alpha.services.search_tuning_service.transports.SearchTuningServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.CompletionServiceTransport(
+        transport = transports.SearchTuningServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "complete_query",
+        "train_custom_model",
         "get_operation",
         "list_operations",
     )
@@ -1289,6 +1279,11 @@ def test_completion_service_base_transport():
     with pytest.raises(NotImplementedError):
         transport.close()
 
+    # Additionally, the LRO client (a property) should
+    # also raise NotImplementedError
+    with pytest.raises(NotImplementedError):
+        transport.operations_client
+
     # Catch all for all remaining methods and properties
     remainder = [
         "kind",
@@ -1298,16 +1293,16 @@ def test_completion_service_base_transport():
             getattr(transport, r)()
 
 
-def test_completion_service_base_transport_with_credentials_file():
+def test_search_tuning_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.discoveryengine_v1alpha.services.completion_service.transports.CompletionServiceTransport._prep_wrapped_messages"
+        "google.cloud.discoveryengine_v1alpha.services.search_tuning_service.transports.SearchTuningServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.CompletionServiceTransport(
+        transport = transports.SearchTuningServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -1319,22 +1314,22 @@ def test_completion_service_base_transport_with_credentials_file():
         )
 
 
-def test_completion_service_base_transport_with_adc():
+def test_search_tuning_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.discoveryengine_v1alpha.services.completion_service.transports.CompletionServiceTransport._prep_wrapped_messages"
+        "google.cloud.discoveryengine_v1alpha.services.search_tuning_service.transports.SearchTuningServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.CompletionServiceTransport()
+        transport = transports.SearchTuningServiceTransport()
         adc.assert_called_once()
 
 
-def test_completion_service_auth_adc():
+def test_search_tuning_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        CompletionServiceClient()
+        SearchTuningServiceClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -1345,11 +1340,11 @@ def test_completion_service_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.CompletionServiceGrpcTransport,
-        transports.CompletionServiceGrpcAsyncIOTransport,
+        transports.SearchTuningServiceGrpcTransport,
+        transports.SearchTuningServiceGrpcAsyncIOTransport,
     ],
 )
-def test_completion_service_transport_auth_adc(transport_class):
+def test_search_tuning_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -1365,12 +1360,12 @@ def test_completion_service_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.CompletionServiceGrpcTransport,
-        transports.CompletionServiceGrpcAsyncIOTransport,
-        transports.CompletionServiceRestTransport,
+        transports.SearchTuningServiceGrpcTransport,
+        transports.SearchTuningServiceGrpcAsyncIOTransport,
+        transports.SearchTuningServiceRestTransport,
     ],
 )
-def test_completion_service_transport_auth_gdch_credentials(transport_class):
+def test_search_tuning_service_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -1388,11 +1383,11 @@ def test_completion_service_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.CompletionServiceGrpcTransport, grpc_helpers),
-        (transports.CompletionServiceGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.SearchTuningServiceGrpcTransport, grpc_helpers),
+        (transports.SearchTuningServiceGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_completion_service_transport_create_channel(transport_class, grpc_helpers):
+def test_search_tuning_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -1423,11 +1418,13 @@ def test_completion_service_transport_create_channel(transport_class, grpc_helpe
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.CompletionServiceGrpcTransport,
-        transports.CompletionServiceGrpcAsyncIOTransport,
+        transports.SearchTuningServiceGrpcTransport,
+        transports.SearchTuningServiceGrpcAsyncIOTransport,
     ],
 )
-def test_completion_service_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_search_tuning_service_grpc_transport_client_cert_source_for_mtls(
+    transport_class,
+):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -1465,15 +1462,32 @@ def test_completion_service_grpc_transport_client_cert_source_for_mtls(transport
             )
 
 
-def test_completion_service_http_transport_client_cert_source_for_mtls():
+def test_search_tuning_service_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.CompletionServiceRestTransport(
+        transports.SearchTuningServiceRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+def test_search_tuning_service_rest_lro_client():
+    client = SearchTuningServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -1484,8 +1498,8 @@ def test_completion_service_http_transport_client_cert_source_for_mtls():
         "rest",
     ],
 )
-def test_completion_service_host_no_port(transport_name):
-    client = CompletionServiceClient(
+def test_search_tuning_service_host_no_port(transport_name):
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="discoveryengine.googleapis.com"
@@ -1507,8 +1521,8 @@ def test_completion_service_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_completion_service_host_with_port(transport_name):
-    client = CompletionServiceClient(
+def test_search_tuning_service_host_with_port(transport_name):
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="discoveryengine.googleapis.com:8000"
@@ -1528,27 +1542,27 @@ def test_completion_service_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_completion_service_client_transport_session_collision(transport_name):
+def test_search_tuning_service_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = CompletionServiceClient(
+    client1 = SearchTuningServiceClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = CompletionServiceClient(
+    client2 = SearchTuningServiceClient(
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.complete_query._session
-    session2 = client2.transport.complete_query._session
+    session1 = client1.transport.train_custom_model._session
+    session2 = client2.transport.train_custom_model._session
     assert session1 != session2
 
 
-def test_completion_service_grpc_transport_channel():
+def test_search_tuning_service_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.CompletionServiceGrpcTransport(
+    transport = transports.SearchTuningServiceGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -1557,11 +1571,11 @@ def test_completion_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_completion_service_grpc_asyncio_transport_channel():
+def test_search_tuning_service_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.CompletionServiceGrpcAsyncIOTransport(
+    transport = transports.SearchTuningServiceGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -1575,11 +1589,11 @@ def test_completion_service_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.CompletionServiceGrpcTransport,
-        transports.CompletionServiceGrpcAsyncIOTransport,
+        transports.SearchTuningServiceGrpcTransport,
+        transports.SearchTuningServiceGrpcAsyncIOTransport,
     ],
 )
-def test_completion_service_transport_channel_mtls_with_client_cert_source(
+def test_search_tuning_service_transport_channel_mtls_with_client_cert_source(
     transport_class,
 ):
     with mock.patch(
@@ -1629,11 +1643,11 @@ def test_completion_service_transport_channel_mtls_with_client_cert_source(
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.CompletionServiceGrpcTransport,
-        transports.CompletionServiceGrpcAsyncIOTransport,
+        transports.SearchTuningServiceGrpcTransport,
+        transports.SearchTuningServiceGrpcAsyncIOTransport,
     ],
 )
-def test_completion_service_transport_channel_mtls_with_adc(transport_class):
+def test_search_tuning_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -1670,6 +1684,40 @@ def test_completion_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_search_tuning_service_grpc_lro_client():
+    client = SearchTuningServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_search_tuning_service_grpc_lro_async_client():
+    client = SearchTuningServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 def test_data_store_path():
     project = "squid"
     location = "clam"
@@ -1679,7 +1727,7 @@ def test_data_store_path():
         location=location,
         data_store=data_store,
     )
-    actual = CompletionServiceClient.data_store_path(project, location, data_store)
+    actual = SearchTuningServiceClient.data_store_path(project, location, data_store)
     assert expected == actual
 
 
@@ -1689,10 +1737,10 @@ def test_parse_data_store_path():
         "location": "oyster",
         "data_store": "nudibranch",
     }
-    path = CompletionServiceClient.data_store_path(**expected)
+    path = SearchTuningServiceClient.data_store_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = CompletionServiceClient.parse_data_store_path(path)
+    actual = SearchTuningServiceClient.parse_data_store_path(path)
     assert expected == actual
 
 
@@ -1701,7 +1749,7 @@ def test_common_billing_account_path():
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = CompletionServiceClient.common_billing_account_path(billing_account)
+    actual = SearchTuningServiceClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
@@ -1709,10 +1757,10 @@ def test_parse_common_billing_account_path():
     expected = {
         "billing_account": "mussel",
     }
-    path = CompletionServiceClient.common_billing_account_path(**expected)
+    path = SearchTuningServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = CompletionServiceClient.parse_common_billing_account_path(path)
+    actual = SearchTuningServiceClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
@@ -1721,7 +1769,7 @@ def test_common_folder_path():
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = CompletionServiceClient.common_folder_path(folder)
+    actual = SearchTuningServiceClient.common_folder_path(folder)
     assert expected == actual
 
 
@@ -1729,10 +1777,10 @@ def test_parse_common_folder_path():
     expected = {
         "folder": "nautilus",
     }
-    path = CompletionServiceClient.common_folder_path(**expected)
+    path = SearchTuningServiceClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = CompletionServiceClient.parse_common_folder_path(path)
+    actual = SearchTuningServiceClient.parse_common_folder_path(path)
     assert expected == actual
 
 
@@ -1741,7 +1789,7 @@ def test_common_organization_path():
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = CompletionServiceClient.common_organization_path(organization)
+    actual = SearchTuningServiceClient.common_organization_path(organization)
     assert expected == actual
 
 
@@ -1749,10 +1797,10 @@ def test_parse_common_organization_path():
     expected = {
         "organization": "abalone",
     }
-    path = CompletionServiceClient.common_organization_path(**expected)
+    path = SearchTuningServiceClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = CompletionServiceClient.parse_common_organization_path(path)
+    actual = SearchTuningServiceClient.parse_common_organization_path(path)
     assert expected == actual
 
 
@@ -1761,7 +1809,7 @@ def test_common_project_path():
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = CompletionServiceClient.common_project_path(project)
+    actual = SearchTuningServiceClient.common_project_path(project)
     assert expected == actual
 
 
@@ -1769,10 +1817,10 @@ def test_parse_common_project_path():
     expected = {
         "project": "clam",
     }
-    path = CompletionServiceClient.common_project_path(**expected)
+    path = SearchTuningServiceClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = CompletionServiceClient.parse_common_project_path(path)
+    actual = SearchTuningServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
@@ -1783,7 +1831,7 @@ def test_common_location_path():
         project=project,
         location=location,
     )
-    actual = CompletionServiceClient.common_location_path(project, location)
+    actual = SearchTuningServiceClient.common_location_path(project, location)
     assert expected == actual
 
 
@@ -1792,10 +1840,10 @@ def test_parse_common_location_path():
         "project": "oyster",
         "location": "nudibranch",
     }
-    path = CompletionServiceClient.common_location_path(**expected)
+    path = SearchTuningServiceClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = CompletionServiceClient.parse_common_location_path(path)
+    actual = SearchTuningServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -1803,18 +1851,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.CompletionServiceTransport, "_prep_wrapped_messages"
+        transports.SearchTuningServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = CompletionServiceClient(
+        client = SearchTuningServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.CompletionServiceTransport, "_prep_wrapped_messages"
+        transports.SearchTuningServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = CompletionServiceClient.get_transport_class()
+        transport_class = SearchTuningServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -1824,7 +1872,7 @@ def test_client_with_default_client_info():
 
 @pytest.mark.asyncio
 async def test_transport_close_async():
-    client = CompletionServiceAsyncClient(
+    client = SearchTuningServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -1839,7 +1887,7 @@ async def test_transport_close_async():
 def test_get_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.GetOperationRequest
 ):
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1872,7 +1920,7 @@ def test_get_operation_rest_bad_request(
     ],
 )
 def test_get_operation_rest(request_type):
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -1902,7 +1950,7 @@ def test_get_operation_rest(request_type):
 def test_list_operations_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
 ):
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1935,7 +1983,7 @@ def test_list_operations_rest_bad_request(
     ],
 )
 def test_list_operations_rest(request_type):
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -1963,7 +2011,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_get_operation(transport: str = "grpc"):
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1988,7 +2036,7 @@ def test_get_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
-    client = CompletionServiceAsyncClient(
+    client = SearchTuningServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2014,7 +2062,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_operation_field_headers():
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -2043,7 +2091,7 @@ def test_get_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
-    client = CompletionServiceAsyncClient(
+    client = SearchTuningServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -2072,7 +2120,7 @@ async def test_get_operation_field_headers_async():
 
 
 def test_get_operation_from_dict():
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2090,7 +2138,7 @@ def test_get_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
-    client = CompletionServiceAsyncClient(
+    client = SearchTuningServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2108,7 +2156,7 @@ async def test_get_operation_from_dict_async():
 
 
 def test_list_operations(transport: str = "grpc"):
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2133,7 +2181,7 @@ def test_list_operations(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
-    client = CompletionServiceAsyncClient(
+    client = SearchTuningServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2159,7 +2207,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 
 def test_list_operations_field_headers():
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -2188,7 +2236,7 @@ def test_list_operations_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
-    client = CompletionServiceAsyncClient(
+    client = SearchTuningServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -2217,7 +2265,7 @@ async def test_list_operations_field_headers_async():
 
 
 def test_list_operations_from_dict():
-    client = CompletionServiceClient(
+    client = SearchTuningServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2235,7 +2283,7 @@ def test_list_operations_from_dict():
 
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
-    client = CompletionServiceAsyncClient(
+    client = SearchTuningServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2259,7 +2307,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = CompletionServiceClient(
+        client = SearchTuningServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -2276,7 +2324,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = CompletionServiceClient(
+        client = SearchTuningServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -2290,10 +2338,10 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (CompletionServiceClient, transports.CompletionServiceGrpcTransport),
+        (SearchTuningServiceClient, transports.SearchTuningServiceGrpcTransport),
         (
-            CompletionServiceAsyncClient,
-            transports.CompletionServiceGrpcAsyncIOTransport,
+            SearchTuningServiceAsyncClient,
+            transports.SearchTuningServiceGrpcAsyncIOTransport,
         ),
     ],
 )

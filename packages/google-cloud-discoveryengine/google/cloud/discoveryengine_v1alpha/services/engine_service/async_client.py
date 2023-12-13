@@ -988,7 +988,8 @@ class EngineServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> engine.Engine:
         r"""Resumes the training of an existing engine. Only applicable if
-        [solution_type][] is
+        [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType]
+        is
         [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
 
         .. code-block:: python

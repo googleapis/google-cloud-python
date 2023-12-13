@@ -24,18 +24,15 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import engine
-from google.cloud.discoveryengine_v1alpha.types import engine as gcd_engine
-from google.cloud.discoveryengine_v1alpha.types import engine_service
+from google.cloud.discoveryengine_v1alpha.types import search_tuning_service
 
-from .base import DEFAULT_CLIENT_INFO, EngineServiceTransport
+from .base import DEFAULT_CLIENT_INFO, SearchTuningServiceTransport
 
 
-class EngineServiceGrpcTransport(EngineServiceTransport):
-    """gRPC backend transport for EngineService.
+class SearchTuningServiceGrpcTransport(SearchTuningServiceTransport):
+    """gRPC backend transport for SearchTuningService.
 
-    Service for managing
-    [Engine][google.cloud.discoveryengine.v1alpha.Engine] configuration.
+    Service for search tuning.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -249,206 +246,17 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
         return self._operations_client
 
     @property
-    def create_engine(
-        self,
-    ) -> Callable[[engine_service.CreateEngineRequest], operations_pb2.Operation]:
-        r"""Return a callable for the create engine method over gRPC.
-
-        Creates a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
-
-        Returns:
-            Callable[[~.CreateEngineRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_engine" not in self._stubs:
-            self._stubs["create_engine"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.EngineService/CreateEngine",
-                request_serializer=engine_service.CreateEngineRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["create_engine"]
-
-    @property
-    def delete_engine(
-        self,
-    ) -> Callable[[engine_service.DeleteEngineRequest], operations_pb2.Operation]:
-        r"""Return a callable for the delete engine method over gRPC.
-
-        Deletes a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
-
-        Returns:
-            Callable[[~.DeleteEngineRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_engine" not in self._stubs:
-            self._stubs["delete_engine"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.EngineService/DeleteEngine",
-                request_serializer=engine_service.DeleteEngineRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["delete_engine"]
-
-    @property
-    def update_engine(
-        self,
-    ) -> Callable[[engine_service.UpdateEngineRequest], gcd_engine.Engine]:
-        r"""Return a callable for the update engine method over gRPC.
-
-        Updates an [Engine][google.cloud.discoveryengine.v1alpha.Engine]
-
-        Returns:
-            Callable[[~.UpdateEngineRequest],
-                    ~.Engine]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_engine" not in self._stubs:
-            self._stubs["update_engine"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.EngineService/UpdateEngine",
-                request_serializer=engine_service.UpdateEngineRequest.serialize,
-                response_deserializer=gcd_engine.Engine.deserialize,
-            )
-        return self._stubs["update_engine"]
-
-    @property
-    def get_engine(self) -> Callable[[engine_service.GetEngineRequest], engine.Engine]:
-        r"""Return a callable for the get engine method over gRPC.
-
-        Gets a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
-
-        Returns:
-            Callable[[~.GetEngineRequest],
-                    ~.Engine]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_engine" not in self._stubs:
-            self._stubs["get_engine"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.EngineService/GetEngine",
-                request_serializer=engine_service.GetEngineRequest.serialize,
-                response_deserializer=engine.Engine.deserialize,
-            )
-        return self._stubs["get_engine"]
-
-    @property
-    def list_engines(
+    def train_custom_model(
         self,
     ) -> Callable[
-        [engine_service.ListEnginesRequest], engine_service.ListEnginesResponse
+        [search_tuning_service.TrainCustomModelRequest], operations_pb2.Operation
     ]:
-        r"""Return a callable for the list engines method over gRPC.
+        r"""Return a callable for the train custom model method over gRPC.
 
-        Lists all the
-        [Engine][google.cloud.discoveryengine.v1alpha.Engine]s
-        associated with the project.
+        Trains a custom model.
 
         Returns:
-            Callable[[~.ListEnginesRequest],
-                    ~.ListEnginesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_engines" not in self._stubs:
-            self._stubs["list_engines"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.EngineService/ListEngines",
-                request_serializer=engine_service.ListEnginesRequest.serialize,
-                response_deserializer=engine_service.ListEnginesResponse.deserialize,
-            )
-        return self._stubs["list_engines"]
-
-    @property
-    def pause_engine(
-        self,
-    ) -> Callable[[engine_service.PauseEngineRequest], engine.Engine]:
-        r"""Return a callable for the pause engine method over gRPC.
-
-        Pauses the training of an existing engine. Only applicable if
-        [solution_type][] is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
-
-        Returns:
-            Callable[[~.PauseEngineRequest],
-                    ~.Engine]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "pause_engine" not in self._stubs:
-            self._stubs["pause_engine"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.EngineService/PauseEngine",
-                request_serializer=engine_service.PauseEngineRequest.serialize,
-                response_deserializer=engine.Engine.deserialize,
-            )
-        return self._stubs["pause_engine"]
-
-    @property
-    def resume_engine(
-        self,
-    ) -> Callable[[engine_service.ResumeEngineRequest], engine.Engine]:
-        r"""Return a callable for the resume engine method over gRPC.
-
-        Resumes the training of an existing engine. Only applicable if
-        [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType]
-        is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
-
-        Returns:
-            Callable[[~.ResumeEngineRequest],
-                    ~.Engine]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "resume_engine" not in self._stubs:
-            self._stubs["resume_engine"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.EngineService/ResumeEngine",
-                request_serializer=engine_service.ResumeEngineRequest.serialize,
-                response_deserializer=engine.Engine.deserialize,
-            )
-        return self._stubs["resume_engine"]
-
-    @property
-    def tune_engine(
-        self,
-    ) -> Callable[[engine_service.TuneEngineRequest], operations_pb2.Operation]:
-        r"""Return a callable for the tune engine method over gRPC.
-
-        Tunes an existing engine. Only applicable if [solution_type][]
-        is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
-
-        Returns:
-            Callable[[~.TuneEngineRequest],
+            Callable[[~.TrainCustomModelRequest],
                     ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -457,13 +265,13 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "tune_engine" not in self._stubs:
-            self._stubs["tune_engine"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1alpha.EngineService/TuneEngine",
-                request_serializer=engine_service.TuneEngineRequest.serialize,
+        if "train_custom_model" not in self._stubs:
+            self._stubs["train_custom_model"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SearchTuningService/TrainCustomModel",
+                request_serializer=search_tuning_service.TrainCustomModelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["tune_engine"]
+        return self._stubs["train_custom_model"]
 
     def close(self):
         self.grpc_channel.close()
@@ -509,4 +317,4 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
         return "grpc"
 
 
-__all__ = ("EngineServiceGrpcTransport",)
+__all__ = ("SearchTuningServiceGrpcTransport",)

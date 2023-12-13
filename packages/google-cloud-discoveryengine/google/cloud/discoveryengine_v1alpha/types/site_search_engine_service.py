@@ -20,14 +20,514 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1alpha.types import (
+    site_search_engine as gcd_site_search_engine,
+)
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
     manifest={
+        "GetSiteSearchEngineRequest",
+        "CreateTargetSiteRequest",
+        "CreateTargetSiteMetadata",
+        "BatchCreateTargetSitesRequest",
+        "GetTargetSiteRequest",
+        "UpdateTargetSiteRequest",
+        "UpdateTargetSiteMetadata",
+        "DeleteTargetSiteRequest",
+        "DeleteTargetSiteMetadata",
+        "ListTargetSitesRequest",
+        "ListTargetSitesResponse",
+        "BatchCreateTargetSiteMetadata",
+        "BatchCreateTargetSitesResponse",
+        "EnableAdvancedSiteSearchRequest",
+        "EnableAdvancedSiteSearchResponse",
+        "EnableAdvancedSiteSearchMetadata",
+        "DisableAdvancedSiteSearchRequest",
+        "DisableAdvancedSiteSearchResponse",
+        "DisableAdvancedSiteSearchMetadata",
         "RecrawlUrisRequest",
         "RecrawlUrisResponse",
         "RecrawlUrisMetadata",
+        "BatchVerifyTargetSitesRequest",
+        "BatchVerifyTargetSitesResponse",
+        "BatchVerifyTargetSitesMetadata",
+        "FetchDomainVerificationStatusRequest",
+        "FetchDomainVerificationStatusResponse",
     },
 )
+
+
+class GetSiteSearchEngineRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.GetSiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetSiteSearchEngine]
+    method.
+
+    Attributes:
+        name (str):
+            Required. Resource name of
+            [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine],
+            such as
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
+
+            If the caller does not have permission to access the
+            [SiteSearchEngine], regardless of whether or not it exists,
+            a PERMISSION_DENIED error is returned.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateTargetSiteRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.CreateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.CreateTargetSite]
+    method.
+
+    Attributes:
+        parent (str):
+            Required. Parent resource name of
+            [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+            such as
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
+        target_site (google.cloud.discoveryengine_v1alpha.types.TargetSite):
+            Required. The
+            [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
+            to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_site: gcd_site_search_engine.TargetSite = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_site_search_engine.TargetSite,
+    )
+
+
+class CreateTargetSiteMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    [SiteSearchEngineService.CreateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.CreateTargetSite]
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class BatchCreateTargetSitesRequest(proto.Message):
+    r"""Request message for [SiteSearchEngineService.s][] method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource shared by all TargetSites
+            being created.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
+            The parent field in the CreateBookRequest messages must
+            either be empty or match this field.
+        requests (MutableSequence[google.cloud.discoveryengine_v1alpha.types.CreateTargetSiteRequest]):
+            Required. The request message specifying the
+            resources to create. A maximum of 20 TargetSites
+            can be created in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreateTargetSiteRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreateTargetSiteRequest",
+    )
+
+
+class GetTargetSiteRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.GetTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetTargetSite]
+    method.
+
+    Attributes:
+        name (str):
+            Required. Full resource name of
+            [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+            such as
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
+
+            If the caller does not have permission to access the
+            [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+            regardless of whether or not it exists, a PERMISSION_DENIED
+            error is returned.
+
+            If the requested
+            [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
+            does not exist, a NOT_FOUND error is returned.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateTargetSiteRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.UpdateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.UpdateTargetSite]
+    method.
+
+    Attributes:
+        target_site (google.cloud.discoveryengine_v1alpha.types.TargetSite):
+            Required. The target site to update. If the caller does not
+            have permission to update the
+            [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+            regardless of whether or not it exists, a PERMISSION_DENIED
+            error is returned.
+
+            If the
+            [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
+            to update does not exist, a NOT_FOUND error is returned.
+    """
+
+    target_site: gcd_site_search_engine.TargetSite = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_site_search_engine.TargetSite,
+    )
+
+
+class UpdateTargetSiteMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    [SiteSearchEngineService.UpdateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.UpdateTargetSite]
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class DeleteTargetSiteRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.DeleteTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DeleteTargetSite]
+    method.
+
+    Attributes:
+        name (str):
+            Required. Full resource name of
+            [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+            such as
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
+
+            If the caller does not have permission to access the
+            [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+            regardless of whether or not it exists, a PERMISSION_DENIED
+            error is returned.
+
+            If the requested
+            [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
+            does not exist, a NOT_FOUND error is returned.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteTargetSiteMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    [SiteSearchEngineService.DeleteTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DeleteTargetSite]
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ListTargetSitesRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites]
+    method.
+
+    Attributes:
+        parent (str):
+            Required. The parent site search engine resource name, such
+            as
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
+
+            If the caller does not have permission to list
+            [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]s
+            under this site search engine, regardless of whether or not
+            this branch exists, a PERMISSION_DENIED error is returned.
+        page_size (int):
+            Requested page size. Server may return fewer items than
+            requested. If unspecified, server will pick an appropriate
+            default. The maximum value is 1000; values above 1000 will
+            be coerced to 1000.
+
+            If this field is negative, an INVALID_ARGUMENT error is
+            returned.
+        page_token (str):
+            A page token, received from a previous ``ListTargetSites``
+            call. Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListTargetSites`` must match the call that provided the
+            page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListTargetSitesResponse(proto.Message):
+    r"""Response message for
+    [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites]
+    method.
+
+    Attributes:
+        target_sites (MutableSequence[google.cloud.discoveryengine_v1alpha.types.TargetSite]):
+            List of TargetSites.
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        total_size (int):
+            The total number of items matching the
+            request. This will always be populated in the
+            response.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    target_sites: MutableSequence[
+        gcd_site_search_engine.TargetSite
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_site_search_engine.TargetSite,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class BatchCreateTargetSiteMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    [SiteSearchEngineService.BatchCreateTargetSite][] operation. This
+    will be returned by the google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class BatchCreateTargetSitesResponse(proto.Message):
+    r"""Response message for
+    [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchCreateTargetSites]
+    method.
+
+    Attributes:
+        target_sites (MutableSequence[google.cloud.discoveryengine_v1alpha.types.TargetSite]):
+            TargetSites created.
+    """
+
+    target_sites: MutableSequence[
+        gcd_site_search_engine.TargetSite
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_site_search_engine.TargetSite,
+    )
+
+
+class EnableAdvancedSiteSearchRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
+    method.
+
+    Attributes:
+        site_search_engine (str):
+            Required. Full resource name of the
+            [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine],
+            such as
+            ``projects/{project}/locations/{location}/dataStores/{data_store_id}/siteSearchEngine``.
+    """
+
+    site_search_engine: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class EnableAdvancedSiteSearchResponse(proto.Message):
+    r"""Response message for
+    [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
+    method.
+
+    """
+
+
+class EnableAdvancedSiteSearchMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class DisableAdvancedSiteSearchRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
+    method.
+
+    Attributes:
+        site_search_engine (str):
+            Required. Full resource name of the
+            [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine],
+            such as
+            ``projects/{project}/locations/{location}/dataStores/{data_store_id}/siteSearchEngine``.
+    """
+
+    site_search_engine: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DisableAdvancedSiteSearchResponse(proto.Message):
+    r"""Response message for
+    [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
+    method.
+
+    """
+
+
+class DisableAdvancedSiteSearchMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class RecrawlUrisRequest(proto.Message):
@@ -208,6 +708,140 @@ class RecrawlUrisMetadata(proto.Message):
     quota_exceeded_count: int = proto.Field(
         proto.INT32,
         number=7,
+    )
+
+
+class BatchVerifyTargetSitesRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites]
+    method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource shared by all TargetSites
+            being verified.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class BatchVerifyTargetSitesResponse(proto.Message):
+    r"""Response message for
+    [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites]
+    method.
+
+    """
+
+
+class BatchVerifyTargetSitesMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites]
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class FetchDomainVerificationStatusRequest(proto.Message):
+    r"""Request message for
+    [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
+    method.
+
+    Attributes:
+        site_search_engine (str):
+            Required. The site search engine resource under which we
+            fetch all the domain verification status.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
+        page_size (int):
+            Requested page size. Server may return fewer items than
+            requested. If unspecified, server will pick an appropriate
+            default. The maximum value is 1000; values above 1000 will
+            be coerced to 1000.
+
+            If this field is negative, an INVALID_ARGUMENT error is
+            returned.
+        page_token (str):
+            A page token, received from a previous
+            ``FetchDomainVerificationStatus`` call. Provide this to
+            retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``FetchDomainVerificationStatus`` must match the call that
+            provided the page token.
+    """
+
+    site_search_engine: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class FetchDomainVerificationStatusResponse(proto.Message):
+    r"""Response message for
+    [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
+    method.
+
+    Attributes:
+        target_sites (MutableSequence[google.cloud.discoveryengine_v1alpha.types.TargetSite]):
+            List of TargetSites containing the site
+            verification status.
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        total_size (int):
+            The total number of items matching the
+            request. This will always be populated in the
+            response.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    target_sites: MutableSequence[
+        gcd_site_search_engine.TargetSite
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_site_search_engine.TargetSite,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size: int = proto.Field(
+        proto.INT32,
+        number=3,
     )
 
 

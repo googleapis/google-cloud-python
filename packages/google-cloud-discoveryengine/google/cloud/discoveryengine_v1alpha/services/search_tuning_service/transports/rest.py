@@ -45,12 +45,10 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import data_store as gcd_data_store
-from google.cloud.discoveryengine_v1alpha.types import data_store
-from google.cloud.discoveryengine_v1alpha.types import data_store_service
+from google.cloud.discoveryengine_v1alpha.types import search_tuning_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import DataStoreServiceTransport
+from .base import SearchTuningServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -59,8 +57,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class DataStoreServiceRestInterceptor:
-    """Interceptor for DataStoreService.
+class SearchTuningServiceRestInterceptor:
+    """Interceptor for SearchTuningService.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -70,167 +68,45 @@ class DataStoreServiceRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the DataStoreServiceRestTransport.
+    instance of a custom subclass when constructing the SearchTuningServiceRestTransport.
 
     .. code-block:: python
-        class MyCustomDataStoreServiceInterceptor(DataStoreServiceRestInterceptor):
-            def pre_create_data_store(self, request, metadata):
+        class MyCustomSearchTuningServiceInterceptor(SearchTuningServiceRestInterceptor):
+            def pre_train_custom_model(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_data_store(self, response):
+            def post_train_custom_model(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_delete_data_store(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_delete_data_store(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_get_data_store(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_get_data_store(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_list_data_stores(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_list_data_stores(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_update_data_store(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_update_data_store(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-        transport = DataStoreServiceRestTransport(interceptor=MyCustomDataStoreServiceInterceptor())
-        client = DataStoreServiceClient(transport=transport)
+        transport = SearchTuningServiceRestTransport(interceptor=MyCustomSearchTuningServiceInterceptor())
+        client = SearchTuningServiceClient(transport=transport)
 
 
     """
 
-    def pre_create_data_store(
+    def pre_train_custom_model(
         self,
-        request: data_store_service.CreateDataStoreRequest,
+        request: search_tuning_service.TrainCustomModelRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[data_store_service.CreateDataStoreRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for create_data_store
+    ) -> Tuple[
+        search_tuning_service.TrainCustomModelRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for train_custom_model
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataStoreService server.
+        before they are sent to the SearchTuningService server.
         """
         return request, metadata
 
-    def post_create_data_store(
+    def post_train_custom_model(
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for create_data_store
+        """Post-rpc interceptor for train_custom_model
 
         Override in a subclass to manipulate the response
-        after it is returned by the DataStoreService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_delete_data_store(
-        self,
-        request: data_store_service.DeleteDataStoreRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[data_store_service.DeleteDataStoreRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for delete_data_store
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataStoreService server.
-        """
-        return request, metadata
-
-    def post_delete_data_store(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for delete_data_store
-
-        Override in a subclass to manipulate the response
-        after it is returned by the DataStoreService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_get_data_store(
-        self,
-        request: data_store_service.GetDataStoreRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[data_store_service.GetDataStoreRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for get_data_store
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataStoreService server.
-        """
-        return request, metadata
-
-    def post_get_data_store(
-        self, response: data_store.DataStore
-    ) -> data_store.DataStore:
-        """Post-rpc interceptor for get_data_store
-
-        Override in a subclass to manipulate the response
-        after it is returned by the DataStoreService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_list_data_stores(
-        self,
-        request: data_store_service.ListDataStoresRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[data_store_service.ListDataStoresRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for list_data_stores
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataStoreService server.
-        """
-        return request, metadata
-
-    def post_list_data_stores(
-        self, response: data_store_service.ListDataStoresResponse
-    ) -> data_store_service.ListDataStoresResponse:
-        """Post-rpc interceptor for list_data_stores
-
-        Override in a subclass to manipulate the response
-        after it is returned by the DataStoreService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_update_data_store(
-        self,
-        request: data_store_service.UpdateDataStoreRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[data_store_service.UpdateDataStoreRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for update_data_store
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataStoreService server.
-        """
-        return request, metadata
-
-    def post_update_data_store(
-        self, response: gcd_data_store.DataStore
-    ) -> gcd_data_store.DataStore:
-        """Post-rpc interceptor for update_data_store
-
-        Override in a subclass to manipulate the response
-        after it is returned by the DataStoreService server but before
+        after it is returned by the SearchTuningService server but before
         it is returned to user code.
         """
         return response
@@ -243,7 +119,7 @@ class DataStoreServiceRestInterceptor:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataStoreService server.
+        before they are sent to the SearchTuningService server.
         """
         return request, metadata
 
@@ -253,7 +129,7 @@ class DataStoreServiceRestInterceptor:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the DataStoreService server but before
+        after it is returned by the SearchTuningService server but before
         it is returned to user code.
         """
         return response
@@ -266,7 +142,7 @@ class DataStoreServiceRestInterceptor:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataStoreService server.
+        before they are sent to the SearchTuningService server.
         """
         return request, metadata
 
@@ -276,25 +152,23 @@ class DataStoreServiceRestInterceptor:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
-        after it is returned by the DataStoreService server but before
+        after it is returned by the SearchTuningService server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class DataStoreServiceRestStub:
+class SearchTuningServiceRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: DataStoreServiceRestInterceptor
+    _interceptor: SearchTuningServiceRestInterceptor
 
 
-class DataStoreServiceRestTransport(DataStoreServiceTransport):
-    """REST backend transport for DataStoreService.
+class SearchTuningServiceRestTransport(SearchTuningServiceTransport):
+    """REST backend transport for SearchTuningService.
 
-    Service for managing
-    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-    configuration.
+    Service for search tuning.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -316,7 +190,7 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[DataStoreServiceRestInterceptor] = None,
+        interceptor: Optional[SearchTuningServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -378,7 +252,7 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or DataStoreServiceRestInterceptor()
+        self._interceptor = interceptor or SearchTuningServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -525,13 +399,11 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateDataStore(DataStoreServiceRestStub):
+    class _TrainCustomModel(SearchTuningServiceRestStub):
         def __hash__(self):
-            return hash("CreateDataStore")
+            return hash("TrainCustomModel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "dataStoreId": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -543,18 +415,18 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
 
         def __call__(
             self,
-            request: data_store_service.CreateDataStoreRequest,
+            request: search_tuning_service.TrainCustomModelRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> operations_pb2.Operation:
-            r"""Call the create data store method over HTTP.
+            r"""Call the train custom model method over HTTP.
 
             Args:
-                request (~.data_store_service.CreateDataStoreRequest):
-                    The request object. Request for
-                [DataStoreService.CreateDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.CreateDataStore]
+                request (~.search_tuning_service.TrainCustomModelRequest):
+                    The request object. Request message for
+                [SearchTuningService.TrainCustomModel][google.cloud.discoveryengine.v1alpha.SearchTuningService.TrainCustomModel]
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -573,19 +445,14 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*}/dataStores",
-                    "body": "data_store",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*}/dataStores",
-                    "body": "data_store",
+                    "uri": "/v1alpha/{data_store=projects/*/locations/*/collections/*/dataStores/*}:trainCustomModel",
+                    "body": "*",
                 },
             ]
-            request, metadata = self._interceptor.pre_create_data_store(
+            request, metadata = self._interceptor.pre_train_custom_model(
                 request, metadata
             )
-            pb_request = data_store_service.CreateDataStoreRequest.pb(request)
+            pb_request = search_tuning_service.TrainCustomModelRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -629,455 +496,24 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_create_data_store(resp)
-            return resp
-
-    class _DeleteDataStore(DataStoreServiceRestStub):
-        def __hash__(self):
-            return hash("DeleteDataStore")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: data_store_service.DeleteDataStoreRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the delete data store method over HTTP.
-
-            Args:
-                request (~.data_store_service.DeleteDataStoreRequest):
-                    The request object. Request message for
-                [DataStoreService.DeleteDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.DeleteDataStore]
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*}",
-                },
-            ]
-            request, metadata = self._interceptor.pre_delete_data_store(
-                request, metadata
-            )
-            pb_request = data_store_service.DeleteDataStoreRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_delete_data_store(resp)
-            return resp
-
-    class _GetDataStore(DataStoreServiceRestStub):
-        def __hash__(self):
-            return hash("GetDataStore")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: data_store_service.GetDataStoreRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> data_store.DataStore:
-            r"""Call the get data store method over HTTP.
-
-            Args:
-                request (~.data_store_service.GetDataStoreRequest):
-                    The request object. Request message for
-                [DataStoreService.GetDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.GetDataStore]
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.data_store.DataStore:
-                    DataStore captures global settings
-                and configs at the DataStore level.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*}",
-                },
-            ]
-            request, metadata = self._interceptor.pre_get_data_store(request, metadata)
-            pb_request = data_store_service.GetDataStoreRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = data_store.DataStore()
-            pb_resp = data_store.DataStore.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_data_store(resp)
-            return resp
-
-    class _ListDataStores(DataStoreServiceRestStub):
-        def __hash__(self):
-            return hash("ListDataStores")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: data_store_service.ListDataStoresRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> data_store_service.ListDataStoresResponse:
-            r"""Call the list data stores method over HTTP.
-
-            Args:
-                request (~.data_store_service.ListDataStoresRequest):
-                    The request object. Request message for
-                [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.data_store_service.ListDataStoresResponse:
-                    Response message for
-                [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
-                method.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*}/dataStores",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*}/dataStores",
-                },
-            ]
-            request, metadata = self._interceptor.pre_list_data_stores(
-                request, metadata
-            )
-            pb_request = data_store_service.ListDataStoresRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = data_store_service.ListDataStoresResponse()
-            pb_resp = data_store_service.ListDataStoresResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_list_data_stores(resp)
-            return resp
-
-    class _UpdateDataStore(DataStoreServiceRestStub):
-        def __hash__(self):
-            return hash("UpdateDataStore")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: data_store_service.UpdateDataStoreRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> gcd_data_store.DataStore:
-            r"""Call the update data store method over HTTP.
-
-            Args:
-                request (~.data_store_service.UpdateDataStoreRequest):
-                    The request object. Request message for
-                [DataStoreService.UpdateDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDataStore]
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.gcd_data_store.DataStore:
-                    DataStore captures global settings
-                and configs at the DataStore level.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{data_store.name=projects/*/locations/*/dataStores/*}",
-                    "body": "data_store",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{data_store.name=projects/*/locations/*/collections/*/dataStores/*}",
-                    "body": "data_store",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_data_store(
-                request, metadata
-            )
-            pb_request = data_store_service.UpdateDataStoreRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = gcd_data_store.DataStore()
-            pb_resp = gcd_data_store.DataStore.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_update_data_store(resp)
+            resp = self._interceptor.post_train_custom_model(resp)
             return resp
 
     @property
-    def create_data_store(
+    def train_custom_model(
         self,
     ) -> Callable[
-        [data_store_service.CreateDataStoreRequest], operations_pb2.Operation
+        [search_tuning_service.TrainCustomModelRequest], operations_pb2.Operation
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateDataStore(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def delete_data_store(
-        self,
-    ) -> Callable[
-        [data_store_service.DeleteDataStoreRequest], operations_pb2.Operation
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._DeleteDataStore(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def get_data_store(
-        self,
-    ) -> Callable[[data_store_service.GetDataStoreRequest], data_store.DataStore]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetDataStore(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def list_data_stores(
-        self,
-    ) -> Callable[
-        [data_store_service.ListDataStoresRequest],
-        data_store_service.ListDataStoresResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ListDataStores(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def update_data_store(
-        self,
-    ) -> Callable[
-        [data_store_service.UpdateDataStoreRequest], gcd_data_store.DataStore
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._UpdateDataStore(self._session, self._host, self._interceptor)  # type: ignore
+        return self._TrainCustomModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(DataStoreServiceRestStub):
+    class _GetOperation(SearchTuningServiceRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -1195,7 +631,7 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(DataStoreServiceRestStub):
+    class _ListOperations(SearchTuningServiceRestStub):
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -1317,4 +753,4 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
         self._session.close()
 
 
-__all__ = ("DataStoreServiceRestTransport",)
+__all__ = ("SearchTuningServiceRestTransport",)

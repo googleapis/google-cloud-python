@@ -24,7 +24,10 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import site_search_engine_service
+from google.cloud.discoveryengine_v1alpha.types import (
+    site_search_engine,
+    site_search_engine_service,
+)
 
 from .base import DEFAULT_CLIENT_INFO, SiteSearchEngineServiceTransport
 
@@ -246,6 +249,273 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._operations_client
 
     @property
+    def get_site_search_engine(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.GetSiteSearchEngineRequest],
+        site_search_engine.SiteSearchEngine,
+    ]:
+        r"""Return a callable for the get site search engine method over gRPC.
+
+        Gets the
+        [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine].
+
+        Returns:
+            Callable[[~.GetSiteSearchEngineRequest],
+                    ~.SiteSearchEngine]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_site_search_engine" not in self._stubs:
+            self._stubs["get_site_search_engine"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/GetSiteSearchEngine",
+                request_serializer=site_search_engine_service.GetSiteSearchEngineRequest.serialize,
+                response_deserializer=site_search_engine.SiteSearchEngine.deserialize,
+            )
+        return self._stubs["get_site_search_engine"]
+
+    @property
+    def create_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.CreateTargetSiteRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create target site method over gRPC.
+
+        Creates a
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+
+        Returns:
+            Callable[[~.CreateTargetSiteRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_target_site" not in self._stubs:
+            self._stubs["create_target_site"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/CreateTargetSite",
+                request_serializer=site_search_engine_service.CreateTargetSiteRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_target_site"]
+
+    @property
+    def batch_create_target_sites(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.BatchCreateTargetSitesRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the batch create target sites method over gRPC.
+
+        Creates
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite] in
+        a batch.
+
+        Returns:
+            Callable[[~.BatchCreateTargetSitesRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_create_target_sites" not in self._stubs:
+            self._stubs["batch_create_target_sites"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/BatchCreateTargetSites",
+                request_serializer=site_search_engine_service.BatchCreateTargetSitesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["batch_create_target_sites"]
+
+    @property
+    def get_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.GetTargetSiteRequest], site_search_engine.TargetSite
+    ]:
+        r"""Return a callable for the get target site method over gRPC.
+
+        Gets a
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+
+        Returns:
+            Callable[[~.GetTargetSiteRequest],
+                    ~.TargetSite]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_target_site" not in self._stubs:
+            self._stubs["get_target_site"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/GetTargetSite",
+                request_serializer=site_search_engine_service.GetTargetSiteRequest.serialize,
+                response_deserializer=site_search_engine.TargetSite.deserialize,
+            )
+        return self._stubs["get_target_site"]
+
+    @property
+    def update_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.UpdateTargetSiteRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update target site method over gRPC.
+
+        Updates a
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+
+        Returns:
+            Callable[[~.UpdateTargetSiteRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_target_site" not in self._stubs:
+            self._stubs["update_target_site"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/UpdateTargetSite",
+                request_serializer=site_search_engine_service.UpdateTargetSiteRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_target_site"]
+
+    @property
+    def delete_target_site(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.DeleteTargetSiteRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete target site method over gRPC.
+
+        Deletes a
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+
+        Returns:
+            Callable[[~.DeleteTargetSiteRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_target_site" not in self._stubs:
+            self._stubs["delete_target_site"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/DeleteTargetSite",
+                request_serializer=site_search_engine_service.DeleteTargetSiteRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_target_site"]
+
+    @property
+    def list_target_sites(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.ListTargetSitesRequest],
+        site_search_engine_service.ListTargetSitesResponse,
+    ]:
+        r"""Return a callable for the list target sites method over gRPC.
+
+        Gets a list of
+        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]s.
+
+        Returns:
+            Callable[[~.ListTargetSitesRequest],
+                    ~.ListTargetSitesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_target_sites" not in self._stubs:
+            self._stubs["list_target_sites"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/ListTargetSites",
+                request_serializer=site_search_engine_service.ListTargetSitesRequest.serialize,
+                response_deserializer=site_search_engine_service.ListTargetSitesResponse.deserialize,
+            )
+        return self._stubs["list_target_sites"]
+
+    @property
+    def enable_advanced_site_search(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.EnableAdvancedSiteSearchRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the enable advanced site search method over gRPC.
+
+        Upgrade from basic site search to advanced site
+        search.
+
+        Returns:
+            Callable[[~.EnableAdvancedSiteSearchRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "enable_advanced_site_search" not in self._stubs:
+            self._stubs["enable_advanced_site_search"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/EnableAdvancedSiteSearch",
+                request_serializer=site_search_engine_service.EnableAdvancedSiteSearchRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["enable_advanced_site_search"]
+
+    @property
+    def disable_advanced_site_search(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.DisableAdvancedSiteSearchRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the disable advanced site search method over gRPC.
+
+        Downgrade from advanced site search to basic site
+        search.
+
+        Returns:
+            Callable[[~.DisableAdvancedSiteSearchRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "disable_advanced_site_search" not in self._stubs:
+            self._stubs["disable_advanced_site_search"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/DisableAdvancedSiteSearch",
+                request_serializer=site_search_engine_service.DisableAdvancedSiteSearchRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["disable_advanced_site_search"]
+
+    @property
     def recrawl_uris(
         self,
     ) -> Callable[
@@ -272,6 +542,71 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["recrawl_uris"]
+
+    @property
+    def batch_verify_target_sites(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.BatchVerifyTargetSitesRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the batch verify target sites method over gRPC.
+
+        Verify target sites' ownership and validity.
+        This API sends all the target sites under site search
+        engine for verification.
+
+        Returns:
+            Callable[[~.BatchVerifyTargetSitesRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_verify_target_sites" not in self._stubs:
+            self._stubs["batch_verify_target_sites"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/BatchVerifyTargetSites",
+                request_serializer=site_search_engine_service.BatchVerifyTargetSitesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["batch_verify_target_sites"]
+
+    @property
+    def fetch_domain_verification_status(
+        self,
+    ) -> Callable[
+        [site_search_engine_service.FetchDomainVerificationStatusRequest],
+        site_search_engine_service.FetchDomainVerificationStatusResponse,
+    ]:
+        r"""Return a callable for the fetch domain verification
+        status method over gRPC.
+
+        Returns list of target sites with its domain verification
+        status. This method can only be called under data store with
+        BASIC_SITE_SEARCH state at the moment.
+
+        Returns:
+            Callable[[~.FetchDomainVerificationStatusRequest],
+                    ~.FetchDomainVerificationStatusResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_domain_verification_status" not in self._stubs:
+            self._stubs[
+                "fetch_domain_verification_status"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/FetchDomainVerificationStatus",
+                request_serializer=site_search_engine_service.FetchDomainVerificationStatusRequest.serialize,
+                response_deserializer=site_search_engine_service.FetchDomainVerificationStatusResponse.deserialize,
+            )
+        return self._stubs["fetch_domain_verification_status"]
 
     def close(self):
         self.grpc_channel.close()
