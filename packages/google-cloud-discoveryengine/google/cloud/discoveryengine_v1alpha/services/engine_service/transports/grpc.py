@@ -415,7 +415,8 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
         r"""Return a callable for the resume engine method over gRPC.
 
         Resumes the training of an existing engine. Only applicable if
-        [solution_type][] is
+        [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType]
+        is
         [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
 
         Returns:

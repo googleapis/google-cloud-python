@@ -2829,6 +2829,25 @@ def test_create_conversation_rest(request_type):
                             "categories": ["categories_value1", "categories_value2"],
                             "scores": [0.656, 0.657],
                         },
+                        "summary_with_metadata": {
+                            "summary": "summary_value",
+                            "citation_metadata": {
+                                "citations": [
+                                    {
+                                        "start_index": 1189,
+                                        "end_index": 942,
+                                        "sources": [{"reference_index": 1574}],
+                                    }
+                                ]
+                            },
+                            "references": [
+                                {
+                                    "title": "title_value",
+                                    "document": "document_value",
+                                    "uri": "uri_value",
+                                }
+                            ],
+                        },
                     },
                 },
                 "create_time": {"seconds": 751, "nanos": 543},
@@ -3492,6 +3511,25 @@ def test_update_conversation_rest(request_type):
                         "safety_attributes": {
                             "categories": ["categories_value1", "categories_value2"],
                             "scores": [0.656, 0.657],
+                        },
+                        "summary_with_metadata": {
+                            "summary": "summary_value",
+                            "citation_metadata": {
+                                "citations": [
+                                    {
+                                        "start_index": 1189,
+                                        "end_index": 942,
+                                        "sources": [{"reference_index": 1574}],
+                                    }
+                                ]
+                            },
+                            "references": [
+                                {
+                                    "title": "title_value",
+                                    "document": "document_value",
+                                    "uri": "uri_value",
+                                }
+                            ],
                         },
                     },
                 },
@@ -5320,7 +5358,7 @@ def test_get_operation_rest_bad_request(
     request = request_type()
     request = json_format.ParseDict(
         {
-            "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
+            "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector/operations/sample4"
         },
         request,
     )
@@ -5350,7 +5388,7 @@ def test_get_operation_rest(request_type):
         transport="rest",
     )
     request_init = {
-        "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
+        "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector/operations/sample4"
     }
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
@@ -5383,7 +5421,7 @@ def test_list_operations_rest_bad_request(
     request = request_type()
     request = json_format.ParseDict(
         {
-            "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5"
+            "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector"
         },
         request,
     )
@@ -5413,7 +5451,7 @@ def test_list_operations_rest(request_type):
         transport="rest",
     )
     request_init = {
-        "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5"
+        "name": "projects/sample1/locations/sample2/collections/sample3/dataConnector"
     }
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
