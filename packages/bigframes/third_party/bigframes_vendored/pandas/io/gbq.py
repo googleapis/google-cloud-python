@@ -3,9 +3,12 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Optional
+from typing import Any, Iterable, Literal, Optional, Tuple, Union
 
 from bigframes import constants
+
+FilterType = Tuple[str, Literal["in", "not in", "<", "<=", "==", "!=", ">=", ">"], Any]
+FiltersType = Iterable[Union[FilterType, Iterable[FilterType]]]
 
 
 class GBQIOMixin:
@@ -16,6 +19,7 @@ class GBQIOMixin:
         index_col: Iterable[str] | str = (),
         col_order: Iterable[str] = (),
         max_results: Optional[int] = None,
+        filters: FiltersType = (),
         use_cache: bool = True,
     ):
         """Loads a DataFrame from BigQuery.
@@ -71,6 +75,21 @@ class GBQIOMixin:
             <BLANKLINE>
             [2 rows x 3 columns]
 
+        Reading data with `columns` and `filters` parameters:
+
+            >>> col_order = ['pitcherFirstName', 'pitcherLastName', 'year', 'pitchSpeed']
+            >>> filters = [('year', '==', 2016), ('pitcherFirstName', 'in', ['John', 'Doe']), ('pitcherLastName', 'in', ['Gant'])]
+            >>> df = bpd.read_gbq(
+            ...             "bigquery-public-data.baseball.games_wide",
+            ...             col_order=col_order,
+            ...             filters=filters,
+            ...         )
+            >>> df.head(1)
+                     pitcherFirstName	pitcherLastName     year	pitchSpeed
+            0	                 John	           Gant	    2016            82
+            <BLANKLINE>
+            [1 rows x 4 columns]
+
         Args:
             query_or_table (str):
                 A SQL string to be executed or a BigQuery table to be read. The
@@ -84,6 +103,14 @@ class GBQIOMixin:
             max_results (Optional[int], default None):
                 If set, limit the maximum number of rows to fetch from the
                 query results.
+            filters (Iterable[Union[Tuple, Iterable[Tuple]]], default ()): To
+                filter out data. Filter syntax: [[(column, op, val), …],…] where
+                op is [==, >, >=, <, <=, !=, in, not in]. The innermost tuples
+                are transposed into a set of filters applied through an AND
+                operation. The outer Iterable combines these sets of filters
+                through an OR operation. A single Iterable of tuples can also
+                be used, meaning that no OR operation between set of filters
+                is to be conducted.
             use_cache (bool, default True):
                 Whether to cache the query inputs. Default to True.
 

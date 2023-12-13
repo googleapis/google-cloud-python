@@ -57,3 +57,60 @@ def test_session_init_fails_with_no_project():
                 credentials=mock.Mock(spec=google.auth.credentials.Credentials)
             )
         )
+
+
+@pytest.mark.parametrize(
+    ("query_or_table", "columns", "filters", "expected_output"),
+    [
+        pytest.param(
+            """SELECT
+                rowindex,
+                string_col,
+            FROM `test_table` AS t
+            """,
+            [],
+            [("rowindex", "<", 4), ("string_col", "==", "Hello, World!")],
+            """SELECT * FROM (SELECT
+                rowindex,
+                string_col,
+            FROM `test_table` AS t
+            ) AS sub WHERE `rowindex` < 4 AND `string_col` = 'Hello, World!'""",
+            id="query_input",
+        ),
+        pytest.param(
+            "test_table",
+            [],
+            [("date_col", ">", "2022-10-20")],
+            "SELECT * FROM test_table AS sub WHERE `date_col` > '2022-10-20'",
+            id="table_input",
+        ),
+        pytest.param(
+            "test_table",
+            ["row_index", "string_col"],
+            [
+                (("rowindex", "not in", [0, 6]),),
+                (("string_col", "in", ["Hello, World!", "こんにちは"]),),
+            ],
+            (
+                "SELECT `row_index`, `string_col` FROM test_table AS sub WHERE "
+                "`rowindex` NOT IN (0, 6) OR `string_col` IN ('Hello, World!', "
+                "'こんにちは')"
+            ),
+            id="or_operation",
+        ),
+        pytest.param(
+            "test_table",
+            [],
+            ["date_col", ">", "2022-10-20"],
+            None,
+            marks=pytest.mark.xfail(
+                raises=ValueError,
+            ),
+            id="raise_error",
+        ),
+    ],
+)
+def test_read_gbq_with_filters(query_or_table, columns, filters, expected_output):
+    session = resources.create_bigquery_session()
+    query = session._filters_to_query(query_or_table, columns, filters)
+    assert query == expected_output

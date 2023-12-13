@@ -233,10 +233,13 @@ class Session(
         index_col: Iterable[str] | str = (),
         col_order: Iterable[str] = (),
         max_results: Optional[int] = None,
+        filters: third_party_pandas_gbq.FiltersType = (),
         use_cache: bool = True,
         # Add a verify index argument that fails if the index is not unique.
     ) -> dataframe.DataFrame:
         # TODO(b/281571214): Generate prompt to show the progress of read_gbq.
+        query_or_table = self._filters_to_query(query_or_table, col_order, filters)
+
         if _is_query(query_or_table):
             return self._read_gbq_query(
                 query_or_table,
@@ -258,6 +261,80 @@ class Session(
                 api_name="read_gbq",
                 use_cache=use_cache,
             )
+
+    def _filters_to_query(self, query_or_table, columns, filters):
+        """Convert filters to query"""
+        if len(filters) == 0:
+            return query_or_table
+
+        sub_query = (
+            f"({query_or_table})" if _is_query(query_or_table) else query_or_table
+        )
+
+        select_clause = "SELECT " + (
+            ", ".join(f"`{column}`" for column in columns) if columns else "*"
+        )
+
+        where_clause = ""
+        if filters:
+            valid_operators = {
+                "in": "IN",
+                "not in": "NOT IN",
+                "==": "=",
+                ">": ">",
+                "<": "<",
+                ">=": ">=",
+                "<=": "<=",
+                "!=": "!=",
+            }
+
+            if (
+                isinstance(filters, Iterable)
+                and isinstance(filters[0], Tuple)
+                and (len(filters[0]) == 0 or not isinstance(filters[0][0], Tuple))
+            ):
+                filters = [filters]
+
+            or_expressions = []
+            for group in filters:
+                if not isinstance(group, Iterable):
+                    raise ValueError(
+                        f"Filter group should be a iterable, {group} is not valid."
+                    )
+
+                and_expressions = []
+                for filter_item in group:
+                    if not isinstance(filter_item, tuple) or (len(filter_item) != 3):
+                        raise ValueError(
+                            f"Filter condition should be a tuple of length 3, {filter_item} is not valid."
+                        )
+
+                    column, operator, value = filter_item
+
+                    if not isinstance(column, str):
+                        raise ValueError(
+                            f"Column name should be a string, but received '{column}' of type {type(column).__name__}."
+                        )
+
+                    if operator not in valid_operators:
+                        raise ValueError(f"Operator {operator} is not valid.")
+
+                    operator = valid_operators[operator]
+
+                    if operator in ["IN", "NOT IN"]:
+                        value_list = ", ".join([repr(v) for v in value])
+                        expression = f"`{column}` {operator} ({value_list})"
+                    else:
+                        expression = f"`{column}` {operator} {repr(value)}"
+                    and_expressions.append(expression)
+
+                or_expressions.append(" AND ".join(and_expressions))
+
+            if or_expressions:
+                where_clause = " WHERE " + " OR ".join(or_expressions)
+
+        full_query = f"{select_clause} FROM {sub_query} AS sub{where_clause}"
+        return full_query
 
     def _query_to_destination(
         self,
