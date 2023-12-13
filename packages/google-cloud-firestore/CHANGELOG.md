@@ -5,6 +5,30 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.14.0](https://github.com/googleapis/python-firestore/compare/v2.13.1...v2.14.0) (2023-12-13)
+
+
+### Features
+
+* Add support for Python 3.12 ([#795](https://github.com/googleapis/python-firestore/issues/795)) ([b301f8b](https://github.com/googleapis/python-firestore/commit/b301f8b10a80b38103fb3fbca544adeab594a8af))
+* Expose Firestore namespace ID fields in import/export APIs to stable ([3a624a9](https://github.com/googleapis/python-firestore/commit/3a624a9ddf00f8c9f84593d483bfae7c7d4276d9))
+* Expose Firestore PITR fields in Database to stable ([3a624a9](https://github.com/googleapis/python-firestore/commit/3a624a9ddf00f8c9f84593d483bfae7c7d4276d9))
+* Expose Firestore snapshot_time field in export API to stable ([3a624a9](https://github.com/googleapis/python-firestore/commit/3a624a9ddf00f8c9f84593d483bfae7c7d4276d9))
+* Introduce compatibility with native namespace packages ([#792](https://github.com/googleapis/python-firestore/issues/792)) ([510adce](https://github.com/googleapis/python-firestore/commit/510adce5405fef37f00e57416fa9269f8cf4f02a))
+* SERVER_TIMESTAMP should survive deep copies ([#820](https://github.com/googleapis/python-firestore/issues/820)) ([#821](https://github.com/googleapis/python-firestore/issues/821)) ([2b17705](https://github.com/googleapis/python-firestore/commit/2b177050af225074602184fc4a43d01ea06ca32f))
+
+
+### Bug Fixes
+
+* Remove used of deprecated `datetime.datetime.utcnow()` and `datetime.utcfromtimestamp()` ([4a74d71](https://github.com/googleapis/python-firestore/commit/4a74d71a383a0c5c92285464a8ec7f55a53a3f95))
+* Use `retry_async` instead of `retry` in async client ([cae9e46](https://github.com/googleapis/python-firestore/commit/cae9e46262c2b5fbbdda372c7fd5dbf9833fc77e))
+
+
+### Documentation
+
+* Assorted typo fixes and whitespace updates ([3a624a9](https://github.com/googleapis/python-firestore/commit/3a624a9ddf00f8c9f84593d483bfae7c7d4276d9))
+* Deprecate google.cloud.firestore_v1.rate_limiter.utcnow ([4a74d71](https://github.com/googleapis/python-firestore/commit/4a74d71a383a0c5c92285464a8ec7f55a53a3f95))
+
 ## [2.13.1](https://github.com/googleapis/python-firestore/compare/v2.13.0...v2.13.1) (2023-11-06)
 
 
