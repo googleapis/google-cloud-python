@@ -114,3 +114,23 @@ def test__numericvalue___eq___same_value():
     inst = _make_numeric_value(value)
     other = _make_numeric_value(value)
     assert inst == other
+
+
+def test__server_timestamp_is_same_after_copy():
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
+    import copy
+
+    value = SERVER_TIMESTAMP
+
+    value_copy = copy.copy(value)
+    assert value_copy is value
+
+
+def test__server_timestamp_is_same_after_deepcopy():
+    from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
+    import copy
+
+    value = SERVER_TIMESTAMP
+
+    value_copy = copy.deepcopy(value)
+    assert value_copy is value

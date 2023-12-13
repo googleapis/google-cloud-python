@@ -26,6 +26,14 @@ class Sentinel(object):
     def __repr__(self):
         return "Sentinel: {}".format(self.description)
 
+    def __copy__(self):
+        # Sentinel identity should be preserved across copies.
+        return self
+
+    def __deepcopy__(self, memo):
+        # Sentinel identity should be preserved across deep copies.
+        return self
+
 
 DELETE_FIELD = Sentinel("Value used to delete a field in a document.")
 
