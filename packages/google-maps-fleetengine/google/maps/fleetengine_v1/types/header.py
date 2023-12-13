@@ -70,6 +70,9 @@ class RequestHeader(proto.Message):
         android_api_level (int):
             Android API level of the calling SDK, only applicable for
             the Android SDKs. Field value example: ``23``.
+        trace_id (str):
+            Optional ID that can be provided for logging
+            purposes in order to identify the request.
     """
 
     class SdkType(proto.Enum):
@@ -155,6 +158,10 @@ class RequestHeader(proto.Message):
     android_api_level: int = proto.Field(
         proto.INT32,
         number=11,
+    )
+    trace_id: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
 
 
