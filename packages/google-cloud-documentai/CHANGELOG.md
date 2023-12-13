@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.21.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.21.0...google-cloud-documentai-v2.21.1) (2023-12-13)
+
+
+### Documentation
+
+* [google-cloud-documentai] Clarify Properties documentation ([#12118](https://github.com/googleapis/google-cloud-python/issues/12118)) ([35c180e](https://github.com/googleapis/google-cloud-python/commit/35c180e4cb7d9e52b5f72a13b606a6004b5c8a08))
+
 ## [2.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.20.2...google-cloud-documentai-v2.21.0) (2023-12-07)
 
 

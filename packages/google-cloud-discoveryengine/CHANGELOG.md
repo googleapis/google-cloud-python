@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.11.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.4...google-cloud-discoveryengine-v0.11.5) (2023-12-13)
+
+
+### Features
+
+* **v1alpha:** add engine support for conversational engine service ([9b171b1](https://github.com/googleapis/google-cloud-python/commit/9b171b158ebdb4d10feb4c0faed6407a9023c3a8))
+* **v1alpha:** add search tuning service ([9b171b1](https://github.com/googleapis/google-cloud-python/commit/9b171b158ebdb4d10feb4c0faed6407a9023c3a8))
+* **v1alpha:** add site search engine service ([9b171b1](https://github.com/googleapis/google-cloud-python/commit/9b171b158ebdb4d10feb4c0faed6407a9023c3a8))
+* **v1alpha:** support search summarization with citations and references ([9b171b1](https://github.com/googleapis/google-cloud-python/commit/9b171b158ebdb4d10feb4c0faed6407a9023c3a8))
+
+
+### Documentation
+
+* **v1alpha:** keep the API doc up-to-date with recent changes ([9b171b1](https://github.com/googleapis/google-cloud-python/commit/9b171b158ebdb4d10feb4c0faed6407a9023c3a8))
+
 ## [0.11.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.3...google-cloud-discoveryengine-v0.11.4) (2023-12-07)
 
 

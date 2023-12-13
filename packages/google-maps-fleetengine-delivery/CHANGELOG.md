@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.1.2...google-maps-fleetengine-delivery-v0.1.3) (2023-12-13)
+
+
+### Features
+
+* [google-maps-fleetengine-delivery] add trace_id to Fleet Engine headers ([#12120](https://github.com/googleapis/google-cloud-python/issues/12120)) ([94238c8](https://github.com/googleapis/google-cloud-python/commit/94238c863b1806cc50d65431c425ef90dbd6ced7))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.1.1...google-maps-fleetengine-delivery-v0.1.2) (2023-12-07)
 
 
