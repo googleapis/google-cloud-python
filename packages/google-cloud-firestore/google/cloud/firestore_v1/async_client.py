@@ -25,7 +25,7 @@ In the hierarchy of API concepts
 """
 
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 
 from google.cloud.firestore_v1.base_client import (
     BaseClient,
@@ -228,7 +228,7 @@ class AsyncClient(BaseClient):
         references: List[AsyncDocumentReference],
         field_paths: Iterable[str] = None,
         transaction=None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
     ) -> AsyncGenerator[DocumentSnapshot, Any]:
         """Retrieve a batch of documents.
@@ -284,7 +284,7 @@ class AsyncClient(BaseClient):
 
     async def collections(
         self,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
     ) -> AsyncGenerator[AsyncCollectionReference, Any]:
         """List top-level collections of the client's database.

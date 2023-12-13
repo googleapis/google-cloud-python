@@ -16,7 +16,7 @@
 
 
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 
 from google.cloud.firestore_v1.base_batch import BaseWriteBatch
 
@@ -38,7 +38,7 @@ class AsyncWriteBatch(BaseWriteBatch):
 
     async def commit(
         self,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
     ) -> list:
         """Commit the changes accumulated in this batch.

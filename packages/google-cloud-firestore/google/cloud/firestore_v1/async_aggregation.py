@@ -21,7 +21,7 @@ a more common way to create an aggregation query than direct usage of the constr
 from __future__ import annotations
 
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 
 from typing import List, Union, AsyncGenerator
 
@@ -46,7 +46,7 @@ class AsyncAggregationQuery(BaseAggregationQuery):
         self,
         transaction=None,
         retry: Union[
-            retries.Retry, None, gapic_v1.method._MethodDefault
+            retries.AsyncRetry, None, gapic_v1.method._MethodDefault
         ] = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
     ) -> List[AggregationResult]:
@@ -80,7 +80,7 @@ class AsyncAggregationQuery(BaseAggregationQuery):
         self,
         transaction=None,
         retry: Union[
-            retries.Retry, None, gapic_v1.method._MethodDefault
+            retries.AsyncRetry, None, gapic_v1.method._MethodDefault
         ] = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
     ) -> Union[AsyncGenerator[List[AggregationResult], None]]:

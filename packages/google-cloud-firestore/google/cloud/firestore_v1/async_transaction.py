@@ -19,7 +19,7 @@ import asyncio
 import random
 
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 
 from google.cloud.firestore_v1.base_transaction import (
     _BaseTransactional,
@@ -153,7 +153,7 @@ class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
     async def get_all(
         self,
         references: list,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
     ) -> AsyncGenerator[DocumentSnapshot, Any]:
         """Retrieves multiple documents from Firestore.
@@ -176,7 +176,7 @@ class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
     async def get(
         self,
         ref_or_query,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
     ) -> AsyncGenerator[DocumentSnapshot, Any]:
         """

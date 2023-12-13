@@ -15,7 +15,7 @@
 """Classes for representing collections for the Google Cloud Firestore API."""
 
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 
 from google.cloud.firestore_v1.base_collection import (
     BaseCollectionReference,
@@ -85,7 +85,7 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
         self,
         document_data: dict,
         document_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
     ) -> Tuple[Any, Any]:
         """Create a document in the Firestore database with the provided data.
@@ -144,7 +144,7 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
     async def list_documents(
         self,
         page_size: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
     ) -> AsyncGenerator[DocumentReference, None]:
         """List all subdocuments of the current collection.
@@ -177,7 +177,7 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
     async def get(
         self,
         transaction: Transaction = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
     ) -> list:
         """Read the documents in this collection.
@@ -208,7 +208,7 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
     async def stream(
         self,
         transaction: Transaction = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
     ) -> AsyncIterator[async_document.DocumentSnapshot]:
         """Read the documents in this collection.

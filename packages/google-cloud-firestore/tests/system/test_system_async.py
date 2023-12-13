@@ -25,7 +25,7 @@ from typing import Callable, Dict, List, Optional
 
 from google.oauth2 import service_account
 
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
 from google.api_core import exceptions as core_exceptions
 
 from google.api_core.exceptions import AlreadyExists
@@ -48,7 +48,7 @@ from tests.system.test__helpers import (
 )
 
 
-RETRIES = retries.Retry(
+RETRIES = retries.AsyncRetry(
     initial=0.1,
     maximum=60.0,
     multiplier=1.3,
