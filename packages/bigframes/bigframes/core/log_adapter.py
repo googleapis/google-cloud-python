@@ -25,19 +25,21 @@ def class_logger(decorated_cls):
     """Decorator that adds logging functionality to each method of the class."""
     for attr_name, attr_value in decorated_cls.__dict__.items():
         if callable(attr_value):
-            setattr(decorated_cls, attr_name, method_logger(attr_value))
+            setattr(decorated_cls, attr_name, method_logger(attr_value, decorated_cls))
     return decorated_cls
 
 
-def method_logger(method):
+def method_logger(method, decorated_cls):
     """Decorator that adds logging functionality to a method."""
 
     @functools.wraps(method)
     def wrapper(*args, **kwargs):
+        class_name = decorated_cls.__name__  # Access decorated class name
         api_method_name = str(method.__name__)
+        full_method_name = f"{class_name.lower()}-{api_method_name}"
         # Track regular and "dunder" methods
         if api_method_name.startswith("__") or not api_method_name.startswith("_"):
-            add_api_method(api_method_name)
+            add_api_method(full_method_name)
         return method(*args, **kwargs)
 
     return wrapper

@@ -40,8 +40,8 @@ def test_method_logging(test_instance):
     # Check if the methods were added to the _api_methods list
     api_methods = log_adapter.get_and_reset_api_methods()
     assert api_methods is not None
-    assert "method1" in api_methods
-    assert "method2" in api_methods
+    assert "testclass-method1" in api_methods
+    assert "testclass-method2" in api_methods
 
 
 def test_add_api_method_limit(test_instance):
