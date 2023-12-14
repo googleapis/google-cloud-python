@@ -19,9 +19,20 @@ import mock
 import unittest
 import warnings
 import pytest
-from google.cloud.spanner_dbapi.exceptions import InterfaceError, OperationalError
+
+from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode
+from google.cloud.spanner_dbapi.exceptions import (
+    InterfaceError,
+    OperationalError,
+    ProgrammingError,
+)
 from google.cloud.spanner_dbapi import Connection
 from google.cloud.spanner_dbapi.connection import CLIENT_TRANSACTION_NOT_STARTED_WARNING
+from google.cloud.spanner_dbapi.parsed_statement import (
+    ParsedStatement,
+    StatementType,
+    Statement,
+)
 
 PROJECT = "test-project"
 INSTANCE = "test-instance"
@@ -332,6 +343,94 @@ class TestConnection(unittest.TestCase):
             CLIENT_TRANSACTION_NOT_STARTED_WARNING, UserWarning, stacklevel=2
         )
 
+    def test_start_batch_dml_batch_mode_active(self):
+        self._under_test._batch_mode = BatchMode.DML
+        cursor = self._under_test.cursor()
+
+        with self.assertRaises(ProgrammingError):
+            self._under_test.start_batch_dml(cursor)
+
+    def test_start_batch_dml_connection_read_only(self):
+        self._under_test.read_only = True
+        cursor = self._under_test.cursor()
+
+        with self.assertRaises(ProgrammingError):
+            self._under_test.start_batch_dml(cursor)
+
+    def test_start_batch_dml(self):
+        cursor = self._under_test.cursor()
+
+        self._under_test.start_batch_dml(cursor)
+
+        self.assertEqual(self._under_test._batch_mode, BatchMode.DML)
+
+    def test_execute_batch_dml_batch_mode_inactive(self):
+        self._under_test._batch_mode = BatchMode.NONE
+
+        with self.assertRaises(ProgrammingError):
+            self._under_test.execute_batch_dml_statement(
+                ParsedStatement(StatementType.UPDATE, Statement("sql"))
+            )
+
+    @mock.patch(
+        "google.cloud.spanner_dbapi.batch_dml_executor.BatchDmlExecutor", autospec=True
+    )
+    def test_execute_batch_dml(self, mock_batch_dml_executor):
+        self._under_test._batch_mode = BatchMode.DML
+        self._under_test._batch_dml_executor = mock_batch_dml_executor
+
+        parsed_statement = ParsedStatement(StatementType.UPDATE, Statement("sql"))
+        self._under_test.execute_batch_dml_statement(parsed_statement)
+
+        mock_batch_dml_executor.execute_statement.assert_called_once_with(
+            parsed_statement
+        )
+
+    @mock.patch(
+        "google.cloud.spanner_dbapi.batch_dml_executor.BatchDmlExecutor", autospec=True
+    )
+    def test_run_batch_batch_mode_inactive(self, mock_batch_dml_executor):
+        self._under_test._batch_mode = BatchMode.NONE
+        self._under_test._batch_dml_executor = mock_batch_dml_executor
+
+        with self.assertRaises(ProgrammingError):
+            self._under_test.run_batch()
+
+    @mock.patch(
+        "google.cloud.spanner_dbapi.batch_dml_executor.BatchDmlExecutor", autospec=True
+    )
+    def test_run_batch(self, mock_batch_dml_executor):
+        self._under_test._batch_mode = BatchMode.DML
+        self._under_test._batch_dml_executor = mock_batch_dml_executor
+
+        self._under_test.run_batch()
+
+        mock_batch_dml_executor.run_batch_dml.assert_called_once_with()
+        self.assertEqual(self._under_test._batch_mode, BatchMode.NONE)
+        self.assertEqual(self._under_test._batch_dml_executor, None)
+
+    @mock.patch(
+        "google.cloud.spanner_dbapi.batch_dml_executor.BatchDmlExecutor", autospec=True
+    )
+    def test_abort_batch_batch_mode_inactive(self, mock_batch_dml_executor):
+        self._under_test._batch_mode = BatchMode.NONE
+        self._under_test._batch_dml_executor = mock_batch_dml_executor
+
+        with self.assertRaises(ProgrammingError):
+            self._under_test.abort_batch()
+
+    @mock.patch(
+        "google.cloud.spanner_dbapi.batch_dml_executor.BatchDmlExecutor", autospec=True
+    )
+    def test_abort_dml_batch(self, mock_batch_dml_executor):
+        self._under_test._batch_mode = BatchMode.DML
+        self._under_test._batch_dml_executor = mock_batch_dml_executor
+
+        self._under_test.abort_batch()
+
+        self.assertEqual(self._under_test._batch_mode, BatchMode.NONE)
+        self.assertEqual(self._under_test._batch_dml_executor, None)
+
     @mock.patch("google.cloud.spanner_v1.database.Database", autospec=True)
     def test_run_prior_DDL_statements(self, mock_database):
         from google.cloud.spanner_dbapi import Connection, InterfaceError
@@ -396,7 +495,7 @@ class TestConnection(unittest.TestCase):
     def test_run_statement_wo_retried(self):
         """Check that Connection remembers executed statements."""
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
 
         sql = """SELECT 23 FROM table WHERE id = @a1"""
         params = {"a1": "value"}
@@ -415,7 +514,7 @@ class TestConnection(unittest.TestCase):
     def test_run_statement_w_retried(self):
         """Check that Connection doesn't remember re-executed statements."""
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
 
         sql = """SELECT 23 FROM table WHERE id = @a1"""
         params = {"a1": "value"}
@@ -431,7 +530,7 @@ class TestConnection(unittest.TestCase):
     def test_run_statement_w_heterogenous_insert_statements(self):
         """Check that Connection executed heterogenous insert statements."""
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
         from google.rpc.status_pb2 import Status
         from google.rpc.code_pb2 import OK
 
@@ -452,7 +551,7 @@ class TestConnection(unittest.TestCase):
     def test_run_statement_w_homogeneous_insert_statements(self):
         """Check that Connection executed homogeneous insert statements."""
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
         from google.rpc.status_pb2 import Status
         from google.rpc.code_pb2 import OK
 
@@ -507,7 +606,7 @@ class TestConnection(unittest.TestCase):
     def test_retry_transaction_w_checksum_match(self):
         """Check retrying an aborted transaction."""
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
 
         row = ["field1", "field2"]
         connection = self._make_connection()
@@ -536,7 +635,7 @@ class TestConnection(unittest.TestCase):
         """
         from google.cloud.spanner_dbapi.exceptions import RetryAborted
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
 
         row = ["field1", "field2"]
         retried_row = ["field3", "field4"]
@@ -560,7 +659,7 @@ class TestConnection(unittest.TestCase):
         from google.api_core.exceptions import Aborted
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
         from google.cloud.spanner_dbapi.connection import connect
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
 
         row = ["field1", "field2"]
 
@@ -592,7 +691,7 @@ class TestConnection(unittest.TestCase):
         from google.api_core.exceptions import Aborted
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
         from google.cloud.spanner_dbapi.connection import connect
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
 
         row = ["field1", "field2"]
 
@@ -625,7 +724,7 @@ class TestConnection(unittest.TestCase):
         """Check retrying raise an error of max internal retries."""
         from google.cloud.spanner_dbapi import connection as conn
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
 
         conn.MAX_INTERNAL_RETRIES = 0
         row = ["field1", "field2"]
@@ -651,7 +750,7 @@ class TestConnection(unittest.TestCase):
         from google.api_core.exceptions import Aborted
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
         from google.cloud.spanner_dbapi.connection import connect
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
 
         row = ["field1", "field2"]
 
@@ -684,7 +783,7 @@ class TestConnection(unittest.TestCase):
     def test_retry_transaction_w_multiple_statement(self):
         """Check retrying an aborted transaction."""
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
 
         row = ["field1", "field2"]
         connection = self._make_connection()
@@ -712,7 +811,7 @@ class TestConnection(unittest.TestCase):
     def test_retry_transaction_w_empty_response(self):
         """Check retrying an aborted transaction."""
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
 
         row = []
         connection = self._make_connection()
@@ -927,7 +1026,7 @@ class TestConnection(unittest.TestCase):
 
     def test_request_priority(self):
         from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-        from google.cloud.spanner_dbapi.cursor import Statement
+        from google.cloud.spanner_dbapi.parsed_statement import Statement
         from google.cloud.spanner_v1 import RequestOptions
 
         sql = "SELECT 1"

@@ -13,13 +13,14 @@
 # limitations under the License.
 
 """DB-API Connection for the Google Cloud Spanner."""
-
 import time
 import warnings
 
 from google.api_core.exceptions import Aborted
 from google.api_core.gapic_v1.client_info import ClientInfo
 from google.cloud import spanner_v1 as spanner
+from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode, BatchDmlExecutor
+from google.cloud.spanner_dbapi.parsed_statement import ParsedStatement, Statement
 from google.cloud.spanner_v1 import RequestOptions
 from google.cloud.spanner_v1.session import _get_retry_delay
 from google.cloud.spanner_v1.snapshot import Snapshot
@@ -28,7 +29,11 @@ from deprecated import deprecated
 from google.cloud.spanner_dbapi.checksum import _compare_checksums
 from google.cloud.spanner_dbapi.checksum import ResultsChecksum
 from google.cloud.spanner_dbapi.cursor import Cursor
-from google.cloud.spanner_dbapi.exceptions import InterfaceError, OperationalError
+from google.cloud.spanner_dbapi.exceptions import (
+    InterfaceError,
+    OperationalError,
+    ProgrammingError,
+)
 from google.cloud.spanner_dbapi.version import DEFAULT_USER_AGENT
 from google.cloud.spanner_dbapi.version import PY_VERSION
 
@@ -111,6 +116,8 @@ class Connection:
         # whether transaction started at Spanner. This means that we had
         # made atleast one call to Spanner.
         self._spanner_transaction_started = False
+        self._batch_mode = BatchMode.NONE
+        self._batch_dml_executor: BatchDmlExecutor = None
 
     @property
     def autocommit(self):
@@ -310,7 +317,10 @@ class Connection:
                 statements, checksum = statement
 
                 transaction = self.transaction_checkout()
-                status, res = transaction.batch_update(statements)
+                statements_tuple = []
+                for single_statement in statements:
+                    statements_tuple.append(single_statement.get_tuple())
+                status, res = transaction.batch_update(statements_tuple)
 
                 if status.code == ABORTED:
                     raise Aborted(status.details)
@@ -476,14 +486,14 @@ class Connection:
 
             return self.database.update_ddl(ddl_statements).result()
 
-    def run_statement(self, statement, retried=False):
+    def run_statement(self, statement: Statement, retried=False):
         """Run single SQL statement in begun transaction.
 
         This method is never used in autocommit mode. In
         !autocommit mode however it remembers every executed
         SQL statement with its parameters.
 
-        :type statement: :class:`dict`
+        :type statement: :class:`Statement`
         :param statement: SQL statement to execute.
 
         :type retried: bool
@@ -533,6 +543,47 @@ class Connection:
                     "The checking query (SELECT 1) returned an unexpected result: %s. "
                     "Expected: [[1]]" % result
                 )
+
+    @check_not_closed
+    def start_batch_dml(self, cursor):
+        if self._batch_mode is not BatchMode.NONE:
+            raise ProgrammingError(
+                "Cannot start a DML batch when a batch is already active"
+            )
+        if self.read_only:
+            raise ProgrammingError(
+                "Cannot start a DML batch when the connection is in read-only mode"
+            )
+        self._batch_mode = BatchMode.DML
+        self._batch_dml_executor = BatchDmlExecutor(cursor)
+
+    @check_not_closed
+    def execute_batch_dml_statement(self, parsed_statement: ParsedStatement):
+        if self._batch_mode is not BatchMode.DML:
+            raise ProgrammingError(
+                "Cannot execute statement when the BatchMode is not DML"
+            )
+        self._batch_dml_executor.execute_statement(parsed_statement)
+
+    @check_not_closed
+    def run_batch(self):
+        if self._batch_mode is BatchMode.NONE:
+            raise ProgrammingError("Cannot run a batch when the BatchMode is not set")
+        try:
+            if self._batch_mode is BatchMode.DML:
+                many_result_set = self._batch_dml_executor.run_batch_dml()
+        finally:
+            self._batch_mode = BatchMode.NONE
+            self._batch_dml_executor = None
+        return many_result_set
+
+    @check_not_closed
+    def abort_batch(self):
+        if self._batch_mode is BatchMode.NONE:
+            raise ProgrammingError("Cannot abort a batch when the BatchMode is not set")
+        if self._batch_mode is BatchMode.DML:
+            self._batch_dml_executor = None
+        self._batch_mode = BatchMode.NONE
 
     def __enter__(self):
         return self

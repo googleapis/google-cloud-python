@@ -17,7 +17,11 @@ from unittest import mock
 import sys
 import unittest
 
-from google.cloud.spanner_dbapi.parsed_statement import ParsedStatement, StatementType
+from google.cloud.spanner_dbapi.parsed_statement import (
+    ParsedStatement,
+    StatementType,
+    Statement,
+)
 
 
 class TestCursor(unittest.TestCase):
@@ -213,8 +217,8 @@ class TestCursor(unittest.TestCase):
         with mock.patch(
             "google.cloud.spanner_dbapi.parse_utils.classify_statement",
             side_effect=[
-                ParsedStatement(StatementType.DDL, sql),
-                ParsedStatement(StatementType.UPDATE, sql),
+                ParsedStatement(StatementType.DDL, Statement(sql)),
+                ParsedStatement(StatementType.UPDATE, Statement(sql)),
             ],
         ) as mockclassify_statement:
             with self.assertRaises(ValueError):
@@ -225,7 +229,7 @@ class TestCursor(unittest.TestCase):
 
         with mock.patch(
             "google.cloud.spanner_dbapi.parse_utils.classify_statement",
-            return_value=ParsedStatement(StatementType.DDL, sql),
+            return_value=ParsedStatement(StatementType.DDL, Statement(sql)),
         ) as mockclassify_statement:
             sql = "sql"
             cursor.execute(sql=sql)
@@ -235,11 +239,11 @@ class TestCursor(unittest.TestCase):
 
         with mock.patch(
             "google.cloud.spanner_dbapi.parse_utils.classify_statement",
-            return_value=ParsedStatement(StatementType.QUERY, sql),
+            return_value=ParsedStatement(StatementType.QUERY, Statement(sql)),
         ):
             with mock.patch(
                 "google.cloud.spanner_dbapi.cursor.Cursor._handle_DQL",
-                return_value=ParsedStatement(StatementType.QUERY, sql),
+                return_value=ParsedStatement(StatementType.QUERY, Statement(sql)),
             ) as mock_handle_ddl:
                 connection.autocommit = True
                 sql = "sql"
@@ -248,13 +252,13 @@ class TestCursor(unittest.TestCase):
 
         with mock.patch(
             "google.cloud.spanner_dbapi.parse_utils.classify_statement",
-            return_value=ParsedStatement(StatementType.UPDATE, sql),
+            return_value=ParsedStatement(StatementType.UPDATE, Statement(sql)),
         ):
             cursor.connection._database = mock_db = mock.MagicMock()
             mock_db.run_in_transaction = mock_run_in = mock.MagicMock()
             cursor.execute(sql="sql")
             mock_run_in.assert_called_once_with(
-                cursor._do_execute_update_in_autocommit, "sql WHERE 1=1", None
+                cursor._do_execute_update_in_autocommit, "sql", None
             )
 
     def test_execute_integrity_error(self):
@@ -618,12 +622,12 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(
             connection._statements[0][0],
             [
-                (
+                Statement(
                     """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
                     {"a0": 1, "a1": 2, "a2": 3, "a3": 4},
                     {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
                 ),
-                (
+                Statement(
                     """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
                     {"a0": 5, "a1": 6, "a2": 7, "a3": 8},
                     {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},

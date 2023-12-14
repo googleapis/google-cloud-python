@@ -24,8 +24,9 @@ from google.cloud.spanner_v1 import JsonObject
 from . import client_side_statement_parser
 from deprecated import deprecated
 
+from .checksum import ResultsChecksum
 from .exceptions import Error
-from .parsed_statement import ParsedStatement, StatementType
+from .parsed_statement import ParsedStatement, StatementType, Statement
 from .types import DateStr, TimestampStr
 from .utils import sanitize_literals_for_upload
 
@@ -205,7 +206,7 @@ def classify_stmt(query):
     return STMT_UPDATING
 
 
-def classify_statement(query):
+def classify_statement(query, args=None):
     """Determine SQL query type.
 
     It is an internal method that can make backwards-incompatible changes.
@@ -221,21 +222,29 @@ def classify_statement(query):
     # PostgreSQL dollar quoted comments are not
     # supported and will not be stripped.
     query = sqlparse.format(query, strip_comments=True).strip()
-    parsed_statement = client_side_statement_parser.parse_stmt(query)
+    parsed_statement: ParsedStatement = client_side_statement_parser.parse_stmt(query)
     if parsed_statement is not None:
         return parsed_statement
+    query, args = sql_pyformat_args_to_spanner(query, args or None)
+    statement = Statement(
+        query,
+        args,
+        get_param_types(args or None),
+        ResultsChecksum(),
+    )
     if RE_DDL.match(query):
-        return ParsedStatement(StatementType.DDL, query)
+        return ParsedStatement(StatementType.DDL, statement)
 
     if RE_IS_INSERT.match(query):
-        return ParsedStatement(StatementType.INSERT, query)
+        return ParsedStatement(StatementType.INSERT, statement)
 
     if RE_NON_UPDATE.match(query) or RE_WITH.match(query):
         # As of 13-March-2020, Cloud Spanner only supports WITH for DQL
         # statements and doesn't yet support WITH for DML statements.
-        return ParsedStatement(StatementType.QUERY, query)
+        return ParsedStatement(StatementType.QUERY, statement)
 
-    return ParsedStatement(StatementType.UPDATE, query)
+    statement.sql = ensure_where_clause(query)
+    return ParsedStatement(StatementType.UPDATE, statement)
 
 
 def sql_pyformat_args_to_spanner(sql, params):

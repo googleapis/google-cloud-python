@@ -14,7 +14,7 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from google.cloud.spanner_dbapi import Connection
+    from google.cloud.spanner_dbapi.cursor import Cursor
     from google.cloud.spanner_dbapi import ProgrammingError
 
 from google.cloud.spanner_dbapi.parsed_statement import (
@@ -38,17 +38,18 @@ TRANSACTION_NOT_STARTED_WARNING = (
 )
 
 
-def execute(connection: "Connection", parsed_statement: ParsedStatement):
+def execute(cursor: "Cursor", parsed_statement: ParsedStatement):
     """Executes the client side statements by calling the relevant method.
 
     It is an internal method that can make backwards-incompatible changes.
 
-    :type connection: Connection
-    :param connection: Connection object of the dbApi
+    :type cursor: Cursor
+    :param cursor: Cursor object of the dbApi
 
     :type parsed_statement: ParsedStatement
     :param parsed_statement: parsed_statement based on the sql query
     """
+    connection = cursor.connection
     if connection.is_closed:
         raise ProgrammingError(CONNECTION_CLOSED_ERROR)
     statement_type = parsed_statement.client_side_statement_type
@@ -81,6 +82,13 @@ def execute(connection: "Connection", parsed_statement: ParsedStatement):
             TypeCode.TIMESTAMP,
             read_timestamp,
         )
+    if statement_type == ClientSideStatementType.START_BATCH_DML:
+        connection.start_batch_dml(cursor)
+        return None
+    if statement_type == ClientSideStatementType.RUN_BATCH:
+        return connection.run_batch()
+    if statement_type == ClientSideStatementType.ABORT_BATCH:
+        return connection.abort_batch()
 
 
 def _get_streamed_result_set(column_name, type_code, column_value):

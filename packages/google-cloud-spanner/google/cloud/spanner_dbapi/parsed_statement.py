@@ -11,9 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any
+
+from google.cloud.spanner_dbapi.checksum import ResultsChecksum
 
 
 class StatementType(Enum):
@@ -30,10 +32,24 @@ class ClientSideStatementType(Enum):
     ROLLBACK = 3
     SHOW_COMMIT_TIMESTAMP = 4
     SHOW_READ_TIMESTAMP = 5
+    START_BATCH_DML = 6
+    RUN_BATCH = 7
+    ABORT_BATCH = 8
+
+
+@dataclass
+class Statement:
+    sql: str
+    params: Any = None
+    param_types: Any = None
+    checksum: ResultsChecksum = None
+
+    def get_tuple(self):
+        return self.sql, self.params, self.param_types
 
 
 @dataclass
 class ParsedStatement:
     statement_type: StatementType
-    query: str
+    statement: Statement
     client_side_statement_type: ClientSideStatementType = None

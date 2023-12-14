@@ -18,6 +18,7 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     ParsedStatement,
     StatementType,
     ClientSideStatementType,
+    Statement,
 )
 
 RE_BEGIN = re.compile(r"^\s*(BEGIN|START)(TRANSACTION)?", re.IGNORECASE)
@@ -29,6 +30,9 @@ RE_SHOW_COMMIT_TIMESTAMP = re.compile(
 RE_SHOW_READ_TIMESTAMP = re.compile(
     r"^\s*(SHOW)\s+(VARIABLE)\s+(READ_TIMESTAMP)", re.IGNORECASE
 )
+RE_START_BATCH_DML = re.compile(r"^\s*(START)\s+(BATCH)\s+(DML)", re.IGNORECASE)
+RE_RUN_BATCH = re.compile(r"^\s*(RUN)\s+(BATCH)", re.IGNORECASE)
+RE_ABORT_BATCH = re.compile(r"^\s*(ABORT)\s+(BATCH)", re.IGNORECASE)
 
 
 def parse_stmt(query):
@@ -54,8 +58,14 @@ def parse_stmt(query):
         client_side_statement_type = ClientSideStatementType.SHOW_COMMIT_TIMESTAMP
     if RE_SHOW_READ_TIMESTAMP.match(query):
         client_side_statement_type = ClientSideStatementType.SHOW_READ_TIMESTAMP
+    if RE_START_BATCH_DML.match(query):
+        client_side_statement_type = ClientSideStatementType.START_BATCH_DML
+    if RE_RUN_BATCH.match(query):
+        client_side_statement_type = ClientSideStatementType.RUN_BATCH
+    if RE_ABORT_BATCH.match(query):
+        client_side_statement_type = ClientSideStatementType.ABORT_BATCH
     if client_side_statement_type is not None:
         return ParsedStatement(
-            StatementType.CLIENT_SIDE, query, client_side_statement_type
+            StatementType.CLIENT_SIDE, Statement(query), client_side_statement_type
         )
     return None

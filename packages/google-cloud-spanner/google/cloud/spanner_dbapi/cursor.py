@@ -26,29 +26,33 @@ from google.api_core.exceptions import InvalidArgument
 from google.api_core.exceptions import OutOfRange
 
 from google.cloud import spanner_v1 as spanner
-from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode
 from google.cloud.spanner_dbapi.exceptions import IntegrityError
 from google.cloud.spanner_dbapi.exceptions import InterfaceError
 from google.cloud.spanner_dbapi.exceptions import OperationalError
 from google.cloud.spanner_dbapi.exceptions import ProgrammingError
 
-from google.cloud.spanner_dbapi import _helpers, client_side_statement_executor
+from google.cloud.spanner_dbapi import (
+    _helpers,
+    client_side_statement_executor,
+    batch_dml_executor,
+)
 from google.cloud.spanner_dbapi._helpers import ColumnInfo
 from google.cloud.spanner_dbapi._helpers import CODE_TO_DISPLAY_SIZE
 
 from google.cloud.spanner_dbapi import parse_utils
 from google.cloud.spanner_dbapi.parse_utils import get_param_types
-from google.cloud.spanner_dbapi.parse_utils import sql_pyformat_args_to_spanner
-from google.cloud.spanner_dbapi.parsed_statement import StatementType
+from google.cloud.spanner_dbapi.parsed_statement import (
+    StatementType,
+    Statement,
+    ParsedStatement,
+)
 from google.cloud.spanner_dbapi.utils import PeekIterator
 from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
-
-from google.rpc.code_pb2 import ABORTED, OK
 
 _UNSET_COUNT = -1
 
 ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
-Statement = namedtuple("Statement", "sql, params, param_types, checksum")
 
 
 def check_not_closed(function):
@@ -188,17 +192,6 @@ class Cursor(object):
         self._itr = PeekIterator(self._result_set)
         self._row_count = _UNSET_COUNT
 
-    def _do_batch_update(self, transaction, statements, many_result_set):
-        status, res = transaction.batch_update(statements)
-        many_result_set.add_iter(res)
-
-        if status.code == ABORTED:
-            raise Aborted(status.message)
-        elif status.code != OK:
-            raise OperationalError(status.message)
-
-        self._row_count = sum([max(val, 0) for val in res])
-
     def _batch_DDLs(self, sql):
         """
         Check that the given operation contains only DDL
@@ -242,14 +235,20 @@ class Cursor(object):
         self._row_count = _UNSET_COUNT
 
         try:
-            parsed_statement = parse_utils.classify_statement(sql)
-
+            parsed_statement: ParsedStatement = parse_utils.classify_statement(
+                sql, args
+            )
             if parsed_statement.statement_type == StatementType.CLIENT_SIDE:
                 self._result_set = client_side_statement_executor.execute(
-                    self.connection, parsed_statement
+                    self, parsed_statement
                 )
                 if self._result_set is not None:
-                    self._itr = PeekIterator(self._result_set)
+                    if isinstance(self._result_set, StreamedManyResultSets):
+                        self._itr = self._result_set
+                    else:
+                        self._itr = PeekIterator(self._result_set)
+            elif self.connection._batch_mode == BatchMode.DML:
+                self.connection.execute_batch_dml_statement(parsed_statement)
             elif self.connection.read_only or (
                 not self.connection._client_transaction_started
                 and parsed_statement.statement_type == StatementType.QUERY
@@ -260,7 +259,7 @@ class Cursor(object):
                 if not self.connection._client_transaction_started:
                     self.connection.run_prior_DDL_statements()
             else:
-                self._execute_in_rw_transaction(parsed_statement, sql, args)
+                self._execute_in_rw_transaction(parsed_statement)
 
         except (AlreadyExists, FailedPrecondition, OutOfRange) as e:
             raise IntegrityError(getattr(e, "details", e)) from e
@@ -272,26 +271,15 @@ class Cursor(object):
             if self.connection._client_transaction_started is False:
                 self.connection._spanner_transaction_started = False
 
-    def _execute_in_rw_transaction(self, parsed_statement, sql, args):
+    def _execute_in_rw_transaction(self, parsed_statement: ParsedStatement):
         # For every other operation, we've got to ensure that
         # any prior DDL statements were run.
         self.connection.run_prior_DDL_statements()
-        if parsed_statement.statement_type == StatementType.UPDATE:
-            sql = parse_utils.ensure_where_clause(sql)
-        sql, args = sql_pyformat_args_to_spanner(sql, args or None)
-
         if self.connection._client_transaction_started:
-            statement = Statement(
-                sql,
-                args,
-                get_param_types(args or None),
-                ResultsChecksum(),
-            )
-
             (
                 self._result_set,
                 self._checksum,
-            ) = self.connection.run_statement(statement)
+            ) = self.connection.run_statement(parsed_statement.statement)
 
             while True:
                 try:
@@ -300,13 +288,13 @@ class Cursor(object):
                 except Aborted:
                     self.connection.retry_transaction()
                 except Exception as ex:
-                    self.connection._statements.remove(statement)
+                    self.connection._statements.remove(parsed_statement.statement)
                     raise ex
         else:
             self.connection.database.run_in_transaction(
                 self._do_execute_update_in_autocommit,
-                sql,
-                args or None,
+                parsed_statement.statement.sql,
+                parsed_statement.statement.params or None,
             )
 
     @check_not_closed
@@ -343,56 +331,19 @@ class Cursor(object):
         # For every operation, we've got to ensure that any prior DDL
         # statements were run.
         self.connection.run_prior_DDL_statements()
-
-        many_result_set = StreamedManyResultSets()
-
         if parsed_statement.statement_type in (
             StatementType.INSERT,
             StatementType.UPDATE,
         ):
             statements = []
-
             for params in seq_of_params:
                 sql, params = parse_utils.sql_pyformat_args_to_spanner(
                     operation, params
                 )
-                statements.append((sql, params, get_param_types(params)))
-
-            if not self.connection._client_transaction_started:
-                self.connection.database.run_in_transaction(
-                    self._do_batch_update, statements, many_result_set
-                )
-            else:
-                retried = False
-                total_row_count = 0
-                while True:
-                    try:
-                        transaction = self.connection.transaction_checkout()
-
-                        res_checksum = ResultsChecksum()
-                        if not retried:
-                            self.connection._statements.append(
-                                (statements, res_checksum)
-                            )
-
-                        status, res = transaction.batch_update(statements)
-                        many_result_set.add_iter(res)
-                        res_checksum.consume_result(res)
-                        res_checksum.consume_result(status.code)
-                        total_row_count += sum([max(val, 0) for val in res])
-
-                        if status.code == ABORTED:
-                            self.connection._transaction = None
-                            raise Aborted(status.message)
-                        elif status.code != OK:
-                            raise OperationalError(status.message)
-                        self._row_count = total_row_count
-                        break
-                    except Aborted:
-                        self.connection.retry_transaction()
-                        retried = True
-
+                statements.append(Statement(sql, params, get_param_types(params)))
+            many_result_set = batch_dml_executor.run_batch_dml(self, statements)
         else:
+            many_result_set = StreamedManyResultSets()
             for params in seq_of_params:
                 self.execute(operation, params)
                 many_result_set.add_iter(self._itr)
