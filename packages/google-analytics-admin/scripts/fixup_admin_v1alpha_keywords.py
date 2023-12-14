@@ -119,6 +119,7 @@ class adminCallTransformer(cst.CSTTransformer):
         'get_rollup_property_source_link': ('name', ),
         'get_search_ads360_link': ('name', ),
         'get_sk_ad_network_conversion_value_schema': ('name', ),
+        'get_subproperty_event_filter': ('name', ),
         'list_access_bindings': ('parent', 'page_size', 'page_token', ),
         'list_accounts': ('page_size', 'page_token', 'show_deleted', ),
         'list_account_summaries': ('page_size', 'page_token', ),
@@ -142,6 +143,7 @@ class adminCallTransformer(cst.CSTTransformer):
         'list_rollup_property_source_links': ('parent', 'page_size', 'page_token', ),
         'list_search_ads360_links': ('parent', 'page_size', 'page_token', ),
         'list_sk_ad_network_conversion_value_schemas': ('parent', 'page_size', 'page_token', ),
+        'list_subproperty_event_filters': ('parent', 'page_size', 'page_token', ),
         'provision_account_ticket': ('account', 'redirect_uri', ),
         'run_access_report': ('entity', 'dimensions', 'metrics', 'date_ranges', 'dimension_filter', 'metric_filter', 'offset', 'limit', 'time_zone', 'order_bys', 'return_entity_quota', 'include_all_users', 'expand_groups', ),
         'search_change_history_events': ('account', 'property', 'resource_type', 'action', 'actor_email', 'earliest_change_time', 'latest_change_time', 'page_size', 'page_token', ),
@@ -167,6 +169,7 @@ class adminCallTransformer(cst.CSTTransformer):
         'update_property': ('property', 'update_mask', ),
         'update_search_ads360_link': ('update_mask', 'search_ads_360_link', ),
         'update_sk_ad_network_conversion_value_schema': ('skadnetwork_conversion_value_schema', 'update_mask', ),
+        'update_subproperty_event_filter': ('subproperty_event_filter', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

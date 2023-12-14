@@ -2009,6 +2009,8 @@ class LinkProposalStatusDetails(proto.Message):
 class ConversionEvent(proto.Message):
     r"""A conversion event in a Google Analytics property.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. Resource name of this conversion event. Format:
@@ -2037,6 +2039,11 @@ class ConversionEvent(proto.Message):
             Optional. The method by which conversions will be counted
             across multiple events within a session. If this value is
             not provided, it will be set to ``ONCE_PER_EVENT``.
+        default_conversion_value (google.analytics.admin_v1alpha.types.ConversionEvent.DefaultConversionValue):
+            Optional. Defines a default value/currency
+            for a conversion event.
+
+            This field is a member of `oneof`_ ``_default_conversion_value``.
     """
 
     class ConversionCountingMethod(proto.Enum):
@@ -2056,6 +2063,40 @@ class ConversionEvent(proto.Message):
         CONVERSION_COUNTING_METHOD_UNSPECIFIED = 0
         ONCE_PER_EVENT = 1
         ONCE_PER_SESSION = 2
+
+    class DefaultConversionValue(proto.Message):
+        r"""Defines a default value/currency for a conversion event. Both
+        value and currency must be provided.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            value (float):
+                This value will be used to populate the value for all
+                conversions of the specified event_name where the event
+                "value" parameter is unset.
+
+                This field is a member of `oneof`_ ``_value``.
+            currency_code (str):
+                When a conversion event for this event_name has no set
+                currency, this currency will be applied as the default. Must
+                be in ISO 4217 currency code format. See
+                https://en.wikipedia.org/wiki/ISO_4217 for more.
+
+                This field is a member of `oneof`_ ``_currency_code``.
+        """
+
+        value: float = proto.Field(
+            proto.DOUBLE,
+            number=1,
+            optional=True,
+        )
+        currency_code: str = proto.Field(
+            proto.STRING,
+            number=2,
+            optional=True,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -2082,6 +2123,12 @@ class ConversionEvent(proto.Message):
         proto.ENUM,
         number=6,
         enum=ConversionCountingMethod,
+    )
+    default_conversion_value: DefaultConversionValue = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        optional=True,
+        message=DefaultConversionValue,
     )
 
 
@@ -2499,46 +2546,6 @@ class AttributionSettings(proto.Message):
                 value to the last channel that the customer clicked through
                 (or engaged view through for YouTube) before converting.
                 Previously CROSS_CHANNEL_LAST_CLICK
-            PAID_AND_ORGANIC_CHANNELS_FIRST_CLICK (3):
-                Starting in June 2023, new properties can no longer use this
-                model. See `Analytics
-                Help <https://support.google.com/analytics/answer/9164320#040623>`__
-                for more details. Starting in September 2023, we will sunset
-                this model for all properties.
-
-                Gives all credit for the conversion to the first channel
-                that a customer clicked (or engaged view through for
-                YouTube) before converting. Previously
-                CROSS_CHANNEL_FIRST_CLICK
-            PAID_AND_ORGANIC_CHANNELS_LINEAR (4):
-                Starting in June 2023, new properties can no longer use this
-                model. See `Analytics
-                Help <https://support.google.com/analytics/answer/9164320#040623>`__
-                for more details. Starting in September 2023, we will sunset
-                this model for all properties.
-
-                Distributes the credit for the conversion equally across all
-                the channels a customer clicked (or engaged view through for
-                YouTube) before converting. Previously CROSS_CHANNEL_LINEAR
-            PAID_AND_ORGANIC_CHANNELS_POSITION_BASED (5):
-                Starting in June 2023, new properties can no longer use this
-                model. See `Analytics
-                Help <https://support.google.com/analytics/answer/9164320#040623>`__
-                for more details. Starting in September 2023, we will sunset
-                this model for all properties.
-
-                Attributes 40% credit to the first and last interaction, and
-                the remaining 20% credit is distributed evenly to the middle
-                interactions. Previously CROSS_CHANNEL_POSITION_BASED
-            PAID_AND_ORGANIC_CHANNELS_TIME_DECAY (6):
-                Starting in June 2023, new properties can no longer use this
-                model. See `Analytics
-                Help <https://support.google.com/analytics/answer/9164320#040623>`__
-                for more details. Starting in September 2023, we will sunset
-                this model for all properties.
-
-                Gives more credit to the touchpoints that happened closer in
-                time to the conversion. Previously CROSS_CHANNEL_TIME_DECAY
             GOOGLE_PAID_CHANNELS_LAST_CLICK (7):
                 Attributes 100% of the conversion value to the last Google
                 Paid channel that the customer clicked through before
@@ -2547,10 +2554,6 @@ class AttributionSettings(proto.Message):
         REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED = 0
         PAID_AND_ORGANIC_CHANNELS_DATA_DRIVEN = 1
         PAID_AND_ORGANIC_CHANNELS_LAST_CLICK = 2
-        PAID_AND_ORGANIC_CHANNELS_FIRST_CLICK = 3
-        PAID_AND_ORGANIC_CHANNELS_LINEAR = 4
-        PAID_AND_ORGANIC_CHANNELS_POSITION_BASED = 5
-        PAID_AND_ORGANIC_CHANNELS_TIME_DECAY = 6
         GOOGLE_PAID_CHANNELS_LAST_CLICK = 7
 
     class AdsWebConversionDataExportScope(proto.Enum):

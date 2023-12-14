@@ -34902,241 +34902,6 @@ async def test_create_subproperty_async_from_dict():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_admin.DeleteSubpropertyEventFilterRequest,
-        dict,
-    ],
-)
-def test_delete_subproperty_event_filter(request_type, transport: str = "grpc"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_subproperty_event_filter), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.delete_subproperty_event_filter(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteSubpropertyEventFilterRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_subproperty_event_filter_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_subproperty_event_filter), "__call__"
-    ) as call:
-        client.delete_subproperty_event_filter()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteSubpropertyEventFilterRequest()
-
-
-@pytest.mark.asyncio
-async def test_delete_subproperty_event_filter_async(
-    transport: str = "grpc_asyncio",
-    request_type=analytics_admin.DeleteSubpropertyEventFilterRequest,
-):
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_subproperty_event_filter), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_subproperty_event_filter(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == analytics_admin.DeleteSubpropertyEventFilterRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_subproperty_event_filter_async_from_dict():
-    await test_delete_subproperty_event_filter_async(request_type=dict)
-
-
-def test_delete_subproperty_event_filter_field_headers():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.DeleteSubpropertyEventFilterRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_subproperty_event_filter), "__call__"
-    ) as call:
-        call.return_value = None
-        client.delete_subproperty_event_filter(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_subproperty_event_filter_field_headers_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = analytics_admin.DeleteSubpropertyEventFilterRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_subproperty_event_filter), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_subproperty_event_filter(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_delete_subproperty_event_filter_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_subproperty_event_filter), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete_subproperty_event_filter(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_delete_subproperty_event_filter_flattened_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_subproperty_event_filter(
-            analytics_admin.DeleteSubpropertyEventFilterRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_delete_subproperty_event_filter_flattened_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_subproperty_event_filter), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.delete_subproperty_event_filter(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_delete_subproperty_event_filter_flattened_error_async():
-    client = AnalyticsAdminServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.delete_subproperty_event_filter(
-            analytics_admin.DeleteSubpropertyEventFilterRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
         analytics_admin.CreateSubpropertyEventFilterRequest,
         dict,
     ],
@@ -35404,6 +35169,1216 @@ async def test_create_subproperty_event_filter_flattened_error_async():
             subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
                 name="name_value"
             ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetSubpropertyEventFilterRequest,
+        dict,
+    ],
+)
+def test_get_subproperty_event_filter(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = subproperty_event_filter.SubpropertyEventFilter(
+            name="name_value",
+            apply_to_property="apply_to_property_value",
+        )
+        response = client.get_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetSubpropertyEventFilterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, subproperty_event_filter.SubpropertyEventFilter)
+    assert response.name == "name_value"
+    assert response.apply_to_property == "apply_to_property_value"
+
+
+def test_get_subproperty_event_filter_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_subproperty_event_filter), "__call__"
+    ) as call:
+        client.get_subproperty_event_filter()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetSubpropertyEventFilterRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_subproperty_event_filter_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.GetSubpropertyEventFilterRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value",
+                apply_to_property="apply_to_property_value",
+            )
+        )
+        response = await client.get_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetSubpropertyEventFilterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, subproperty_event_filter.SubpropertyEventFilter)
+    assert response.name == "name_value"
+    assert response.apply_to_property == "apply_to_property_value"
+
+
+@pytest.mark.asyncio
+async def test_get_subproperty_event_filter_async_from_dict():
+    await test_get_subproperty_event_filter_async(request_type=dict)
+
+
+def test_get_subproperty_event_filter_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetSubpropertyEventFilterRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_subproperty_event_filter), "__call__"
+    ) as call:
+        call.return_value = subproperty_event_filter.SubpropertyEventFilter()
+        client.get_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_subproperty_event_filter_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetSubpropertyEventFilterRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_subproperty_event_filter), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            subproperty_event_filter.SubpropertyEventFilter()
+        )
+        await client.get_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_subproperty_event_filter_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = subproperty_event_filter.SubpropertyEventFilter()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_subproperty_event_filter(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_subproperty_event_filter_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_subproperty_event_filter(
+            analytics_admin.GetSubpropertyEventFilterRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_subproperty_event_filter_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = subproperty_event_filter.SubpropertyEventFilter()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            subproperty_event_filter.SubpropertyEventFilter()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_subproperty_event_filter(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_subproperty_event_filter_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_subproperty_event_filter(
+            analytics_admin.GetSubpropertyEventFilterRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListSubpropertyEventFiltersRequest,
+        dict,
+    ],
+)
+def test_list_subproperty_event_filters(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subproperty_event_filters), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListSubpropertyEventFiltersResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_subproperty_event_filters(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListSubpropertyEventFiltersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSubpropertyEventFiltersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_subproperty_event_filters_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subproperty_event_filters), "__call__"
+    ) as call:
+        client.list_subproperty_event_filters()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListSubpropertyEventFiltersRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_subproperty_event_filters_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.ListSubpropertyEventFiltersRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subproperty_event_filters), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_subproperty_event_filters(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListSubpropertyEventFiltersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSubpropertyEventFiltersAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_subproperty_event_filters_async_from_dict():
+    await test_list_subproperty_event_filters_async(request_type=dict)
+
+
+def test_list_subproperty_event_filters_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListSubpropertyEventFiltersRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subproperty_event_filters), "__call__"
+    ) as call:
+        call.return_value = analytics_admin.ListSubpropertyEventFiltersResponse()
+        client.list_subproperty_event_filters(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_subproperty_event_filters_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListSubpropertyEventFiltersRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subproperty_event_filters), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListSubpropertyEventFiltersResponse()
+        )
+        await client.list_subproperty_event_filters(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_subproperty_event_filters_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subproperty_event_filters), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListSubpropertyEventFiltersResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_subproperty_event_filters(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_subproperty_event_filters_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_subproperty_event_filters(
+            analytics_admin.ListSubpropertyEventFiltersRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_subproperty_event_filters_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subproperty_event_filters), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListSubpropertyEventFiltersResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListSubpropertyEventFiltersResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_subproperty_event_filters(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_subproperty_event_filters_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_subproperty_event_filters(
+            analytics_admin.ListSubpropertyEventFiltersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_subproperty_event_filters_pager(transport_name: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subproperty_event_filters), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_subproperty_event_filters(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, subproperty_event_filter.SubpropertyEventFilter)
+            for i in results
+        )
+
+
+def test_list_subproperty_event_filters_pages(transport_name: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subproperty_event_filters), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_subproperty_event_filters(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_subproperty_event_filters_async_pager():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subproperty_event_filters),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_subproperty_event_filters(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, subproperty_event_filter.SubpropertyEventFilter)
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_subproperty_event_filters_async_pages():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subproperty_event_filters),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_subproperty_event_filters(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateSubpropertyEventFilterRequest,
+        dict,
+    ],
+)
+def test_update_subproperty_event_filter(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_subproperty_event_filter.SubpropertyEventFilter(
+            name="name_value",
+            apply_to_property="apply_to_property_value",
+        )
+        response = client.update_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateSubpropertyEventFilterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_subproperty_event_filter.SubpropertyEventFilter)
+    assert response.name == "name_value"
+    assert response.apply_to_property == "apply_to_property_value"
+
+
+def test_update_subproperty_event_filter_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_subproperty_event_filter), "__call__"
+    ) as call:
+        client.update_subproperty_event_filter()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateSubpropertyEventFilterRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_subproperty_event_filter_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.UpdateSubpropertyEventFilterRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value",
+                apply_to_property="apply_to_property_value",
+            )
+        )
+        response = await client.update_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateSubpropertyEventFilterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_subproperty_event_filter.SubpropertyEventFilter)
+    assert response.name == "name_value"
+    assert response.apply_to_property == "apply_to_property_value"
+
+
+@pytest.mark.asyncio
+async def test_update_subproperty_event_filter_async_from_dict():
+    await test_update_subproperty_event_filter_async(request_type=dict)
+
+
+def test_update_subproperty_event_filter_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.UpdateSubpropertyEventFilterRequest()
+
+    request.subproperty_event_filter.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_subproperty_event_filter), "__call__"
+    ) as call:
+        call.return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+        client.update_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "subproperty_event_filter.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_subproperty_event_filter_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.UpdateSubpropertyEventFilterRequest()
+
+    request.subproperty_event_filter.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_subproperty_event_filter), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_subproperty_event_filter.SubpropertyEventFilter()
+        )
+        await client.update_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "subproperty_event_filter.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_subproperty_event_filter_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_subproperty_event_filter(
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].subproperty_event_filter
+        mock_val = gaa_subproperty_event_filter.SubpropertyEventFilter(
+            name="name_value"
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_subproperty_event_filter_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_subproperty_event_filter(
+            analytics_admin.UpdateSubpropertyEventFilterRequest(),
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_subproperty_event_filter_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_subproperty_event_filter.SubpropertyEventFilter()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_subproperty_event_filter(
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].subproperty_event_filter
+        mock_val = gaa_subproperty_event_filter.SubpropertyEventFilter(
+            name="name_value"
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_subproperty_event_filter_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_subproperty_event_filter(
+            analytics_admin.UpdateSubpropertyEventFilterRequest(),
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteSubpropertyEventFilterRequest,
+        dict,
+    ],
+)
+def test_delete_subproperty_event_filter(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteSubpropertyEventFilterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_subproperty_event_filter_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        client.delete_subproperty_event_filter()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteSubpropertyEventFilterRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_subproperty_event_filter_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.DeleteSubpropertyEventFilterRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteSubpropertyEventFilterRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_subproperty_event_filter_async_from_dict():
+    await test_delete_subproperty_event_filter_async(request_type=dict)
+
+
+def test_delete_subproperty_event_filter_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteSubpropertyEventFilterRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_subproperty_event_filter_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteSubpropertyEventFilterRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_subproperty_event_filter(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_subproperty_event_filter_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_subproperty_event_filter(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_subproperty_event_filter_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_subproperty_event_filter(
+            analytics_admin.DeleteSubpropertyEventFilterRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_subproperty_event_filter_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subproperty_event_filter), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_subproperty_event_filter(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_subproperty_event_filter_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_subproperty_event_filter(
+            analytics_admin.DeleteSubpropertyEventFilterRequest(),
+            name="name_value",
         )
 
 
@@ -45835,6 +46810,10 @@ def test_create_conversion_event_rest(request_type):
         "deletable": True,
         "custom": True,
         "counting_method": 1,
+        "default_conversion_value": {
+            "value": 0.541,
+            "currency_code": "currency_code_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -46207,6 +47186,10 @@ def test_update_conversion_event_rest(request_type):
         "deletable": True,
         "custom": True,
         "counting_method": 1,
+        "default_conversion_value": {
+            "value": 0.541,
+            "currency_code": "currency_code_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -74041,263 +75024,6 @@ def test_create_subproperty_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        analytics_admin.DeleteSubpropertyEventFilterRequest,
-        dict,
-    ],
-)
-def test_delete_subproperty_event_filter_rest(request_type):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_subproperty_event_filter(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_subproperty_event_filter_rest_required_fields(
-    request_type=analytics_admin.DeleteSubpropertyEventFilterRequest,
-):
-    transport_class = transports.AnalyticsAdminServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_subproperty_event_filter._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_subproperty_event_filter._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = None
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "delete",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = ""
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.delete_subproperty_event_filter(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_delete_subproperty_event_filter_rest_unset_required_fields():
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_subproperty_event_filter._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_subproperty_event_filter_rest_interceptors(null_interceptor):
-    transport = transports.AnalyticsAdminServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AnalyticsAdminServiceRestInterceptor(),
-    )
-    client = AnalyticsAdminServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "pre_delete_subproperty_event_filter",
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = analytics_admin.DeleteSubpropertyEventFilterRequest.pb(
-            analytics_admin.DeleteSubpropertyEventFilterRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = analytics_admin.DeleteSubpropertyEventFilterRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_subproperty_event_filter(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_subproperty_event_filter_rest_bad_request(
-    transport: str = "rest",
-    request_type=analytics_admin.DeleteSubpropertyEventFilterRequest,
-):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_subproperty_event_filter(request)
-
-
-def test_delete_subproperty_event_filter_rest_flattened():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.delete_subproperty_event_filter(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{name=properties/*/subpropertyEventFilters/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_delete_subproperty_event_filter_rest_flattened_error(transport: str = "rest"):
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_subproperty_event_filter(
-            analytics_admin.DeleteSubpropertyEventFilterRequest(),
-            name="name_value",
-        )
-
-
-def test_delete_subproperty_event_filter_rest_error():
-    client = AnalyticsAdminServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
         analytics_admin.CreateSubpropertyEventFilterRequest,
         dict,
     ],
@@ -74689,6 +75415,1308 @@ def test_create_subproperty_event_filter_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetSubpropertyEventFilterRequest,
+        dict,
+    ],
+)
+def test_get_subproperty_event_filter_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = subproperty_event_filter.SubpropertyEventFilter(
+            name="name_value",
+            apply_to_property="apply_to_property_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = subproperty_event_filter.SubpropertyEventFilter.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_subproperty_event_filter(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, subproperty_event_filter.SubpropertyEventFilter)
+    assert response.name == "name_value"
+    assert response.apply_to_property == "apply_to_property_value"
+
+
+def test_get_subproperty_event_filter_rest_required_fields(
+    request_type=analytics_admin.GetSubpropertyEventFilterRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_subproperty_event_filter._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_subproperty_event_filter._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = subproperty_event_filter.SubpropertyEventFilter()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = subproperty_event_filter.SubpropertyEventFilter.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_subproperty_event_filter(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_subproperty_event_filter_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_subproperty_event_filter._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_subproperty_event_filter_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_subproperty_event_filter",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_get_subproperty_event_filter",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetSubpropertyEventFilterRequest.pb(
+            analytics_admin.GetSubpropertyEventFilterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            subproperty_event_filter.SubpropertyEventFilter.to_json(
+                subproperty_event_filter.SubpropertyEventFilter()
+            )
+        )
+
+        request = analytics_admin.GetSubpropertyEventFilterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = subproperty_event_filter.SubpropertyEventFilter()
+
+        client.get_subproperty_event_filter(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_subproperty_event_filter_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.GetSubpropertyEventFilterRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_subproperty_event_filter(request)
+
+
+def test_get_subproperty_event_filter_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = subproperty_event_filter.SubpropertyEventFilter()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = subproperty_event_filter.SubpropertyEventFilter.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_subproperty_event_filter(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/subpropertyEventFilters/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_subproperty_event_filter_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_subproperty_event_filter(
+            analytics_admin.GetSubpropertyEventFilterRequest(),
+            name="name_value",
+        )
+
+
+def test_get_subproperty_event_filter_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListSubpropertyEventFiltersRequest,
+        dict,
+    ],
+)
+def test_list_subproperty_event_filters_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListSubpropertyEventFiltersResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = analytics_admin.ListSubpropertyEventFiltersResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_subproperty_event_filters(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSubpropertyEventFiltersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_subproperty_event_filters_rest_required_fields(
+    request_type=analytics_admin.ListSubpropertyEventFiltersRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_subproperty_event_filters._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_subproperty_event_filters._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListSubpropertyEventFiltersResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = analytics_admin.ListSubpropertyEventFiltersResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_subproperty_event_filters(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_subproperty_event_filters_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_subproperty_event_filters._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_subproperty_event_filters_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_subproperty_event_filters",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_list_subproperty_event_filters",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListSubpropertyEventFiltersRequest.pb(
+            analytics_admin.ListSubpropertyEventFiltersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.ListSubpropertyEventFiltersResponse.to_json(
+                analytics_admin.ListSubpropertyEventFiltersResponse()
+            )
+        )
+
+        request = analytics_admin.ListSubpropertyEventFiltersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListSubpropertyEventFiltersResponse()
+
+        client.list_subproperty_event_filters(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_subproperty_event_filters_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.ListSubpropertyEventFiltersRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_subproperty_event_filters(request)
+
+
+def test_list_subproperty_event_filters_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListSubpropertyEventFiltersResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = analytics_admin.ListSubpropertyEventFiltersResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_subproperty_event_filters(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/subpropertyEventFilters"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_subproperty_event_filters_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_subproperty_event_filters(
+            analytics_admin.ListSubpropertyEventFiltersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_subproperty_event_filters_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListSubpropertyEventFiltersResponse(
+                subproperty_event_filters=[
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                    subproperty_event_filter.SubpropertyEventFilter(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListSubpropertyEventFiltersResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_subproperty_event_filters(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, subproperty_event_filter.SubpropertyEventFilter)
+            for i in results
+        )
+
+        pages = list(
+            client.list_subproperty_event_filters(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateSubpropertyEventFilterRequest,
+        dict,
+    ],
+)
+def test_update_subproperty_event_filter_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "subproperty_event_filter": {
+            "name": "properties/sample1/subpropertyEventFilters/sample2"
+        }
+    }
+    request_init["subproperty_event_filter"] = {
+        "name": "properties/sample1/subpropertyEventFilters/sample2",
+        "apply_to_property": "apply_to_property_value",
+        "filter_clauses": [
+            {
+                "filter_clause_type": 1,
+                "filter_expression": {
+                    "or_group": {"filter_expressions": {}},
+                    "not_expression": {},
+                    "filter_condition": {
+                        "null_filter": True,
+                        "string_filter": {
+                            "match_type": 1,
+                            "value": "value_value",
+                            "case_sensitive": True,
+                        },
+                        "field_name": "field_name_value",
+                    },
+                },
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = analytics_admin.UpdateSubpropertyEventFilterRequest.meta.fields[
+        "subproperty_event_filter"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "subproperty_event_filter"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["subproperty_event_filter"][field])):
+                    del request_init["subproperty_event_filter"][field][i][subfield]
+            else:
+                del request_init["subproperty_event_filter"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_subproperty_event_filter.SubpropertyEventFilter(
+            name="name_value",
+            apply_to_property="apply_to_property_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gaa_subproperty_event_filter.SubpropertyEventFilter.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_subproperty_event_filter(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_subproperty_event_filter.SubpropertyEventFilter)
+    assert response.name == "name_value"
+    assert response.apply_to_property == "apply_to_property_value"
+
+
+def test_update_subproperty_event_filter_rest_required_fields(
+    request_type=analytics_admin.UpdateSubpropertyEventFilterRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_subproperty_event_filter._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_subproperty_event_filter._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gaa_subproperty_event_filter.SubpropertyEventFilter.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_subproperty_event_filter(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_subproperty_event_filter_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_subproperty_event_filter._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "subpropertyEventFilter",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_subproperty_event_filter_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_subproperty_event_filter",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_update_subproperty_event_filter",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateSubpropertyEventFilterRequest.pb(
+            analytics_admin.UpdateSubpropertyEventFilterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            gaa_subproperty_event_filter.SubpropertyEventFilter.to_json(
+                gaa_subproperty_event_filter.SubpropertyEventFilter()
+            )
+        )
+
+        request = analytics_admin.UpdateSubpropertyEventFilterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+
+        client.update_subproperty_event_filter(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_subproperty_event_filter_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.UpdateSubpropertyEventFilterRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "subproperty_event_filter": {
+            "name": "properties/sample1/subpropertyEventFilters/sample2"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_subproperty_event_filter(request)
+
+
+def test_update_subproperty_event_filter_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_subproperty_event_filter.SubpropertyEventFilter()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "subproperty_event_filter": {
+                "name": "properties/sample1/subpropertyEventFilters/sample2"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gaa_subproperty_event_filter.SubpropertyEventFilter.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_subproperty_event_filter(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{subproperty_event_filter.name=properties/*/subpropertyEventFilters/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_subproperty_event_filter_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_subproperty_event_filter(
+            analytics_admin.UpdateSubpropertyEventFilterRequest(),
+            subproperty_event_filter=gaa_subproperty_event_filter.SubpropertyEventFilter(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_subproperty_event_filter_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteSubpropertyEventFilterRequest,
+        dict,
+    ],
+)
+def test_delete_subproperty_event_filter_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_subproperty_event_filter(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_subproperty_event_filter_rest_required_fields(
+    request_type=analytics_admin.DeleteSubpropertyEventFilterRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_subproperty_event_filter._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_subproperty_event_filter._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_subproperty_event_filter(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_subproperty_event_filter_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_subproperty_event_filter._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_subproperty_event_filter_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_delete_subproperty_event_filter",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteSubpropertyEventFilterRequest.pb(
+            analytics_admin.DeleteSubpropertyEventFilterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteSubpropertyEventFilterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_subproperty_event_filter(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_subproperty_event_filter_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.DeleteSubpropertyEventFilterRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_subproperty_event_filter(request)
+
+
+def test_delete_subproperty_event_filter_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/subpropertyEventFilters/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_subproperty_event_filter(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/subpropertyEventFilters/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_subproperty_event_filter_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_subproperty_event_filter(
+            analytics_admin.DeleteSubpropertyEventFilterRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_subproperty_event_filter_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AnalyticsAdminServiceGrpcTransport(
@@ -74954,8 +76982,11 @@ def test_analytics_admin_service_base_transport():
         "create_rollup_property_source_link",
         "delete_rollup_property_source_link",
         "create_subproperty",
-        "delete_subproperty_event_filter",
         "create_subproperty_event_filter",
+        "get_subproperty_event_filter",
+        "list_subproperty_event_filters",
+        "update_subproperty_event_filter",
+        "delete_subproperty_event_filter",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -75636,11 +77667,20 @@ def test_analytics_admin_service_client_transport_session_collision(transport_na
     session1 = client1.transport.create_subproperty._session
     session2 = client2.transport.create_subproperty._session
     assert session1 != session2
-    session1 = client1.transport.delete_subproperty_event_filter._session
-    session2 = client2.transport.delete_subproperty_event_filter._session
-    assert session1 != session2
     session1 = client1.transport.create_subproperty_event_filter._session
     session2 = client2.transport.create_subproperty_event_filter._session
+    assert session1 != session2
+    session1 = client1.transport.get_subproperty_event_filter._session
+    session2 = client2.transport.get_subproperty_event_filter._session
+    assert session1 != session2
+    session1 = client1.transport.list_subproperty_event_filters._session
+    session2 = client2.transport.list_subproperty_event_filters._session
+    assert session1 != session2
+    session1 = client1.transport.update_subproperty_event_filter._session
+    session2 = client2.transport.update_subproperty_event_filter._session
+    assert session1 != session2
+    session1 = client1.transport.delete_subproperty_event_filter._session
+    session2 = client2.transport.delete_subproperty_event_filter._session
     assert session1 != session2
 
 

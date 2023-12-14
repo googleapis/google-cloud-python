@@ -40,6 +40,7 @@ from google.analytics.admin_v1alpha.types import channel_group
 from google.analytics.admin_v1alpha.types import event_create_and_edit
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
+from google.analytics.admin_v1alpha.types import subproperty_event_filter
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -771,13 +772,28 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_subproperty_event_filter: gapic_v1.method.wrap_method(
-                self.delete_subproperty_event_filter,
+            self.create_subproperty_event_filter: gapic_v1.method.wrap_method(
+                self.create_subproperty_event_filter,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_subproperty_event_filter: gapic_v1.method.wrap_method(
-                self.create_subproperty_event_filter,
+            self.get_subproperty_event_filter: gapic_v1.method.wrap_method(
+                self.get_subproperty_event_filter,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_subproperty_event_filters: gapic_v1.method.wrap_method(
+                self.list_subproperty_event_filters,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_subproperty_event_filter: gapic_v1.method.wrap_method(
+                self.update_subproperty_event_filter,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_subproperty_event_filter: gapic_v1.method.wrap_method(
+                self.delete_subproperty_event_filter,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -2124,15 +2140,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def delete_subproperty_event_filter(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteSubpropertyEventFilterRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def create_subproperty_event_filter(
         self,
     ) -> Callable[
@@ -2141,6 +2148,51 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             gaa_subproperty_event_filter.SubpropertyEventFilter,
             Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_subproperty_event_filter(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetSubpropertyEventFilterRequest],
+        Union[
+            subproperty_event_filter.SubpropertyEventFilter,
+            Awaitable[subproperty_event_filter.SubpropertyEventFilter],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_subproperty_event_filters(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListSubpropertyEventFiltersRequest],
+        Union[
+            analytics_admin.ListSubpropertyEventFiltersResponse,
+            Awaitable[analytics_admin.ListSubpropertyEventFiltersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_subproperty_event_filter(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateSubpropertyEventFilterRequest],
+        Union[
+            gaa_subproperty_event_filter.SubpropertyEventFilter,
+            Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_subproperty_event_filter(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteSubpropertyEventFilterRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

@@ -262,10 +262,12 @@ class ChannelGroup(proto.Message):
             length of 256 characters.
         grouping_rule (MutableSequence[google.analytics.admin_v1alpha.types.GroupingRule]):
             Required. The grouping rules of channels.
-            Maximum number of rules is 25.
+            Maximum number of rules is 50.
         system_defined (bool):
-            Output only. Default Channel Group defined by
-            Google, which cannot be updated.
+            Output only. If true, then this channel group
+            is the Default Channel Group predefined by
+            Google Analytics. Display name and grouping
+            rules cannot be updated for this channel group.
     """
 
     name: str = proto.Field(

@@ -37,6 +37,7 @@ from google.analytics.admin_v1alpha.types import channel_group
 from google.analytics.admin_v1alpha.types import event_create_and_edit
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
+from google.analytics.admin_v1alpha.types import subproperty_event_filter
 
 from .base import DEFAULT_CLIENT_INFO, AnalyticsAdminServiceTransport
 from .grpc import AnalyticsAdminServiceGrpcTransport
@@ -2661,9 +2662,10 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         provides records of each time a user reads Google Analytics
         reporting data. Access records are retained for up to 2 years.
 
-        Data Access Reports can be requested for a property. The
-        property must be in Google Analytics 360. This method is only
-        available to Administrators.
+        Data Access Reports can be requested for a property. Reports may
+        be requested for any property, but dimensions that aren't
+        related to quota can only be requested on Google Analytics 360
+        properties. This method is only available to Administrators.
 
         These data access records include GA4 UI Reporting, GA4 UI
         Explorations, GA4 Data API, and other products like Firebase &
@@ -4078,38 +4080,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_subproperty"]
 
     @property
-    def delete_subproperty_event_filter(
-        self,
-    ) -> Callable[
-        [analytics_admin.DeleteSubpropertyEventFilterRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
-        r"""Return a callable for the delete subproperty event
-        filter method over gRPC.
-
-        Deletes a subproperty event filter.
-
-        Returns:
-            Callable[[~.DeleteSubpropertyEventFilterRequest],
-                    Awaitable[~.Empty]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_subproperty_event_filter" not in self._stubs:
-            self._stubs[
-                "delete_subproperty_event_filter"
-            ] = self.grpc_channel.unary_unary(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteSubpropertyEventFilter",
-                request_serializer=analytics_admin.DeleteSubpropertyEventFilterRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["delete_subproperty_event_filter"]
-
-    @property
     def create_subproperty_event_filter(
         self,
     ) -> Callable[
@@ -4140,6 +4110,130 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=gaa_subproperty_event_filter.SubpropertyEventFilter.deserialize,
             )
         return self._stubs["create_subproperty_event_filter"]
+
+    @property
+    def get_subproperty_event_filter(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetSubpropertyEventFilterRequest],
+        Awaitable[subproperty_event_filter.SubpropertyEventFilter],
+    ]:
+        r"""Return a callable for the get subproperty event filter method over gRPC.
+
+        Lookup for a single subproperty Event Filter.
+
+        Returns:
+            Callable[[~.GetSubpropertyEventFilterRequest],
+                    Awaitable[~.SubpropertyEventFilter]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_subproperty_event_filter" not in self._stubs:
+            self._stubs["get_subproperty_event_filter"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetSubpropertyEventFilter",
+                request_serializer=analytics_admin.GetSubpropertyEventFilterRequest.serialize,
+                response_deserializer=subproperty_event_filter.SubpropertyEventFilter.deserialize,
+            )
+        return self._stubs["get_subproperty_event_filter"]
+
+    @property
+    def list_subproperty_event_filters(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListSubpropertyEventFiltersRequest],
+        Awaitable[analytics_admin.ListSubpropertyEventFiltersResponse],
+    ]:
+        r"""Return a callable for the list subproperty event filters method over gRPC.
+
+        List all subproperty Event Filters on a property.
+
+        Returns:
+            Callable[[~.ListSubpropertyEventFiltersRequest],
+                    Awaitable[~.ListSubpropertyEventFiltersResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_subproperty_event_filters" not in self._stubs:
+            self._stubs[
+                "list_subproperty_event_filters"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListSubpropertyEventFilters",
+                request_serializer=analytics_admin.ListSubpropertyEventFiltersRequest.serialize,
+                response_deserializer=analytics_admin.ListSubpropertyEventFiltersResponse.deserialize,
+            )
+        return self._stubs["list_subproperty_event_filters"]
+
+    @property
+    def update_subproperty_event_filter(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateSubpropertyEventFilterRequest],
+        Awaitable[gaa_subproperty_event_filter.SubpropertyEventFilter],
+    ]:
+        r"""Return a callable for the update subproperty event
+        filter method over gRPC.
+
+        Updates a subproperty Event Filter.
+
+        Returns:
+            Callable[[~.UpdateSubpropertyEventFilterRequest],
+                    Awaitable[~.SubpropertyEventFilter]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_subproperty_event_filter" not in self._stubs:
+            self._stubs[
+                "update_subproperty_event_filter"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateSubpropertyEventFilter",
+                request_serializer=analytics_admin.UpdateSubpropertyEventFilterRequest.serialize,
+                response_deserializer=gaa_subproperty_event_filter.SubpropertyEventFilter.deserialize,
+            )
+        return self._stubs["update_subproperty_event_filter"]
+
+    @property
+    def delete_subproperty_event_filter(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteSubpropertyEventFilterRequest],
+        Awaitable[empty_pb2.Empty],
+    ]:
+        r"""Return a callable for the delete subproperty event
+        filter method over gRPC.
+
+        Deletes a subproperty event filter.
+
+        Returns:
+            Callable[[~.DeleteSubpropertyEventFilterRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_subproperty_event_filter" not in self._stubs:
+            self._stubs[
+                "delete_subproperty_event_filter"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteSubpropertyEventFilter",
+                request_serializer=analytics_admin.DeleteSubpropertyEventFilterRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_subproperty_event_filter"]
 
     def close(self):
         return self.grpc_channel.close()
