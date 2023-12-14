@@ -6920,9 +6920,10 @@ class AnalyticsAdminServiceAsyncClient:
         provides records of each time a user reads Google Analytics
         reporting data. Access records are retained for up to 2 years.
 
-        Data Access Reports can be requested for a property. The
-        property must be in Google Analytics 360. This method is only
-        available to Administrators.
+        Data Access Reports can be requested for a property. Reports may
+        be requested for any property, but dimensions that aren't
+        related to quota can only be requested on Google Analytics 360
+        properties. This method is only available to Administrators.
 
         These data access records include GA4 UI Reporting, GA4 UI
         Explorations, GA4 Data API, and other products like Firebase &
@@ -10523,77 +10524,6 @@ class AnalyticsAdminServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_subproperty_event_filter(
-        self,
-        request: Optional[
-            Union[analytics_admin.DeleteSubpropertyEventFilterRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a subproperty event filter.
-
-        Args:
-            request (Optional[Union[google.analytics.admin_v1alpha.types.DeleteSubpropertyEventFilterRequest, dict]]):
-                The request object. Request message for
-                DeleteSubpropertyEventFilter RPC.
-            name (:class:`str`):
-                Required. Resource name of the subproperty event filter
-                to delete. Format:
-                properties/property_id/subpropertyEventFilters/subproperty_event_filter
-                Example: properties/123/subpropertyEventFilters/456
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.DeleteSubpropertyEventFilterRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_subproperty_event_filter,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
     async def create_subproperty_event_filter(
         self,
         request: Optional[
@@ -10684,6 +10614,347 @@ class AnalyticsAdminServiceAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def get_subproperty_event_filter(
+        self,
+        request: Optional[
+            Union[analytics_admin.GetSubpropertyEventFilterRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> subproperty_event_filter.SubpropertyEventFilter:
+        r"""Lookup for a single subproperty Event Filter.
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.GetSubpropertyEventFilterRequest, dict]]):
+                The request object. Request message for
+                GetSubpropertyEventFilter RPC.
+            name (:class:`str`):
+                Required. Resource name of the subproperty event filter
+                to lookup. Format:
+                properties/property_id/subpropertyEventFilters/subproperty_event_filter
+                Example: properties/123/subpropertyEventFilters/456
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.SubpropertyEventFilter:
+                A resource message representing a GA4
+                Subproperty event filter.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.GetSubpropertyEventFilterRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_subproperty_event_filter,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_subproperty_event_filters(
+        self,
+        request: Optional[
+            Union[analytics_admin.ListSubpropertyEventFiltersRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSubpropertyEventFiltersAsyncPager:
+        r"""List all subproperty Event Filters on a property.
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.ListSubpropertyEventFiltersRequest, dict]]):
+                The request object. Request message for
+                ListSubpropertyEventFilters RPC.
+            parent (:class:`str`):
+                Required. Resource name of the ordinary property.
+                Format: properties/property_id Example: properties/123
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListSubpropertyEventFiltersAsyncPager:
+                Response message for
+                ListSubpropertyEventFilter RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.ListSubpropertyEventFiltersRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_subproperty_event_filters,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListSubpropertyEventFiltersAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_subproperty_event_filter(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateSubpropertyEventFilterRequest, dict]
+        ] = None,
+        *,
+        subproperty_event_filter: Optional[
+            gaa_subproperty_event_filter.SubpropertyEventFilter
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gaa_subproperty_event_filter.SubpropertyEventFilter:
+        r"""Updates a subproperty Event Filter.
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.UpdateSubpropertyEventFilterRequest, dict]]):
+                The request object. Request message for
+                UpdateSubpropertyEventFilter RPC.
+            subproperty_event_filter (:class:`google.analytics.admin_v1alpha.types.SubpropertyEventFilter`):
+                Required. The subproperty event
+                filter to update.
+
+                This corresponds to the ``subproperty_event_filter`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to update. Field names must
+                be in snake case (for example, "field_to_update").
+                Omitted fields will not be updated. To replace the
+                entire entity, use one path with the string "*" to match
+                all fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.SubpropertyEventFilter:
+                A resource message representing a GA4
+                Subproperty event filter.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([subproperty_event_filter, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.UpdateSubpropertyEventFilterRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if subproperty_event_filter is not None:
+            request.subproperty_event_filter = subproperty_event_filter
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_subproperty_event_filter,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "subproperty_event_filter.name",
+                        request.subproperty_event_filter.name,
+                    ),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_subproperty_event_filter(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteSubpropertyEventFilterRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a subproperty event filter.
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.DeleteSubpropertyEventFilterRequest, dict]]):
+                The request object. Request message for
+                DeleteSubpropertyEventFilter RPC.
+            name (:class:`str`):
+                Required. Resource name of the subproperty event filter
+                to delete. Format:
+                properties/property_id/subpropertyEventFilters/subproperty_event_filter
+                Example: properties/123/subpropertyEventFilters/456
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.DeleteSubpropertyEventFilterRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_subproperty_event_filter,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def __aenter__(self) -> "AnalyticsAdminServiceAsyncClient":
         return self

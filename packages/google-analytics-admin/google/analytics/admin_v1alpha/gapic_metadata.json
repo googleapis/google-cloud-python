@@ -410,6 +410,11 @@
                 "get_search_ads360_link"
               ]
             },
+            "GetSubpropertyEventFilter": {
+              "methods": [
+                "get_subproperty_event_filter"
+              ]
+            },
             "ListAccessBindings": {
               "methods": [
                 "list_access_bindings"
@@ -523,6 +528,11 @@
             "ListSearchAds360Links": {
               "methods": [
                 "list_search_ads360_links"
+              ]
+            },
+            "ListSubpropertyEventFilters": {
+              "methods": [
+                "list_subproperty_event_filters"
               ]
             },
             "ProvisionAccountTicket": {
@@ -648,6 +658,11 @@
             "UpdateSearchAds360Link": {
               "methods": [
                 "update_search_ads360_link"
+              ]
+            },
+            "UpdateSubpropertyEventFilter": {
+              "methods": [
+                "update_subproperty_event_filter"
               ]
             }
           }
@@ -1055,6 +1070,11 @@
                 "get_search_ads360_link"
               ]
             },
+            "GetSubpropertyEventFilter": {
+              "methods": [
+                "get_subproperty_event_filter"
+              ]
+            },
             "ListAccessBindings": {
               "methods": [
                 "list_access_bindings"
@@ -1168,6 +1188,11 @@
             "ListSearchAds360Links": {
               "methods": [
                 "list_search_ads360_links"
+              ]
+            },
+            "ListSubpropertyEventFilters": {
+              "methods": [
+                "list_subproperty_event_filters"
               ]
             },
             "ProvisionAccountTicket": {
@@ -1293,6 +1318,11 @@
             "UpdateSearchAds360Link": {
               "methods": [
                 "update_search_ads360_link"
+              ]
+            },
+            "UpdateSubpropertyEventFilter": {
+              "methods": [
+                "update_subproperty_event_filter"
               ]
             }
           }
@@ -1700,6 +1730,11 @@
                 "get_search_ads360_link"
               ]
             },
+            "GetSubpropertyEventFilter": {
+              "methods": [
+                "get_subproperty_event_filter"
+              ]
+            },
             "ListAccessBindings": {
               "methods": [
                 "list_access_bindings"
@@ -1813,6 +1848,11 @@
             "ListSearchAds360Links": {
               "methods": [
                 "list_search_ads360_links"
+              ]
+            },
+            "ListSubpropertyEventFilters": {
+              "methods": [
+                "list_subproperty_event_filters"
               ]
             },
             "ProvisionAccountTicket": {
@@ -1938,6 +1978,11 @@
             "UpdateSearchAds360Link": {
               "methods": [
                 "update_search_ads360_link"
+              ]
+            },
+            "UpdateSubpropertyEventFilter": {
+              "methods": [
+                "update_subproperty_event_filter"
               ]
             }
           }

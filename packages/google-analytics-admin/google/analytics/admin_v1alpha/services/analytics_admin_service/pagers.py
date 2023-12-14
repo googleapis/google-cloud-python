@@ -31,6 +31,7 @@ from google.analytics.admin_v1alpha.types import (
     event_create_and_edit,
     expanded_data_set,
     resources,
+    subproperty_event_filter,
 )
 
 
@@ -3038,6 +3039,140 @@ class ListRollupPropertySourceLinksAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.rollup_property_source_links:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListSubpropertyEventFiltersPager:
+    """A pager for iterating through ``list_subproperty_event_filters`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListSubpropertyEventFiltersResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``subproperty_event_filters`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListSubpropertyEventFilters`` requests and continue to iterate
+    through the ``subproperty_event_filters`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListSubpropertyEventFiltersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_admin.ListSubpropertyEventFiltersResponse],
+        request: analytics_admin.ListSubpropertyEventFiltersRequest,
+        response: analytics_admin.ListSubpropertyEventFiltersResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListSubpropertyEventFiltersRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListSubpropertyEventFiltersResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListSubpropertyEventFiltersRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[analytics_admin.ListSubpropertyEventFiltersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[subproperty_event_filter.SubpropertyEventFilter]:
+        for page in self.pages:
+            yield from page.subproperty_event_filters
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListSubpropertyEventFiltersAsyncPager:
+    """A pager for iterating through ``list_subproperty_event_filters`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListSubpropertyEventFiltersResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``subproperty_event_filters`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListSubpropertyEventFilters`` requests and continue to iterate
+    through the ``subproperty_event_filters`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListSubpropertyEventFiltersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[analytics_admin.ListSubpropertyEventFiltersResponse]
+        ],
+        request: analytics_admin.ListSubpropertyEventFiltersRequest,
+        response: analytics_admin.ListSubpropertyEventFiltersResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListSubpropertyEventFiltersRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListSubpropertyEventFiltersResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListSubpropertyEventFiltersRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[analytics_admin.ListSubpropertyEventFiltersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[subproperty_event_filter.SubpropertyEventFilter]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.subproperty_event_filters:
                     yield response
 
         return async_generator()
