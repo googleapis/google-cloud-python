@@ -17,34 +17,33 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.translate_v3.types import common
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
-    package='google.cloud.translation.v3',
+    package="google.cloud.translation.v3",
     manifest={
-        'AdaptiveMtDataset',
-        'CreateAdaptiveMtDatasetRequest',
-        'DeleteAdaptiveMtDatasetRequest',
-        'GetAdaptiveMtDatasetRequest',
-        'ListAdaptiveMtDatasetsRequest',
-        'ListAdaptiveMtDatasetsResponse',
-        'AdaptiveMtTranslateRequest',
-        'AdaptiveMtTranslation',
-        'AdaptiveMtTranslateResponse',
-        'AdaptiveMtFile',
-        'GetAdaptiveMtFileRequest',
-        'DeleteAdaptiveMtFileRequest',
-        'ImportAdaptiveMtFileRequest',
-        'ImportAdaptiveMtFileResponse',
-        'ListAdaptiveMtFilesRequest',
-        'ListAdaptiveMtFilesResponse',
-        'AdaptiveMtSentence',
-        'ListAdaptiveMtSentencesRequest',
-        'ListAdaptiveMtSentencesResponse',
+        "AdaptiveMtDataset",
+        "CreateAdaptiveMtDatasetRequest",
+        "DeleteAdaptiveMtDatasetRequest",
+        "GetAdaptiveMtDatasetRequest",
+        "ListAdaptiveMtDatasetsRequest",
+        "ListAdaptiveMtDatasetsResponse",
+        "AdaptiveMtTranslateRequest",
+        "AdaptiveMtTranslation",
+        "AdaptiveMtTranslateResponse",
+        "AdaptiveMtFile",
+        "GetAdaptiveMtFileRequest",
+        "DeleteAdaptiveMtFileRequest",
+        "ImportAdaptiveMtFileRequest",
+        "ImportAdaptiveMtFileResponse",
+        "ListAdaptiveMtFilesRequest",
+        "ListAdaptiveMtFilesResponse",
+        "AdaptiveMtSentence",
+        "ListAdaptiveMtSentencesRequest",
+        "ListAdaptiveMtSentencesResponse",
     },
 )
 
@@ -125,10 +124,10 @@ class CreateAdaptiveMtDatasetRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    adaptive_mt_dataset: 'AdaptiveMtDataset' = proto.Field(
+    adaptive_mt_dataset: "AdaptiveMtDataset" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='AdaptiveMtDataset',
+        message="AdaptiveMtDataset",
     )
 
 
@@ -224,10 +223,10 @@ class ListAdaptiveMtDatasetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    adaptive_mt_datasets: MutableSequence['AdaptiveMtDataset'] = proto.RepeatedField(
+    adaptive_mt_datasets: MutableSequence["AdaptiveMtDataset"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='AdaptiveMtDataset',
+        message="AdaptiveMtDataset",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -292,10 +291,10 @@ class AdaptiveMtTranslateResponse(proto.Message):
             Output only. The translation's language code.
     """
 
-    translations: MutableSequence['AdaptiveMtTranslation'] = proto.RepeatedField(
+    translations: MutableSequence["AdaptiveMtTranslation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='AdaptiveMtTranslation',
+        message="AdaptiveMtTranslation",
     )
     language_code: str = proto.Field(
         proto.STRING,
@@ -409,13 +408,13 @@ class ImportAdaptiveMtFileRequest(proto.Message):
     file_input_source: common.FileInputSource = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof='source',
+        oneof="source",
         message=common.FileInputSource,
     )
     gcs_input_source: common.GcsInputSource = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof='source',
+        oneof="source",
         message=common.GcsInputSource,
     )
 
@@ -429,10 +428,10 @@ class ImportAdaptiveMtFileResponse(proto.Message):
             imported.
     """
 
-    adaptive_mt_file: 'AdaptiveMtFile' = proto.Field(
+    adaptive_mt_file: "AdaptiveMtFile" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='AdaptiveMtFile',
+        message="AdaptiveMtFile",
     )
 
 
@@ -488,10 +487,10 @@ class ListAdaptiveMtFilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    adaptive_mt_files: MutableSequence['AdaptiveMtFile'] = proto.RepeatedField(
+    adaptive_mt_files: MutableSequence["AdaptiveMtFile"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='AdaptiveMtFile',
+        message="AdaptiveMtFile",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -593,10 +592,10 @@ class ListAdaptiveMtSentencesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    adaptive_mt_sentences: MutableSequence['AdaptiveMtSentence'] = proto.RepeatedField(
+    adaptive_mt_sentences: MutableSequence["AdaptiveMtSentence"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='AdaptiveMtSentence',
+        message="AdaptiveMtSentence",
     )
     next_page_token: str = proto.Field(
         proto.STRING,

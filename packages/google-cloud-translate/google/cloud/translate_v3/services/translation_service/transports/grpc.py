@@ -16,14 +16,15 @@
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-import grpc  # type: ignore
-
 from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.translate_v3.types import translation_service
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+import grpc  # type: ignore
+
+from google.cloud.translate_v3.types import adaptive_mt, translation_service
 
 from .base import DEFAULT_CLIENT_INFO, TranslationServiceTransport
 
@@ -552,6 +553,290 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_glossary"]
+
+    @property
+    def create_adaptive_mt_dataset(
+        self,
+    ) -> Callable[
+        [adaptive_mt.CreateAdaptiveMtDatasetRequest], adaptive_mt.AdaptiveMtDataset
+    ]:
+        r"""Return a callable for the create adaptive mt dataset method over gRPC.
+
+        Creates an Adaptive MT dataset.
+
+        Returns:
+            Callable[[~.CreateAdaptiveMtDatasetRequest],
+                    ~.AdaptiveMtDataset]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_adaptive_mt_dataset" not in self._stubs:
+            self._stubs["create_adaptive_mt_dataset"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/CreateAdaptiveMtDataset",
+                request_serializer=adaptive_mt.CreateAdaptiveMtDatasetRequest.serialize,
+                response_deserializer=adaptive_mt.AdaptiveMtDataset.deserialize,
+            )
+        return self._stubs["create_adaptive_mt_dataset"]
+
+    @property
+    def delete_adaptive_mt_dataset(
+        self,
+    ) -> Callable[[adaptive_mt.DeleteAdaptiveMtDatasetRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete adaptive mt dataset method over gRPC.
+
+        Deletes an Adaptive MT dataset, including all its
+        entries and associated metadata.
+
+        Returns:
+            Callable[[~.DeleteAdaptiveMtDatasetRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_adaptive_mt_dataset" not in self._stubs:
+            self._stubs["delete_adaptive_mt_dataset"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/DeleteAdaptiveMtDataset",
+                request_serializer=adaptive_mt.DeleteAdaptiveMtDatasetRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_adaptive_mt_dataset"]
+
+    @property
+    def get_adaptive_mt_dataset(
+        self,
+    ) -> Callable[
+        [adaptive_mt.GetAdaptiveMtDatasetRequest], adaptive_mt.AdaptiveMtDataset
+    ]:
+        r"""Return a callable for the get adaptive mt dataset method over gRPC.
+
+        Gets the Adaptive MT dataset.
+
+        Returns:
+            Callable[[~.GetAdaptiveMtDatasetRequest],
+                    ~.AdaptiveMtDataset]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_adaptive_mt_dataset" not in self._stubs:
+            self._stubs["get_adaptive_mt_dataset"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/GetAdaptiveMtDataset",
+                request_serializer=adaptive_mt.GetAdaptiveMtDatasetRequest.serialize,
+                response_deserializer=adaptive_mt.AdaptiveMtDataset.deserialize,
+            )
+        return self._stubs["get_adaptive_mt_dataset"]
+
+    @property
+    def list_adaptive_mt_datasets(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ListAdaptiveMtDatasetsRequest],
+        adaptive_mt.ListAdaptiveMtDatasetsResponse,
+    ]:
+        r"""Return a callable for the list adaptive mt datasets method over gRPC.
+
+        Lists all Adaptive MT datasets for which the caller
+        has read permission.
+
+        Returns:
+            Callable[[~.ListAdaptiveMtDatasetsRequest],
+                    ~.ListAdaptiveMtDatasetsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_adaptive_mt_datasets" not in self._stubs:
+            self._stubs["list_adaptive_mt_datasets"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtDatasets",
+                request_serializer=adaptive_mt.ListAdaptiveMtDatasetsRequest.serialize,
+                response_deserializer=adaptive_mt.ListAdaptiveMtDatasetsResponse.deserialize,
+            )
+        return self._stubs["list_adaptive_mt_datasets"]
+
+    @property
+    def adaptive_mt_translate(
+        self,
+    ) -> Callable[
+        [adaptive_mt.AdaptiveMtTranslateRequest],
+        adaptive_mt.AdaptiveMtTranslateResponse,
+    ]:
+        r"""Return a callable for the adaptive mt translate method over gRPC.
+
+        Translate text using Adaptive MT.
+
+        Returns:
+            Callable[[~.AdaptiveMtTranslateRequest],
+                    ~.AdaptiveMtTranslateResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "adaptive_mt_translate" not in self._stubs:
+            self._stubs["adaptive_mt_translate"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/AdaptiveMtTranslate",
+                request_serializer=adaptive_mt.AdaptiveMtTranslateRequest.serialize,
+                response_deserializer=adaptive_mt.AdaptiveMtTranslateResponse.deserialize,
+            )
+        return self._stubs["adaptive_mt_translate"]
+
+    @property
+    def get_adaptive_mt_file(
+        self,
+    ) -> Callable[[adaptive_mt.GetAdaptiveMtFileRequest], adaptive_mt.AdaptiveMtFile]:
+        r"""Return a callable for the get adaptive mt file method over gRPC.
+
+        Gets and AdaptiveMtFile
+
+        Returns:
+            Callable[[~.GetAdaptiveMtFileRequest],
+                    ~.AdaptiveMtFile]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_adaptive_mt_file" not in self._stubs:
+            self._stubs["get_adaptive_mt_file"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/GetAdaptiveMtFile",
+                request_serializer=adaptive_mt.GetAdaptiveMtFileRequest.serialize,
+                response_deserializer=adaptive_mt.AdaptiveMtFile.deserialize,
+            )
+        return self._stubs["get_adaptive_mt_file"]
+
+    @property
+    def delete_adaptive_mt_file(
+        self,
+    ) -> Callable[[adaptive_mt.DeleteAdaptiveMtFileRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete adaptive mt file method over gRPC.
+
+        Deletes an AdaptiveMtFile along with its sentences.
+
+        Returns:
+            Callable[[~.DeleteAdaptiveMtFileRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_adaptive_mt_file" not in self._stubs:
+            self._stubs["delete_adaptive_mt_file"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/DeleteAdaptiveMtFile",
+                request_serializer=adaptive_mt.DeleteAdaptiveMtFileRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_adaptive_mt_file"]
+
+    @property
+    def import_adaptive_mt_file(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ImportAdaptiveMtFileRequest],
+        adaptive_mt.ImportAdaptiveMtFileResponse,
+    ]:
+        r"""Return a callable for the import adaptive mt file method over gRPC.
+
+        Imports an AdaptiveMtFile and adds all of its
+        sentences into the AdaptiveMtDataset.
+
+        Returns:
+            Callable[[~.ImportAdaptiveMtFileRequest],
+                    ~.ImportAdaptiveMtFileResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_adaptive_mt_file" not in self._stubs:
+            self._stubs["import_adaptive_mt_file"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/ImportAdaptiveMtFile",
+                request_serializer=adaptive_mt.ImportAdaptiveMtFileRequest.serialize,
+                response_deserializer=adaptive_mt.ImportAdaptiveMtFileResponse.deserialize,
+            )
+        return self._stubs["import_adaptive_mt_file"]
+
+    @property
+    def list_adaptive_mt_files(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ListAdaptiveMtFilesRequest],
+        adaptive_mt.ListAdaptiveMtFilesResponse,
+    ]:
+        r"""Return a callable for the list adaptive mt files method over gRPC.
+
+        Lists all AdaptiveMtFiles associated to an
+        AdaptiveMtDataset.
+
+        Returns:
+            Callable[[~.ListAdaptiveMtFilesRequest],
+                    ~.ListAdaptiveMtFilesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_adaptive_mt_files" not in self._stubs:
+            self._stubs["list_adaptive_mt_files"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtFiles",
+                request_serializer=adaptive_mt.ListAdaptiveMtFilesRequest.serialize,
+                response_deserializer=adaptive_mt.ListAdaptiveMtFilesResponse.deserialize,
+            )
+        return self._stubs["list_adaptive_mt_files"]
+
+    @property
+    def list_adaptive_mt_sentences(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ListAdaptiveMtSentencesRequest],
+        adaptive_mt.ListAdaptiveMtSentencesResponse,
+    ]:
+        r"""Return a callable for the list adaptive mt sentences method over gRPC.
+
+        Lists all AdaptiveMtSentences under a given
+        file/dataset.
+
+        Returns:
+            Callable[[~.ListAdaptiveMtSentencesRequest],
+                    ~.ListAdaptiveMtSentencesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_adaptive_mt_sentences" not in self._stubs:
+            self._stubs["list_adaptive_mt_sentences"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtSentences",
+                request_serializer=adaptive_mt.ListAdaptiveMtSentencesRequest.serialize,
+                response_deserializer=adaptive_mt.ListAdaptiveMtSentencesResponse.deserialize,
+            )
+        return self._stubs["list_adaptive_mt_sentences"]
 
     def close(self):
         self.grpc_channel.close()

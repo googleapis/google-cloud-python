@@ -27,6 +27,7 @@ class TestClient(unittest.TestCase):
 
     def test_constructor_defaults(self):
         from google.cloud._http import ClientInfo
+
         from google.cloud.translate_v2._http import Connection
         from google.cloud.translate_v2.client import ENGLISH_ISO_639
 
@@ -40,6 +41,7 @@ class TestClient(unittest.TestCase):
 
     def test_constructor_explicit(self):
         from google.cloud._http import ClientInfo
+
         from google.cloud.translate_v2._http import Connection
 
         http = object()

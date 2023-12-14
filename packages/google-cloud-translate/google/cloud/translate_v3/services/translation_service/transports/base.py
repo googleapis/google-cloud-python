@@ -22,10 +22,12 @@ from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.cloud.translate_v3 import gapic_version as package_version
-from google.cloud.translate_v3.types import translation_service
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+
+from google.cloud.translate_v3 import gapic_version as package_version
+from google.cloud.translate_v3.types import adaptive_mt, translation_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -215,6 +217,56 @@ class TranslationServiceTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.create_adaptive_mt_dataset: gapic_v1.method.wrap_method(
+                self.create_adaptive_mt_dataset,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_adaptive_mt_dataset: gapic_v1.method.wrap_method(
+                self.delete_adaptive_mt_dataset,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_adaptive_mt_dataset: gapic_v1.method.wrap_method(
+                self.get_adaptive_mt_dataset,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_adaptive_mt_datasets: gapic_v1.method.wrap_method(
+                self.list_adaptive_mt_datasets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.adaptive_mt_translate: gapic_v1.method.wrap_method(
+                self.adaptive_mt_translate,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_adaptive_mt_file: gapic_v1.method.wrap_method(
+                self.get_adaptive_mt_file,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_adaptive_mt_file: gapic_v1.method.wrap_method(
+                self.delete_adaptive_mt_file,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.import_adaptive_mt_file: gapic_v1.method.wrap_method(
+                self.import_adaptive_mt_file,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_adaptive_mt_files: gapic_v1.method.wrap_method(
+                self.list_adaptive_mt_files,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_adaptive_mt_sentences: gapic_v1.method.wrap_method(
+                self.list_adaptive_mt_sentences,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -333,6 +385,111 @@ class TranslationServiceTransport(abc.ABC):
     ) -> Callable[
         [translation_service.DeleteGlossaryRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_adaptive_mt_dataset(
+        self,
+    ) -> Callable[
+        [adaptive_mt.CreateAdaptiveMtDatasetRequest],
+        Union[adaptive_mt.AdaptiveMtDataset, Awaitable[adaptive_mt.AdaptiveMtDataset]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_adaptive_mt_dataset(
+        self,
+    ) -> Callable[
+        [adaptive_mt.DeleteAdaptiveMtDatasetRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_adaptive_mt_dataset(
+        self,
+    ) -> Callable[
+        [adaptive_mt.GetAdaptiveMtDatasetRequest],
+        Union[adaptive_mt.AdaptiveMtDataset, Awaitable[adaptive_mt.AdaptiveMtDataset]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_adaptive_mt_datasets(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ListAdaptiveMtDatasetsRequest],
+        Union[
+            adaptive_mt.ListAdaptiveMtDatasetsResponse,
+            Awaitable[adaptive_mt.ListAdaptiveMtDatasetsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def adaptive_mt_translate(
+        self,
+    ) -> Callable[
+        [adaptive_mt.AdaptiveMtTranslateRequest],
+        Union[
+            adaptive_mt.AdaptiveMtTranslateResponse,
+            Awaitable[adaptive_mt.AdaptiveMtTranslateResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_adaptive_mt_file(
+        self,
+    ) -> Callable[
+        [adaptive_mt.GetAdaptiveMtFileRequest],
+        Union[adaptive_mt.AdaptiveMtFile, Awaitable[adaptive_mt.AdaptiveMtFile]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_adaptive_mt_file(
+        self,
+    ) -> Callable[
+        [adaptive_mt.DeleteAdaptiveMtFileRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_adaptive_mt_file(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ImportAdaptiveMtFileRequest],
+        Union[
+            adaptive_mt.ImportAdaptiveMtFileResponse,
+            Awaitable[adaptive_mt.ImportAdaptiveMtFileResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_adaptive_mt_files(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ListAdaptiveMtFilesRequest],
+        Union[
+            adaptive_mt.ListAdaptiveMtFilesResponse,
+            Awaitable[adaptive_mt.ListAdaptiveMtFilesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_adaptive_mt_sentences(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ListAdaptiveMtSentencesRequest],
+        Union[
+            adaptive_mt.ListAdaptiveMtSentencesResponse,
+            Awaitable[adaptive_mt.ListAdaptiveMtSentencesResponse],
+        ],
     ]:
         raise NotImplementedError()
 

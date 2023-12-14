@@ -26,14 +26,6 @@ from collections.abc import Iterable
 import json
 import math
 
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
-
 from google.api_core import (
     future,
     gapic_v1,
@@ -49,6 +41,18 @@ from google.api_core import operation_async  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
+from google.protobuf import json_format
+from google.protobuf import timestamp_pb2  # type: ignore
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
 from google.cloud.translate_v3beta1.services.translation_service import (
     TranslationServiceAsyncClient,
     TranslationServiceClient,
@@ -56,10 +60,6 @@ from google.cloud.translate_v3beta1.services.translation_service import (
     transports,
 )
 from google.cloud.translate_v3beta1.types import translation_service
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
-from google.protobuf import json_format
-from google.protobuf import timestamp_pb2  # type: ignore
 
 
 def client_cert_source_callback():

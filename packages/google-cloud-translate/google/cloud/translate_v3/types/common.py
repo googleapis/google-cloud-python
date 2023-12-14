@@ -19,13 +19,12 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.translation.v3',
+    package="google.cloud.translation.v3",
     manifest={
-        'GcsInputSource',
-        'FileInputSource',
-        'GcsOutputDestination',
+        "GcsInputSource",
+        "FileInputSource",
+        "GcsOutputDestination",
     },
 )
 

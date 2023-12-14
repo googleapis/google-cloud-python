@@ -16,14 +16,14 @@
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-import grpc  # type: ignore
-
 from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.translate_v3beta1.types import translation_service
 from google.longrunning import operations_pb2  # type: ignore
+import grpc  # type: ignore
+
+from google.cloud.translate_v3beta1.types import translation_service
 
 from .base import DEFAULT_CLIENT_INFO, TranslationServiceTransport
 

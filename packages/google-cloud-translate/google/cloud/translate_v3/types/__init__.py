@@ -13,6 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .adaptive_mt import (
+    AdaptiveMtDataset,
+    AdaptiveMtFile,
+    AdaptiveMtSentence,
+    AdaptiveMtTranslateRequest,
+    AdaptiveMtTranslateResponse,
+    AdaptiveMtTranslation,
+    CreateAdaptiveMtDatasetRequest,
+    DeleteAdaptiveMtDatasetRequest,
+    DeleteAdaptiveMtFileRequest,
+    GetAdaptiveMtDatasetRequest,
+    GetAdaptiveMtFileRequest,
+    ImportAdaptiveMtFileRequest,
+    ImportAdaptiveMtFileResponse,
+    ListAdaptiveMtDatasetsRequest,
+    ListAdaptiveMtDatasetsResponse,
+    ListAdaptiveMtFilesRequest,
+    ListAdaptiveMtFilesResponse,
+    ListAdaptiveMtSentencesRequest,
+    ListAdaptiveMtSentencesResponse,
+)
+from .common import FileInputSource, GcsInputSource, GcsOutputDestination
 from .translation_service import (
     BatchDocumentInputConfig,
     BatchDocumentOutputConfig,
@@ -54,6 +76,28 @@ from .translation_service import (
 )
 
 __all__ = (
+    "AdaptiveMtDataset",
+    "AdaptiveMtFile",
+    "AdaptiveMtSentence",
+    "AdaptiveMtTranslateRequest",
+    "AdaptiveMtTranslateResponse",
+    "AdaptiveMtTranslation",
+    "CreateAdaptiveMtDatasetRequest",
+    "DeleteAdaptiveMtDatasetRequest",
+    "DeleteAdaptiveMtFileRequest",
+    "GetAdaptiveMtDatasetRequest",
+    "GetAdaptiveMtFileRequest",
+    "ImportAdaptiveMtFileRequest",
+    "ImportAdaptiveMtFileResponse",
+    "ListAdaptiveMtDatasetsRequest",
+    "ListAdaptiveMtDatasetsResponse",
+    "ListAdaptiveMtFilesRequest",
+    "ListAdaptiveMtFilesResponse",
+    "ListAdaptiveMtSentencesRequest",
+    "ListAdaptiveMtSentencesResponse",
+    "FileInputSource",
+    "GcsInputSource",
+    "GcsOutputDestination",
     "BatchDocumentInputConfig",
     "BatchDocumentOutputConfig",
     "BatchTranslateDocumentMetadata",
