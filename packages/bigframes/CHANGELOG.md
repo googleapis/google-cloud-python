@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.17.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.16.0...v0.17.0) (2023-12-14)
+
+
+### Features
+
+* Add `filters` argument to `read_gbq` for enhanced data querying ([#198](https://github.com/googleapis/python-bigquery-dataframes/issues/198)) ([034f71f](https://github.com/googleapis/python-bigquery-dataframes/commit/034f71f113235f2218223e43f129507c1ec3f6ff))
+* Add module/class level api tracking ([#272](https://github.com/googleapis/python-bigquery-dataframes/issues/272)) ([4f3db3d](https://github.com/googleapis/python-bigquery-dataframes/commit/4f3db3d50fb782dbe03051ed024d03e19944d775))
+* Deprecate `use_regional_endpoints` ([#199](https://github.com/googleapis/python-bigquery-dataframes/issues/199)) ([319a1f2](https://github.com/googleapis/python-bigquery-dataframes/commit/319a1f27be5bd96ebbe29f11a00a5a62d2b4237f))
+
+
+### Bug Fixes
+
+* Increase recursion limit, cache compilation tree hashes ([#184](https://github.com/googleapis/python-bigquery-dataframes/issues/184)) ([b54791c](https://github.com/googleapis/python-bigquery-dataframes/commit/b54791c820f56c578a0bd9883489de9b9c7eb3a2))
+* Replaced raise `NotImplementedError` with return `NotImplemented` ([#258](https://github.com/googleapis/python-bigquery-dataframes/issues/258)) ([a133822](https://github.com/googleapis/python-bigquery-dataframes/commit/a133822974229f70529a414a682b6d98770d1846))
+
+
+### Documentation
+
+* Add code samples for `values` and `value_counts` ([#249](https://github.com/googleapis/python-bigquery-dataframes/issues/249)) ([f247d95](https://github.com/googleapis/python-bigquery-dataframes/commit/f247d957a12a119ce8a263df215e8a9ef7310ef6))
+* Add sample for getting started with BQML ([#141](https://github.com/googleapis/python-bigquery-dataframes/issues/141)) ([fb14f54](https://github.com/googleapis/python-bigquery-dataframes/commit/fb14f54548e988c6c226753fcca162cf15b5c8d7))
+
 ## [0.16.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.15.0...v0.16.0) (2023-12-12)
 
 
