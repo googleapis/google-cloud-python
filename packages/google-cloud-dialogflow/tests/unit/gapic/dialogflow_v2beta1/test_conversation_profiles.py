@@ -3497,6 +3497,7 @@ def test_create_conversation_profile_rest(request_type):
                         "suggestion_feature": {"type_": 1},
                         "enable_event_based_suggestion": True,
                         "disable_agent_query_logging": True,
+                        "enable_conversation_augmented_query": True,
                         "suggestion_trigger_settings": {
                             "no_small_talk": True,
                             "only_end_user": True,
@@ -3522,6 +3523,7 @@ def test_create_conversation_profile_rest(request_type):
                                 "drop_virtual_agent_messages": True,
                                 "drop_ivr_messages": True,
                             },
+                            "sections": {"section_types": [1]},
                         },
                         "conversation_model_config": {
                             "model": "model_value",
@@ -3960,6 +3962,7 @@ def test_update_conversation_profile_rest(request_type):
                         "suggestion_feature": {"type_": 1},
                         "enable_event_based_suggestion": True,
                         "disable_agent_query_logging": True,
+                        "enable_conversation_augmented_query": True,
                         "suggestion_trigger_settings": {
                             "no_small_talk": True,
                             "only_end_user": True,
@@ -3985,6 +3988,7 @@ def test_update_conversation_profile_rest(request_type):
                                 "drop_virtual_agent_messages": True,
                                 "drop_ivr_messages": True,
                             },
+                            "sections": {"section_types": [1]},
                         },
                         "conversation_model_config": {
                             "model": "model_value",
