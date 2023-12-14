@@ -942,7 +942,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
 
         This RPC only returns either resources of types supported by
         `searchable asset
-        types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__,
+        types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__,
         or IAM policies.
 
         Returns:
