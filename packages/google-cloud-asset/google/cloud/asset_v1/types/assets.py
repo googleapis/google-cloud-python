@@ -202,17 +202,17 @@ class Asset(proto.Message):
             There can be more than one organization policy with
             different constraints set on a given resource.
         access_policy (google.identity.accesscontextmanager.v1.access_policy_pb2.AccessPolicy):
-            Please also refer to the `access policy user
+            Also refer to the `access policy user
             guide <https://cloud.google.com/access-context-manager/docs/overview#access-policies>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
         access_level (google.identity.accesscontextmanager.v1.access_level_pb2.AccessLevel):
-            Please also refer to the `access level user
+            Also refer to the `access level user
             guide <https://cloud.google.com/access-context-manager/docs/overview#access-levels>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
         service_perimeter (google.identity.accesscontextmanager.v1.service_perimeter_pb2.ServicePerimeter):
-            Please also refer to the `service perimeter user
+            Also refer to the `service perimeter user
             guide <https://cloud.google.com/vpc-service-controls/docs/overview>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
@@ -346,8 +346,6 @@ class Resource(proto.Message):
             hierarchy <https://cloud.google.com/iam/docs/overview#policy_hierarchy>`__.
             Example:
             ``//cloudresourcemanager.googleapis.com/projects/my_project_123``
-
-            For third-party assets, this field may be set differently.
         data (google.protobuf.struct_pb2.Struct):
             The content of the resource, in which some
             sensitive fields are removed and may not be
@@ -714,10 +712,10 @@ class ResourceSearchResult(proto.Message):
             name.
 
             This field only presents for the purpose of backward
-            compatibility. Please use the ``kms_keys`` field to retrieve
-            Cloud KMS key information. This field is available only when
-            the resource's Protobuf contains it and will only be
-            populated for `these resource
+            compatibility. Use the ``kms_keys`` field to retrieve Cloud
+            KMS key information. This field is available only when the
+            resource's Protobuf contains it and will only be populated
+            for `these resource
             types <https://cloud.google.com/asset-inventory/docs/legacy-field-names#resource_types_with_the_to_be_deprecated_kmskey_field>`__
             for backward compatible purposes.
 
@@ -799,7 +797,7 @@ class ResourceSearchResult(proto.Message):
             provided by the corresponding Google Cloud service (e.g.,
             Compute Engine). see `API references and supported
             searchable
-            attributes <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__
+            attributes <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
             to see which fields are included.
 
             You can search values of these fields through free text
@@ -849,7 +847,7 @@ class ResourceSearchResult(proto.Message):
             types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#supported_relationship_types>`__.
         tag_keys (MutableSequence[str]):
             This field is only present for the purpose of backward
-            compatibility. Please use the ``tags`` field instead.
+            compatibility. Use the ``tags`` field instead.
 
             TagKey namespaced names, in the format of
             {ORG_ID}/{TAG_KEY_SHORT_NAME}. To search against the
@@ -866,7 +864,7 @@ class ResourceSearchResult(proto.Message):
                -  ``env``
         tag_values (MutableSequence[str]):
             This field is only present for the purpose of backward
-            compatibility. Please use the ``tags`` field instead.
+            compatibility. Use the ``tags`` field instead.
 
             TagValue namespaced names, in the format of
             {ORG_ID}/{TAG_KEY_SHORT_NAME}/{TAG_VALUE_SHORT_NAME}. To
@@ -884,7 +882,7 @@ class ResourceSearchResult(proto.Message):
                -  ``prod``
         tag_value_ids (MutableSequence[str]):
             This field is only present for the purpose of backward
-            compatibility. Please use the ``tags`` field instead.
+            compatibility. Use the ``tags`` field instead.
 
             TagValue IDs, in the format of tagValues/{TAG_VALUE_ID}. To
             search against the ``tagValueIds``:
@@ -948,12 +946,7 @@ class ResourceSearchResult(proto.Message):
             The actual content of Security Command Center security marks
             associated with the asset.
 
-            Note that both staging & prod SecurityMarks are attached on
-            prod resources. In CAS preprod/prod, both staging & prod
-            SecurityMarks are ingested and returned in the following
-            ``security_marks`` map. In that case, the prefix "staging."
-            will be added to the keys of all the staging marks. To
-            search against SCC SecurityMarks field:
+            To search against SCC SecurityMarks field:
 
             -  Use a field query:
 
@@ -1107,7 +1100,7 @@ class VersionedResource(proto.Message):
 
             You can find the resource definition for each supported
             resource type in this table:
-            ``https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types``
+            ``https://cloud.google.com/asset-inventory/docs/supported-asset-types``
     """
 
     version: str = proto.Field(
@@ -1134,7 +1127,7 @@ class AttachedResource(proto.Message):
 
             You can find the supported attached asset types of each
             resource in this table:
-            ``https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types``
+            ``https://cloud.google.com/asset-inventory/docs/supported-asset-types``
         versioned_resources (MutableSequence[google.cloud.asset_v1.types.VersionedResource]):
             Versioned resource representations of this
             attached resource. This is repeated because

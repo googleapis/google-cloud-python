@@ -1114,37 +1114,35 @@ class SearchAllResourcesRequest(proto.Message):
                a label ``env``.
             -  ``tagKeys:env`` to find Google Cloud resources that have
                directly attached tags where the
-               ```TagKey`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys#resource:-tagkey>`__
-               .\ ``namespacedName`` contains ``env``.
+               ```TagKey.namespacedName`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys#resource:-tagkey>`__
+               contains ``env``.
             -  ``tagValues:prod*`` to find Google Cloud resources that
                have directly attached tags where the
-               ```TagValue`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
-               .\ ``namespacedName`` contains a word prefixed by
-               ``prod``.
+               ```TagValue.namespacedName`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
+               contains a word prefixed by ``prod``.
             -  ``tagValueIds=tagValues/123`` to find Google Cloud
                resources that have directly attached tags where the
-               ```TagValue`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
-               .\ ``name`` is exactly ``tagValues/123``.
+               ```TagValue.name`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
+               is exactly ``tagValues/123``.
             -  ``effectiveTagKeys:env`` to find Google Cloud resources
                that have directly attached or inherited tags where the
-               ```TagKey`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys#resource:-tagkey>`__
-               .\ ``namespacedName`` contains ``env``.
+               ```TagKey.namespacedName`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys#resource:-tagkey>`__
+               contains ``env``.
             -  ``effectiveTagValues:prod*`` to find Google Cloud
                resources that have directly attached or inherited tags
                where the
-               ```TagValue`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
-               .\ ``namespacedName`` contains a word prefixed by
-               ``prod``.
+               ```TagValue.namespacedName`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
+               contains a word prefixed by ``prod``.
             -  ``effectiveTagValueIds=tagValues/123`` to find Google
                Cloud resources that have directly attached or inherited
                tags where the
-               ```TagValue`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
-               .\ ``name`` is exactly ``tagValues/123``.
+               ```TagValue.name`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
+               is exactly ``tagValues/123``.
             -  ``kmsKey:key`` to find Google Cloud resources encrypted
                with a customer-managed encryption key whose name
-               contains ``key`` as a word. This field is deprecated.
-               Please use the ``kmsKeys`` field to retrieve Cloud KMS
-               key information.
+               contains ``key`` as a word. This field is deprecated. Use
+               the ``kmsKeys`` field to retrieve Cloud KMS key
+               information.
             -  ``kmsKeys:key`` to find Google Cloud resources encrypted
                with customer-managed encryption keys whose name contains
                the word ``key``.
@@ -1159,6 +1157,11 @@ class SearchAllResourcesRequest(proto.Message):
                with ``instance-group-1`` in the Compute Engine instance
                group resource name, for relationship type
                ``INSTANCE_TO_INSTANCEGROUP``.
+            -  ``sccSecurityMarks.key=value`` to find Cloud resources
+               that are attached with security marks whose key is
+               ``key`` and value is ``value``.
+            -  ``sccSecurityMarks.key:*`` to find Cloud resources that
+               are attached with security marks whose key is ``key``.
             -  ``state:ACTIVE`` to find Google Cloud resources whose
                state contains ``ACTIVE`` as a word.
             -  ``NOT state:ACTIVE`` to find Google Cloud resources whose
@@ -1183,7 +1186,7 @@ class SearchAllResourcesRequest(proto.Message):
         asset_types (MutableSequence[str]):
             Optional. A list of asset types that this request searches
             for. If empty, it will search all the `searchable asset
-            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
+            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__.
 
             Regular expressions are also supported. For example:
 
@@ -1409,7 +1412,7 @@ class SearchAllIamPoliciesRequest(proto.Message):
             Optional. A list of asset types that the IAM policies are
             attached to. If empty, it will search the IAM policies that
             are attached to all the `searchable asset
-            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
+            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__.
 
             Regular expressions are also supported. For example:
 
@@ -1803,8 +1806,8 @@ class AnalyzeIamPolicyRequest(proto.Message):
             If both ``analysis_query`` and ``saved_analysis_query`` are
             provided, they will be merged together with the
             ``saved_analysis_query`` as base and the ``analysis_query``
-            as overrides. For more details of the merge behavior, please
-            refer to the
+            as overrides. For more details of the merge behavior, refer
+            to the
             `MergeFrom <https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.message#Message.MergeFrom.details>`__
             page.
 
@@ -2084,8 +2087,8 @@ class AnalyzeIamPolicyLongrunningRequest(proto.Message):
             If both ``analysis_query`` and ``saved_analysis_query`` are
             provided, they will be merged together with the
             ``saved_analysis_query`` as base and the ``analysis_query``
-            as overrides. For more details of the merge behavior, please
-            refer to the
+            as overrides. For more details of the merge behavior, refer
+            to the
             `MergeFrom <https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.message#Message.MergeFrom.details>`__
             doc.
 
@@ -2960,7 +2963,7 @@ class BatchGetEffectiveIamPoliciesRequest(proto.Message):
             Required. The names refer to the [full_resource_names]
             (https://cloud.google.com/asset-inventory/docs/resource-name-format)
             of `searchable asset
-            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
+            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__.
             A maximum of 20 resources' effective policies can be
             retrieved in a batch.
     """
@@ -3514,13 +3517,17 @@ class AnalyzeOrgPoliciesRequest(proto.Message):
         filter (str):
             The expression to filter
             [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results].
-            The only supported field is
-            ``consolidated_policy.attached_resource``, and the only
-            supported operator is ``=``.
+            Filtering is currently available for bare literal values and
+            the following fields:
 
-            Example:
+            -  consolidated_policy.attached_resource
+            -  consolidated_policy.rules.enforce
+
+            When filtering by a specific field, the only supported
+            operator is ``=``. For example, filtering by
             consolidated_policy.attached_resource="//cloudresourcemanager.googleapis.com/folders/001"
-            will return the org policy results of"folders/001".
+            will return all the Organization Policy results attached to
+            "folders/001".
         page_size (int):
             The maximum number of items to return per page. If
             unspecified,
@@ -3647,13 +3654,18 @@ class AnalyzeOrgPolicyGovernedContainersRequest(proto.Message):
             only contains organization policies for the
             provided constraint.
         filter (str):
-            The expression to filter the governed containers in result.
-            The only supported field is ``parent``, and the only
-            supported operator is ``=``.
+            The expression to filter
+            [AnalyzeOrgPolicyGovernedContainersResponse.governed_containers][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.governed_containers].
+            Filtering is currently available for bare literal values and
+            the following fields:
 
-            Example:
+            -  parent
+            -  consolidated_policy.rules.enforce
+
+            When filtering by a specific field, the only supported
+            operator is ``=``. For example, filtering by
             parent="//cloudresourcemanager.googleapis.com/folders/001"
-            will return all containers under "folders/001".
+            will return all the containers under "folders/001".
         page_size (int):
             The maximum number of items to return per page. If
             unspecified,
@@ -3797,22 +3809,38 @@ class AnalyzeOrgPolicyGovernedAssetsRequest(proto.Message):
             contains analyzed organization policies for the
             provided constraint.
         filter (str):
-            The expression to filter the governed assets in result. The
-            only supported fields for governed resources are
-            ``governed_resource.project`` and
-            ``governed_resource.folders``. The only supported fields for
-            governed iam policies are ``governed_iam_policy.project``
-            and ``governed_iam_policy.folders``. The only supported
-            operator is ``=``.
+            The expression to filter
+            [AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets].
 
-            Example 1: governed_resource.project="projects/12345678"
-            filter will return all governed resources under
-            projects/12345678 including the project ifself, if
-            applicable.
+            For governed resources, filtering is currently available for
+            bare literal values and the following fields:
 
-            Example 2: governed_iam_policy.folders="folders/12345678"
-            filter will return all governed iam policies under
-            folders/12345678, if applicable.
+            -  governed_resource.project
+            -  governed_resource.folders
+            -  consolidated_policy.rules.enforce When filtering by
+               ``governed_resource.project`` or
+               ``consolidated_policy.rules.enforce``, the only supported
+               operator is ``=``. When filtering by
+               ``governed_resource.folders``, the supported operators
+               are ``=`` and ``:``. For example, filtering by
+               ``governed_resource.project="projects/12345678"`` will
+               return all the governed resources under
+               "projects/12345678", including the project itself if
+               applicable.
+
+            For governed IAM policies, filtering is currently available
+            for bare literal values and the following fields:
+
+            -  governed_iam_policy.project
+            -  governed_iam_policy.folders
+            -  consolidated_policy.rules.enforce When filtering by
+               ``governed_iam_policy.project`` or
+               ``consolidated_policy.rules.enforce``, the only supported
+               operator is ``=``. When filtering by
+               ``governed_iam_policy.folders``, the supported operators
+               are ``=`` and ``:``. For example, filtering by
+               ``governed_iam_policy.folders:"folders/12345678"`` will
+               return all the governed IAM policies under "folders/001".
         page_size (int):
             The maximum number of items to return per page. If
             unspecified,
