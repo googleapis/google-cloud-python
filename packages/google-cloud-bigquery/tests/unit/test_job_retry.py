@@ -20,6 +20,7 @@ import pytest
 
 import google.api_core.exceptions
 import google.api_core.retry
+import freezegun
 
 from .helpers import make_connection
 
@@ -156,69 +157,63 @@ def test_disable_retry_failed_jobs(sleep, client, job_retry_on_query):
     assert len(sleep.mock_calls) == 0
 
 
-@mock.patch("google.api_core.retry.datetime_helpers")
 @mock.patch("time.sleep")
-def test_retry_failed_jobs_after_retry_failed(sleep, datetime_helpers, client):
+def test_retry_failed_jobs_after_retry_failed(sleep, client):
     """
     If at first you don't succeed, maybe you will later. :)
     """
     conn = client._connection = make_connection()
 
-    datetime_helpers.utcnow.return_value = datetime.datetime(2021, 7, 29, 10, 43, 2)
+    with freezegun.freeze_time("2024-01-01 00:00:00") as frozen_datetime:
+        err = dict(reason="rateLimitExceeded")
 
-    err = dict(reason="rateLimitExceeded")
-
-    def api_request(method, path, query_params=None, data=None, **kw):
-        calls = sleep.mock_calls
-        if calls:
-            datetime_helpers.utcnow.return_value += datetime.timedelta(
-                seconds=calls[-1][1][0]
-            )
-        response = dict(status=dict(state="DONE", errors=[err], errorResult=err))
-        response["jobReference"] = data["jobReference"]
-        return response
-
-    conn.api_request.side_effect = api_request
-
-    job = client.query("select 1")
-    orig_job_id = job.job_id
-
-    with pytest.raises(google.api_core.exceptions.RetryError):
-        job.result()
-
-    # We never got a successful job, so the job id never changed:
-    assert job.job_id == orig_job_id
-
-    # We failed because we couldn't succeed after 120 seconds.
-    # But we can try again:
-    err2 = dict(reason="backendError")  # We also retry on this
-    responses = [
-        dict(status=dict(state="DONE", errors=[err2], errorResult=err2)),
-        dict(status=dict(state="DONE", errors=[err], errorResult=err)),
-        dict(status=dict(state="DONE", errors=[err2], errorResult=err2)),
-        dict(status=dict(state="DONE")),
-        dict(rows=[{"f": [{"v": "1"}]}], totalRows="1"),
-    ]
-
-    def api_request(method, path, query_params=None, data=None, **kw):
-        calls = sleep.mock_calls
-        datetime_helpers.utcnow.return_value += datetime.timedelta(
-            seconds=calls[-1][1][0]
-        )
-        response = responses.pop(0)
-        if data:
+        def api_request(method, path, query_params=None, data=None, **kw):
+            calls = sleep.mock_calls
+            if calls:
+                frozen_datetime.tick(delta=datetime.timedelta(seconds=calls[-1][1][0]))
+            response = dict(status=dict(state="DONE", errors=[err], errorResult=err))
             response["jobReference"] = data["jobReference"]
-        else:
-            response["jobReference"] = dict(
-                jobId=path.split("/")[-1], projectId="PROJECT"
-            )
-        return response
+            return response
 
-    conn.api_request.side_effect = api_request
-    result = job.result()
-    assert result.total_rows == 1
-    assert not responses  # We made all the calls we expected to.
-    assert job.job_id != orig_job_id
+        conn.api_request.side_effect = api_request
+
+        job = client.query("select 1")
+        orig_job_id = job.job_id
+
+        with pytest.raises(google.api_core.exceptions.RetryError):
+            job.result()
+
+        # We never got a successful job, so the job id never changed:
+        assert job.job_id == orig_job_id
+
+        # We failed because we couldn't succeed after 120 seconds.
+        # But we can try again:
+        err2 = dict(reason="backendError")  # We also retry on this
+        responses = [
+            dict(status=dict(state="DONE", errors=[err2], errorResult=err2)),
+            dict(status=dict(state="DONE", errors=[err], errorResult=err)),
+            dict(status=dict(state="DONE", errors=[err2], errorResult=err2)),
+            dict(status=dict(state="DONE")),
+            dict(rows=[{"f": [{"v": "1"}]}], totalRows="1"),
+        ]
+
+        def api_request(method, path, query_params=None, data=None, **kw):
+            calls = sleep.mock_calls
+            frozen_datetime.tick(delta=datetime.timedelta(seconds=calls[-1][1][0]))
+            response = responses.pop(0)
+            if data:
+                response["jobReference"] = data["jobReference"]
+            else:
+                response["jobReference"] = dict(
+                    jobId=path.split("/")[-1], projectId="PROJECT"
+                )
+            return response
+
+        conn.api_request.side_effect = api_request
+        result = job.result()
+        assert result.total_rows == 1
+        assert not responses  # We made all the calls we expected to.
+        assert job.job_id != orig_job_id
 
 
 def test_raises_on_job_retry_on_query_with_non_retryable_jobs(client):
