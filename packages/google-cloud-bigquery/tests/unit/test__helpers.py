@@ -15,6 +15,7 @@
 import base64
 import datetime
 import decimal
+import json
 import unittest
 
 import mock
@@ -71,9 +72,20 @@ class Test_json_from_json(unittest.TestCase):
         with self.assertRaises(TypeError):
             self._call_fut(None, _Field("REQUIRED"))
 
+    def test_w_json_field(self):
+        data_field = _Field("REQUIRED", "data", "JSON")
+
+        value = json.dumps(
+            {"v": {"key": "value"}},
+        )
+
+        expected_output = {"v": {"key": "value"}}
+        coerced_output = self._call_fut(value, data_field)
+        self.assertEqual(coerced_output, expected_output)
+
     def test_w_string_value(self):
-        coerced = self._call_fut('{"foo": true}', object())
-        self.assertEqual(coerced, {"foo": True})
+        coerced = self._call_fut('"foo"', object())
+        self.assertEqual(coerced, "foo")
 
 
 class Test_float_from_json(unittest.TestCase):
