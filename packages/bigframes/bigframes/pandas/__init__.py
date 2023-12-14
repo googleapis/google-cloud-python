@@ -18,6 +18,7 @@ from __future__ import annotations
 
 from collections import namedtuple
 import inspect
+import sys
 import typing
 from typing import (
     Any,
@@ -657,6 +658,9 @@ get_global_session = global_session.get_global_session
 close_session = global_session.close_session
 reset_session = global_session.close_session
 
+# SQL Compilation uses recursive algorithms on deep trees
+# 10M tree depth should be sufficient to generate any sql that is under bigquery limit
+sys.setrecursionlimit(max(10000000, sys.getrecursionlimit()))
 
 # Use __all__ to let type checkers know what is part of the public API.
 __all___ = [

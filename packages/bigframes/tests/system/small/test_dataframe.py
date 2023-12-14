@@ -3667,6 +3667,13 @@ def test_df_dot_operator_series(
     )
 
 
+def test_recursion_limit(scalars_df_index):
+    scalars_df_index = scalars_df_index[["int64_too", "int64_col", "float64_col"]]
+    for i in range(400):
+        scalars_df_index = scalars_df_index + 4
+    scalars_df_index.to_pandas()
+
+
 def test_to_pandas_downsampling_option_override(session):
     df = session.read_gbq("bigframes-dev.bigframes_tests_sys.batting")
     download_size = 1
