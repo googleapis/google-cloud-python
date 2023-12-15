@@ -34,13 +34,18 @@ __protobuf__ = proto.module(
         "DeleteAwsClusterRequest",
         "CreateAwsNodePoolRequest",
         "UpdateAwsNodePoolRequest",
+        "RollbackAwsNodePoolUpdateRequest",
         "GetAwsNodePoolRequest",
         "ListAwsNodePoolsRequest",
         "ListAwsNodePoolsResponse",
         "DeleteAwsNodePoolRequest",
+        "GetAwsOpenIdConfigRequest",
+        "GetAwsJsonWebKeysRequest",
         "GetAwsServerConfigRequest",
         "GenerateAwsAccessTokenRequest",
         "GenerateAwsAccessTokenResponse",
+        "GenerateAwsClusterAgentTokenRequest",
+        "GenerateAwsClusterAgentTokenResponse",
     },
 )
 
@@ -120,6 +125,8 @@ class UpdateAwsClusterRequest(proto.Message):
             -  ``annotations``.
             -  ``control_plane.version``.
             -  ``authorization.admin_users``.
+            -  ``authorization.admin_groups``.
+            -  ``binary_authorization.evaluation_mode``.
             -  ``control_plane.aws_services_authentication.role_arn``.
             -  ``control_plane.aws_services_authentication.role_session_name``.
             -  ``control_plane.config_encryption.kms_key_arn``.
@@ -131,6 +138,7 @@ class UpdateAwsClusterRequest(proto.Message):
             -  ``control_plane.root_volume.size_gib``.
             -  ``control_plane.root_volume.volume_type``.
             -  ``control_plane.root_volume.iops``.
+            -  ``control_plane.root_volume.throughput``.
             -  ``control_plane.root_volume.kms_key_arn``.
             -  ``control_plane.ssh_config``.
             -  ``control_plane.ssh_config.ec2_key_pair``.
@@ -139,6 +147,7 @@ class UpdateAwsClusterRequest(proto.Message):
             -  ``logging_config.component_config.enable_components``.
             -  ``control_plane.tags``.
             -  ``monitoring_config.managed_prometheus_config.enabled``.
+            -  ``networking.per_node_pool_sg_rules_disabled``.
     """
 
     aws_cluster: aws_resources.AwsCluster = proto.Field(
@@ -280,6 +289,12 @@ class DeleteAwsClusterRequest(proto.Message):
             [Operation][google.longrunning.Operation] will be returned.
 
             Useful for idempotent deletion.
+        ignore_errors (bool):
+            Optional. If set to true, the deletion of
+            [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster]
+            resource will succeed even if errors occur during deleting
+            in cluster resources. Using this parameter may result in
+            orphaned resources in the cluster.
         etag (str):
             The current etag of the
             [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster].
@@ -303,6 +318,10 @@ class DeleteAwsClusterRequest(proto.Message):
     allow_missing: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    ignore_errors: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
     etag: str = proto.Field(
         proto.STRING,
@@ -388,6 +407,7 @@ class UpdateAwsNodePoolRequest(proto.Message):
             -  ``config.config_encryption.kms_key_arn``.
             -  ``config.security_group_ids``.
             -  ``config.root_volume.iops``.
+            -  ``config.root_volume.throughput``.
             -  ``config.root_volume.kms_key_arn``.
             -  ``config.root_volume.volume_type``.
             -  ``config.root_volume.size_gib``.
@@ -403,6 +423,13 @@ class UpdateAwsNodePoolRequest(proto.Message):
             -  ``config.autoscaling_metrics_collection``.
             -  ``config.autoscaling_metrics_collection.granularity``.
             -  ``config.autoscaling_metrics_collection.metrics``.
+            -  ``config.instance_type``.
+            -  ``management.auto_repair``.
+            -  ``management``.
+            -  ``update_settings``.
+            -  ``update_settings.surge_settings``.
+            -  ``update_settings.surge_settings.max_surge``.
+            -  ``update_settings.surge_settings.max_unavailable``.
     """
 
     aws_node_pool: aws_resources.AwsNodePool = proto.Field(
@@ -418,6 +445,38 @@ class UpdateAwsNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class RollbackAwsNodePoolUpdateRequest(proto.Message):
+    r"""Request message for ``AwsClusters.RollbackAwsNodePoolUpdate``
+    method.
+
+    Attributes:
+        name (str):
+            Required. The name of the
+            [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
+            resource to rollback.
+
+            ``AwsNodePool`` names are formatted as
+            ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>/awsNodePools/<node-pool-id>``.
+
+            See `Resource
+            Names <https://cloud.google.com/apis/design/resource_names>`__
+            for more details on Google Cloud resource names.
+        respect_pdb (bool):
+            Optional. Option for rollback to ignore the
+            PodDisruptionBudget when draining the node pool
+            nodes. Default value is false.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    respect_pdb: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -544,6 +603,12 @@ class DeleteAwsNodePoolRequest(proto.Message):
             [Operation][google.longrunning.Operation] will be returned.
 
             Useful for idempotent deletion.
+        ignore_errors (bool):
+            Optional. If set to true, the deletion of
+            [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
+            resource will succeed even if errors occur during deleting
+            in node pool resources. Using this parameter may result in
+            orphaned resources in the node pool.
         etag (str):
             The current ETag of the
             [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool].
@@ -568,9 +633,52 @@ class DeleteAwsNodePoolRequest(proto.Message):
         proto.BOOL,
         number=3,
     )
+    ignore_errors: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
     etag: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class GetAwsOpenIdConfigRequest(proto.Message):
+    r"""GetAwsOpenIdConfigRequest gets the OIDC discovery document
+    for the cluster. See the OpenID Connect Discovery 1.0
+    specification for details.
+
+    Attributes:
+        aws_cluster (str):
+            Required. The AwsCluster, which owns the OIDC
+            discovery document. Format:
+
+            projects/{project}/locations/{location}/awsClusters/{cluster}
+    """
+
+    aws_cluster: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetAwsJsonWebKeysRequest(proto.Message):
+    r"""GetAwsJsonWebKeysRequest gets the public component of the keys used
+    by the cluster to sign token requests. This will be the jwks_uri for
+    the discover document returned by getOpenIDConfig. See the OpenID
+    Connect Discovery 1.0 specification for details.
+
+    Attributes:
+        aws_cluster (str):
+            Required. The AwsCluster, which owns the
+            JsonWebKeys. Format:
+
+            projects/{project}/locations/{location}/awsClusters/{cluster}
+    """
+
+    aws_cluster: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -641,6 +749,100 @@ class GenerateAwsAccessTokenResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class GenerateAwsClusterAgentTokenRequest(proto.Message):
+    r"""
+
+    Attributes:
+        aws_cluster (str):
+            Required.
+        subject_token (str):
+            Required.
+        subject_token_type (str):
+            Required.
+        version (str):
+            Required.
+        node_pool_id (str):
+            Optional.
+        grant_type (str):
+            Optional.
+        audience (str):
+            Optional.
+        scope (str):
+            Optional.
+        requested_token_type (str):
+            Optional.
+        options (str):
+            Optional.
+    """
+
+    aws_cluster: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subject_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    subject_token_type: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    version: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    node_pool_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    grant_type: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    audience: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    scope: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    requested_token_type: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    options: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+
+
+class GenerateAwsClusterAgentTokenResponse(proto.Message):
+    r"""
+
+    Attributes:
+        access_token (str):
+
+        expires_in (int):
+
+        token_type (str):
+
+    """
+
+    access_token: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expires_in: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    token_type: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

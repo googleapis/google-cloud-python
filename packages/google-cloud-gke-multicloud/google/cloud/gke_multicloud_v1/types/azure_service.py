@@ -38,6 +38,8 @@ __protobuf__ = proto.module(
         "ListAzureNodePoolsRequest",
         "ListAzureNodePoolsResponse",
         "DeleteAzureNodePoolRequest",
+        "GetAzureOpenIdConfigRequest",
+        "GetAzureJsonWebKeysRequest",
         "GetAzureServerConfigRequest",
         "CreateAzureClientRequest",
         "GetAzureClientRequest",
@@ -46,6 +48,8 @@ __protobuf__ = proto.module(
         "DeleteAzureClientRequest",
         "GenerateAzureAccessTokenRequest",
         "GenerateAzureAccessTokenResponse",
+        "GenerateAzureClusterAgentTokenRequest",
+        "GenerateAzureClusterAgentTokenResponse",
     },
 )
 
@@ -127,6 +131,7 @@ class UpdateAzureClusterRequest(proto.Message):
             -  ``control_plane.vm_size``.
             -  ``annotations``.
             -  ``authorization.admin_users``.
+            -  ``authorization.admin_groups``.
             -  ``control_plane.root_volume.size_gib``.
             -  ``azure_services_authentication``.
             -  ``azure_services_authentication.tenant_id``.
@@ -253,7 +258,7 @@ class ListAzureClustersResponse(proto.Message):
 
 
 class DeleteAzureClusterRequest(proto.Message):
-    r"""Request message for ``Clusters.DeleteAzureCluster`` method.
+    r"""Request message for ``AzureClusters.DeleteAzureCluster`` method.
 
     Attributes:
         name (str):
@@ -317,8 +322,8 @@ class CreateAzureNodePoolRequest(proto.Message):
             [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
             resource where this node pool will be created.
 
-            Location names are formatted as
-            ``projects/<project-id>/locations/<region>``.
+            ``AzureCluster`` names are formatted as
+            ``projects/<project-id>/locations/<region>/azureClusters/<cluster-id>``.
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
@@ -385,6 +390,8 @@ class UpdateAzureNodePoolRequest(proto.Message):
             -  ``autoscaling.min_node_count``.
             -  ``autoscaling.max_node_count``.
             -  ``config.ssh_config.authorized_key``.
+            -  ``management.auto_repair``.
+            -  ``management``.
     """
 
     azure_node_pool: azure_resources.AzureNodePool = proto.Field(
@@ -503,7 +510,7 @@ class ListAzureNodePoolsResponse(proto.Message):
 
 
 class DeleteAzureNodePoolRequest(proto.Message):
-    r"""Delete message for ``AzureClusters.DeleteAzureNodePool`` method.
+    r"""Request message for ``AzureClusters.DeleteAzureNodePool`` method.
 
     Attributes:
         name (str):
@@ -555,6 +562,45 @@ class DeleteAzureNodePoolRequest(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class GetAzureOpenIdConfigRequest(proto.Message):
+    r"""GetAzureOpenIdConfigRequest gets the OIDC discovery document
+    for the cluster. See the OpenID Connect Discovery 1.0
+    specification for details.
+
+    Attributes:
+        azure_cluster (str):
+            Required. The AzureCluster, which owns the
+            OIDC discovery document. Format:
+
+            projects/<project-id>/locations/<region>/azureClusters/<cluster-id>
+    """
+
+    azure_cluster: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetAzureJsonWebKeysRequest(proto.Message):
+    r"""GetAzureJsonWebKeysRequest gets the public component of the keys
+    used by the cluster to sign token requests. This will be the
+    jwks_uri for the discover document returned by getOpenIDConfig. See
+    the OpenID Connect Discovery 1.0 specification for details.
+
+    Attributes:
+        azure_cluster (str):
+            Required. The AzureCluster, which owns the
+            JsonWebKeys. Format:
+
+            projects/<project-id>/locations/<region>/azureClusters/<cluster-id>
+    """
+
+    azure_cluster: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -788,7 +834,7 @@ class GenerateAzureAccessTokenRequest(proto.Message):
             resource to authenticate to.
 
             ``AzureCluster`` names are formatted as
-            ``projects/<project-id>/locations/<region>/AzureClusters/<cluster-id>``.
+            ``projects/<project-id>/locations/<region>/azureClusters/<cluster-id>``.
 
             See `Resource
             Names <https://cloud.google.com/apis/design/resource_names>`__
@@ -822,6 +868,100 @@ class GenerateAzureAccessTokenResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class GenerateAzureClusterAgentTokenRequest(proto.Message):
+    r"""
+
+    Attributes:
+        azure_cluster (str):
+            Required.
+        subject_token (str):
+            Required.
+        subject_token_type (str):
+            Required.
+        version (str):
+            Required.
+        node_pool_id (str):
+            Optional.
+        grant_type (str):
+            Optional.
+        audience (str):
+            Optional.
+        scope (str):
+            Optional.
+        requested_token_type (str):
+            Optional.
+        options (str):
+            Optional.
+    """
+
+    azure_cluster: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subject_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    subject_token_type: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    version: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    node_pool_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    grant_type: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    audience: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    scope: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    requested_token_type: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    options: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+
+
+class GenerateAzureClusterAgentTokenResponse(proto.Message):
+    r"""
+
+    Attributes:
+        access_token (str):
+
+        expires_in (int):
+
+        token_type (str):
+
+    """
+
+    access_token: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expires_in: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    token_type: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

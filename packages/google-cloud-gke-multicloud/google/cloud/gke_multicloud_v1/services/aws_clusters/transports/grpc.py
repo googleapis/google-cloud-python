@@ -397,6 +397,38 @@ class AwsClustersGrpcTransport(AwsClustersTransport):
         return self._stubs["delete_aws_cluster"]
 
     @property
+    def generate_aws_cluster_agent_token(
+        self,
+    ) -> Callable[
+        [aws_service.GenerateAwsClusterAgentTokenRequest],
+        aws_service.GenerateAwsClusterAgentTokenResponse,
+    ]:
+        r"""Return a callable for the generate aws cluster agent
+        token method over gRPC.
+
+        Generates an access token for a cluster agent.
+
+        Returns:
+            Callable[[~.GenerateAwsClusterAgentTokenRequest],
+                    ~.GenerateAwsClusterAgentTokenResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_aws_cluster_agent_token" not in self._stubs:
+            self._stubs[
+                "generate_aws_cluster_agent_token"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AwsClusters/GenerateAwsClusterAgentToken",
+                request_serializer=aws_service.GenerateAwsClusterAgentTokenRequest.serialize,
+                response_deserializer=aws_service.GenerateAwsClusterAgentTokenResponse.deserialize,
+            )
+        return self._stubs["generate_aws_cluster_agent_token"]
+
+    @property
     def generate_aws_access_token(
         self,
     ) -> Callable[
@@ -485,6 +517,41 @@ class AwsClustersGrpcTransport(AwsClustersTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_aws_node_pool"]
+
+    @property
+    def rollback_aws_node_pool_update(
+        self,
+    ) -> Callable[
+        [aws_service.RollbackAwsNodePoolUpdateRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the rollback aws node pool update method over gRPC.
+
+        Rolls back a previously aborted or failed
+        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool] update
+        request. Makes no changes if the last update request
+        successfully finished. If an update request is in progress, you
+        cannot rollback the update. You must first cancel or let it
+        finish unsuccessfully before you can rollback.
+
+        Returns:
+            Callable[[~.RollbackAwsNodePoolUpdateRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "rollback_aws_node_pool_update" not in self._stubs:
+            self._stubs[
+                "rollback_aws_node_pool_update"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AwsClusters/RollbackAwsNodePoolUpdate",
+                request_serializer=aws_service.RollbackAwsNodePoolUpdateRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["rollback_aws_node_pool_update"]
 
     @property
     def get_aws_node_pool(
@@ -576,6 +643,64 @@ class AwsClustersGrpcTransport(AwsClustersTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_aws_node_pool"]
+
+    @property
+    def get_aws_open_id_config(
+        self,
+    ) -> Callable[
+        [aws_service.GetAwsOpenIdConfigRequest], aws_resources.AwsOpenIdConfig
+    ]:
+        r"""Return a callable for the get aws open id config method over gRPC.
+
+        Gets the OIDC discovery document for the cluster. See the
+        `OpenID Connect Discovery 1.0
+        specification <https://openid.net/specs/openid-connect-discovery-1_0.html>`__
+        for details.
+
+        Returns:
+            Callable[[~.GetAwsOpenIdConfigRequest],
+                    ~.AwsOpenIdConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_aws_open_id_config" not in self._stubs:
+            self._stubs["get_aws_open_id_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsOpenIdConfig",
+                request_serializer=aws_service.GetAwsOpenIdConfigRequest.serialize,
+                response_deserializer=aws_resources.AwsOpenIdConfig.deserialize,
+            )
+        return self._stubs["get_aws_open_id_config"]
+
+    @property
+    def get_aws_json_web_keys(
+        self,
+    ) -> Callable[[aws_service.GetAwsJsonWebKeysRequest], aws_resources.AwsJsonWebKeys]:
+        r"""Return a callable for the get aws json web keys method over gRPC.
+
+        Gets the public component of the cluster signing keys
+        in JSON Web Key format.
+
+        Returns:
+            Callable[[~.GetAwsJsonWebKeysRequest],
+                    ~.AwsJsonWebKeys]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_aws_json_web_keys" not in self._stubs:
+            self._stubs["get_aws_json_web_keys"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsJsonWebKeys",
+                request_serializer=aws_service.GetAwsJsonWebKeysRequest.serialize,
+                response_deserializer=aws_resources.AwsJsonWebKeys.deserialize,
+            )
+        return self._stubs["get_aws_json_web_keys"]
 
     @property
     def get_aws_server_config(

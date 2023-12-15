@@ -882,7 +882,6 @@ class AzureClustersAsyncClient:
                 azure_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
                 azure_cluster.control_plane.version = "version_value"
                 azure_cluster.control_plane.ssh_config.authorized_key = "authorized_key_value"
-                azure_cluster.authorization.admin_users.username = "username_value"
                 azure_cluster.fleet.project = "project_value"
 
                 request = gke_multicloud_v1.CreateAzureClusterRequest(
@@ -1049,7 +1048,6 @@ class AzureClustersAsyncClient:
                 azure_cluster.networking.service_address_cidr_blocks = ['service_address_cidr_blocks_value1', 'service_address_cidr_blocks_value2']
                 azure_cluster.control_plane.version = "version_value"
                 azure_cluster.control_plane.ssh_config.authorized_key = "authorized_key_value"
-                azure_cluster.authorization.admin_users.username = "username_value"
                 azure_cluster.fleet.project = "project_value"
 
                 request = gke_multicloud_v1.UpdateAzureClusterRequest(
@@ -1090,6 +1088,7 @@ class AzureClustersAsyncClient:
                 -  ``control_plane.vm_size``.
                 -  ``annotations``.
                 -  ``authorization.admin_users``.
+                -  ``authorization.admin_groups``.
                 -  ``control_plane.root_volume.size_gib``.
                 -  ``azure_services_authentication``.
                 -  ``azure_services_authentication.tenant_id``.
@@ -1482,7 +1481,7 @@ class AzureClustersAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.gke_multicloud_v1.types.DeleteAzureClusterRequest, dict]]):
-                The request object. Request message for ``Clusters.DeleteAzureCluster``
+                The request object. Request message for ``AzureClusters.DeleteAzureCluster``
                 method.
             name (:class:`str`):
                 Required. The resource name the
@@ -1567,6 +1566,99 @@ class AzureClustersAsyncClient:
             self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=common_resources.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def generate_azure_cluster_agent_token(
+        self,
+        request: Optional[
+            Union[azure_service.GenerateAzureClusterAgentTokenRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> azure_service.GenerateAzureClusterAgentTokenResponse:
+        r"""Generates an access token for a cluster agent.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_multicloud_v1
+
+            async def sample_generate_azure_cluster_agent_token():
+                # Create a client
+                client = gke_multicloud_v1.AzureClustersAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_multicloud_v1.GenerateAzureClusterAgentTokenRequest(
+                    azure_cluster="azure_cluster_value",
+                    subject_token="subject_token_value",
+                    subject_token_type="subject_token_type_value",
+                    version="version_value",
+                )
+
+                # Make the request
+                response = await client.generate_azure_cluster_agent_token(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GenerateAzureClusterAgentTokenRequest, dict]]):
+                The request object.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.gke_multicloud_v1.types.GenerateAzureClusterAgentTokenResponse:
+
+        """
+        # Create or coerce a protobuf request object.
+        request = azure_service.GenerateAzureClusterAgentTokenRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.generate_azure_cluster_agent_token,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("azure_cluster", request.azure_cluster),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1736,8 +1828,8 @@ class AzureClustersAsyncClient:
                 [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
                 resource where this node pool will be created.
 
-                Location names are formatted as
-                ``projects/<project-id>/locations/<region>``.
+                ``AzureCluster`` names are formatted as
+                ``projects/<project-id>/locations/<region>/azureClusters/<cluster-id>``.
 
                 See `Resource
                 Names <https://cloud.google.com/apis/design/resource_names>`__
@@ -1913,6 +2005,8 @@ class AzureClustersAsyncClient:
                 -  ``autoscaling.min_node_count``.
                 -  ``autoscaling.max_node_count``.
                 -  ``config.ssh_config.authorized_key``.
+                -  ``management.auto_repair``.
+                -  ``management``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2290,8 +2384,8 @@ class AzureClustersAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.gke_multicloud_v1.types.DeleteAzureNodePoolRequest, dict]]):
-                The request object. Delete message for ``AzureClusters.DeleteAzureNodePool``
-                method.
+                The request object. Request message for
+                ``AzureClusters.DeleteAzureNodePool`` method.
             name (:class:`str`):
                 Required. The resource name the
                 [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool]
@@ -2374,6 +2468,250 @@ class AzureClustersAsyncClient:
             self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=common_resources.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_azure_open_id_config(
+        self,
+        request: Optional[
+            Union[azure_service.GetAzureOpenIdConfigRequest, dict]
+        ] = None,
+        *,
+        azure_cluster: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> azure_resources.AzureOpenIdConfig:
+        r"""Gets the OIDC discovery document for the cluster. See the
+        `OpenID Connect Discovery 1.0
+        specification <https://openid.net/specs/openid-connect-discovery-1_0.html>`__
+        for details.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_multicloud_v1
+
+            async def sample_get_azure_open_id_config():
+                # Create a client
+                client = gke_multicloud_v1.AzureClustersAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_multicloud_v1.GetAzureOpenIdConfigRequest(
+                    azure_cluster="azure_cluster_value",
+                )
+
+                # Make the request
+                response = await client.get_azure_open_id_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GetAzureOpenIdConfigRequest, dict]]):
+                The request object. GetAzureOpenIdConfigRequest gets the
+                OIDC discovery document for the cluster.
+                See the OpenID Connect Discovery 1.0
+                specification for details.
+            azure_cluster (:class:`str`):
+                Required. The AzureCluster, which
+                owns the OIDC discovery document.
+                Format:
+
+                projects/<project-id>/locations/<region>/azureClusters/<cluster-id>
+
+                This corresponds to the ``azure_cluster`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.gke_multicloud_v1.types.AzureOpenIdConfig:
+                AzureOpenIdConfig is an OIDC
+                discovery document for the cluster. See
+                the OpenID Connect Discovery 1.0
+                specification for details.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([azure_cluster])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = azure_service.GetAzureOpenIdConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if azure_cluster is not None:
+            request.azure_cluster = azure_cluster
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_azure_open_id_config,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("azure_cluster", request.azure_cluster),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_azure_json_web_keys(
+        self,
+        request: Optional[Union[azure_service.GetAzureJsonWebKeysRequest, dict]] = None,
+        *,
+        azure_cluster: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> azure_resources.AzureJsonWebKeys:
+        r"""Gets the public component of the cluster signing keys
+        in JSON Web Key format.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_multicloud_v1
+
+            async def sample_get_azure_json_web_keys():
+                # Create a client
+                client = gke_multicloud_v1.AzureClustersAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_multicloud_v1.GetAzureJsonWebKeysRequest(
+                    azure_cluster="azure_cluster_value",
+                )
+
+                # Make the request
+                response = await client.get_azure_json_web_keys(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_multicloud_v1.types.GetAzureJsonWebKeysRequest, dict]]):
+                The request object. GetAzureJsonWebKeysRequest gets the public component of
+                the keys used by the cluster to sign token requests.
+                This will be the jwks_uri for the discover document
+                returned by getOpenIDConfig. See the OpenID Connect
+                Discovery 1.0 specification for details.
+            azure_cluster (:class:`str`):
+                Required. The AzureCluster, which
+                owns the JsonWebKeys. Format:
+
+                projects/<project-id>/locations/<region>/azureClusters/<cluster-id>
+
+                This corresponds to the ``azure_cluster`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.gke_multicloud_v1.types.AzureJsonWebKeys:
+                AzureJsonWebKeys is a valid JSON Web
+                Key Set as specififed in RFC 7517.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([azure_cluster])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = azure_service.GetAzureJsonWebKeysRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if azure_cluster is not None:
+            request.azure_cluster = azure_cluster
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_azure_json_web_keys,
+            default_retry=retries.AsyncRetry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("azure_cluster", request.azure_cluster),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

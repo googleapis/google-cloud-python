@@ -2157,6 +2157,175 @@ async def test_delete_aws_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        aws_service.GenerateAwsClusterAgentTokenRequest,
+        dict,
+    ],
+)
+def test_generate_aws_cluster_agent_token(request_type, transport: str = "grpc"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_aws_cluster_agent_token), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = aws_service.GenerateAwsClusterAgentTokenResponse(
+            access_token="access_token_value",
+            expires_in=1078,
+            token_type="token_type_value",
+        )
+        response = client.generate_aws_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GenerateAwsClusterAgentTokenRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_service.GenerateAwsClusterAgentTokenResponse)
+    assert response.access_token == "access_token_value"
+    assert response.expires_in == 1078
+    assert response.token_type == "token_type_value"
+
+
+def test_generate_aws_cluster_agent_token_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_aws_cluster_agent_token), "__call__"
+    ) as call:
+        client.generate_aws_cluster_agent_token()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GenerateAwsClusterAgentTokenRequest()
+
+
+@pytest.mark.asyncio
+async def test_generate_aws_cluster_agent_token_async(
+    transport: str = "grpc_asyncio",
+    request_type=aws_service.GenerateAwsClusterAgentTokenRequest,
+):
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_aws_cluster_agent_token), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_service.GenerateAwsClusterAgentTokenResponse(
+                access_token="access_token_value",
+                expires_in=1078,
+                token_type="token_type_value",
+            )
+        )
+        response = await client.generate_aws_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GenerateAwsClusterAgentTokenRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_service.GenerateAwsClusterAgentTokenResponse)
+    assert response.access_token == "access_token_value"
+    assert response.expires_in == 1078
+    assert response.token_type == "token_type_value"
+
+
+@pytest.mark.asyncio
+async def test_generate_aws_cluster_agent_token_async_from_dict():
+    await test_generate_aws_cluster_agent_token_async(request_type=dict)
+
+
+def test_generate_aws_cluster_agent_token_field_headers():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = aws_service.GenerateAwsClusterAgentTokenRequest()
+
+    request.aws_cluster = "aws_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_aws_cluster_agent_token), "__call__"
+    ) as call:
+        call.return_value = aws_service.GenerateAwsClusterAgentTokenResponse()
+        client.generate_aws_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "aws_cluster=aws_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_generate_aws_cluster_agent_token_field_headers_async():
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = aws_service.GenerateAwsClusterAgentTokenRequest()
+
+    request.aws_cluster = "aws_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_aws_cluster_agent_token), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_service.GenerateAwsClusterAgentTokenResponse()
+        )
+        await client.generate_aws_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "aws_cluster=aws_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         aws_service.GenerateAwsAccessTokenRequest,
         dict,
     ],
@@ -2822,6 +2991,247 @@ async def test_update_aws_node_pool_flattened_error_async():
             aws_service.UpdateAwsNodePoolRequest(),
             aws_node_pool=aws_resources.AwsNodePool(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.RollbackAwsNodePoolUpdateRequest,
+        dict,
+    ],
+)
+def test_rollback_aws_node_pool_update(request_type, transport: str = "grpc"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_aws_node_pool_update), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.rollback_aws_node_pool_update(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.RollbackAwsNodePoolUpdateRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_rollback_aws_node_pool_update_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_aws_node_pool_update), "__call__"
+    ) as call:
+        client.rollback_aws_node_pool_update()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.RollbackAwsNodePoolUpdateRequest()
+
+
+@pytest.mark.asyncio
+async def test_rollback_aws_node_pool_update_async(
+    transport: str = "grpc_asyncio",
+    request_type=aws_service.RollbackAwsNodePoolUpdateRequest,
+):
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_aws_node_pool_update), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.rollback_aws_node_pool_update(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.RollbackAwsNodePoolUpdateRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_rollback_aws_node_pool_update_async_from_dict():
+    await test_rollback_aws_node_pool_update_async(request_type=dict)
+
+
+def test_rollback_aws_node_pool_update_field_headers():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = aws_service.RollbackAwsNodePoolUpdateRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_aws_node_pool_update), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.rollback_aws_node_pool_update(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_rollback_aws_node_pool_update_field_headers_async():
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = aws_service.RollbackAwsNodePoolUpdateRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_aws_node_pool_update), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.rollback_aws_node_pool_update(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_rollback_aws_node_pool_update_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_aws_node_pool_update), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.rollback_aws_node_pool_update(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_rollback_aws_node_pool_update_flattened_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rollback_aws_node_pool_update(
+            aws_service.RollbackAwsNodePoolUpdateRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rollback_aws_node_pool_update_flattened_async():
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_aws_node_pool_update), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.rollback_aws_node_pool_update(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_rollback_aws_node_pool_update_flattened_error_async():
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.rollback_aws_node_pool_update(
+            aws_service.RollbackAwsNodePoolUpdateRequest(),
+            name="name_value",
         )
 
 
@@ -3782,6 +4192,352 @@ async def test_delete_aws_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        aws_service.GetAwsOpenIdConfigRequest,
+        dict,
+    ],
+)
+def test_get_aws_open_id_config(request_type, transport: str = "grpc"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_open_id_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = aws_resources.AwsOpenIdConfig(
+            issuer="issuer_value",
+            jwks_uri="jwks_uri_value",
+            response_types_supported=["response_types_supported_value"],
+            subject_types_supported=["subject_types_supported_value"],
+            id_token_signing_alg_values_supported=[
+                "id_token_signing_alg_values_supported_value"
+            ],
+            claims_supported=["claims_supported_value"],
+            grant_types=["grant_types_value"],
+        )
+        response = client.get_aws_open_id_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsOpenIdConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_resources.AwsOpenIdConfig)
+    assert response.issuer == "issuer_value"
+    assert response.jwks_uri == "jwks_uri_value"
+    assert response.response_types_supported == ["response_types_supported_value"]
+    assert response.subject_types_supported == ["subject_types_supported_value"]
+    assert response.id_token_signing_alg_values_supported == [
+        "id_token_signing_alg_values_supported_value"
+    ]
+    assert response.claims_supported == ["claims_supported_value"]
+    assert response.grant_types == ["grant_types_value"]
+
+
+def test_get_aws_open_id_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_open_id_config), "__call__"
+    ) as call:
+        client.get_aws_open_id_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsOpenIdConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_aws_open_id_config_async(
+    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsOpenIdConfigRequest
+):
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_open_id_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_resources.AwsOpenIdConfig(
+                issuer="issuer_value",
+                jwks_uri="jwks_uri_value",
+                response_types_supported=["response_types_supported_value"],
+                subject_types_supported=["subject_types_supported_value"],
+                id_token_signing_alg_values_supported=[
+                    "id_token_signing_alg_values_supported_value"
+                ],
+                claims_supported=["claims_supported_value"],
+                grant_types=["grant_types_value"],
+            )
+        )
+        response = await client.get_aws_open_id_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsOpenIdConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_resources.AwsOpenIdConfig)
+    assert response.issuer == "issuer_value"
+    assert response.jwks_uri == "jwks_uri_value"
+    assert response.response_types_supported == ["response_types_supported_value"]
+    assert response.subject_types_supported == ["subject_types_supported_value"]
+    assert response.id_token_signing_alg_values_supported == [
+        "id_token_signing_alg_values_supported_value"
+    ]
+    assert response.claims_supported == ["claims_supported_value"]
+    assert response.grant_types == ["grant_types_value"]
+
+
+@pytest.mark.asyncio
+async def test_get_aws_open_id_config_async_from_dict():
+    await test_get_aws_open_id_config_async(request_type=dict)
+
+
+def test_get_aws_open_id_config_field_headers():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = aws_service.GetAwsOpenIdConfigRequest()
+
+    request.aws_cluster = "aws_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_open_id_config), "__call__"
+    ) as call:
+        call.return_value = aws_resources.AwsOpenIdConfig()
+        client.get_aws_open_id_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "aws_cluster=aws_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_aws_open_id_config_field_headers_async():
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = aws_service.GetAwsOpenIdConfigRequest()
+
+    request.aws_cluster = "aws_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_open_id_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_resources.AwsOpenIdConfig()
+        )
+        await client.get_aws_open_id_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "aws_cluster=aws_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GetAwsJsonWebKeysRequest,
+        dict,
+    ],
+)
+def test_get_aws_json_web_keys(request_type, transport: str = "grpc"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = aws_resources.AwsJsonWebKeys()
+        response = client.get_aws_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsJsonWebKeysRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_resources.AwsJsonWebKeys)
+
+
+def test_get_aws_json_web_keys_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_json_web_keys), "__call__"
+    ) as call:
+        client.get_aws_json_web_keys()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsJsonWebKeysRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_aws_json_web_keys_async(
+    transport: str = "grpc_asyncio", request_type=aws_service.GetAwsJsonWebKeysRequest
+):
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_resources.AwsJsonWebKeys()
+        )
+        response = await client.get_aws_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == aws_service.GetAwsJsonWebKeysRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_resources.AwsJsonWebKeys)
+
+
+@pytest.mark.asyncio
+async def test_get_aws_json_web_keys_async_from_dict():
+    await test_get_aws_json_web_keys_async(request_type=dict)
+
+
+def test_get_aws_json_web_keys_field_headers():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = aws_service.GetAwsJsonWebKeysRequest()
+
+    request.aws_cluster = "aws_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_json_web_keys), "__call__"
+    ) as call:
+        call.return_value = aws_resources.AwsJsonWebKeys()
+        client.get_aws_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "aws_cluster=aws_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_aws_json_web_keys_field_headers_async():
+    client = AwsClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = aws_service.GetAwsJsonWebKeysRequest()
+
+    request.aws_cluster = "aws_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_aws_json_web_keys), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            aws_resources.AwsJsonWebKeys()
+        )
+        await client.get_aws_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "aws_cluster=aws_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         aws_service.GetAwsServerConfigRequest,
         dict,
     ],
@@ -4057,6 +4813,7 @@ def test_create_aws_cluster_rest(request_type):
                 "service_address_cidr_blocks_value1",
                 "service_address_cidr_blocks_value2",
             ],
+            "per_node_pool_sg_rules_disabled": True,
         },
         "aws_region": "aws_region_value",
         "control_plane": {
@@ -4073,6 +4830,7 @@ def test_create_aws_cluster_rest(request_type):
                 "size_gib": 844,
                 "volume_type": 1,
                 "iops": 443,
+                "throughput": 1114,
                 "kms_key_arn": "kms_key_arn_value",
             },
             "main_volume": {},
@@ -4089,7 +4847,10 @@ def test_create_aws_cluster_rest(request_type):
             "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
             "instance_placement": {"tenancy": 1},
         },
-        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "authorization": {
+            "admin_users": [{"username": "username_value"}],
+            "admin_groups": [{"group": "group_value"}],
+        },
         "state": 1,
         "endpoint": "endpoint_value",
         "uid": "uid_value",
@@ -4108,6 +4869,7 @@ def test_create_aws_cluster_rest(request_type):
         "logging_config": {"component_config": {"enable_components": [1]}},
         "errors": [{"message": "message_value"}],
         "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+        "binary_authorization": {"evaluation_mode": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4494,6 +5256,7 @@ def test_update_aws_cluster_rest(request_type):
                 "service_address_cidr_blocks_value1",
                 "service_address_cidr_blocks_value2",
             ],
+            "per_node_pool_sg_rules_disabled": True,
         },
         "aws_region": "aws_region_value",
         "control_plane": {
@@ -4510,6 +5273,7 @@ def test_update_aws_cluster_rest(request_type):
                 "size_gib": 844,
                 "volume_type": 1,
                 "iops": 443,
+                "throughput": 1114,
                 "kms_key_arn": "kms_key_arn_value",
             },
             "main_volume": {},
@@ -4526,7 +5290,10 @@ def test_update_aws_cluster_rest(request_type):
             "config_encryption": {"kms_key_arn": "kms_key_arn_value"},
             "instance_placement": {"tenancy": 1},
         },
-        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "authorization": {
+            "admin_users": [{"username": "username_value"}],
+            "admin_groups": [{"group": "group_value"}],
+        },
         "state": 1,
         "endpoint": "endpoint_value",
         "uid": "uid_value",
@@ -4545,6 +5312,7 @@ def test_update_aws_cluster_rest(request_type):
         "logging_config": {"component_config": {"enable_components": [1]}},
         "errors": [{"message": "message_value"}],
         "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+        "binary_authorization": {"evaluation_mode": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5590,6 +6358,7 @@ def test_delete_aws_cluster_rest_required_fields(
         (
             "allow_missing",
             "etag",
+            "ignore_errors",
             "validate_only",
         )
     )
@@ -5648,6 +6417,7 @@ def test_delete_aws_cluster_rest_unset_required_fields():
             (
                 "allowMissing",
                 "etag",
+                "ignoreErrors",
                 "validateOnly",
             )
         )
@@ -5796,6 +6566,258 @@ def test_delete_aws_cluster_rest_flattened_error(transport: str = "rest"):
 
 
 def test_delete_aws_cluster_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GenerateAwsClusterAgentTokenRequest,
+        dict,
+    ],
+)
+def test_generate_aws_cluster_agent_token_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_service.GenerateAwsClusterAgentTokenResponse(
+            access_token="access_token_value",
+            expires_in=1078,
+            token_type="token_type_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = aws_service.GenerateAwsClusterAgentTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_aws_cluster_agent_token(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_service.GenerateAwsClusterAgentTokenResponse)
+    assert response.access_token == "access_token_value"
+    assert response.expires_in == 1078
+    assert response.token_type == "token_type_value"
+
+
+def test_generate_aws_cluster_agent_token_rest_required_fields(
+    request_type=aws_service.GenerateAwsClusterAgentTokenRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["aws_cluster"] = ""
+    request_init["subject_token"] = ""
+    request_init["subject_token_type"] = ""
+    request_init["version"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_aws_cluster_agent_token._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["awsCluster"] = "aws_cluster_value"
+    jsonified_request["subjectToken"] = "subject_token_value"
+    jsonified_request["subjectTokenType"] = "subject_token_type_value"
+    jsonified_request["version"] = "version_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_aws_cluster_agent_token._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "awsCluster" in jsonified_request
+    assert jsonified_request["awsCluster"] == "aws_cluster_value"
+    assert "subjectToken" in jsonified_request
+    assert jsonified_request["subjectToken"] == "subject_token_value"
+    assert "subjectTokenType" in jsonified_request
+    assert jsonified_request["subjectTokenType"] == "subject_token_type_value"
+    assert "version" in jsonified_request
+    assert jsonified_request["version"] == "version_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = aws_service.GenerateAwsClusterAgentTokenResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = aws_service.GenerateAwsClusterAgentTokenResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.generate_aws_cluster_agent_token(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_aws_cluster_agent_token_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.generate_aws_cluster_agent_token._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "awsCluster",
+                "subjectToken",
+                "subjectTokenType",
+                "version",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_aws_cluster_agent_token_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_generate_aws_cluster_agent_token"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_generate_aws_cluster_agent_token"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.GenerateAwsClusterAgentTokenRequest.pb(
+            aws_service.GenerateAwsClusterAgentTokenRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            aws_service.GenerateAwsClusterAgentTokenResponse.to_json(
+                aws_service.GenerateAwsClusterAgentTokenResponse()
+            )
+        )
+
+        request = aws_service.GenerateAwsClusterAgentTokenRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = aws_service.GenerateAwsClusterAgentTokenResponse()
+
+        client.generate_aws_cluster_agent_token(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_aws_cluster_agent_token_rest_bad_request(
+    transport: str = "rest",
+    request_type=aws_service.GenerateAwsClusterAgentTokenRequest,
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.generate_aws_cluster_agent_token(request)
+
+
+def test_generate_aws_cluster_agent_token_rest_error():
     client = AwsClustersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -6043,6 +7065,7 @@ def test_create_aws_node_pool_rest(request_type):
                 "size_gib": 844,
                 "volume_type": 1,
                 "iops": 443,
+                "throughput": 1114,
                 "kms_key_arn": "kms_key_arn_value",
             },
             "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
@@ -6065,6 +7088,9 @@ def test_create_aws_node_pool_rest(request_type):
                 "granularity": "granularity_value",
                 "metrics": ["metrics_value1", "metrics_value2"],
             },
+            "spot_config": {
+                "instance_types": ["instance_types_value1", "instance_types_value2"]
+            },
         },
         "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
         "subnet_id": "subnet_id_value",
@@ -6077,6 +7103,10 @@ def test_create_aws_node_pool_rest(request_type):
         "annotations": {},
         "max_pods_constraint": {"max_pods_per_node": 1798},
         "errors": [{"message": "message_value"}],
+        "management": {"auto_repair": True},
+        "update_settings": {
+            "surge_settings": {"max_surge": 971, "max_unavailable": 1577}
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6461,6 +7491,7 @@ def test_update_aws_node_pool_rest(request_type):
                 "size_gib": 844,
                 "volume_type": 1,
                 "iops": 443,
+                "throughput": 1114,
                 "kms_key_arn": "kms_key_arn_value",
             },
             "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
@@ -6483,6 +7514,9 @@ def test_update_aws_node_pool_rest(request_type):
                 "granularity": "granularity_value",
                 "metrics": ["metrics_value1", "metrics_value2"],
             },
+            "spot_config": {
+                "instance_types": ["instance_types_value1", "instance_types_value2"]
+            },
         },
         "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
         "subnet_id": "subnet_id_value",
@@ -6495,6 +7529,10 @@ def test_update_aws_node_pool_rest(request_type):
         "annotations": {},
         "max_pods_constraint": {"max_pods_per_node": 1798},
         "errors": [{"message": "message_value"}],
+        "management": {"auto_repair": True},
+        "update_settings": {
+            "surge_settings": {"max_surge": 971, "max_unavailable": 1577}
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6832,6 +7870,278 @@ def test_update_aws_node_pool_rest_flattened_error(transport: str = "rest"):
 
 
 def test_update_aws_node_pool_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.RollbackAwsNodePoolUpdateRequest,
+        dict,
+    ],
+)
+def test_rollback_aws_node_pool_update_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rollback_aws_node_pool_update(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_rollback_aws_node_pool_update_rest_required_fields(
+    request_type=aws_service.RollbackAwsNodePoolUpdateRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rollback_aws_node_pool_update._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rollback_aws_node_pool_update._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.rollback_aws_node_pool_update(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_rollback_aws_node_pool_update_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rollback_aws_node_pool_update._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rollback_aws_node_pool_update_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_rollback_aws_node_pool_update"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_rollback_aws_node_pool_update"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.RollbackAwsNodePoolUpdateRequest.pb(
+            aws_service.RollbackAwsNodePoolUpdateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = aws_service.RollbackAwsNodePoolUpdateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.rollback_aws_node_pool_update(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rollback_aws_node_pool_update_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.RollbackAwsNodePoolUpdateRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.rollback_aws_node_pool_update(request)
+
+
+def test_rollback_aws_node_pool_update_rest_flattened():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/awsClusters/sample3/awsNodePools/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.rollback_aws_node_pool_update(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}:rollback"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_rollback_aws_node_pool_update_rest_flattened_error(transport: str = "rest"):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rollback_aws_node_pool_update(
+            aws_service.RollbackAwsNodePoolUpdateRequest(),
+            name="name_value",
+        )
+
+
+def test_rollback_aws_node_pool_update_rest_error():
     client = AwsClustersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -7546,6 +8856,7 @@ def test_delete_aws_node_pool_rest_required_fields(
         (
             "allow_missing",
             "etag",
+            "ignore_errors",
             "validate_only",
         )
     )
@@ -7604,6 +8915,7 @@ def test_delete_aws_node_pool_rest_unset_required_fields():
             (
                 "allowMissing",
                 "etag",
+                "ignoreErrors",
                 "validateOnly",
             )
         )
@@ -7754,6 +9066,455 @@ def test_delete_aws_node_pool_rest_flattened_error(transport: str = "rest"):
 
 
 def test_delete_aws_node_pool_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GetAwsOpenIdConfigRequest,
+        dict,
+    ],
+)
+def test_get_aws_open_id_config_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_resources.AwsOpenIdConfig(
+            issuer="issuer_value",
+            jwks_uri="jwks_uri_value",
+            response_types_supported=["response_types_supported_value"],
+            subject_types_supported=["subject_types_supported_value"],
+            id_token_signing_alg_values_supported=[
+                "id_token_signing_alg_values_supported_value"
+            ],
+            claims_supported=["claims_supported_value"],
+            grant_types=["grant_types_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = aws_resources.AwsOpenIdConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_aws_open_id_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_resources.AwsOpenIdConfig)
+    assert response.issuer == "issuer_value"
+    assert response.jwks_uri == "jwks_uri_value"
+    assert response.response_types_supported == ["response_types_supported_value"]
+    assert response.subject_types_supported == ["subject_types_supported_value"]
+    assert response.id_token_signing_alg_values_supported == [
+        "id_token_signing_alg_values_supported_value"
+    ]
+    assert response.claims_supported == ["claims_supported_value"]
+    assert response.grant_types == ["grant_types_value"]
+
+
+def test_get_aws_open_id_config_rest_required_fields(
+    request_type=aws_service.GetAwsOpenIdConfigRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["aws_cluster"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_aws_open_id_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["awsCluster"] = "aws_cluster_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_aws_open_id_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "awsCluster" in jsonified_request
+    assert jsonified_request["awsCluster"] == "aws_cluster_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = aws_resources.AwsOpenIdConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = aws_resources.AwsOpenIdConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_aws_open_id_config(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_aws_open_id_config_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_aws_open_id_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("awsCluster",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_aws_open_id_config_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_get_aws_open_id_config"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_get_aws_open_id_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.GetAwsOpenIdConfigRequest.pb(
+            aws_service.GetAwsOpenIdConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = aws_resources.AwsOpenIdConfig.to_json(
+            aws_resources.AwsOpenIdConfig()
+        )
+
+        request = aws_service.GetAwsOpenIdConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = aws_resources.AwsOpenIdConfig()
+
+        client.get_aws_open_id_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_aws_open_id_config_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.GetAwsOpenIdConfigRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_aws_open_id_config(request)
+
+
+def test_get_aws_open_id_config_rest_error():
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        aws_service.GetAwsJsonWebKeysRequest,
+        dict,
+    ],
+)
+def test_get_aws_json_web_keys_rest(request_type):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = aws_resources.AwsJsonWebKeys()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = aws_resources.AwsJsonWebKeys.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_aws_json_web_keys(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, aws_resources.AwsJsonWebKeys)
+
+
+def test_get_aws_json_web_keys_rest_required_fields(
+    request_type=aws_service.GetAwsJsonWebKeysRequest,
+):
+    transport_class = transports.AwsClustersRestTransport
+
+    request_init = {}
+    request_init["aws_cluster"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_aws_json_web_keys._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["awsCluster"] = "aws_cluster_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_aws_json_web_keys._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "awsCluster" in jsonified_request
+    assert jsonified_request["awsCluster"] == "aws_cluster_value"
+
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = aws_resources.AwsJsonWebKeys()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = aws_resources.AwsJsonWebKeys.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_aws_json_web_keys(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_aws_json_web_keys_rest_unset_required_fields():
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_aws_json_web_keys._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("awsCluster",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_aws_json_web_keys_rest_interceptors(null_interceptor):
+    transport = transports.AwsClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AwsClustersRestInterceptor(),
+    )
+    client = AwsClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "post_get_aws_json_web_keys"
+    ) as post, mock.patch.object(
+        transports.AwsClustersRestInterceptor, "pre_get_aws_json_web_keys"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = aws_service.GetAwsJsonWebKeysRequest.pb(
+            aws_service.GetAwsJsonWebKeysRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = aws_resources.AwsJsonWebKeys.to_json(
+            aws_resources.AwsJsonWebKeys()
+        )
+
+        request = aws_service.GetAwsJsonWebKeysRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = aws_resources.AwsJsonWebKeys()
+
+        client.get_aws_json_web_keys(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_aws_json_web_keys_rest_bad_request(
+    transport: str = "rest", request_type=aws_service.GetAwsJsonWebKeysRequest
+):
+    client = AwsClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "aws_cluster": "projects/sample1/locations/sample2/awsClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_aws_json_web_keys(request)
+
+
+def test_get_aws_json_web_keys_rest_error():
     client = AwsClustersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -8176,12 +9937,16 @@ def test_aws_clusters_base_transport():
         "get_aws_cluster",
         "list_aws_clusters",
         "delete_aws_cluster",
+        "generate_aws_cluster_agent_token",
         "generate_aws_access_token",
         "create_aws_node_pool",
         "update_aws_node_pool",
+        "rollback_aws_node_pool_update",
         "get_aws_node_pool",
         "list_aws_node_pools",
         "delete_aws_node_pool",
+        "get_aws_open_id_config",
+        "get_aws_json_web_keys",
         "get_aws_server_config",
         "get_operation",
         "cancel_operation",
@@ -8479,6 +10244,9 @@ def test_aws_clusters_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_aws_cluster._session
     session2 = client2.transport.delete_aws_cluster._session
     assert session1 != session2
+    session1 = client1.transport.generate_aws_cluster_agent_token._session
+    session2 = client2.transport.generate_aws_cluster_agent_token._session
+    assert session1 != session2
     session1 = client1.transport.generate_aws_access_token._session
     session2 = client2.transport.generate_aws_access_token._session
     assert session1 != session2
@@ -8488,6 +10256,9 @@ def test_aws_clusters_client_transport_session_collision(transport_name):
     session1 = client1.transport.update_aws_node_pool._session
     session2 = client2.transport.update_aws_node_pool._session
     assert session1 != session2
+    session1 = client1.transport.rollback_aws_node_pool_update._session
+    session2 = client2.transport.rollback_aws_node_pool_update._session
+    assert session1 != session2
     session1 = client1.transport.get_aws_node_pool._session
     session2 = client2.transport.get_aws_node_pool._session
     assert session1 != session2
@@ -8496,6 +10267,12 @@ def test_aws_clusters_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.delete_aws_node_pool._session
     session2 = client2.transport.delete_aws_node_pool._session
+    assert session1 != session2
+    session1 = client1.transport.get_aws_open_id_config._session
+    session2 = client2.transport.get_aws_open_id_config._session
+    assert session1 != session2
+    session1 = client1.transport.get_aws_json_web_keys._session
+    session2 = client2.transport.get_aws_json_web_keys._session
     assert session1 != session2
     session1 = client1.transport.get_aws_server_config._session
     session2 = client2.transport.get_aws_server_config._session

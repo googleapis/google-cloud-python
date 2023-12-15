@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import common_resources
@@ -30,12 +31,18 @@ __protobuf__ = proto.module(
         "AwsServicesAuthentication",
         "AwsAuthorization",
         "AwsClusterUser",
+        "AwsClusterGroup",
         "AwsDatabaseEncryption",
         "AwsVolumeTemplate",
         "AwsClusterNetworking",
         "AwsNodePool",
+        "UpdateSettings",
+        "SurgeSettings",
+        "AwsNodeManagement",
         "AwsNodeConfig",
         "AwsNodePoolAutoscaling",
+        "AwsOpenIdConfig",
+        "AwsJsonWebKeys",
         "AwsServerConfig",
         "AwsK8sVersionInfo",
         "AwsSshConfig",
@@ -43,6 +50,7 @@ __protobuf__ = proto.module(
         "AwsConfigEncryption",
         "AwsInstancePlacement",
         "AwsAutoscalingGroupMetricsCollection",
+        "SpotConfig",
         "AwsClusterError",
         "AwsNodePoolError",
     },
@@ -135,6 +143,9 @@ class AwsCluster(proto.Message):
         monitoring_config (google.cloud.gke_multicloud_v1.types.MonitoringConfig):
             Optional. Monitoring configuration for this
             cluster.
+        binary_authorization (google.cloud.gke_multicloud_v1.types.BinaryAuthorization):
+            Optional. Binary Authorization configuration
+            for this cluster.
     """
 
     class State(proto.Enum):
@@ -263,6 +274,11 @@ class AwsCluster(proto.Message):
         proto.MESSAGE,
         number=21,
         message=common_resources.MonitoringConfig,
+    )
+    binary_authorization: common_resources.BinaryAuthorization = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message=common_resources.BinaryAuthorization,
     )
 
 
@@ -447,10 +463,18 @@ class AwsAuthorization(proto.Message):
 
     Attributes:
         admin_users (MutableSequence[google.cloud.gke_multicloud_v1.types.AwsClusterUser]):
-            Required. Users that can perform operations as a cluster
+            Optional. Users that can perform operations as a cluster
             admin. A managed ClusterRoleBinding will be created to grant
             the ``cluster-admin`` ClusterRole to the users. Up to ten
             admin users can be provided.
+
+            For more info on RBAC, see
+            https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles
+        admin_groups (MutableSequence[google.cloud.gke_multicloud_v1.types.AwsClusterGroup]):
+            Optional. Groups of users that can perform operations as a
+            cluster admin. A managed ClusterRoleBinding will be created
+            to grant the ``cluster-admin`` ClusterRole to the groups. Up
+            to ten admin groups can be provided.
 
             For more info on RBAC, see
             https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles
@@ -460,6 +484,11 @@ class AwsAuthorization(proto.Message):
         proto.MESSAGE,
         number=1,
         message="AwsClusterUser",
+    )
+    admin_groups: MutableSequence["AwsClusterGroup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="AwsClusterGroup",
     )
 
 
@@ -473,6 +502,21 @@ class AwsClusterUser(proto.Message):
     """
 
     username: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AwsClusterGroup(proto.Message):
+    r"""Identities of a group-type subject for AWS clusters.
+
+    Attributes:
+        group (str):
+            Required. The name of the group, e.g.
+            ``my-group@domain.com``.
+    """
+
+    group: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -511,6 +555,12 @@ class AwsVolumeTemplate(proto.Message):
         iops (int):
             Optional. The number of I/O operations per
             second (IOPS) to provision for GP3 volume.
+        throughput (int):
+            Optional. The throughput that the volume supports, in MiB/s.
+            Only valid if volume_type is GP3.
+
+            If the volume_type is GP3 and this is not speficied, it
+            defaults to 125.
         kms_key_arn (str):
             Optional. The Amazon Resource Name (ARN) of
             the Customer Managed Key (CMK) used to encrypt
@@ -553,6 +603,10 @@ class AwsVolumeTemplate(proto.Message):
         proto.INT32,
         number=3,
     )
+    throughput: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
     kms_key_arn: str = proto.Field(
         proto.STRING,
         number=4,
@@ -582,6 +636,14 @@ class AwsClusterNetworking(proto.Message):
             assigned an IPv4 address from these ranges. Only
             a single range is supported. This field cannot
             be changed after creation.
+        per_node_pool_sg_rules_disabled (bool):
+            Optional. Disable the per node pool subnet
+            security group rules on the control plane
+            security group. When set to true, you must also
+            provide one or more security groups that ensure
+            node pools are able to send requests to the
+            control plane on TCP/443 and TCP/8132. Failure
+            to do so may result in unavailable node pools.
     """
 
     vpc_id: str = proto.Field(
@@ -595,6 +657,10 @@ class AwsClusterNetworking(proto.Message):
     service_address_cidr_blocks: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+    per_node_pool_sg_rules_disabled: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 
@@ -666,6 +732,12 @@ class AwsNodePool(proto.Message):
         errors (MutableSequence[google.cloud.gke_multicloud_v1.types.AwsNodePoolError]):
             Output only. A set of errors found in the
             node pool.
+        management (google.cloud.gke_multicloud_v1.types.AwsNodeManagement):
+            Optional. The Management configuration for
+            this node pool.
+        update_settings (google.cloud.gke_multicloud_v1.types.UpdateSettings):
+            Optional. Update settings control the speed
+            and disruption of the update.
     """
 
     class State(proto.Enum):
@@ -766,6 +838,100 @@ class AwsNodePool(proto.Message):
         number=29,
         message="AwsNodePoolError",
     )
+    management: "AwsNodeManagement" = proto.Field(
+        proto.MESSAGE,
+        number=30,
+        message="AwsNodeManagement",
+    )
+    update_settings: "UpdateSettings" = proto.Field(
+        proto.MESSAGE,
+        number=32,
+        message="UpdateSettings",
+    )
+
+
+class UpdateSettings(proto.Message):
+    r"""UpdateSettings control the level of parallelism and the level of
+    disruption caused during the update of a node pool.
+
+    These settings are applicable when the node pool update requires
+    replacing the existing node pool nodes with the updated ones.
+
+    UpdateSettings are optional. When UpdateSettings are not specified
+    during the node pool creation, a default is chosen based on the
+    parent cluster's version. For clusters with minor version 1.27 and
+    later, a default surge_settings configuration with max_surge = 1 and
+    max_unavailable = 0 is used. For clusters with older versions, node
+    pool updates use the traditional rolling update mechanism of
+    updating one node at a time in a "terminate before create" fashion
+    and update_settings is not applicable.
+
+    Set the surge_settings parameter to use the Surge Update mechanism
+    for the rolling update of node pool nodes.
+
+    1. max_surge controls the number of additional nodes that can be
+       created beyond the current size of the node pool temporarily for
+       the time of the update to increase the number of available nodes.
+    2. max_unavailable controls the number of nodes that can be
+       simultaneously unavailable during the update.
+    3. (max_surge + max_unavailable) determines the level of parallelism
+       (i.e., the number of nodes being updated at the same time).
+
+    Attributes:
+        surge_settings (google.cloud.gke_multicloud_v1.types.SurgeSettings):
+            Optional. Settings for surge update.
+    """
+
+    surge_settings: "SurgeSettings" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SurgeSettings",
+    )
+
+
+class SurgeSettings(proto.Message):
+    r"""SurgeSettings contains the parameters for Surge update.
+
+    Attributes:
+        max_surge (int):
+            Optional. The maximum number of nodes that
+            can be created beyond the current size of the
+            node pool during the update process.
+        max_unavailable (int):
+            Optional. The maximum number of nodes that
+            can be simultaneously unavailable during the
+            update process. A node is considered unavailable
+            if its status is not Ready.
+    """
+
+    max_surge: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    max_unavailable: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+
+
+class AwsNodeManagement(proto.Message):
+    r"""AwsNodeManagement defines the set of node management features
+    turned on for an AWS node pool.
+
+    Attributes:
+        auto_repair (bool):
+            Optional. Whether or not the nodes will be
+            automatically repaired. When set to true, the
+            nodes in this node pool will be monitored and if
+            they fail health checks consistently over a
+            period of time, an automatic repair action will
+            be triggered to replace them with new nodes.
+    """
+
+    auto_repair: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 class AwsNodeConfig(proto.Message):
@@ -773,10 +939,11 @@ class AwsNodeConfig(proto.Message):
 
     Attributes:
         instance_type (str):
-            Optional. The AWS instance type.
-
-            When unspecified, it uses a default based on the
-            node pool's version.
+            Optional. The EC2 instance type when creating
+            on-Demand instances.
+            If unspecified during node pool creation, a
+            default will be chosen based on the node pool
+            version, and assigned to this field.
         root_volume (google.cloud.gke_multicloud_v1.types.AwsVolumeTemplate):
             Optional. Template for the root volume
             provisioned for node pool nodes. Volumes will be
@@ -804,8 +971,7 @@ class AwsNodeConfig(proto.Message):
             assigned to nodes in the pool.
         image_type (str):
             Optional. The OS image type to use on node pool instances.
-            Can have a value of ``ubuntu``, or ``windows`` if the
-            cluster enables the Windows node pool preview feature.
+            Can be unspecified, or have a value of ``ubuntu``.
 
             When unspecified, it defaults to ``ubuntu``.
         ssh_config (google.cloud.gke_multicloud_v1.types.AwsSshConfig):
@@ -831,6 +997,12 @@ class AwsNodeConfig(proto.Message):
 
             When unspecified, metrics collection is
             disabled.
+        spot_config (google.cloud.gke_multicloud_v1.types.SpotConfig):
+            Optional. Configuration for provisioning EC2 Spot instances
+
+            When specified, the node pool will provision Spot instances
+            from the set of spot_config.instance_types. This field is
+            mutually exclusive with ``instance_type``.
     """
 
     instance_type: str = proto.Field(
@@ -896,6 +1068,11 @@ class AwsNodeConfig(proto.Message):
             message="AwsAutoscalingGroupMetricsCollection",
         )
     )
+    spot_config: "SpotConfig" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="SpotConfig",
+    )
 
 
 class AwsNodePoolAutoscaling(proto.Message):
@@ -924,6 +1101,75 @@ class AwsNodePoolAutoscaling(proto.Message):
     )
 
 
+class AwsOpenIdConfig(proto.Message):
+    r"""AwsOpenIdConfig is an OIDC discovery document for the
+    cluster. See the OpenID Connect Discovery 1.0 specification for
+    details.
+
+    Attributes:
+        issuer (str):
+            OIDC Issuer.
+        jwks_uri (str):
+            JSON Web Key uri.
+        response_types_supported (MutableSequence[str]):
+            Supported response types.
+        subject_types_supported (MutableSequence[str]):
+            Supported subject types.
+        id_token_signing_alg_values_supported (MutableSequence[str]):
+            supported ID Token signing Algorithms.
+        claims_supported (MutableSequence[str]):
+            Supported claims.
+        grant_types (MutableSequence[str]):
+            Supported grant types.
+    """
+
+    issuer: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    jwks_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    response_types_supported: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    subject_types_supported: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    id_token_signing_alg_values_supported: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    claims_supported: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    grant_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+
+
+class AwsJsonWebKeys(proto.Message):
+    r"""AwsJsonWebKeys is a valid JSON Web Key Set as specififed in
+    RFC 7517.
+
+    Attributes:
+        keys (MutableSequence[google.cloud.gke_multicloud_v1.types.Jwk]):
+            The public component of the keys used by the
+            cluster to sign token requests.
+    """
+
+    keys: MutableSequence[common_resources.Jwk] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=common_resources.Jwk,
+    )
+
+
 class AwsServerConfig(proto.Message):
     r"""AwsServerConfig is the configuration of GKE cluster on AWS.
 
@@ -931,7 +1177,11 @@ class AwsServerConfig(proto.Message):
         name (str):
             The resource name of the config.
         valid_versions (MutableSequence[google.cloud.gke_multicloud_v1.types.AwsK8sVersionInfo]):
-            List of valid Kubernetes versions.
+            List of all released Kubernetes versions, including ones
+            which are end of life and can no longer be used. Filter by
+            the ``enabled`` property to limit to currently available
+            versions. Valid versions supported for both create and
+            update operations
         supported_aws_regions (MutableSequence[str]):
             The list of supported AWS regions.
     """
@@ -957,11 +1207,50 @@ class AwsK8sVersionInfo(proto.Message):
     Attributes:
         version (str):
             Kubernetes version name.
+        enabled (bool):
+            Optional. True if the version is available
+            for cluster creation. If a version is enabled
+            for creation, it can be used to create new
+            clusters. Otherwise, cluster creation will fail.
+            However, cluster upgrade operations may succeed,
+            even if the version is not enabled.
+        end_of_life (bool):
+            Optional. True if this cluster version
+            belongs to a minor version that has reached its
+            end of life and is no longer in scope to receive
+            security and bug fixes.
+        end_of_life_date (google.type.date_pb2.Date):
+            Optional. The estimated date (in Pacific Time) when this
+            cluster version will reach its end of life. Or if this
+            version is no longer supported (the ``end_of_life`` field is
+            true), this is the actual date (in Pacific time) when the
+            version reached its end of life.
+        release_date (google.type.date_pb2.Date):
+            Optional. The date (in Pacific Time) when the
+            cluster version was released.
     """
 
     version: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    end_of_life: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    end_of_life_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=date_pb2.Date,
+    )
+    release_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=date_pb2.Date,
     )
 
 
@@ -1084,6 +1373,21 @@ class AwsAutoscalingGroupMetricsCollection(proto.Message):
     metrics: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
+    )
+
+
+class SpotConfig(proto.Message):
+    r"""SpotConfig has configuration info for Spot node.
+
+    Attributes:
+        instance_types (MutableSequence[str]):
+            Required. A list of instance types for
+            creating spot node pool.
+    """
+
+    instance_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 
