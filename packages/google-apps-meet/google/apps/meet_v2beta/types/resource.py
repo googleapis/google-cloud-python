@@ -423,6 +423,12 @@ class Recording(proto.Message):
             recording session during the conference.
         state (google.apps.meet_v2beta.types.Recording.State):
             Output only. Current state.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp when the recording
+            started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp when the recording
+            ended.
     """
 
     class State(proto.Enum):
@@ -459,6 +465,16 @@ class Recording(proto.Message):
         proto.ENUM,
         number=3,
         enum=State,
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -512,6 +528,12 @@ class Transcript(proto.Message):
             transcription session of the conference.
         state (google.apps.meet_v2beta.types.Transcript.State):
             Output only. Current state.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp when the transcript
+            started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp when the transcript
+            stopped.
     """
 
     class State(proto.Enum):
@@ -548,6 +570,16 @@ class Transcript(proto.Message):
         proto.ENUM,
         number=3,
         enum=State,
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 
