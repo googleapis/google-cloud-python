@@ -754,12 +754,18 @@ class SearchKnowledgeResponse(proto.Message):
             Most relevant snippets extracted from
             articles in the given knowledge base, ordered by
             confidence.
+        rewritten_query (str):
+            The rewritten query used to search knowledge.
     """
 
     answers: MutableSequence["SearchKnowledgeAnswer"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="SearchKnowledgeAnswer",
+    )
+    rewritten_query: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -786,13 +792,16 @@ class SearchKnowledgeAnswer(proto.Message):
             ANSWER_TYPE_UNSPECIFIED (0):
                 The answer has a unspecified type.
             FAQ (1):
-                The answer is from FAQ doucments.
+                The answer is from FAQ documents.
             GENERATIVE (2):
                 The answer is from generative model.
+            INTENT (3):
+                The answer is from intent matching.
         """
         ANSWER_TYPE_UNSPECIFIED = 0
         FAQ = 1
         GENERATIVE = 2
+        INTENT = 3
 
     class AnswerSource(proto.Message):
         r"""The sources of the answers.
