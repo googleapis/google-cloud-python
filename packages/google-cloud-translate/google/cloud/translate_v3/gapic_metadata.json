@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "TranslationServiceClient",
           "rpcs": {
+            "AdaptiveMtTranslate": {
+              "methods": [
+                "adaptive_mt_translate"
+              ]
+            },
             "BatchTranslateDocument": {
               "methods": [
                 "batch_translate_document"
@@ -20,9 +25,24 @@
                 "batch_translate_text"
               ]
             },
+            "CreateAdaptiveMtDataset": {
+              "methods": [
+                "create_adaptive_mt_dataset"
+              ]
+            },
             "CreateGlossary": {
               "methods": [
                 "create_glossary"
+              ]
+            },
+            "DeleteAdaptiveMtDataset": {
+              "methods": [
+                "delete_adaptive_mt_dataset"
+              ]
+            },
+            "DeleteAdaptiveMtFile": {
+              "methods": [
+                "delete_adaptive_mt_file"
               ]
             },
             "DeleteGlossary": {
@@ -35,6 +55,16 @@
                 "detect_language"
               ]
             },
+            "GetAdaptiveMtDataset": {
+              "methods": [
+                "get_adaptive_mt_dataset"
+              ]
+            },
+            "GetAdaptiveMtFile": {
+              "methods": [
+                "get_adaptive_mt_file"
+              ]
+            },
             "GetGlossary": {
               "methods": [
                 "get_glossary"
@@ -43,6 +73,26 @@
             "GetSupportedLanguages": {
               "methods": [
                 "get_supported_languages"
+              ]
+            },
+            "ImportAdaptiveMtFile": {
+              "methods": [
+                "import_adaptive_mt_file"
+              ]
+            },
+            "ListAdaptiveMtDatasets": {
+              "methods": [
+                "list_adaptive_mt_datasets"
+              ]
+            },
+            "ListAdaptiveMtFiles": {
+              "methods": [
+                "list_adaptive_mt_files"
+              ]
+            },
+            "ListAdaptiveMtSentences": {
+              "methods": [
+                "list_adaptive_mt_sentences"
               ]
             },
             "ListGlossaries": {
@@ -65,6 +115,11 @@
         "grpc-async": {
           "libraryClient": "TranslationServiceAsyncClient",
           "rpcs": {
+            "AdaptiveMtTranslate": {
+              "methods": [
+                "adaptive_mt_translate"
+              ]
+            },
             "BatchTranslateDocument": {
               "methods": [
                 "batch_translate_document"
@@ -75,9 +130,24 @@
                 "batch_translate_text"
               ]
             },
+            "CreateAdaptiveMtDataset": {
+              "methods": [
+                "create_adaptive_mt_dataset"
+              ]
+            },
             "CreateGlossary": {
               "methods": [
                 "create_glossary"
+              ]
+            },
+            "DeleteAdaptiveMtDataset": {
+              "methods": [
+                "delete_adaptive_mt_dataset"
+              ]
+            },
+            "DeleteAdaptiveMtFile": {
+              "methods": [
+                "delete_adaptive_mt_file"
               ]
             },
             "DeleteGlossary": {
@@ -90,6 +160,16 @@
                 "detect_language"
               ]
             },
+            "GetAdaptiveMtDataset": {
+              "methods": [
+                "get_adaptive_mt_dataset"
+              ]
+            },
+            "GetAdaptiveMtFile": {
+              "methods": [
+                "get_adaptive_mt_file"
+              ]
+            },
             "GetGlossary": {
               "methods": [
                 "get_glossary"
@@ -98,6 +178,26 @@
             "GetSupportedLanguages": {
               "methods": [
                 "get_supported_languages"
+              ]
+            },
+            "ImportAdaptiveMtFile": {
+              "methods": [
+                "import_adaptive_mt_file"
+              ]
+            },
+            "ListAdaptiveMtDatasets": {
+              "methods": [
+                "list_adaptive_mt_datasets"
+              ]
+            },
+            "ListAdaptiveMtFiles": {
+              "methods": [
+                "list_adaptive_mt_files"
+              ]
+            },
+            "ListAdaptiveMtSentences": {
+              "methods": [
+                "list_adaptive_mt_sentences"
               ]
             },
             "ListGlossaries": {
@@ -120,6 +220,11 @@
         "rest": {
           "libraryClient": "TranslationServiceClient",
           "rpcs": {
+            "AdaptiveMtTranslate": {
+              "methods": [
+                "adaptive_mt_translate"
+              ]
+            },
             "BatchTranslateDocument": {
               "methods": [
                 "batch_translate_document"
@@ -130,9 +235,24 @@
                 "batch_translate_text"
               ]
             },
+            "CreateAdaptiveMtDataset": {
+              "methods": [
+                "create_adaptive_mt_dataset"
+              ]
+            },
             "CreateGlossary": {
               "methods": [
                 "create_glossary"
+              ]
+            },
+            "DeleteAdaptiveMtDataset": {
+              "methods": [
+                "delete_adaptive_mt_dataset"
+              ]
+            },
+            "DeleteAdaptiveMtFile": {
+              "methods": [
+                "delete_adaptive_mt_file"
               ]
             },
             "DeleteGlossary": {
@@ -145,6 +265,16 @@
                 "detect_language"
               ]
             },
+            "GetAdaptiveMtDataset": {
+              "methods": [
+                "get_adaptive_mt_dataset"
+              ]
+            },
+            "GetAdaptiveMtFile": {
+              "methods": [
+                "get_adaptive_mt_file"
+              ]
+            },
             "GetGlossary": {
               "methods": [
                 "get_glossary"
@@ -153,6 +283,26 @@
             "GetSupportedLanguages": {
               "methods": [
                 "get_supported_languages"
+              ]
+            },
+            "ImportAdaptiveMtFile": {
+              "methods": [
+                "import_adaptive_mt_file"
+              ]
+            },
+            "ListAdaptiveMtDatasets": {
+              "methods": [
+                "list_adaptive_mt_datasets"
+              ]
+            },
+            "ListAdaptiveMtFiles": {
+              "methods": [
+                "list_adaptive_mt_files"
+              ]
+            },
+            "ListAdaptiveMtSentences": {
+              "methods": [
+                "list_adaptive_mt_sentences"
               ]
             },
             "ListGlossaries": {

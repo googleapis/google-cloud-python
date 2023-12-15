@@ -33,8 +33,9 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.cloud.translate_v3 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.translate_v3 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
@@ -43,9 +44,10 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.translate_v3.services.translation_service import pagers
-from google.cloud.translate_v3.types import translation_service
 from google.protobuf import timestamp_pb2  # type: ignore
+
+from google.cloud.translate_v3.services.translation_service import pagers
+from google.cloud.translate_v3.types import adaptive_mt, translation_service
 
 from .client import TranslationServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, TranslationServiceTransport
@@ -60,6 +62,22 @@ class TranslationServiceAsyncClient:
     DEFAULT_ENDPOINT = TranslationServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = TranslationServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    adaptive_mt_dataset_path = staticmethod(
+        TranslationServiceClient.adaptive_mt_dataset_path
+    )
+    parse_adaptive_mt_dataset_path = staticmethod(
+        TranslationServiceClient.parse_adaptive_mt_dataset_path
+    )
+    adaptive_mt_file_path = staticmethod(TranslationServiceClient.adaptive_mt_file_path)
+    parse_adaptive_mt_file_path = staticmethod(
+        TranslationServiceClient.parse_adaptive_mt_file_path
+    )
+    adaptive_mt_sentence_path = staticmethod(
+        TranslationServiceClient.adaptive_mt_sentence_path
+    )
+    parse_adaptive_mt_sentence_path = staticmethod(
+        TranslationServiceClient.parse_adaptive_mt_sentence_path
+    )
     glossary_path = staticmethod(TranslationServiceClient.glossary_path)
     parse_glossary_path = staticmethod(TranslationServiceClient.parse_glossary_path)
     common_billing_account_path = staticmethod(
@@ -1643,6 +1661,1091 @@ class TranslationServiceAsyncClient:
             self._client._transport.operations_client,
             translation_service.DeleteGlossaryResponse,
             metadata_type=translation_service.DeleteGlossaryMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_adaptive_mt_dataset(
+        self,
+        request: Optional[
+            Union[adaptive_mt.CreateAdaptiveMtDatasetRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        adaptive_mt_dataset: Optional[adaptive_mt.AdaptiveMtDataset] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> adaptive_mt.AdaptiveMtDataset:
+        r"""Creates an Adaptive MT dataset.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import translate_v3
+
+            async def sample_create_adaptive_mt_dataset():
+                # Create a client
+                client = translate_v3.TranslationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                adaptive_mt_dataset = translate_v3.AdaptiveMtDataset()
+                adaptive_mt_dataset.name = "name_value"
+
+                request = translate_v3.CreateAdaptiveMtDatasetRequest(
+                    parent="parent_value",
+                    adaptive_mt_dataset=adaptive_mt_dataset,
+                )
+
+                # Make the request
+                response = await client.create_adaptive_mt_dataset(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.translate_v3.types.CreateAdaptiveMtDatasetRequest, dict]]):
+                The request object. Request message for creating an
+                AdaptiveMtDataset.
+            parent (:class:`str`):
+                Required. Name of the parent project. In form of
+                ``projects/{project-number-or-id}/locations/{location-id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            adaptive_mt_dataset (:class:`google.cloud.translate_v3.types.AdaptiveMtDataset`):
+                Required. The AdaptiveMtDataset to be
+                created.
+
+                This corresponds to the ``adaptive_mt_dataset`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.translate_v3.types.AdaptiveMtDataset:
+                An Adaptive MT Dataset.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, adaptive_mt_dataset])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = adaptive_mt.CreateAdaptiveMtDatasetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if adaptive_mt_dataset is not None:
+            request.adaptive_mt_dataset = adaptive_mt_dataset
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_adaptive_mt_dataset,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_adaptive_mt_dataset(
+        self,
+        request: Optional[
+            Union[adaptive_mt.DeleteAdaptiveMtDatasetRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes an Adaptive MT dataset, including all its
+        entries and associated metadata.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import translate_v3
+
+            async def sample_delete_adaptive_mt_dataset():
+                # Create a client
+                client = translate_v3.TranslationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.DeleteAdaptiveMtDatasetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_adaptive_mt_dataset(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.translate_v3.types.DeleteAdaptiveMtDatasetRequest, dict]]):
+                The request object. Request message for deleting an
+                AdaptiveMtDataset.
+            name (:class:`str`):
+                Required. Name of the dataset. In the form of
+                ``projects/{project-number-or-id}/locations/{location-id}/adaptiveMtDatasets/{adaptive-mt-dataset-id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = adaptive_mt.DeleteAdaptiveMtDatasetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_adaptive_mt_dataset,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def get_adaptive_mt_dataset(
+        self,
+        request: Optional[Union[adaptive_mt.GetAdaptiveMtDatasetRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> adaptive_mt.AdaptiveMtDataset:
+        r"""Gets the Adaptive MT dataset.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import translate_v3
+
+            async def sample_get_adaptive_mt_dataset():
+                # Create a client
+                client = translate_v3.TranslationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.GetAdaptiveMtDatasetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_adaptive_mt_dataset(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.translate_v3.types.GetAdaptiveMtDatasetRequest, dict]]):
+                The request object. Request message for getting an
+                Adaptive MT dataset.
+            name (:class:`str`):
+                Required. Name of the dataset. In the form of
+                ``projects/{project-number-or-id}/locations/{location-id}/adaptiveMtDatasets/{adaptive-mt-dataset-id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.translate_v3.types.AdaptiveMtDataset:
+                An Adaptive MT Dataset.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = adaptive_mt.GetAdaptiveMtDatasetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_adaptive_mt_dataset,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_adaptive_mt_datasets(
+        self,
+        request: Optional[
+            Union[adaptive_mt.ListAdaptiveMtDatasetsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAdaptiveMtDatasetsAsyncPager:
+        r"""Lists all Adaptive MT datasets for which the caller
+        has read permission.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import translate_v3
+
+            async def sample_list_adaptive_mt_datasets():
+                # Create a client
+                client = translate_v3.TranslationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.ListAdaptiveMtDatasetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_adaptive_mt_datasets(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.translate_v3.types.ListAdaptiveMtDatasetsRequest, dict]]):
+                The request object. Request message for listing all
+                Adaptive MT datasets that the requestor
+                has access to.
+            parent (:class:`str`):
+                Required. The resource name of the project from which to
+                list the Adaptive MT datasets.
+                ``projects/{project-number-or-id}/locations/{location-id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.translate_v3.services.translation_service.pagers.ListAdaptiveMtDatasetsAsyncPager:
+                A list of AdaptiveMtDatasets.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = adaptive_mt.ListAdaptiveMtDatasetsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_adaptive_mt_datasets,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAdaptiveMtDatasetsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def adaptive_mt_translate(
+        self,
+        request: Optional[Union[adaptive_mt.AdaptiveMtTranslateRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        content: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> adaptive_mt.AdaptiveMtTranslateResponse:
+        r"""Translate text using Adaptive MT.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import translate_v3
+
+            async def sample_adaptive_mt_translate():
+                # Create a client
+                client = translate_v3.TranslationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.AdaptiveMtTranslateRequest(
+                    parent="parent_value",
+                    dataset="dataset_value",
+                    content=['content_value1', 'content_value2'],
+                )
+
+                # Make the request
+                response = await client.adaptive_mt_translate(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.translate_v3.types.AdaptiveMtTranslateRequest, dict]]):
+                The request object. The request for sending an AdaptiveMt
+                translation query.
+            parent (:class:`str`):
+                Required. Location to make a regional call.
+
+                Format:
+                ``projects/{project-number-or-id}/locations/{location-id}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            content (:class:`MutableSequence[str]`):
+                Required. The content of the input in
+                string format. For now only one sentence
+                per request is supported.
+
+                This corresponds to the ``content`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.translate_v3.types.AdaptiveMtTranslateResponse:
+                An AdaptiveMtTranslate response.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, content])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = adaptive_mt.AdaptiveMtTranslateRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if content:
+            request.content.extend(content)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.adaptive_mt_translate,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_adaptive_mt_file(
+        self,
+        request: Optional[Union[adaptive_mt.GetAdaptiveMtFileRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> adaptive_mt.AdaptiveMtFile:
+        r"""Gets and AdaptiveMtFile
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import translate_v3
+
+            async def sample_get_adaptive_mt_file():
+                # Create a client
+                client = translate_v3.TranslationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.GetAdaptiveMtFileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_adaptive_mt_file(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.translate_v3.types.GetAdaptiveMtFileRequest, dict]]):
+                The request object. The request for getting an
+                AdaptiveMtFile.
+            name (:class:`str`):
+                Required. The resource name of the file, in form of
+                ``projects/{project-number-or-id}/locations/{location_id}/adaptiveMtDatasets/{dataset}/adaptiveMtFiles/{file}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.translate_v3.types.AdaptiveMtFile:
+                An AdaptiveMtFile.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = adaptive_mt.GetAdaptiveMtFileRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_adaptive_mt_file,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_adaptive_mt_file(
+        self,
+        request: Optional[Union[adaptive_mt.DeleteAdaptiveMtFileRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes an AdaptiveMtFile along with its sentences.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import translate_v3
+
+            async def sample_delete_adaptive_mt_file():
+                # Create a client
+                client = translate_v3.TranslationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.DeleteAdaptiveMtFileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_adaptive_mt_file(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.translate_v3.types.DeleteAdaptiveMtFileRequest, dict]]):
+                The request object. The request for deleting an
+                AdaptiveMt file.
+            name (:class:`str`):
+                Required. The resource name of the file to delete, in
+                form of
+                ``projects/{project-number-or-id}/locations/{location_id}/adaptiveMtDatasets/{dataset}/adaptiveMtFiles/{file}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = adaptive_mt.DeleteAdaptiveMtFileRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_adaptive_mt_file,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def import_adaptive_mt_file(
+        self,
+        request: Optional[Union[adaptive_mt.ImportAdaptiveMtFileRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> adaptive_mt.ImportAdaptiveMtFileResponse:
+        r"""Imports an AdaptiveMtFile and adds all of its
+        sentences into the AdaptiveMtDataset.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import translate_v3
+
+            async def sample_import_adaptive_mt_file():
+                # Create a client
+                client = translate_v3.TranslationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                file_input_source = translate_v3.FileInputSource()
+                file_input_source.mime_type = "mime_type_value"
+                file_input_source.content = b'content_blob'
+                file_input_source.display_name = "display_name_value"
+
+                request = translate_v3.ImportAdaptiveMtFileRequest(
+                    file_input_source=file_input_source,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.import_adaptive_mt_file(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.translate_v3.types.ImportAdaptiveMtFileRequest, dict]]):
+                The request object. The request for importing an
+                AdaptiveMt file along with its
+                sentences.
+            parent (:class:`str`):
+                Required. The resource name of the file, in form of
+                ``projects/{project-number-or-id}/locations/{location_id}/adaptiveMtDatasets/{dataset}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.translate_v3.types.ImportAdaptiveMtFileResponse:
+                The response for importing an
+                AdaptiveMtFile
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = adaptive_mt.ImportAdaptiveMtFileRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.import_adaptive_mt_file,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_adaptive_mt_files(
+        self,
+        request: Optional[Union[adaptive_mt.ListAdaptiveMtFilesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAdaptiveMtFilesAsyncPager:
+        r"""Lists all AdaptiveMtFiles associated to an
+        AdaptiveMtDataset.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import translate_v3
+
+            async def sample_list_adaptive_mt_files():
+                # Create a client
+                client = translate_v3.TranslationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.ListAdaptiveMtFilesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_adaptive_mt_files(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.translate_v3.types.ListAdaptiveMtFilesRequest, dict]]):
+                The request object. The request to list all AdaptiveMt
+                files under a given dataset.
+            parent (:class:`str`):
+                Required. The resource name of the project from which to
+                list the Adaptive MT files.
+                ``projects/{project}/locations/{location}/adaptiveMtDatasets/{dataset}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.translate_v3.services.translation_service.pagers.ListAdaptiveMtFilesAsyncPager:
+                The response for listing all
+                AdaptiveMt files under a given dataset.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = adaptive_mt.ListAdaptiveMtFilesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_adaptive_mt_files,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAdaptiveMtFilesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_adaptive_mt_sentences(
+        self,
+        request: Optional[
+            Union[adaptive_mt.ListAdaptiveMtSentencesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAdaptiveMtSentencesAsyncPager:
+        r"""Lists all AdaptiveMtSentences under a given
+        file/dataset.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import translate_v3
+
+            async def sample_list_adaptive_mt_sentences():
+                # Create a client
+                client = translate_v3.TranslationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = translate_v3.ListAdaptiveMtSentencesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_adaptive_mt_sentences(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.translate_v3.types.ListAdaptiveMtSentencesRequest, dict]]):
+                The request object. The request for listing Adaptive MT
+                sentences from a Dataset/File.
+            parent (:class:`str`):
+                Required. The resource name of the project from which to
+                list the Adaptive MT files. The following format lists
+                all sentences under a file.
+                ``projects/{project}/locations/{location}/adaptiveMtDatasets/{dataset}/adaptiveMtFiles/{file}``
+                The following format lists all sentences within a
+                dataset.
+                ``projects/{project}/locations/{location}/adaptiveMtDatasets/{dataset}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.translate_v3.services.translation_service.pagers.ListAdaptiveMtSentencesAsyncPager:
+                List AdaptiveMt sentences response.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = adaptive_mt.ListAdaptiveMtSentencesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_adaptive_mt_sentences,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAdaptiveMtSentencesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.

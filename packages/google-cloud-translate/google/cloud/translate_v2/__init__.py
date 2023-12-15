@@ -16,7 +16,6 @@
 
 
 from google.cloud.translate import __version__
-
 from google.cloud.translate_v2.client import Client
 
 __all__ = ("__version__", "Client")

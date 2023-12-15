@@ -17,9 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.translation.v3",
@@ -1801,9 +1800,9 @@ class BatchTranslateDocumentRequest(proto.Message):
             Optional. Glossaries to be applied. It's
             keyed by target language code.
         format_conversions (MutableMapping[str, str]):
-            Optional. File format conversion map to be applied to all
-            input files. Map's key is the original mime_type. Map's
-            value is the target mime_type of translated documents.
+            Optional. The file format conversion map that is applied to
+            all input files. The map key is the original mime_type. The
+            map value is the target mime_type of translated documents.
 
             Supported file format conversion includes:
 

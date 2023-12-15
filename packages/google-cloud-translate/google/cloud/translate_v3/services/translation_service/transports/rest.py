@@ -20,9 +20,6 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
 from google.api_core import (
     gapic_v1,
     operations_v1,
@@ -36,6 +33,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
+import grpc  # type: ignore
+from requests import __version__ as requests_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -43,8 +42,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 
-from google.cloud.translate_v3.types import translation_service
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+
+from google.cloud.translate_v3.types import adaptive_mt, translation_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import TranslationServiceTransport
@@ -71,6 +72,14 @@ class TranslationServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomTranslationServiceInterceptor(TranslationServiceRestInterceptor):
+            def pre_adaptive_mt_translate(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_adaptive_mt_translate(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_batch_translate_document(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -87,6 +96,14 @@ class TranslationServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_adaptive_mt_dataset(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_adaptive_mt_dataset(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_glossary(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -94,6 +111,14 @@ class TranslationServiceRestInterceptor:
             def post_create_glossary(self, response):
                 logging.log(f"Received response: {response}")
                 return response
+
+            def pre_delete_adaptive_mt_dataset(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_adaptive_mt_file(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
 
             def pre_delete_glossary(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -111,6 +136,22 @@ class TranslationServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_adaptive_mt_dataset(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_adaptive_mt_dataset(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_adaptive_mt_file(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_adaptive_mt_file(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_glossary(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -124,6 +165,38 @@ class TranslationServiceRestInterceptor:
                 return request, metadata
 
             def post_get_supported_languages(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_import_adaptive_mt_file(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_import_adaptive_mt_file(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_adaptive_mt_datasets(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_adaptive_mt_datasets(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_adaptive_mt_files(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_adaptive_mt_files(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_adaptive_mt_sentences(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_adaptive_mt_sentences(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -156,6 +229,29 @@ class TranslationServiceRestInterceptor:
 
 
     """
+
+    def pre_adaptive_mt_translate(
+        self,
+        request: adaptive_mt.AdaptiveMtTranslateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[adaptive_mt.AdaptiveMtTranslateRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for adaptive_mt_translate
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_adaptive_mt_translate(
+        self, response: adaptive_mt.AdaptiveMtTranslateResponse
+    ) -> adaptive_mt.AdaptiveMtTranslateResponse:
+        """Post-rpc interceptor for adaptive_mt_translate
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_batch_translate_document(
         self,
@@ -207,6 +303,29 @@ class TranslationServiceRestInterceptor:
         """
         return response
 
+    def pre_create_adaptive_mt_dataset(
+        self,
+        request: adaptive_mt.CreateAdaptiveMtDatasetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[adaptive_mt.CreateAdaptiveMtDatasetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_adaptive_mt_dataset
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_create_adaptive_mt_dataset(
+        self, response: adaptive_mt.AdaptiveMtDataset
+    ) -> adaptive_mt.AdaptiveMtDataset:
+        """Post-rpc interceptor for create_adaptive_mt_dataset
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_glossary(
         self,
         request: translation_service.CreateGlossaryRequest,
@@ -229,6 +348,30 @@ class TranslationServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
+    def pre_delete_adaptive_mt_dataset(
+        self,
+        request: adaptive_mt.DeleteAdaptiveMtDatasetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[adaptive_mt.DeleteAdaptiveMtDatasetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_adaptive_mt_dataset
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def pre_delete_adaptive_mt_file(
+        self,
+        request: adaptive_mt.DeleteAdaptiveMtFileRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[adaptive_mt.DeleteAdaptiveMtFileRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_adaptive_mt_file
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
 
     def pre_delete_glossary(
         self,
@@ -269,6 +412,52 @@ class TranslationServiceRestInterceptor:
         self, response: translation_service.DetectLanguageResponse
     ) -> translation_service.DetectLanguageResponse:
         """Post-rpc interceptor for detect_language
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_adaptive_mt_dataset(
+        self,
+        request: adaptive_mt.GetAdaptiveMtDatasetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[adaptive_mt.GetAdaptiveMtDatasetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_adaptive_mt_dataset
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_get_adaptive_mt_dataset(
+        self, response: adaptive_mt.AdaptiveMtDataset
+    ) -> adaptive_mt.AdaptiveMtDataset:
+        """Post-rpc interceptor for get_adaptive_mt_dataset
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_adaptive_mt_file(
+        self,
+        request: adaptive_mt.GetAdaptiveMtFileRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[adaptive_mt.GetAdaptiveMtFileRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_adaptive_mt_file
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_get_adaptive_mt_file(
+        self, response: adaptive_mt.AdaptiveMtFile
+    ) -> adaptive_mt.AdaptiveMtFile:
+        """Post-rpc interceptor for get_adaptive_mt_file
 
         Override in a subclass to manipulate the response
         after it is returned by the TranslationService server but before
@@ -317,6 +506,98 @@ class TranslationServiceRestInterceptor:
         self, response: translation_service.SupportedLanguages
     ) -> translation_service.SupportedLanguages:
         """Post-rpc interceptor for get_supported_languages
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_import_adaptive_mt_file(
+        self,
+        request: adaptive_mt.ImportAdaptiveMtFileRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[adaptive_mt.ImportAdaptiveMtFileRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for import_adaptive_mt_file
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_import_adaptive_mt_file(
+        self, response: adaptive_mt.ImportAdaptiveMtFileResponse
+    ) -> adaptive_mt.ImportAdaptiveMtFileResponse:
+        """Post-rpc interceptor for import_adaptive_mt_file
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_adaptive_mt_datasets(
+        self,
+        request: adaptive_mt.ListAdaptiveMtDatasetsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[adaptive_mt.ListAdaptiveMtDatasetsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_adaptive_mt_datasets
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_list_adaptive_mt_datasets(
+        self, response: adaptive_mt.ListAdaptiveMtDatasetsResponse
+    ) -> adaptive_mt.ListAdaptiveMtDatasetsResponse:
+        """Post-rpc interceptor for list_adaptive_mt_datasets
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_adaptive_mt_files(
+        self,
+        request: adaptive_mt.ListAdaptiveMtFilesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[adaptive_mt.ListAdaptiveMtFilesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_adaptive_mt_files
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_list_adaptive_mt_files(
+        self, response: adaptive_mt.ListAdaptiveMtFilesResponse
+    ) -> adaptive_mt.ListAdaptiveMtFilesResponse:
+        """Post-rpc interceptor for list_adaptive_mt_files
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_adaptive_mt_sentences(
+        self,
+        request: adaptive_mt.ListAdaptiveMtSentencesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[adaptive_mt.ListAdaptiveMtSentencesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_adaptive_mt_sentences
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_list_adaptive_mt_sentences(
+        self, response: adaptive_mt.ListAdaptiveMtSentencesResponse
+    ) -> adaptive_mt.ListAdaptiveMtSentencesResponse:
+        """Post-rpc interceptor for list_adaptive_mt_sentences
 
         Override in a subclass to manipulate the response
         after it is returned by the TranslationService server but before
@@ -551,6 +832,104 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _AdaptiveMtTranslate(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("AdaptiveMtTranslate")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: adaptive_mt.AdaptiveMtTranslateRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> adaptive_mt.AdaptiveMtTranslateResponse:
+            r"""Call the adaptive mt translate method over HTTP.
+
+            Args:
+                request (~.adaptive_mt.AdaptiveMtTranslateRequest):
+                    The request object. The request for sending an AdaptiveMt
+                translation query.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.adaptive_mt.AdaptiveMtTranslateResponse:
+                    An AdaptiveMtTranslate response.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{parent=projects/*/locations/*}:adaptiveMtTranslate",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_adaptive_mt_translate(
+                request, metadata
+            )
+            pb_request = adaptive_mt.AdaptiveMtTranslateRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = adaptive_mt.AdaptiveMtTranslateResponse()
+            pb_resp = adaptive_mt.AdaptiveMtTranslateResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_adaptive_mt_translate(resp)
+            return resp
+
     class _BatchTranslateDocument(TranslationServiceRestStub):
         def __hash__(self):
             return hash("BatchTranslateDocument")
@@ -747,6 +1126,105 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
             resp = self._interceptor.post_batch_translate_text(resp)
             return resp
 
+    class _CreateAdaptiveMtDataset(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("CreateAdaptiveMtDataset")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: adaptive_mt.CreateAdaptiveMtDatasetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> adaptive_mt.AdaptiveMtDataset:
+            r"""Call the create adaptive mt
+            dataset method over HTTP.
+
+                Args:
+                    request (~.adaptive_mt.CreateAdaptiveMtDatasetRequest):
+                        The request object. Request message for creating an
+                    AdaptiveMtDataset.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.adaptive_mt.AdaptiveMtDataset:
+                        An Adaptive MT Dataset.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{parent=projects/*/locations/*}/adaptiveMtDatasets",
+                    "body": "adaptive_mt_dataset",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_adaptive_mt_dataset(
+                request, metadata
+            )
+            pb_request = adaptive_mt.CreateAdaptiveMtDatasetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = adaptive_mt.AdaptiveMtDataset()
+            pb_resp = adaptive_mt.AdaptiveMtDataset.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_adaptive_mt_dataset(resp)
+            return resp
+
     class _CreateGlossary(TranslationServiceRestStub):
         def __hash__(self):
             return hash("CreateGlossary")
@@ -842,6 +1320,161 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_glossary(resp)
             return resp
+
+    class _DeleteAdaptiveMtDataset(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteAdaptiveMtDataset")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: adaptive_mt.DeleteAdaptiveMtDatasetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete adaptive mt
+            dataset method over HTTP.
+
+                Args:
+                    request (~.adaptive_mt.DeleteAdaptiveMtDatasetRequest):
+                        The request object. Request message for deleting an
+                    AdaptiveMtDataset.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v3/{name=projects/*/locations/*/adaptiveMtDatasets/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_adaptive_mt_dataset(
+                request, metadata
+            )
+            pb_request = adaptive_mt.DeleteAdaptiveMtDatasetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteAdaptiveMtFile(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteAdaptiveMtFile")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: adaptive_mt.DeleteAdaptiveMtFileRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete adaptive mt file method over HTTP.
+
+            Args:
+                request (~.adaptive_mt.DeleteAdaptiveMtFileRequest):
+                    The request object. The request for deleting an
+                AdaptiveMt file.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v3/{name=projects/*/locations/*/adaptiveMtDatasets/*/adaptiveMtFiles/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_adaptive_mt_file(
+                request, metadata
+            )
+            pb_request = adaptive_mt.DeleteAdaptiveMtFileRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _DeleteGlossary(TranslationServiceRestStub):
         def __hash__(self):
@@ -1033,6 +1666,184 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
             resp = self._interceptor.post_detect_language(resp)
             return resp
 
+    class _GetAdaptiveMtDataset(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("GetAdaptiveMtDataset")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: adaptive_mt.GetAdaptiveMtDatasetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> adaptive_mt.AdaptiveMtDataset:
+            r"""Call the get adaptive mt dataset method over HTTP.
+
+            Args:
+                request (~.adaptive_mt.GetAdaptiveMtDatasetRequest):
+                    The request object. Request message for getting an
+                Adaptive MT dataset.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.adaptive_mt.AdaptiveMtDataset:
+                    An Adaptive MT Dataset.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{name=projects/*/locations/*/adaptiveMtDatasets/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_adaptive_mt_dataset(
+                request, metadata
+            )
+            pb_request = adaptive_mt.GetAdaptiveMtDatasetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = adaptive_mt.AdaptiveMtDataset()
+            pb_resp = adaptive_mt.AdaptiveMtDataset.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_adaptive_mt_dataset(resp)
+            return resp
+
+    class _GetAdaptiveMtFile(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("GetAdaptiveMtFile")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: adaptive_mt.GetAdaptiveMtFileRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> adaptive_mt.AdaptiveMtFile:
+            r"""Call the get adaptive mt file method over HTTP.
+
+            Args:
+                request (~.adaptive_mt.GetAdaptiveMtFileRequest):
+                    The request object. The request for getting an
+                AdaptiveMtFile.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.adaptive_mt.AdaptiveMtFile:
+                    An AdaptiveMtFile.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{name=projects/*/locations/*/adaptiveMtDatasets/*/adaptiveMtFiles/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_adaptive_mt_file(
+                request, metadata
+            )
+            pb_request = adaptive_mt.GetAdaptiveMtFileRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = adaptive_mt.AdaptiveMtFile()
+            pb_resp = adaptive_mt.AdaptiveMtFile.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_adaptive_mt_file(resp)
+            return resp
+
     class _GetGlossary(TranslationServiceRestStub):
         def __hash__(self):
             return hash("GetGlossary")
@@ -1214,6 +2025,382 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_supported_languages(resp)
+            return resp
+
+    class _ImportAdaptiveMtFile(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("ImportAdaptiveMtFile")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: adaptive_mt.ImportAdaptiveMtFileRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> adaptive_mt.ImportAdaptiveMtFileResponse:
+            r"""Call the import adaptive mt file method over HTTP.
+
+            Args:
+                request (~.adaptive_mt.ImportAdaptiveMtFileRequest):
+                    The request object. The request for importing an
+                AdaptiveMt file along with its
+                sentences.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.adaptive_mt.ImportAdaptiveMtFileResponse:
+                    The response for importing an
+                AdaptiveMtFile
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{parent=projects/*/locations/*/adaptiveMtDatasets/*}:importAdaptiveMtFile",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_import_adaptive_mt_file(
+                request, metadata
+            )
+            pb_request = adaptive_mt.ImportAdaptiveMtFileRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = adaptive_mt.ImportAdaptiveMtFileResponse()
+            pb_resp = adaptive_mt.ImportAdaptiveMtFileResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_import_adaptive_mt_file(resp)
+            return resp
+
+    class _ListAdaptiveMtDatasets(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("ListAdaptiveMtDatasets")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: adaptive_mt.ListAdaptiveMtDatasetsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> adaptive_mt.ListAdaptiveMtDatasetsResponse:
+            r"""Call the list adaptive mt datasets method over HTTP.
+
+            Args:
+                request (~.adaptive_mt.ListAdaptiveMtDatasetsRequest):
+                    The request object. Request message for listing all
+                Adaptive MT datasets that the requestor
+                has access to.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.adaptive_mt.ListAdaptiveMtDatasetsResponse:
+                    A list of AdaptiveMtDatasets.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{parent=projects/*/locations/*}/adaptiveMtDatasets",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_adaptive_mt_datasets(
+                request, metadata
+            )
+            pb_request = adaptive_mt.ListAdaptiveMtDatasetsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = adaptive_mt.ListAdaptiveMtDatasetsResponse()
+            pb_resp = adaptive_mt.ListAdaptiveMtDatasetsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_adaptive_mt_datasets(resp)
+            return resp
+
+    class _ListAdaptiveMtFiles(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("ListAdaptiveMtFiles")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: adaptive_mt.ListAdaptiveMtFilesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> adaptive_mt.ListAdaptiveMtFilesResponse:
+            r"""Call the list adaptive mt files method over HTTP.
+
+            Args:
+                request (~.adaptive_mt.ListAdaptiveMtFilesRequest):
+                    The request object. The request to list all AdaptiveMt
+                files under a given dataset.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.adaptive_mt.ListAdaptiveMtFilesResponse:
+                    The response for listing all
+                AdaptiveMt files under a given dataset.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{parent=projects/*/locations/*/adaptiveMtDatasets/*}/adaptiveMtFiles",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_adaptive_mt_files(
+                request, metadata
+            )
+            pb_request = adaptive_mt.ListAdaptiveMtFilesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = adaptive_mt.ListAdaptiveMtFilesResponse()
+            pb_resp = adaptive_mt.ListAdaptiveMtFilesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_adaptive_mt_files(resp)
+            return resp
+
+    class _ListAdaptiveMtSentences(TranslationServiceRestStub):
+        def __hash__(self):
+            return hash("ListAdaptiveMtSentences")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: adaptive_mt.ListAdaptiveMtSentencesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> adaptive_mt.ListAdaptiveMtSentencesResponse:
+            r"""Call the list adaptive mt
+            sentences method over HTTP.
+
+                Args:
+                    request (~.adaptive_mt.ListAdaptiveMtSentencesRequest):
+                        The request object. The request for listing Adaptive MT
+                    sentences from a Dataset/File.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.adaptive_mt.ListAdaptiveMtSentencesResponse:
+                        List AdaptiveMt sentences response.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3/{parent=projects/*/locations/*/adaptiveMtDatasets/*/adaptiveMtFiles/*}/adaptiveMtSentences",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v3/{parent=projects/*/locations/*/adaptiveMtDatasets/*}/adaptiveMtSentences",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_adaptive_mt_sentences(
+                request, metadata
+            )
+            pb_request = adaptive_mt.ListAdaptiveMtSentencesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = adaptive_mt.ListAdaptiveMtSentencesResponse()
+            pb_resp = adaptive_mt.ListAdaptiveMtSentencesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_adaptive_mt_sentences(resp)
             return resp
 
     class _ListGlossaries(TranslationServiceRestStub):
@@ -1503,6 +2690,17 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
             return resp
 
     @property
+    def adaptive_mt_translate(
+        self,
+    ) -> Callable[
+        [adaptive_mt.AdaptiveMtTranslateRequest],
+        adaptive_mt.AdaptiveMtTranslateResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._AdaptiveMtTranslate(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def batch_translate_document(
         self,
     ) -> Callable[
@@ -1523,6 +2721,16 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         return self._BatchTranslateText(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_adaptive_mt_dataset(
+        self,
+    ) -> Callable[
+        [adaptive_mt.CreateAdaptiveMtDatasetRequest], adaptive_mt.AdaptiveMtDataset
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAdaptiveMtDataset(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_glossary(
         self,
     ) -> Callable[
@@ -1531,6 +2739,22 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGlossary(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_adaptive_mt_dataset(
+        self,
+    ) -> Callable[[adaptive_mt.DeleteAdaptiveMtDatasetRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAdaptiveMtDataset(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_adaptive_mt_file(
+        self,
+    ) -> Callable[[adaptive_mt.DeleteAdaptiveMtFileRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAdaptiveMtFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_glossary(
@@ -1554,6 +2778,24 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         return self._DetectLanguage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_adaptive_mt_dataset(
+        self,
+    ) -> Callable[
+        [adaptive_mt.GetAdaptiveMtDatasetRequest], adaptive_mt.AdaptiveMtDataset
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAdaptiveMtDataset(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_adaptive_mt_file(
+        self,
+    ) -> Callable[[adaptive_mt.GetAdaptiveMtFileRequest], adaptive_mt.AdaptiveMtFile]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAdaptiveMtFile(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_glossary(
         self,
     ) -> Callable[
@@ -1573,6 +2815,50 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSupportedLanguages(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def import_adaptive_mt_file(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ImportAdaptiveMtFileRequest],
+        adaptive_mt.ImportAdaptiveMtFileResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ImportAdaptiveMtFile(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_adaptive_mt_datasets(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ListAdaptiveMtDatasetsRequest],
+        adaptive_mt.ListAdaptiveMtDatasetsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAdaptiveMtDatasets(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_adaptive_mt_files(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ListAdaptiveMtFilesRequest],
+        adaptive_mt.ListAdaptiveMtFilesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAdaptiveMtFiles(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_adaptive_mt_sentences(
+        self,
+    ) -> Callable[
+        [adaptive_mt.ListAdaptiveMtSentencesRequest],
+        adaptive_mt.ListAdaptiveMtSentencesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAdaptiveMtSentences(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_glossaries(

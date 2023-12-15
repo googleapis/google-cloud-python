@@ -39,13 +39,23 @@ def partition(
 class translateCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'adaptive_mt_translate': ('parent', 'dataset', 'content', ),
         'batch_translate_document': ('parent', 'source_language_code', 'target_language_codes', 'input_configs', 'output_config', 'models', 'glossaries', 'format_conversions', 'customized_attribution', 'enable_shadow_removal_native_pdf', 'enable_rotation_correction', ),
         'batch_translate_text': ('parent', 'source_language_code', 'target_language_codes', 'input_configs', 'output_config', 'models', 'glossaries', 'labels', ),
+        'create_adaptive_mt_dataset': ('parent', 'adaptive_mt_dataset', ),
         'create_glossary': ('parent', 'glossary', ),
+        'delete_adaptive_mt_dataset': ('name', ),
+        'delete_adaptive_mt_file': ('name', ),
         'delete_glossary': ('name', ),
         'detect_language': ('parent', 'model', 'content', 'mime_type', 'labels', ),
+        'get_adaptive_mt_dataset': ('name', ),
+        'get_adaptive_mt_file': ('name', ),
         'get_glossary': ('name', ),
         'get_supported_languages': ('parent', 'display_language_code', 'model', ),
+        'import_adaptive_mt_file': ('parent', 'file_input_source', 'gcs_input_source', ),
+        'list_adaptive_mt_datasets': ('parent', 'page_size', 'page_token', 'filter', ),
+        'list_adaptive_mt_files': ('parent', 'page_size', 'page_token', ),
+        'list_adaptive_mt_sentences': ('parent', 'page_size', 'page_token', ),
         'list_glossaries': ('parent', 'page_size', 'page_token', 'filter', ),
         'translate_document': ('parent', 'target_language_code', 'document_input_config', 'source_language_code', 'document_output_config', 'model', 'glossary_config', 'labels', 'customized_attribution', 'is_translate_native_pdf_only', 'enable_shadow_removal_native_pdf', 'enable_rotation_correction', ),
         'translate_text': ('contents', 'target_language_code', 'parent', 'mime_type', 'source_language_code', 'model', 'glossary_config', 'labels', ),

@@ -24,7 +24,7 @@ from typing import (
     Tuple,
 )
 
-from google.cloud.translate_v3.types import translation_service
+from google.cloud.translate_v3.types import adaptive_mt, translation_service
 
 
 class ListGlossariesPager:
@@ -147,6 +147,390 @@ class ListGlossariesAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.glossaries:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAdaptiveMtDatasetsPager:
+    """A pager for iterating through ``list_adaptive_mt_datasets`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.translate_v3.types.ListAdaptiveMtDatasetsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``adaptive_mt_datasets`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAdaptiveMtDatasets`` requests and continue to iterate
+    through the ``adaptive_mt_datasets`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.translate_v3.types.ListAdaptiveMtDatasetsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., adaptive_mt.ListAdaptiveMtDatasetsResponse],
+        request: adaptive_mt.ListAdaptiveMtDatasetsRequest,
+        response: adaptive_mt.ListAdaptiveMtDatasetsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.translate_v3.types.ListAdaptiveMtDatasetsRequest):
+                The initial request object.
+            response (google.cloud.translate_v3.types.ListAdaptiveMtDatasetsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = adaptive_mt.ListAdaptiveMtDatasetsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[adaptive_mt.ListAdaptiveMtDatasetsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[adaptive_mt.AdaptiveMtDataset]:
+        for page in self.pages:
+            yield from page.adaptive_mt_datasets
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAdaptiveMtDatasetsAsyncPager:
+    """A pager for iterating through ``list_adaptive_mt_datasets`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.translate_v3.types.ListAdaptiveMtDatasetsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``adaptive_mt_datasets`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAdaptiveMtDatasets`` requests and continue to iterate
+    through the ``adaptive_mt_datasets`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.translate_v3.types.ListAdaptiveMtDatasetsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[adaptive_mt.ListAdaptiveMtDatasetsResponse]],
+        request: adaptive_mt.ListAdaptiveMtDatasetsRequest,
+        response: adaptive_mt.ListAdaptiveMtDatasetsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.translate_v3.types.ListAdaptiveMtDatasetsRequest):
+                The initial request object.
+            response (google.cloud.translate_v3.types.ListAdaptiveMtDatasetsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = adaptive_mt.ListAdaptiveMtDatasetsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[adaptive_mt.ListAdaptiveMtDatasetsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[adaptive_mt.AdaptiveMtDataset]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.adaptive_mt_datasets:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAdaptiveMtFilesPager:
+    """A pager for iterating through ``list_adaptive_mt_files`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.translate_v3.types.ListAdaptiveMtFilesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``adaptive_mt_files`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAdaptiveMtFiles`` requests and continue to iterate
+    through the ``adaptive_mt_files`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.translate_v3.types.ListAdaptiveMtFilesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., adaptive_mt.ListAdaptiveMtFilesResponse],
+        request: adaptive_mt.ListAdaptiveMtFilesRequest,
+        response: adaptive_mt.ListAdaptiveMtFilesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.translate_v3.types.ListAdaptiveMtFilesRequest):
+                The initial request object.
+            response (google.cloud.translate_v3.types.ListAdaptiveMtFilesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = adaptive_mt.ListAdaptiveMtFilesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[adaptive_mt.ListAdaptiveMtFilesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[adaptive_mt.AdaptiveMtFile]:
+        for page in self.pages:
+            yield from page.adaptive_mt_files
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAdaptiveMtFilesAsyncPager:
+    """A pager for iterating through ``list_adaptive_mt_files`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.translate_v3.types.ListAdaptiveMtFilesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``adaptive_mt_files`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAdaptiveMtFiles`` requests and continue to iterate
+    through the ``adaptive_mt_files`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.translate_v3.types.ListAdaptiveMtFilesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[adaptive_mt.ListAdaptiveMtFilesResponse]],
+        request: adaptive_mt.ListAdaptiveMtFilesRequest,
+        response: adaptive_mt.ListAdaptiveMtFilesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.translate_v3.types.ListAdaptiveMtFilesRequest):
+                The initial request object.
+            response (google.cloud.translate_v3.types.ListAdaptiveMtFilesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = adaptive_mt.ListAdaptiveMtFilesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[adaptive_mt.ListAdaptiveMtFilesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[adaptive_mt.AdaptiveMtFile]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.adaptive_mt_files:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAdaptiveMtSentencesPager:
+    """A pager for iterating through ``list_adaptive_mt_sentences`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.translate_v3.types.ListAdaptiveMtSentencesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``adaptive_mt_sentences`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAdaptiveMtSentences`` requests and continue to iterate
+    through the ``adaptive_mt_sentences`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.translate_v3.types.ListAdaptiveMtSentencesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., adaptive_mt.ListAdaptiveMtSentencesResponse],
+        request: adaptive_mt.ListAdaptiveMtSentencesRequest,
+        response: adaptive_mt.ListAdaptiveMtSentencesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.translate_v3.types.ListAdaptiveMtSentencesRequest):
+                The initial request object.
+            response (google.cloud.translate_v3.types.ListAdaptiveMtSentencesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = adaptive_mt.ListAdaptiveMtSentencesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[adaptive_mt.ListAdaptiveMtSentencesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[adaptive_mt.AdaptiveMtSentence]:
+        for page in self.pages:
+            yield from page.adaptive_mt_sentences
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAdaptiveMtSentencesAsyncPager:
+    """A pager for iterating through ``list_adaptive_mt_sentences`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.translate_v3.types.ListAdaptiveMtSentencesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``adaptive_mt_sentences`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAdaptiveMtSentences`` requests and continue to iterate
+    through the ``adaptive_mt_sentences`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.translate_v3.types.ListAdaptiveMtSentencesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[adaptive_mt.ListAdaptiveMtSentencesResponse]],
+        request: adaptive_mt.ListAdaptiveMtSentencesRequest,
+        response: adaptive_mt.ListAdaptiveMtSentencesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.translate_v3.types.ListAdaptiveMtSentencesRequest):
+                The initial request object.
+            response (google.cloud.translate_v3.types.ListAdaptiveMtSentencesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = adaptive_mt.ListAdaptiveMtSentencesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[adaptive_mt.ListAdaptiveMtSentencesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[adaptive_mt.AdaptiveMtSentence]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.adaptive_mt_sentences:
                     yield response
 
         return async_generator()
