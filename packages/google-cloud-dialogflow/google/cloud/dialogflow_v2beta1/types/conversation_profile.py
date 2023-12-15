@@ -208,12 +208,12 @@ class AutomatedAgentConfig(proto.Message):
                If environment is not specified, the default ``draft``
                environment is used.
         session_ttl (google.protobuf.duration_pb2.Duration):
-            Optional. Sets Dialogflow CX session life
-            time. By default, a Dialogflow CX session
-            remains active and its data is stored for 30
-            minutes after the last request is sent for the
-            session. This value should be no longer than 1
-            day.
+            Optional. Configure lifetime of the
+            Dialogflow session. By default, a Dialogflow CX
+            session remains active and its data is stored
+            for 30 minutes after the last request is sent
+            for the session. This value should be no longer
+            than 1 day.
     """
 
     agent: str = proto.Field(
@@ -286,6 +286,9 @@ class HumanAgentAssistantConfig(proto.Message):
                 at answer records.
 
                 Supported features: KNOWLEDGE_SEARCH.
+            enable_conversation_augmented_query (bool):
+                Optional. Enable including conversation context during query
+                answer generation. Supported features: KNOWLEDGE_SEARCH.
             suggestion_trigger_settings (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionTriggerSettings):
                 Settings of suggestion trigger.
 
@@ -311,6 +314,10 @@ class HumanAgentAssistantConfig(proto.Message):
         disable_agent_query_logging: bool = proto.Field(
             proto.BOOL,
             number=14,
+        )
+        enable_conversation_augmented_query: bool = proto.Field(
+            proto.BOOL,
+            number=16,
         )
         suggestion_trigger_settings: "HumanAgentAssistantConfig.SuggestionTriggerSettings" = proto.Field(
             proto.MESSAGE,
@@ -424,6 +431,10 @@ class HumanAgentAssistantConfig(proto.Message):
                 Determines how recent conversation context is
                 filtered when generating suggestions. If
                 unspecified, no messages will be dropped.
+            sections (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.Sections):
+                Optional. The customized sections chosen to
+                return when requesting a summary of a
+                conversation.
         """
 
         class KnowledgeBaseQuerySource(proto.Message):
@@ -534,6 +545,72 @@ class HumanAgentAssistantConfig(proto.Message):
                 number=3,
             )
 
+        class Sections(proto.Message):
+            r"""Custom sections to return when requesting a summary of a
+            conversation. This is only supported when ``baseline_model_version``
+            == '2.0'.
+
+            Supported features: CONVERSATION_SUMMARIZATION,
+            CONVERSATION_SUMMARIZATION_VOICE.
+
+            Attributes:
+                section_types (MutableSequence[google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.Sections.SectionType]):
+                    The selected sections chosen to return when
+                    requesting a summary of a conversation. A
+                    duplicate selected section will be treated as a
+                    single selected section. If section types are
+                    not provided, the default will be {SITUATION,
+                    ACTION, RESULT}.
+            """
+
+            class SectionType(proto.Enum):
+                r"""Selectable sections to return when requesting a summary of a
+                conversation.
+
+                Values:
+                    SECTION_TYPE_UNSPECIFIED (0):
+                        Undefined section type, does not return
+                        anything.
+                    SITUATION (1):
+                        What the customer needs help with or has
+                        question about. Section name: "situation".
+                    ACTION (2):
+                        What the agent does to help the customer.
+                        Section name: "action".
+                    RESOLUTION (3):
+                        Result of the customer service. A single word
+                        describing the result of the conversation.
+                        Section name: "resolution".
+                    REASON_FOR_CANCELLATION (4):
+                        Reason for cancellation if the customer requests for a
+                        cancellation. "N/A" otherwise. Section name:
+                        "reason_for_cancellation".
+                    CUSTOMER_SATISFACTION (5):
+                        "Unsatisfied" or "Satisfied" depending on the customer's
+                        feelings at the end of the conversation. Section name:
+                        "customer_satisfaction".
+                    ENTITIES (6):
+                        Key entities extracted from the conversation,
+                        such as ticket number, order number, dollar
+                        amount, etc. Section names are prefixed by
+                        "entities/".
+                """
+                SECTION_TYPE_UNSPECIFIED = 0
+                SITUATION = 1
+                ACTION = 2
+                RESOLUTION = 3
+                REASON_FOR_CANCELLATION = 4
+                CUSTOMER_SATISFACTION = 5
+                ENTITIES = 6
+
+            section_types: MutableSequence[
+                "HumanAgentAssistantConfig.SuggestionQueryConfig.Sections.SectionType"
+            ] = proto.RepeatedField(
+                proto.ENUM,
+                number=1,
+                enum="HumanAgentAssistantConfig.SuggestionQueryConfig.Sections.SectionType",
+            )
+
         knowledge_base_query_source: "HumanAgentAssistantConfig.SuggestionQueryConfig.KnowledgeBaseQuerySource" = proto.Field(
             proto.MESSAGE,
             number=1,
@@ -564,6 +641,13 @@ class HumanAgentAssistantConfig(proto.Message):
             proto.MESSAGE,
             number=7,
             message="HumanAgentAssistantConfig.SuggestionQueryConfig.ContextFilterSettings",
+        )
+        sections: "HumanAgentAssistantConfig.SuggestionQueryConfig.Sections" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=8,
+                message="HumanAgentAssistantConfig.SuggestionQueryConfig.Sections",
+            )
         )
 
     class ConversationModelConfig(proto.Message):

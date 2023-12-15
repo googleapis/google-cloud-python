@@ -3064,7 +3064,9 @@ def test_search_knowledge(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_knowledge), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = conversation.SearchKnowledgeResponse()
+        call.return_value = conversation.SearchKnowledgeResponse(
+            rewritten_query="rewritten_query_value",
+        )
         response = client.search_knowledge(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3074,6 +3076,7 @@ def test_search_knowledge(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversation.SearchKnowledgeResponse)
+    assert response.rewritten_query == "rewritten_query_value"
 
 
 def test_search_knowledge_empty_call():
@@ -3109,7 +3112,9 @@ async def test_search_knowledge_async(
     with mock.patch.object(type(client.transport.search_knowledge), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.SearchKnowledgeResponse()
+            conversation.SearchKnowledgeResponse(
+                rewritten_query="rewritten_query_value",
+            )
         )
         response = await client.search_knowledge(request)
 
@@ -3120,6 +3125,7 @@ async def test_search_knowledge_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversation.SearchKnowledgeResponse)
+    assert response.rewritten_query == "rewritten_query_value"
 
 
 @pytest.mark.asyncio
@@ -5614,7 +5620,9 @@ def test_search_knowledge_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = conversation.SearchKnowledgeResponse()
+        return_value = conversation.SearchKnowledgeResponse(
+            rewritten_query="rewritten_query_value",
+        )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5629,6 +5637,7 @@ def test_search_knowledge_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversation.SearchKnowledgeResponse)
+    assert response.rewritten_query == "rewritten_query_value"
 
 
 def test_search_knowledge_rest_required_fields(
