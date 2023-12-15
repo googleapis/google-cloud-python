@@ -645,7 +645,7 @@ def subscribe_with_avro_schema_with_revisions(
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
     with open(avsc_file, "rb") as file:
-        writer_avro_schema = schema.parse(file.read())
+        reader_avro_schema = schema.parse(file.read())
     # Dict to keep readers for different schema revisions.
     revisions_to_readers = {}
 
@@ -665,7 +665,7 @@ def subscribe_with_avro_schema_with_revisions(
                 print(f"{schema_path} not found.")
                 message.nack()
                 return
-            reader_avro_schema = schema.parse(received_avro_schema.definition)
+            writer_avro_schema = schema.parse(received_avro_schema.definition)
             revisions_to_readers[schema_revision_id] = DatumReader(
                 writer_avro_schema, reader_avro_schema
             )
