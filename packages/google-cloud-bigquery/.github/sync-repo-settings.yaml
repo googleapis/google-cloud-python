@@ -11,10 +11,17 @@ branchProtectionRules:
   requiredStatusCheckContexts:
     - 'Kokoro'
     - 'Kokoro snippets-3.8'
+    - 'Kokoro snippets-3.12'
+    - 'Kokoro system-3.8'
+    - 'Kokoro system-3.12'
     - 'cla/google'
     - 'Samples - Lint'
     - 'Samples - Python 3.7'
     - 'Samples - Python 3.8'
+    - 'Samples - Python 3.9'
+    - 'Samples - Python 3.10'
+    - 'Samples - Python 3.11'
+    - 'Samples - Python 3.12'
 - pattern: v2
   requiresLinearHistory: true
   requiresCodeOwnerReviews: true
