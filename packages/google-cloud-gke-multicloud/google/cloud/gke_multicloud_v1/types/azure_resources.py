@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import common_resources
@@ -37,9 +38,13 @@ __protobuf__ = proto.module(
         "AzureAuthorization",
         "AzureServicesAuthentication",
         "AzureClusterUser",
+        "AzureClusterGroup",
         "AzureNodePool",
+        "AzureNodeManagement",
         "AzureNodeConfig",
         "AzureNodePoolAutoscaling",
+        "AzureOpenIdConfig",
+        "AzureJsonWebKeys",
         "AzureServerConfig",
         "AzureK8sVersionInfo",
         "AzureSshConfig",
@@ -85,6 +90,9 @@ class AzureCluster(proto.Message):
             that contains authentication configuration for how the
             Anthos Multi-Cloud API connects to Azure APIs.
 
+            Either azure_client or azure_services_authentication should
+            be provided.
+
             The ``AzureClient`` resource must reside on the same Google
             Cloud Platform project and region as the ``AzureCluster``.
 
@@ -104,8 +112,11 @@ class AzureCluster(proto.Message):
             Required. Configuration related to the
             cluster RBAC settings.
         azure_services_authentication (google.cloud.gke_multicloud_v1.types.AzureServicesAuthentication):
-            Optional. Authentication configuration for
-            management of Azure resources.
+            Optional. Authentication configuration for management of
+            Azure resources.
+
+            Either azure_client or azure_services_authentication should
+            be provided.
         state (google.cloud.gke_multicloud_v1.types.AzureCluster.State):
             Output only. The current state of the
             cluster.
@@ -741,10 +752,18 @@ class AzureAuthorization(proto.Message):
 
     Attributes:
         admin_users (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureClusterUser]):
-            Required. Users that can perform operations as a cluster
+            Optional. Users that can perform operations as a cluster
             admin. A managed ClusterRoleBinding will be created to grant
             the ``cluster-admin`` ClusterRole to the users. Up to ten
             admin users can be provided.
+
+            For more info on RBAC, see
+            https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles
+        admin_groups (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureClusterGroup]):
+            Optional. Groups of users that can perform operations as a
+            cluster admin. A managed ClusterRoleBinding will be created
+            to grant the ``cluster-admin`` ClusterRole to the groups. Up
+            to ten admin groups can be provided.
 
             For more info on RBAC, see
             https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles
@@ -754,6 +773,11 @@ class AzureAuthorization(proto.Message):
         proto.MESSAGE,
         number=1,
         message="AzureClusterUser",
+    )
+    admin_groups: MutableSequence["AzureClusterGroup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="AzureClusterGroup",
     )
 
 
@@ -790,6 +814,21 @@ class AzureClusterUser(proto.Message):
     """
 
     username: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AzureClusterGroup(proto.Message):
+    r"""Identities of a group-type subject for Azure clusters.
+
+    Attributes:
+        group (str):
+            Required. The name of the group, e.g.
+            ``my-group@domain.com``.
+    """
+
+    group: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -867,6 +906,9 @@ class AzureNodePool(proto.Message):
         errors (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureNodePoolError]):
             Output only. A set of errors found in the
             node pool.
+        management (google.cloud.gke_multicloud_v1.types.AzureNodeManagement):
+            Optional. The Management configuration for
+            this node pool.
     """
 
     class State(proto.Enum):
@@ -971,6 +1013,31 @@ class AzureNodePool(proto.Message):
         number=29,
         message="AzureNodePoolError",
     )
+    management: "AzureNodeManagement" = proto.Field(
+        proto.MESSAGE,
+        number=30,
+        message="AzureNodeManagement",
+    )
+
+
+class AzureNodeManagement(proto.Message):
+    r"""AzureNodeManagement defines the set of node management
+    features turned on for an Azure node pool.
+
+    Attributes:
+        auto_repair (bool):
+            Optional. Whether or not the nodes will be
+            automatically repaired. When set to true, the
+            nodes in this node pool will be monitored and if
+            they fail health checks consistently over a
+            period of time, an automatic repair action will
+            be triggered to replace them with new nodes.
+    """
+
+    auto_repair: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 class AzureNodeConfig(proto.Message):
@@ -1003,8 +1070,7 @@ class AzureNodeConfig(proto.Message):
             characters. Values can be up to 255 Unicode characters.
         image_type (str):
             Optional. The OS image type to use on node pool instances.
-            Can have a value of ``ubuntu``, or ``windows`` if the
-            cluster enables the Windows node pool preview feature.
+            Can be unspecified, or have a value of ``ubuntu``.
 
             When unspecified, it defaults to ``ubuntu``.
         ssh_config (google.cloud.gke_multicloud_v1.types.AzureSshConfig):
@@ -1098,6 +1164,75 @@ class AzureNodePoolAutoscaling(proto.Message):
     )
 
 
+class AzureOpenIdConfig(proto.Message):
+    r"""AzureOpenIdConfig is an OIDC discovery document for the
+    cluster. See the OpenID Connect Discovery 1.0 specification for
+    details.
+
+    Attributes:
+        issuer (str):
+            OIDC Issuer.
+        jwks_uri (str):
+            JSON Web Key uri.
+        response_types_supported (MutableSequence[str]):
+            Supported response types.
+        subject_types_supported (MutableSequence[str]):
+            Supported subject types.
+        id_token_signing_alg_values_supported (MutableSequence[str]):
+            supported ID Token signing Algorithms.
+        claims_supported (MutableSequence[str]):
+            Supported claims.
+        grant_types (MutableSequence[str]):
+            Supported grant types.
+    """
+
+    issuer: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    jwks_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    response_types_supported: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    subject_types_supported: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    id_token_signing_alg_values_supported: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    claims_supported: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    grant_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+
+
+class AzureJsonWebKeys(proto.Message):
+    r"""AzureJsonWebKeys is a valid JSON Web Key Set as specififed in
+    RFC 7517.
+
+    Attributes:
+        keys (MutableSequence[google.cloud.gke_multicloud_v1.types.Jwk]):
+            The public component of the keys used by the
+            cluster to sign token requests.
+    """
+
+    keys: MutableSequence[common_resources.Jwk] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=common_resources.Jwk,
+    )
+
+
 class AzureServerConfig(proto.Message):
     r"""AzureServerConfig contains information about a Google Cloud
     location, such as supported Azure regions and Kubernetes
@@ -1114,7 +1249,11 @@ class AzureServerConfig(proto.Message):
             Names <https://cloud.google.com/apis/design/resource_names>`__
             for more details on Google Cloud Platform resource names.
         valid_versions (MutableSequence[google.cloud.gke_multicloud_v1.types.AzureK8sVersionInfo]):
-            List of valid Kubernetes versions.
+            List of all released Kubernetes versions, including ones
+            which are end of life and can no longer be used. Filter by
+            the ``enabled`` property to limit to currently available
+            versions. Valid versions supported for both create and
+            update operations
         supported_azure_regions (MutableSequence[str]):
             The list of supported Azure regions.
     """
@@ -1135,17 +1274,55 @@ class AzureServerConfig(proto.Message):
 
 
 class AzureK8sVersionInfo(proto.Message):
-    r"""Information about a supported Kubernetes version.
+    r"""Kubernetes version information of GKE cluster on Azure.
 
     Attributes:
         version (str):
-            A supported Kubernetes version (for example,
-            ``1.19.10-gke.1000``)
+            Kubernetes version name (for example, ``1.19.10-gke.1000``)
+        enabled (bool):
+            Optional. True if the version is available
+            for cluster creation. If a version is enabled
+            for creation, it can be used to create new
+            clusters. Otherwise, cluster creation will fail.
+            However, cluster upgrade operations may succeed,
+            even if the version is not enabled.
+        end_of_life (bool):
+            Optional. True if this cluster version
+            belongs to a minor version that has reached its
+            end of life and is no longer in scope to receive
+            security and bug fixes.
+        end_of_life_date (google.type.date_pb2.Date):
+            Optional. The estimated date (in Pacific Time) when this
+            cluster version will reach its end of life. Or if this
+            version is no longer supported (the ``end_of_life`` field is
+            true), this is the actual date (in Pacific time) when the
+            version reached its end of life.
+        release_date (google.type.date_pb2.Date):
+            Optional. The date (in Pacific Time) when the
+            cluster version was released.
     """
 
     version: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    end_of_life: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    end_of_life_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=date_pb2.Date,
+    )
+    release_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=date_pb2.Date,
     )
 
 

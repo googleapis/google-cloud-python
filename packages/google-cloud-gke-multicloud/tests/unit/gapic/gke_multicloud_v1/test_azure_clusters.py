@@ -3401,6 +3401,175 @@ async def test_delete_azure_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        azure_service.GenerateAzureClusterAgentTokenRequest,
+        dict,
+    ],
+)
+def test_generate_azure_cluster_agent_token(request_type, transport: str = "grpc"):
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_azure_cluster_agent_token), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = azure_service.GenerateAzureClusterAgentTokenResponse(
+            access_token="access_token_value",
+            expires_in=1078,
+            token_type="token_type_value",
+        )
+        response = client.generate_azure_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == azure_service.GenerateAzureClusterAgentTokenRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, azure_service.GenerateAzureClusterAgentTokenResponse)
+    assert response.access_token == "access_token_value"
+    assert response.expires_in == 1078
+    assert response.token_type == "token_type_value"
+
+
+def test_generate_azure_cluster_agent_token_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_azure_cluster_agent_token), "__call__"
+    ) as call:
+        client.generate_azure_cluster_agent_token()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == azure_service.GenerateAzureClusterAgentTokenRequest()
+
+
+@pytest.mark.asyncio
+async def test_generate_azure_cluster_agent_token_async(
+    transport: str = "grpc_asyncio",
+    request_type=azure_service.GenerateAzureClusterAgentTokenRequest,
+):
+    client = AzureClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_azure_cluster_agent_token), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            azure_service.GenerateAzureClusterAgentTokenResponse(
+                access_token="access_token_value",
+                expires_in=1078,
+                token_type="token_type_value",
+            )
+        )
+        response = await client.generate_azure_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == azure_service.GenerateAzureClusterAgentTokenRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, azure_service.GenerateAzureClusterAgentTokenResponse)
+    assert response.access_token == "access_token_value"
+    assert response.expires_in == 1078
+    assert response.token_type == "token_type_value"
+
+
+@pytest.mark.asyncio
+async def test_generate_azure_cluster_agent_token_async_from_dict():
+    await test_generate_azure_cluster_agent_token_async(request_type=dict)
+
+
+def test_generate_azure_cluster_agent_token_field_headers():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = azure_service.GenerateAzureClusterAgentTokenRequest()
+
+    request.azure_cluster = "azure_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_azure_cluster_agent_token), "__call__"
+    ) as call:
+        call.return_value = azure_service.GenerateAzureClusterAgentTokenResponse()
+        client.generate_azure_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "azure_cluster=azure_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_generate_azure_cluster_agent_token_field_headers_async():
+    client = AzureClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = azure_service.GenerateAzureClusterAgentTokenRequest()
+
+    request.azure_cluster = "azure_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_azure_cluster_agent_token), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            azure_service.GenerateAzureClusterAgentTokenResponse()
+        )
+        await client.generate_azure_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "azure_cluster=azure_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         azure_service.GenerateAzureAccessTokenRequest,
         dict,
     ],
@@ -5034,6 +5203,526 @@ async def test_delete_azure_node_pool_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        azure_service.GetAzureOpenIdConfigRequest,
+        dict,
+    ],
+)
+def test_get_azure_open_id_config(request_type, transport: str = "grpc"):
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_open_id_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = azure_resources.AzureOpenIdConfig(
+            issuer="issuer_value",
+            jwks_uri="jwks_uri_value",
+            response_types_supported=["response_types_supported_value"],
+            subject_types_supported=["subject_types_supported_value"],
+            id_token_signing_alg_values_supported=[
+                "id_token_signing_alg_values_supported_value"
+            ],
+            claims_supported=["claims_supported_value"],
+            grant_types=["grant_types_value"],
+        )
+        response = client.get_azure_open_id_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == azure_service.GetAzureOpenIdConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, azure_resources.AzureOpenIdConfig)
+    assert response.issuer == "issuer_value"
+    assert response.jwks_uri == "jwks_uri_value"
+    assert response.response_types_supported == ["response_types_supported_value"]
+    assert response.subject_types_supported == ["subject_types_supported_value"]
+    assert response.id_token_signing_alg_values_supported == [
+        "id_token_signing_alg_values_supported_value"
+    ]
+    assert response.claims_supported == ["claims_supported_value"]
+    assert response.grant_types == ["grant_types_value"]
+
+
+def test_get_azure_open_id_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_open_id_config), "__call__"
+    ) as call:
+        client.get_azure_open_id_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == azure_service.GetAzureOpenIdConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_azure_open_id_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=azure_service.GetAzureOpenIdConfigRequest,
+):
+    client = AzureClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_open_id_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            azure_resources.AzureOpenIdConfig(
+                issuer="issuer_value",
+                jwks_uri="jwks_uri_value",
+                response_types_supported=["response_types_supported_value"],
+                subject_types_supported=["subject_types_supported_value"],
+                id_token_signing_alg_values_supported=[
+                    "id_token_signing_alg_values_supported_value"
+                ],
+                claims_supported=["claims_supported_value"],
+                grant_types=["grant_types_value"],
+            )
+        )
+        response = await client.get_azure_open_id_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == azure_service.GetAzureOpenIdConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, azure_resources.AzureOpenIdConfig)
+    assert response.issuer == "issuer_value"
+    assert response.jwks_uri == "jwks_uri_value"
+    assert response.response_types_supported == ["response_types_supported_value"]
+    assert response.subject_types_supported == ["subject_types_supported_value"]
+    assert response.id_token_signing_alg_values_supported == [
+        "id_token_signing_alg_values_supported_value"
+    ]
+    assert response.claims_supported == ["claims_supported_value"]
+    assert response.grant_types == ["grant_types_value"]
+
+
+@pytest.mark.asyncio
+async def test_get_azure_open_id_config_async_from_dict():
+    await test_get_azure_open_id_config_async(request_type=dict)
+
+
+def test_get_azure_open_id_config_field_headers():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = azure_service.GetAzureOpenIdConfigRequest()
+
+    request.azure_cluster = "azure_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_open_id_config), "__call__"
+    ) as call:
+        call.return_value = azure_resources.AzureOpenIdConfig()
+        client.get_azure_open_id_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "azure_cluster=azure_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_azure_open_id_config_field_headers_async():
+    client = AzureClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = azure_service.GetAzureOpenIdConfigRequest()
+
+    request.azure_cluster = "azure_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_open_id_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            azure_resources.AzureOpenIdConfig()
+        )
+        await client.get_azure_open_id_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "azure_cluster=azure_cluster_value",
+    ) in kw["metadata"]
+
+
+def test_get_azure_open_id_config_flattened():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_open_id_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = azure_resources.AzureOpenIdConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_azure_open_id_config(
+            azure_cluster="azure_cluster_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].azure_cluster
+        mock_val = "azure_cluster_value"
+        assert arg == mock_val
+
+
+def test_get_azure_open_id_config_flattened_error():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_azure_open_id_config(
+            azure_service.GetAzureOpenIdConfigRequest(),
+            azure_cluster="azure_cluster_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_azure_open_id_config_flattened_async():
+    client = AzureClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_open_id_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = azure_resources.AzureOpenIdConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            azure_resources.AzureOpenIdConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_azure_open_id_config(
+            azure_cluster="azure_cluster_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].azure_cluster
+        mock_val = "azure_cluster_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_azure_open_id_config_flattened_error_async():
+    client = AzureClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_azure_open_id_config(
+            azure_service.GetAzureOpenIdConfigRequest(),
+            azure_cluster="azure_cluster_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.GetAzureJsonWebKeysRequest,
+        dict,
+    ],
+)
+def test_get_azure_json_web_keys(request_type, transport: str = "grpc"):
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = azure_resources.AzureJsonWebKeys()
+        response = client.get_azure_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == azure_service.GetAzureJsonWebKeysRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, azure_resources.AzureJsonWebKeys)
+
+
+def test_get_azure_json_web_keys_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_json_web_keys), "__call__"
+    ) as call:
+        client.get_azure_json_web_keys()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == azure_service.GetAzureJsonWebKeysRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_azure_json_web_keys_async(
+    transport: str = "grpc_asyncio",
+    request_type=azure_service.GetAzureJsonWebKeysRequest,
+):
+    client = AzureClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            azure_resources.AzureJsonWebKeys()
+        )
+        response = await client.get_azure_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == azure_service.GetAzureJsonWebKeysRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, azure_resources.AzureJsonWebKeys)
+
+
+@pytest.mark.asyncio
+async def test_get_azure_json_web_keys_async_from_dict():
+    await test_get_azure_json_web_keys_async(request_type=dict)
+
+
+def test_get_azure_json_web_keys_field_headers():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = azure_service.GetAzureJsonWebKeysRequest()
+
+    request.azure_cluster = "azure_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_json_web_keys), "__call__"
+    ) as call:
+        call.return_value = azure_resources.AzureJsonWebKeys()
+        client.get_azure_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "azure_cluster=azure_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_azure_json_web_keys_field_headers_async():
+    client = AzureClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = azure_service.GetAzureJsonWebKeysRequest()
+
+    request.azure_cluster = "azure_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_json_web_keys), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            azure_resources.AzureJsonWebKeys()
+        )
+        await client.get_azure_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "azure_cluster=azure_cluster_value",
+    ) in kw["metadata"]
+
+
+def test_get_azure_json_web_keys_flattened():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = azure_resources.AzureJsonWebKeys()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_azure_json_web_keys(
+            azure_cluster="azure_cluster_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].azure_cluster
+        mock_val = "azure_cluster_value"
+        assert arg == mock_val
+
+
+def test_get_azure_json_web_keys_flattened_error():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_azure_json_web_keys(
+            azure_service.GetAzureJsonWebKeysRequest(),
+            azure_cluster="azure_cluster_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_azure_json_web_keys_flattened_async():
+    client = AzureClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_azure_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = azure_resources.AzureJsonWebKeys()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            azure_resources.AzureJsonWebKeys()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_azure_json_web_keys(
+            azure_cluster="azure_cluster_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].azure_cluster
+        mock_val = "azure_cluster_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_azure_json_web_keys_flattened_error_async():
+    client = AzureClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_azure_json_web_keys(
+            azure_service.GetAzureJsonWebKeysRequest(),
+            azure_cluster="azure_cluster_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         azure_service.GetAzureServerConfigRequest,
         dict,
     ],
@@ -6625,7 +7314,10 @@ def test_create_azure_cluster_rest(request_type):
             ],
             "endpoint_subnet_id": "endpoint_subnet_id_value",
         },
-        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "authorization": {
+            "admin_users": [{"username": "username_value"}],
+            "admin_groups": [{"group": "group_value"}],
+        },
         "azure_services_authentication": {
             "tenant_id": "tenant_id_value",
             "application_id": "application_id_value",
@@ -7068,7 +7760,10 @@ def test_update_azure_cluster_rest(request_type):
             ],
             "endpoint_subnet_id": "endpoint_subnet_id_value",
         },
-        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "authorization": {
+            "admin_users": [{"username": "username_value"}],
+            "admin_groups": [{"group": "group_value"}],
+        },
         "azure_services_authentication": {
             "tenant_id": "tenant_id_value",
             "application_id": "application_id_value",
@@ -8358,6 +9053,262 @@ def test_delete_azure_cluster_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        azure_service.GenerateAzureClusterAgentTokenRequest,
+        dict,
+    ],
+)
+def test_generate_azure_cluster_agent_token_rest(request_type):
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "azure_cluster": "projects/sample1/locations/sample2/azureClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = azure_service.GenerateAzureClusterAgentTokenResponse(
+            access_token="access_token_value",
+            expires_in=1078,
+            token_type="token_type_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = azure_service.GenerateAzureClusterAgentTokenResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_azure_cluster_agent_token(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, azure_service.GenerateAzureClusterAgentTokenResponse)
+    assert response.access_token == "access_token_value"
+    assert response.expires_in == 1078
+    assert response.token_type == "token_type_value"
+
+
+def test_generate_azure_cluster_agent_token_rest_required_fields(
+    request_type=azure_service.GenerateAzureClusterAgentTokenRequest,
+):
+    transport_class = transports.AzureClustersRestTransport
+
+    request_init = {}
+    request_init["azure_cluster"] = ""
+    request_init["subject_token"] = ""
+    request_init["subject_token_type"] = ""
+    request_init["version"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_azure_cluster_agent_token._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["azureCluster"] = "azure_cluster_value"
+    jsonified_request["subjectToken"] = "subject_token_value"
+    jsonified_request["subjectTokenType"] = "subject_token_type_value"
+    jsonified_request["version"] = "version_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_azure_cluster_agent_token._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "azureCluster" in jsonified_request
+    assert jsonified_request["azureCluster"] == "azure_cluster_value"
+    assert "subjectToken" in jsonified_request
+    assert jsonified_request["subjectToken"] == "subject_token_value"
+    assert "subjectTokenType" in jsonified_request
+    assert jsonified_request["subjectTokenType"] == "subject_token_type_value"
+    assert "version" in jsonified_request
+    assert jsonified_request["version"] == "version_value"
+
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = azure_service.GenerateAzureClusterAgentTokenResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = azure_service.GenerateAzureClusterAgentTokenResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.generate_azure_cluster_agent_token(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_azure_cluster_agent_token_rest_unset_required_fields():
+    transport = transports.AzureClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.generate_azure_cluster_agent_token._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "azureCluster",
+                "subjectToken",
+                "subjectTokenType",
+                "version",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_azure_cluster_agent_token_rest_interceptors(null_interceptor):
+    transport = transports.AzureClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AzureClustersRestInterceptor(),
+    )
+    client = AzureClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_generate_azure_cluster_agent_token",
+    ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "pre_generate_azure_cluster_agent_token",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = azure_service.GenerateAzureClusterAgentTokenRequest.pb(
+            azure_service.GenerateAzureClusterAgentTokenRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            azure_service.GenerateAzureClusterAgentTokenResponse.to_json(
+                azure_service.GenerateAzureClusterAgentTokenResponse()
+            )
+        )
+
+        request = azure_service.GenerateAzureClusterAgentTokenRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = azure_service.GenerateAzureClusterAgentTokenResponse()
+
+        client.generate_azure_cluster_agent_token(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_azure_cluster_agent_token_rest_bad_request(
+    transport: str = "rest",
+    request_type=azure_service.GenerateAzureClusterAgentTokenRequest,
+):
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "azure_cluster": "projects/sample1/locations/sample2/azureClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.generate_azure_cluster_agent_token(request)
+
+
+def test_generate_azure_cluster_agent_token_rest_error():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         azure_service.GenerateAzureAccessTokenRequest,
         dict,
     ],
@@ -8626,6 +9577,7 @@ def test_create_azure_node_pool_rest(request_type):
         "max_pods_constraint": {"max_pods_per_node": 1798},
         "azure_availability_zone": "azure_availability_zone_value",
         "errors": [{"message": "message_value"}],
+        "management": {"auto_repair": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -9035,6 +9987,7 @@ def test_update_azure_node_pool_rest(request_type):
         "max_pods_constraint": {"max_pods_per_node": 1798},
         "azure_availability_zone": "azure_availability_zone_value",
         "errors": [{"message": "message_value"}],
+        "management": {"auto_repair": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10308,6 +11261,573 @@ def test_delete_azure_node_pool_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        azure_service.GetAzureOpenIdConfigRequest,
+        dict,
+    ],
+)
+def test_get_azure_open_id_config_rest(request_type):
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "azure_cluster": "projects/sample1/locations/sample2/azureClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = azure_resources.AzureOpenIdConfig(
+            issuer="issuer_value",
+            jwks_uri="jwks_uri_value",
+            response_types_supported=["response_types_supported_value"],
+            subject_types_supported=["subject_types_supported_value"],
+            id_token_signing_alg_values_supported=[
+                "id_token_signing_alg_values_supported_value"
+            ],
+            claims_supported=["claims_supported_value"],
+            grant_types=["grant_types_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureOpenIdConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_azure_open_id_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, azure_resources.AzureOpenIdConfig)
+    assert response.issuer == "issuer_value"
+    assert response.jwks_uri == "jwks_uri_value"
+    assert response.response_types_supported == ["response_types_supported_value"]
+    assert response.subject_types_supported == ["subject_types_supported_value"]
+    assert response.id_token_signing_alg_values_supported == [
+        "id_token_signing_alg_values_supported_value"
+    ]
+    assert response.claims_supported == ["claims_supported_value"]
+    assert response.grant_types == ["grant_types_value"]
+
+
+def test_get_azure_open_id_config_rest_required_fields(
+    request_type=azure_service.GetAzureOpenIdConfigRequest,
+):
+    transport_class = transports.AzureClustersRestTransport
+
+    request_init = {}
+    request_init["azure_cluster"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_azure_open_id_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["azureCluster"] = "azure_cluster_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_azure_open_id_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "azureCluster" in jsonified_request
+    assert jsonified_request["azureCluster"] == "azure_cluster_value"
+
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = azure_resources.AzureOpenIdConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = azure_resources.AzureOpenIdConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_azure_open_id_config(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_azure_open_id_config_rest_unset_required_fields():
+    transport = transports.AzureClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_azure_open_id_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("azureCluster",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_azure_open_id_config_rest_interceptors(null_interceptor):
+    transport = transports.AzureClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AzureClustersRestInterceptor(),
+    )
+    client = AzureClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AzureClustersRestInterceptor, "post_get_azure_open_id_config"
+    ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor, "pre_get_azure_open_id_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = azure_service.GetAzureOpenIdConfigRequest.pb(
+            azure_service.GetAzureOpenIdConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = azure_resources.AzureOpenIdConfig.to_json(
+            azure_resources.AzureOpenIdConfig()
+        )
+
+        request = azure_service.GetAzureOpenIdConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = azure_resources.AzureOpenIdConfig()
+
+        client.get_azure_open_id_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_azure_open_id_config_rest_bad_request(
+    transport: str = "rest", request_type=azure_service.GetAzureOpenIdConfigRequest
+):
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "azure_cluster": "projects/sample1/locations/sample2/azureClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_azure_open_id_config(request)
+
+
+def test_get_azure_open_id_config_rest_flattened():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = azure_resources.AzureOpenIdConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "azure_cluster": "projects/sample1/locations/sample2/azureClusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            azure_cluster="azure_cluster_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureOpenIdConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_azure_open_id_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}/.well-known/openid-configuration"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_azure_open_id_config_rest_flattened_error(transport: str = "rest"):
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_azure_open_id_config(
+            azure_service.GetAzureOpenIdConfigRequest(),
+            azure_cluster="azure_cluster_value",
+        )
+
+
+def test_get_azure_open_id_config_rest_error():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        azure_service.GetAzureJsonWebKeysRequest,
+        dict,
+    ],
+)
+def test_get_azure_json_web_keys_rest(request_type):
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "azure_cluster": "projects/sample1/locations/sample2/azureClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = azure_resources.AzureJsonWebKeys()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureJsonWebKeys.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_azure_json_web_keys(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, azure_resources.AzureJsonWebKeys)
+
+
+def test_get_azure_json_web_keys_rest_required_fields(
+    request_type=azure_service.GetAzureJsonWebKeysRequest,
+):
+    transport_class = transports.AzureClustersRestTransport
+
+    request_init = {}
+    request_init["azure_cluster"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_azure_json_web_keys._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["azureCluster"] = "azure_cluster_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_azure_json_web_keys._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "azureCluster" in jsonified_request
+    assert jsonified_request["azureCluster"] == "azure_cluster_value"
+
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = azure_resources.AzureJsonWebKeys()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = azure_resources.AzureJsonWebKeys.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_azure_json_web_keys(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_azure_json_web_keys_rest_unset_required_fields():
+    transport = transports.AzureClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_azure_json_web_keys._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("azureCluster",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_azure_json_web_keys_rest_interceptors(null_interceptor):
+    transport = transports.AzureClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AzureClustersRestInterceptor(),
+    )
+    client = AzureClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AzureClustersRestInterceptor, "post_get_azure_json_web_keys"
+    ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor, "pre_get_azure_json_web_keys"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = azure_service.GetAzureJsonWebKeysRequest.pb(
+            azure_service.GetAzureJsonWebKeysRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = azure_resources.AzureJsonWebKeys.to_json(
+            azure_resources.AzureJsonWebKeys()
+        )
+
+        request = azure_service.GetAzureJsonWebKeysRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = azure_resources.AzureJsonWebKeys()
+
+        client.get_azure_json_web_keys(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_azure_json_web_keys_rest_bad_request(
+    transport: str = "rest", request_type=azure_service.GetAzureJsonWebKeysRequest
+):
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "azure_cluster": "projects/sample1/locations/sample2/azureClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_azure_json_web_keys(request)
+
+
+def test_get_azure_json_web_keys_rest_flattened():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = azure_resources.AzureJsonWebKeys()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "azure_cluster": "projects/sample1/locations/sample2/azureClusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            azure_cluster="azure_cluster_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureJsonWebKeys.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_azure_json_web_keys(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}/jwks"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_azure_json_web_keys_rest_flattened_error(transport: str = "rest"):
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_azure_json_web_keys(
+            azure_service.GetAzureJsonWebKeysRequest(),
+            azure_cluster="azure_cluster_value",
+        )
+
+
+def test_get_azure_json_web_keys_rest_error():
+    client = AzureClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         azure_service.GetAzureServerConfigRequest,
         dict,
     ],
@@ -10728,12 +12248,15 @@ def test_azure_clusters_base_transport():
         "get_azure_cluster",
         "list_azure_clusters",
         "delete_azure_cluster",
+        "generate_azure_cluster_agent_token",
         "generate_azure_access_token",
         "create_azure_node_pool",
         "update_azure_node_pool",
         "get_azure_node_pool",
         "list_azure_node_pools",
         "delete_azure_node_pool",
+        "get_azure_open_id_config",
+        "get_azure_json_web_keys",
         "get_azure_server_config",
         "get_operation",
         "cancel_operation",
@@ -11046,6 +12569,9 @@ def test_azure_clusters_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_azure_cluster._session
     session2 = client2.transport.delete_azure_cluster._session
     assert session1 != session2
+    session1 = client1.transport.generate_azure_cluster_agent_token._session
+    session2 = client2.transport.generate_azure_cluster_agent_token._session
+    assert session1 != session2
     session1 = client1.transport.generate_azure_access_token._session
     session2 = client2.transport.generate_azure_access_token._session
     assert session1 != session2
@@ -11063,6 +12589,12 @@ def test_azure_clusters_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.delete_azure_node_pool._session
     session2 = client2.transport.delete_azure_node_pool._session
+    assert session1 != session2
+    session1 = client1.transport.get_azure_open_id_config._session
+    session2 = client2.transport.get_azure_open_id_config._session
+    assert session1 != session2
+    session1 = client1.transport.get_azure_json_web_keys._session
+    session2 = client2.transport.get_azure_json_web_keys._session
     assert session1 != session2
     session1 = client1.transport.get_azure_server_config._session
     session2 = client2.transport.get_azure_server_config._session

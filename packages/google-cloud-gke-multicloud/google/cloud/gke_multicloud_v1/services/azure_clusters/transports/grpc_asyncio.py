@@ -550,6 +550,38 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
         return self._stubs["delete_azure_cluster"]
 
     @property
+    def generate_azure_cluster_agent_token(
+        self,
+    ) -> Callable[
+        [azure_service.GenerateAzureClusterAgentTokenRequest],
+        Awaitable[azure_service.GenerateAzureClusterAgentTokenResponse],
+    ]:
+        r"""Return a callable for the generate azure cluster agent
+        token method over gRPC.
+
+        Generates an access token for a cluster agent.
+
+        Returns:
+            Callable[[~.GenerateAzureClusterAgentTokenRequest],
+                    Awaitable[~.GenerateAzureClusterAgentTokenResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_azure_cluster_agent_token" not in self._stubs:
+            self._stubs[
+                "generate_azure_cluster_agent_token"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureClusterAgentToken",
+                request_serializer=azure_service.GenerateAzureClusterAgentTokenRequest.serialize,
+                response_deserializer=azure_service.GenerateAzureClusterAgentTokenResponse.deserialize,
+            )
+        return self._stubs["generate_azure_cluster_agent_token"]
+
+    @property
     def generate_azure_access_token(
         self,
     ) -> Callable[
@@ -740,6 +772,68 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_azure_node_pool"]
+
+    @property
+    def get_azure_open_id_config(
+        self,
+    ) -> Callable[
+        [azure_service.GetAzureOpenIdConfigRequest],
+        Awaitable[azure_resources.AzureOpenIdConfig],
+    ]:
+        r"""Return a callable for the get azure open id config method over gRPC.
+
+        Gets the OIDC discovery document for the cluster. See the
+        `OpenID Connect Discovery 1.0
+        specification <https://openid.net/specs/openid-connect-discovery-1_0.html>`__
+        for details.
+
+        Returns:
+            Callable[[~.GetAzureOpenIdConfigRequest],
+                    Awaitable[~.AzureOpenIdConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_azure_open_id_config" not in self._stubs:
+            self._stubs["get_azure_open_id_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AzureClusters/GetAzureOpenIdConfig",
+                request_serializer=azure_service.GetAzureOpenIdConfigRequest.serialize,
+                response_deserializer=azure_resources.AzureOpenIdConfig.deserialize,
+            )
+        return self._stubs["get_azure_open_id_config"]
+
+    @property
+    def get_azure_json_web_keys(
+        self,
+    ) -> Callable[
+        [azure_service.GetAzureJsonWebKeysRequest],
+        Awaitable[azure_resources.AzureJsonWebKeys],
+    ]:
+        r"""Return a callable for the get azure json web keys method over gRPC.
+
+        Gets the public component of the cluster signing keys
+        in JSON Web Key format.
+
+        Returns:
+            Callable[[~.GetAzureJsonWebKeysRequest],
+                    Awaitable[~.AzureJsonWebKeys]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_azure_json_web_keys" not in self._stubs:
+            self._stubs["get_azure_json_web_keys"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AzureClusters/GetAzureJsonWebKeys",
+                request_serializer=azure_service.GetAzureJsonWebKeysRequest.serialize,
+                response_deserializer=azure_resources.AzureJsonWebKeys.deserialize,
+            )
+        return self._stubs["get_azure_json_web_keys"]
 
     @property
     def get_azure_server_config(

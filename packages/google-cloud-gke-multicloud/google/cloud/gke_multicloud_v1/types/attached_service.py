@@ -35,6 +35,8 @@ __protobuf__ = proto.module(
         "ListAttachedClustersResponse",
         "DeleteAttachedClusterRequest",
         "GetAttachedServerConfigRequest",
+        "GenerateAttachedClusterAgentTokenRequest",
+        "GenerateAttachedClusterAgentTokenResponse",
     },
 )
 
@@ -80,6 +82,9 @@ class GenerateAttachedClusterInstallManifestRequest(proto.Message):
             You can list all supported versions on a given Google Cloud
             region by calling
             [GetAttachedServerConfig][google.cloud.gkemulticloud.v1.AttachedClusters.GetAttachedServerConfig].
+        proxy_config (google.cloud.gke_multicloud_v1.types.AttachedProxyConfig):
+            Optional. Proxy configuration for outbound
+            HTTP(S) traffic.
     """
 
     parent: str = proto.Field(
@@ -93,6 +98,11 @@ class GenerateAttachedClusterInstallManifestRequest(proto.Message):
     platform_version: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    proxy_config: attached_resources.AttachedProxyConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=attached_resources.AttachedProxyConfig,
     )
 
 
@@ -202,6 +212,9 @@ class ImportAttachedClusterRequest(proto.Message):
             attached cluster.
 
             Supported values: ["eks", "aks"].
+        proxy_config (google.cloud.gke_multicloud_v1.types.AttachedProxyConfig):
+            Optional. Proxy configuration for outbound
+            HTTP(S) traffic.
     """
 
     parent: str = proto.Field(
@@ -224,6 +237,11 @@ class ImportAttachedClusterRequest(proto.Message):
         proto.STRING,
         number=5,
     )
+    proxy_config: attached_resources.AttachedProxyConfig = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=attached_resources.AttachedProxyConfig,
+    )
 
 
 class UpdateAttachedClusterRequest(proto.Message):
@@ -244,12 +262,16 @@ class UpdateAttachedClusterRequest(proto.Message):
             paths field can only include these fields from
             [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]:
 
-            -  ``description``.
             -  ``annotations``.
-            -  ``platform_version``.
+            -  ``authorization.admin_groups``.
             -  ``authorization.admin_users``.
+            -  ``binary_authorization.evaluation_mode``.
+            -  ``description``.
             -  ``logging_config.component_config.enable_components``.
             -  ``monitoring_config.managed_prometheus_config.enabled``.
+            -  ``platform_version``.
+            -  ``proxy_config.kubernetes_secret.name``.
+            -  ``proxy_config.kubernetes_secret.namespace``.
     """
 
     attached_cluster: attached_resources.AttachedCluster = proto.Field(
@@ -457,6 +479,94 @@ class GetAttachedServerConfigRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class GenerateAttachedClusterAgentTokenRequest(proto.Message):
+    r"""
+
+    Attributes:
+        attached_cluster (str):
+            Required.
+        subject_token (str):
+            Required.
+        subject_token_type (str):
+            Required.
+        version (str):
+            Required.
+        grant_type (str):
+            Optional.
+        audience (str):
+            Optional.
+        scope (str):
+            Optional.
+        requested_token_type (str):
+            Optional.
+        options (str):
+            Optional.
+    """
+
+    attached_cluster: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subject_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    subject_token_type: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    version: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    grant_type: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    audience: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    scope: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    requested_token_type: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    options: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+
+
+class GenerateAttachedClusterAgentTokenResponse(proto.Message):
+    r"""
+
+    Attributes:
+        access_token (str):
+
+        expires_in (int):
+
+        token_type (str):
+
+    """
+
+    access_token: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expires_in: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    token_type: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

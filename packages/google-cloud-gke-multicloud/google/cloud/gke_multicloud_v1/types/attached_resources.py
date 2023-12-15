@@ -28,10 +28,13 @@ __protobuf__ = proto.module(
         "AttachedCluster",
         "AttachedClustersAuthorization",
         "AttachedClusterUser",
+        "AttachedClusterGroup",
         "AttachedOidcConfig",
         "AttachedServerConfig",
         "AttachedPlatformVersionInfo",
         "AttachedClusterError",
+        "AttachedProxyConfig",
+        "KubernetesSecret",
     },
 )
 
@@ -67,7 +70,7 @@ class AttachedCluster(proto.Message):
             Required. The Kubernetes distribution of the underlying
             attached cluster.
 
-            Supported values: ["eks", "aks"].
+            Supported values: ["eks", "aks", "generic"].
         cluster_region (str):
             Output only. The region where this cluster
             runs.
@@ -125,6 +128,12 @@ class AttachedCluster(proto.Message):
         monitoring_config (google.cloud.gke_multicloud_v1.types.MonitoringConfig):
             Optional. Monitoring configuration for this
             cluster.
+        proxy_config (google.cloud.gke_multicloud_v1.types.AttachedProxyConfig):
+            Optional. Proxy configuration for outbound
+            HTTP(S) traffic.
+        binary_authorization (google.cloud.gke_multicloud_v1.types.BinaryAuthorization):
+            Optional. Binary Authorization configuration
+            for this cluster.
     """
 
     class State(proto.Enum):
@@ -253,6 +262,16 @@ class AttachedCluster(proto.Message):
         number=23,
         message=common_resources.MonitoringConfig,
     )
+    proxy_config: "AttachedProxyConfig" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message="AttachedProxyConfig",
+    )
+    binary_authorization: common_resources.BinaryAuthorization = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message=common_resources.BinaryAuthorization,
+    )
 
 
 class AttachedClustersAuthorization(proto.Message):
@@ -260,10 +279,18 @@ class AttachedClustersAuthorization(proto.Message):
 
     Attributes:
         admin_users (MutableSequence[google.cloud.gke_multicloud_v1.types.AttachedClusterUser]):
-            Required. Users that can perform operations as a cluster
+            Optional. Users that can perform operations as a cluster
             admin. A managed ClusterRoleBinding will be created to grant
             the ``cluster-admin`` ClusterRole to the users. Up to ten
             admin users can be provided.
+
+            For more info on RBAC, see
+            https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles
+        admin_groups (MutableSequence[google.cloud.gke_multicloud_v1.types.AttachedClusterGroup]):
+            Optional. Groups of users that can perform operations as a
+            cluster admin. A managed ClusterRoleBinding will be created
+            to grant the ``cluster-admin`` ClusterRole to the groups. Up
+            to ten admin groups can be provided.
 
             For more info on RBAC, see
             https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles
@@ -273,6 +300,11 @@ class AttachedClustersAuthorization(proto.Message):
         proto.MESSAGE,
         number=1,
         message="AttachedClusterUser",
+    )
+    admin_groups: MutableSequence["AttachedClusterGroup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="AttachedClusterGroup",
     )
 
 
@@ -286,6 +318,21 @@ class AttachedClusterUser(proto.Message):
     """
 
     username: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AttachedClusterGroup(proto.Message):
+    r"""Identities of a group-type subject for Attached clusters.
+
+    Attributes:
+        group (str):
+            Required. The name of the group, e.g.
+            ``my-group@domain.com``.
+    """
+
+    group: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -382,6 +429,45 @@ class AttachedClusterError(proto.Message):
     message: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class AttachedProxyConfig(proto.Message):
+    r"""Details of a proxy config.
+
+    Attributes:
+        kubernetes_secret (google.cloud.gke_multicloud_v1.types.KubernetesSecret):
+            The Kubernetes Secret resource that contains
+            the HTTP(S) proxy configuration. The secret must
+            be a JSON encoded proxy configuration as
+            described in
+    """
+
+    kubernetes_secret: "KubernetesSecret" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="KubernetesSecret",
+    )
+
+
+class KubernetesSecret(proto.Message):
+    r"""Information about a Kubernetes Secret
+
+    Attributes:
+        name (str):
+            Name of the kubernetes secret.
+        namespace (str):
+            Namespace in which the kubernetes secret is
+            stored.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    namespace: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

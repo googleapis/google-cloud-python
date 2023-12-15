@@ -23,6 +23,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.gkemulticloud.v1",
     manifest={
+        "Jwk",
         "WorkloadIdentityConfig",
         "MaxPodsConstraint",
         "OperationMetadata",
@@ -32,8 +33,71 @@ __protobuf__ = proto.module(
         "LoggingComponentConfig",
         "MonitoringConfig",
         "ManagedPrometheusConfig",
+        "BinaryAuthorization",
     },
 )
+
+
+class Jwk(proto.Message):
+    r"""Jwk is a JSON Web Key as specified in RFC 7517.
+
+    Attributes:
+        kty (str):
+            Key Type.
+        alg (str):
+            Algorithm.
+        use (str):
+            Permitted uses for the public keys.
+        kid (str):
+            Key ID.
+        n (str):
+            Used for RSA keys.
+        e (str):
+            Used for RSA keys.
+        x (str):
+            Used for ECDSA keys.
+        y (str):
+            Used for ECDSA keys.
+        crv (str):
+            Used for ECDSA keys.
+    """
+
+    kty: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    alg: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    use: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    kid: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    n: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    e: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    x: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    y: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    crv: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 class WorkloadIdentityConfig(proto.Message):
@@ -313,6 +377,40 @@ class ManagedPrometheusConfig(proto.Message):
     enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+
+
+class BinaryAuthorization(proto.Message):
+    r"""Configuration for Binary Authorization.
+
+    Attributes:
+        evaluation_mode (google.cloud.gke_multicloud_v1.types.BinaryAuthorization.EvaluationMode):
+            Mode of operation for binauthz policy
+            evaluation. If unspecified, defaults to
+            DISABLED.
+    """
+
+    class EvaluationMode(proto.Enum):
+        r"""Binary Authorization mode of operation.
+
+        Values:
+            EVALUATION_MODE_UNSPECIFIED (0):
+                Default value
+            DISABLED (1):
+                Disable BinaryAuthorization
+            PROJECT_SINGLETON_POLICY_ENFORCE (2):
+                Enforce Kubernetes admission requests with
+                BinaryAuthorization using the project's
+                singleton policy.
+        """
+        EVALUATION_MODE_UNSPECIFIED = 0
+        DISABLED = 1
+        PROJECT_SINGLETON_POLICY_ENFORCE = 2
+
+    evaluation_mode: EvaluationMode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=EvaluationMode,
     )
 
 

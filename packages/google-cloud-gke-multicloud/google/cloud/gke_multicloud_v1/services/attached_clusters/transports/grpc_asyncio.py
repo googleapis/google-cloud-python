@@ -514,6 +514,38 @@ class AttachedClustersGrpcAsyncIOTransport(AttachedClustersTransport):
             )
         return self._stubs["generate_attached_cluster_install_manifest"]
 
+    @property
+    def generate_attached_cluster_agent_token(
+        self,
+    ) -> Callable[
+        [attached_service.GenerateAttachedClusterAgentTokenRequest],
+        Awaitable[attached_service.GenerateAttachedClusterAgentTokenResponse],
+    ]:
+        r"""Return a callable for the generate attached cluster
+        agent token method over gRPC.
+
+        Generates an access token for a cluster agent.
+
+        Returns:
+            Callable[[~.GenerateAttachedClusterAgentTokenRequest],
+                    Awaitable[~.GenerateAttachedClusterAgentTokenResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_attached_cluster_agent_token" not in self._stubs:
+            self._stubs[
+                "generate_attached_cluster_agent_token"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterAgentToken",
+                request_serializer=attached_service.GenerateAttachedClusterAgentTokenRequest.serialize,
+                response_deserializer=attached_service.GenerateAttachedClusterAgentTokenResponse.deserialize,
+            )
+        return self._stubs["generate_attached_cluster_agent_token"]
+
     def close(self):
         return self.grpc_channel.close()
 

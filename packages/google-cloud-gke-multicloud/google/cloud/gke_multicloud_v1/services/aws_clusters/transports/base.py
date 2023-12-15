@@ -166,6 +166,20 @@ class AwsClustersTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.generate_aws_cluster_agent_token: gapic_v1.method.wrap_method(
+                self.generate_aws_cluster_agent_token,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.generate_aws_access_token: gapic_v1.method.wrap_method(
                 self.generate_aws_access_token,
                 default_retry=retries.Retry(
@@ -187,6 +201,11 @@ class AwsClustersTransport(abc.ABC):
             ),
             self.update_aws_node_pool: gapic_v1.method.wrap_method(
                 self.update_aws_node_pool,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.rollback_aws_node_pool_update: gapic_v1.method.wrap_method(
+                self.rollback_aws_node_pool_update,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -220,6 +239,34 @@ class AwsClustersTransport(abc.ABC):
             ),
             self.delete_aws_node_pool: gapic_v1.method.wrap_method(
                 self.delete_aws_node_pool,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_aws_open_id_config: gapic_v1.method.wrap_method(
+                self.get_aws_open_id_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_aws_json_web_keys: gapic_v1.method.wrap_method(
+                self.get_aws_json_web_keys,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -302,6 +349,18 @@ class AwsClustersTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def generate_aws_cluster_agent_token(
+        self,
+    ) -> Callable[
+        [aws_service.GenerateAwsClusterAgentTokenRequest],
+        Union[
+            aws_service.GenerateAwsClusterAgentTokenResponse,
+            Awaitable[aws_service.GenerateAwsClusterAgentTokenResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def generate_aws_access_token(
         self,
     ) -> Callable[
@@ -327,6 +386,15 @@ class AwsClustersTransport(abc.ABC):
         self,
     ) -> Callable[
         [aws_service.UpdateAwsNodePoolRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def rollback_aws_node_pool_update(
+        self,
+    ) -> Callable[
+        [aws_service.RollbackAwsNodePoolUpdateRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -358,6 +426,24 @@ class AwsClustersTransport(abc.ABC):
     ) -> Callable[
         [aws_service.DeleteAwsNodePoolRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_aws_open_id_config(
+        self,
+    ) -> Callable[
+        [aws_service.GetAwsOpenIdConfigRequest],
+        Union[aws_resources.AwsOpenIdConfig, Awaitable[aws_resources.AwsOpenIdConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_aws_json_web_keys(
+        self,
+    ) -> Callable[
+        [aws_service.GetAwsJsonWebKeysRequest],
+        Union[aws_resources.AwsJsonWebKeys, Awaitable[aws_resources.AwsJsonWebKeys]],
     ]:
         raise NotImplementedError()
 

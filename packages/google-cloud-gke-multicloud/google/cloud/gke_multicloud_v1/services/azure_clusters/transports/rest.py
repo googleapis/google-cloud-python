@@ -127,6 +127,14 @@ class AzureClustersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_generate_azure_cluster_agent_token(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_generate_azure_cluster_agent_token(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_azure_client(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -143,11 +151,27 @@ class AzureClustersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_azure_json_web_keys(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_azure_json_web_keys(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_azure_node_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_azure_node_pool(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_azure_open_id_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_azure_open_id_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -368,6 +392,31 @@ class AzureClustersRestInterceptor:
         """
         return response
 
+    def pre_generate_azure_cluster_agent_token(
+        self,
+        request: azure_service.GenerateAzureClusterAgentTokenRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        azure_service.GenerateAzureClusterAgentTokenRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for generate_azure_cluster_agent_token
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AzureClusters server.
+        """
+        return request, metadata
+
+    def post_generate_azure_cluster_agent_token(
+        self, response: azure_service.GenerateAzureClusterAgentTokenResponse
+    ) -> azure_service.GenerateAzureClusterAgentTokenResponse:
+        """Post-rpc interceptor for generate_azure_cluster_agent_token
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AzureClusters server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_azure_client(
         self,
         request: azure_service.GetAzureClientRequest,
@@ -414,6 +463,29 @@ class AzureClustersRestInterceptor:
         """
         return response
 
+    def pre_get_azure_json_web_keys(
+        self,
+        request: azure_service.GetAzureJsonWebKeysRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.GetAzureJsonWebKeysRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_azure_json_web_keys
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AzureClusters server.
+        """
+        return request, metadata
+
+    def post_get_azure_json_web_keys(
+        self, response: azure_resources.AzureJsonWebKeys
+    ) -> azure_resources.AzureJsonWebKeys:
+        """Post-rpc interceptor for get_azure_json_web_keys
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AzureClusters server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_azure_node_pool(
         self,
         request: azure_service.GetAzureNodePoolRequest,
@@ -430,6 +502,29 @@ class AzureClustersRestInterceptor:
         self, response: azure_resources.AzureNodePool
     ) -> azure_resources.AzureNodePool:
         """Post-rpc interceptor for get_azure_node_pool
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AzureClusters server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_azure_open_id_config(
+        self,
+        request: azure_service.GetAzureOpenIdConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[azure_service.GetAzureOpenIdConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_azure_open_id_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AzureClusters server.
+        """
+        return request, metadata
+
+    def post_get_azure_open_id_config(
+        self, response: azure_resources.AzureOpenIdConfig
+    ) -> azure_resources.AzureOpenIdConfig:
+        """Post-rpc interceptor for get_azure_open_id_config
 
         Override in a subclass to manipulate the response
         after it is returned by the AzureClusters server but before
@@ -1234,7 +1329,7 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             Args:
                 request (~.azure_service.DeleteAzureClusterRequest):
-                    The request object. Request message for ``Clusters.DeleteAzureCluster``
+                    The request object. Request message for ``AzureClusters.DeleteAzureCluster``
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1322,8 +1417,8 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             Args:
                 request (~.azure_service.DeleteAzureNodePoolRequest):
-                    The request object. Delete message for ``AzureClusters.DeleteAzureNodePool``
-                method.
+                    The request object. Request message for
+                ``AzureClusters.DeleteAzureNodePool`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1472,6 +1567,105 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_generate_azure_access_token(resp)
+            return resp
+
+    class _GenerateAzureClusterAgentToken(AzureClustersRestStub):
+        def __hash__(self):
+            return hash("GenerateAzureClusterAgentToken")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: azure_service.GenerateAzureClusterAgentTokenRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> azure_service.GenerateAzureClusterAgentTokenResponse:
+            r"""Call the generate azure cluster
+            agent token method over HTTP.
+
+                Args:
+                    request (~.azure_service.GenerateAzureClusterAgentTokenRequest):
+                        The request object.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.azure_service.GenerateAzureClusterAgentTokenResponse:
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}:generateAzureClusterAgentToken",
+                    "body": "*",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_generate_azure_cluster_agent_token(
+                request, metadata
+            )
+            pb_request = azure_service.GenerateAzureClusterAgentTokenRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = azure_service.GenerateAzureClusterAgentTokenResponse()
+            pb_resp = azure_service.GenerateAzureClusterAgentTokenResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_generate_azure_cluster_agent_token(resp)
             return resp
 
     class _GetAzureClient(AzureClustersRestStub):
@@ -1664,6 +1858,98 @@ class AzureClustersRestTransport(AzureClustersTransport):
             resp = self._interceptor.post_get_azure_cluster(resp)
             return resp
 
+    class _GetAzureJsonWebKeys(AzureClustersRestStub):
+        def __hash__(self):
+            return hash("GetAzureJsonWebKeys")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: azure_service.GetAzureJsonWebKeysRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> azure_resources.AzureJsonWebKeys:
+            r"""Call the get azure json web keys method over HTTP.
+
+            Args:
+                request (~.azure_service.GetAzureJsonWebKeysRequest):
+                    The request object. GetAzureJsonWebKeysRequest gets the public component of
+                the keys used by the cluster to sign token requests.
+                This will be the jwks_uri for the discover document
+                returned by getOpenIDConfig. See the OpenID Connect
+                Discovery 1.0 specification for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.azure_resources.AzureJsonWebKeys:
+                    AzureJsonWebKeys is a valid JSON Web
+                Key Set as specififed in RFC 7517.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}/jwks",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_azure_json_web_keys(
+                request, metadata
+            )
+            pb_request = azure_service.GetAzureJsonWebKeysRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = azure_resources.AzureJsonWebKeys()
+            pb_resp = azure_resources.AzureJsonWebKeys.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_azure_json_web_keys(resp)
+            return resp
+
     class _GetAzureNodePool(AzureClustersRestStub):
         def __hash__(self):
             return hash("GetAzureNodePool")
@@ -1749,6 +2035,99 @@ class AzureClustersRestTransport(AzureClustersTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_azure_node_pool(resp)
+            return resp
+
+    class _GetAzureOpenIdConfig(AzureClustersRestStub):
+        def __hash__(self):
+            return hash("GetAzureOpenIdConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: azure_service.GetAzureOpenIdConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> azure_resources.AzureOpenIdConfig:
+            r"""Call the get azure open id config method over HTTP.
+
+            Args:
+                request (~.azure_service.GetAzureOpenIdConfigRequest):
+                    The request object. GetAzureOpenIdConfigRequest gets the
+                OIDC discovery document for the cluster.
+                See the OpenID Connect Discovery 1.0
+                specification for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.azure_resources.AzureOpenIdConfig:
+                    AzureOpenIdConfig is an OIDC
+                discovery document for the cluster. See
+                the OpenID Connect Discovery 1.0
+                specification for details.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}/.well-known/openid-configuration",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_azure_open_id_config(
+                request, metadata
+            )
+            pb_request = azure_service.GetAzureOpenIdConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = azure_resources.AzureOpenIdConfig()
+            pb_resp = azure_resources.AzureOpenIdConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_azure_open_id_config(resp)
             return resp
 
     class _GetAzureServerConfig(AzureClustersRestStub):
@@ -2367,6 +2746,17 @@ class AzureClustersRestTransport(AzureClustersTransport):
         return self._GenerateAzureAccessToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def generate_azure_cluster_agent_token(
+        self,
+    ) -> Callable[
+        [azure_service.GenerateAzureClusterAgentTokenRequest],
+        azure_service.GenerateAzureClusterAgentTokenResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GenerateAzureClusterAgentToken(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_azure_client(
         self,
     ) -> Callable[[azure_service.GetAzureClientRequest], azure_resources.AzureClient]:
@@ -2383,6 +2773,16 @@ class AzureClustersRestTransport(AzureClustersTransport):
         return self._GetAzureCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_azure_json_web_keys(
+        self,
+    ) -> Callable[
+        [azure_service.GetAzureJsonWebKeysRequest], azure_resources.AzureJsonWebKeys
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAzureJsonWebKeys(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_azure_node_pool(
         self,
     ) -> Callable[
@@ -2391,6 +2791,16 @@ class AzureClustersRestTransport(AzureClustersTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAzureNodePool(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_azure_open_id_config(
+        self,
+    ) -> Callable[
+        [azure_service.GetAzureOpenIdConfigRequest], azure_resources.AzureOpenIdConfig
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAzureOpenIdConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_azure_server_config(

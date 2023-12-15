@@ -204,6 +204,20 @@ class AzureClustersTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.generate_azure_cluster_agent_token: gapic_v1.method.wrap_method(
+                self.generate_azure_cluster_agent_token,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.generate_azure_access_token: gapic_v1.method.wrap_method(
                 self.generate_azure_access_token,
                 default_retry=retries.Retry(
@@ -258,6 +272,34 @@ class AzureClustersTransport(abc.ABC):
             ),
             self.delete_azure_node_pool: gapic_v1.method.wrap_method(
                 self.delete_azure_node_pool,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_azure_open_id_config: gapic_v1.method.wrap_method(
+                self.get_azure_open_id_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_azure_json_web_keys: gapic_v1.method.wrap_method(
+                self.get_azure_json_web_keys,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -379,6 +421,18 @@ class AzureClustersTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def generate_azure_cluster_agent_token(
+        self,
+    ) -> Callable[
+        [azure_service.GenerateAzureClusterAgentTokenRequest],
+        Union[
+            azure_service.GenerateAzureClusterAgentTokenResponse,
+            Awaitable[azure_service.GenerateAzureClusterAgentTokenResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def generate_azure_access_token(
         self,
     ) -> Callable[
@@ -435,6 +489,30 @@ class AzureClustersTransport(abc.ABC):
     ) -> Callable[
         [azure_service.DeleteAzureNodePoolRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_azure_open_id_config(
+        self,
+    ) -> Callable[
+        [azure_service.GetAzureOpenIdConfigRequest],
+        Union[
+            azure_resources.AzureOpenIdConfig,
+            Awaitable[azure_resources.AzureOpenIdConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_azure_json_web_keys(
+        self,
+    ) -> Callable[
+        [azure_service.GetAzureJsonWebKeysRequest],
+        Union[
+            azure_resources.AzureJsonWebKeys,
+            Awaitable[azure_resources.AzureJsonWebKeys],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -550,7 +550,6 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 aws_cluster.control_plane.database_encryption.kms_key_arn = "kms_key_arn_value"
                 aws_cluster.control_plane.aws_services_authentication.role_arn = "role_arn_value"
                 aws_cluster.control_plane.config_encryption.kms_key_arn = "kms_key_arn_value"
-                aws_cluster.authorization.admin_users.username = "username_value"
                 aws_cluster.fleet.project = "project_value"
 
                 request = gke_multicloud_v1.CreateAwsClusterRequest(
@@ -720,7 +719,6 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 aws_cluster.control_plane.database_encryption.kms_key_arn = "kms_key_arn_value"
                 aws_cluster.control_plane.aws_services_authentication.role_arn = "role_arn_value"
                 aws_cluster.control_plane.config_encryption.kms_key_arn = "kms_key_arn_value"
-                aws_cluster.authorization.admin_users.username = "username_value"
                 aws_cluster.fleet.project = "project_value"
 
                 request = gke_multicloud_v1.UpdateAwsClusterRequest(
@@ -759,6 +757,8 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 -  ``annotations``.
                 -  ``control_plane.version``.
                 -  ``authorization.admin_users``.
+                -  ``authorization.admin_groups``.
+                -  ``binary_authorization.evaluation_mode``.
                 -  ``control_plane.aws_services_authentication.role_arn``.
                 -  ``control_plane.aws_services_authentication.role_session_name``.
                 -  ``control_plane.config_encryption.kms_key_arn``.
@@ -770,6 +770,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 -  ``control_plane.root_volume.size_gib``.
                 -  ``control_plane.root_volume.volume_type``.
                 -  ``control_plane.root_volume.iops``.
+                -  ``control_plane.root_volume.throughput``.
                 -  ``control_plane.root_volume.kms_key_arn``.
                 -  ``control_plane.ssh_config``.
                 -  ``control_plane.ssh_config.ec2_key_pair``.
@@ -778,6 +779,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 -  ``logging_config.component_config.enable_components``.
                 -  ``control_plane.tags``.
                 -  ``monitoring_config.managed_prometheus_config.enabled``.
+                -  ``networking.per_node_pool_sg_rules_disabled``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1228,6 +1230,93 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         # Done; return the response.
         return response
 
+    def generate_aws_cluster_agent_token(
+        self,
+        request: Optional[
+            Union[aws_service.GenerateAwsClusterAgentTokenRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> aws_service.GenerateAwsClusterAgentTokenResponse:
+        r"""Generates an access token for a cluster agent.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_multicloud_v1
+
+            def sample_generate_aws_cluster_agent_token():
+                # Create a client
+                client = gke_multicloud_v1.AwsClustersClient()
+
+                # Initialize request argument(s)
+                request = gke_multicloud_v1.GenerateAwsClusterAgentTokenRequest(
+                    aws_cluster="aws_cluster_value",
+                    subject_token="subject_token_value",
+                    subject_token_type="subject_token_type_value",
+                    version="version_value",
+                )
+
+                # Make the request
+                response = client.generate_aws_cluster_agent_token(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.gke_multicloud_v1.types.GenerateAwsClusterAgentTokenRequest, dict]):
+                The request object.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.gke_multicloud_v1.types.GenerateAwsClusterAgentTokenResponse:
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a aws_service.GenerateAwsClusterAgentTokenRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, aws_service.GenerateAwsClusterAgentTokenRequest):
+            request = aws_service.GenerateAwsClusterAgentTokenRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.generate_aws_cluster_agent_token
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("aws_cluster", request.aws_cluster),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def generate_aws_access_token(
         self,
         request: Optional[
@@ -1565,6 +1654,7 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 -  ``config.config_encryption.kms_key_arn``.
                 -  ``config.security_group_ids``.
                 -  ``config.root_volume.iops``.
+                -  ``config.root_volume.throughput``.
                 -  ``config.root_volume.kms_key_arn``.
                 -  ``config.root_volume.volume_type``.
                 -  ``config.root_volume.size_gib``.
@@ -1580,6 +1670,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
                 -  ``config.autoscaling_metrics_collection``.
                 -  ``config.autoscaling_metrics_collection.granularity``.
                 -  ``config.autoscaling_metrics_collection.metrics``.
+                -  ``config.instance_type``.
+                -  ``management.auto_repair``.
+                -  ``management``.
+                -  ``update_settings``.
+                -  ``update_settings.surge_settings``.
+                -  ``update_settings.surge_settings.max_surge``.
+                -  ``update_settings.surge_settings.max_unavailable``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1632,6 +1729,140 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("aws_node_pool.name", request.aws_node_pool.name),)
             ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            aws_resources.AwsNodePool,
+            metadata_type=common_resources.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def rollback_aws_node_pool_update(
+        self,
+        request: Optional[
+            Union[aws_service.RollbackAwsNodePoolUpdateRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Rolls back a previously aborted or failed
+        [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool] update
+        request. Makes no changes if the last update request
+        successfully finished. If an update request is in progress, you
+        cannot rollback the update. You must first cancel or let it
+        finish unsuccessfully before you can rollback.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_multicloud_v1
+
+            def sample_rollback_aws_node_pool_update():
+                # Create a client
+                client = gke_multicloud_v1.AwsClustersClient()
+
+                # Initialize request argument(s)
+                request = gke_multicloud_v1.RollbackAwsNodePoolUpdateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.rollback_aws_node_pool_update(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.gke_multicloud_v1.types.RollbackAwsNodePoolUpdateRequest, dict]):
+                The request object. Request message for
+                ``AwsClusters.RollbackAwsNodePoolUpdate`` method.
+            name (str):
+                Required. The name of the
+                [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool]
+                resource to rollback.
+
+                ``AwsNodePool`` names are formatted as
+                ``projects/<project-id>/locations/<region>/awsClusters/<cluster-id>/awsNodePools/<node-pool-id>``.
+
+                See `Resource
+                Names <https://cloud.google.com/apis/design/resource_names>`__
+                for more details on Google Cloud resource names.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.gke_multicloud_v1.types.AwsNodePool`
+                An Anthos node pool running on AWS.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a aws_service.RollbackAwsNodePoolUpdateRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, aws_service.RollbackAwsNodePoolUpdateRequest):
+            request = aws_service.RollbackAwsNodePoolUpdateRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.rollback_aws_node_pool_update
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -2023,6 +2254,183 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
             self._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=common_resources.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_aws_open_id_config(
+        self,
+        request: Optional[Union[aws_service.GetAwsOpenIdConfigRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> aws_resources.AwsOpenIdConfig:
+        r"""Gets the OIDC discovery document for the cluster. See the
+        `OpenID Connect Discovery 1.0
+        specification <https://openid.net/specs/openid-connect-discovery-1_0.html>`__
+        for details.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_multicloud_v1
+
+            def sample_get_aws_open_id_config():
+                # Create a client
+                client = gke_multicloud_v1.AwsClustersClient()
+
+                # Initialize request argument(s)
+                request = gke_multicloud_v1.GetAwsOpenIdConfigRequest(
+                    aws_cluster="aws_cluster_value",
+                )
+
+                # Make the request
+                response = client.get_aws_open_id_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.gke_multicloud_v1.types.GetAwsOpenIdConfigRequest, dict]):
+                The request object. GetAwsOpenIdConfigRequest gets the
+                OIDC discovery document for the cluster.
+                See the OpenID Connect Discovery 1.0
+                specification for details.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.gke_multicloud_v1.types.AwsOpenIdConfig:
+                AwsOpenIdConfig is an OIDC discovery
+                document for the cluster. See the OpenID
+                Connect Discovery 1.0 specification for
+                details.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a aws_service.GetAwsOpenIdConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, aws_service.GetAwsOpenIdConfigRequest):
+            request = aws_service.GetAwsOpenIdConfigRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_aws_open_id_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("aws_cluster", request.aws_cluster),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_aws_json_web_keys(
+        self,
+        request: Optional[Union[aws_service.GetAwsJsonWebKeysRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> aws_resources.AwsJsonWebKeys:
+        r"""Gets the public component of the cluster signing keys
+        in JSON Web Key format.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_multicloud_v1
+
+            def sample_get_aws_json_web_keys():
+                # Create a client
+                client = gke_multicloud_v1.AwsClustersClient()
+
+                # Initialize request argument(s)
+                request = gke_multicloud_v1.GetAwsJsonWebKeysRequest(
+                    aws_cluster="aws_cluster_value",
+                )
+
+                # Make the request
+                response = client.get_aws_json_web_keys(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.gke_multicloud_v1.types.GetAwsJsonWebKeysRequest, dict]):
+                The request object. GetAwsJsonWebKeysRequest gets the public component of
+                the keys used by the cluster to sign token requests.
+                This will be the jwks_uri for the discover document
+                returned by getOpenIDConfig. See the OpenID Connect
+                Discovery 1.0 specification for details.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.gke_multicloud_v1.types.AwsJsonWebKeys:
+                AwsJsonWebKeys is a valid JSON Web
+                Key Set as specififed in RFC 7517.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a aws_service.GetAwsJsonWebKeysRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, aws_service.GetAwsJsonWebKeysRequest):
+            request = aws_service.GetAwsJsonWebKeysRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_aws_json_web_keys]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("aws_cluster", request.aws_cluster),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

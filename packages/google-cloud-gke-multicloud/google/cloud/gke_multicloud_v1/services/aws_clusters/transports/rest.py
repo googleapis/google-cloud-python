@@ -111,6 +111,14 @@ class AwsClustersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_generate_aws_cluster_agent_token(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_generate_aws_cluster_agent_token(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_aws_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -119,11 +127,27 @@ class AwsClustersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_aws_json_web_keys(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_aws_json_web_keys(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_aws_node_pool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_aws_node_pool(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_aws_open_id_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_aws_open_id_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -148,6 +172,14 @@ class AwsClustersRestInterceptor:
                 return request, metadata
 
             def post_list_aws_node_pools(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_rollback_aws_node_pool_update(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_rollback_aws_node_pool_update(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -288,6 +320,31 @@ class AwsClustersRestInterceptor:
         """
         return response
 
+    def pre_generate_aws_cluster_agent_token(
+        self,
+        request: aws_service.GenerateAwsClusterAgentTokenRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        aws_service.GenerateAwsClusterAgentTokenRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for generate_aws_cluster_agent_token
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AwsClusters server.
+        """
+        return request, metadata
+
+    def post_generate_aws_cluster_agent_token(
+        self, response: aws_service.GenerateAwsClusterAgentTokenResponse
+    ) -> aws_service.GenerateAwsClusterAgentTokenResponse:
+        """Post-rpc interceptor for generate_aws_cluster_agent_token
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AwsClusters server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_aws_cluster(
         self,
         request: aws_service.GetAwsClusterRequest,
@@ -311,6 +368,29 @@ class AwsClustersRestInterceptor:
         """
         return response
 
+    def pre_get_aws_json_web_keys(
+        self,
+        request: aws_service.GetAwsJsonWebKeysRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[aws_service.GetAwsJsonWebKeysRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_aws_json_web_keys
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AwsClusters server.
+        """
+        return request, metadata
+
+    def post_get_aws_json_web_keys(
+        self, response: aws_resources.AwsJsonWebKeys
+    ) -> aws_resources.AwsJsonWebKeys:
+        """Post-rpc interceptor for get_aws_json_web_keys
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AwsClusters server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_aws_node_pool(
         self,
         request: aws_service.GetAwsNodePoolRequest,
@@ -327,6 +407,29 @@ class AwsClustersRestInterceptor:
         self, response: aws_resources.AwsNodePool
     ) -> aws_resources.AwsNodePool:
         """Post-rpc interceptor for get_aws_node_pool
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AwsClusters server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_aws_open_id_config(
+        self,
+        request: aws_service.GetAwsOpenIdConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[aws_service.GetAwsOpenIdConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_aws_open_id_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AwsClusters server.
+        """
+        return request, metadata
+
+    def post_get_aws_open_id_config(
+        self, response: aws_resources.AwsOpenIdConfig
+    ) -> aws_resources.AwsOpenIdConfig:
+        """Post-rpc interceptor for get_aws_open_id_config
 
         Override in a subclass to manipulate the response
         after it is returned by the AwsClusters server but before
@@ -396,6 +499,29 @@ class AwsClustersRestInterceptor:
         self, response: aws_service.ListAwsNodePoolsResponse
     ) -> aws_service.ListAwsNodePoolsResponse:
         """Post-rpc interceptor for list_aws_node_pools
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AwsClusters server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_rollback_aws_node_pool_update(
+        self,
+        request: aws_service.RollbackAwsNodePoolUpdateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[aws_service.RollbackAwsNodePoolUpdateRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for rollback_aws_node_pool_update
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AwsClusters server.
+        """
+        return request, metadata
+
+    def post_rollback_aws_node_pool_update(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for rollback_aws_node_pool_update
 
         Override in a subclass to manipulate the response
         after it is returned by the AwsClusters server but before
@@ -1160,6 +1286,102 @@ class AwsClustersRestTransport(AwsClustersTransport):
             resp = self._interceptor.post_generate_aws_access_token(resp)
             return resp
 
+    class _GenerateAwsClusterAgentToken(AwsClustersRestStub):
+        def __hash__(self):
+            return hash("GenerateAwsClusterAgentToken")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: aws_service.GenerateAwsClusterAgentTokenRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> aws_service.GenerateAwsClusterAgentTokenResponse:
+            r"""Call the generate aws cluster
+            agent token method over HTTP.
+
+                Args:
+                    request (~.aws_service.GenerateAwsClusterAgentTokenRequest):
+                        The request object.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.aws_service.GenerateAwsClusterAgentTokenResponse:
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{aws_cluster=projects/*/locations/*/awsClusters/*}:generateAwsClusterAgentToken",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_generate_aws_cluster_agent_token(
+                request, metadata
+            )
+            pb_request = aws_service.GenerateAwsClusterAgentTokenRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = aws_service.GenerateAwsClusterAgentTokenResponse()
+            pb_resp = aws_service.GenerateAwsClusterAgentTokenResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_generate_aws_cluster_agent_token(resp)
+            return resp
+
     class _GetAwsCluster(AwsClustersRestStub):
         def __hash__(self):
             return hash("GetAwsCluster")
@@ -1243,6 +1465,98 @@ class AwsClustersRestTransport(AwsClustersTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_aws_cluster(resp)
+            return resp
+
+    class _GetAwsJsonWebKeys(AwsClustersRestStub):
+        def __hash__(self):
+            return hash("GetAwsJsonWebKeys")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: aws_service.GetAwsJsonWebKeysRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> aws_resources.AwsJsonWebKeys:
+            r"""Call the get aws json web keys method over HTTP.
+
+            Args:
+                request (~.aws_service.GetAwsJsonWebKeysRequest):
+                    The request object. GetAwsJsonWebKeysRequest gets the public component of
+                the keys used by the cluster to sign token requests.
+                This will be the jwks_uri for the discover document
+                returned by getOpenIDConfig. See the OpenID Connect
+                Discovery 1.0 specification for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.aws_resources.AwsJsonWebKeys:
+                    AwsJsonWebKeys is a valid JSON Web
+                Key Set as specififed in RFC 7517.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{aws_cluster=projects/*/locations/*/awsClusters/*}/jwks",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_aws_json_web_keys(
+                request, metadata
+            )
+            pb_request = aws_service.GetAwsJsonWebKeysRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = aws_resources.AwsJsonWebKeys()
+            pb_resp = aws_resources.AwsJsonWebKeys.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_aws_json_web_keys(resp)
             return resp
 
     class _GetAwsNodePool(AwsClustersRestStub):
@@ -1330,6 +1644,99 @@ class AwsClustersRestTransport(AwsClustersTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_aws_node_pool(resp)
+            return resp
+
+    class _GetAwsOpenIdConfig(AwsClustersRestStub):
+        def __hash__(self):
+            return hash("GetAwsOpenIdConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: aws_service.GetAwsOpenIdConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> aws_resources.AwsOpenIdConfig:
+            r"""Call the get aws open id config method over HTTP.
+
+            Args:
+                request (~.aws_service.GetAwsOpenIdConfigRequest):
+                    The request object. GetAwsOpenIdConfigRequest gets the
+                OIDC discovery document for the cluster.
+                See the OpenID Connect Discovery 1.0
+                specification for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.aws_resources.AwsOpenIdConfig:
+                    AwsOpenIdConfig is an OIDC discovery
+                document for the cluster. See the OpenID
+                Connect Discovery 1.0 specification for
+                details.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{aws_cluster=projects/*/locations/*/awsClusters/*}/.well-known/openid-configuration",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_aws_open_id_config(
+                request, metadata
+            )
+            pb_request = aws_service.GetAwsOpenIdConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = aws_resources.AwsOpenIdConfig()
+            pb_resp = aws_resources.AwsOpenIdConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_aws_open_id_config(resp)
             return resp
 
     class _GetAwsServerConfig(AwsClustersRestStub):
@@ -1599,6 +2006,104 @@ class AwsClustersRestTransport(AwsClustersTransport):
             resp = self._interceptor.post_list_aws_node_pools(resp)
             return resp
 
+    class _RollbackAwsNodePoolUpdate(AwsClustersRestStub):
+        def __hash__(self):
+            return hash("RollbackAwsNodePoolUpdate")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: aws_service.RollbackAwsNodePoolUpdateRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the rollback aws node pool
+            update method over HTTP.
+
+                Args:
+                    request (~.aws_service.RollbackAwsNodePoolUpdateRequest):
+                        The request object. Request message for
+                    ``AwsClusters.RollbackAwsNodePoolUpdate`` method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/awsClusters/*/awsNodePools/*}:rollback",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_rollback_aws_node_pool_update(
+                request, metadata
+            )
+            pb_request = aws_service.RollbackAwsNodePoolUpdateRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_rollback_aws_node_pool_update(resp)
+            return resp
+
     class _UpdateAwsCluster(AwsClustersRestStub):
         def __hash__(self):
             return hash("UpdateAwsCluster")
@@ -1841,6 +2346,17 @@ class AwsClustersRestTransport(AwsClustersTransport):
         return self._GenerateAwsAccessToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def generate_aws_cluster_agent_token(
+        self,
+    ) -> Callable[
+        [aws_service.GenerateAwsClusterAgentTokenRequest],
+        aws_service.GenerateAwsClusterAgentTokenResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GenerateAwsClusterAgentToken(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_aws_cluster(
         self,
     ) -> Callable[[aws_service.GetAwsClusterRequest], aws_resources.AwsCluster]:
@@ -1849,12 +2365,30 @@ class AwsClustersRestTransport(AwsClustersTransport):
         return self._GetAwsCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_aws_json_web_keys(
+        self,
+    ) -> Callable[[aws_service.GetAwsJsonWebKeysRequest], aws_resources.AwsJsonWebKeys]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAwsJsonWebKeys(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_aws_node_pool(
         self,
     ) -> Callable[[aws_service.GetAwsNodePoolRequest], aws_resources.AwsNodePool]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAwsNodePool(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_aws_open_id_config(
+        self,
+    ) -> Callable[
+        [aws_service.GetAwsOpenIdConfigRequest], aws_resources.AwsOpenIdConfig
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAwsOpenIdConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_aws_server_config(
@@ -1885,6 +2419,16 @@ class AwsClustersRestTransport(AwsClustersTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAwsNodePools(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def rollback_aws_node_pool_update(
+        self,
+    ) -> Callable[
+        [aws_service.RollbackAwsNodePoolUpdateRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RollbackAwsNodePoolUpdate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_aws_cluster(

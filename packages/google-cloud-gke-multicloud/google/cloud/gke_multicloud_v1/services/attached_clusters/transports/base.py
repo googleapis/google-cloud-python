@@ -199,6 +199,20 @@ class AttachedClustersTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.generate_attached_cluster_agent_token: gapic_v1.method.wrap_method(
+                self.generate_attached_cluster_agent_token,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -295,6 +309,18 @@ class AttachedClustersTransport(abc.ABC):
         Union[
             attached_service.GenerateAttachedClusterInstallManifestResponse,
             Awaitable[attached_service.GenerateAttachedClusterInstallManifestResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_attached_cluster_agent_token(
+        self,
+    ) -> Callable[
+        [attached_service.GenerateAttachedClusterAgentTokenRequest],
+        Union[
+            attached_service.GenerateAttachedClusterAgentTokenResponse,
+            Awaitable[attached_service.GenerateAttachedClusterAgentTokenResponse],
         ],
     ]:
         raise NotImplementedError()

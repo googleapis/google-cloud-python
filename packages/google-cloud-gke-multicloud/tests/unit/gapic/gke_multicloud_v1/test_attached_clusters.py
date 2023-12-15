@@ -3008,6 +3008,179 @@ async def test_generate_attached_cluster_install_manifest_flattened_error_async(
 @pytest.mark.parametrize(
     "request_type",
     [
+        attached_service.GenerateAttachedClusterAgentTokenRequest,
+        dict,
+    ],
+)
+def test_generate_attached_cluster_agent_token(request_type, transport: str = "grpc"):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_agent_token), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = attached_service.GenerateAttachedClusterAgentTokenResponse(
+            access_token="access_token_value",
+            expires_in=1078,
+            token_type="token_type_value",
+        )
+        response = client.generate_attached_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == attached_service.GenerateAttachedClusterAgentTokenRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, attached_service.GenerateAttachedClusterAgentTokenResponse
+    )
+    assert response.access_token == "access_token_value"
+    assert response.expires_in == 1078
+    assert response.token_type == "token_type_value"
+
+
+def test_generate_attached_cluster_agent_token_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_agent_token), "__call__"
+    ) as call:
+        client.generate_attached_cluster_agent_token()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == attached_service.GenerateAttachedClusterAgentTokenRequest()
+
+
+@pytest.mark.asyncio
+async def test_generate_attached_cluster_agent_token_async(
+    transport: str = "grpc_asyncio",
+    request_type=attached_service.GenerateAttachedClusterAgentTokenRequest,
+):
+    client = AttachedClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_agent_token), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            attached_service.GenerateAttachedClusterAgentTokenResponse(
+                access_token="access_token_value",
+                expires_in=1078,
+                token_type="token_type_value",
+            )
+        )
+        response = await client.generate_attached_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == attached_service.GenerateAttachedClusterAgentTokenRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, attached_service.GenerateAttachedClusterAgentTokenResponse
+    )
+    assert response.access_token == "access_token_value"
+    assert response.expires_in == 1078
+    assert response.token_type == "token_type_value"
+
+
+@pytest.mark.asyncio
+async def test_generate_attached_cluster_agent_token_async_from_dict():
+    await test_generate_attached_cluster_agent_token_async(request_type=dict)
+
+
+def test_generate_attached_cluster_agent_token_field_headers():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = attached_service.GenerateAttachedClusterAgentTokenRequest()
+
+    request.attached_cluster = "attached_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_agent_token), "__call__"
+    ) as call:
+        call.return_value = attached_service.GenerateAttachedClusterAgentTokenResponse()
+        client.generate_attached_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attached_cluster=attached_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_generate_attached_cluster_agent_token_field_headers_async():
+    client = AttachedClustersAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = attached_service.GenerateAttachedClusterAgentTokenRequest()
+
+    request.attached_cluster = "attached_cluster_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_attached_cluster_agent_token), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            attached_service.GenerateAttachedClusterAgentTokenResponse()
+        )
+        await client.generate_attached_cluster_agent_token(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "attached_cluster=attached_cluster_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         attached_service.CreateAttachedClusterRequest,
         dict,
     ],
@@ -3043,8 +3216,15 @@ def test_create_attached_cluster_rest(request_type):
         },
         "logging_config": {"component_config": {"enable_components": [1]}},
         "errors": [{"message": "message_value"}],
-        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "authorization": {
+            "admin_users": [{"username": "username_value"}],
+            "admin_groups": [{"group": "group_value"}],
+        },
         "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+        "proxy_config": {
+            "kubernetes_secret": {"name": "name_value", "namespace": "namespace_value"}
+        },
+        "binary_authorization": {"evaluation_mode": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3443,8 +3623,15 @@ def test_update_attached_cluster_rest(request_type):
         },
         "logging_config": {"component_config": {"enable_components": [1]}},
         "errors": [{"message": "message_value"}],
-        "authorization": {"admin_users": [{"username": "username_value"}]},
+        "authorization": {
+            "admin_users": [{"username": "username_value"}],
+            "admin_groups": [{"group": "group_value"}],
+        },
         "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+        "proxy_config": {
+            "kubernetes_secret": {"name": "name_value", "namespace": "namespace_value"}
+        },
+        "binary_authorization": {"evaluation_mode": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5377,6 +5564,7 @@ def test_generate_attached_cluster_install_manifest_rest_required_fields(
         (
             "attached_cluster_id",
             "platform_version",
+            "proxy_config",
         )
     )
     jsonified_request.update(unset_fields)
@@ -5458,6 +5646,7 @@ def test_generate_attached_cluster_install_manifest_rest_unset_required_fields()
             (
                 "attachedClusterId",
                 "platformVersion",
+                "proxyConfig",
             )
         )
         & set(
@@ -5629,6 +5818,270 @@ def test_generate_attached_cluster_install_manifest_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        attached_service.GenerateAttachedClusterAgentTokenRequest,
+        dict,
+    ],
+)
+def test_generate_attached_cluster_agent_token_rest(request_type):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attached_cluster": "projects/sample1/locations/sample2/attachedClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = attached_service.GenerateAttachedClusterAgentTokenResponse(
+            access_token="access_token_value",
+            expires_in=1078,
+            token_type="token_type_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = attached_service.GenerateAttachedClusterAgentTokenResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_attached_cluster_agent_token(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, attached_service.GenerateAttachedClusterAgentTokenResponse
+    )
+    assert response.access_token == "access_token_value"
+    assert response.expires_in == 1078
+    assert response.token_type == "token_type_value"
+
+
+def test_generate_attached_cluster_agent_token_rest_required_fields(
+    request_type=attached_service.GenerateAttachedClusterAgentTokenRequest,
+):
+    transport_class = transports.AttachedClustersRestTransport
+
+    request_init = {}
+    request_init["attached_cluster"] = ""
+    request_init["subject_token"] = ""
+    request_init["subject_token_type"] = ""
+    request_init["version"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_attached_cluster_agent_token._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["attachedCluster"] = "attached_cluster_value"
+    jsonified_request["subjectToken"] = "subject_token_value"
+    jsonified_request["subjectTokenType"] = "subject_token_type_value"
+    jsonified_request["version"] = "version_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_attached_cluster_agent_token._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "attachedCluster" in jsonified_request
+    assert jsonified_request["attachedCluster"] == "attached_cluster_value"
+    assert "subjectToken" in jsonified_request
+    assert jsonified_request["subjectToken"] == "subject_token_value"
+    assert "subjectTokenType" in jsonified_request
+    assert jsonified_request["subjectTokenType"] == "subject_token_type_value"
+    assert "version" in jsonified_request
+    assert jsonified_request["version"] == "version_value"
+
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = attached_service.GenerateAttachedClusterAgentTokenResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                attached_service.GenerateAttachedClusterAgentTokenResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.generate_attached_cluster_agent_token(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_attached_cluster_agent_token_rest_unset_required_fields():
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.generate_attached_cluster_agent_token._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "attachedCluster",
+                "subjectToken",
+                "subjectTokenType",
+                "version",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_attached_cluster_agent_token_rest_interceptors(null_interceptor):
+    transport = transports.AttachedClustersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AttachedClustersRestInterceptor(),
+    )
+    client = AttachedClustersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AttachedClustersRestInterceptor,
+        "post_generate_attached_cluster_agent_token",
+    ) as post, mock.patch.object(
+        transports.AttachedClustersRestInterceptor,
+        "pre_generate_attached_cluster_agent_token",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = attached_service.GenerateAttachedClusterAgentTokenRequest.pb(
+            attached_service.GenerateAttachedClusterAgentTokenRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            attached_service.GenerateAttachedClusterAgentTokenResponse.to_json(
+                attached_service.GenerateAttachedClusterAgentTokenResponse()
+            )
+        )
+
+        request = attached_service.GenerateAttachedClusterAgentTokenRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = attached_service.GenerateAttachedClusterAgentTokenResponse()
+
+        client.generate_attached_cluster_agent_token(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_attached_cluster_agent_token_rest_bad_request(
+    transport: str = "rest",
+    request_type=attached_service.GenerateAttachedClusterAgentTokenRequest,
+):
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attached_cluster": "projects/sample1/locations/sample2/attachedClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.generate_attached_cluster_agent_token(request)
+
+
+def test_generate_attached_cluster_agent_token_rest_error():
+    client = AttachedClustersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AttachedClustersGrpcTransport(
@@ -5776,6 +6229,7 @@ def test_attached_clusters_base_transport():
         "delete_attached_cluster",
         "get_attached_server_config",
         "generate_attached_cluster_install_manifest",
+        "generate_attached_cluster_agent_token",
         "get_operation",
         "cancel_operation",
         "delete_operation",
@@ -6083,6 +6537,9 @@ def test_attached_clusters_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.generate_attached_cluster_install_manifest._session
     session2 = client2.transport.generate_attached_cluster_install_manifest._session
+    assert session1 != session2
+    session1 = client1.transport.generate_attached_cluster_agent_token._session
+    session2 = client2.transport.generate_attached_cluster_agent_token._session
     assert session1 != session2
 
 
