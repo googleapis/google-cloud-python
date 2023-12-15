@@ -362,6 +362,30 @@ def test__retry_read_rows_exception_deadline_exceeded_wrapped_in_grpc():
     assert _retry_read_rows_exception(exception)
 
 
+def test_partial_cell_data():
+    from google.cloud.bigtable.row_data import PartialCellData
+
+    expected_key = b"row-key"
+    expected_family_name = b"family-name"
+    expected_qualifier = b"qualifier"
+    expected_timestamp = 1234
+    instance = PartialCellData(
+        expected_key, expected_family_name, expected_qualifier, expected_timestamp
+    )
+    assert instance.row_key == expected_key
+    assert instance.family_name == expected_family_name
+    assert instance.qualifier == expected_qualifier
+    assert instance.timestamp_micros == expected_timestamp
+    assert instance.value == b""
+    assert instance.labels == ()
+    # test updating value
+    added_value = b"added-value"
+    instance.append_value(added_value)
+    assert instance.value == added_value
+    instance.append_value(added_value)
+    assert instance.value == added_value + added_value
+
+
 def _make_partial_rows_data(*args, **kwargs):
     from google.cloud.bigtable.row_data import PartialRowsData
 
