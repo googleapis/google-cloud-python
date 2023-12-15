@@ -79,9 +79,9 @@ import bigframes.session._io.bigquery as bigframes_io
 import bigframes.session.clients
 import bigframes.version
 
-# Even though the ibis.backends.bigquery.registry import is unused, it's needed
+# Even though the ibis.backends.bigquery import is unused, it's needed
 # to register new and replacement ops with the Ibis BigQuery backend.
-import third_party.bigframes_vendored.ibis.backends.bigquery.registry  # noqa
+import third_party.bigframes_vendored.ibis.backends.bigquery  # noqa
 import third_party.bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 import third_party.bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import third_party.bigframes_vendored.pandas.io.parquet as third_party_pandas_parquet
@@ -873,8 +873,9 @@ class Session(
             total_ordering_columns=frozenset([ordering_col]),
             integer_encoding=IntegerEncoding(True, is_sequential=True),
         )
-        table_expression = self.ibis_client.table(
+        table_expression = self.ibis_client.table(  # type: ignore
             load_table_destination.table_id,
+            # TODO: use "dataset_id" as the "schema"
             database=f"{load_table_destination.project}.{load_table_destination.dataset_id}",
         )
 

@@ -18,6 +18,7 @@ from typing import Iterable, Literal, Optional, Union
 
 import bigframes.constants as constants
 import bigframes.core as core
+import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.dataframe
 import bigframes.operations as ops
@@ -145,7 +146,10 @@ def qcut(
     block, result = block.apply_window_op(
         x._value_column,
         agg_ops.QcutOp(q),
-        window_spec=core.WindowSpec(grouping_keys=(nullity_id,)),
+        window_spec=core.WindowSpec(
+            grouping_keys=(nullity_id,),
+            ordering=(order.OrderingColumnReference(x._value_column),),
+        ),
     )
     block, result = block.apply_binary_op(
         result, nullity_id, ops.partial_arg3(ops.where_op, None), result_label=label

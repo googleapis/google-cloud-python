@@ -6,4 +6,4 @@ from ibis.expr.operations.core import Unary
 
 
 class ToJsonString(Unary):
-    output_dtype = dt.string
+    dtype = dt.string

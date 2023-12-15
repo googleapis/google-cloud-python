@@ -524,23 +524,19 @@ def prerelease(session: nox.sessions.Session, tests_path):
     )
     already_installed.add("pandas")
 
-    # TODO(shobs):
-    # Commit https://github.com/ibis-project/ibis/commit/c20ba7feab6bdea6c299721310e04dbc10551cc2
-    # introduced breaking change that removed the following:
-    #   ibis.expr.rules.column
-    #   ibis.expr.rules.value
-    #   ibis.expr.rules.any
-    # Let's exclude ibis head from prerelease install list for now. Instead, use
-    # a working ibis-framework version resolved via setup.by (currently resolves
-    # to version 6.2.0 due to version requirement "6.2.0,<7.0.0dev").
-    # We should enable the head back once bigframes support a version that
-    # includes the above commit.
+    # Ibis has introduced breaking changes. Let's exclude ibis head
+    # from prerelease install list for now. We should enable the head back
+    # once bigframes supports the version at HEAD.
     # session.install(
-    #    "--upgrade",
-    #    "-e",  # Use -e so that py.typed file is included.
-    #    "git+https://github.com/ibis-project/ibis.git#egg=ibis-framework",
+    #     "--upgrade",
+    #     "-e",  # Use -e so that py.typed file is included.
+    #     "git+https://github.com/ibis-project/ibis.git@7.x.x#egg=ibis-framework",
     # )
-    session.install("--no-deps", "ibis-framework==6.2.0")
+    session.install(
+        "--upgrade",
+        # "--pre",
+        "ibis-framework>=7.1.0,<8.0.0dev",
+    )
     already_installed.add("ibis-framework")
 
     # Workaround https://github.com/googleapis/python-db-dtypes-pandas/issues/178

@@ -79,7 +79,7 @@ def create_dataframe(
     # might not actually be used. Mock out the global session, too.
     monkeypatch.setattr(bigframes.core.global_session, "_global_session", session)
     bigframes.options.bigquery._session_started = True
-    return bigframes.dataframe.DataFrame({}, session=session)
+    return bigframes.dataframe.DataFrame({"col": []}, session=session)
 
 
 def create_pandas_session(tables: Dict[str, pandas.DataFrame]) -> bigframes.Session:

@@ -45,7 +45,7 @@ greenlet==2.0.2
 grpc-google-iam-v1==0.12.6
 grpcio==1.53.0
 grpcio-status==1.48.2
-ibis-framework==6.2.0
+ibis-framework==7.1.0
 humanize==4.6.0
 identify==2.5.22
 idna==3.4
@@ -107,7 +107,7 @@ scikit-learn==1.2.2
 SecretStorage==3.3.3
 six==1.16.0
 SQLAlchemy==1.4.0
-sqlglot==10.6.4
+sqlglot==18.12.0
 tomli==2.0.1
 toolz==0.12.0
 tqdm==4.65.0

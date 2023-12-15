@@ -23,11 +23,16 @@ import third_party.bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 def test_approximate_quantiles(session: bigframes.Session, scalars_table_id: str):
     num_bins = 3
     ibis_client = session.ibis_client
-    _, dataset, table_id = scalars_table_id.split(".")
-    ibis_table: ibis_types.Table = ibis_client.table(table_id, database=dataset)
+    project, dataset, table_id = scalars_table_id.split(".")
+    ibis_table: ibis_types.Table = ibis_client.table(  # type: ignore
+        table_id,
+        schema=dataset,
+        database=project,
+    )
     ibis_column: ibis_types.NumericColumn = ibis_table["int64_col"]
-    quantiles: ibis_types.ArrayScalar = vendored_ibis_ops.ApproximateMultiQuantile(  # type: ignore
-        ibis_column, num_bins=num_bins
+    quantiles: ibis_types.ArrayScalar = vendored_ibis_ops.ApproximateMultiQuantile(
+        ibis_column,  # type: ignore
+        num_bins=num_bins,  # type: ignore
     ).to_expr()
     value = quantiles[1]
     num_edges = quantiles.length()

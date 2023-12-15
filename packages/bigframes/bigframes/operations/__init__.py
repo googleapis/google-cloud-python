@@ -18,6 +18,7 @@ import functools
 import typing
 
 import ibis
+import ibis.common.annotations
 import ibis.common.exceptions
 import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.operations.generic
@@ -352,14 +353,23 @@ class StrPadOp(UnaryOp):
         str_val = typing.cast(ibis_types.StringValue, x)
 
         # SQL pad operations will truncate, we do not want to truncate though.
-        pad_length = ibis.greatest(str_val.length(), self._length)
+        pad_length = typing.cast(
+            ibis_types.IntegerValue, ibis.greatest(str_val.length(), self._length)
+        )
         if self._side == "left":
             return str_val.lpad(pad_length, self._fillchar)
         elif self._side == "right":
             return str_val.rpad(pad_length, self._fillchar)
         else:  # side == both
             # Pad more on right side if can't pad both sides equally
-            lpad_amount = ((pad_length - str_val.length()) // 2) + str_val.length()
+            lpad_amount = typing.cast(
+                ibis_types.IntegerValue,
+                (
+                    (pad_length - str_val.length())
+                    // typing.cast(ibis_types.NumericValue, ibis.literal(2))
+                )
+                + str_val.length(),
+            )
             return str_val.lpad(lpad_amount, self._fillchar).rpad(
                 pad_length, self._fillchar
             )
@@ -722,10 +732,29 @@ def ne_op(
     return x != y
 
 
+def _null_or_value(value: ibis_types.Value, where_value: ibis_types.BooleanValue):
+    return ibis.where(
+        where_value,
+        value,
+        ibis.null(),
+    )
+
+
 def and_op(
     x: ibis_types.Value,
     y: ibis_types.Value,
 ):
+    # Workaround issue https://github.com/ibis-project/ibis/issues/7775 by
+    # implementing three-valued logic ourselves. For AND, when we encounter a
+    # NULL value, we only know when the result is FALSE, otherwise the result
+    # is unknown (NULL). See: truth table at
+    # https://en.wikibooks.org/wiki/Structured_Query_Language/NULLs_and_the_Three_Valued_Logic#AND,_OR
+    if isinstance(x, ibis_types.NullScalar):
+        return _null_or_value(y, y == ibis.literal(False))
+
+    if isinstance(y, ibis_types.NullScalar):
+        return _null_or_value(x, x == ibis.literal(False))
+
     return typing.cast(ibis_types.BooleanValue, x) & typing.cast(
         ibis_types.BooleanValue, y
     )
@@ -735,6 +764,17 @@ def or_op(
     x: ibis_types.Value,
     y: ibis_types.Value,
 ):
+    # Workaround issue https://github.com/ibis-project/ibis/issues/7775 by
+    # implementing three-valued logic ourselves. For OR, when we encounter a
+    # NULL value, we only know when the result is TRUE, otherwise the result
+    # is unknown (NULL). See: truth table at
+    # https://en.wikibooks.org/wiki/Structured_Query_Language/NULLs_and_the_Three_Valued_Logic#AND,_OR
+    if isinstance(x, ibis_types.NullScalar):
+        return _null_or_value(y, y == ibis.literal(True))
+
+    if isinstance(y, ibis_types.NullScalar):
+        return _null_or_value(x, x == ibis.literal(True))
+
     return typing.cast(ibis_types.BooleanValue, x) | typing.cast(
         ibis_types.BooleanValue, y
     )
@@ -746,10 +786,16 @@ def add_op(
     y: ibis_types.Value,
 ):
     if isinstance(x, ibis_types.NullScalar) or isinstance(x, ibis_types.NullScalar):
-        return
-    return typing.cast(ibis_types.NumericValue, x) + typing.cast(
-        ibis_types.NumericValue, y
-    )
+        return ibis.null()
+    try:
+        # Could be string concatenation or numeric addition.
+        return x + y  # type: ignore
+    except ibis.common.annotations.SignatureValidationError as exc:
+        left_type = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(x.type())
+        right_type = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(y.type())
+        raise TypeError(
+            f"Cannot add {repr(left_type)} and {repr(right_type)}. {constants.FEEDBACK_LINK}"
+        ) from exc
 
 
 @short_circuit_nulls()
@@ -1047,7 +1093,7 @@ def where_op(
     replacement: ibis_types.Value,
 ) -> ibis_types.Value:
     """Returns x if y is true, otherwise returns z."""
-    return ibis.case().when(condition, original).else_(replacement).end()
+    return ibis.case().when(condition, original).else_(replacement).end()  # type: ignore
 
 
 def clip_op(
@@ -1060,7 +1106,7 @@ def clip_op(
         not isinstance(upper, ibis_types.NullScalar)
     ):
         return (
-            ibis.case()
+            ibis.case()  # type: ignore
             .when(upper.isnull() | (original > upper), upper)
             .else_(original)
             .end()
@@ -1069,7 +1115,7 @@ def clip_op(
         upper, ibis_types.NullScalar
     ):
         return (
-            ibis.case()
+            ibis.case()  # type: ignore
             .when(lower.isnull() | (original < lower), lower)
             .else_(original)
             .end()
@@ -1079,9 +1125,11 @@ def clip_op(
     ):
         return original
     else:
-        # Note: Pandas has unchanged behavior when upper bound and lower bound are flipped. This implementation requires that lower_bound < upper_bound
+        # Note: Pandas has unchanged behavior when upper bound and lower bound
+        # are flipped.
+        # This implementation requires that lower_bound < upper_bound.
         return (
-            ibis.case()
+            ibis.case()  # type: ignore
             .when(lower.isnull() | (original < lower), lower)
             .when(upper.isnull() | (original > upper), upper)
             .else_(original)

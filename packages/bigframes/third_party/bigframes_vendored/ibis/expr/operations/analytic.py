@@ -2,22 +2,22 @@
 
 from __future__ import annotations
 
-from ibis.expr.operations.analytic import Analytic
+import ibis.expr.operations as ops
 import ibis.expr.rules as rlz
 
 
-class FirstNonNullValue(Analytic):
+class FirstNonNullValue(ops.Analytic):
     """Retrieve the first element."""
 
-    arg = rlz.column(rlz.any)
-    output_dtype = rlz.dtype_like("arg")
+    arg: ops.Column
+    dtype = rlz.dtype_like("arg")
 
 
-class LastNonNullValue(Analytic):
+class LastNonNullValue(ops.Analytic):
     """Retrieve the last element."""
 
-    arg = rlz.column(rlz.any)
-    output_dtype = rlz.dtype_like("arg")
+    arg: ops.Column
+    dtype = rlz.dtype_like("arg")
 
 
 __all__ = [
