@@ -43,6 +43,7 @@ from google.auth import exceptions
 from google.oauth2 import sts
 from google.oauth2 import utils
 
+_DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 _EXTERNAL_ACCOUNT_AUTHORIZED_USER_JSON_TYPE = "external_account_authorized_user"
 
 
@@ -75,6 +76,7 @@ class Credentials(
         revoke_url=None,
         scopes=None,
         quota_project_id=None,
+        universe_domain=_DEFAULT_UNIVERSE_DOMAIN,
     ):
         """Instantiates a external account authorized user credentials object.
 
@@ -98,6 +100,8 @@ class Credentials(
         quota_project_id (str): The optional project ID used for quota and billing.
             This project may be different from the project used to
             create the credentials.
+        universe_domain (Optional[str]): The universe domain. The default value
+            is googleapis.com.
 
         Returns:
             google.auth.external_account_authorized_user.Credentials: The
@@ -116,6 +120,7 @@ class Credentials(
         self._revoke_url = revoke_url
         self._quota_project_id = quota_project_id
         self._scopes = scopes
+        self._universe_domain = universe_domain or _DEFAULT_UNIVERSE_DOMAIN
 
         if not self.valid and not self.can_refresh:
             raise exceptions.InvalidOperation(
@@ -162,6 +167,7 @@ class Credentials(
             "revoke_url": self._revoke_url,
             "scopes": self._scopes,
             "quota_project_id": self._quota_project_id,
+            "universe_domain": self._universe_domain,
         }
 
     @property
@@ -295,6 +301,12 @@ class Credentials(
     def with_token_uri(self, token_uri):
         kwargs = self.constructor_args()
         kwargs.update(token_url=token_uri)
+        return self.__class__(**kwargs)
+
+    @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
+    def with_universe_domain(self, universe_domain):
+        kwargs = self.constructor_args()
+        kwargs.update(universe_domain=universe_domain)
         return self.__class__(**kwargs)
 
     @classmethod

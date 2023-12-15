@@ -188,7 +188,7 @@ class CredentialsWithQuotaProject(Credentials):
                 billing purposes
 
         Returns:
-            google.oauth2.credentials.Credentials: A new credentials instance.
+            google.auth.credentials.Credentials: A new credentials instance.
         """
         raise NotImplementedError("This credential does not support quota project.")
 
@@ -209,9 +209,26 @@ class CredentialsWithTokenUri(Credentials):
             token_uri (str): The uri to use for fetching/exchanging tokens
 
         Returns:
-            google.oauth2.credentials.Credentials: A new credentials instance.
+            google.auth.credentials.Credentials: A new credentials instance.
         """
         raise NotImplementedError("This credential does not use token uri.")
+
+
+class CredentialsWithUniverseDomain(Credentials):
+    """Abstract base for credentials supporting ``with_universe_domain`` factory"""
+
+    def with_universe_domain(self, universe_domain):
+        """Returns a copy of these credentials with a modified universe domain.
+
+        Args:
+            universe_domain (str): The universe domain to use
+
+        Returns:
+            google.auth.credentials.Credentials: A new credentials instance.
+        """
+        raise NotImplementedError(
+            "This credential does not support with_universe_domain."
+        )
 
 
 class AnonymousCredentials(Credentials):

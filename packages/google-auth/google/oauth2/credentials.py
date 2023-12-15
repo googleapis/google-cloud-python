@@ -302,15 +302,8 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             universe_domain=self._universe_domain,
         )
 
+    @_helpers.copy_docstring(credentials.CredentialsWithUniverseDomain)
     def with_universe_domain(self, universe_domain):
-        """Create a copy of the credential with the given universe domain.
-
-        Args:
-            universe_domain (str): The universe domain value.
-
-        Returns:
-            google.oauth2.credentials.Credentials: A new credentials instance.
-        """
 
         return self.__class__(
             self.token,

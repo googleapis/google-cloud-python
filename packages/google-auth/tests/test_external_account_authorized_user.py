@@ -44,6 +44,8 @@ CLIENT_SECRET = "password"
 BASIC_AUTH_ENCODING = "dXNlcm5hbWU6cGFzc3dvcmQ="
 SCOPES = ["email", "profile"]
 NOW = datetime.datetime(1990, 8, 27, 6, 54, 30)
+FAKE_UNIVERSE_DOMAIN = "fake-universe-domain"
+DEFAULT_UNIVERSE_DOMAIN = external_account_authorized_user._DEFAULT_UNIVERSE_DOMAIN
 
 
 class TestCredentials(object):
@@ -98,6 +100,7 @@ class TestCredentials(object):
         assert creds.refresh_token == REFRESH_TOKEN
         assert creds.audience == AUDIENCE
         assert creds.token_url == TOKEN_URL
+        assert creds.universe_domain == DEFAULT_UNIVERSE_DOMAIN
 
     def test_basic_create(self):
         creds = external_account_authorized_user.Credentials(
@@ -105,6 +108,7 @@ class TestCredentials(object):
             expiry=datetime.datetime.max,
             scopes=SCOPES,
             revoke_url=REVOKE_URL,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
         )
 
         assert creds.expiry == datetime.datetime.max
@@ -115,6 +119,7 @@ class TestCredentials(object):
         assert creds.scopes == SCOPES
         assert creds.is_user
         assert creds.revoke_url == REVOKE_URL
+        assert creds.universe_domain == FAKE_UNIVERSE_DOMAIN
 
     def test_stunted_create_no_refresh_token(self):
         with pytest.raises(ValueError) as excinfo:
@@ -339,6 +344,7 @@ class TestCredentials(object):
         assert info["token_info_url"] == TOKEN_INFO_URL
         assert info["client_id"] == CLIENT_ID
         assert info["client_secret"] == CLIENT_SECRET
+        assert info["universe_domain"] == DEFAULT_UNIVERSE_DOMAIN
         assert "token" not in info
         assert "expiry" not in info
         assert "revoke_url" not in info
@@ -350,6 +356,7 @@ class TestCredentials(object):
             expiry=NOW,
             revoke_url=REVOKE_URL,
             quota_project_id=QUOTA_PROJECT_ID,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
         )
         info = creds.info
 
@@ -363,6 +370,7 @@ class TestCredentials(object):
         assert info["expiry"] == NOW.isoformat() + "Z"
         assert info["revoke_url"] == REVOKE_URL
         assert info["quota_project_id"] == QUOTA_PROJECT_ID
+        assert info["universe_domain"] == FAKE_UNIVERSE_DOMAIN
 
     def test_to_json(self):
         creds = self.make_credentials()
@@ -375,6 +383,7 @@ class TestCredentials(object):
         assert info["token_info_url"] == TOKEN_INFO_URL
         assert info["client_id"] == CLIENT_ID
         assert info["client_secret"] == CLIENT_SECRET
+        assert info["universe_domain"] == DEFAULT_UNIVERSE_DOMAIN
         assert "token" not in info
         assert "expiry" not in info
         assert "revoke_url" not in info
@@ -386,6 +395,7 @@ class TestCredentials(object):
             expiry=NOW,
             revoke_url=REVOKE_URL,
             quota_project_id=QUOTA_PROJECT_ID,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
         )
         json_info = creds.to_json()
         info = json.loads(json_info)
@@ -400,6 +410,7 @@ class TestCredentials(object):
         assert info["expiry"] == NOW.isoformat() + "Z"
         assert info["revoke_url"] == REVOKE_URL
         assert info["quota_project_id"] == QUOTA_PROJECT_ID
+        assert info["universe_domain"] == FAKE_UNIVERSE_DOMAIN
 
     def test_to_json_full_with_strip(self):
         creds = self.make_credentials(
@@ -466,6 +477,26 @@ class TestCredentials(object):
         assert new_creds.expiry == creds.expiry
         assert new_creds._revoke_url == creds._revoke_url
         assert new_creds._quota_project_id == creds._quota_project_id
+
+    def test_with_universe_domain(self):
+        creds = self.make_credentials(
+            token=ACCESS_TOKEN,
+            expiry=NOW,
+            revoke_url=REVOKE_URL,
+            quota_project_id=QUOTA_PROJECT_ID,
+        )
+        new_creds = creds.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
+        assert new_creds._audience == creds._audience
+        assert new_creds._refresh_token == creds._refresh_token
+        assert new_creds._token_url == creds._token_url
+        assert new_creds._token_info_url == creds._token_info_url
+        assert new_creds._client_id == creds._client_id
+        assert new_creds._client_secret == creds._client_secret
+        assert new_creds.token == creds.token
+        assert new_creds.expiry == creds.expiry
+        assert new_creds._revoke_url == creds._revoke_url
+        assert new_creds._quota_project_id == QUOTA_PROJECT_ID
+        assert new_creds.universe_domain == FAKE_UNIVERSE_DOMAIN
 
     def test_from_file_required_options_only(self, tmpdir):
         from_creds = self.make_credentials()
