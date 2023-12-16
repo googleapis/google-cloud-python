@@ -40,26 +40,32 @@ __protobuf__ = proto.module(
         "CreatePolicyRequest",
         "UpdatePolicyRequest",
         "DeletePolicyRequest",
+        "CreateCustomConstraintRequest",
+        "GetCustomConstraintRequest",
+        "ListCustomConstraintsRequest",
+        "ListCustomConstraintsResponse",
+        "UpdateCustomConstraintRequest",
+        "DeleteCustomConstraintRequest",
     },
 )
 
 
 class Policy(proto.Message):
-    r"""Defines a Cloud Organization ``Policy`` which is used to specify
-    ``Constraints`` for configurations of Cloud Platform resources.
+    r"""Defines an organization policy which is used to specify
+    constraints for configurations of Google Cloud resources.
 
     Attributes:
         name (str):
-            Immutable. The resource name of the Policy. Must be one of
-            the following forms, where constraint_name is the name of
-            the constraint which this Policy configures:
+            Immutable. The resource name of the policy. Must be one of
+            the following forms, where ``constraint_name`` is the name
+            of the constraint which this policy configures:
 
             -  ``projects/{project_number}/policies/{constraint_name}``
             -  ``folders/{folder_id}/policies/{constraint_name}``
             -  ``organizations/{organization_id}/policies/{constraint_name}``
 
             For example,
-            "projects/123/policies/compute.disableSerialPortAccess".
+            ``projects/123/policies/compute.disableSerialPortAccess``.
 
             Note: ``projects/{project_id}/policies/{constraint_name}``
             is also an acceptable name for API requests, but responses
@@ -70,10 +76,18 @@ class Policy(proto.Message):
         alternate (google.cloud.orgpolicy_v2.types.AlternatePolicySpec):
             Deprecated.
         dry_run_spec (google.cloud.orgpolicy_v2.types.PolicySpec):
-            dry-run policy.
+            Dry-run policy.
             Audit-only policy, can be used to monitor how
             the policy would have impacted the existing and
             future resources if it's enforced.
+        etag (str):
+            Optional. An opaque tag indicating the
+            current state of the policy, used for
+            concurrency control. This 'etag' is computed by
+            the server based on the value of other fields,
+            and may be sent on update and delete requests to
+            ensure the client has an up-to-date value before
+            proceeding.
     """
 
     name: str = proto.Field(
@@ -95,6 +109,10 @@ class Policy(proto.Message):
         number=4,
         message="PolicySpec",
     )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class AlternatePolicySpec(proto.Message):
@@ -108,8 +126,8 @@ class AlternatePolicySpec(proto.Message):
             while audit logging and to control the launch.
             Should be set only in the alternate policy.
         spec (google.cloud.orgpolicy_v2.types.PolicySpec):
-            Specify ``Constraint`` for configurations of Cloud Platform
-            resources.
+            Specify constraint for configurations of
+            Google Cloud resources.
     """
 
     launch: str = proto.Field(
@@ -124,52 +142,52 @@ class AlternatePolicySpec(proto.Message):
 
 
 class PolicySpec(proto.Message):
-    r"""Defines a Cloud Organization ``PolicySpec`` which is used to specify
-    ``Constraints`` for configurations of Cloud Platform resources.
+    r"""Defines a Google Cloud policy specification which is used to
+    specify constraints for configurations of Google Cloud
+    resources.
 
     Attributes:
         etag (str):
             An opaque tag indicating the current version of the
-            ``Policy``, used for concurrency control.
+            policySpec, used for concurrency control.
 
             This field is ignored if used in a ``CreatePolicy`` request.
 
-            When the ``Policy`` is returned from either a ``GetPolicy``
-            or a ``ListPolicies`` request, this ``etag`` indicates the
-            version of the current ``Policy`` to use when executing a
+            When the policy is returned from either a ``GetPolicy`` or a
+            ``ListPolicies`` request, this ``etag`` indicates the
+            version of the current policySpec to use when executing a
             read-modify-write loop.
 
-            When the ``Policy`` is returned from a
-            ``GetEffectivePolicy`` request, the ``etag`` will be unset.
+            When the policy is returned from a ``GetEffectivePolicy``
+            request, the ``etag`` will be unset.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time stamp this was previously updated.
             This represents the last time a call to ``CreatePolicy`` or
-            ``UpdatePolicy`` was made for that ``Policy``.
+            ``UpdatePolicy`` was made for that policy.
         rules (MutableSequence[google.cloud.orgpolicy_v2.types.PolicySpec.PolicyRule]):
-            Up to 10 PolicyRules are allowed.
-
-            In Policies for boolean constraints, the following
+            In policies for boolean constraints, the following
             requirements apply:
 
-            -  There must be one and only one PolicyRule where condition
-               is unset.
-            -  BooleanPolicyRules with conditions must set ``enforced``
-               to the opposite of the PolicyRule without a condition.
-            -  During policy evaluation, PolicyRules with conditions
+            -  There must be one and only one policy rule where
+               condition is unset.
+            -  Boolean policy rules with conditions must set
+               ``enforced`` to the opposite of the policy rule without a
+               condition.
+            -  During policy evaluation, policy rules with conditions
                that are true for a target resource take precedence.
         inherit_from_parent (bool):
-            Determines the inheritance behavior for this ``Policy``.
+            Determines the inheritance behavior for this policy.
 
-            If ``inherit_from_parent`` is true, PolicyRules set higher
+            If ``inherit_from_parent`` is true, policy rules set higher
             up in the hierarchy (up to the closest root) are inherited
             and present in the effective policy. If it is false, then no
-            rules are inherited, and this Policy becomes the new root
-            for evaluation. This field can be set only for Policies
+            rules are inherited, and this policy becomes the new root
+            for evaluation. This field can be set only for policies
             which configure list constraints.
         reset (bool):
             Ignores policies set above this resource and restores the
             ``constraint_default`` enforcement behavior of the specific
-            ``Constraint`` at this resource. This field can be set in
+            constraint at this resource. This field can be set in
             policies for either list or boolean constraints. If set,
             ``rules`` must be empty and ``inherit_from_parent`` must be
             set to false.
@@ -187,27 +205,27 @@ class PolicySpec(proto.Message):
 
         Attributes:
             values (google.cloud.orgpolicy_v2.types.PolicySpec.PolicyRule.StringValues):
-                List of values to be used for this
-                PolicyRule. This field can be set only in
-                Policies for list constraints.
+                List of values to be used for this policy
+                rule. This field can be set only in policies for
+                list constraints.
 
                 This field is a member of `oneof`_ ``kind``.
             allow_all (bool):
                 Setting this to true means that all values
                 are allowed. This field can be set only in
-                Policies for list constraints.
+                policies for list constraints.
 
                 This field is a member of `oneof`_ ``kind``.
             deny_all (bool):
                 Setting this to true means that all values
                 are denied. This field can be set only in
-                Policies for list constraints.
+                policies for list constraints.
 
                 This field is a member of `oneof`_ ``kind``.
             enforce (bool):
-                If ``true``, then the ``Policy`` is enforced. If ``false``,
-                then any configuration is acceptable. This field can be set
-                only in Policies for boolean constraints.
+                If ``true``, then the policy is enforced. If ``false``, then
+                any configuration is acceptable. This field can be set only
+                in policies for boolean constraints.
 
                 This field is a member of `oneof`_ ``kind``.
             condition (google.type.expr_pb2.Expr):
@@ -229,7 +247,7 @@ class PolicySpec(proto.Message):
 
         class StringValues(proto.Message):
             r"""A message that holds specific allowed and denied values. This
-            message can define specific values and subtrees of Cloud Resource
+            message can define specific values and subtrees of the Resource
             Manager resource hierarchy (``Organizations``, ``Folders``,
             ``Projects``) that are allowed or denied. This is achieved by using
             the ``under:`` and optional ``is:`` prefixes. The ``under:`` prefix
@@ -237,10 +255,16 @@ class PolicySpec(proto.Message):
             used to denote specific values, and is required only if the value
             contains a ":". Values prefixed with "is:" are treated the same as
             values with no prefix. Ancestry subtrees must be in one of the
-            following formats: - "projects/", e.g. "projects/tokyo-rain-123" -
-            "folders/", e.g. "folders/1234" - "organizations/", e.g.
-            "organizations/1234" The ``supports_under`` field of the associated
-            ``Constraint`` defines whether ancestry prefixes can be used.
+            following formats:
+
+            -  ``projects/<project-id>`` (for example,
+               ``projects/tokyo-rain-123``)
+            -  ``folders/<folder-id>`` (for example, ``folders/1234``)
+            -  ``organizations/<organization-id>`` (for example,
+               ``organizations/1234``)
+
+            The ``supports_under`` field of the associated ``Constraint``
+            defines whether ancestry prefixes can be used.
 
             Attributes:
                 allowed_values (MutableSequence[str]):
@@ -315,8 +339,8 @@ class ListConstraintsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The Cloud resource that parents the constraint.
-            Must be in one of the following forms:
+            Required. The Google Cloud resource that parents the
+            constraint. Must be in one of the following forms:
 
             -  ``projects/{project_number}``
             -  ``projects/{project_id}``
@@ -382,9 +406,9 @@ class ListPoliciesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The target Cloud resource that parents the set of
-            constraints and policies that will be returned from this
-            call. Must be in one of the following forms:
+            Required. The target Google Cloud resource that parents the
+            set of constraints and policies that will be returned from
+            this call. Must be in one of the following forms:
 
             -  ``projects/{project_number}``
             -  ``projects/{project_id}``
@@ -419,12 +443,12 @@ class ListPoliciesRequest(proto.Message):
 class ListPoliciesResponse(proto.Message):
     r"""The response returned from the [ListPolicies]
     [google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies] method. It will
-    be empty if no ``Policies`` are set on the resource.
+    be empty if no policies are set on the resource.
 
     Attributes:
         policies (MutableSequence[google.cloud.orgpolicy_v2.types.Policy]):
-            All ``Policies`` that exist on the resource. It will be
-            empty if no ``Policies`` are set.
+            All policies that exist on the resource. It
+            will be empty if no policies are set.
         next_page_token (str):
             Page token used to retrieve the next page.
             This is currently not used, but the server may
@@ -452,8 +476,9 @@ class GetPolicyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the policy. See ``Policy`` for
-            naming requirements.
+            Required. Resource name of the policy. See
+            [Policy][google.cloud.orgpolicy.v2.Policy] for naming
+            requirements.
     """
 
     name: str = proto.Field(
@@ -468,8 +493,9 @@ class GetEffectivePolicyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The effective policy to compute. See ``Policy``
-            for naming rules.
+            Required. The effective policy to compute. See
+            [Policy][google.cloud.orgpolicy.v2.Policy] for naming
+            requirements.
     """
 
     name: str = proto.Field(
@@ -484,15 +510,15 @@ class CreatePolicyRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The Cloud resource that will parent the new
-            Policy. Must be in one of the following forms:
+            Required. The Google Cloud resource that will parent the new
+            policy. Must be in one of the following forms:
 
             -  ``projects/{project_number}``
             -  ``projects/{project_id}``
             -  ``folders/{folder_id}``
             -  ``organizations/{organization_id}``
         policy (google.cloud.orgpolicy_v2.types.Policy):
-            Required. ``Policy`` to create.
+            Required. Policy to create.
     """
 
     parent: str = proto.Field(
@@ -512,7 +538,7 @@ class UpdatePolicyRequest(proto.Message):
 
     Attributes:
         policy (google.cloud.orgpolicy_v2.types.Policy):
-            Required. ``Policy`` to update.
+            Required. Policy to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Field mask used to specify the fields to be overwritten in
             the policy by the set. The fields specified in the
@@ -538,7 +564,161 @@ class DeletePolicyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the policy to delete. See ``Policy`` for
+            Required. Name of the policy to delete.
+            See the policy entry for naming rules.
+        etag (str):
+            Optional. The current etag of policy. If an
+            etag is provided and does not match the current
+            etag of the policy, deletion will be blocked and
+            an ABORTED error will be returned.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateCustomConstraintRequest(proto.Message):
+    r"""The request sent to the [CreateCustomConstraintRequest]
+    [google.cloud.orgpolicy.v2.OrgPolicy.CreateCustomConstraint] method.
+
+    Attributes:
+        parent (str):
+            Required. Must be in the following form:
+
+            -  ``organizations/{organization_id}``
+        custom_constraint (google.cloud.orgpolicy_v2.types.CustomConstraint):
+            Required. Custom constraint to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    custom_constraint: constraint.CustomConstraint = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=constraint.CustomConstraint,
+    )
+
+
+class GetCustomConstraintRequest(proto.Message):
+    r"""The request sent to the [GetCustomConstraint]
+    [google.cloud.orgpolicy.v2.OrgPolicy.GetCustomConstraint] method.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the custom
+            constraint. See the custom constraint entry for
+            naming requirements.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListCustomConstraintsRequest(proto.Message):
+    r"""The request sent to the [ListCustomConstraints]
+    [google.cloud.orgpolicy.v2.OrgPolicy.ListCustomConstraints] method.
+
+    Attributes:
+        parent (str):
+            Required. The target Google Cloud resource that parents the
+            set of custom constraints that will be returned from this
+            call. Must be in one of the following forms:
+
+            -  ``organizations/{organization_id}``
+        page_size (int):
+            Size of the pages to be returned. This is
+            currently unsupported and will be ignored. The
+            server may at any point start using this field
+            to limit page size.
+        page_token (str):
+            Page token used to retrieve the next page.
+            This is currently unsupported and will be
+            ignored. The server may at any point start using
+            this field.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListCustomConstraintsResponse(proto.Message):
+    r"""The response returned from the [ListCustomConstraints]
+    [google.cloud.orgpolicy.v2.OrgPolicy.ListCustomConstraints] method.
+    It will be empty if no custom constraints are set on the
+    organization resource.
+
+    Attributes:
+        custom_constraints (MutableSequence[google.cloud.orgpolicy_v2.types.CustomConstraint]):
+            All custom constraints that exist on the
+            organization resource. It will be empty if no
+            custom constraints are set.
+        next_page_token (str):
+            Page token used to retrieve the next page.
+            This is currently not used, but the server may
+            at any point start supplying a valid token.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    custom_constraints: MutableSequence[
+        constraint.CustomConstraint
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=constraint.CustomConstraint,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateCustomConstraintRequest(proto.Message):
+    r"""The request sent to the [UpdateCustomConstraintRequest]
+    [google.cloud.orgpolicy.v2.OrgPolicy.UpdateCustomConstraint] method.
+
+    Attributes:
+        custom_constraint (google.cloud.orgpolicy_v2.types.CustomConstraint):
+            Required. ``CustomConstraint`` to update.
+    """
+
+    custom_constraint: constraint.CustomConstraint = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=constraint.CustomConstraint,
+    )
+
+
+class DeleteCustomConstraintRequest(proto.Message):
+    r"""The request sent to the [DeleteCustomConstraint]
+    [google.cloud.orgpolicy.v2.OrgPolicy.DeleteCustomConstraint] method.
+
+    Attributes:
+        name (str):
+            Required. Name of the custom constraint to
+            delete. See the custom constraint entry for
             naming rules.
     """
 

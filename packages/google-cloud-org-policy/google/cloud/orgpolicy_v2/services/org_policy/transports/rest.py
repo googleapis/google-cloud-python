@@ -39,6 +39,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 
+from google.cloud.orgpolicy_v2.types import constraint
 from google.cloud.orgpolicy_v2.types import orgpolicy
 from google.protobuf import empty_pb2  # type: ignore
 
@@ -67,6 +68,14 @@ class OrgPolicyRestInterceptor:
 
     .. code-block:: python
         class MyCustomOrgPolicyInterceptor(OrgPolicyRestInterceptor):
+            def pre_create_custom_constraint(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_custom_constraint(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -75,9 +84,21 @@ class OrgPolicyRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_custom_constraint(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def pre_get_custom_constraint(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_custom_constraint(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_get_effective_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -103,11 +124,27 @@ class OrgPolicyRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_custom_constraints(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_custom_constraints(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_policies(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_custom_constraint(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_custom_constraint(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -124,6 +161,29 @@ class OrgPolicyRestInterceptor:
 
 
     """
+
+    def pre_create_custom_constraint(
+        self,
+        request: orgpolicy.CreateCustomConstraintRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[orgpolicy.CreateCustomConstraintRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_custom_constraint
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the OrgPolicy server.
+        """
+        return request, metadata
+
+    def post_create_custom_constraint(
+        self, response: constraint.CustomConstraint
+    ) -> constraint.CustomConstraint:
+        """Post-rpc interceptor for create_custom_constraint
+
+        Override in a subclass to manipulate the response
+        after it is returned by the OrgPolicy server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_create_policy(
         self,
@@ -146,6 +206,18 @@ class OrgPolicyRestInterceptor:
         """
         return response
 
+    def pre_delete_custom_constraint(
+        self,
+        request: orgpolicy.DeleteCustomConstraintRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[orgpolicy.DeleteCustomConstraintRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_custom_constraint
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the OrgPolicy server.
+        """
+        return request, metadata
+
     def pre_delete_policy(
         self,
         request: orgpolicy.DeletePolicyRequest,
@@ -157,6 +229,29 @@ class OrgPolicyRestInterceptor:
         before they are sent to the OrgPolicy server.
         """
         return request, metadata
+
+    def pre_get_custom_constraint(
+        self,
+        request: orgpolicy.GetCustomConstraintRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[orgpolicy.GetCustomConstraintRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_custom_constraint
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the OrgPolicy server.
+        """
+        return request, metadata
+
+    def post_get_custom_constraint(
+        self, response: constraint.CustomConstraint
+    ) -> constraint.CustomConstraint:
+        """Post-rpc interceptor for get_custom_constraint
+
+        Override in a subclass to manipulate the response
+        after it is returned by the OrgPolicy server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_get_effective_policy(
         self,
@@ -221,6 +316,29 @@ class OrgPolicyRestInterceptor:
         """
         return response
 
+    def pre_list_custom_constraints(
+        self,
+        request: orgpolicy.ListCustomConstraintsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[orgpolicy.ListCustomConstraintsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_custom_constraints
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the OrgPolicy server.
+        """
+        return request, metadata
+
+    def post_list_custom_constraints(
+        self, response: orgpolicy.ListCustomConstraintsResponse
+    ) -> orgpolicy.ListCustomConstraintsResponse:
+        """Post-rpc interceptor for list_custom_constraints
+
+        Override in a subclass to manipulate the response
+        after it is returned by the OrgPolicy server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_policies(
         self,
         request: orgpolicy.ListPoliciesRequest,
@@ -237,6 +355,29 @@ class OrgPolicyRestInterceptor:
         self, response: orgpolicy.ListPoliciesResponse
     ) -> orgpolicy.ListPoliciesResponse:
         """Post-rpc interceptor for list_policies
+
+        Override in a subclass to manipulate the response
+        after it is returned by the OrgPolicy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_custom_constraint(
+        self,
+        request: orgpolicy.UpdateCustomConstraintRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[orgpolicy.UpdateCustomConstraintRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_custom_constraint
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the OrgPolicy server.
+        """
+        return request, metadata
+
+    def post_update_custom_constraint(
+        self, response: constraint.CustomConstraint
+    ) -> constraint.CustomConstraint:
+        """Post-rpc interceptor for update_custom_constraint
 
         Override in a subclass to manipulate the response
         after it is returned by the OrgPolicy server but before
@@ -278,26 +419,26 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
     An interface for managing organization policies.
 
-    The Cloud Org Policy service provides a simple mechanism for
-    organizations to restrict the allowed configurations across their
-    entire Cloud Resource hierarchy.
+    The Organization Policy Service provides a simple mechanism for
+    organizations to restrict the allowed configurations across
+    their entire resource hierarchy.
 
-    You can use a ``policy`` to configure restrictions in Cloud
-    resources. For example, you can enforce a ``policy`` that restricts
-    which Google Cloud Platform APIs can be activated in a certain part
-    of your resource hierarchy, or prevents serial port access to VM
-    instances in a particular folder.
+    You can use a policy to configure restrictions on resources. For
+    example, you can enforce a policy that restricts which Google
+    Cloud APIs can be activated in a certain part of your resource
+    hierarchy, or prevents serial port access to VM instances in a
+    particular folder.
 
-    ``Policies`` are inherited down through the resource hierarchy. A
-    ``policy`` applied to a parent resource automatically applies to all
-    its child resources unless overridden with a ``policy`` lower in the
+    Policies are inherited down through the resource hierarchy. A
+    policy applied to a parent resource automatically applies to all
+    its child resources unless overridden with a policy lower in the
     hierarchy.
 
-    A ``constraint`` defines an aspect of a resource's configuration
-    that can be controlled by an organization's policy administrator.
-    ``Policies`` are a collection of ``constraints`` that defines their
-    allowable configuration on a particular resource and its child
-    resources.
+    A constraint defines an aspect of a resource's configuration
+    that can be controlled by an organization's policy
+    administrator. Policies are a collection of constraints that
+    defines their allowable configuration on a particular resource
+    and its child resources.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -383,6 +524,113 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
         self._interceptor = interceptor or OrgPolicyRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
+    class _CreateCustomConstraint(OrgPolicyRestStub):
+        def __hash__(self):
+            return hash("CreateCustomConstraint")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: orgpolicy.CreateCustomConstraintRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> constraint.CustomConstraint:
+            r"""Call the create custom constraint method over HTTP.
+
+            Args:
+                request (~.orgpolicy.CreateCustomConstraintRequest):
+                    The request object. The request sent to the [CreateCustomConstraintRequest]
+                [google.cloud.orgpolicy.v2.OrgPolicy.CreateCustomConstraint]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.constraint.CustomConstraint:
+                    A custom constraint defined by customers which can
+                *only* be applied to the given resource types and
+                organization.
+
+                By creating a custom constraint, customers can apply
+                policies of this custom constraint. *Creating a custom
+                constraint itself does NOT apply any policy
+                enforcement*.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=organizations/*}/customConstraints",
+                    "body": "custom_constraint",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_custom_constraint(
+                request, metadata
+            )
+            pb_request = orgpolicy.CreateCustomConstraintRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = constraint.CustomConstraint()
+            pb_resp = constraint.CustomConstraint.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_custom_constraint(resp)
+            return resp
+
     class _CreatePolicy(OrgPolicyRestStub):
         def __hash__(self):
             return hash("CreatePolicy")
@@ -420,9 +668,10 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             Returns:
                 ~.orgpolicy.Policy:
-                    Defines a Cloud Organization ``Policy`` which is used to
-                specify ``Constraints`` for configurations of Cloud
-                Platform resources.
+                    Defines an organization policy which
+                is used to specify constraints for
+                configurations of Google Cloud
+                resources.
 
             """
 
@@ -492,6 +741,84 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_policy(resp)
             return resp
+
+    class _DeleteCustomConstraint(OrgPolicyRestStub):
+        def __hash__(self):
+            return hash("DeleteCustomConstraint")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: orgpolicy.DeleteCustomConstraintRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete custom constraint method over HTTP.
+
+            Args:
+                request (~.orgpolicy.DeleteCustomConstraintRequest):
+                    The request object. The request sent to the [DeleteCustomConstraint]
+                [google.cloud.orgpolicy.v2.OrgPolicy.DeleteCustomConstraint]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=organizations/*/customConstraints/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_custom_constraint(
+                request, metadata
+            )
+            pb_request = orgpolicy.DeleteCustomConstraintRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _DeletePolicy(OrgPolicyRestStub):
         def __hash__(self):
@@ -577,6 +904,104 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _GetCustomConstraint(OrgPolicyRestStub):
+        def __hash__(self):
+            return hash("GetCustomConstraint")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: orgpolicy.GetCustomConstraintRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> constraint.CustomConstraint:
+            r"""Call the get custom constraint method over HTTP.
+
+            Args:
+                request (~.orgpolicy.GetCustomConstraintRequest):
+                    The request object. The request sent to the [GetCustomConstraint]
+                [google.cloud.orgpolicy.v2.OrgPolicy.GetCustomConstraint]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.constraint.CustomConstraint:
+                    A custom constraint defined by customers which can
+                *only* be applied to the given resource types and
+                organization.
+
+                By creating a custom constraint, customers can apply
+                policies of this custom constraint. *Creating a custom
+                constraint itself does NOT apply any policy
+                enforcement*.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=organizations/*/customConstraints/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_custom_constraint(
+                request, metadata
+            )
+            pb_request = orgpolicy.GetCustomConstraintRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = constraint.CustomConstraint()
+            pb_resp = constraint.CustomConstraint.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_custom_constraint(resp)
+            return resp
+
     class _GetEffectivePolicy(OrgPolicyRestStub):
         def __hash__(self):
             return hash("GetEffectivePolicy")
@@ -614,9 +1039,10 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             Returns:
                 ~.orgpolicy.Policy:
-                    Defines a Cloud Organization ``Policy`` which is used to
-                specify ``Constraints`` for configurations of Cloud
-                Platform resources.
+                    Defines an organization policy which
+                is used to specify constraints for
+                configurations of Google Cloud
+                resources.
 
             """
 
@@ -714,9 +1140,10 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             Returns:
                 ~.orgpolicy.Policy:
-                    Defines a Cloud Organization ``Policy`` which is used to
-                specify ``Constraints`` for configurations of Cloud
-                Platform resources.
+                    Defines an organization policy which
+                is used to specify constraints for
+                configurations of Google Cloud
+                resources.
 
             """
 
@@ -877,6 +1304,100 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             resp = self._interceptor.post_list_constraints(resp)
             return resp
 
+    class _ListCustomConstraints(OrgPolicyRestStub):
+        def __hash__(self):
+            return hash("ListCustomConstraints")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: orgpolicy.ListCustomConstraintsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> orgpolicy.ListCustomConstraintsResponse:
+            r"""Call the list custom constraints method over HTTP.
+
+            Args:
+                request (~.orgpolicy.ListCustomConstraintsRequest):
+                    The request object. The request sent to the [ListCustomConstraints]
+                [google.cloud.orgpolicy.v2.OrgPolicy.ListCustomConstraints]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.orgpolicy.ListCustomConstraintsResponse:
+                    The response returned from the [ListCustomConstraints]
+                [google.cloud.orgpolicy.v2.OrgPolicy.ListCustomConstraints]
+                method. It will be empty if no custom constraints are
+                set on the organization resource.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*}/customConstraints",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_custom_constraints(
+                request, metadata
+            )
+            pb_request = orgpolicy.ListCustomConstraintsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = orgpolicy.ListCustomConstraintsResponse()
+            pb_resp = orgpolicy.ListCustomConstraintsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_custom_constraints(resp)
+            return resp
+
     class _ListPolicies(OrgPolicyRestStub):
         def __hash__(self):
             return hash("ListPolicies")
@@ -916,8 +1437,8 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
                 ~.orgpolicy.ListPoliciesResponse:
                     The response returned from the [ListPolicies]
                 [google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies]
-                method. It will be empty if no ``Policies`` are set on
-                the resource.
+                method. It will be empty if no policies are set on the
+                resource.
 
             """
 
@@ -977,6 +1498,113 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             resp = self._interceptor.post_list_policies(resp)
             return resp
 
+    class _UpdateCustomConstraint(OrgPolicyRestStub):
+        def __hash__(self):
+            return hash("UpdateCustomConstraint")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: orgpolicy.UpdateCustomConstraintRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> constraint.CustomConstraint:
+            r"""Call the update custom constraint method over HTTP.
+
+            Args:
+                request (~.orgpolicy.UpdateCustomConstraintRequest):
+                    The request object. The request sent to the [UpdateCustomConstraintRequest]
+                [google.cloud.orgpolicy.v2.OrgPolicy.UpdateCustomConstraint]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.constraint.CustomConstraint:
+                    A custom constraint defined by customers which can
+                *only* be applied to the given resource types and
+                organization.
+
+                By creating a custom constraint, customers can apply
+                policies of this custom constraint. *Creating a custom
+                constraint itself does NOT apply any policy
+                enforcement*.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v2/{custom_constraint.name=organizations/*/customConstraints/*}",
+                    "body": "custom_constraint",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_custom_constraint(
+                request, metadata
+            )
+            pb_request = orgpolicy.UpdateCustomConstraintRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = constraint.CustomConstraint()
+            pb_resp = constraint.CustomConstraint.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_custom_constraint(resp)
+            return resp
+
     class _UpdatePolicy(OrgPolicyRestStub):
         def __hash__(self):
             return hash("UpdatePolicy")
@@ -1014,9 +1642,10 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             Returns:
                 ~.orgpolicy.Policy:
-                    Defines a Cloud Organization ``Policy`` which is used to
-                specify ``Constraints`` for configurations of Cloud
-                Platform resources.
+                    Defines an organization policy which
+                is used to specify constraints for
+                configurations of Google Cloud
+                resources.
 
             """
 
@@ -1088,6 +1717,16 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             return resp
 
     @property
+    def create_custom_constraint(
+        self,
+    ) -> Callable[
+        [orgpolicy.CreateCustomConstraintRequest], constraint.CustomConstraint
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateCustomConstraint(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_policy(
         self,
     ) -> Callable[[orgpolicy.CreatePolicyRequest], orgpolicy.Policy]:
@@ -1096,12 +1735,28 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
         return self._CreatePolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_custom_constraint(
+        self,
+    ) -> Callable[[orgpolicy.DeleteCustomConstraintRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteCustomConstraint(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_policy(
         self,
     ) -> Callable[[orgpolicy.DeletePolicyRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_custom_constraint(
+        self,
+    ) -> Callable[[orgpolicy.GetCustomConstraintRequest], constraint.CustomConstraint]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetCustomConstraint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_effective_policy(
@@ -1128,12 +1783,33 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
         return self._ListConstraints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_custom_constraints(
+        self,
+    ) -> Callable[
+        [orgpolicy.ListCustomConstraintsRequest],
+        orgpolicy.ListCustomConstraintsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListCustomConstraints(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_policies(
         self,
     ) -> Callable[[orgpolicy.ListPoliciesRequest], orgpolicy.ListPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPolicies(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_custom_constraint(
+        self,
+    ) -> Callable[
+        [orgpolicy.UpdateCustomConstraintRequest], constraint.CustomConstraint
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateCustomConstraint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_policy(

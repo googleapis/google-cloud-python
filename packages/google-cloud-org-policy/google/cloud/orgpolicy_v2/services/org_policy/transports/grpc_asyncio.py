@@ -24,6 +24,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
+from google.cloud.orgpolicy_v2.types import constraint
 from google.cloud.orgpolicy_v2.types import orgpolicy
 from google.protobuf import empty_pb2  # type: ignore
 from .base import OrgPolicyTransport, DEFAULT_CLIENT_INFO
@@ -35,26 +36,26 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
 
     An interface for managing organization policies.
 
-    The Cloud Org Policy service provides a simple mechanism for
-    organizations to restrict the allowed configurations across their
-    entire Cloud Resource hierarchy.
+    The Organization Policy Service provides a simple mechanism for
+    organizations to restrict the allowed configurations across
+    their entire resource hierarchy.
 
-    You can use a ``policy`` to configure restrictions in Cloud
-    resources. For example, you can enforce a ``policy`` that restricts
-    which Google Cloud Platform APIs can be activated in a certain part
-    of your resource hierarchy, or prevents serial port access to VM
-    instances in a particular folder.
+    You can use a policy to configure restrictions on resources. For
+    example, you can enforce a policy that restricts which Google
+    Cloud APIs can be activated in a certain part of your resource
+    hierarchy, or prevents serial port access to VM instances in a
+    particular folder.
 
-    ``Policies`` are inherited down through the resource hierarchy. A
-    ``policy`` applied to a parent resource automatically applies to all
-    its child resources unless overridden with a ``policy`` lower in the
+    Policies are inherited down through the resource hierarchy. A
+    policy applied to a parent resource automatically applies to all
+    its child resources unless overridden with a policy lower in the
     hierarchy.
 
-    A ``constraint`` defines an aspect of a resource's configuration
-    that can be controlled by an organization's policy administrator.
-    ``Policies`` are a collection of ``constraints`` that defines their
-    allowable configuration on a particular resource and its child
-    resources.
+    A constraint defines an aspect of a resource's configuration
+    that can be controlled by an organization's policy
+    administrator. Policies are a collection of constraints that
+    defines their allowable configuration on a particular resource
+    and its child resources.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -262,8 +263,8 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
     ]:
         r"""Return a callable for the list constraints method over gRPC.
 
-        Lists ``Constraints`` that could be applied on the specified
-        resource.
+        Lists constraints that could be applied on the
+        specified resource.
 
         Returns:
             Callable[[~.ListConstraintsRequest],
@@ -291,8 +292,8 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
     ]:
         r"""Return a callable for the list policies method over gRPC.
 
-        Retrieves all of the ``Policies`` that exist on a particular
-        resource.
+        Retrieves all of the policies that exist on a
+        particular resource.
 
         Returns:
             Callable[[~.ListPoliciesRequest],
@@ -318,11 +319,11 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
     ) -> Callable[[orgpolicy.GetPolicyRequest], Awaitable[orgpolicy.Policy]]:
         r"""Return a callable for the get policy method over gRPC.
 
-        Gets a ``Policy`` on a resource.
+        Gets a policy on a resource.
 
-        If no ``Policy`` is set on the resource, NOT_FOUND is returned.
+        If no policy is set on the resource, ``NOT_FOUND`` is returned.
         The ``etag`` value can be used with ``UpdatePolicy()`` to update
-        a ``Policy`` during read-modify-write.
+        a policy during read-modify-write.
 
         Returns:
             Callable[[~.GetPolicyRequest],
@@ -348,10 +349,10 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
     ) -> Callable[[orgpolicy.GetEffectivePolicyRequest], Awaitable[orgpolicy.Policy]]:
         r"""Return a callable for the get effective policy method over gRPC.
 
-        Gets the effective ``Policy`` on a resource. This is the result
-        of merging ``Policies`` in the resource hierarchy and evaluating
-        conditions. The returned ``Policy`` will not have an ``etag`` or
-        ``condition`` set because it is a computed ``Policy`` across
+        Gets the effective policy on a resource. This is the result of
+        merging policies in the resource hierarchy and evaluating
+        conditions. The returned policy will not have an ``etag`` or
+        ``condition`` set because it is an evaluated policy across
         multiple resources. Subtrees of Resource Manager resource
         hierarchy with 'under:' prefix will not be expanded.
 
@@ -379,13 +380,13 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
     ) -> Callable[[orgpolicy.CreatePolicyRequest], Awaitable[orgpolicy.Policy]]:
         r"""Return a callable for the create policy method over gRPC.
 
-        Creates a Policy.
+        Creates a policy.
 
         Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.NOT_FOUND`` if the constraint does not exist.
         Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.ALREADY_EXISTS`` if the policy already exists
-        on the given Cloud resource.
+        on the given Google Cloud resource.
 
         Returns:
             Callable[[~.CreatePolicyRequest],
@@ -411,7 +412,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
     ) -> Callable[[orgpolicy.UpdatePolicyRequest], Awaitable[orgpolicy.Policy]]:
         r"""Return a callable for the update policy method over gRPC.
 
-        Updates a Policy.
+        Updates a policy.
 
         Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.NOT_FOUND`` if the constraint or the policy do
@@ -446,11 +447,11 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
     ) -> Callable[[orgpolicy.DeletePolicyRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete policy method over gRPC.
 
-        Deletes a Policy.
+        Deletes a policy.
 
         Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.NOT_FOUND`` if the constraint or Org Policy
-        does not exist.
+        ``google.rpc.Code.NOT_FOUND`` if the constraint or organization
+        policy does not exist.
 
         Returns:
             Callable[[~.DeletePolicyRequest],
@@ -469,6 +470,169 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_policy"]
+
+    @property
+    def create_custom_constraint(
+        self,
+    ) -> Callable[
+        [orgpolicy.CreateCustomConstraintRequest],
+        Awaitable[constraint.CustomConstraint],
+    ]:
+        r"""Return a callable for the create custom constraint method over gRPC.
+
+        Creates a custom constraint.
+
+        Returns a ``google.rpc.Status`` with
+        ``google.rpc.Code.NOT_FOUND`` if the organization does not
+        exist. Returns a ``google.rpc.Status`` with
+        ``google.rpc.Code.ALREADY_EXISTS`` if the constraint already
+        exists on the given organization.
+
+        Returns:
+            Callable[[~.CreateCustomConstraintRequest],
+                    Awaitable[~.CustomConstraint]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_custom_constraint" not in self._stubs:
+            self._stubs["create_custom_constraint"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orgpolicy.v2.OrgPolicy/CreateCustomConstraint",
+                request_serializer=orgpolicy.CreateCustomConstraintRequest.serialize,
+                response_deserializer=constraint.CustomConstraint.deserialize,
+            )
+        return self._stubs["create_custom_constraint"]
+
+    @property
+    def update_custom_constraint(
+        self,
+    ) -> Callable[
+        [orgpolicy.UpdateCustomConstraintRequest],
+        Awaitable[constraint.CustomConstraint],
+    ]:
+        r"""Return a callable for the update custom constraint method over gRPC.
+
+        Updates a custom constraint.
+
+        Returns a ``google.rpc.Status`` with
+        ``google.rpc.Code.NOT_FOUND`` if the constraint does not exist.
+
+        Note: the supplied policy will perform a full overwrite of all
+        fields.
+
+        Returns:
+            Callable[[~.UpdateCustomConstraintRequest],
+                    Awaitable[~.CustomConstraint]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_custom_constraint" not in self._stubs:
+            self._stubs["update_custom_constraint"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orgpolicy.v2.OrgPolicy/UpdateCustomConstraint",
+                request_serializer=orgpolicy.UpdateCustomConstraintRequest.serialize,
+                response_deserializer=constraint.CustomConstraint.deserialize,
+            )
+        return self._stubs["update_custom_constraint"]
+
+    @property
+    def get_custom_constraint(
+        self,
+    ) -> Callable[
+        [orgpolicy.GetCustomConstraintRequest], Awaitable[constraint.CustomConstraint]
+    ]:
+        r"""Return a callable for the get custom constraint method over gRPC.
+
+        Gets a custom constraint.
+
+        Returns a ``google.rpc.Status`` with
+        ``google.rpc.Code.NOT_FOUND`` if the custom constraint does not
+        exist.
+
+        Returns:
+            Callable[[~.GetCustomConstraintRequest],
+                    Awaitable[~.CustomConstraint]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_custom_constraint" not in self._stubs:
+            self._stubs["get_custom_constraint"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orgpolicy.v2.OrgPolicy/GetCustomConstraint",
+                request_serializer=orgpolicy.GetCustomConstraintRequest.serialize,
+                response_deserializer=constraint.CustomConstraint.deserialize,
+            )
+        return self._stubs["get_custom_constraint"]
+
+    @property
+    def list_custom_constraints(
+        self,
+    ) -> Callable[
+        [orgpolicy.ListCustomConstraintsRequest],
+        Awaitable[orgpolicy.ListCustomConstraintsResponse],
+    ]:
+        r"""Return a callable for the list custom constraints method over gRPC.
+
+        Retrieves all of the custom constraints that exist on
+        a particular organization resource.
+
+        Returns:
+            Callable[[~.ListCustomConstraintsRequest],
+                    Awaitable[~.ListCustomConstraintsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_custom_constraints" not in self._stubs:
+            self._stubs["list_custom_constraints"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orgpolicy.v2.OrgPolicy/ListCustomConstraints",
+                request_serializer=orgpolicy.ListCustomConstraintsRequest.serialize,
+                response_deserializer=orgpolicy.ListCustomConstraintsResponse.deserialize,
+            )
+        return self._stubs["list_custom_constraints"]
+
+    @property
+    def delete_custom_constraint(
+        self,
+    ) -> Callable[
+        [orgpolicy.DeleteCustomConstraintRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete custom constraint method over gRPC.
+
+        Deletes a custom constraint.
+
+        Returns a ``google.rpc.Status`` with
+        ``google.rpc.Code.NOT_FOUND`` if the constraint does not exist.
+
+        Returns:
+            Callable[[~.DeleteCustomConstraintRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_custom_constraint" not in self._stubs:
+            self._stubs["delete_custom_constraint"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orgpolicy.v2.OrgPolicy/DeleteCustomConstraint",
+                request_serializer=orgpolicy.DeleteCustomConstraintRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_custom_constraint"]
 
     def close(self):
         return self.grpc_channel.close()

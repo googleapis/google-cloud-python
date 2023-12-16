@@ -26,6 +26,7 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.orgpolicy_v2.types import constraint
 from google.cloud.orgpolicy_v2.types import orgpolicy
 from google.protobuf import empty_pb2  # type: ignore
 
@@ -229,6 +230,81 @@ class OrgPolicyTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_custom_constraint: gapic_v1.method.wrap_method(
+                self.create_custom_constraint,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_custom_constraint: gapic_v1.method.wrap_method(
+                self.update_custom_constraint,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_custom_constraint: gapic_v1.method.wrap_method(
+                self.get_custom_constraint,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_custom_constraints: gapic_v1.method.wrap_method(
+                self.list_custom_constraints,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_custom_constraint: gapic_v1.method.wrap_method(
+                self.delete_custom_constraint,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -304,6 +380,54 @@ class OrgPolicyTransport(abc.ABC):
         self,
     ) -> Callable[
         [orgpolicy.DeletePolicyRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_custom_constraint(
+        self,
+    ) -> Callable[
+        [orgpolicy.CreateCustomConstraintRequest],
+        Union[constraint.CustomConstraint, Awaitable[constraint.CustomConstraint]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_custom_constraint(
+        self,
+    ) -> Callable[
+        [orgpolicy.UpdateCustomConstraintRequest],
+        Union[constraint.CustomConstraint, Awaitable[constraint.CustomConstraint]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_custom_constraint(
+        self,
+    ) -> Callable[
+        [orgpolicy.GetCustomConstraintRequest],
+        Union[constraint.CustomConstraint, Awaitable[constraint.CustomConstraint]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_custom_constraints(
+        self,
+    ) -> Callable[
+        [orgpolicy.ListCustomConstraintsRequest],
+        Union[
+            orgpolicy.ListCustomConstraintsResponse,
+            Awaitable[orgpolicy.ListCustomConstraintsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_custom_constraint(
+        self,
+    ) -> Callable[
+        [orgpolicy.DeleteCustomConstraintRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()

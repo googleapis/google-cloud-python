@@ -39,12 +39,17 @@ def partition(
 class orgpolicyCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'create_custom_constraint': ('parent', 'custom_constraint', ),
         'create_policy': ('parent', 'policy', ),
-        'delete_policy': ('name', ),
+        'delete_custom_constraint': ('name', ),
+        'delete_policy': ('name', 'etag', ),
+        'get_custom_constraint': ('name', ),
         'get_effective_policy': ('name', ),
         'get_policy': ('name', ),
         'list_constraints': ('parent', 'page_size', 'page_token', ),
+        'list_custom_constraints': ('parent', 'page_size', 'page_token', ),
         'list_policies': ('parent', 'page_size', 'page_token', ),
+        'update_custom_constraint': ('custom_constraint', ),
         'update_policy': ('policy', 'update_mask', ),
     }
 

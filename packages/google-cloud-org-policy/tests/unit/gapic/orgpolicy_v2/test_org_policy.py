@@ -1549,6 +1549,7 @@ def test_get_policy(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = orgpolicy.Policy(
             name="name_value",
+            etag="etag_value",
         )
         response = client.get_policy(request)
 
@@ -1560,6 +1561,7 @@ def test_get_policy(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 def test_get_policy_empty_call():
@@ -1597,6 +1599,7 @@ async def test_get_policy_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             orgpolicy.Policy(
                 name="name_value",
+                etag="etag_value",
             )
         )
         response = await client.get_policy(request)
@@ -1609,6 +1612,7 @@ async def test_get_policy_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -1779,6 +1783,7 @@ def test_get_effective_policy(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = orgpolicy.Policy(
             name="name_value",
+            etag="etag_value",
         )
         response = client.get_effective_policy(request)
 
@@ -1790,6 +1795,7 @@ def test_get_effective_policy(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 def test_get_effective_policy_empty_call():
@@ -1831,6 +1837,7 @@ async def test_get_effective_policy_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             orgpolicy.Policy(
                 name="name_value",
+                etag="etag_value",
             )
         )
         response = await client.get_effective_policy(request)
@@ -1843,6 +1850,7 @@ async def test_get_effective_policy_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -2019,6 +2027,7 @@ def test_create_policy(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = orgpolicy.Policy(
             name="name_value",
+            etag="etag_value",
         )
         response = client.create_policy(request)
 
@@ -2030,6 +2039,7 @@ def test_create_policy(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 def test_create_policy_empty_call():
@@ -2067,6 +2077,7 @@ async def test_create_policy_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             orgpolicy.Policy(
                 name="name_value",
+                etag="etag_value",
             )
         )
         response = await client.create_policy(request)
@@ -2079,6 +2090,7 @@ async def test_create_policy_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -2257,6 +2269,7 @@ def test_update_policy(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = orgpolicy.Policy(
             name="name_value",
+            etag="etag_value",
         )
         response = client.update_policy(request)
 
@@ -2268,6 +2281,7 @@ def test_update_policy(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 def test_update_policy_empty_call():
@@ -2305,6 +2319,7 @@ async def test_update_policy_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             orgpolicy.Policy(
                 name="name_value",
+                etag="etag_value",
             )
         )
         response = await client.update_policy(request)
@@ -2317,6 +2332,7 @@ async def test_update_policy_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -2679,6 +2695,1507 @@ async def test_delete_policy_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_policy(
             orgpolicy.DeletePolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        orgpolicy.CreateCustomConstraintRequest,
+        dict,
+    ],
+)
+def test_create_custom_constraint(request_type, transport: str = "grpc"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = constraint.CustomConstraint(
+            name="name_value",
+            resource_types=["resource_types_value"],
+            method_types=[constraint.CustomConstraint.MethodType.CREATE],
+            condition="condition_value",
+            action_type=constraint.CustomConstraint.ActionType.ALLOW,
+            display_name="display_name_value",
+            description="description_value",
+        )
+        response = client.create_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.CreateCustomConstraintRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, constraint.CustomConstraint)
+    assert response.name == "name_value"
+    assert response.resource_types == ["resource_types_value"]
+    assert response.method_types == [constraint.CustomConstraint.MethodType.CREATE]
+    assert response.condition == "condition_value"
+    assert response.action_type == constraint.CustomConstraint.ActionType.ALLOW
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+def test_create_custom_constraint_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_constraint), "__call__"
+    ) as call:
+        client.create_custom_constraint()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.CreateCustomConstraintRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_custom_constraint_async(
+    transport: str = "grpc_asyncio",
+    request_type=orgpolicy.CreateCustomConstraintRequest,
+):
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            constraint.CustomConstraint(
+                name="name_value",
+                resource_types=["resource_types_value"],
+                method_types=[constraint.CustomConstraint.MethodType.CREATE],
+                condition="condition_value",
+                action_type=constraint.CustomConstraint.ActionType.ALLOW,
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.create_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.CreateCustomConstraintRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, constraint.CustomConstraint)
+    assert response.name == "name_value"
+    assert response.resource_types == ["resource_types_value"]
+    assert response.method_types == [constraint.CustomConstraint.MethodType.CREATE]
+    assert response.condition == "condition_value"
+    assert response.action_type == constraint.CustomConstraint.ActionType.ALLOW
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_create_custom_constraint_async_from_dict():
+    await test_create_custom_constraint_async(request_type=dict)
+
+
+def test_create_custom_constraint_field_headers():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = orgpolicy.CreateCustomConstraintRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_constraint), "__call__"
+    ) as call:
+        call.return_value = constraint.CustomConstraint()
+        client.create_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_custom_constraint_field_headers_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = orgpolicy.CreateCustomConstraintRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_constraint), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            constraint.CustomConstraint()
+        )
+        await client.create_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_custom_constraint_flattened():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = constraint.CustomConstraint()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_custom_constraint(
+            parent="parent_value",
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].custom_constraint
+        mock_val = constraint.CustomConstraint(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_custom_constraint_flattened_error():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_custom_constraint(
+            orgpolicy.CreateCustomConstraintRequest(),
+            parent="parent_value",
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_custom_constraint_flattened_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = constraint.CustomConstraint()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            constraint.CustomConstraint()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_custom_constraint(
+            parent="parent_value",
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].custom_constraint
+        mock_val = constraint.CustomConstraint(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_custom_constraint_flattened_error_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_custom_constraint(
+            orgpolicy.CreateCustomConstraintRequest(),
+            parent="parent_value",
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        orgpolicy.UpdateCustomConstraintRequest,
+        dict,
+    ],
+)
+def test_update_custom_constraint(request_type, transport: str = "grpc"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = constraint.CustomConstraint(
+            name="name_value",
+            resource_types=["resource_types_value"],
+            method_types=[constraint.CustomConstraint.MethodType.CREATE],
+            condition="condition_value",
+            action_type=constraint.CustomConstraint.ActionType.ALLOW,
+            display_name="display_name_value",
+            description="description_value",
+        )
+        response = client.update_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.UpdateCustomConstraintRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, constraint.CustomConstraint)
+    assert response.name == "name_value"
+    assert response.resource_types == ["resource_types_value"]
+    assert response.method_types == [constraint.CustomConstraint.MethodType.CREATE]
+    assert response.condition == "condition_value"
+    assert response.action_type == constraint.CustomConstraint.ActionType.ALLOW
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+def test_update_custom_constraint_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_constraint), "__call__"
+    ) as call:
+        client.update_custom_constraint()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.UpdateCustomConstraintRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_custom_constraint_async(
+    transport: str = "grpc_asyncio",
+    request_type=orgpolicy.UpdateCustomConstraintRequest,
+):
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            constraint.CustomConstraint(
+                name="name_value",
+                resource_types=["resource_types_value"],
+                method_types=[constraint.CustomConstraint.MethodType.CREATE],
+                condition="condition_value",
+                action_type=constraint.CustomConstraint.ActionType.ALLOW,
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.update_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.UpdateCustomConstraintRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, constraint.CustomConstraint)
+    assert response.name == "name_value"
+    assert response.resource_types == ["resource_types_value"]
+    assert response.method_types == [constraint.CustomConstraint.MethodType.CREATE]
+    assert response.condition == "condition_value"
+    assert response.action_type == constraint.CustomConstraint.ActionType.ALLOW
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_update_custom_constraint_async_from_dict():
+    await test_update_custom_constraint_async(request_type=dict)
+
+
+def test_update_custom_constraint_field_headers():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = orgpolicy.UpdateCustomConstraintRequest()
+
+    request.custom_constraint.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_constraint), "__call__"
+    ) as call:
+        call.return_value = constraint.CustomConstraint()
+        client.update_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "custom_constraint.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_custom_constraint_field_headers_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = orgpolicy.UpdateCustomConstraintRequest()
+
+    request.custom_constraint.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_constraint), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            constraint.CustomConstraint()
+        )
+        await client.update_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "custom_constraint.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_custom_constraint_flattened():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = constraint.CustomConstraint()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_custom_constraint(
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].custom_constraint
+        mock_val = constraint.CustomConstraint(name="name_value")
+        assert arg == mock_val
+
+
+def test_update_custom_constraint_flattened_error():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_custom_constraint(
+            orgpolicy.UpdateCustomConstraintRequest(),
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_custom_constraint_flattened_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = constraint.CustomConstraint()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            constraint.CustomConstraint()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_custom_constraint(
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].custom_constraint
+        mock_val = constraint.CustomConstraint(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_custom_constraint_flattened_error_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_custom_constraint(
+            orgpolicy.UpdateCustomConstraintRequest(),
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        orgpolicy.GetCustomConstraintRequest,
+        dict,
+    ],
+)
+def test_get_custom_constraint(request_type, transport: str = "grpc"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = constraint.CustomConstraint(
+            name="name_value",
+            resource_types=["resource_types_value"],
+            method_types=[constraint.CustomConstraint.MethodType.CREATE],
+            condition="condition_value",
+            action_type=constraint.CustomConstraint.ActionType.ALLOW,
+            display_name="display_name_value",
+            description="description_value",
+        )
+        response = client.get_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.GetCustomConstraintRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, constraint.CustomConstraint)
+    assert response.name == "name_value"
+    assert response.resource_types == ["resource_types_value"]
+    assert response.method_types == [constraint.CustomConstraint.MethodType.CREATE]
+    assert response.condition == "condition_value"
+    assert response.action_type == constraint.CustomConstraint.ActionType.ALLOW
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+def test_get_custom_constraint_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_constraint), "__call__"
+    ) as call:
+        client.get_custom_constraint()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.GetCustomConstraintRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_custom_constraint_async(
+    transport: str = "grpc_asyncio", request_type=orgpolicy.GetCustomConstraintRequest
+):
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            constraint.CustomConstraint(
+                name="name_value",
+                resource_types=["resource_types_value"],
+                method_types=[constraint.CustomConstraint.MethodType.CREATE],
+                condition="condition_value",
+                action_type=constraint.CustomConstraint.ActionType.ALLOW,
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.GetCustomConstraintRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, constraint.CustomConstraint)
+    assert response.name == "name_value"
+    assert response.resource_types == ["resource_types_value"]
+    assert response.method_types == [constraint.CustomConstraint.MethodType.CREATE]
+    assert response.condition == "condition_value"
+    assert response.action_type == constraint.CustomConstraint.ActionType.ALLOW
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_get_custom_constraint_async_from_dict():
+    await test_get_custom_constraint_async(request_type=dict)
+
+
+def test_get_custom_constraint_field_headers():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = orgpolicy.GetCustomConstraintRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_constraint), "__call__"
+    ) as call:
+        call.return_value = constraint.CustomConstraint()
+        client.get_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_custom_constraint_field_headers_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = orgpolicy.GetCustomConstraintRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_constraint), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            constraint.CustomConstraint()
+        )
+        await client.get_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_custom_constraint_flattened():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = constraint.CustomConstraint()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_custom_constraint(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_custom_constraint_flattened_error():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_custom_constraint(
+            orgpolicy.GetCustomConstraintRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_custom_constraint_flattened_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = constraint.CustomConstraint()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            constraint.CustomConstraint()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_custom_constraint(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_custom_constraint_flattened_error_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_custom_constraint(
+            orgpolicy.GetCustomConstraintRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        orgpolicy.ListCustomConstraintsRequest,
+        dict,
+    ],
+)
+def test_list_custom_constraints(request_type, transport: str = "grpc"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_constraints), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = orgpolicy.ListCustomConstraintsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_custom_constraints(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.ListCustomConstraintsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomConstraintsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_custom_constraints_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_constraints), "__call__"
+    ) as call:
+        client.list_custom_constraints()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.ListCustomConstraintsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_custom_constraints_async(
+    transport: str = "grpc_asyncio", request_type=orgpolicy.ListCustomConstraintsRequest
+):
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_constraints), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            orgpolicy.ListCustomConstraintsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_custom_constraints(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.ListCustomConstraintsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomConstraintsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_custom_constraints_async_from_dict():
+    await test_list_custom_constraints_async(request_type=dict)
+
+
+def test_list_custom_constraints_field_headers():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = orgpolicy.ListCustomConstraintsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_constraints), "__call__"
+    ) as call:
+        call.return_value = orgpolicy.ListCustomConstraintsResponse()
+        client.list_custom_constraints(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_custom_constraints_field_headers_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = orgpolicy.ListCustomConstraintsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_constraints), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            orgpolicy.ListCustomConstraintsResponse()
+        )
+        await client.list_custom_constraints(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_custom_constraints_flattened():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_constraints), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = orgpolicy.ListCustomConstraintsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_custom_constraints(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_custom_constraints_flattened_error():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_custom_constraints(
+            orgpolicy.ListCustomConstraintsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_custom_constraints_flattened_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_constraints), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = orgpolicy.ListCustomConstraintsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            orgpolicy.ListCustomConstraintsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_custom_constraints(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_custom_constraints_flattened_error_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_custom_constraints(
+            orgpolicy.ListCustomConstraintsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_custom_constraints_pager(transport_name: str = "grpc"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_constraints), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                ],
+                next_page_token="abc",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[],
+                next_page_token="def",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                ],
+                next_page_token="ghi",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_custom_constraints(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, constraint.CustomConstraint) for i in results)
+
+
+def test_list_custom_constraints_pages(transport_name: str = "grpc"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_constraints), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                ],
+                next_page_token="abc",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[],
+                next_page_token="def",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                ],
+                next_page_token="ghi",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_custom_constraints(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_custom_constraints_async_pager():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_constraints),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                ],
+                next_page_token="abc",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[],
+                next_page_token="def",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                ],
+                next_page_token="ghi",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_custom_constraints(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, constraint.CustomConstraint) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_custom_constraints_async_pages():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_constraints),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                ],
+                next_page_token="abc",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[],
+                next_page_token="def",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                ],
+                next_page_token="ghi",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_custom_constraints(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        orgpolicy.DeleteCustomConstraintRequest,
+        dict,
+    ],
+)
+def test_delete_custom_constraint(request_type, transport: str = "grpc"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.DeleteCustomConstraintRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_custom_constraint_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_constraint), "__call__"
+    ) as call:
+        client.delete_custom_constraint()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.DeleteCustomConstraintRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_constraint_async(
+    transport: str = "grpc_asyncio",
+    request_type=orgpolicy.DeleteCustomConstraintRequest,
+):
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == orgpolicy.DeleteCustomConstraintRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_constraint_async_from_dict():
+    await test_delete_custom_constraint_async(request_type=dict)
+
+
+def test_delete_custom_constraint_field_headers():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = orgpolicy.DeleteCustomConstraintRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_constraint), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_constraint_field_headers_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = orgpolicy.DeleteCustomConstraintRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_constraint), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_custom_constraint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_custom_constraint_flattened():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_custom_constraint(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_custom_constraint_flattened_error():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_custom_constraint(
+            orgpolicy.DeleteCustomConstraintRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_constraint_flattened_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_constraint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_custom_constraint(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_constraint_flattened_error_async():
+    client = OrgPolicyAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_custom_constraint(
+            orgpolicy.DeleteCustomConstraintRequest(),
             name="name_value",
         )
 
@@ -3375,6 +4892,7 @@ def test_get_policy_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = orgpolicy.Policy(
             name="name_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -3391,6 +4909,7 @@ def test_get_policy_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 def test_get_policy_rest_required_fields(request_type=orgpolicy.GetPolicyRequest):
@@ -3636,6 +5155,7 @@ def test_get_effective_policy_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = orgpolicy.Policy(
             name="name_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -3652,6 +5172,7 @@ def test_get_effective_policy_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 def test_get_effective_policy_rest_required_fields(
@@ -3929,6 +5450,7 @@ def test_create_policy_rest(request_type):
         },
         "alternate": {"launch": "launch_value", "spec": {}},
         "dry_run_spec": {},
+        "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4004,6 +5526,7 @@ def test_create_policy_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = orgpolicy.Policy(
             name="name_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -4020,6 +5543,7 @@ def test_create_policy_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 def test_create_policy_rest_required_fields(request_type=orgpolicy.CreatePolicyRequest):
@@ -4302,6 +5826,7 @@ def test_update_policy_rest(request_type):
         },
         "alternate": {"launch": "launch_value", "spec": {}},
         "dry_run_spec": {},
+        "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4377,6 +5902,7 @@ def test_update_policy_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = orgpolicy.Policy(
             name="name_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -4393,6 +5919,7 @@ def test_update_policy_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
+    assert response.etag == "etag_value"
 
 
 def test_update_policy_rest_required_fields(request_type=orgpolicy.UpdatePolicyRequest):
@@ -4679,6 +6206,8 @@ def test_delete_policy_rest_required_fields(request_type=orgpolicy.DeletePolicyR
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_policy._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("etag",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4729,7 +6258,7 @@ def test_delete_policy_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4855,6 +6384,1610 @@ def test_delete_policy_rest_flattened_error(transport: str = "rest"):
 
 
 def test_delete_policy_rest_error():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        orgpolicy.CreateCustomConstraintRequest,
+        dict,
+    ],
+)
+def test_create_custom_constraint_rest(request_type):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request_init["custom_constraint"] = {
+        "name": "name_value",
+        "resource_types": ["resource_types_value1", "resource_types_value2"],
+        "method_types": [1],
+        "condition": "condition_value",
+        "action_type": 1,
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = orgpolicy.CreateCustomConstraintRequest.meta.fields[
+        "custom_constraint"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["custom_constraint"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["custom_constraint"][field])):
+                    del request_init["custom_constraint"][field][i][subfield]
+            else:
+                del request_init["custom_constraint"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = constraint.CustomConstraint(
+            name="name_value",
+            resource_types=["resource_types_value"],
+            method_types=[constraint.CustomConstraint.MethodType.CREATE],
+            condition="condition_value",
+            action_type=constraint.CustomConstraint.ActionType.ALLOW,
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = constraint.CustomConstraint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_custom_constraint(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, constraint.CustomConstraint)
+    assert response.name == "name_value"
+    assert response.resource_types == ["resource_types_value"]
+    assert response.method_types == [constraint.CustomConstraint.MethodType.CREATE]
+    assert response.condition == "condition_value"
+    assert response.action_type == constraint.CustomConstraint.ActionType.ALLOW
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+def test_create_custom_constraint_rest_required_fields(
+    request_type=orgpolicy.CreateCustomConstraintRequest,
+):
+    transport_class = transports.OrgPolicyRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_constraint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_constraint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = constraint.CustomConstraint()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = constraint.CustomConstraint.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_custom_constraint(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_custom_constraint_rest_unset_required_fields():
+    transport = transports.OrgPolicyRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_custom_constraint._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "customConstraint",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_custom_constraint_rest_interceptors(null_interceptor):
+    transport = transports.OrgPolicyRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.OrgPolicyRestInterceptor(),
+    )
+    client = OrgPolicyClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "post_create_custom_constraint"
+    ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "pre_create_custom_constraint"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = orgpolicy.CreateCustomConstraintRequest.pb(
+            orgpolicy.CreateCustomConstraintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = constraint.CustomConstraint.to_json(
+            constraint.CustomConstraint()
+        )
+
+        request = orgpolicy.CreateCustomConstraintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = constraint.CustomConstraint()
+
+        client.create_custom_constraint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_custom_constraint_rest_bad_request(
+    transport: str = "rest", request_type=orgpolicy.CreateCustomConstraintRequest
+):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_custom_constraint(request)
+
+
+def test_create_custom_constraint_rest_flattened():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = constraint.CustomConstraint()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "organizations/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = constraint.CustomConstraint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_custom_constraint(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=organizations/*}/customConstraints" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_custom_constraint_rest_flattened_error(transport: str = "rest"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_custom_constraint(
+            orgpolicy.CreateCustomConstraintRequest(),
+            parent="parent_value",
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+
+
+def test_create_custom_constraint_rest_error():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        orgpolicy.UpdateCustomConstraintRequest,
+        dict,
+    ],
+)
+def test_update_custom_constraint_rest(request_type):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "custom_constraint": {"name": "organizations/sample1/customConstraints/sample2"}
+    }
+    request_init["custom_constraint"] = {
+        "name": "organizations/sample1/customConstraints/sample2",
+        "resource_types": ["resource_types_value1", "resource_types_value2"],
+        "method_types": [1],
+        "condition": "condition_value",
+        "action_type": 1,
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = orgpolicy.UpdateCustomConstraintRequest.meta.fields[
+        "custom_constraint"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["custom_constraint"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["custom_constraint"][field])):
+                    del request_init["custom_constraint"][field][i][subfield]
+            else:
+                del request_init["custom_constraint"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = constraint.CustomConstraint(
+            name="name_value",
+            resource_types=["resource_types_value"],
+            method_types=[constraint.CustomConstraint.MethodType.CREATE],
+            condition="condition_value",
+            action_type=constraint.CustomConstraint.ActionType.ALLOW,
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = constraint.CustomConstraint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_custom_constraint(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, constraint.CustomConstraint)
+    assert response.name == "name_value"
+    assert response.resource_types == ["resource_types_value"]
+    assert response.method_types == [constraint.CustomConstraint.MethodType.CREATE]
+    assert response.condition == "condition_value"
+    assert response.action_type == constraint.CustomConstraint.ActionType.ALLOW
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+def test_update_custom_constraint_rest_required_fields(
+    request_type=orgpolicy.UpdateCustomConstraintRequest,
+):
+    transport_class = transports.OrgPolicyRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_custom_constraint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_custom_constraint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = constraint.CustomConstraint()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = constraint.CustomConstraint.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_custom_constraint(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_custom_constraint_rest_unset_required_fields():
+    transport = transports.OrgPolicyRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_custom_constraint._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("customConstraint",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_custom_constraint_rest_interceptors(null_interceptor):
+    transport = transports.OrgPolicyRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.OrgPolicyRestInterceptor(),
+    )
+    client = OrgPolicyClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "post_update_custom_constraint"
+    ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "pre_update_custom_constraint"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = orgpolicy.UpdateCustomConstraintRequest.pb(
+            orgpolicy.UpdateCustomConstraintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = constraint.CustomConstraint.to_json(
+            constraint.CustomConstraint()
+        )
+
+        request = orgpolicy.UpdateCustomConstraintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = constraint.CustomConstraint()
+
+        client.update_custom_constraint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_custom_constraint_rest_bad_request(
+    transport: str = "rest", request_type=orgpolicy.UpdateCustomConstraintRequest
+):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "custom_constraint": {"name": "organizations/sample1/customConstraints/sample2"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_custom_constraint(request)
+
+
+def test_update_custom_constraint_rest_flattened():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = constraint.CustomConstraint()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "custom_constraint": {
+                "name": "organizations/sample1/customConstraints/sample2"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = constraint.CustomConstraint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_custom_constraint(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{custom_constraint.name=organizations/*/customConstraints/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_custom_constraint_rest_flattened_error(transport: str = "rest"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_custom_constraint(
+            orgpolicy.UpdateCustomConstraintRequest(),
+            custom_constraint=constraint.CustomConstraint(name="name_value"),
+        )
+
+
+def test_update_custom_constraint_rest_error():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        orgpolicy.GetCustomConstraintRequest,
+        dict,
+    ],
+)
+def test_get_custom_constraint_rest(request_type):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/customConstraints/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = constraint.CustomConstraint(
+            name="name_value",
+            resource_types=["resource_types_value"],
+            method_types=[constraint.CustomConstraint.MethodType.CREATE],
+            condition="condition_value",
+            action_type=constraint.CustomConstraint.ActionType.ALLOW,
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = constraint.CustomConstraint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_custom_constraint(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, constraint.CustomConstraint)
+    assert response.name == "name_value"
+    assert response.resource_types == ["resource_types_value"]
+    assert response.method_types == [constraint.CustomConstraint.MethodType.CREATE]
+    assert response.condition == "condition_value"
+    assert response.action_type == constraint.CustomConstraint.ActionType.ALLOW
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+def test_get_custom_constraint_rest_required_fields(
+    request_type=orgpolicy.GetCustomConstraintRequest,
+):
+    transport_class = transports.OrgPolicyRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_custom_constraint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_custom_constraint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = constraint.CustomConstraint()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = constraint.CustomConstraint.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_custom_constraint(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_custom_constraint_rest_unset_required_fields():
+    transport = transports.OrgPolicyRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_custom_constraint._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_custom_constraint_rest_interceptors(null_interceptor):
+    transport = transports.OrgPolicyRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.OrgPolicyRestInterceptor(),
+    )
+    client = OrgPolicyClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "post_get_custom_constraint"
+    ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "pre_get_custom_constraint"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = orgpolicy.GetCustomConstraintRequest.pb(
+            orgpolicy.GetCustomConstraintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = constraint.CustomConstraint.to_json(
+            constraint.CustomConstraint()
+        )
+
+        request = orgpolicy.GetCustomConstraintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = constraint.CustomConstraint()
+
+        client.get_custom_constraint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_custom_constraint_rest_bad_request(
+    transport: str = "rest", request_type=orgpolicy.GetCustomConstraintRequest
+):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/customConstraints/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_custom_constraint(request)
+
+
+def test_get_custom_constraint_rest_flattened():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = constraint.CustomConstraint()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "organizations/sample1/customConstraints/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = constraint.CustomConstraint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_custom_constraint(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=organizations/*/customConstraints/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_custom_constraint_rest_flattened_error(transport: str = "rest"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_custom_constraint(
+            orgpolicy.GetCustomConstraintRequest(),
+            name="name_value",
+        )
+
+
+def test_get_custom_constraint_rest_error():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        orgpolicy.ListCustomConstraintsRequest,
+        dict,
+    ],
+)
+def test_list_custom_constraints_rest(request_type):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = orgpolicy.ListCustomConstraintsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = orgpolicy.ListCustomConstraintsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_custom_constraints(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomConstraintsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_custom_constraints_rest_required_fields(
+    request_type=orgpolicy.ListCustomConstraintsRequest,
+):
+    transport_class = transports.OrgPolicyRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_custom_constraints._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_custom_constraints._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = orgpolicy.ListCustomConstraintsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = orgpolicy.ListCustomConstraintsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_custom_constraints(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_custom_constraints_rest_unset_required_fields():
+    transport = transports.OrgPolicyRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_custom_constraints._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_custom_constraints_rest_interceptors(null_interceptor):
+    transport = transports.OrgPolicyRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.OrgPolicyRestInterceptor(),
+    )
+    client = OrgPolicyClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "post_list_custom_constraints"
+    ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "pre_list_custom_constraints"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = orgpolicy.ListCustomConstraintsRequest.pb(
+            orgpolicy.ListCustomConstraintsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = orgpolicy.ListCustomConstraintsResponse.to_json(
+            orgpolicy.ListCustomConstraintsResponse()
+        )
+
+        request = orgpolicy.ListCustomConstraintsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = orgpolicy.ListCustomConstraintsResponse()
+
+        client.list_custom_constraints(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_custom_constraints_rest_bad_request(
+    transport: str = "rest", request_type=orgpolicy.ListCustomConstraintsRequest
+):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_custom_constraints(request)
+
+
+def test_list_custom_constraints_rest_flattened():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = orgpolicy.ListCustomConstraintsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "organizations/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = orgpolicy.ListCustomConstraintsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_custom_constraints(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=organizations/*}/customConstraints" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_custom_constraints_rest_flattened_error(transport: str = "rest"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_custom_constraints(
+            orgpolicy.ListCustomConstraintsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_custom_constraints_rest_pager(transport: str = "rest"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                ],
+                next_page_token="abc",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[],
+                next_page_token="def",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                ],
+                next_page_token="ghi",
+            ),
+            orgpolicy.ListCustomConstraintsResponse(
+                custom_constraints=[
+                    constraint.CustomConstraint(),
+                    constraint.CustomConstraint(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            orgpolicy.ListCustomConstraintsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "organizations/sample1"}
+
+        pager = client.list_custom_constraints(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, constraint.CustomConstraint) for i in results)
+
+        pages = list(client.list_custom_constraints(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        orgpolicy.DeleteCustomConstraintRequest,
+        dict,
+    ],
+)
+def test_delete_custom_constraint_rest(request_type):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/customConstraints/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_custom_constraint(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_custom_constraint_rest_required_fields(
+    request_type=orgpolicy.DeleteCustomConstraintRequest,
+):
+    transport_class = transports.OrgPolicyRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_custom_constraint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_custom_constraint._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_custom_constraint(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_custom_constraint_rest_unset_required_fields():
+    transport = transports.OrgPolicyRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_custom_constraint._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_custom_constraint_rest_interceptors(null_interceptor):
+    transport = transports.OrgPolicyRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.OrgPolicyRestInterceptor(),
+    )
+    client = OrgPolicyClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "pre_delete_custom_constraint"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = orgpolicy.DeleteCustomConstraintRequest.pb(
+            orgpolicy.DeleteCustomConstraintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = orgpolicy.DeleteCustomConstraintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_custom_constraint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_custom_constraint_rest_bad_request(
+    transport: str = "rest", request_type=orgpolicy.DeleteCustomConstraintRequest
+):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/customConstraints/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_custom_constraint(request)
+
+
+def test_delete_custom_constraint_rest_flattened():
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "organizations/sample1/customConstraints/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_custom_constraint(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=organizations/*/customConstraints/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_custom_constraint_rest_flattened_error(transport: str = "rest"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_custom_constraint(
+            orgpolicy.DeleteCustomConstraintRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_custom_constraint_rest_error():
     client = OrgPolicyClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -5006,6 +8139,11 @@ def test_org_policy_base_transport():
         "create_policy",
         "update_policy",
         "delete_policy",
+        "create_custom_constraint",
+        "update_custom_constraint",
+        "get_custom_constraint",
+        "list_custom_constraints",
+        "delete_custom_constraint",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -5282,6 +8420,21 @@ def test_org_policy_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_policy._session
     session2 = client2.transport.delete_policy._session
     assert session1 != session2
+    session1 = client1.transport.create_custom_constraint._session
+    session2 = client2.transport.create_custom_constraint._session
+    assert session1 != session2
+    session1 = client1.transport.update_custom_constraint._session
+    session2 = client2.transport.update_custom_constraint._session
+    assert session1 != session2
+    session1 = client1.transport.get_custom_constraint._session
+    session2 = client2.transport.get_custom_constraint._session
+    assert session1 != session2
+    session1 = client1.transport.list_custom_constraints._session
+    session2 = client2.transport.list_custom_constraints._session
+    assert session1 != session2
+    session1 = client1.transport.delete_custom_constraint._session
+    session2 = client2.transport.delete_custom_constraint._session
+    assert session1 != session2
 
 
 def test_org_policy_grpc_transport_channel():
@@ -5425,9 +8578,34 @@ def test_parse_constraint_path():
     assert expected == actual
 
 
+def test_custom_constraint_path():
+    organization = "oyster"
+    custom_constraint = "nudibranch"
+    expected = (
+        "organizations/{organization}/customConstraints/{custom_constraint}".format(
+            organization=organization,
+            custom_constraint=custom_constraint,
+        )
+    )
+    actual = OrgPolicyClient.custom_constraint_path(organization, custom_constraint)
+    assert expected == actual
+
+
+def test_parse_custom_constraint_path():
+    expected = {
+        "organization": "cuttlefish",
+        "custom_constraint": "mussel",
+    }
+    path = OrgPolicyClient.custom_constraint_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = OrgPolicyClient.parse_custom_constraint_path(path)
+    assert expected == actual
+
+
 def test_policy_path():
-    project = "oyster"
-    policy = "nudibranch"
+    project = "winkle"
+    policy = "nautilus"
     expected = "projects/{project}/policies/{policy}".format(
         project=project,
         policy=policy,
@@ -5438,8 +8616,8 @@ def test_policy_path():
 
 def test_parse_policy_path():
     expected = {
-        "project": "cuttlefish",
-        "policy": "mussel",
+        "project": "scallop",
+        "policy": "abalone",
     }
     path = OrgPolicyClient.policy_path(**expected)
 
@@ -5449,7 +8627,7 @@ def test_parse_policy_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5459,7 +8637,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "clam",
     }
     path = OrgPolicyClient.common_billing_account_path(**expected)
 
@@ -5469,7 +8647,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5479,7 +8657,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "octopus",
     }
     path = OrgPolicyClient.common_folder_path(**expected)
 
@@ -5489,7 +8667,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5499,7 +8677,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nudibranch",
     }
     path = OrgPolicyClient.common_organization_path(**expected)
 
@@ -5509,7 +8687,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5519,7 +8697,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "mussel",
     }
     path = OrgPolicyClient.common_project_path(**expected)
 
@@ -5529,8 +8707,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5541,8 +8719,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = OrgPolicyClient.common_location_path(**expected)
 
