@@ -620,6 +620,8 @@ class GovernanceEvent(proto.Message):
                 Rule processing exceeds the allowed limit.
             GOVERNANCE_RULE_ERRORS (17):
                 Rule processing errors.
+            GOVERNANCE_RULE_PROCESSING (18):
+                Governance rule prcoessing Event.
         """
         EVENT_TYPE_UNSPECIFIED = 0
         RESOURCE_IAM_POLICY_UPDATE = 1
@@ -637,6 +639,7 @@ class GovernanceEvent(proto.Message):
         GOVERNANCE_RULE_MATCHED_RESOURCES = 15
         GOVERNANCE_RULE_SEARCH_LIMIT_EXCEEDS = 16
         GOVERNANCE_RULE_ERRORS = 17
+        GOVERNANCE_RULE_PROCESSING = 18
 
     class Entity(proto.Message):
         r"""Information about Entity resource that the log event is
