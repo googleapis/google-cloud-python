@@ -396,6 +396,10 @@ class IndexValue:
     ) -> typing.Sequence[typing.Union[bf_dtypes.Dtype, np.dtype[typing.Any]]]:
         return self._block.index_dtypes
 
+    @property
+    def session(self) -> core.Session:
+        return self._expr.session
+
     def __repr__(self) -> str:
         """Converts an Index to a string."""
         # TODO(swast): Add a timeout here? If the query is taking a long time,
@@ -411,7 +415,7 @@ class IndexValue:
         index_columns = list(self._block.index_columns)
         dtypes = dict(zip(index_columns, self.dtypes))
         expr = self._expr.select_columns(index_columns)
-        results, _ = expr.start_query()
+        results, _ = self.session._execute(expr)
         df = expr.session._rows_to_dataframe(results, dtypes)
         df = df.set_index(index_columns)
         index = df.index

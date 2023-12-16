@@ -44,7 +44,7 @@ def test_read_gbq_tokyo(
     result = df.sort_index().to_pandas()
     expected = scalars_pandas_df_index
 
-    _, query_job = df._block.expr.start_query()
+    _, query_job = session_tokyo._execute(df._block.expr)
     assert query_job.location == tokyo_location
 
     pd.testing.assert_frame_equal(result, expected)
@@ -379,7 +379,7 @@ def test_read_pandas_tokyo(
     result = df.to_pandas()
     expected = scalars_pandas_df_index
 
-    _, query_job = df._block.expr.start_query()
+    _, query_job = session_tokyo._execute(df._block.expr)
     assert query_job.location == tokyo_location
 
     pd.testing.assert_frame_equal(result, expected)

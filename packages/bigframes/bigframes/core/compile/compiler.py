@@ -174,6 +174,12 @@ def compile_concat(node: nodes.ConcatNode, ordered: bool = True):
 
 
 @_compile_node.register
+def compile_rowcount(node: nodes.RowCountNode, ordered: bool = True):
+    result = compile_unordered(node.child).row_count()
+    return result if ordered else result.to_unordered()
+
+
+@_compile_node.register
 def compile_aggregate(node: nodes.AggregateNode, ordered: bool = True):
     result = compile_unordered(node.child).aggregate(
         node.aggregations, node.by_column_ids, node.dropna

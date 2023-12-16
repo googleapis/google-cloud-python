@@ -16,10 +16,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 import io
 import typing
-from typing import Iterable, Literal, Optional, Sequence, Tuple
+from typing import Iterable, Literal, Sequence
 
-from google.cloud import bigquery
-import ibis
 import ibis.expr.types as ibis_types
 import pandas
 
@@ -86,7 +84,17 @@ class ArrayValue:
         required_session = self.node.session
         from bigframes import get_global_session
 
-        return self.node.session[0] if required_session else get_global_session()
+        return (
+            required_session if (required_session is not None) else get_global_session()
+        )
+
+    def _try_evaluate_local(self):
+        """Use only for unit testing paths - not fully featured. Will throw exception if fails."""
+        import ibis
+
+        return ibis.pandas.connect({}).execute(
+            self._compile_ordered()._to_ibis_expr(ordering_mode="unordered")
+        )
 
     def get_column_type(self, key: str) -> bigframes.dtypes.Dtype:
         return self._compile_ordered().get_column_type(key)
@@ -97,97 +105,9 @@ class ArrayValue:
     def _compile_unordered(self) -> compiled.UnorderedIR:
         return compiler.compile_unordered(self.node)
 
-    def shape(self) -> typing.Tuple[int, int]:
-        """Returns dimensions as (length, width) tuple."""
-        width = len(self._compile_unordered().columns)
-        count_expr = self._compile_unordered()._to_ibis_expr().count()
-
-        # Support in-memory engines for hermetic unit tests.
-        if not self.node.session:
-            try:
-                length = ibis.pandas.connect({}).execute(count_expr)
-                return (length, width)
-            except Exception:
-                # Not all cases can be handled by pandas engine
-                pass
-
-        sql = self.session.ibis_client.compile(count_expr)
-        row_iterator, _ = self.session._start_query(
-            sql=sql,
-            max_results=1,
-        )
-        length = next(row_iterator)[0]
-        return (length, width)
-
-    def to_sql(
-        self,
-        offset_column: typing.Optional[str] = None,
-        col_id_overrides: typing.Mapping[str, str] = {},
-        sorted: bool = False,
-    ) -> str:
-        array_value = self
-        if offset_column:
-            array_value = self.promote_offsets(offset_column)
-        if sorted:
-            return array_value._compile_ordered().to_sql(
-                col_id_overrides=col_id_overrides,
-                sorted=sorted,
-            )
-        else:
-            return array_value._compile_unordered().to_sql(
-                col_id_overrides=col_id_overrides
-            )
-
-    def start_query(
-        self,
-        job_config: Optional[bigquery.job.QueryJobConfig] = None,
-        max_results: Optional[int] = None,
-        *,
-        sorted: bool = True,
-    ) -> Tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
-        """Execute a query and return metadata about the results."""
-        # TODO(swast): Cache the job ID so we can look it up again if they ask
-        # for the results? We'd need a way to invalidate the cache if DataFrame
-        # becomes mutable, though. Or move this method to the immutable
-        # expression class.
-        # TODO(swast): We might want to move this method to Session and/or
-        # provide our own minimal metadata class. Tight coupling to the
-        # BigQuery client library isn't ideal, especially if we want to support
-        # a LocalSession for unit testing.
-        # TODO(swast): Add a timeout here? If the query is taking a long time,
-        # maybe we just print the job metadata that we have so far?
-        sql = self.to_sql(sorted=sorted)  # type:ignore
-        return self.session._start_query(
-            sql=sql,
-            job_config=job_config,
-            max_results=max_results,
-        )
-
-    def cached(self, cluster_cols: typing.Sequence[str]) -> ArrayValue:
-        """Write the ArrayValue to a session table and create a new block object that references it."""
-        compiled_value = self._compile_ordered()
-        ibis_expr = compiled_value._to_ibis_expr(
-            ordering_mode="unordered", expose_hidden_cols=True
-        )
-        tmp_table = self.session._ibis_to_temp_table(
-            ibis_expr, cluster_cols=cluster_cols, api_name="cached"
-        )
-
-        table_expression = self.session.ibis_client.table(
-            f"{tmp_table.project}.{tmp_table.dataset_id}.{tmp_table.table_id}"
-        )
-        new_columns = [table_expression[column] for column in compiled_value.column_ids]
-        new_hidden_columns = [
-            table_expression[column]
-            for column in compiled_value._hidden_ordering_column_names
-        ]
-        return ArrayValue.from_ibis(
-            self.session,
-            table_expression,
-            columns=new_columns,
-            hidden_ordering_columns=new_hidden_columns,
-            ordering=compiled_value._ordering,
-        )
+    def row_count(self) -> ArrayValue:
+        """Get number of rows in ArrayValue as a single-entry ArrayValue."""
+        return ArrayValue(nodes.RowCountNode(child=self.node))
 
     # Operations
 

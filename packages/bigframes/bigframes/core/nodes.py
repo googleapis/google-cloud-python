@@ -139,7 +139,7 @@ class ReadGbqNode(BigFrameNode):
 
     @property
     def session(self):
-        return (self.table_session,)
+        return self.table_session
 
     def __hash__(self):
         return self._node_hash
@@ -227,6 +227,12 @@ class ProjectTernaryOpNode(UnaryNode):
 
     def __hash__(self):
         return self._node_hash
+
+
+# TODO: Merge RowCount and Corr into Aggregate Node
+@dataclass(frozen=True)
+class RowCountNode(UnaryNode):
+    pass
 
 
 @dataclass(frozen=True)

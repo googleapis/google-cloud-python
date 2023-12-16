@@ -2701,7 +2701,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         if ordering_id is not None:
             array_value = array_value.promote_offsets(ordering_id)
-        return array_value.to_sql(
+        return self._block.session._to_sql(
+            array_value=array_value,
             col_id_overrides=id_overrides,
         )
 
