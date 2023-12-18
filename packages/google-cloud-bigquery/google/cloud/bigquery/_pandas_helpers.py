@@ -23,6 +23,7 @@ import queue
 import warnings
 from typing import Any, Union
 
+
 from google.cloud.bigquery import _pyarrow_helpers
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import schema
@@ -485,7 +486,6 @@ def augment_schema(dataframe, current_bq_schema):
     # pytype: disable=attribute-error
     augmented_schema = []
     unknown_type_fields = []
-
     for field in current_bq_schema:
         if field.field_type is not None:
             augmented_schema.append(field)
@@ -515,6 +515,8 @@ def augment_schema(dataframe, current_bq_schema):
         else:
             detected_mode = field.mode
             detected_type = _pyarrow_helpers.arrow_scalar_ids_to_bq(arrow_table.type.id)
+            if detected_type == "NUMERIC" and arrow_table.type.scale > 9:
+                detected_type = "BIGNUMERIC"
 
         if detected_type is None:
             unknown_type_fields.append(field)
