@@ -46,6 +46,7 @@ __protobuf__ = proto.module(
         "Backup",
         "SupportedDatabaseFlag",
         "User",
+        "Database",
     },
 )
 
@@ -749,8 +750,13 @@ class Cluster(proto.Message):
         primary_config (google.cloud.alloydb_v1alpha.types.Cluster.PrimaryConfig):
             Output only. Cross Region replication config
             specific to PRIMARY cluster.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
         satisfies_pzs (bool):
-            Reserved for future use.
+            Output only. Reserved for future use.
+        psc_config (google.cloud.alloydb_v1alpha.types.Cluster.PscConfig):
+            Optional. The configuration for Private
+            Service Connect (PSC) for the cluster.
     """
 
     class State(proto.Enum):
@@ -825,7 +831,7 @@ class Cluster(proto.Message):
 
         Attributes:
             network (str):
-                Required. The resource link for the VPC network in which
+                Optional. The resource link for the VPC network in which
                 cluster resources are created and from which they are
                 accessible via Private IP. The network must belong to the
                 same project as the cluster. It is specified in the form:
@@ -838,8 +844,8 @@ class Cluster(proto.Message):
                 for this cluster will be created in the allocated range. The
                 range name must comply with RFC 1035. Specifically, the name
                 must be 1-63 characters long and match the regular
-                expression `a-z <[-a-z0-9]*[a-z0-9]>`__?. Field name is
-                intended to be consistent with CloudSQL.
+                expression ``[a-z]([-a-z0-9]*[a-z0-9])?``. Field name is
+                intended to be consistent with Cloud SQL.
         """
 
         network: str = proto.Field(
@@ -880,6 +886,22 @@ class Cluster(proto.Message):
 
         secondary_cluster_names: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
+            number=1,
+        )
+
+    class PscConfig(proto.Message):
+        r"""PscConfig contains PSC related configuration at a cluster
+        level.
+
+        Attributes:
+            psc_enabled (bool):
+                Optional. Create an instance that allows
+                connections from Private Service Connect
+                endpoints to the instance.
+        """
+
+        psc_enabled: bool = proto.Field(
+            proto.BOOL,
             number=1,
         )
 
@@ -1009,9 +1031,18 @@ class Cluster(proto.Message):
         number=23,
         message=PrimaryConfig,
     )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=33,
+    )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
         number=30,
+    )
+    psc_config: PscConfig = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message=PscConfig,
     )
 
 
@@ -1102,7 +1133,8 @@ class Instance(proto.Message):
         query_insights_config (google.cloud.alloydb_v1alpha.types.Instance.QueryInsightsInstanceConfig):
             Configuration for query insights.
         read_pool_config (google.cloud.alloydb_v1alpha.types.Instance.ReadPoolConfig):
-            Read pool specific config.
+            Read pool instance configuration. This is required if the
+            value of instanceType is READ_POOL.
         ip_address (str):
             Output only. The IP address for the Instance.
             This is the connection endpoint for an end-user
@@ -1133,8 +1165,16 @@ class Instance(proto.Message):
         client_connection_config (google.cloud.alloydb_v1alpha.types.Instance.ClientConnectionConfig):
             Optional. Client connection specific
             configurations
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
         satisfies_pzs (bool):
-            Reserved for future use.
+            Output only. Reserved for future use.
+        psc_instance_config (google.cloud.alloydb_v1alpha.types.Instance.PscInstanceConfig):
+            Optional. The configuration for Private
+            Service Connect (PSC) for the instance.
+        network_config (google.cloud.alloydb_v1alpha.types.Instance.InstanceNetworkConfig):
+            Optional. Instance level network
+            configuration.
     """
 
     class State(proto.Enum):
@@ -1300,7 +1340,7 @@ class Instance(proto.Message):
             query_string_length (int):
                 Query string length. The default value is
                 1024. Any integer between 256 and 4500 is
-                considered valid.
+                    considered valid.
             query_plans_per_minute (int):
                 Number of query execution plans captured by
                 Insights per minute for all queries combined.
@@ -1395,6 +1435,141 @@ class Instance(proto.Message):
             proto.MESSAGE,
             number=2,
             message="SslConfig",
+        )
+
+    class PscInterfaceConfig(proto.Message):
+        r"""Configuration for setting up a PSC interface. This
+        information needs to be provided by the customer.
+        PSC interfaces will be created and added to VMs via SLM (adding
+        a network interface will require recreating the VM). For HA
+        instances this will be done via LDTM.
+
+        Attributes:
+            consumer_endpoint_ips (MutableSequence[str]):
+                A list of endpoints in the consumer VPC the
+                interface might initiate outbound connections
+                to. This list has to be provided when the PSC
+                interface is created.
+            network_attachment (str):
+                The NetworkAttachment resource created in the consumer VPC
+                to which the PSC interface will be linked, in the form of:
+                "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}".
+                NetworkAttachment has to be provided when the PSC interface
+                is created.
+        """
+
+        consumer_endpoint_ips: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        network_attachment: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class PscInstanceConfig(proto.Message):
+        r"""PscInstanceConfig contains PSC related configuration at an
+        instance level.
+
+        Attributes:
+            service_attachment_link (str):
+                Output only. The service attachment created
+                when Private Service Connect (PSC) is enabled
+                for the instance. The name of the resource will
+                be in the format of
+                projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>
+            allowed_consumer_projects (MutableSequence[str]):
+                Optional. List of consumer projects that are
+                allowed to create PSC endpoints to
+                service-attachments to this instance.
+            allowed_consumer_networks (MutableSequence[str]):
+                Optional. List of consumer networks that are
+                allowed to create PSC endpoints to
+                service-attachments to this instance.
+            psc_interface_configs (MutableSequence[google.cloud.alloydb_v1alpha.types.Instance.PscInterfaceConfig]):
+                Optional. Configurations for setting up PSC
+                interfaces attached to the instance which are
+                used for outbound connectivity. Only primary
+                instances can have PSC interface attached. All
+                the VMs created for the primary instance will
+                share the same configurations. Currently we only
+                support 0 or 1 PSC interface.
+            outgoing_service_attachment_links (MutableSequence[str]):
+                Optional. List of service attachments that
+                this instance has created endpoints to connect
+                with. Currently, only a single outgoing service
+                attachment is supported per instance.
+            psc_enabled (bool):
+                Optional. Whether PSC connectivity is enabled
+                for this instance. This is populated by
+                referencing the value from the parent cluster.
+        """
+
+        service_attachment_link: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        allowed_consumer_projects: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        allowed_consumer_networks: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+        psc_interface_configs: MutableSequence[
+            "Instance.PscInterfaceConfig"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="Instance.PscInterfaceConfig",
+        )
+        outgoing_service_attachment_links: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=5,
+        )
+        psc_enabled: bool = proto.Field(
+            proto.BOOL,
+            number=6,
+        )
+
+    class InstanceNetworkConfig(proto.Message):
+        r"""Metadata related to instance level network configuration.
+
+        Attributes:
+            authorized_external_networks (MutableSequence[google.cloud.alloydb_v1alpha.types.Instance.InstanceNetworkConfig.AuthorizedNetwork]):
+                Optional. A list of external network
+                authorized to access this instance.
+            enable_public_ip (bool):
+                Optional. Enabling public ip for the
+                instance.
+        """
+
+        class AuthorizedNetwork(proto.Message):
+            r"""AuthorizedNetwork contains metadata for an authorized
+            network.
+
+            Attributes:
+                cidr_range (str):
+                    CIDR range for one authorzied network of the
+                    instance.
+            """
+
+            cidr_range: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        authorized_external_networks: MutableSequence[
+            "Instance.InstanceNetworkConfig.AuthorizedNetwork"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Instance.InstanceNetworkConfig.AuthorizedNetwork",
+        )
+        enable_public_ip: bool = proto.Field(
+            proto.BOOL,
+            number=2,
         )
 
     name: str = proto.Field(
@@ -1505,9 +1680,23 @@ class Instance(proto.Message):
         number=23,
         message=ClientConnectionConfig,
     )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=30,
+    )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
         number=24,
+    )
+    psc_instance_config: PscInstanceConfig = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=PscInstanceConfig,
+    )
+    network_config: InstanceNetworkConfig = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        message=InstanceNetworkConfig,
     )
 
 
@@ -1525,6 +1714,10 @@ class ConnectionInfo(proto.Message):
             Instance. This is the default IP for the instance and is
             always created (even if enable_public_ip is set). This is
             the connection endpoint for an end-user application.
+        public_ip_address (str):
+            Output only. The public IP addresses for the Instance. This
+            is available ONLY when enable_public_ip is set. This is the
+            connection endpoint for an end-user application.
         pem_certificate_chain (MutableSequence[str]):
             Output only. The pem-encoded chain that may
             be used to verify the X.509 certificate.
@@ -1541,6 +1734,10 @@ class ConnectionInfo(proto.Message):
     ip_address: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    public_ip_address: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
     pem_certificate_chain: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -1636,8 +1833,10 @@ class Backup(proto.Message):
             policy. Once the expiry quantity is over
             retention, the backup is eligible to be garbage
             collected.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
         satisfies_pzs (bool):
-            Reserved for future use.
+            Output only. Reserved for future use.
         database_version (google.cloud.alloydb_v1alpha.types.DatabaseVersion):
             Output only. The database engine major
             version of the cluster this backup was created
@@ -1814,6 +2013,10 @@ class Backup(proto.Message):
         proto.MESSAGE,
         number=20,
         message=QuantityBasedExpiry,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=23,
     )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
@@ -2030,6 +2233,39 @@ class User(proto.Message):
         proto.ENUM,
         number=5,
         enum=UserType,
+    )
+
+
+class Database(proto.Message):
+    r"""Message describing Database object.
+
+    Attributes:
+        name (str):
+            Identifier. Name of the resource in the form
+            of
+            projects/{project}/locations/{location}/clusters/{cluster}/databases/{database}.
+        charset (str):
+            Optional. Charset for the database. This field can contain
+            any PostgreSQL supported charset name. Example values
+            include "UTF8", "SQL_ASCII", etc.
+        collation (str):
+            Optional. Collation for the database.
+            Name of the custom or native collation for
+            postgres. Example values include "C", "POSIX",
+            etc
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    charset: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    collation: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
