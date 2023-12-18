@@ -6349,11 +6349,21 @@ class GetNodePoolRequest(proto.Message):
 class BlueGreenSettings(proto.Message):
     r"""Settings for blue-green upgrade.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         standard_rollout_policy (google.cloud.container_v1beta1.types.BlueGreenSettings.StandardRolloutPolicy):
             Standard policy for the blue-green upgrade.
+
+            This field is a member of `oneof`_ ``rollout_policy``.
+        autoscaled_rollout_policy (google.cloud.container_v1beta1.types.BlueGreenSettings.AutoscaledRolloutPolicy):
+            Autoscaled policy for cluster autoscaler
+            enabled blue-green upgrade.
 
             This field is a member of `oneof`_ ``rollout_policy``.
         node_pool_soak_duration (google.protobuf.duration_pb2.Duration):
@@ -6407,11 +6417,23 @@ class BlueGreenSettings(proto.Message):
             message=duration_pb2.Duration,
         )
 
+    class AutoscaledRolloutPolicy(proto.Message):
+        r"""Autoscaled rollout policy uses cluster autoscaler during
+        blue-green upgrades to scale both the green and blue pools.
+
+        """
+
     standard_rollout_policy: StandardRolloutPolicy = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="rollout_policy",
         message=StandardRolloutPolicy,
+    )
+    autoscaled_rollout_policy: AutoscaledRolloutPolicy = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="rollout_policy",
+        message=AutoscaledRolloutPolicy,
     )
     node_pool_soak_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
