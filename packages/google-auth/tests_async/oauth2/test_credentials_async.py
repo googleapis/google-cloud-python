@@ -433,7 +433,10 @@ class TestCredentials:
         assert list(creds.__dict__).sort() == list(unpickled.__dict__).sort()
 
         for attr in list(creds.__dict__):
-            assert getattr(creds, attr) == getattr(unpickled, attr)
+            if attr == "_refresh_worker":
+                assert getattr(unpickled, attr) is None
+            else:
+                assert getattr(creds, attr) == getattr(unpickled, attr)
 
     def test_pickle_with_missing_attribute(self):
         creds = self.make_credentials()

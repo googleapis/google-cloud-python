@@ -242,7 +242,7 @@ class TestImpersonatedCredentials(object):
         request_kwargs = request.call_args[1]
         assert request_kwargs["url"] == self.IAM_ENDPOINT_OVERRIDE
 
-    @pytest.mark.parametrize("time_skew", [100, -100])
+    @pytest.mark.parametrize("time_skew", [150, -150])
     def test_refresh_source_credentials(self, time_skew):
         credentials = self.make_credentials(lifetime=None)
 

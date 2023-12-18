@@ -161,6 +161,8 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         # because they need to be importable.
         # Instead, the refresh_handler setter should be used to repopulate this.
         del state_dict["_refresh_handler"]
+        # Remove worker as it contains multiproccessing queue objects.
+        del state_dict["_refresh_worker"]
         return state_dict
 
     def __setstate__(self, d):
@@ -183,6 +185,8 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._universe_domain = d.get("_universe_domain") or _DEFAULT_UNIVERSE_DOMAIN
         # The refresh_handler setter should be used to repopulate this.
         self._refresh_handler = None
+        self._refresh_worker = None
+        self._use_non_blocking_refresh = d.get("_use_non_blocking_refresh")
 
     @property
     def refresh_token(self):

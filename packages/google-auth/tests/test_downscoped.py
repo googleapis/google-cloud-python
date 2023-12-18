@@ -25,6 +25,7 @@ from google.auth import credentials
 from google.auth import downscoped
 from google.auth import exceptions
 from google.auth import transport
+from google.auth.credentials import TokenState
 
 
 EXPRESSION = (
@@ -676,6 +677,7 @@ class TestCredentials(object):
 
         assert credentials.valid
         assert not credentials.expired
+        assert credentials.token_state == TokenState.FRESH
 
         credentials.before_request(request, "POST", "https://example.com/api", headers)
 
@@ -687,8 +689,24 @@ class TestCredentials(object):
 
         assert not credentials.valid
         assert credentials.expired
+        assert credentials.token_state == TokenState.STALE
 
         credentials.before_request(request, "POST", "https://example.com/api", headers)
+        assert credentials.token_state == TokenState.FRESH
+
+        # New token should be retrieved.
+        assert headers == {
+            "authorization": "Bearer {}".format(SUCCESS_RESPONSE["access_token"])
+        }
+
+        utcnow.return_value = datetime.datetime.min + datetime.timedelta(seconds=6000)
+
+        assert not credentials.valid
+        assert credentials.expired
+        assert credentials.token_state == TokenState.INVALID
+
+        credentials.before_request(request, "POST", "https://example.com/api", headers)
+        assert credentials.token_state == TokenState.FRESH
 
         # New token should be retrieved.
         assert headers == {
