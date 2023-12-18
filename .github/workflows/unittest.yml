@@ -40,7 +40,7 @@ jobs:
     - name: Upload coverage results
       uses: actions/upload-artifact@v4
       with:
-        name: coverage-artifacts
+        name: coverage-artifact-${{ '{{' }} matrix.python {{ '}}' }}
         path: .coverage-${{ matrix.python }}
   prerelease:
     runs-on: ubuntu-latest
@@ -99,10 +99,10 @@ jobs:
       if: ${{ steps.date.packages.num_files_changed > 0 }}
       uses: actions/download-artifact@v4
       with:
-        name: coverage-artifacts
         path: .coverage-results/
     - name: Report coverage results
       if: ${{ steps.date.packages.num_files_changed > 0 }}
       run: |
-        coverage combine .coverage-results/.coverage*
+        find .coverage-results -type f -name '*.zip' -exec unzip {} \;
+        coverage combine .coverage-results/**/.coverage*
         coverage report --show-missing --fail-under=100
