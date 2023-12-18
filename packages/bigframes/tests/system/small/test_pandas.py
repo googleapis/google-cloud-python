@@ -366,6 +366,40 @@ def test_cut(scalars_dfs):
 
 
 @pytest.mark.parametrize(
+    ("bins",),
+    [
+        ([(-5, 2), (2, 3), (-3000, -10)],),
+        (pd.IntervalIndex.from_tuples([(1, 2), (2, 3), (4, 5)]),),
+    ],
+)
+def test_cut_with_interval(scalars_dfs, bins):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = bpd.cut(scalars_df["int64_too"], bins, labels=False).to_pandas()
+
+    if isinstance(bins, list):
+        bins = pd.IntervalIndex.from_tuples(bins)
+    pd_result = pd.cut(scalars_pandas_df["int64_too"], bins, labels=False)
+
+    # Convert to match data format
+    pd_result_converted = pd.Series(
+        [
+            {"left_exclusive": interval.left, "right_inclusive": interval.right}
+            if pd.notna(val)
+            else pd.NA
+            for val, interval in zip(
+                pd_result, pd_result.cat.categories[pd_result.cat.codes]
+            )
+        ],
+        name=pd_result.name,
+    )
+    pd_result.index = pd_result.index.astype("Int64")
+
+    pd.testing.assert_series_equal(
+        bf_result, pd_result_converted, check_index=False, check_dtype=False
+    )
+
+
+@pytest.mark.parametrize(
     ("q",),
     [
         (1,),

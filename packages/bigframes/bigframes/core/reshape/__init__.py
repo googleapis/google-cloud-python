@@ -14,7 +14,9 @@
 from __future__ import annotations
 
 import typing
-from typing import Iterable, Literal, Optional, Union
+from typing import Iterable, Literal, Optional, Tuple, Union
+
+import pandas as pd
 
 import bigframes.constants as constants
 import bigframes.core as core
@@ -108,17 +110,29 @@ def concat(
 
 def cut(
     x: bigframes.series.Series,
-    bins: int,
+    bins: Union[
+        int,
+        pd.IntervalIndex,
+        Iterable[Tuple[Union[int, float], Union[int, float]]],
+    ],
     *,
     labels: Optional[bool] = None,
 ) -> bigframes.series.Series:
-    if bins <= 0:
+    if isinstance(bins, int) and bins <= 0:
         raise ValueError("`bins` should be a positive integer.")
+
+    if isinstance(bins, Iterable):
+        if not isinstance(bins, pd.IntervalIndex):
+            bins = pd.IntervalIndex.from_tuples(list(bins))
+
+        if bins.is_overlapping:
+            raise ValueError("Overlapping IntervalIndex is not accepted.")
 
     if labels is not False:
         raise NotImplementedError(
             f"Only labels=False is supported in BigQuery DataFrames so far. {constants.FEEDBACK_LINK}"
         )
+
     return x._apply_window_op(agg_ops.CutOp(bins), window_spec=core.WindowSpec())
 
 

@@ -24,31 +24,61 @@ def cut(
 
     ``labels=False`` implies you just want the bins back.
 
-    Examples:
+    **Examples:**
 
-    .. code-block::
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.display.progress_bar = None
+        >>> s = bpd.Series([0, 1, 5, 10])
+        >>> s
+        0     0
+        1     1
+        2     5
+        3    10
+        dtype: Int64
 
-        import bigframes.pandas as pd
+    Cut with an integer (equal-width bins):
 
-        pd.options.display.progress_bar = None
-        s = pd.Series([0, 1, 1, 2])
-        pd.cut(s, bins=4, labels=False)
-
+        >>> bpd.cut(s, bins=4, labels=False)
         0    0
-        1    1
+        1    0
         2    1
         3    3
         dtype: Int64
 
+    Cut with pd.IntervalIndex, requires importing pandas for IntervalIndex:
+
+        >>> import pandas as pd
+
+        >>> interval_index = pd.IntervalIndex.from_tuples([(0, 1), (1, 5), (5, 20)])
+        >>> bpd.cut(s, bins=interval_index, labels=False)
+        0                                            <NA>
+        1     {'left_exclusive': 0, 'right_inclusive': 1}
+        2     {'left_exclusive': 1, 'right_inclusive': 5}
+        3    {'left_exclusive': 5, 'right_inclusive': 20}
+        dtype: struct<left_exclusive: int64, right_inclusive: int64>[pyarrow]
+
+    Cut with an iterable of tuples:
+
+        >>> bins_tuples = [(0, 1), (1, 4), (5, 20)]
+        >>> bpd.cut(s, bins=bins_tuples, labels=False)
+        0                                            <NA>
+        1     {'left_exclusive': 0, 'right_inclusive': 1}
+        2                                            <NA>
+        3    {'left_exclusive': 5, 'right_inclusive': 20}
+        dtype: struct<left_exclusive: int64, right_inclusive: int64>[pyarrow]
+
     Args:
         x (Series):
             The input Series to be binned. Must be 1-dimensional.
-        bins (int):
+        bins (int, pd.IntervalIndex, Iterable[Tuple[Union[int, float], Union[int, float]]]):
             The criteria to bin by.
 
-            int : Defines the number of equal-width bins in the range of `x`. The
+            int: Defines the number of equal-width bins in the range of `x`. The
             range of `x` is extended by .1% on each side to include the minimum
             and maximum values of `x`.
+
+            pd.IntervalIndex or Iterable of tuples: Defines the exact bins to be used.
+            It's important to ensure that these bins are non-overlapping.
         labels (None):
             Specifies the labels for the returned bins. Must be the same length as
             the resulting bins. If False, returns only integer indicators of the

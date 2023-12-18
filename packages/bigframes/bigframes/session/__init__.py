@@ -1017,13 +1017,13 @@ class Session(
                 header=header,
                 names=names,
                 index_col=index_col,
-                usecols=usecols,
+                usecols=usecols,  # type: ignore
                 dtype=dtype,
                 engine=engine,
                 encoding=encoding,
                 **kwargs,
             )
-            return self.read_pandas(pandas_df)
+            return self.read_pandas(pandas_df)  # type: ignore
 
     def read_pickle(
         self,

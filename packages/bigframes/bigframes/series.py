@@ -1324,7 +1324,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self.to_pandas().to_csv(path_or_buf, **kwargs)
 
     def to_dict(self, into: type[dict] = dict) -> typing.Mapping:
-        return typing.cast(dict, self.to_pandas().to_dict(into))
+        return typing.cast(dict, self.to_pandas().to_dict(into))  # type: ignore
 
     def to_excel(self, excel_writer, sheet_name="Sheet1", **kwargs) -> None:
         return self.to_pandas().to_excel(excel_writer, sheet_name, **kwargs)
