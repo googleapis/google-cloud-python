@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
+import warnings
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
@@ -232,7 +233,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     @classmethod
     def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
-        """Return the API endpoint and client cert source for mutual TLS.
+        """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
         (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
@@ -262,6 +263,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
+
+        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
+            DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
         use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
@@ -288,6 +292,77 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             api_endpoint = cls.DEFAULT_ENDPOINT
 
         return api_endpoint, client_cert_source
+
+    @staticmethod
+    def _read_environment_variables():
+        """Returns the environment variables used by the client.
+
+        Returns:
+            Tuple[bool, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE
+                and the GOOGLE_API_USE_MTLS_ENDPOINT environment variables.
+
+        Raises:
+            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
+                any of ["true", "false"].
+            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
+                is not any of ["auto", "never", "always"].
+        """
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
+        if use_client_cert not in ("true", "false"):
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+        return use_client_cert == "true", use_mtls_endpoint
+
+    def _get_client_cert_source(provided_cert_source, use_cert_flag):
+        """Return the client cert source to be used by the client.
+
+        Args:
+            provided_cert_source (bytes): The client certificate source provided.
+            use_cert_flag (bool): A flag indicating whether to use the client certificate.
+
+        Returns:
+            bytes or None: The client cert source to be used by the client.
+        """
+        client_cert_source = None
+        if use_cert_flag:
+            if provided_cert_source:
+                client_cert_source = provided_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+        return client_cert_source
+
+    def _get_api_endpoint(api_override, client_cert_source, use_mtls_endpoint):
+        """Return the API endpoint used by the client.
+
+        Args:
+            api_override (str): The API endpoint override. If specified, this is always the return value of this function.
+            client_cert_source (bytes): The client certificate source used by the client.
+            use_mtls_endpoint (str): How to use the MTLS endpoint, which depends also on the other parameters.
+                Possible values are "always", "auto", or "never".
+
+        Returns:
+            str: The API endpoint to be used by the client.
+        """
+
+        if api_override is not None:
+            api_endpoint = api_override
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+            api_endpoint = MetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = MetricsServiceV2Client.DEFAULT_ENDPOINT
+        return api_endpoint
+
+    @property
+    def api_endpoint(self):
+        """Return the API endpoint used by the client instance.
+
+        Returns:
+            str: The API endpoint used
+                by the client instance.
+        """
+        return self._api_endpoint
 
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
@@ -332,15 +407,18 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        if isinstance(client_options, dict):
-            client_options = client_options_lib.from_dict(client_options)
-        if client_options is None:
-            client_options = client_options_lib.ClientOptions()
-        client_options = cast(client_options_lib.ClientOptions, client_options)
+        self._client_options = client_options
+        if isinstance(self._client_options, dict):
+            self._client_options = client_options_lib.from_dict(self._client_options)
+        if self._client_options is None:
+            self._client_options = client_options_lib.ClientOptions()
+        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
-        api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(client_options)
+        self._use_client_cert, self._use_mtls_endpoint = MetricsServiceV2Client._read_environment_variables()
+        self._client_cert_source = MetricsServiceV2Client._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
+        self._api_endpoint = MetricsServiceV2Client._get_api_endpoint(self._client_options.api_endpoint, self._client_cert_source, self._use_mtls_endpoint)
 
-        api_key_value = getattr(client_options, "api_key", None)
+        api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
             raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
@@ -349,10 +427,10 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, MetricsServiceV2Transport):
             # transport is a MetricsServiceV2Transport instance.
-            if credentials or client_options.credentials_file or api_key_value:
+            if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError("When providing a transport instance, "
                                  "provide its credentials directly.")
-            if client_options.scopes:
+            if self._client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, provide its scopes "
                     "directly."
@@ -367,14 +445,14 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
-                credentials_file=client_options.credentials_file,
-                host=api_endpoint,
-                scopes=client_options.scopes,
-                client_cert_source_for_mtls=client_cert_source_func,
-                quota_project_id=client_options.quota_project_id,
+                credentials_file=self._client_options.credentials_file,
+                host=self._api_endpoint,
+                scopes=self._client_options.scopes,
+                client_cert_source_for_mtls=self._client_cert_source,
+                quota_project_id=self._client_options.quota_project_id,
                 client_info=client_info,
                 always_use_jwt_access=True,
-                api_audience=client_options.api_audience,
+                api_audience=self._client_options.api_audience,
             )
 
     def list_log_metrics(self,
