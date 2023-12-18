@@ -34,6 +34,7 @@ from typing import (
     Union,
 )
 
+import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import numpy
 import pandas
@@ -2508,7 +2509,14 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 )
             if_exists = "replace"
 
-        if "." not in destination_table:
+        table_parts = destination_table.split(".")
+        default_project = self._block.expr.session.bqclient.project
+
+        if len(table_parts) == 2:
+            destination_dataset = f"{default_project}.{table_parts[0]}"
+        elif len(table_parts) == 3:
+            destination_dataset = f"{table_parts[0]}.{table_parts[1]}"
+        else:
             raise ValueError(
                 f"Got invalid value for destination_table {repr(destination_table)}. "
                 "Should be of the form 'datasetId.tableId' or 'projectId.datasetId.tableId'."
@@ -2523,11 +2531,16 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 f"Valid options include None or one of {dispositions.keys()}."
             )
 
+        try:
+            self._session.bqclient.get_dataset(destination_dataset)
+        except google.api_core.exceptions.NotFound:
+            self._session.bqclient.create_dataset(destination_dataset, exists_ok=True)
+
         job_config = bigquery.QueryJobConfig(
             write_disposition=dispositions[if_exists],
             destination=bigquery.table.TableReference.from_string(
                 destination_table,
-                default_project=self._block.expr.session.bqclient.project,
+                default_project=default_project,
             ),
         )
 
