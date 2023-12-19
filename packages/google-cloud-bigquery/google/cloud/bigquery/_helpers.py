@@ -374,6 +374,13 @@ def _bytes_to_json(value):
     return value
 
 
+def _json_to_json(value):
+    """Coerce 'value' to a BigQuery REST API representation."""
+    if value is None:
+        return None
+    return json.dumps(value)
+
+
 def _timestamp_to_json_parameter(value):
     """Coerce 'value' to an JSON-compatible representation.
 
@@ -439,7 +446,7 @@ _SCALAR_VALUE_TO_JSON_ROW = {
     "DATETIME": _datetime_to_json,
     "DATE": _date_to_json,
     "TIME": _time_to_json,
-    "JSON": _json_from_json,
+    "JSON": _json_to_json,
     # Make sure DECIMAL and BIGDECIMAL are handled, even though
     # requests for them should be converted to NUMERIC.  Better safe
     # than sorry.

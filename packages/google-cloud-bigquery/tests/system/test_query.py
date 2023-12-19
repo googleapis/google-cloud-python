@@ -256,6 +256,18 @@ def test_query_statistics(bigquery_client, query_api_method):
                 )
             ],
         ),
+        pytest.param(
+            "SELECT @json",
+            {"alpha": "abc", "num": [1, 2, 3]},
+            [
+                ScalarQueryParameter(
+                    name="json",
+                    type_="JSON",
+                    value={"alpha": "abc", "num": [1, 2, 3]},
+                )
+            ],
+            id="scalar-json",
+        ),
         (
             "SELECT @naive_time",
             datetime.time(12, 41, 9, 62500),

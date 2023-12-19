@@ -2049,13 +2049,18 @@ class TestBigQuery(unittest.TestCase):
                     ),
                 ],
             ),
+            SF("json_col", "JSON"),
         ]
         record = {
             "nested_string": "another string value",
             "nested_repeated": [0, 1, 2],
             "nested_record": {"nested_nested_string": "some deep insight"},
         }
-        to_insert = [("Some value", record)]
+        json_record = {
+            "json_array": [1, 2, 3],
+            "json_object": {"alpha": "abc", "num": 123},
+        }
+        to_insert = [("Some value", record, json_record)]
         table_id = "test_table"
         dataset = self.temp_dataset(_make_dataset_id("issue_2951"))
         table_arg = Table(dataset.table(table_id), schema=schema)

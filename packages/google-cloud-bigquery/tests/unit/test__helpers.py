@@ -886,6 +886,16 @@ class Test_scalar_field_to_json(unittest.TestCase):
         converted = self._call_fut(field, original)
         self.assertEqual(converted, str(original))
 
+    def test_w_scalar_none(self):
+        import google.cloud.bigquery._helpers as module_under_test
+
+        scalar_types = module_under_test._SCALAR_VALUE_TO_JSON_ROW.keys()
+        for type_ in scalar_types:
+            field = _make_field(type_)
+            original = None
+            converted = self._call_fut(field, original)
+            self.assertIsNone(converted, msg=f"{type_} did not return None")
+
 
 class Test_single_field_to_json(unittest.TestCase):
     def _call_fut(self, field, value):
@@ -920,6 +930,12 @@ class Test_single_field_to_json(unittest.TestCase):
         original = "hello world"
         converted = self._call_fut(field, original)
         self.assertEqual(converted, original)
+
+    def test_w_scalar_json(self):
+        field = _make_field("JSON")
+        original = {"alpha": "abc", "num": [1, 2, 3]}
+        converted = self._call_fut(field, original)
+        self.assertEqual(converted, json.dumps(original))
 
 
 class Test_repeated_field_to_json(unittest.TestCase):
