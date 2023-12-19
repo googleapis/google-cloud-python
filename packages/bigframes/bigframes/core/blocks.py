@@ -66,7 +66,7 @@ _MONOTONIC_INCREASING = "monotonic_increasing"
 _MONOTONIC_DECREASING = "monotonic_decreasing"
 
 
-LevelType = typing.Union[str, int]
+LevelType = typing.Hashable
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
 
 
@@ -941,7 +941,6 @@ class Block:
         by_column_ids: typing.Sequence[str] = (),
         aggregations: typing.Sequence[typing.Tuple[str, agg_ops.AggregateOp]] = (),
         *,
-        as_index: bool = True,
         dropna: bool = True,
     ) -> typing.Tuple[Block, typing.Sequence[str]]:
         """
@@ -962,40 +961,21 @@ class Block:
         aggregate_labels = self._get_labels_for_columns(
             [agg[0] for agg in aggregations]
         )
-        if as_index:
-            names: typing.List[Label] = []
-            for by_col_id in by_column_ids:
-                if by_col_id in self.value_columns:
-                    names.append(self.col_id_to_label[by_col_id])
-                else:
-                    names.append(self.col_id_to_index_name[by_col_id])
-            return (
-                Block(
-                    result_expr,
-                    index_columns=by_column_ids,
-                    column_labels=aggregate_labels,
-                    index_labels=names,
-                ),
-                output_col_ids,
-            )
-        else:  # as_index = False
-            # If as_index=False, drop grouping levels, but keep grouping value columns
-            by_value_columns = [
-                col for col in by_column_ids if col in self.value_columns
-            ]
-            by_column_labels = self._get_labels_for_columns(by_value_columns)
-            labels = (*by_column_labels, *aggregate_labels)
-            offsets_id = guid.generate_guid()
-            result_expr_pruned = result_expr.select_columns(
-                [*by_value_columns, *output_col_ids]
-            ).promote_offsets(offsets_id)
-
-            return (
-                Block(
-                    result_expr_pruned, index_columns=[offsets_id], column_labels=labels
-                ),
-                output_col_ids,
-            )
+        names: typing.List[Label] = []
+        for by_col_id in by_column_ids:
+            if by_col_id in self.value_columns:
+                names.append(self.col_id_to_label[by_col_id])
+            else:
+                names.append(self.col_id_to_index_name[by_col_id])
+        return (
+            Block(
+                result_expr,
+                index_columns=by_column_ids,
+                column_labels=aggregate_labels,
+                index_labels=names,
+            ),
+            output_col_ids,
+        )
 
     def get_stat(self, column_id: str, stat: agg_ops.AggregateOp):
         """Gets aggregates immediately, and caches it"""
@@ -1324,7 +1304,6 @@ class Block:
         result_block, _ = block.aggregate(
             by_column_ids=self.index_columns,
             aggregations=aggregations,
-            as_index=True,
             dropna=True,
         )
 

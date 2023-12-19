@@ -841,7 +841,6 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         block, agg_ids = block.aggregate(
             by_column_ids=[self._value_column],
             aggregations=((self._value_column, agg_ops.count_op),),
-            as_index=False,
         )
         value_count_col_id = agg_ids[0]
         block, max_value_count_col_id = block.apply_window_op(
@@ -855,14 +854,15 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             ops.eq_op,
         )
         block = block.filter(is_mode_col_id)
-        mode_values_series = Series(
-            block.select_column(self._value_column).assign_label(
-                self._value_column, self.name
-            )
+        # use temporary name for reset_index to avoid collision, restore after dropping extra columns
+        block = (
+            block.with_index_labels(["mode_temp_internal"])
+            .order_by([OrderingColumnReference(self._value_column)])
+            .reset_index(drop=False)
         )
-        return typing.cast(
-            Series, mode_values_series.sort_values().reset_index(drop=True)
-        )
+        block = block.select_column(self._value_column).with_column_labels([self.name])
+        mode_values_series = Series(block.select_column(self._value_column))
+        return typing.cast(Series, mode_values_series)
 
     def mean(self) -> float:
         return typing.cast(float, self._apply_aggregation(agg_ops.mean_op))

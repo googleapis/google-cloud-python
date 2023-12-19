@@ -332,7 +332,6 @@ def value_counts(
         by_column_ids=columns,
         aggregations=[(dummy, agg_ops.count_op)],
         dropna=dropna,
-        as_index=True,
     )
     count_id = agg_ids[0]
     if normalize:

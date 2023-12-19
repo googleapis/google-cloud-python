@@ -356,17 +356,24 @@ def test_multi_index_dataframe_groupby(scalars_df_index, scalars_pandas_df_index
 def test_multi_index_dataframe_groupby_level_aggregate(
     scalars_df_index, scalars_pandas_df_index, level, as_index
 ):
+    index_cols = ["int64_too", "bool_col"]
     bf_result = (
-        scalars_df_index.set_index(["int64_too", "bool_col"])
+        scalars_df_index.set_index(index_cols)
         .groupby(level=level, as_index=as_index)
         .mean(numeric_only=True)
         .to_pandas()
     )
     pd_result = (
-        scalars_pandas_df_index.set_index(["int64_too", "bool_col"])
+        scalars_pandas_df_index.set_index(index_cols)
         .groupby(level=level, as_index=as_index)
         .mean(numeric_only=True)
     )
+    # For as_index=False, pandas will drop index levels used as groupings
+    # In the future, it will include this in the result, bigframes already does this behavior
+    if not as_index:
+        for col in index_cols:
+            if col in bf_result.columns:
+                bf_result = bf_result.drop(col, axis=1)
 
     # Pandas will have int64 index, while bigquery will have Int64 when resetting
     pandas.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
