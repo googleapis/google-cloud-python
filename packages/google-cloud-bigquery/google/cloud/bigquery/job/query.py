@@ -1614,6 +1614,7 @@ class QueryJob(_AsyncJob):
                 project=self.project,
                 job_id=self.job_id,
                 query_id=self.query_id,
+                num_dml_affected_rows=self._query_results.num_dml_affected_rows,
             )
 
         # We know that there's at least 1 row, so only treat the response from
@@ -1639,6 +1640,7 @@ class QueryJob(_AsyncJob):
             timeout=timeout,
             query_id=self.query_id,
             first_page_response=first_page_response,
+            num_dml_affected_rows=self._query_results.num_dml_affected_rows,
         )
         rows._preserve_order = _contains_order_by(self.query)
         return rows

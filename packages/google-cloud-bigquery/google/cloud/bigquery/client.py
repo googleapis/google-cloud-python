@@ -3963,6 +3963,7 @@ class Client(ClientWithProject):
         timeout: TimeoutType = DEFAULT_TIMEOUT,
         query_id: Optional[str] = None,
         first_page_response: Optional[Dict[str, Any]] = None,
+        num_dml_affected_rows: Optional[int] = None,
     ) -> RowIterator:
         """List the rows of a completed query.
         See
@@ -4007,6 +4008,10 @@ class Client(ClientWithProject):
                 and not guaranteed to be populated.
             first_page_response (Optional[dict]):
                 API response for the first page of results (if available).
+            num_dml_affected_rows (Optional[int]):
+                If this RowIterator is the result of a DML query, the number of
+                rows that were affected.
+
         Returns:
             google.cloud.bigquery.table.RowIterator:
                 Iterator of row data
@@ -4047,6 +4052,7 @@ class Client(ClientWithProject):
             job_id=job_id,
             query_id=query_id,
             first_page_response=first_page_response,
+            num_dml_affected_rows=num_dml_affected_rows,
         )
         return row_iterator
 

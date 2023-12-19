@@ -2133,6 +2133,14 @@ class TestRowIterator(unittest.TestCase):
         rows = self._make_one(location="asia-northeast1")
         self.assertEqual(rows.location, "asia-northeast1")
 
+    def test_num_dml_affected_rows_missing(self):
+        rows = self._make_one()
+        self.assertIsNone(rows.num_dml_affected_rows)
+
+    def test_num_dml_affected_rows_present(self):
+        rows = self._make_one(num_dml_affected_rows=1234)
+        self.assertEqual(rows.num_dml_affected_rows, 1234)
+
     def test_project_missing(self):
         rows = self._make_one()
         self.assertIsNone(rows.project)
@@ -2334,11 +2342,11 @@ class TestRowIterator(unittest.TestCase):
         iterator = self._make_one(first_page_response=first_page)
         self.assertTrue(iterator._is_almost_completely_cached())
 
-    def test__validate_bqstorage_returns_false_when_completely_cached(self):
+    def test__should_use_bqstorage_returns_false_when_completely_cached(self):
         first_page = {"rows": []}
         iterator = self._make_one(first_page_response=first_page)
         self.assertFalse(
-            iterator._validate_bqstorage(
+            iterator._should_use_bqstorage(
                 bqstorage_client=None, create_bqstorage_client=True
             )
         )
@@ -2346,32 +2354,32 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(
         bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
-    def test__validate_bqstorage_returns_true_if_no_cached_results(self):
+    def test__should_use_bqstorage_returns_true_if_no_cached_results(self):
         iterator = self._make_one(first_page_response=None)  # not cached
-        result = iterator._validate_bqstorage(
+        result = iterator._should_use_bqstorage(
             bqstorage_client=None, create_bqstorage_client=True
         )
         self.assertTrue(result)
 
-    def test__validate_bqstorage_returns_false_if_page_token_set(self):
+    def test__should_use_bqstorage_returns_false_if_page_token_set(self):
         iterator = self._make_one(
             page_token="abc", first_page_response=None  # not cached
         )
-        result = iterator._validate_bqstorage(
+        result = iterator._should_use_bqstorage(
             bqstorage_client=None, create_bqstorage_client=True
         )
         self.assertFalse(result)
 
-    def test__validate_bqstorage_returns_false_if_max_results_set(self):
+    def test__should_use_bqstorage_returns_false_if_max_results_set(self):
         iterator = self._make_one(
             max_results=10, first_page_response=None  # not cached
         )
-        result = iterator._validate_bqstorage(
+        result = iterator._should_use_bqstorage(
             bqstorage_client=None, create_bqstorage_client=True
         )
         self.assertFalse(result)
 
-    def test__validate_bqstorage_returns_false_if_missing_dependency(self):
+    def test__should_use_bqstorage_returns_false_if_missing_dependency(self):
         iterator = self._make_one(first_page_response=None)  # not cached
 
         def fail_bqstorage_import(name, globals, locals, fromlist, level):
@@ -2383,7 +2391,7 @@ class TestRowIterator(unittest.TestCase):
         no_bqstorage = maybe_fail_import(predicate=fail_bqstorage_import)
 
         with no_bqstorage:
-            result = iterator._validate_bqstorage(
+            result = iterator._should_use_bqstorage(
                 bqstorage_client=None, create_bqstorage_client=True
             )
 
@@ -2392,7 +2400,7 @@ class TestRowIterator(unittest.TestCase):
     @unittest.skipIf(
         bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
-    def test__validate_bqstorage_returns_false_w_warning_if_obsolete_version(self):
+    def test__should_use_bqstorage_returns_false_w_warning_if_obsolete_version(self):
         iterator = self._make_one(first_page_response=None)  # not cached
 
         patcher = mock.patch(
@@ -2400,7 +2408,7 @@ class TestRowIterator(unittest.TestCase):
             side_effect=exceptions.LegacyBigQueryStorageError("BQ Storage too old"),
         )
         with patcher, warnings.catch_warnings(record=True) as warned:
-            result = iterator._validate_bqstorage(
+            result = iterator._should_use_bqstorage(
                 bqstorage_client=None, create_bqstorage_client=True
             )
 

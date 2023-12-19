@@ -1566,6 +1566,7 @@ class RowIterator(HTTPIterator):
         job_id: Optional[str] = None,
         query_id: Optional[str] = None,
         project: Optional[str] = None,
+        num_dml_affected_rows: Optional[int] = None,
     ):
         super(RowIterator, self).__init__(
             client,
@@ -1592,6 +1593,7 @@ class RowIterator(HTTPIterator):
         self._job_id = job_id
         self._query_id = query_id
         self._project = project
+        self._num_dml_affected_rows = num_dml_affected_rows
 
     @property
     def _billing_project(self) -> Optional[str]:
@@ -1617,6 +1619,16 @@ class RowIterator(HTTPIterator):
         return self._location
 
     @property
+    def num_dml_affected_rows(self) -> Optional[int]:
+        """If this RowIterator is the result of a DML query, the number of
+        rows that were affected.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.num_dml_affected_rows
+        """
+        return self._num_dml_affected_rows
+
+    @property
     def project(self) -> Optional[str]:
         """GCP Project ID where these rows are read from."""
         return self._project
@@ -1635,7 +1647,10 @@ class RowIterator(HTTPIterator):
         This is useful to know, because we can avoid alternative download
         mechanisms.
         """
-        if self._first_page_response is None:
+        if (
+            not hasattr(self, "_first_page_response")
+            or self._first_page_response is None
+        ):
             return False
 
         total_cached_rows = len(self._first_page_response.get(self._items_key, []))
@@ -1655,7 +1670,7 @@ class RowIterator(HTTPIterator):
 
         return False
 
-    def _validate_bqstorage(self, bqstorage_client, create_bqstorage_client):
+    def _should_use_bqstorage(self, bqstorage_client, create_bqstorage_client):
         """Returns True if the BigQuery Storage API can be used.
 
         Returns:
@@ -1669,8 +1684,9 @@ class RowIterator(HTTPIterator):
         if self._table is None:
             return False
 
-        # The developer is manually paging through results if this is set.
-        if self.next_page_token is not None:
+        # The developer has already started paging through results if
+        # next_page_token is set.
+        if hasattr(self, "next_page_token") and self.next_page_token is not None:
             return False
 
         if self._is_almost_completely_cached():
@@ -1726,7 +1742,7 @@ class RowIterator(HTTPIterator):
 
     @property
     def total_rows(self):
-        """int: The total number of rows in the table."""
+        """int: The total number of rows in the table or query results."""
         return self._total_rows
 
     def _maybe_warn_max_results(
@@ -1752,7 +1768,7 @@ class RowIterator(HTTPIterator):
     def _to_page_iterable(
         self, bqstorage_download, tabledata_list_download, bqstorage_client=None
     ):
-        if not self._validate_bqstorage(bqstorage_client, False):
+        if not self._should_use_bqstorage(bqstorage_client, False):
             bqstorage_client = None
 
         result_pages = (
@@ -1882,7 +1898,7 @@ class RowIterator(HTTPIterator):
 
         self._maybe_warn_max_results(bqstorage_client)
 
-        if not self._validate_bqstorage(bqstorage_client, create_bqstorage_client):
+        if not self._should_use_bqstorage(bqstorage_client, create_bqstorage_client):
             create_bqstorage_client = False
             bqstorage_client = None
 
@@ -2223,7 +2239,7 @@ class RowIterator(HTTPIterator):
 
         self._maybe_warn_max_results(bqstorage_client)
 
-        if not self._validate_bqstorage(bqstorage_client, create_bqstorage_client):
+        if not self._should_use_bqstorage(bqstorage_client, create_bqstorage_client):
             create_bqstorage_client = False
             bqstorage_client = None
 

@@ -14,11 +14,12 @@
 
 """Cursor for the Google BigQuery DB-API."""
 
+from __future__ import annotations
+
 import collections
 from collections import abc as collections_abc
-import copy
-import logging
 import re
+from typing import Optional
 
 try:
     from google.cloud.bigquery_storage import ArrowSerializationOptions
@@ -33,8 +34,6 @@ from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
 import google.cloud.exceptions  # type: ignore
 
-
-_LOGGER = logging.getLogger(__name__)
 
 # Per PEP 249: A 7-item sequence containing information describing one result
 # column. The first two items (name and type_code) are mandatory, the other
@@ -76,18 +75,31 @@ class Cursor(object):
         # most appropriate size.
         self.arraysize = None
         self._query_data = None
-        self._query_job = None
+        self._query_rows = None
         self._closed = False
 
     @property
-    def query_job(self):
-        """google.cloud.bigquery.job.query.QueryJob: The query job created by
-        the last ``execute*()`` call.
+    def query_job(self) -> Optional[job.QueryJob]:
+        """google.cloud.bigquery.job.query.QueryJob | None: The query job
+        created by the last ``execute*()`` call, if a query job was created.
 
         .. note::
             If the last ``execute*()`` call was ``executemany()``, this is the
             last job created by ``executemany()``."""
-        return self._query_job
+        rows = self._query_rows
+
+        if rows is None:
+            return None
+
+        job_id = rows.job_id
+        project = rows.project
+        location = rows.location
+        client = self.connection._client
+
+        if job_id is None:
+            return None
+
+        return client.get_job(job_id, location=location, project=project)
 
     def close(self):
         """Mark the cursor as closed, preventing its further use."""
@@ -117,8 +129,8 @@ class Cursor(object):
             for field in schema
         )
 
-    def _set_rowcount(self, query_results):
-        """Set the rowcount from query results.
+    def _set_rowcount(self, rows):
+        """Set the rowcount from a RowIterator.
 
         Normally, this sets rowcount to the number of rows returned by the
         query, but if it was a DML statement, it sets rowcount to the number
@@ -129,10 +141,10 @@ class Cursor(object):
                 Results of a query.
         """
         total_rows = 0
-        num_dml_affected_rows = query_results.num_dml_affected_rows
+        num_dml_affected_rows = rows.num_dml_affected_rows
 
-        if query_results.total_rows is not None and query_results.total_rows > 0:
-            total_rows = query_results.total_rows
+        if rows.total_rows is not None and rows.total_rows > 0:
+            total_rows = rows.total_rows
         if num_dml_affected_rows is not None and num_dml_affected_rows > 0:
             total_rows = num_dml_affected_rows
         self.rowcount = total_rows
@@ -165,9 +177,10 @@ class Cursor(object):
             parameters (Union[Mapping[str, Any], Sequence[Any]]):
                 (Optional) dictionary or sequence of parameter values.
 
-            job_id (str):
-                (Optional) The job_id to use. If not set, a job ID
-                is generated at random.
+            job_id (str | None):
+                (Optional and discouraged) The job ID to use when creating
+                the query job. For best performance and reliability, manually
+                setting a job ID is discouraged.
 
             job_config (google.cloud.bigquery.job.QueryJobConfig):
                 (Optional) Extra configuration options for the query job.
@@ -181,7 +194,7 @@ class Cursor(object):
         self, formatted_operation, parameters, job_id, job_config, parameter_types
     ):
         self._query_data = None
-        self._query_job = None
+        self._query_results = None
         client = self.connection._client
 
         # The DB-API uses the pyformat formatting, since the way BigQuery does
@@ -190,33 +203,35 @@ class Cursor(object):
         # libraries.
         query_parameters = _helpers.to_query_parameters(parameters, parameter_types)
 
-        if client._default_query_job_config:
-            if job_config:
-                config = job_config._fill_from_default(client._default_query_job_config)
-            else:
-                config = copy.deepcopy(client._default_query_job_config)
-        else:
-            config = job_config or job.QueryJobConfig(use_legacy_sql=False)
-
+        config = job_config or job.QueryJobConfig()
         config.query_parameters = query_parameters
-        self._query_job = client.query(
-            formatted_operation, job_config=config, job_id=job_id
-        )
 
-        if self._query_job.dry_run:
-            self._set_description(schema=None)
-            self.rowcount = 0
-            return
-
-        # Wait for the query to finish.
+        # Start the query and wait for the query to finish.
         try:
-            self._query_job.result()
+            if job_id is not None:
+                rows = client.query(
+                    formatted_operation,
+                    job_config=job_config,
+                    job_id=job_id,
+                ).result(
+                    page_size=self.arraysize,
+                )
+            else:
+                rows = client.query_and_wait(
+                    formatted_operation,
+                    job_config=config,
+                    page_size=self.arraysize,
+                )
         except google.cloud.exceptions.GoogleCloudError as exc:
             raise exceptions.DatabaseError(exc)
 
-        query_results = self._query_job._query_results
-        self._set_rowcount(query_results)
-        self._set_description(query_results.schema)
+        self._query_rows = rows
+        self._set_description(rows.schema)
+
+        if config.dry_run:
+            self.rowcount = 0
+        else:
+            self._set_rowcount(rows)
 
     def executemany(self, operation, seq_of_parameters):
         """Prepare and execute a database operation multiple times.
@@ -250,25 +265,26 @@ class Cursor(object):
 
         Mutates self to indicate that iteration has started.
         """
-        if self._query_job is None:
+        if self._query_data is not None:
+            # Already started fetching the data.
+            return
+
+        rows = self._query_rows
+        if rows is None:
             raise exceptions.InterfaceError(
                 "No query results: execute() must be called before fetch."
             )
 
-        if self._query_job.dry_run:
-            self._query_data = iter([])
+        bqstorage_client = self.connection._bqstorage_client
+        if rows._should_use_bqstorage(
+            bqstorage_client,
+            create_bqstorage_client=False,
+        ):
+            rows_iterable = self._bqstorage_fetch(bqstorage_client)
+            self._query_data = _helpers.to_bq_table_rows(rows_iterable)
             return
 
-        if self._query_data is None:
-            bqstorage_client = self.connection._bqstorage_client
-
-            if bqstorage_client is not None:
-                rows_iterable = self._bqstorage_fetch(bqstorage_client)
-                self._query_data = _helpers.to_bq_table_rows(rows_iterable)
-                return
-
-            rows_iter = self._query_job.result(page_size=self.arraysize)
-            self._query_data = iter(rows_iter)
+        self._query_data = iter(rows)
 
     def _bqstorage_fetch(self, bqstorage_client):
         """Start fetching data with the BigQuery Storage API.
@@ -290,7 +306,7 @@ class Cursor(object):
         # bigquery_storage can indeed be imported here without errors.
         from google.cloud import bigquery_storage
 
-        table_reference = self._query_job.destination
+        table_reference = self._query_rows._table
 
         requested_session = bigquery_storage.types.ReadSession(
             table=table_reference.to_bqstorage(),
