@@ -11,9 +11,9 @@ jobs:
         python: ['3.9', '3.10', '3.11']
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Setup Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python }}
     - name: Install nox
@@ -26,9 +26,9 @@ jobs:
       run: |
         nox -s unit-${{ matrix.python }}
     - name: Upload coverage results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: coverage-artifacts
+        name: coverage-artifact-${{ matrix.python }}
         path: .coverage-${{ matrix.python }}
 
   cover:
@@ -37,9 +37,9 @@ jobs:
         - unit
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Setup Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "3.8"
     - name: Install coverage
@@ -47,11 +47,11 @@ jobs:
         python -m pip install --upgrade setuptools pip wheel
         python -m pip install coverage
     - name: Download coverage results
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
-        name: coverage-artifacts
         path: .coverage-results/
     - name: Report coverage results
       run: |
-        coverage combine .coverage-results/.coverage*
+        find .coverage-results -type f -name '*.zip' -exec unzip {} \;
+        coverage combine .coverage-results/**/.coverage*
         coverage report --show-missing --fail-under=35
