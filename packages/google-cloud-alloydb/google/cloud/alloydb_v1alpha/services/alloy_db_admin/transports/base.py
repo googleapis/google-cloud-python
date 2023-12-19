@@ -381,6 +381,20 @@ class AlloyDBAdminTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_databases: gapic_v1.method.wrap_method(
+                self.list_databases,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -674,6 +688,15 @@ class AlloyDBAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.DeleteUserRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_databases(
+        self,
+    ) -> Callable[
+        [service.ListDatabasesRequest],
+        Union[service.ListDatabasesResponse, Awaitable[service.ListDatabasesResponse]],
     ]:
         raise NotImplementedError()
 

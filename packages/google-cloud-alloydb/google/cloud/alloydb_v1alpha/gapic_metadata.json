@@ -115,6 +115,11 @@
                 "list_clusters"
               ]
             },
+            "ListDatabases": {
+              "methods": [
+                "list_databases"
+              ]
+            },
             "ListInstances": {
               "methods": [
                 "list_instances"
@@ -275,6 +280,11 @@
                 "list_clusters"
               ]
             },
+            "ListDatabases": {
+              "methods": [
+                "list_databases"
+              ]
+            },
             "ListInstances": {
               "methods": [
                 "list_instances"
@@ -433,6 +443,11 @@
             "ListClusters": {
               "methods": [
                 "list_clusters"
+              ]
+            },
+            "ListDatabases": {
+              "methods": [
+                "list_databases"
               ]
             },
             "ListInstances": {

@@ -1165,6 +1165,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             network="network_value",
             etag="etag_value",
             reconciling=True,
+            satisfies_pzi=True,
             satisfies_pzs=True,
         )
         response = client.get_cluster(request)
@@ -1185,6 +1186,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.network == "network_value"
     assert response.etag == "etag_value"
     assert response.reconciling is True
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
 
 
@@ -1231,6 +1233,7 @@ async def test_get_cluster_async(
                 network="network_value",
                 etag="etag_value",
                 reconciling=True,
+                satisfies_pzi=True,
                 satisfies_pzs=True,
             )
         )
@@ -1252,6 +1255,7 @@ async def test_get_cluster_async(
     assert response.network == "network_value"
     assert response.etag == "etag_value"
     assert response.reconciling is True
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
 
 
@@ -3230,6 +3234,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             ip_address="ip_address_value",
             reconciling=True,
             etag="etag_value",
+            satisfies_pzi=True,
             satisfies_pzs=True,
         )
         response = client.get_instance(request)
@@ -3251,6 +3256,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.ip_address == "ip_address_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
 
 
@@ -3298,6 +3304,7 @@ async def test_get_instance_async(
                 ip_address="ip_address_value",
                 reconciling=True,
                 etag="etag_value",
+                satisfies_pzi=True,
                 satisfies_pzs=True,
             )
         )
@@ -3320,6 +3327,7 @@ async def test_get_instance_async(
     assert response.ip_address == "ip_address_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
 
 
@@ -5749,6 +5757,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
             reconciling=True,
             etag="etag_value",
             size_bytes=1089,
+            satisfies_pzi=True,
             satisfies_pzs=True,
             database_version=resources.DatabaseVersion.POSTGRES_13,
         )
@@ -5772,6 +5781,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.size_bytes == 1089
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
     assert response.database_version == resources.DatabaseVersion.POSTGRES_13
 
@@ -5821,6 +5831,7 @@ async def test_get_backup_async(
                 reconciling=True,
                 etag="etag_value",
                 size_bytes=1089,
+                satisfies_pzi=True,
                 satisfies_pzs=True,
                 database_version=resources.DatabaseVersion.POSTGRES_13,
             )
@@ -5845,6 +5856,7 @@ async def test_get_backup_async(
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.size_bytes == 1089
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
     assert response.database_version == resources.DatabaseVersion.POSTGRES_13
 
@@ -7426,6 +7438,7 @@ def test_get_connection_info(request_type, transport: str = "grpc"):
         call.return_value = resources.ConnectionInfo(
             name="name_value",
             ip_address="ip_address_value",
+            public_ip_address="public_ip_address_value",
             pem_certificate_chain=["pem_certificate_chain_value"],
             instance_uid="instance_uid_value",
         )
@@ -7440,6 +7453,7 @@ def test_get_connection_info(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.ConnectionInfo)
     assert response.name == "name_value"
     assert response.ip_address == "ip_address_value"
+    assert response.public_ip_address == "public_ip_address_value"
     assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
     assert response.instance_uid == "instance_uid_value"
 
@@ -7484,6 +7498,7 @@ async def test_get_connection_info_async(
             resources.ConnectionInfo(
                 name="name_value",
                 ip_address="ip_address_value",
+                public_ip_address="public_ip_address_value",
                 pem_certificate_chain=["pem_certificate_chain_value"],
                 instance_uid="instance_uid_value",
             )
@@ -7499,6 +7514,7 @@ async def test_get_connection_info_async(
     assert isinstance(response, resources.ConnectionInfo)
     assert response.name == "name_value"
     assert response.ip_address == "ip_address_value"
+    assert response.public_ip_address == "public_ip_address_value"
     assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
     assert response.instance_uid == "instance_uid_value"
 
@@ -9058,6 +9074,428 @@ async def test_delete_user_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.ListDatabasesRequest,
+        dict,
+    ],
+)
+def test_list_databases(request_type, transport: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListDatabasesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_databases(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListDatabasesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatabasesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_databases_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        client.list_databases()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListDatabasesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_databases_async(
+    transport: str = "grpc_asyncio", request_type=service.ListDatabasesRequest
+):
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListDatabasesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_databases(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListDatabasesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatabasesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_databases_async_from_dict():
+    await test_list_databases_async(request_type=dict)
+
+
+def test_list_databases_field_headers():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListDatabasesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        call.return_value = service.ListDatabasesResponse()
+        client.list_databases(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_databases_field_headers_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListDatabasesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListDatabasesResponse()
+        )
+        await client.list_databases(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_databases_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListDatabasesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_databases(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_databases_flattened_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_databases(
+            service.ListDatabasesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_databases_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListDatabasesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListDatabasesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_databases(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_databases_flattened_error_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_databases(
+            service.ListDatabasesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_databases_pager(transport_name: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                    resources.Database(),
+                    resources.Database(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListDatabasesResponse(
+                databases=[],
+                next_page_token="def",
+            ),
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                    resources.Database(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_databases(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.Database) for i in results)
+
+
+def test_list_databases_pages(transport_name: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                    resources.Database(),
+                    resources.Database(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListDatabasesResponse(
+                databases=[],
+                next_page_token="def",
+            ),
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                    resources.Database(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_databases(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_databases_async_pager():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_databases), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                    resources.Database(),
+                    resources.Database(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListDatabasesResponse(
+                databases=[],
+                next_page_token="def",
+            ),
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                    resources.Database(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_databases(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.Database) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_databases_async_pages():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_databases), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                    resources.Database(),
+                    resources.Database(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListDatabasesResponse(
+                databases=[],
+                next_page_token="def",
+            ),
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                    resources.Database(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_databases(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.ListClustersRequest,
         dict,
     ],
@@ -9428,6 +9866,7 @@ def test_get_cluster_rest(request_type):
             network="network_value",
             etag="etag_value",
             reconciling=True,
+            satisfies_pzi=True,
             satisfies_pzs=True,
         )
 
@@ -9453,6 +9892,7 @@ def test_get_cluster_rest(request_type):
     assert response.network == "network_value"
     assert response.etag == "etag_value"
     assert response.reconciling is True
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
 
 
@@ -9768,7 +10208,9 @@ def test_create_cluster_rest(request_type):
                 "secondary_cluster_names_value2",
             ]
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
+        "psc_config": {"psc_enabled": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10213,7 +10655,9 @@ def test_update_cluster_rest(request_type):
                 "secondary_cluster_names_value2",
             ]
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
+        "psc_config": {"psc_enabled": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11396,7 +11840,9 @@ def test_create_secondary_cluster_rest(request_type):
                 "secondary_cluster_names_value2",
             ]
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
+        "psc_config": {"psc_enabled": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -12138,6 +12584,7 @@ def test_get_instance_rest(request_type):
             ip_address="ip_address_value",
             reconciling=True,
             etag="etag_value",
+            satisfies_pzi=True,
             satisfies_pzs=True,
         )
 
@@ -12164,6 +12611,7 @@ def test_get_instance_rest(request_type):
     assert response.ip_address == "ip_address_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
 
 
@@ -12450,7 +12898,37 @@ def test_create_instance_rest(request_type):
             "require_connectors": True,
             "ssl_config": {"ssl_mode": 1, "ca_source": 1},
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
+        "psc_instance_config": {
+            "service_attachment_link": "service_attachment_link_value",
+            "allowed_consumer_projects": [
+                "allowed_consumer_projects_value1",
+                "allowed_consumer_projects_value2",
+            ],
+            "allowed_consumer_networks": [
+                "allowed_consumer_networks_value1",
+                "allowed_consumer_networks_value2",
+            ],
+            "psc_interface_configs": [
+                {
+                    "consumer_endpoint_ips": [
+                        "consumer_endpoint_ips_value1",
+                        "consumer_endpoint_ips_value2",
+                    ],
+                    "network_attachment": "network_attachment_value",
+                }
+            ],
+            "outgoing_service_attachment_links": [
+                "outgoing_service_attachment_links_value1",
+                "outgoing_service_attachment_links_value2",
+            ],
+            "psc_enabled": True,
+        },
+        "network_config": {
+            "authorized_external_networks": [{"cidr_range": "cidr_range_value"}],
+            "enable_public_ip": True,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -12860,7 +13338,37 @@ def test_create_secondary_instance_rest(request_type):
             "require_connectors": True,
             "ssl_config": {"ssl_mode": 1, "ca_source": 1},
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
+        "psc_instance_config": {
+            "service_attachment_link": "service_attachment_link_value",
+            "allowed_consumer_projects": [
+                "allowed_consumer_projects_value1",
+                "allowed_consumer_projects_value2",
+            ],
+            "allowed_consumer_networks": [
+                "allowed_consumer_networks_value1",
+                "allowed_consumer_networks_value2",
+            ],
+            "psc_interface_configs": [
+                {
+                    "consumer_endpoint_ips": [
+                        "consumer_endpoint_ips_value1",
+                        "consumer_endpoint_ips_value2",
+                    ],
+                    "network_attachment": "network_attachment_value",
+                }
+            ],
+            "outgoing_service_attachment_links": [
+                "outgoing_service_attachment_links_value1",
+                "outgoing_service_attachment_links_value2",
+            ],
+            "psc_enabled": True,
+        },
+        "network_config": {
+            "authorized_external_networks": [{"cidr_range": "cidr_range_value"}],
+            "enable_public_ip": True,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -13277,7 +13785,39 @@ def test_batch_create_instances_rest(request_type):
                         "require_connectors": True,
                         "ssl_config": {"ssl_mode": 1, "ca_source": 1},
                     },
+                    "satisfies_pzi": True,
                     "satisfies_pzs": True,
+                    "psc_instance_config": {
+                        "service_attachment_link": "service_attachment_link_value",
+                        "allowed_consumer_projects": [
+                            "allowed_consumer_projects_value1",
+                            "allowed_consumer_projects_value2",
+                        ],
+                        "allowed_consumer_networks": [
+                            "allowed_consumer_networks_value1",
+                            "allowed_consumer_networks_value2",
+                        ],
+                        "psc_interface_configs": [
+                            {
+                                "consumer_endpoint_ips": [
+                                    "consumer_endpoint_ips_value1",
+                                    "consumer_endpoint_ips_value2",
+                                ],
+                                "network_attachment": "network_attachment_value",
+                            }
+                        ],
+                        "outgoing_service_attachment_links": [
+                            "outgoing_service_attachment_links_value1",
+                            "outgoing_service_attachment_links_value2",
+                        ],
+                        "psc_enabled": True,
+                    },
+                    "network_config": {
+                        "authorized_external_networks": [
+                            {"cidr_range": "cidr_range_value"}
+                        ],
+                        "enable_public_ip": True,
+                    },
                 },
                 "request_id": "request_id_value",
                 "validate_only": True,
@@ -13611,7 +14151,37 @@ def test_update_instance_rest(request_type):
             "require_connectors": True,
             "ssl_config": {"ssl_mode": 1, "ca_source": 1},
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
+        "psc_instance_config": {
+            "service_attachment_link": "service_attachment_link_value",
+            "allowed_consumer_projects": [
+                "allowed_consumer_projects_value1",
+                "allowed_consumer_projects_value2",
+            ],
+            "allowed_consumer_networks": [
+                "allowed_consumer_networks_value1",
+                "allowed_consumer_networks_value2",
+            ],
+            "psc_interface_configs": [
+                {
+                    "consumer_endpoint_ips": [
+                        "consumer_endpoint_ips_value1",
+                        "consumer_endpoint_ips_value2",
+                    ],
+                    "network_attachment": "network_attachment_value",
+                }
+            ],
+            "outgoing_service_attachment_links": [
+                "outgoing_service_attachment_links_value1",
+                "outgoing_service_attachment_links_value2",
+            ],
+            "psc_enabled": True,
+        },
+        "network_config": {
+            "authorized_external_networks": [{"cidr_range": "cidr_range_value"}],
+            "enable_public_ip": True,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15424,6 +15994,7 @@ def test_get_backup_rest(request_type):
             reconciling=True,
             etag="etag_value",
             size_bytes=1089,
+            satisfies_pzi=True,
             satisfies_pzs=True,
             database_version=resources.DatabaseVersion.POSTGRES_13,
         )
@@ -15452,6 +16023,7 @@ def test_get_backup_rest(request_type):
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.size_bytes == 1089
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
     assert response.database_version == resources.DatabaseVersion.POSTGRES_13
 
@@ -15720,6 +16292,7 @@ def test_create_backup_rest(request_type):
         "size_bytes": 1089,
         "expiry_time": {},
         "expiry_quantity": {"retention_count": 1632, "total_retention_count": 2275},
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "database_version": 1,
     }
@@ -16116,6 +16689,7 @@ def test_update_backup_rest(request_type):
         "size_bytes": 1089,
         "expiry_time": {},
         "expiry_quantity": {"retention_count": 1632, "total_retention_count": 2275},
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "database_version": 1,
     }
@@ -17375,6 +17949,7 @@ def test_get_connection_info_rest(request_type):
         return_value = resources.ConnectionInfo(
             name="name_value",
             ip_address="ip_address_value",
+            public_ip_address="public_ip_address_value",
             pem_certificate_chain=["pem_certificate_chain_value"],
             instance_uid="instance_uid_value",
         )
@@ -17394,6 +17969,7 @@ def test_get_connection_info_rest(request_type):
     assert isinstance(response, resources.ConnectionInfo)
     assert response.name == "name_value"
     assert response.ip_address == "ip_address_value"
+    assert response.public_ip_address == "public_ip_address_value"
     assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
     assert response.instance_uid == "instance_uid_value"
 
@@ -19289,6 +19865,349 @@ def test_delete_user_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListDatabasesRequest,
+        dict,
+    ],
+)
+def test_list_databases_rest(request_type):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListDatabasesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = service.ListDatabasesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_databases(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatabasesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_databases_rest_required_fields(request_type=service.ListDatabasesRequest):
+    transport_class = transports.AlloyDBAdminRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_databases._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_databases._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListDatabasesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = service.ListDatabasesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_databases(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_databases_rest_unset_required_fields():
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_databases._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_databases_rest_interceptors(null_interceptor):
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AlloyDBAdminRestInterceptor(),
+    )
+    client = AlloyDBAdminClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_list_databases"
+    ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "pre_list_databases"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListDatabasesRequest.pb(service.ListDatabasesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListDatabasesResponse.to_json(
+            service.ListDatabasesResponse()
+        )
+
+        request = service.ListDatabasesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListDatabasesResponse()
+
+        client.list_databases(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_databases_rest_bad_request(
+    transport: str = "rest", request_type=service.ListDatabasesRequest
+):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_databases(request)
+
+
+def test_list_databases_rest_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListDatabasesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/clusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = service.ListDatabasesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_databases(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*/clusters/*}/databases"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_databases_rest_flattened_error(transport: str = "rest"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_databases(
+            service.ListDatabasesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_databases_rest_pager(transport: str = "rest"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                    resources.Database(),
+                    resources.Database(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListDatabasesResponse(
+                databases=[],
+                next_page_token="def",
+            ),
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListDatabasesResponse(
+                databases=[
+                    resources.Database(),
+                    resources.Database(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(service.ListDatabasesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/clusters/sample3"
+        }
+
+        pager = client.list_databases(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.Database) for i in results)
+
+        pages = list(client.list_databases(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AlloyDBAdminGrpcTransport(
@@ -19459,6 +20378,7 @@ def test_alloy_db_admin_base_transport():
         "create_user",
         "update_user",
         "delete_user",
+        "list_databases",
         "get_location",
         "list_locations",
         "get_operation",
@@ -19835,6 +20755,9 @@ def test_alloy_db_admin_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_user._session
     session2 = client2.transport.delete_user._session
     assert session1 != session2
+    session1 = client1.transport.list_databases._session
+    session2 = client2.transport.list_databases._session
+    assert session1 != session2
 
 
 def test_alloy_db_admin_grpc_transport_channel():
@@ -20106,11 +21029,40 @@ def test_parse_crypto_key_version_path():
     assert expected == actual
 
 
-def test_instance_path():
+def test_database_path():
     project = "cuttlefish"
     location = "mussel"
     cluster = "winkle"
-    instance = "nautilus"
+    database = "nautilus"
+    expected = "projects/{project}/locations/{location}/clusters/{cluster}/databases/{database}".format(
+        project=project,
+        location=location,
+        cluster=cluster,
+        database=database,
+    )
+    actual = AlloyDBAdminClient.database_path(project, location, cluster, database)
+    assert expected == actual
+
+
+def test_parse_database_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "cluster": "squid",
+        "database": "clam",
+    }
+    path = AlloyDBAdminClient.database_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AlloyDBAdminClient.parse_database_path(path)
+    assert expected == actual
+
+
+def test_instance_path():
+    project = "whelk"
+    location = "octopus"
+    cluster = "oyster"
+    instance = "nudibranch"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/instances/{instance}".format(
         project=project,
         location=location,
@@ -20123,10 +21075,10 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "cluster": "squid",
-        "instance": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "cluster": "winkle",
+        "instance": "nautilus",
     }
     path = AlloyDBAdminClient.instance_path(**expected)
 
@@ -20136,8 +21088,8 @@ def test_parse_instance_path():
 
 
 def test_network_path():
-    project = "whelk"
-    network = "octopus"
+    project = "scallop"
+    network = "abalone"
     expected = "projects/{project}/global/networks/{network}".format(
         project=project,
         network=network,
@@ -20148,8 +21100,8 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "oyster",
-        "network": "nudibranch",
+        "project": "squid",
+        "network": "clam",
     }
     path = AlloyDBAdminClient.network_path(**expected)
 
@@ -20159,9 +21111,9 @@ def test_parse_network_path():
 
 
 def test_supported_database_flag_path():
-    project = "cuttlefish"
-    location = "mussel"
-    flag = "winkle"
+    project = "whelk"
+    location = "octopus"
+    flag = "oyster"
     expected = "projects/{project}/locations/{location}/flags/{flag}".format(
         project=project,
         location=location,
@@ -20173,9 +21125,9 @@ def test_supported_database_flag_path():
 
 def test_parse_supported_database_flag_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "flag": "abalone",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "flag": "mussel",
     }
     path = AlloyDBAdminClient.supported_database_flag_path(**expected)
 
@@ -20185,10 +21137,10 @@ def test_parse_supported_database_flag_path():
 
 
 def test_user_path():
-    project = "squid"
-    location = "clam"
-    cluster = "whelk"
-    user = "octopus"
+    project = "winkle"
+    location = "nautilus"
+    cluster = "scallop"
+    user = "abalone"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/users/{user}".format(
         project=project,
         location=location,
@@ -20201,10 +21153,10 @@ def test_user_path():
 
 def test_parse_user_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "cluster": "cuttlefish",
-        "user": "mussel",
+        "project": "squid",
+        "location": "clam",
+        "cluster": "whelk",
+        "user": "octopus",
     }
     path = AlloyDBAdminClient.user_path(**expected)
 
@@ -20214,7 +21166,7 @@ def test_parse_user_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -20224,7 +21176,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "nudibranch",
     }
     path = AlloyDBAdminClient.common_billing_account_path(**expected)
 
@@ -20234,7 +21186,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -20244,7 +21196,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "mussel",
     }
     path = AlloyDBAdminClient.common_folder_path(**expected)
 
@@ -20254,7 +21206,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -20264,7 +21216,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nautilus",
     }
     path = AlloyDBAdminClient.common_organization_path(**expected)
 
@@ -20274,7 +21226,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -20284,7 +21236,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "abalone",
     }
     path = AlloyDBAdminClient.common_project_path(**expected)
 
@@ -20294,8 +21246,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -20306,8 +21258,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = AlloyDBAdminClient.common_location_path(**expected)
 
