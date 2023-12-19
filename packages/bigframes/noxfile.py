@@ -535,7 +535,7 @@ def prerelease(session: nox.sessions.Session, tests_path):
     session.install(
         "--upgrade",
         # "--pre",
-        "ibis-framework>=7.1.0,<8.0.0dev",
+        "ibis-framework>=7.1.0,<7.2.0dev",
     )
     already_installed.add("ibis-framework")
 
