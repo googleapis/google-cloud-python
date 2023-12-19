@@ -523,6 +523,20 @@ class AsTypeOp(UnaryOp):
         return bigframes.dtypes.cast_ibis_value(x, self.to_type)
 
 
+class MapOp(UnaryOp):
+    def __init__(
+        self,
+        mappings: typing.Tuple[typing.Tuple[typing.Hashable, typing.Hashable], ...],
+    ):
+        self._mappings = mappings
+
+    def _as_ibis(self, x: ibis_types.Value):
+        case = ibis.case()
+        for mapping in self._mappings:
+            case = case.when(x == mapping[0], mapping[1])
+        return case.else_(x).end()
+
+
 class FindOp(UnaryOp):
     def __init__(self, sub, start, end):
         self._sub = sub

@@ -14,6 +14,7 @@
 
 """Mappings for Pandas dtypes supported by BigQuery DataFrames package"""
 
+import datetime
 import textwrap
 import typing
 from typing import Any, Dict, Iterable, Literal, Tuple, Union
@@ -437,3 +438,50 @@ def to_pandas_dtypes_overrides(schema: Iterable[bigquery.SchemaField]) -> Dict:
                 gcb3p_pandas_helpers.bq_to_arrow_data_type(field)
             )
     return dtypes
+
+
+def is_dtype(scalar: typing.Any, dtype: Dtype) -> bool:
+    """Captures whether a scalar can be losslessly represented by a dtype."""
+    if scalar is None:
+        return True
+    if pd.api.types.is_bool_dtype(dtype):
+        return pd.api.types.is_bool(scalar)
+    if pd.api.types.is_float_dtype(dtype):
+        return pd.api.types.is_float(scalar)
+    if pd.api.types.is_integer_dtype(dtype):
+        return pd.api.types.is_integer(scalar)
+    if isinstance(dtype, pd.StringDtype):
+        return isinstance(scalar, str)
+    if isinstance(dtype, pd.ArrowDtype):
+        pa_type = dtype.pyarrow_dtype
+        return is_patype(scalar, pa_type)
+    return False
+
+
+def is_patype(scalar: typing.Any, pa_type: pa.DataType) -> bool:
+    """Determine whether a scalar's type matches a given pyarrow type."""
+    if pa_type == pa.time64("us"):
+        return isinstance(scalar, datetime.time)
+    if pa_type == pa.timestamp("us"):
+        if isinstance(scalar, datetime.datetime):
+            return not scalar.tzinfo
+        if isinstance(scalar, pd.Timestamp):
+            return not scalar.tzinfo
+    if pa_type == pa.timestamp("us", tz="UTC"):
+        if isinstance(scalar, datetime.datetime):
+            return scalar.tzinfo == datetime.timezone.utc
+        if isinstance(scalar, pd.Timestamp):
+            return scalar.tzinfo == datetime.timezone.utc
+    if pa_type == pa.date32():
+        return isinstance(scalar, datetime.date)
+    return False
+
+
+def is_comparable(scalar: typing.Any, dtype: Dtype) -> bool:
+    """Whether scalar can be compare to items of dtype (though maybe requiring coercion)"""
+    if is_dtype(scalar, dtype):
+        return True
+    elif pd.api.types.is_numeric_dtype(dtype):
+        return pd.api.types.is_number(scalar)
+    else:
+        return False

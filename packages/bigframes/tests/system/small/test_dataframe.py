@@ -839,6 +839,50 @@ def test_df_fillna(scalars_dfs):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_df_replace_scalar_scalar(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df.replace("Hello, World!", "Howdy, Planet!").to_pandas()
+    pd_result = scalars_pandas_df.replace("Hello, World!", "Howdy, Planet!")
+
+    pd.testing.assert_frame_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_df_replace_regex_scalar(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df.replace("^H.l", "Howdy, Planet!", regex=True).to_pandas()
+    pd_result = scalars_pandas_df.replace("^H.l", "Howdy, Planet!", regex=True)
+
+    pd.testing.assert_frame_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_df_replace_list_scalar(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df.replace(["Hello, World!", "T"], "Howdy, Planet!").to_pandas()
+    pd_result = scalars_pandas_df.replace(["Hello, World!", "T"], "Howdy, Planet!")
+
+    pd.testing.assert_frame_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_df_replace_value_dict(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df.replace(1, {"int64_col": 100, "int64_too": 200}).to_pandas()
+    pd_result = scalars_pandas_df.replace(1, {"int64_col": 100, "int64_too": 200})
+
+    pd.testing.assert_frame_equal(
+        pd_result,
+        bf_result,
+    )
+
+
 def test_df_ffill(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = scalars_df[["int64_col", "float64_col"]].ffill(limit=1).to_pandas()

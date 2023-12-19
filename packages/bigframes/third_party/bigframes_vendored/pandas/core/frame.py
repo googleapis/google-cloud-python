@@ -4356,6 +4356,94 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def replace(
+        self,
+        to_replace,
+        value=None,
+        *,
+        regex=False,
+    ):
+        """
+        Replace values given in `to_replace` with `value`.
+
+        Values of the Series/DataFrame are replaced with other values dynamically.
+        This differs from updating with ``.loc`` or ``.iloc``, which require
+        you to specify a location to update with some value.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({
+            ...     'int_col': [1, 1, 2, 3],
+            ...     'string_col': ["a", "b", "c", "b"],
+            ...     })
+
+        Using scalar `to_replace` and `value`:
+
+            >>> df.replace("b", "e")
+               int_col string_col
+            0        1          a
+            1        1          e
+            2        2          c
+            3        3          e
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+        Using dictionary:
+
+            >>> df.replace({"a": "e", 2: 5})
+               int_col string_col
+            0        1          e
+            1        1          b
+            2        5          c
+            3        3          b
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+        Using regex:
+
+            >>> df.replace("[ab]", "e", regex=True)
+               int_col string_col
+            0        1          e
+            1        1          e
+            2        2          c
+            3        3          e
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+
+        Args:
+            to_replace (str, regex, list, int, float or None):
+                How to find the values that will be replaced.
+                numeric: numeric values equal to `to_replace` will be replaced with `value`
+                str: string exactly matching `to_replace` will be replaced with `value`
+                regex: regexs matching `to_replace` will be replaced with`value`
+                list of str, regex, or numeric:
+                First, if `to_replace` and `value` are both lists, they **must** be the same length.
+                Second, if ``regex=True`` then all of the strings in **both**
+                lists will be interpreted as regexs otherwise they will match
+                directly. This doesn't matter much for `value` since there
+                are only a few possible substitution regexes you can use.
+                str, regex and numeric rules apply as above.
+
+            value (scalar, default None):
+                Value to replace any values matching `to_replace` with.
+                For a DataFrame a dict of values can be used to specify which
+                value to use for each column (columns not in the dict will not be
+                filled). Regular expressions, strings and lists or dicts of such
+                objects are also allowed.
+            regex (bool, default False):
+                Whether to interpret `to_replace` and/or `value` as regular
+                expressions. If this is ``True`` then `to_replace` *must* be a
+                string.
+
+        Returns:
+            Series/DataFrame: Object after replacement.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     @property
     def iloc(self):
         """Purely integer-location based indexing for selection by position."""
