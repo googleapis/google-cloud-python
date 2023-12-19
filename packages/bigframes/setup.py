@@ -82,7 +82,7 @@ version_id = version["__version__"]
 # benchmarks, etc.
 packages = [
     package
-    for package in setuptools.PEP420PackageFinder.find()
+    for package in setuptools.find_namespace_packages()
     if package.startswith("bigframes") or package.startswith("third_party")
 ]
 
