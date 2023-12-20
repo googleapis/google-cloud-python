@@ -82,10 +82,46 @@ class NDFrame(indexing.IndexingMixin):
         """
         Cast a pandas object to a specified dtype ``dtype``.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Create a DataFrame:
+
+            >>> d = {'col1': [1, 2], 'col2': [3, 4]}
+            >>> df = bpd.DataFrame(data=d)
+            >>> df.dtypes
+            col1    Int64
+            col2    Int64
+            dtype: object
+
+        Cast all columns to ``Float64``:
+
+            >>> df.astype('Float64').dtypes
+            col1    Float64
+            col2    Float64
+            dtype: object
+
+        Create a series of type ``Int64``:
+
+            >>> ser = bpd.Series([1, 2], dtype='Int64')
+            >>> ser
+            0    1
+            1    2
+            dtype: Int64
+
+        Convert to ``Float64`` type:
+
+            >>> ser.astype('Float64')
+            0    1.0
+            1    2.0
+            dtype: Float64
+
         Args:
             dtype (str or pandas.ExtensionDtype):
                 A dtype supported by BigQuery DataFrame include 'boolean','Float64','Int64',
-                'string', 'tring[pyarrow]','timestamp[us, tz=UTC][pyarrow]',
+                'string', 'string[pyarrow]','timestamp[us, tz=UTC][pyarrow]',
                 'timestamp[us][pyarrow]','date32[day][pyarrow]','time64[us][pyarrow]'
                 A pandas.ExtensionDtype include pandas.BooleanDtype(), pandas.Float64Dtype(),
                 pandas.Int64Dtype(), pandas.StringDtype(storage="pyarrow"),

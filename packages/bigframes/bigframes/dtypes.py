@@ -288,7 +288,7 @@ def bigframes_dtype_to_ibis_dtype(
                 f"""
                 Unexpected data type {bigframes_dtype}. The following
                         str dtypes are supppted: 'boolean','Float64','Int64', 'string',
-                        'tring[pyarrow]','timestamp[us, tz=UTC][pyarrow]',
+                        'string[pyarrow]','timestamp[us, tz=UTC][pyarrow]',
                         'timestamp[us][pyarrow]','date32[day][pyarrow]',
                         'time64[us][pyarrow]'. The following pandas.ExtensionDtype are
                         supported: pandas.BooleanDtype(), pandas.Float64Dtype(),

@@ -890,6 +890,95 @@ class Series(NDFrame):  # type: ignore[misc]
         used to group large amounts of data and compute operations on these
         groups.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        You can group by a named index level.
+
+            >>> s = bpd.Series([380, 370., 24., 26.],
+            ...                index=["Falcon", "Falcon", "Parrot", "Parrot"],
+            ...                name="Max Speed")
+            >>> s.index.name="Animal"
+            >>> s
+            Animal
+            Falcon    380.0
+            Falcon    370.0
+            Parrot     24.0
+            Parrot     26.0
+            Name: Max Speed, dtype: Float64
+            >>> s.groupby("Animal").mean()
+            Animal
+            Falcon    375.0
+            Parrot     25.0
+            Name: Max Speed, dtype: Float64
+
+        You can also group by more than one index levels.
+
+            >>> import pandas as pd
+            >>> s = bpd.Series([380, 370., 24., 26.],
+            ...                index=pd.MultiIndex.from_tuples(
+            ...                    [("Falcon", "Clear"),
+            ...                     ("Falcon", "Cloudy"),
+            ...                     ("Parrot", "Clear"),
+            ...                     ("Parrot", "Clear")],
+            ...                    names=["Animal", "Sky"]),
+            ...                name="Max Speed")
+            >>> s
+            Animal    Sky
+            Falcon  Clear     380.0
+                    Cloudy    370.0
+            Parrot  Clear      24.0
+                    Clear      26.0
+            Name: Max Speed, dtype: Float64
+
+            >>> s.groupby("Animal").mean()
+            Animal
+            Falcon    375.0
+            Parrot     25.0
+            Name: Max Speed, dtype: Float64
+
+            >>> s.groupby("Sky").mean()
+            Sky
+            Clear     143.333333
+            Cloudy         370.0
+            Name: Max Speed, dtype: Float64
+
+            >>> s.groupby(["Animal", "Sky"]).mean()
+            Animal  Sky
+            Falcon  Clear     380.0
+                    Cloudy    370.0
+            Parrot  Clear      25.0
+            Name: Max Speed, dtype: Float64
+
+        You can also group by values in a Series provided the index matches with
+        the original series.
+
+            >>> df = bpd.DataFrame({'Animal': ['Falcon', 'Falcon', 'Parrot', 'Parrot'],
+            ...                     'Max Speed': [380., 370., 24., 26.],
+            ...                     'Age': [10., 20., 4., 6.]})
+            >>> df
+            Animal  Max Speed   Age
+            0  Falcon      380.0  10.0
+            1  Falcon      370.0  20.0
+            2  Parrot       24.0   4.0
+            3  Parrot       26.0   6.0
+            <BLANKLINE>
+            [4 rows x 3 columns]
+
+            >>> df['Max Speed'].groupby(df['Animal']).mean()
+            Animal
+            Falcon    375.0
+            Parrot     25.0
+            Name: Max Speed, dtype: Float64
+
+            >>> df['Age'].groupby(df['Animal']).max()
+            Animal
+            Falcon    20.0
+            Parrot     6.0
+            Name: Age, dtype: Float64
+
         Args:
             by (mapping, function, label, pd.Grouper or list of such, default None):
                 Used to determine the groups for the groupby.
@@ -1661,6 +1750,31 @@ class Series(NDFrame):  # type: ignore[misc]
         If you want the index of the maximum, use ``idxmax``. This is the equivalent
         of the ``numpy.ndarray`` method ``argmax``.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Calculating the max of a Series:
+
+            >>> s = bpd.Series([1, 3])
+            >>> s
+            0    1
+            1    3
+            dtype: Int64
+            >>> s.max()
+            3
+
+        Calculating the max of a Series containing ``NA`` values:
+
+            >>> s = bpd.Series([1, 3, bpd.NA])
+            >>> s
+            0     1.0
+            1     3.0
+            2    <NA>
+            dtype: Float64
+            >>> s.max()
+            3.0
 
         Returns:
             scalar: Scalar.
@@ -1675,6 +1789,32 @@ class Series(NDFrame):  # type: ignore[misc]
 
         If you want the index of the minimum, use ``idxmin``. This is the equivalent
         of the ``numpy.ndarray`` method ``argmin``.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Calculating the min of a Series:
+
+            >>> s = bpd.Series([1, 3])
+            >>> s
+            0    1
+            1    3
+            dtype: Int64
+            >>> s.min()
+            1
+
+        Calculating the min of a Series containing ``NA`` values:
+
+            >>> s = bpd.Series([1, 3, bpd.NA])
+            >>> s
+            0     1.0
+            1     3.0
+            2    <NA>
+            dtype: Float64
+            >>> s.min()
+            1.0
 
         Returns:
             scalar: Scalar.
@@ -1714,6 +1854,32 @@ class Series(NDFrame):  # type: ignore[misc]
 
         This is equivalent to the method ``numpy.sum``.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Calculating the sum of a Series:
+
+            >>> s = bpd.Series([1, 3])
+            >>> s
+            0    1
+            1    3
+            dtype: Int64
+            >>> s.sum()
+            4
+
+        Calculating the sum of a Series containing ``NA`` values:
+
+            >>> s = bpd.Series([1, 3, bpd.NA])
+            >>> s
+            0     1.0
+            1     3.0
+            2    <NA>
+            dtype: Float64
+            >>> s.sum()
+            4.0
+
         Returns:
             scalar: Scalar.
         """
@@ -1721,6 +1887,32 @@ class Series(NDFrame):  # type: ignore[misc]
 
     def mean(self):
         """Return the mean of the values over the requested axis.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Calculating the mean of a Series:
+
+            >>> s = bpd.Series([1, 3])
+            >>> s
+            0    1
+            1    3
+            dtype: Int64
+            >>> s.mean()
+            2.0
+
+        Calculating the mean of a Series containing ``NA`` values:
+
+            >>> s = bpd.Series([1, 3, bpd.NA])
+            >>> s
+            0     1.0
+            1     3.0
+            2    <NA>
+            dtype: Float64
+            >>> s.mean()
+            2.0
 
         Returns:
             scalar: Scalar.
