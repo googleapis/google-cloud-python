@@ -963,6 +963,8 @@ class TestCredentials(object):
         # this mimics a pickle created with a previous class definition with
         # fewer attributes
         del creds.__dict__["_quota_project_id"]
+        del creds.__dict__["_refresh_handler"]
+        del creds.__dict__["_refresh_worker"]
 
         unpickled = pickle.loads(pickle.dumps(creds))
 

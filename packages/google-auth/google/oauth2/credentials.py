@@ -160,9 +160,11 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         # unpickling certain callables (lambda, functools.partial instances)
         # because they need to be importable.
         # Instead, the refresh_handler setter should be used to repopulate this.
-        del state_dict["_refresh_handler"]
-        # Remove worker as it contains multiproccessing queue objects.
-        del state_dict["_refresh_worker"]
+        if "_refresh_handler" in state_dict:
+            del state_dict["_refresh_handler"]
+
+        if "_refresh_worker" in state_dict:
+            del state_dict["_refresh_worker"]
         return state_dict
 
     def __setstate__(self, d):
@@ -186,7 +188,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         # The refresh_handler setter should be used to repopulate this.
         self._refresh_handler = None
         self._refresh_worker = None
-        self._use_non_blocking_refresh = d.get("_use_non_blocking_refresh")
+        self._use_non_blocking_refresh = d.get("_use_non_blocking_refresh", False)
 
     @property
     def refresh_token(self):
