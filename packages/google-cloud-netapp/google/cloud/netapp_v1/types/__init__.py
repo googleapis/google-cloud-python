@@ -22,6 +22,33 @@ from .active_directory import (
     ListActiveDirectoriesResponse,
     UpdateActiveDirectoryRequest,
 )
+from .backup import (
+    Backup,
+    CreateBackupRequest,
+    DeleteBackupRequest,
+    GetBackupRequest,
+    ListBackupsRequest,
+    ListBackupsResponse,
+    UpdateBackupRequest,
+)
+from .backup_policy import (
+    BackupPolicy,
+    CreateBackupPolicyRequest,
+    DeleteBackupPolicyRequest,
+    GetBackupPolicyRequest,
+    ListBackupPoliciesRequest,
+    ListBackupPoliciesResponse,
+    UpdateBackupPolicyRequest,
+)
+from .backup_vault import (
+    BackupVault,
+    CreateBackupVaultRequest,
+    DeleteBackupVaultRequest,
+    GetBackupVaultRequest,
+    ListBackupVaultsRequest,
+    ListBackupVaultsResponse,
+    UpdateBackupVaultRequest,
+)
 from .cloud_netapp_service import OperationMetadata
 from .kms import (
     CreateKmsConfigRequest,
@@ -69,6 +96,7 @@ from .storage_pool import (
 )
 from .volume import (
     AccessType,
+    BackupConfig,
     CreateVolumeRequest,
     DailySchedule,
     DeleteVolumeRequest,
@@ -100,6 +128,27 @@ __all__ = (
     "ListActiveDirectoriesRequest",
     "ListActiveDirectoriesResponse",
     "UpdateActiveDirectoryRequest",
+    "Backup",
+    "CreateBackupRequest",
+    "DeleteBackupRequest",
+    "GetBackupRequest",
+    "ListBackupsRequest",
+    "ListBackupsResponse",
+    "UpdateBackupRequest",
+    "BackupPolicy",
+    "CreateBackupPolicyRequest",
+    "DeleteBackupPolicyRequest",
+    "GetBackupPolicyRequest",
+    "ListBackupPoliciesRequest",
+    "ListBackupPoliciesResponse",
+    "UpdateBackupPolicyRequest",
+    "BackupVault",
+    "CreateBackupVaultRequest",
+    "DeleteBackupVaultRequest",
+    "GetBackupVaultRequest",
+    "ListBackupVaultsRequest",
+    "ListBackupVaultsResponse",
+    "UpdateBackupVaultRequest",
     "OperationMetadata",
     "EncryptionType",
     "ServiceLevel",
@@ -139,6 +188,7 @@ __all__ = (
     "ListStoragePoolsResponse",
     "StoragePool",
     "UpdateStoragePoolRequest",
+    "BackupConfig",
     "CreateVolumeRequest",
     "DailySchedule",
     "DeleteVolumeRequest",

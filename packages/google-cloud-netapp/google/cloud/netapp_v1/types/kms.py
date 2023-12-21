@@ -263,7 +263,7 @@ class KmsConfig(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Name of the KmsConfig.
+            Identifier. Name of the KmsConfig.
         crypto_key_name (str):
             Required. Customer managed crypto key resource full name.
             Format:

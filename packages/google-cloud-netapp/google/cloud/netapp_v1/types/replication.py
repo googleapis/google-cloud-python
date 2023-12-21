@@ -143,7 +143,7 @@ class Replication(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the Replication. Format:
+            Identifier. The resource name of the Replication. Format:
             ``projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}``.
         state (google.cloud.netapp_v1.types.Replication.State):
             Output only. State of the replication.

@@ -29,6 +29,12 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.netapp_v1 import gapic_version as package_version
 from google.cloud.netapp_v1.types import active_directory as gcn_active_directory
 from google.cloud.netapp_v1.types import active_directory
+from google.cloud.netapp_v1.types import backup
+from google.cloud.netapp_v1.types import backup as gcn_backup
+from google.cloud.netapp_v1.types import backup_policy
+from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
+from google.cloud.netapp_v1.types import backup_vault
+from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
 from google.cloud.netapp_v1.types import kms
 from google.cloud.netapp_v1.types import replication
 from google.cloud.netapp_v1.types import replication as gcn_replication
@@ -422,6 +428,135 @@ class NetAppTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_backup_vault: gapic_v1.method.wrap_method(
+                self.create_backup_vault,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_backup_vault: gapic_v1.method.wrap_method(
+                self.get_backup_vault,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_backup_vaults: gapic_v1.method.wrap_method(
+                self.list_backup_vaults,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_backup_vault: gapic_v1.method.wrap_method(
+                self.update_backup_vault,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_backup_vault: gapic_v1.method.wrap_method(
+                self.delete_backup_vault,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_backup: gapic_v1.method.wrap_method(
+                self.create_backup,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_backup: gapic_v1.method.wrap_method(
+                self.get_backup,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_backups: gapic_v1.method.wrap_method(
+                self.list_backups,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_backup: gapic_v1.method.wrap_method(
+                self.delete_backup,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_backup: gapic_v1.method.wrap_method(
+                self.update_backup,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_backup_policy: gapic_v1.method.wrap_method(
+                self.create_backup_policy,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_backup_policy: gapic_v1.method.wrap_method(
+                self.get_backup_policy,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_backup_policies: gapic_v1.method.wrap_method(
+                self.list_backup_policies,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_backup_policy: gapic_v1.method.wrap_method(
+                self.update_backup_policy,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_backup_policy: gapic_v1.method.wrap_method(
+                self.delete_backup_policy,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -770,6 +905,146 @@ class NetAppTransport(abc.ABC):
         self,
     ) -> Callable[
         [replication.ReverseReplicationDirectionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_backup_vault(
+        self,
+    ) -> Callable[
+        [gcn_backup_vault.CreateBackupVaultRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup_vault(
+        self,
+    ) -> Callable[
+        [backup_vault.GetBackupVaultRequest],
+        Union[backup_vault.BackupVault, Awaitable[backup_vault.BackupVault]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backup_vaults(
+        self,
+    ) -> Callable[
+        [backup_vault.ListBackupVaultsRequest],
+        Union[
+            backup_vault.ListBackupVaultsResponse,
+            Awaitable[backup_vault.ListBackupVaultsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_backup_vault(
+        self,
+    ) -> Callable[
+        [gcn_backup_vault.UpdateBackupVaultRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup_vault(
+        self,
+    ) -> Callable[
+        [backup_vault.DeleteBackupVaultRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_backup(
+        self,
+    ) -> Callable[
+        [gcn_backup.CreateBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[
+        [backup.GetBackupRequest], Union[backup.Backup, Awaitable[backup.Backup]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [backup.ListBackupsRequest],
+        Union[backup.ListBackupsResponse, Awaitable[backup.ListBackupsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[
+        [backup.DeleteBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_backup(
+        self,
+    ) -> Callable[
+        [gcn_backup.UpdateBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_backup_policy(
+        self,
+    ) -> Callable[
+        [gcn_backup_policy.CreateBackupPolicyRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup_policy(
+        self,
+    ) -> Callable[
+        [backup_policy.GetBackupPolicyRequest],
+        Union[backup_policy.BackupPolicy, Awaitable[backup_policy.BackupPolicy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backup_policies(
+        self,
+    ) -> Callable[
+        [backup_policy.ListBackupPoliciesRequest],
+        Union[
+            backup_policy.ListBackupPoliciesResponse,
+            Awaitable[backup_policy.ListBackupPoliciesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_backup_policy(
+        self,
+    ) -> Callable[
+        [gcn_backup_policy.UpdateBackupPolicyRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup_policy(
+        self,
+    ) -> Callable[
+        [backup_policy.DeleteBackupPolicyRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

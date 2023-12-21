@@ -57,6 +57,12 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.cloud.netapp_v1.services.net_app import pagers
 from google.cloud.netapp_v1.types import active_directory as gcn_active_directory
 from google.cloud.netapp_v1.types import active_directory
+from google.cloud.netapp_v1.types import backup
+from google.cloud.netapp_v1.types import backup as gcn_backup
+from google.cloud.netapp_v1.types import backup_policy
+from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
+from google.cloud.netapp_v1.types import backup_vault
+from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
 from google.cloud.netapp_v1.types import cloud_netapp_service, common, kms
 from google.cloud.netapp_v1.types import replication
 from google.cloud.netapp_v1.types import replication as gcn_replication
@@ -211,6 +217,74 @@ class NetAppClient(metaclass=NetAppClientMeta):
         """Parses a active_directory path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/activeDirectories/(?P<active_directory>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def backup_path(
+        project: str,
+        location: str,
+        backup_vault: str,
+        backup: str,
+    ) -> str:
+        """Returns a fully-qualified backup string."""
+        return "projects/{project}/locations/{location}/backupVaults/{backup_vault}/backups/{backup}".format(
+            project=project,
+            location=location,
+            backup_vault=backup_vault,
+            backup=backup,
+        )
+
+    @staticmethod
+    def parse_backup_path(path: str) -> Dict[str, str]:
+        """Parses a backup path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/backupVaults/(?P<backup_vault>.+?)/backups/(?P<backup>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def backup_policy_path(
+        project: str,
+        location: str,
+        backup_policy: str,
+    ) -> str:
+        """Returns a fully-qualified backup_policy string."""
+        return "projects/{project}/locations/{location}/backupPolicies/{backup_policy}".format(
+            project=project,
+            location=location,
+            backup_policy=backup_policy,
+        )
+
+    @staticmethod
+    def parse_backup_policy_path(path: str) -> Dict[str, str]:
+        """Parses a backup_policy path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/backupPolicies/(?P<backup_policy>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def backup_vault_path(
+        project: str,
+        location: str,
+        backup_vault: str,
+    ) -> str:
+        """Returns a fully-qualified backup_vault string."""
+        return "projects/{project}/locations/{location}/backupVaults/{backup_vault}".format(
+            project=project,
+            location=location,
+            backup_vault=backup_vault,
+        )
+
+    @staticmethod
+    def parse_backup_vault_path(path: str) -> Dict[str, str]:
+        """Parses a backup_vault path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/backupVaults/(?P<backup_vault>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -4884,6 +4958,1866 @@ class NetAppClient(metaclass=NetAppClientMeta):
             response,
             self._transport.operations_client,
             replication.Replication,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_backup_vault(
+        self,
+        request: Optional[
+            Union[gcn_backup_vault.CreateBackupVaultRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        backup_vault: Optional[gcn_backup_vault.BackupVault] = None,
+        backup_vault_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Creates new backup vault
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_create_backup_vault():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.CreateBackupVaultRequest(
+                    parent="parent_value",
+                    backup_vault_id="backup_vault_id_value",
+                )
+
+                # Make the request
+                operation = client.create_backup_vault(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.CreateBackupVaultRequest, dict]):
+                The request object. CreateBackupVaultRequest creates a
+                backup vault.
+            parent (str):
+                Required. The location to create the backup vaults, in
+                the format
+                ``projects/{project_id}/locations/{location}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup_vault (google.cloud.netapp_v1.types.BackupVault):
+                Required. A backupVault resource
+                This corresponds to the ``backup_vault`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup_vault_id (str):
+                Required. The ID to use for the backupVault. The ID must
+                be unique within the specified location. The max
+                supported length is 63 characters. This value must start
+                with a lowercase letter followed by up to 62 lowercase
+                letters, numbers, or hyphens, and cannot end with a
+                hyphen. Values that do not match this pattern will
+                trigger an INVALID_ARGUMENT error.
+
+                This corresponds to the ``backup_vault_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.netapp_v1.types.BackupVault` A
+                NetApp BackupVault.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, backup_vault, backup_vault_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcn_backup_vault.CreateBackupVaultRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcn_backup_vault.CreateBackupVaultRequest):
+            request = gcn_backup_vault.CreateBackupVaultRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if backup_vault is not None:
+                request.backup_vault = backup_vault
+            if backup_vault_id is not None:
+                request.backup_vault_id = backup_vault_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_backup_vault]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcn_backup_vault.BackupVault,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_backup_vault(
+        self,
+        request: Optional[Union[backup_vault.GetBackupVaultRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> backup_vault.BackupVault:
+        r"""Returns the description of the specified backup vault
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_get_backup_vault():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.GetBackupVaultRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_backup_vault(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.GetBackupVaultRequest, dict]):
+                The request object. GetBackupVaultRequest gets the state
+                of a backupVault.
+            name (str):
+                Required. The backupVault resource name, in the format
+                ``projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.netapp_v1.types.BackupVault:
+                A NetApp BackupVault.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a backup_vault.GetBackupVaultRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, backup_vault.GetBackupVaultRequest):
+            request = backup_vault.GetBackupVaultRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_backup_vault]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_backup_vaults(
+        self,
+        request: Optional[Union[backup_vault.ListBackupVaultsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListBackupVaultsPager:
+        r"""Returns list of all available backup vaults.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_list_backup_vaults():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.ListBackupVaultsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backup_vaults(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.ListBackupVaultsRequest, dict]):
+                The request object. ListBackupVaultsRequest lists
+                backupVaults.
+            parent (str):
+                Required. The location for which to retrieve backupVault
+                information, in the format
+                ``projects/{project_id}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.netapp_v1.services.net_app.pagers.ListBackupVaultsPager:
+                ListBackupVaultsResponse is the
+                result of ListBackupVaultsRequest.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a backup_vault.ListBackupVaultsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, backup_vault.ListBackupVaultsRequest):
+            request = backup_vault.ListBackupVaultsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_backup_vaults]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListBackupVaultsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_backup_vault(
+        self,
+        request: Optional[
+            Union[gcn_backup_vault.UpdateBackupVaultRequest, dict]
+        ] = None,
+        *,
+        backup_vault: Optional[gcn_backup_vault.BackupVault] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Updates the settings of a specific backup vault.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_update_backup_vault():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.UpdateBackupVaultRequest(
+                )
+
+                # Make the request
+                operation = client.update_backup_vault(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.UpdateBackupVaultRequest, dict]):
+                The request object. UpdateBackupVaultRequest updates
+                description and/or labels for a
+                backupVault.
+            backup_vault (google.cloud.netapp_v1.types.BackupVault):
+                Required. The backupVault being
+                updated
+
+                This corresponds to the ``backup_vault`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. Field mask is used to specify the fields to be
+                overwritten in the Backup resource to be updated. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.netapp_v1.types.BackupVault` A
+                NetApp BackupVault.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([backup_vault, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcn_backup_vault.UpdateBackupVaultRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcn_backup_vault.UpdateBackupVaultRequest):
+            request = gcn_backup_vault.UpdateBackupVaultRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if backup_vault is not None:
+                request.backup_vault = backup_vault
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_backup_vault]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("backup_vault.name", request.backup_vault.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcn_backup_vault.BackupVault,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_backup_vault(
+        self,
+        request: Optional[Union[backup_vault.DeleteBackupVaultRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Warning! This operation will permanently delete the
+        backup vault.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_delete_backup_vault():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.DeleteBackupVaultRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_backup_vault(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.DeleteBackupVaultRequest, dict]):
+                The request object. DeleteBackupVaultRequest deletes a
+                backupVault.
+            name (str):
+                Required. The backupVault resource name, in the format
+                ``projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a backup_vault.DeleteBackupVaultRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, backup_vault.DeleteBackupVaultRequest):
+            request = backup_vault.DeleteBackupVaultRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_backup_vault]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_backup(
+        self,
+        request: Optional[Union[gcn_backup.CreateBackupRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        backup: Optional[gcn_backup.Backup] = None,
+        backup_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Creates a backup from the volume specified in the
+        request The backup can be created from the given
+        snapshot if specified in the request. If no snapshot
+        specified, there'll be a new snapshot taken to initiate
+        the backup creation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_create_backup():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.CreateBackupRequest(
+                    parent="parent_value",
+                    backup_id="backup_id_value",
+                )
+
+                # Make the request
+                operation = client.create_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.CreateBackupRequest, dict]):
+                The request object. CreateBackupRequest creates a backup.
+            parent (str):
+                Required. The NetApp backupVault to create the backups
+                of, in the format
+                ``projects/*/locations/*/backupVaults/{backup_vault_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup (google.cloud.netapp_v1.types.Backup):
+                Required. A backup resource
+                This corresponds to the ``backup`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup_id (str):
+                Required. The ID to use for the backup. The ID must be
+                unique within the specified backupVault. This value must
+                start with a lowercase letter followed by up to 62
+                lowercase letters, numbers, or hyphens, and cannot end
+                with a hyphen. Values that do not match this pattern
+                will trigger an INVALID_ARGUMENT error.
+
+                This corresponds to the ``backup_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.netapp_v1.types.Backup` A NetApp
+                Backup.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, backup, backup_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcn_backup.CreateBackupRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcn_backup.CreateBackupRequest):
+            request = gcn_backup.CreateBackupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if backup is not None:
+                request.backup = backup
+            if backup_id is not None:
+                request.backup_id = backup_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_backup]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcn_backup.Backup,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_backup(
+        self,
+        request: Optional[Union[backup.GetBackupRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> backup.Backup:
+        r"""Returns the description of the specified backup
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_get_backup():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.GetBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_backup(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.GetBackupRequest, dict]):
+                The request object. GetBackupRequest gets the state of a
+                backup.
+            name (str):
+                Required. The backup resource name, in the format
+                ``projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}/backups/{backup_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.netapp_v1.types.Backup:
+                A NetApp Backup.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a backup.GetBackupRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, backup.GetBackupRequest):
+            request = backup.GetBackupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_backup]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_backups(
+        self,
+        request: Optional[Union[backup.ListBackupsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListBackupsPager:
+        r"""Returns descriptions of all backups for a
+        backupVault.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_list_backups():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.ListBackupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.ListBackupsRequest, dict]):
+                The request object. ListBackupsRequest lists backups.
+            parent (str):
+                Required. The backupVault for which to retrieve backup
+                information, in the format
+                ``projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}``.
+                To retrieve backup information for all locations, use
+                "-" for the ``{location}`` value. To retrieve backup
+                information for all backupVaults, use "-" for the
+                ``{backup_vault_id}`` value. To retrieve backup
+                information for a volume, use "-" for the
+                ``{backup_vault_id}`` value and specify volume full name
+                with the filter.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.netapp_v1.services.net_app.pagers.ListBackupsPager:
+                ListBackupsResponse is the result of
+                ListBackupsRequest.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a backup.ListBackupsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, backup.ListBackupsRequest):
+            request = backup.ListBackupsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_backups]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListBackupsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_backup(
+        self,
+        request: Optional[Union[backup.DeleteBackupRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Warning! This operation will permanently delete the
+        backup.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_delete_backup():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.DeleteBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.DeleteBackupRequest, dict]):
+                The request object. DeleteBackupRequest deletes a backup.
+            name (str):
+                Required. The backup resource name, in the format
+                ``projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}/backups/{backup_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a backup.DeleteBackupRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, backup.DeleteBackupRequest):
+            request = backup.DeleteBackupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_backup]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_backup(
+        self,
+        request: Optional[Union[gcn_backup.UpdateBackupRequest, dict]] = None,
+        *,
+        backup: Optional[gcn_backup.Backup] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Update backup with full spec.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_update_backup():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.UpdateBackupRequest(
+                )
+
+                # Make the request
+                operation = client.update_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.UpdateBackupRequest, dict]):
+                The request object. UpdateBackupRequest updates
+                description and/or labels for a backup.
+            backup (google.cloud.netapp_v1.types.Backup):
+                Required. The backup being updated
+                This corresponds to the ``backup`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. Field mask is used to specify the fields to be
+                overwritten in the Backup resource to be updated. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.netapp_v1.types.Backup` A NetApp
+                Backup.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([backup, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcn_backup.UpdateBackupRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcn_backup.UpdateBackupRequest):
+            request = gcn_backup.UpdateBackupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if backup is not None:
+                request.backup = backup
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_backup]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("backup.name", request.backup.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcn_backup.Backup,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_backup_policy(
+        self,
+        request: Optional[
+            Union[gcn_backup_policy.CreateBackupPolicyRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        backup_policy: Optional[gcn_backup_policy.BackupPolicy] = None,
+        backup_policy_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Creates new backup policy
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_create_backup_policy():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.CreateBackupPolicyRequest(
+                    parent="parent_value",
+                    backup_policy_id="backup_policy_id_value",
+                )
+
+                # Make the request
+                operation = client.create_backup_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.CreateBackupPolicyRequest, dict]):
+                The request object. CreateBackupPolicyRequest creates a
+                backupPolicy.
+            parent (str):
+                Required. The location to create the backup policies of,
+                in the format
+                ``projects/{project_id}/locations/{location}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup_policy (google.cloud.netapp_v1.types.BackupPolicy):
+                Required. A backupPolicy resource
+                This corresponds to the ``backup_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup_policy_id (str):
+                Required. The ID to use for the
+                backup policy. The ID must be unique
+                within the specified location. This
+                value must start with a lowercase letter
+                followed by up to 62 lowercase letters,
+                numbers, or hyphens, and cannot end with
+                a hyphen.
+
+                This corresponds to the ``backup_policy_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.netapp_v1.types.BackupPolicy`
+                Backup Policy.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, backup_policy, backup_policy_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcn_backup_policy.CreateBackupPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcn_backup_policy.CreateBackupPolicyRequest):
+            request = gcn_backup_policy.CreateBackupPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if backup_policy is not None:
+                request.backup_policy = backup_policy
+            if backup_policy_id is not None:
+                request.backup_policy_id = backup_policy_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_backup_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcn_backup_policy.BackupPolicy,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_backup_policy(
+        self,
+        request: Optional[Union[backup_policy.GetBackupPolicyRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> backup_policy.BackupPolicy:
+        r"""Returns the description of the specified backup policy by
+        backup_policy_id.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_get_backup_policy():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.GetBackupPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_backup_policy(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.GetBackupPolicyRequest, dict]):
+                The request object. GetBackupPolicyRequest gets the state
+                of a backupPolicy.
+            name (str):
+                Required. The backupPolicy resource name, in the format
+                ``projects/{project_id}/locations/{location}/backupPolicies/{backup_policy_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.netapp_v1.types.BackupPolicy:
+                Backup Policy.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a backup_policy.GetBackupPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, backup_policy.GetBackupPolicyRequest):
+            request = backup_policy.GetBackupPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_backup_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_backup_policies(
+        self,
+        request: Optional[Union[backup_policy.ListBackupPoliciesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListBackupPoliciesPager:
+        r"""Returns list of all available backup policies.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_list_backup_policies():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.ListBackupPoliciesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backup_policies(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.ListBackupPoliciesRequest, dict]):
+                The request object. ListBackupPoliciesRequest for
+                requesting multiple backup policies.
+            parent (str):
+                Required. Parent value for
+                ListBackupPoliciesRequest
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.netapp_v1.services.net_app.pagers.ListBackupPoliciesPager:
+                ListBackupPoliciesResponse contains
+                all the backup policies requested.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a backup_policy.ListBackupPoliciesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, backup_policy.ListBackupPoliciesRequest):
+            request = backup_policy.ListBackupPoliciesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_backup_policies]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListBackupPoliciesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_backup_policy(
+        self,
+        request: Optional[
+            Union[gcn_backup_policy.UpdateBackupPolicyRequest, dict]
+        ] = None,
+        *,
+        backup_policy: Optional[gcn_backup_policy.BackupPolicy] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Updates settings of a specific backup policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_update_backup_policy():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.UpdateBackupPolicyRequest(
+                )
+
+                # Make the request
+                operation = client.update_backup_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.UpdateBackupPolicyRequest, dict]):
+                The request object. UpdateBackupPolicyRequest for
+                updating a backup policy.
+            backup_policy (google.cloud.netapp_v1.types.BackupPolicy):
+                Required. The backup policy being
+                updated
+
+                This corresponds to the ``backup_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. Field mask is used to specify the fields to be
+                overwritten in the Backup Policy resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.netapp_v1.types.BackupPolicy`
+                Backup Policy.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([backup_policy, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcn_backup_policy.UpdateBackupPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcn_backup_policy.UpdateBackupPolicyRequest):
+            request = gcn_backup_policy.UpdateBackupPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if backup_policy is not None:
+                request.backup_policy = backup_policy
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_backup_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("backup_policy.name", request.backup_policy.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcn_backup_policy.BackupPolicy,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_backup_policy(
+        self,
+        request: Optional[Union[backup_policy.DeleteBackupPolicyRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Warning! This operation will permanently delete the
+        backup policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_delete_backup_policy():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.DeleteBackupPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_backup_policy(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.DeleteBackupPolicyRequest, dict]):
+                The request object. DeleteBackupPolicyRequest deletes a
+                backup policy.
+            name (str):
+                Required. The backup policy resource name, in the format
+                ``projects/{project_id}/locations/{location}/backupPolicies/{backup_policy_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a backup_policy.DeleteBackupPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, backup_policy.DeleteBackupPolicyRequest):
+            request = backup_policy.DeleteBackupPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_backup_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
             metadata_type=cloud_netapp_service.OperationMetadata,
         )
 

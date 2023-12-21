@@ -29,6 +29,33 @@ from google.cloud.netapp_v1.types.active_directory import (
     ListActiveDirectoriesResponse,
     UpdateActiveDirectoryRequest,
 )
+from google.cloud.netapp_v1.types.backup import (
+    Backup,
+    CreateBackupRequest,
+    DeleteBackupRequest,
+    GetBackupRequest,
+    ListBackupsRequest,
+    ListBackupsResponse,
+    UpdateBackupRequest,
+)
+from google.cloud.netapp_v1.types.backup_policy import (
+    BackupPolicy,
+    CreateBackupPolicyRequest,
+    DeleteBackupPolicyRequest,
+    GetBackupPolicyRequest,
+    ListBackupPoliciesRequest,
+    ListBackupPoliciesResponse,
+    UpdateBackupPolicyRequest,
+)
+from google.cloud.netapp_v1.types.backup_vault import (
+    BackupVault,
+    CreateBackupVaultRequest,
+    DeleteBackupVaultRequest,
+    GetBackupVaultRequest,
+    ListBackupVaultsRequest,
+    ListBackupVaultsResponse,
+    UpdateBackupVaultRequest,
+)
 from google.cloud.netapp_v1.types.cloud_netapp_service import OperationMetadata
 from google.cloud.netapp_v1.types.common import EncryptionType, ServiceLevel
 from google.cloud.netapp_v1.types.kms import (
@@ -77,6 +104,7 @@ from google.cloud.netapp_v1.types.storage_pool import (
 )
 from google.cloud.netapp_v1.types.volume import (
     AccessType,
+    BackupConfig,
     CreateVolumeRequest,
     DailySchedule,
     DeleteVolumeRequest,
@@ -110,6 +138,27 @@ __all__ = (
     "ListActiveDirectoriesRequest",
     "ListActiveDirectoriesResponse",
     "UpdateActiveDirectoryRequest",
+    "Backup",
+    "CreateBackupRequest",
+    "DeleteBackupRequest",
+    "GetBackupRequest",
+    "ListBackupsRequest",
+    "ListBackupsResponse",
+    "UpdateBackupRequest",
+    "BackupPolicy",
+    "CreateBackupPolicyRequest",
+    "DeleteBackupPolicyRequest",
+    "GetBackupPolicyRequest",
+    "ListBackupPoliciesRequest",
+    "ListBackupPoliciesResponse",
+    "UpdateBackupPolicyRequest",
+    "BackupVault",
+    "CreateBackupVaultRequest",
+    "DeleteBackupVaultRequest",
+    "GetBackupVaultRequest",
+    "ListBackupVaultsRequest",
+    "ListBackupVaultsResponse",
+    "UpdateBackupVaultRequest",
     "OperationMetadata",
     "EncryptionType",
     "ServiceLevel",
@@ -149,6 +198,7 @@ __all__ = (
     "ListStoragePoolsResponse",
     "StoragePool",
     "UpdateStoragePoolRequest",
+    "BackupConfig",
     "CreateVolumeRequest",
     "DailySchedule",
     "DeleteVolumeRequest",

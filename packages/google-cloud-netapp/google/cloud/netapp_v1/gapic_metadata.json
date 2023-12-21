@@ -15,6 +15,21 @@
                 "create_active_directory"
               ]
             },
+            "CreateBackup": {
+              "methods": [
+                "create_backup"
+              ]
+            },
+            "CreateBackupPolicy": {
+              "methods": [
+                "create_backup_policy"
+              ]
+            },
+            "CreateBackupVault": {
+              "methods": [
+                "create_backup_vault"
+              ]
+            },
             "CreateKmsConfig": {
               "methods": [
                 "create_kms_config"
@@ -43,6 +58,21 @@
             "DeleteActiveDirectory": {
               "methods": [
                 "delete_active_directory"
+              ]
+            },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
+            "DeleteBackupPolicy": {
+              "methods": [
+                "delete_backup_policy"
+              ]
+            },
+            "DeleteBackupVault": {
+              "methods": [
+                "delete_backup_vault"
               ]
             },
             "DeleteKmsConfig": {
@@ -80,6 +110,21 @@
                 "get_active_directory"
               ]
             },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetBackupPolicy": {
+              "methods": [
+                "get_backup_policy"
+              ]
+            },
+            "GetBackupVault": {
+              "methods": [
+                "get_backup_vault"
+              ]
+            },
             "GetKmsConfig": {
               "methods": [
                 "get_kms_config"
@@ -108,6 +153,21 @@
             "ListActiveDirectories": {
               "methods": [
                 "list_active_directories"
+              ]
+            },
+            "ListBackupPolicies": {
+              "methods": [
+                "list_backup_policies"
+              ]
+            },
+            "ListBackupVaults": {
+              "methods": [
+                "list_backup_vaults"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
               ]
             },
             "ListKmsConfigs": {
@@ -158,6 +218,21 @@
             "UpdateActiveDirectory": {
               "methods": [
                 "update_active_directory"
+              ]
+            },
+            "UpdateBackup": {
+              "methods": [
+                "update_backup"
+              ]
+            },
+            "UpdateBackupPolicy": {
+              "methods": [
+                "update_backup_policy"
+              ]
+            },
+            "UpdateBackupVault": {
+              "methods": [
+                "update_backup_vault"
               ]
             },
             "UpdateKmsConfig": {
@@ -200,6 +275,21 @@
                 "create_active_directory"
               ]
             },
+            "CreateBackup": {
+              "methods": [
+                "create_backup"
+              ]
+            },
+            "CreateBackupPolicy": {
+              "methods": [
+                "create_backup_policy"
+              ]
+            },
+            "CreateBackupVault": {
+              "methods": [
+                "create_backup_vault"
+              ]
+            },
             "CreateKmsConfig": {
               "methods": [
                 "create_kms_config"
@@ -228,6 +318,21 @@
             "DeleteActiveDirectory": {
               "methods": [
                 "delete_active_directory"
+              ]
+            },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
+            "DeleteBackupPolicy": {
+              "methods": [
+                "delete_backup_policy"
+              ]
+            },
+            "DeleteBackupVault": {
+              "methods": [
+                "delete_backup_vault"
               ]
             },
             "DeleteKmsConfig": {
@@ -265,6 +370,21 @@
                 "get_active_directory"
               ]
             },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetBackupPolicy": {
+              "methods": [
+                "get_backup_policy"
+              ]
+            },
+            "GetBackupVault": {
+              "methods": [
+                "get_backup_vault"
+              ]
+            },
             "GetKmsConfig": {
               "methods": [
                 "get_kms_config"
@@ -293,6 +413,21 @@
             "ListActiveDirectories": {
               "methods": [
                 "list_active_directories"
+              ]
+            },
+            "ListBackupPolicies": {
+              "methods": [
+                "list_backup_policies"
+              ]
+            },
+            "ListBackupVaults": {
+              "methods": [
+                "list_backup_vaults"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
               ]
             },
             "ListKmsConfigs": {
@@ -343,6 +478,21 @@
             "UpdateActiveDirectory": {
               "methods": [
                 "update_active_directory"
+              ]
+            },
+            "UpdateBackup": {
+              "methods": [
+                "update_backup"
+              ]
+            },
+            "UpdateBackupPolicy": {
+              "methods": [
+                "update_backup_policy"
+              ]
+            },
+            "UpdateBackupVault": {
+              "methods": [
+                "update_backup_vault"
               ]
             },
             "UpdateKmsConfig": {
@@ -385,6 +535,21 @@
                 "create_active_directory"
               ]
             },
+            "CreateBackup": {
+              "methods": [
+                "create_backup"
+              ]
+            },
+            "CreateBackupPolicy": {
+              "methods": [
+                "create_backup_policy"
+              ]
+            },
+            "CreateBackupVault": {
+              "methods": [
+                "create_backup_vault"
+              ]
+            },
             "CreateKmsConfig": {
               "methods": [
                 "create_kms_config"
@@ -413,6 +578,21 @@
             "DeleteActiveDirectory": {
               "methods": [
                 "delete_active_directory"
+              ]
+            },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
+            "DeleteBackupPolicy": {
+              "methods": [
+                "delete_backup_policy"
+              ]
+            },
+            "DeleteBackupVault": {
+              "methods": [
+                "delete_backup_vault"
               ]
             },
             "DeleteKmsConfig": {
@@ -450,6 +630,21 @@
                 "get_active_directory"
               ]
             },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetBackupPolicy": {
+              "methods": [
+                "get_backup_policy"
+              ]
+            },
+            "GetBackupVault": {
+              "methods": [
+                "get_backup_vault"
+              ]
+            },
             "GetKmsConfig": {
               "methods": [
                 "get_kms_config"
@@ -478,6 +673,21 @@
             "ListActiveDirectories": {
               "methods": [
                 "list_active_directories"
+              ]
+            },
+            "ListBackupPolicies": {
+              "methods": [
+                "list_backup_policies"
+              ]
+            },
+            "ListBackupVaults": {
+              "methods": [
+                "list_backup_vaults"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
               ]
             },
             "ListKmsConfigs": {
@@ -528,6 +738,21 @@
             "UpdateActiveDirectory": {
               "methods": [
                 "update_active_directory"
+              ]
+            },
+            "UpdateBackup": {
+              "methods": [
+                "update_backup"
+              ]
+            },
+            "UpdateBackupPolicy": {
+              "methods": [
+                "update_backup_policy"
+              ]
+            },
+            "UpdateBackupVault": {
+              "methods": [
+                "update_backup_vault"
               ]
             },
             "UpdateKmsConfig": {

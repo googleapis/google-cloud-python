@@ -26,6 +26,9 @@ from typing import (
 
 from google.cloud.netapp_v1.types import (
     active_directory,
+    backup,
+    backup_policy,
+    backup_vault,
     kms,
     replication,
     snapshot,
@@ -798,6 +801,390 @@ class ListReplicationsAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.replications:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupVaultsPager:
+    """A pager for iterating through ``list_backup_vaults`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.netapp_v1.types.ListBackupVaultsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``backup_vaults`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListBackupVaults`` requests and continue to iterate
+    through the ``backup_vaults`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.netapp_v1.types.ListBackupVaultsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., backup_vault.ListBackupVaultsResponse],
+        request: backup_vault.ListBackupVaultsRequest,
+        response: backup_vault.ListBackupVaultsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.netapp_v1.types.ListBackupVaultsRequest):
+                The initial request object.
+            response (google.cloud.netapp_v1.types.ListBackupVaultsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = backup_vault.ListBackupVaultsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[backup_vault.ListBackupVaultsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[backup_vault.BackupVault]:
+        for page in self.pages:
+            yield from page.backup_vaults
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupVaultsAsyncPager:
+    """A pager for iterating through ``list_backup_vaults`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.netapp_v1.types.ListBackupVaultsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backup_vaults`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListBackupVaults`` requests and continue to iterate
+    through the ``backup_vaults`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.netapp_v1.types.ListBackupVaultsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[backup_vault.ListBackupVaultsResponse]],
+        request: backup_vault.ListBackupVaultsRequest,
+        response: backup_vault.ListBackupVaultsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.netapp_v1.types.ListBackupVaultsRequest):
+                The initial request object.
+            response (google.cloud.netapp_v1.types.ListBackupVaultsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = backup_vault.ListBackupVaultsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[backup_vault.ListBackupVaultsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[backup_vault.BackupVault]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backup_vaults:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupsPager:
+    """A pager for iterating through ``list_backups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.netapp_v1.types.ListBackupsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``backups`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListBackups`` requests and continue to iterate
+    through the ``backups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.netapp_v1.types.ListBackupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., backup.ListBackupsResponse],
+        request: backup.ListBackupsRequest,
+        response: backup.ListBackupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.netapp_v1.types.ListBackupsRequest):
+                The initial request object.
+            response (google.cloud.netapp_v1.types.ListBackupsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = backup.ListBackupsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[backup.ListBackupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[backup.Backup]:
+        for page in self.pages:
+            yield from page.backups
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupsAsyncPager:
+    """A pager for iterating through ``list_backups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.netapp_v1.types.ListBackupsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backups`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListBackups`` requests and continue to iterate
+    through the ``backups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.netapp_v1.types.ListBackupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[backup.ListBackupsResponse]],
+        request: backup.ListBackupsRequest,
+        response: backup.ListBackupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.netapp_v1.types.ListBackupsRequest):
+                The initial request object.
+            response (google.cloud.netapp_v1.types.ListBackupsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = backup.ListBackupsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[backup.ListBackupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[backup.Backup]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backups:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupPoliciesPager:
+    """A pager for iterating through ``list_backup_policies`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.netapp_v1.types.ListBackupPoliciesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``backup_policies`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListBackupPolicies`` requests and continue to iterate
+    through the ``backup_policies`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.netapp_v1.types.ListBackupPoliciesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., backup_policy.ListBackupPoliciesResponse],
+        request: backup_policy.ListBackupPoliciesRequest,
+        response: backup_policy.ListBackupPoliciesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.netapp_v1.types.ListBackupPoliciesRequest):
+                The initial request object.
+            response (google.cloud.netapp_v1.types.ListBackupPoliciesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = backup_policy.ListBackupPoliciesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[backup_policy.ListBackupPoliciesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[backup_policy.BackupPolicy]:
+        for page in self.pages:
+            yield from page.backup_policies
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupPoliciesAsyncPager:
+    """A pager for iterating through ``list_backup_policies`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.netapp_v1.types.ListBackupPoliciesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backup_policies`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListBackupPolicies`` requests and continue to iterate
+    through the ``backup_policies`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.netapp_v1.types.ListBackupPoliciesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[backup_policy.ListBackupPoliciesResponse]],
+        request: backup_policy.ListBackupPoliciesRequest,
+        response: backup_policy.ListBackupPoliciesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.netapp_v1.types.ListBackupPoliciesRequest):
+                The initial request object.
+            response (google.cloud.netapp_v1.types.ListBackupPoliciesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = backup_policy.ListBackupPoliciesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[backup_policy.ListBackupPoliciesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[backup_policy.BackupPolicy]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backup_policies:
                     yield response
 
         return async_generator()

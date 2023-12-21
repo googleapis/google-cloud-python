@@ -33,11 +33,11 @@ class ServiceLevel(proto.Enum):
 
     Values:
         SERVICE_LEVEL_UNSPECIFIED (0):
-            No description available.
+            Unspecified service level.
         PREMIUM (1):
-            No description available.
+            Premium service level.
         EXTREME (2):
-            No description available.
+            Extreme service level.
         STANDARD (3):
             Standard (Software offering)
     """

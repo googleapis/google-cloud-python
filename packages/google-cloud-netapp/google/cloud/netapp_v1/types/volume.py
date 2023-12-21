@@ -48,12 +48,14 @@ __protobuf__ = proto.module(
         "MonthlySchedule",
         "MountOption",
         "RestoreParameters",
+        "BackupConfig",
     },
 )
 
 
 class Protocols(proto.Enum):
-    r"""
+    r"""Protocols is an enum of all the supported network protocols
+    for a volume.
 
     Values:
         PROTOCOLS_UNSPECIFIED (0):
@@ -72,7 +74,8 @@ class Protocols(proto.Enum):
 
 
 class AccessType(proto.Enum):
-    r"""
+    r"""AccessType is an enum of all the supported access types for a
+    volume.
 
     Values:
         ACCESS_TYPE_UNSPECIFIED (0):
@@ -354,9 +357,11 @@ class RevertVolumeRequest(proto.Message):
 class Volume(proto.Message):
     r"""Volume provides a filesystem that you can mount.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
-            Output only. Name of the volume
+            Identifier. Name of the volume
         state (google.cloud.netapp_v1.types.Volume.State):
             Output only. State of the volume
         state_details (str):
@@ -433,6 +438,10 @@ class Volume(proto.Message):
         has_replication (bool):
             Output only. Indicates whether the volume is
             part of a replication relationship.
+        backup_config (google.cloud.netapp_v1.types.BackupConfig):
+            BackupConfig of the volume.
+
+            This field is a member of `oneof`_ ``_backup_config``.
         restricted_actions (MutableSequence[google.cloud.netapp_v1.types.RestrictedAction]):
             Optional. List of actions that are restricted
             on this volume.
@@ -595,6 +604,12 @@ class Volume(proto.Message):
     has_replication: bool = proto.Field(
         proto.BOOL,
         number=29,
+    )
+    backup_config: "BackupConfig" = proto.Field(
+        proto.MESSAGE,
+        number=30,
+        optional=True,
+        message="BackupConfig",
     )
     restricted_actions: MutableSequence["RestrictedAction"] = proto.RepeatedField(
         proto.ENUM,
@@ -1033,6 +1048,10 @@ class RestoreParameters(proto.Message):
     r"""The RestoreParameters if volume is created from a snapshot or
     backup.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -1044,12 +1063,58 @@ class RestoreParameters(proto.Message):
             projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}
 
             This field is a member of `oneof`_ ``source``.
+        source_backup (str):
+            Full name of the backup resource. Format:
+            projects/{project}/locations/{location}/backupVaults/{backup_vault_id}/backups/{backup_id}
+
+            This field is a member of `oneof`_ ``source``.
     """
 
     source_snapshot: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="source",
+    )
+    source_backup: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="source",
+    )
+
+
+class BackupConfig(proto.Message):
+    r"""BackupConfig contains backup related config on a volume.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        backup_policies (MutableSequence[str]):
+            Optional. When specified, schedule backups
+            will be created based on the policy
+            configuration.
+        backup_vault (str):
+            Optional. Name of backup vault. Format:
+            projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}
+        scheduled_backup_enabled (bool):
+            Optional. When set to true, scheduled backup
+            is enabled on the volume. This field should be
+            nil when there's no backup policy attached.
+
+            This field is a member of `oneof`_ ``_scheduled_backup_enabled``.
+    """
+
+    backup_policies: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    backup_vault: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    scheduled_backup_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
     )
 
 
