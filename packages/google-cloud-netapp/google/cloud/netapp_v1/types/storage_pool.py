@@ -206,7 +206,7 @@ class StoragePool(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Name of the storage pool
+            Identifier. Name of the storage pool
         service_level (google.cloud.netapp_v1.types.ServiceLevel):
             Required. Service level of the storage pool
         capacity_gib (int):
@@ -248,8 +248,8 @@ class StoragePool(proto.Message):
             Output only. Specifies the current pool
             encryption key source.
         global_access_allowed (bool):
-            Optional. Allows SO pool to access AD or DNS
-            server from other regions.
+            Deprecated. Used to allow SO pool to access
+            AD or DNS server from other regions.
 
             This field is a member of `oneof`_ ``_global_access_allowed``.
     """

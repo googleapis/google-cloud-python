@@ -204,7 +204,7 @@ class ActiveDirectory(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the active directory.
+            Identifier. The resource name of the active directory.
             Format:
             ``projects/{project_number}/locations/{location_id}/activeDirectories/{active_directory_id}``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):

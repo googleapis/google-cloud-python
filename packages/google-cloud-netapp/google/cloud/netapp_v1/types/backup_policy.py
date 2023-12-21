@@ -17,22 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.cloud.netapp.v1',
+    package="google.cloud.netapp.v1",
     manifest={
-        'BackupPolicy',
-        'CreateBackupPolicyRequest',
-        'GetBackupPolicyRequest',
-        'ListBackupPoliciesRequest',
-        'ListBackupPoliciesResponse',
-        'UpdateBackupPolicyRequest',
-        'DeleteBackupPolicyRequest',
+        "BackupPolicy",
+        "CreateBackupPolicyRequest",
+        "GetBackupPolicyRequest",
+        "ListBackupPoliciesRequest",
+        "ListBackupPoliciesResponse",
+        "UpdateBackupPolicyRequest",
+        "DeleteBackupPolicyRequest",
     },
 )
 
@@ -89,6 +87,7 @@ class BackupPolicy(proto.Message):
         state (google.cloud.netapp_v1.types.BackupPolicy.State):
             Output only. The backup policy state.
     """
+
     class State(proto.Enum):
         r"""
 
@@ -186,10 +185,10 @@ class CreateBackupPolicyRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    backup_policy: 'BackupPolicy' = proto.Field(
+    backup_policy: "BackupPolicy" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='BackupPolicy',
+        message="BackupPolicy",
     )
     backup_policy_id: str = proto.Field(
         proto.STRING,
@@ -273,10 +272,10 @@ class ListBackupPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_policies: MutableSequence['BackupPolicy'] = proto.RepeatedField(
+    backup_policies: MutableSequence["BackupPolicy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='BackupPolicy',
+        message="BackupPolicy",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -308,10 +307,10 @@ class UpdateBackupPolicyRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    backup_policy: 'BackupPolicy' = proto.Field(
+    backup_policy: "BackupPolicy" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='BackupPolicy',
+        message="BackupPolicy",
     )
 
 

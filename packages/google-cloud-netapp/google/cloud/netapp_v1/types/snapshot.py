@@ -202,7 +202,7 @@ class Snapshot(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the snapshot. Format:
+            Identifier. The resource name of the snapshot. Format:
             ``projects/{project_id}/locations/{location}/volumes/{volume_id}/snapshots/{snapshot_id}``.
         state (google.cloud.netapp_v1.types.Snapshot.State):
             Output only. The snapshot state.

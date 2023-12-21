@@ -26,6 +26,12 @@ from grpc.experimental import aio  # type: ignore
 
 from google.cloud.netapp_v1.types import active_directory as gcn_active_directory
 from google.cloud.netapp_v1.types import active_directory
+from google.cloud.netapp_v1.types import backup
+from google.cloud.netapp_v1.types import backup as gcn_backup
+from google.cloud.netapp_v1.types import backup_policy
+from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
+from google.cloud.netapp_v1.types import backup_vault
+from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
 from google.cloud.netapp_v1.types import kms
 from google.cloud.netapp_v1.types import replication
 from google.cloud.netapp_v1.types import replication as gcn_replication
@@ -1266,6 +1272,433 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["reverse_replication_direction"]
+
+    @property
+    def create_backup_vault(
+        self,
+    ) -> Callable[
+        [gcn_backup_vault.CreateBackupVaultRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create backup vault method over gRPC.
+
+        Creates new backup vault
+
+        Returns:
+            Callable[[~.CreateBackupVaultRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_backup_vault" not in self._stubs:
+            self._stubs["create_backup_vault"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/CreateBackupVault",
+                request_serializer=gcn_backup_vault.CreateBackupVaultRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_backup_vault"]
+
+    @property
+    def get_backup_vault(
+        self,
+    ) -> Callable[
+        [backup_vault.GetBackupVaultRequest], Awaitable[backup_vault.BackupVault]
+    ]:
+        r"""Return a callable for the get backup vault method over gRPC.
+
+        Returns the description of the specified backup vault
+
+        Returns:
+            Callable[[~.GetBackupVaultRequest],
+                    Awaitable[~.BackupVault]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup_vault" not in self._stubs:
+            self._stubs["get_backup_vault"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/GetBackupVault",
+                request_serializer=backup_vault.GetBackupVaultRequest.serialize,
+                response_deserializer=backup_vault.BackupVault.deserialize,
+            )
+        return self._stubs["get_backup_vault"]
+
+    @property
+    def list_backup_vaults(
+        self,
+    ) -> Callable[
+        [backup_vault.ListBackupVaultsRequest],
+        Awaitable[backup_vault.ListBackupVaultsResponse],
+    ]:
+        r"""Return a callable for the list backup vaults method over gRPC.
+
+        Returns list of all available backup vaults.
+
+        Returns:
+            Callable[[~.ListBackupVaultsRequest],
+                    Awaitable[~.ListBackupVaultsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backup_vaults" not in self._stubs:
+            self._stubs["list_backup_vaults"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/ListBackupVaults",
+                request_serializer=backup_vault.ListBackupVaultsRequest.serialize,
+                response_deserializer=backup_vault.ListBackupVaultsResponse.deserialize,
+            )
+        return self._stubs["list_backup_vaults"]
+
+    @property
+    def update_backup_vault(
+        self,
+    ) -> Callable[
+        [gcn_backup_vault.UpdateBackupVaultRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update backup vault method over gRPC.
+
+        Updates the settings of a specific backup vault.
+
+        Returns:
+            Callable[[~.UpdateBackupVaultRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_backup_vault" not in self._stubs:
+            self._stubs["update_backup_vault"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/UpdateBackupVault",
+                request_serializer=gcn_backup_vault.UpdateBackupVaultRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_backup_vault"]
+
+    @property
+    def delete_backup_vault(
+        self,
+    ) -> Callable[
+        [backup_vault.DeleteBackupVaultRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete backup vault method over gRPC.
+
+        Warning! This operation will permanently delete the
+        backup vault.
+
+        Returns:
+            Callable[[~.DeleteBackupVaultRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup_vault" not in self._stubs:
+            self._stubs["delete_backup_vault"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/DeleteBackupVault",
+                request_serializer=backup_vault.DeleteBackupVaultRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_backup_vault"]
+
+    @property
+    def create_backup(
+        self,
+    ) -> Callable[
+        [gcn_backup.CreateBackupRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create backup method over gRPC.
+
+        Creates a backup from the volume specified in the
+        request The backup can be created from the given
+        snapshot if specified in the request. If no snapshot
+        specified, there'll be a new snapshot taken to initiate
+        the backup creation.
+
+        Returns:
+            Callable[[~.CreateBackupRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_backup" not in self._stubs:
+            self._stubs["create_backup"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/CreateBackup",
+                request_serializer=gcn_backup.CreateBackupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_backup"]
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[[backup.GetBackupRequest], Awaitable[backup.Backup]]:
+        r"""Return a callable for the get backup method over gRPC.
+
+        Returns the description of the specified backup
+
+        Returns:
+            Callable[[~.GetBackupRequest],
+                    Awaitable[~.Backup]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup" not in self._stubs:
+            self._stubs["get_backup"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/GetBackup",
+                request_serializer=backup.GetBackupRequest.serialize,
+                response_deserializer=backup.Backup.deserialize,
+            )
+        return self._stubs["get_backup"]
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[[backup.ListBackupsRequest], Awaitable[backup.ListBackupsResponse]]:
+        r"""Return a callable for the list backups method over gRPC.
+
+        Returns descriptions of all backups for a
+        backupVault.
+
+        Returns:
+            Callable[[~.ListBackupsRequest],
+                    Awaitable[~.ListBackupsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backups" not in self._stubs:
+            self._stubs["list_backups"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/ListBackups",
+                request_serializer=backup.ListBackupsRequest.serialize,
+                response_deserializer=backup.ListBackupsResponse.deserialize,
+            )
+        return self._stubs["list_backups"]
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[[backup.DeleteBackupRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the delete backup method over gRPC.
+
+        Warning! This operation will permanently delete the
+        backup.
+
+        Returns:
+            Callable[[~.DeleteBackupRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup" not in self._stubs:
+            self._stubs["delete_backup"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/DeleteBackup",
+                request_serializer=backup.DeleteBackupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_backup"]
+
+    @property
+    def update_backup(
+        self,
+    ) -> Callable[
+        [gcn_backup.UpdateBackupRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update backup method over gRPC.
+
+        Update backup with full spec.
+
+        Returns:
+            Callable[[~.UpdateBackupRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_backup" not in self._stubs:
+            self._stubs["update_backup"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/UpdateBackup",
+                request_serializer=gcn_backup.UpdateBackupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_backup"]
+
+    @property
+    def create_backup_policy(
+        self,
+    ) -> Callable[
+        [gcn_backup_policy.CreateBackupPolicyRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create backup policy method over gRPC.
+
+        Creates new backup policy
+
+        Returns:
+            Callable[[~.CreateBackupPolicyRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_backup_policy" not in self._stubs:
+            self._stubs["create_backup_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/CreateBackupPolicy",
+                request_serializer=gcn_backup_policy.CreateBackupPolicyRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_backup_policy"]
+
+    @property
+    def get_backup_policy(
+        self,
+    ) -> Callable[
+        [backup_policy.GetBackupPolicyRequest], Awaitable[backup_policy.BackupPolicy]
+    ]:
+        r"""Return a callable for the get backup policy method over gRPC.
+
+        Returns the description of the specified backup policy by
+        backup_policy_id.
+
+        Returns:
+            Callable[[~.GetBackupPolicyRequest],
+                    Awaitable[~.BackupPolicy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup_policy" not in self._stubs:
+            self._stubs["get_backup_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/GetBackupPolicy",
+                request_serializer=backup_policy.GetBackupPolicyRequest.serialize,
+                response_deserializer=backup_policy.BackupPolicy.deserialize,
+            )
+        return self._stubs["get_backup_policy"]
+
+    @property
+    def list_backup_policies(
+        self,
+    ) -> Callable[
+        [backup_policy.ListBackupPoliciesRequest],
+        Awaitable[backup_policy.ListBackupPoliciesResponse],
+    ]:
+        r"""Return a callable for the list backup policies method over gRPC.
+
+        Returns list of all available backup policies.
+
+        Returns:
+            Callable[[~.ListBackupPoliciesRequest],
+                    Awaitable[~.ListBackupPoliciesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backup_policies" not in self._stubs:
+            self._stubs["list_backup_policies"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/ListBackupPolicies",
+                request_serializer=backup_policy.ListBackupPoliciesRequest.serialize,
+                response_deserializer=backup_policy.ListBackupPoliciesResponse.deserialize,
+            )
+        return self._stubs["list_backup_policies"]
+
+    @property
+    def update_backup_policy(
+        self,
+    ) -> Callable[
+        [gcn_backup_policy.UpdateBackupPolicyRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update backup policy method over gRPC.
+
+        Updates settings of a specific backup policy.
+
+        Returns:
+            Callable[[~.UpdateBackupPolicyRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_backup_policy" not in self._stubs:
+            self._stubs["update_backup_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/UpdateBackupPolicy",
+                request_serializer=gcn_backup_policy.UpdateBackupPolicyRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_backup_policy"]
+
+    @property
+    def delete_backup_policy(
+        self,
+    ) -> Callable[
+        [backup_policy.DeleteBackupPolicyRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete backup policy method over gRPC.
+
+        Warning! This operation will permanently delete the
+        backup policy.
+
+        Returns:
+            Callable[[~.DeleteBackupPolicyRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup_policy" not in self._stubs:
+            self._stubs["delete_backup_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/DeleteBackupPolicy",
+                request_serializer=backup_policy.DeleteBackupPolicyRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_backup_policy"]
 
     def close(self):
         return self.grpc_channel.close()

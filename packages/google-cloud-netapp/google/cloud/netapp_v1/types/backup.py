@@ -17,22 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.cloud.netapp.v1',
+    package="google.cloud.netapp.v1",
     manifest={
-        'Backup',
-        'ListBackupsRequest',
-        'ListBackupsResponse',
-        'GetBackupRequest',
-        'CreateBackupRequest',
-        'DeleteBackupRequest',
-        'UpdateBackupRequest',
+        "Backup",
+        "ListBackupsRequest",
+        "ListBackupsResponse",
+        "GetBackupRequest",
+        "CreateBackupRequest",
+        "DeleteBackupRequest",
+        "UpdateBackupRequest",
     },
 )
 
@@ -81,6 +79,7 @@ class Backup(proto.Message):
             chain in bytes = baseline backup size +
             sum(incremental backup size)
     """
+
     class State(proto.Enum):
         r"""The Backup States
 
@@ -250,10 +249,10 @@ class ListBackupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backups: MutableSequence['Backup'] = proto.RepeatedField(
+    backups: MutableSequence["Backup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Backup',
+        message="Backup",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -307,10 +306,10 @@ class CreateBackupRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    backup: 'Backup' = proto.Field(
+    backup: "Backup" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='Backup',
+        message="Backup",
     )
 
 
@@ -350,10 +349,10 @@ class UpdateBackupRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    backup: 'Backup' = proto.Field(
+    backup: "Backup" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='Backup',
+        message="Backup",
     )
 
 

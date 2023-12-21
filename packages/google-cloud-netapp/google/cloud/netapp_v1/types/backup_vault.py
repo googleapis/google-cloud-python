@@ -17,22 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.cloud.netapp.v1',
+    package="google.cloud.netapp.v1",
     manifest={
-        'BackupVault',
-        'GetBackupVaultRequest',
-        'ListBackupVaultsRequest',
-        'ListBackupVaultsResponse',
-        'CreateBackupVaultRequest',
-        'DeleteBackupVaultRequest',
-        'UpdateBackupVaultRequest',
+        "BackupVault",
+        "GetBackupVaultRequest",
+        "ListBackupVaultsRequest",
+        "ListBackupVaultsResponse",
+        "CreateBackupVaultRequest",
+        "DeleteBackupVaultRequest",
+        "UpdateBackupVaultRequest",
     },
 )
 
@@ -54,6 +52,7 @@ class BackupVault(proto.Message):
             Resource labels to represent user provided
             metadata.
     """
+
     class State(proto.Enum):
         r"""The Backup Vault States
 
@@ -180,10 +179,10 @@ class ListBackupVaultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_vaults: MutableSequence['BackupVault'] = proto.RepeatedField(
+    backup_vaults: MutableSequence["BackupVault"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='BackupVault',
+        message="BackupVault",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -222,10 +221,10 @@ class CreateBackupVaultRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    backup_vault: 'BackupVault' = proto.Field(
+    backup_vault: "BackupVault" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='BackupVault',
+        message="BackupVault",
     )
 
 
@@ -265,10 +264,10 @@ class UpdateBackupVaultRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    backup_vault: 'BackupVault' = proto.Field(
+    backup_vault: "BackupVault" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='BackupVault',
+        message="BackupVault",
     )
 
 

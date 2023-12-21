@@ -47,6 +47,12 @@ from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.netapp_v1.types import active_directory as gcn_active_directory
 from google.cloud.netapp_v1.types import active_directory
+from google.cloud.netapp_v1.types import backup
+from google.cloud.netapp_v1.types import backup as gcn_backup
+from google.cloud.netapp_v1.types import backup_policy
+from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
+from google.cloud.netapp_v1.types import backup_vault
+from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
 from google.cloud.netapp_v1.types import kms
 from google.cloud.netapp_v1.types import replication
 from google.cloud.netapp_v1.types import replication as gcn_replication
@@ -87,6 +93,30 @@ class NetAppRestInterceptor:
                 return request, metadata
 
             def post_create_active_directory(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_backup_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_backup_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_backup_vault(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_backup_vault(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -135,6 +165,30 @@ class NetAppRestInterceptor:
                 return request, metadata
 
             def post_delete_active_directory(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_backup_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_backup_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_backup_vault(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_backup_vault(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -194,6 +248,30 @@ class NetAppRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_backup_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_backup_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_backup_vault(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_backup_vault(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_kms_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -239,6 +317,30 @@ class NetAppRestInterceptor:
                 return request, metadata
 
             def post_list_active_directories(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_backup_policies(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_backup_policies(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_backups(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_backups(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_backup_vaults(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_backup_vaults(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -322,6 +424,30 @@ class NetAppRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_backup_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_backup_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_backup_vault(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_backup_vault(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_kms_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -394,6 +520,75 @@ class NetAppRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_active_directory
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_backup(
+        self,
+        request: gcn_backup.CreateBackupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[gcn_backup.CreateBackupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_create_backup(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_backup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_backup_policy(
+        self,
+        request: gcn_backup_policy.CreateBackupPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[gcn_backup_policy.CreateBackupPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_backup_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_create_backup_policy(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_backup_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_backup_vault(
+        self,
+        request: gcn_backup_vault.CreateBackupVaultRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[gcn_backup_vault.CreateBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_backup_vault
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_create_backup_vault(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_backup_vault
 
         Override in a subclass to manipulate the response
         after it is returned by the NetApp server but before
@@ -532,6 +727,73 @@ class NetAppRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_active_directory
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_backup(
+        self, request: backup.DeleteBackupRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[backup.DeleteBackupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_delete_backup(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_backup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_backup_policy(
+        self,
+        request: backup_policy.DeleteBackupPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[backup_policy.DeleteBackupPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_backup_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_delete_backup_policy(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_backup_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_backup_vault(
+        self,
+        request: backup_vault.DeleteBackupVaultRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[backup_vault.DeleteBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_backup_vault
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_delete_backup_vault(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_backup_vault
 
         Override in a subclass to manipulate the response
         after it is returned by the NetApp server but before
@@ -694,6 +956,71 @@ class NetAppRestInterceptor:
         """
         return response
 
+    def pre_get_backup(
+        self, request: backup.GetBackupRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[backup.GetBackupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_get_backup(self, response: backup.Backup) -> backup.Backup:
+        """Post-rpc interceptor for get_backup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_backup_policy(
+        self,
+        request: backup_policy.GetBackupPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[backup_policy.GetBackupPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_backup_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_get_backup_policy(
+        self, response: backup_policy.BackupPolicy
+    ) -> backup_policy.BackupPolicy:
+        """Post-rpc interceptor for get_backup_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_backup_vault(
+        self,
+        request: backup_vault.GetBackupVaultRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[backup_vault.GetBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_backup_vault
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_get_backup_vault(
+        self, response: backup_vault.BackupVault
+    ) -> backup_vault.BackupVault:
+        """Post-rpc interceptor for get_backup_vault
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_kms_config(
         self, request: kms.GetKmsConfigRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[kms.GetKmsConfigRequest, Sequence[Tuple[str, str]]]:
@@ -815,6 +1142,73 @@ class NetAppRestInterceptor:
         self, response: active_directory.ListActiveDirectoriesResponse
     ) -> active_directory.ListActiveDirectoriesResponse:
         """Post-rpc interceptor for list_active_directories
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_backup_policies(
+        self,
+        request: backup_policy.ListBackupPoliciesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[backup_policy.ListBackupPoliciesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_backup_policies
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_list_backup_policies(
+        self, response: backup_policy.ListBackupPoliciesResponse
+    ) -> backup_policy.ListBackupPoliciesResponse:
+        """Post-rpc interceptor for list_backup_policies
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_backups(
+        self, request: backup.ListBackupsRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[backup.ListBackupsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_backups
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_list_backups(
+        self, response: backup.ListBackupsResponse
+    ) -> backup.ListBackupsResponse:
+        """Post-rpc interceptor for list_backups
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_backup_vaults(
+        self,
+        request: backup_vault.ListBackupVaultsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[backup_vault.ListBackupVaultsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_backup_vaults
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_list_backup_vaults(
+        self, response: backup_vault.ListBackupVaultsResponse
+    ) -> backup_vault.ListBackupVaultsResponse:
+        """Post-rpc interceptor for list_backup_vaults
 
         Override in a subclass to manipulate the response
         after it is returned by the NetApp server but before
@@ -1043,6 +1437,75 @@ class NetAppRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_active_directory
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_backup(
+        self,
+        request: gcn_backup.UpdateBackupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[gcn_backup.UpdateBackupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_update_backup(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_backup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_backup_policy(
+        self,
+        request: gcn_backup_policy.UpdateBackupPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[gcn_backup_policy.UpdateBackupPolicyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_backup_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_update_backup_policy(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_backup_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_backup_vault(
+        self,
+        request: gcn_backup_vault.UpdateBackupVaultRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[gcn_backup_vault.UpdateBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_backup_vault
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_update_backup_vault(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_backup_vault
 
         Override in a subclass to manipulate the response
         after it is returned by the NetApp server but before
@@ -1568,6 +2031,306 @@ class NetAppRestTransport(NetAppTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_active_directory(resp)
+            return resp
+
+    class _CreateBackup(NetAppRestStub):
+        def __hash__(self):
+            return hash("CreateBackup")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "backupId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gcn_backup.CreateBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create backup method over HTTP.
+
+            Args:
+                request (~.gcn_backup.CreateBackupRequest):
+                    The request object. CreateBackupRequest creates a backup.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/backupVaults/*}/backups",
+                    "body": "backup",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_backup(request, metadata)
+            pb_request = gcn_backup.CreateBackupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_backup(resp)
+            return resp
+
+    class _CreateBackupPolicy(NetAppRestStub):
+        def __hash__(self):
+            return hash("CreateBackupPolicy")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "backupPolicyId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gcn_backup_policy.CreateBackupPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create backup policy method over HTTP.
+
+            Args:
+                request (~.gcn_backup_policy.CreateBackupPolicyRequest):
+                    The request object. CreateBackupPolicyRequest creates a
+                backupPolicy.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/backupPolicies",
+                    "body": "backup_policy",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_backup_policy(
+                request, metadata
+            )
+            pb_request = gcn_backup_policy.CreateBackupPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_backup_policy(resp)
+            return resp
+
+    class _CreateBackupVault(NetAppRestStub):
+        def __hash__(self):
+            return hash("CreateBackupVault")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "backupVaultId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gcn_backup_vault.CreateBackupVaultRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create backup vault method over HTTP.
+
+            Args:
+                request (~.gcn_backup_vault.CreateBackupVaultRequest):
+                    The request object. CreateBackupVaultRequest creates a
+                backup vault.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/backupVaults",
+                    "body": "backup_vault",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_backup_vault(
+                request, metadata
+            )
+            pb_request = gcn_backup_vault.CreateBackupVaultRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_backup_vault(resp)
             return resp
 
     class _CreateKmsConfig(NetAppRestStub):
@@ -2158,6 +2921,273 @@ class NetAppRestTransport(NetAppTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_active_directory(resp)
+            return resp
+
+    class _DeleteBackup(NetAppRestStub):
+        def __hash__(self):
+            return hash("DeleteBackup")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup.DeleteBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete backup method over HTTP.
+
+            Args:
+                request (~.backup.DeleteBackupRequest):
+                    The request object. DeleteBackupRequest deletes a backup.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/backupVaults/*/backups/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_backup(request, metadata)
+            pb_request = backup.DeleteBackupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_backup(resp)
+            return resp
+
+    class _DeleteBackupPolicy(NetAppRestStub):
+        def __hash__(self):
+            return hash("DeleteBackupPolicy")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup_policy.DeleteBackupPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete backup policy method over HTTP.
+
+            Args:
+                request (~.backup_policy.DeleteBackupPolicyRequest):
+                    The request object. DeleteBackupPolicyRequest deletes a
+                backup policy.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/backupPolicies/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_backup_policy(
+                request, metadata
+            )
+            pb_request = backup_policy.DeleteBackupPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_backup_policy(resp)
+            return resp
+
+    class _DeleteBackupVault(NetAppRestStub):
+        def __hash__(self):
+            return hash("DeleteBackupVault")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup_vault.DeleteBackupVaultRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete backup vault method over HTTP.
+
+            Args:
+                request (~.backup_vault.DeleteBackupVaultRequest):
+                    The request object. DeleteBackupVaultRequest deletes a
+                backupVault.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/backupVaults/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_backup_vault(
+                request, metadata
+            )
+            pb_request = backup_vault.DeleteBackupVaultRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_backup_vault(resp)
             return resp
 
     class _DeleteKmsConfig(NetAppRestStub):
@@ -2794,6 +3824,271 @@ class NetAppRestTransport(NetAppTransport):
             resp = self._interceptor.post_get_active_directory(resp)
             return resp
 
+    class _GetBackup(NetAppRestStub):
+        def __hash__(self):
+            return hash("GetBackup")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup.GetBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> backup.Backup:
+            r"""Call the get backup method over HTTP.
+
+            Args:
+                request (~.backup.GetBackupRequest):
+                    The request object. GetBackupRequest gets the state of a
+                backup.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.backup.Backup:
+                    A NetApp Backup.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/backupVaults/*/backups/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_backup(request, metadata)
+            pb_request = backup.GetBackupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backup.Backup()
+            pb_resp = backup.Backup.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_backup(resp)
+            return resp
+
+    class _GetBackupPolicy(NetAppRestStub):
+        def __hash__(self):
+            return hash("GetBackupPolicy")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup_policy.GetBackupPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> backup_policy.BackupPolicy:
+            r"""Call the get backup policy method over HTTP.
+
+            Args:
+                request (~.backup_policy.GetBackupPolicyRequest):
+                    The request object. GetBackupPolicyRequest gets the state
+                of a backupPolicy.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.backup_policy.BackupPolicy:
+                    Backup Policy.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/backupPolicies/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_backup_policy(
+                request, metadata
+            )
+            pb_request = backup_policy.GetBackupPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backup_policy.BackupPolicy()
+            pb_resp = backup_policy.BackupPolicy.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_backup_policy(resp)
+            return resp
+
+    class _GetBackupVault(NetAppRestStub):
+        def __hash__(self):
+            return hash("GetBackupVault")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup_vault.GetBackupVaultRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> backup_vault.BackupVault:
+            r"""Call the get backup vault method over HTTP.
+
+            Args:
+                request (~.backup_vault.GetBackupVaultRequest):
+                    The request object. GetBackupVaultRequest gets the state
+                of a backupVault.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.backup_vault.BackupVault:
+                    A NetApp BackupVault.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/backupVaults/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_backup_vault(
+                request, metadata
+            )
+            pb_request = backup_vault.GetBackupVaultRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backup_vault.BackupVault()
+            pb_resp = backup_vault.BackupVault.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_backup_vault(resp)
+            return resp
+
     class _GetKmsConfig(NetAppRestStub):
         def __hash__(self):
             return hash("GetKmsConfig")
@@ -3336,6 +4631,276 @@ class NetAppRestTransport(NetAppTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_active_directories(resp)
+            return resp
+
+    class _ListBackupPolicies(NetAppRestStub):
+        def __hash__(self):
+            return hash("ListBackupPolicies")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup_policy.ListBackupPoliciesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> backup_policy.ListBackupPoliciesResponse:
+            r"""Call the list backup policies method over HTTP.
+
+            Args:
+                request (~.backup_policy.ListBackupPoliciesRequest):
+                    The request object. ListBackupPoliciesRequest for
+                requesting multiple backup policies.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.backup_policy.ListBackupPoliciesResponse:
+                    ListBackupPoliciesResponse contains
+                all the backup policies requested.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/backupPolicies",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_backup_policies(
+                request, metadata
+            )
+            pb_request = backup_policy.ListBackupPoliciesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backup_policy.ListBackupPoliciesResponse()
+            pb_resp = backup_policy.ListBackupPoliciesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_backup_policies(resp)
+            return resp
+
+    class _ListBackups(NetAppRestStub):
+        def __hash__(self):
+            return hash("ListBackups")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup.ListBackupsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> backup.ListBackupsResponse:
+            r"""Call the list backups method over HTTP.
+
+            Args:
+                request (~.backup.ListBackupsRequest):
+                    The request object. ListBackupsRequest lists backups.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.backup.ListBackupsResponse:
+                    ListBackupsResponse is the result of
+                ListBackupsRequest.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/backupVaults/*}/backups",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_backups(request, metadata)
+            pb_request = backup.ListBackupsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backup.ListBackupsResponse()
+            pb_resp = backup.ListBackupsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_backups(resp)
+            return resp
+
+    class _ListBackupVaults(NetAppRestStub):
+        def __hash__(self):
+            return hash("ListBackupVaults")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: backup_vault.ListBackupVaultsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> backup_vault.ListBackupVaultsResponse:
+            r"""Call the list backup vaults method over HTTP.
+
+            Args:
+                request (~.backup_vault.ListBackupVaultsRequest):
+                    The request object. ListBackupVaultsRequest lists
+                backupVaults.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.backup_vault.ListBackupVaultsResponse:
+                    ListBackupVaultsResponse is the
+                result of ListBackupVaultsRequest.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/backupVaults",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_backup_vaults(
+                request, metadata
+            )
+            pb_request = backup_vault.ListBackupVaultsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backup_vault.ListBackupVaultsResponse()
+            pb_resp = backup_vault.ListBackupVaultsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_backup_vaults(resp)
             return resp
 
     class _ListKmsConfigs(NetAppRestStub):
@@ -4285,6 +5850,308 @@ class NetAppRestTransport(NetAppTransport):
             resp = self._interceptor.post_update_active_directory(resp)
             return resp
 
+    class _UpdateBackup(NetAppRestStub):
+        def __hash__(self):
+            return hash("UpdateBackup")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gcn_backup.UpdateBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update backup method over HTTP.
+
+            Args:
+                request (~.gcn_backup.UpdateBackupRequest):
+                    The request object. UpdateBackupRequest updates
+                description and/or labels for a backup.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{backup.name=projects/*/locations/*/backupVaults/*/backups/*}",
+                    "body": "backup",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_backup(request, metadata)
+            pb_request = gcn_backup.UpdateBackupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_backup(resp)
+            return resp
+
+    class _UpdateBackupPolicy(NetAppRestStub):
+        def __hash__(self):
+            return hash("UpdateBackupPolicy")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gcn_backup_policy.UpdateBackupPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update backup policy method over HTTP.
+
+            Args:
+                request (~.gcn_backup_policy.UpdateBackupPolicyRequest):
+                    The request object. UpdateBackupPolicyRequest for
+                updating a backup policy.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{backup_policy.name=projects/*/locations/*/backupPolicies/*}",
+                    "body": "backup_policy",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_backup_policy(
+                request, metadata
+            )
+            pb_request = gcn_backup_policy.UpdateBackupPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_backup_policy(resp)
+            return resp
+
+    class _UpdateBackupVault(NetAppRestStub):
+        def __hash__(self):
+            return hash("UpdateBackupVault")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gcn_backup_vault.UpdateBackupVaultRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update backup vault method over HTTP.
+
+            Args:
+                request (~.gcn_backup_vault.UpdateBackupVaultRequest):
+                    The request object. UpdateBackupVaultRequest updates
+                description and/or labels for a
+                backupVault.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{backup_vault.name=projects/*/locations/*/backupVaults/*}",
+                    "body": "backup_vault",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_backup_vault(
+                request, metadata
+            )
+            pb_request = gcn_backup_vault.UpdateBackupVaultRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_backup_vault(resp)
+            return resp
+
     class _UpdateKmsConfig(NetAppRestStub):
         def __hash__(self):
             return hash("UpdateKmsConfig")
@@ -4899,6 +6766,34 @@ class NetAppRestTransport(NetAppTransport):
         return self._CreateActiveDirectory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_backup(
+        self,
+    ) -> Callable[[gcn_backup.CreateBackupRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_backup_policy(
+        self,
+    ) -> Callable[
+        [gcn_backup_policy.CreateBackupPolicyRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateBackupPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_backup_vault(
+        self,
+    ) -> Callable[
+        [gcn_backup_vault.CreateBackupVaultRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateBackupVault(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_kms_config(
         self,
     ) -> Callable[[kms.CreateKmsConfigRequest], operations_pb2.Operation]:
@@ -4949,6 +6844,30 @@ class NetAppRestTransport(NetAppTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteActiveDirectory(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[[backup.DeleteBackupRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_backup_policy(
+        self,
+    ) -> Callable[[backup_policy.DeleteBackupPolicyRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteBackupPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_backup_vault(
+        self,
+    ) -> Callable[[backup_vault.DeleteBackupVaultRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteBackupVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_kms_config(
@@ -5009,6 +6928,28 @@ class NetAppRestTransport(NetAppTransport):
         return self._GetActiveDirectory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_backup(self) -> Callable[[backup.GetBackupRequest], backup.Backup]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_backup_policy(
+        self,
+    ) -> Callable[[backup_policy.GetBackupPolicyRequest], backup_policy.BackupPolicy]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBackupPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_backup_vault(
+        self,
+    ) -> Callable[[backup_vault.GetBackupVaultRequest], backup_vault.BackupVault]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBackupVault(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_kms_config(self) -> Callable[[kms.GetKmsConfigRequest], kms.KmsConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -5054,6 +6995,35 @@ class NetAppRestTransport(NetAppTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListActiveDirectories(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_backup_policies(
+        self,
+    ) -> Callable[
+        [backup_policy.ListBackupPoliciesRequest],
+        backup_policy.ListBackupPoliciesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBackupPolicies(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[[backup.ListBackupsRequest], backup.ListBackupsResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_backup_vaults(
+        self,
+    ) -> Callable[
+        [backup_vault.ListBackupVaultsRequest], backup_vault.ListBackupVaultsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBackupVaults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_kms_configs(
@@ -5142,6 +7112,34 @@ class NetAppRestTransport(NetAppTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateActiveDirectory(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_backup(
+        self,
+    ) -> Callable[[gcn_backup.UpdateBackupRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_backup_policy(
+        self,
+    ) -> Callable[
+        [gcn_backup_policy.UpdateBackupPolicyRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateBackupPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_backup_vault(
+        self,
+    ) -> Callable[
+        [gcn_backup_vault.UpdateBackupVaultRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateBackupVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_kms_config(
