@@ -117,7 +117,7 @@ the BigQuery client the following PyPI packages need to be installed:
 
 .. code-block:: console
 
-    pip install google-cloud-bigquery[opentelemetry] opentelemetry-exporter-google-cloud
+    pip install google-cloud-bigquery[opentelemetry] opentelemetry-exporter-gcp-trace
 
 After installation, OpenTelemetry can be used in the BigQuery
 client and in BigQuery jobs. First, however, an exporter must be
@@ -128,12 +128,11 @@ example of this can be found here:
 
     from opentelemetry import trace
     from opentelemetry.sdk.trace import TracerProvider
-    from opentelemetry.sdk.trace.export import BatchExportSpanProcessor
+    from opentelemetry.sdk.trace.export import BatchSpanProcessor
     from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
+    tracer_provider = TracerProvider()
+    tracer_provider = BatchSpanProcessor(CloudTraceSpanExporter())
     trace.set_tracer_provider(TracerProvider())
-    trace.get_tracer_provider().add_span_processor(
-        BatchExportSpanProcessor(CloudTraceSpanExporter())
-    )
 
 In this example all tracing data will be published to the Google
 `Cloud Trace`_ console. For more information on OpenTelemetry, please consult the `OpenTelemetry documentation`_.
