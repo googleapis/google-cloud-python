@@ -184,4 +184,5 @@ def test_bqml_standalone_transform(penguins_df_default_index, new_penguins_df):
         expected,
         check_exact=False,
         rtol=0.1,
+        check_dtype=False,
     )

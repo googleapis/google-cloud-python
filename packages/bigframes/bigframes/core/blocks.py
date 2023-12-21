@@ -1063,7 +1063,7 @@ class Block:
         stats: list[agg_ops.AggregateOp] = [agg_ops.count_op]
         if dtype not in bigframes.dtypes.UNORDERED_DTYPES:
             stats += [agg_ops.min_op, agg_ops.max_op]
-        if dtype in bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES:
+        if dtype in bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE:
             # Notable exclusions:
             # prod op tends to cause overflows
             # Also, var_op is redundant as can be derived from std

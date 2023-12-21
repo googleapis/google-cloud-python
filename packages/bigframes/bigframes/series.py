@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import functools
 import itertools
 import numbers
 import textwrap
@@ -455,7 +456,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         else:  # Scalar
             replace_list = [to_replace]
         replace_list = [
-            i for i in replace_list if bigframes.dtypes.is_comparable(i, self.dtype)
+            i for i in replace_list if bigframes.dtypes.is_compatible(i, self.dtype)
         ]
         return self._simple_replace(replace_list, value) if replace_list else self
 
@@ -472,10 +473,14 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return Series(block.select_column(result_col))
 
     def _simple_replace(self, to_replace_list: typing.Sequence, value):
-        if not bigframes.dtypes.is_dtype(value, self.dtype):
+        result_type = bigframes.dtypes.is_compatible(value, self.dtype)
+        if not result_type:
             raise NotImplementedError(
                 f"Cannot replace {self.dtype} elements with incompatible item {value} as mixed-type columns not supported. {constants.FEEDBACK_LINK}"
             )
+
+        if result_type != self.dtype:
+            return self.astype(result_type)._simple_replace(to_replace_list, value)
 
         block, cond = self._block.apply_unary_op(
             self._value_column, ops.IsInOp(to_replace_list)
@@ -490,15 +495,26 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def _mapping_replace(self, mapping: dict[typing.Hashable, typing.Hashable]):
         tuples = []
+        lcd_types: list[typing.Optional[bigframes.dtypes.Dtype]] = []
         for key, value in mapping.items():
-            if not bigframes.dtypes.is_comparable(key, self.dtype):
+            lcd_type = bigframes.dtypes.is_compatible(key, self.dtype)
+            if not lcd_type:
                 continue
             if not bigframes.dtypes.is_dtype(value, self.dtype):
                 raise NotImplementedError(
                     f"Cannot replace {self.dtype} elements with incompatible item {value} as mixed-type columns not supported. {constants.FEEDBACK_LINK}"
                 )
             tuples.append((key, value))
+            lcd_types.append(lcd_type)
 
+        result_dtype = functools.reduce(
+            lambda t1, t2: bigframes.dtypes.lcd_type(t1, t2) if (t1 and t2) else None,
+            lcd_types,
+        )
+        if not result_dtype:
+            raise NotImplementedError(
+                f"Cannot replace {self.dtype} elements with incompatible mapping {mapping} as mixed-type columns not supported. {constants.FEEDBACK_LINK}"
+            )
         block, result = self._block.apply_unary_op(
             self._value_column, ops.MapOp(tuple(tuples))
         )
@@ -782,7 +798,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def agg(self, func: str | typing.Sequence[str]) -> scalars.Scalar | Series:
         if _is_list_like(func):
-            if self.dtype not in bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES:
+            if self.dtype not in bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE:
                 raise NotImplementedError(
                     f"Multiple aggregations only supported on numeric series. {constants.FEEDBACK_LINK}"
                 )

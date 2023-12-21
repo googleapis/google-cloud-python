@@ -56,7 +56,9 @@ def test_to_pandas_array_struct_correct_result(session):
     result = df.to_pandas()
     expected = pd.DataFrame(
         {
-            "array_column": [[1, 3, 2]],
+            "array_column": pd.Series(
+                [[1, 3, 2]], dtype=pd.ArrowDtype(pa.list_(pa.int64()))
+            ),
             "struct_column": pd.Series(
                 [{"string_field": "a", "float_field": 1.2}],
                 dtype=pd.ArrowDtype(
@@ -91,7 +93,8 @@ def test_load_json(session):
     expected = pd.DataFrame(
         {
             "json_column": ['{"bar":true,"foo":10}'],
-        }
+        },
+        dtype=pd.StringDtype(storage="pyarrow"),
     )
     expected.index = expected.index.astype("Int64")
     pd.testing.assert_series_equal(result.dtypes, expected.dtypes)
@@ -137,6 +140,8 @@ def test_to_csv_index(
     dtype = scalars_df.reset_index().dtypes.to_dict()
     dtype.pop("geography_col")
     dtype.pop("rowindex")
+    # read_csv will decode into bytes inproperly, convert_pandas_dtypes will encode properly from string
+    dtype.pop("bytes_col")
     gcs_df = pd.read_csv(
         path,
         dtype=dtype,
@@ -148,7 +153,6 @@ def test_to_csv_index(
 
     scalars_pandas_df = scalars_pandas_df.copy()
     scalars_pandas_df.index = scalars_pandas_df.index.astype("int64")
-
     # Ordering should be maintained for tables smaller than 1 GB.
     pd.testing.assert_frame_equal(gcs_df, scalars_pandas_df)
 
@@ -174,6 +178,8 @@ def test_to_csv_tabs(
     dtype = scalars_df.reset_index().dtypes.to_dict()
     dtype.pop("geography_col")
     dtype.pop("rowindex")
+    # read_csv will decode into bytes inproperly, convert_pandas_dtypes will encode properly from string
+    dtype.pop("bytes_col")
     gcs_df = pd.read_csv(
         path,
         sep="\t",
@@ -216,6 +222,8 @@ def test_to_gbq_index(scalars_dfs, dataset_id, index):
         df_out = df_out.sort_values("rowindex_2").reset_index(drop=True)
 
     convert_pandas_dtypes(df_out, bytes_col=False)
+    # pd.read_gbq interpets bytes_col as object, reconvert to pyarrow binary
+    df_out["bytes_col"] = df_out["bytes_col"].astype(pd.ArrowDtype(pa.binary()))
     expected = scalars_pandas_df.copy()
     expected.index.name = index_col
     pd.testing.assert_frame_equal(df_out, expected, check_index_type=False)
@@ -377,7 +385,9 @@ def test_to_parquet_index(scalars_dfs, gcs_folder, index):
     scalars_pandas_df.index = scalars_pandas_df.index.astype("Int64")
 
     # Ordering should be maintained for tables smaller than 1 GB.
-    pd.testing.assert_frame_equal(gcs_df, scalars_pandas_df)
+    pd.testing.assert_frame_equal(
+        gcs_df.drop("bytes_col", axis=1), scalars_pandas_df.drop("bytes_col", axis=1)
+    )
 
 
 def test_to_sql_query_unnamed_index_included(

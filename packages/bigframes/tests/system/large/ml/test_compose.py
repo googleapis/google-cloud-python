@@ -72,7 +72,7 @@ def test_columntransformer_standalone_fit_and_transform(
         expected.standard_scaled_flipper_length_mm.astype("Float64")
     )
 
-    pandas.testing.assert_frame_equal(result, expected, rtol=1e-3)
+    pandas.testing.assert_frame_equal(result, expected, rtol=1e-3, check_dtype=False)
 
 
 def test_columntransformer_standalone_fit_transform(new_penguins_df):
@@ -123,4 +123,4 @@ def test_columntransformer_standalone_fit_transform(new_penguins_df):
         expected.standard_scaled_flipper_length_mm.astype("Float64")
     )
 
-    pandas.testing.assert_frame_equal(result, expected, rtol=1e-3)
+    pandas.testing.assert_frame_equal(result, expected, rtol=1e-3, check_dtype=False)

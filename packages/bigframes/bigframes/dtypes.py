@@ -15,6 +15,7 @@
 """Mappings for Pandas dtypes supported by BigQuery DataFrames package"""
 
 import datetime
+import decimal
 import textwrap
 import typing
 from typing import Any, Dict, Iterable, Literal, Tuple, Union
@@ -30,6 +31,7 @@ import pyarrow as pa
 
 import bigframes.constants as constants
 import third_party.bigframes_vendored.google_cloud_bigquery._pandas_helpers as gcb3p_pandas_helpers
+import third_party.bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 
 # Type hints for Pandas dtypes supported by BigQuery DataFrame
 Dtype = Union[
@@ -39,9 +41,6 @@ Dtype = Union[
     pd.StringDtype,
     pd.ArrowDtype,
 ]
-
-# Corresponds to the pandas concept of numeric type (such as when 'numeric_only' is specified in an operation)
-NUMERIC_BIGFRAMES_TYPES = [pd.BooleanDtype(), pd.Float64Dtype(), pd.Int64Dtype()]
 
 # On BQ side, ARRAY, STRUCT, GEOGRAPHY, JSON are not orderable
 UNORDERED_DTYPES = [gpd.array.GeometryDtype()]
@@ -57,6 +56,9 @@ DtypeString = Literal[
     "timestamp[us][pyarrow]",
     "date32[day][pyarrow]",
     "time64[us][pyarrow]",
+    "decimal128(38, 9)[pyarrow]",
+    "decimal256(38, 9)[pyarrow]",
+    "binary[pyarrow]",
 ]
 
 # Type hints for Ibis data types supported by BigQuery DataFrame
@@ -72,8 +74,17 @@ IbisDtype = Union[
 
 BOOL_BIGFRAMES_TYPES = [pd.BooleanDtype()]
 
-# Several operations are restricted to these types.
-NUMERIC_BIGFRAMES_TYPES = [pd.BooleanDtype(), pd.Float64Dtype(), pd.Int64Dtype()]
+# Corresponds to the pandas concept of numeric type (such as when 'numeric_only' is specified in an operation)
+# Pandas is inconsistent, so two definitions are provided, each used in different contexts
+NUMERIC_BIGFRAMES_TYPES_RESTRICTIVE = [
+    pd.Float64Dtype(),
+    pd.Int64Dtype(),
+]
+NUMERIC_BIGFRAMES_TYPES_PERMISSIVE = NUMERIC_BIGFRAMES_TYPES_RESTRICTIVE + [
+    pd.BooleanDtype(),
+    pd.ArrowDtype(pa.decimal128(38, 9)),
+    pd.ArrowDtype(pa.decimal256(76, 38)),
+]
 
 # Type hints for Ibis data types that can be read to Python objects by BigQuery DataFrame
 ReadOnlyIbisDtype = Union[
@@ -97,6 +108,15 @@ BIDIRECTIONAL_MAPPINGS: Iterable[Tuple[IbisDtype, Dtype]] = (
         ibis_dtypes.Timestamp(timezone="UTC"),
         pd.ArrowDtype(pa.timestamp("us", tz="UTC")),
     ),
+    (ibis_dtypes.binary, pd.ArrowDtype(pa.binary())),
+    (
+        ibis_dtypes.Decimal(precision=38, scale=9, nullable=True),
+        pd.ArrowDtype(pa.decimal128(38, 9)),
+    ),
+    (
+        ibis_dtypes.Decimal(precision=76, scale=38, nullable=True),
+        pd.ArrowDtype(pa.decimal256(76, 38)),
+    ),
 )
 
 BIGFRAMES_TO_IBIS: Dict[Dtype, ibis_dtypes.DataType] = {
@@ -112,6 +132,9 @@ IBIS_TO_ARROW: Dict[ibis_dtypes.DataType, pa.DataType] = {
     ibis_dtypes.time: pa.time64("us"),
     ibis_dtypes.Timestamp(timezone=None): pa.timestamp("us"),
     ibis_dtypes.Timestamp(timezone="UTC"): pa.timestamp("us", tz="UTC"),
+    ibis_dtypes.binary: pa.binary(),
+    ibis_dtypes.Decimal(precision=38, scale=9, nullable=True): pa.decimal128(38, 9),
+    ibis_dtypes.Decimal(precision=76, scale=38, nullable=True): pa.decimal256(76, 38),
 }
 
 ARROW_TO_IBIS = {arrow: ibis for ibis, arrow in IBIS_TO_ARROW.items()}
@@ -125,10 +148,6 @@ IBIS_TO_BIGFRAMES.update(
 )
 IBIS_TO_BIGFRAMES.update(
     {
-        ibis_dtypes.binary: np.dtype("O"),
-        ibis_dtypes.json: np.dtype("O"),
-        ibis_dtypes.Decimal(precision=38, scale=9, nullable=True): np.dtype("O"),
-        ibis_dtypes.Decimal(precision=76, scale=38, nullable=True): np.dtype("O"),
         ibis_dtypes.GeoSpatial(
             geotype="geography", srid=4326, nullable=True
         ): gpd.array.GeometryDtype(),
@@ -178,7 +197,7 @@ def ibis_dtype_to_bigframes_dtype(
     # our IO returns them as objects. Eventually, we should support them as
     # ArrowDType (and update the IO accordingly)
     if isinstance(ibis_dtype, ibis_dtypes.Array):
-        return np.dtype("O")
+        return pd.ArrowDtype(ibis_dtype_to_arrow_dtype(ibis_dtype))
 
     if isinstance(ibis_dtype, ibis_dtypes.Struct):
         return pd.ArrowDtype(ibis_dtype_to_arrow_dtype(ibis_dtype))
@@ -200,7 +219,9 @@ def ibis_dtype_to_bigframes_dtype(
 
 def ibis_dtype_to_arrow_dtype(ibis_dtype: ibis_dtypes.DataType) -> pa.DataType:
     if isinstance(ibis_dtype, ibis_dtypes.Array):
-        return pa.list_(ibis_dtype_to_arrow_dtype(ibis_dtype.value_type))
+        return pa.list_(
+            ibis_dtype_to_arrow_dtype(ibis_dtype.value_type.copy(nullable=True))
+        )
 
     if isinstance(ibis_dtype, ibis_dtypes.Struct):
         return pa.struct(
@@ -224,21 +245,13 @@ def ibis_value_to_canonical_type(value: ibis_types.Value) -> ibis_types.Value:
     This is useful in cases where multiple types correspond to the same BigFrames dtype.
     """
     ibis_type = value.type()
+    name = value.get_name()
+    if ibis_type.is_json():
+        value = vendored_ibis_ops.ToJsonString(value).to_expr()
+        return value.name(name)
     # Allow REQUIRED fields to be joined with NULLABLE fields.
     nullable_type = ibis_type.copy(nullable=True)
-    return value.cast(nullable_type).name(value.get_name())
-
-
-def ibis_table_to_canonical_types(table: ibis_types.Table) -> ibis_types.Table:
-    """Converts an Ibis table expression to canonical types.
-
-    This is useful in cases where multiple types correspond to the same BigFrames dtype.
-    """
-    casted_columns = []
-    for column_name in table.columns:
-        column = typing.cast(ibis_types.Value, table[column_name])
-        casted_columns.append(ibis_value_to_canonical_type(column))
-    return table.select(*casted_columns)
+    return value.cast(nullable_type).name(name)
 
 
 def arrow_dtype_to_ibis_dtype(arrow_dtype: pa.DataType) -> ibis_dtypes.DataType:
@@ -386,15 +399,35 @@ def cast_ibis_value(
             ibis_dtypes.bool,
             ibis_dtypes.float64,
             ibis_dtypes.string,
+            ibis_dtypes.Decimal(precision=38, scale=9),
+            ibis_dtypes.Decimal(precision=76, scale=38),
         ),
-        ibis_dtypes.float64: (ibis_dtypes.string, ibis_dtypes.int64),
-        ibis_dtypes.string: (ibis_dtypes.int64, ibis_dtypes.float64),
+        ibis_dtypes.float64: (
+            ibis_dtypes.string,
+            ibis_dtypes.int64,
+            ibis_dtypes.Decimal(precision=38, scale=9),
+            ibis_dtypes.Decimal(precision=76, scale=38),
+        ),
+        ibis_dtypes.string: (
+            ibis_dtypes.int64,
+            ibis_dtypes.float64,
+            ibis_dtypes.Decimal(precision=38, scale=9),
+            ibis_dtypes.Decimal(precision=76, scale=38),
+            ibis_dtypes.binary,
+        ),
         ibis_dtypes.date: (ibis_dtypes.string,),
-        ibis_dtypes.Decimal(precision=38, scale=9): (ibis_dtypes.float64,),
-        ibis_dtypes.Decimal(precision=76, scale=38): (ibis_dtypes.float64,),
+        ibis_dtypes.Decimal(precision=38, scale=9): (
+            ibis_dtypes.float64,
+            ibis_dtypes.Decimal(precision=76, scale=38),
+        ),
+        ibis_dtypes.Decimal(precision=76, scale=38): (
+            ibis_dtypes.float64,
+            ibis_dtypes.Decimal(precision=38, scale=9),
+        ),
         ibis_dtypes.time: (),
         ibis_dtypes.timestamp: (ibis_dtypes.Timestamp(timezone="UTC"),),
         ibis_dtypes.Timestamp(timezone="UTC"): (ibis_dtypes.timestamp,),
+        ibis_dtypes.binary: (ibis_dtypes.string,),
     }
 
     value = ibis_value_to_canonical_type(value)
@@ -458,30 +491,62 @@ def is_dtype(scalar: typing.Any, dtype: Dtype) -> bool:
     return False
 
 
+# string is binary
 def is_patype(scalar: typing.Any, pa_type: pa.DataType) -> bool:
     """Determine whether a scalar's type matches a given pyarrow type."""
     if pa_type == pa.time64("us"):
         return isinstance(scalar, datetime.time)
-    if pa_type == pa.timestamp("us"):
+    elif pa_type == pa.timestamp("us"):
         if isinstance(scalar, datetime.datetime):
             return not scalar.tzinfo
         if isinstance(scalar, pd.Timestamp):
             return not scalar.tzinfo
-    if pa_type == pa.timestamp("us", tz="UTC"):
+    elif pa_type == pa.timestamp("us", tz="UTC"):
         if isinstance(scalar, datetime.datetime):
             return scalar.tzinfo == datetime.timezone.utc
         if isinstance(scalar, pd.Timestamp):
             return scalar.tzinfo == datetime.timezone.utc
-    if pa_type == pa.date32():
+    elif pa_type == pa.date32():
         return isinstance(scalar, datetime.date)
+    elif pa_type == pa.binary():
+        return isinstance(scalar, bytes)
+    elif pa_type == pa.decimal128(38, 9):
+        # decimal.Decimal is a superset, but ibis performs out-of-bounds and loss-of-precision checks
+        return isinstance(scalar, decimal.Decimal)
+    elif pa_type == pa.decimal256(76, 38):
+        # decimal.Decimal is a superset, but ibis performs out-of-bounds and loss-of-precision checks
+        return isinstance(scalar, decimal.Decimal)
     return False
 
 
-def is_comparable(scalar: typing.Any, dtype: Dtype) -> bool:
-    """Whether scalar can be compare to items of dtype (though maybe requiring coercion)"""
+def is_compatible(scalar: typing.Any, dtype: Dtype) -> typing.Optional[Dtype]:
+    """Whether scalar can be compare to items of dtype (though maybe requiring coercion). Returns the datatype that must be used for the comparison"""
     if is_dtype(scalar, dtype):
-        return True
+        return dtype
     elif pd.api.types.is_numeric_dtype(dtype):
-        return pd.api.types.is_number(scalar)
-    else:
-        return False
+        # Implicit conversion currently only supported for numeric types
+        if pd.api.types.is_bool(scalar):
+            return lcd_type(pd.BooleanDtype(), dtype)
+        if pd.api.types.is_float(scalar):
+            return lcd_type(pd.Float64Dtype(), dtype)
+        if pd.api.types.is_integer(scalar):
+            return lcd_type(pd.Int64Dtype(), dtype)
+        if isinstance(scalar, decimal.Decimal):
+            # TODO: Check context to see if can use NUMERIC instead of BIGNUMERIC
+            return lcd_type(pd.ArrowDtype(pa.decimal128(76, 38)), dtype)
+    return None
+
+
+def lcd_type(dtype1: Dtype, dtype2: Dtype) -> typing.Optional[Dtype]:
+    # Implicit conversion currently only supported for numeric types
+    hierarchy: list[Dtype] = [
+        pd.BooleanDtype(),
+        pd.Int64Dtype(),
+        pd.Float64Dtype(),
+        pd.ArrowDtype(pa.decimal128(38, 9)),
+        pd.ArrowDtype(pa.decimal256(76, 38)),
+    ]
+    if (dtype1 not in hierarchy) or (dtype2 not in hierarchy):
+        return None
+    lcd_index = max(hierarchy.index(dtype1), hierarchy.index(dtype2))
+    return hierarchy[lcd_index]

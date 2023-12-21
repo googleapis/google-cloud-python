@@ -51,6 +51,7 @@ def test_tensorflow_model_predict(imported_tensorflow_model, llm_text_df):
         result,
         expected,
         check_exact=False,
+        check_dtype=False,
         atol=0.1,
     )
 
@@ -90,6 +91,7 @@ def test_onnx_model_predict(imported_onnx_model, onnx_iris_df):
         result,
         expected,
         check_exact=False,
+        check_dtype=False,
         atol=0.1,
     )
 

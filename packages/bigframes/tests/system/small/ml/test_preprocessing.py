@@ -15,6 +15,7 @@
 import math
 
 import pandas as pd
+import pyarrow as pa
 
 import bigframes.ml.preprocessing
 
@@ -453,6 +454,9 @@ def test_one_hot_encoder_default_params(new_penguins_df):
                 [{"index": 2, "value": 1.0}],
             ],
         },
+        dtype=pd.ArrowDtype(
+            pa.list_(pa.struct([("index", pa.int64()), ("value", pa.float64())]))
+        ),
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
 
@@ -482,6 +486,9 @@ def test_one_hot_encoder_default_params_fit_transform(new_penguins_df):
                 [{"index": 2, "value": 1.0}],
             ],
         },
+        dtype=pd.ArrowDtype(
+            pa.list_(pa.struct([("index", pa.int64()), ("value", pa.float64())]))
+        ),
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
 
@@ -507,6 +514,9 @@ def test_one_hot_encoder_series_default_params(new_penguins_df):
                 [{"index": 2, "value": 1.0}],
             ],
         },
+        dtype=pd.ArrowDtype(
+            pa.list_(pa.struct([("index", pa.int64()), ("value", pa.float64())]))
+        ),
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
 
@@ -537,6 +547,9 @@ def test_one_hot_encoder_params(new_penguins_df):
                 [{"index": 0, "value": 1.0}],
             ],
         },
+        dtype=pd.ArrowDtype(
+            pa.list_(pa.struct([("index", pa.int64()), ("value", pa.float64())]))
+        ),
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
 
@@ -567,6 +580,9 @@ def test_one_hot_encoder_different_data(penguins_df_default_index, new_penguins_
                 [{"index": 2, "value": 1.0}],
             ],
         },
+        dtype=pd.ArrowDtype(
+            pa.list_(pa.struct([("index", pa.int64()), ("value", pa.float64())]))
+        ),
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
 

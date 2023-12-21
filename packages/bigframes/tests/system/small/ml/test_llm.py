@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import numpy as np
 import pytest
 
 from bigframes.ml import llm
@@ -202,8 +201,7 @@ def test_embedding_generator_predict_success(
     assert "text_embedding" in df.columns
     series = df["text_embedding"]
     value = series[0]
-    assert isinstance(value, np.ndarray)
-    assert value.size == 768
+    assert len(value) == 768
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -215,8 +213,7 @@ def test_embedding_generator_multilingual_predict_success(
     assert "text_embedding" in df.columns
     series = df["text_embedding"]
     value = series[0]
-    assert isinstance(value, np.ndarray)
-    assert value.size == 768
+    assert len(value) == 768
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -228,5 +225,4 @@ def test_embedding_generator_predict_series_success(
     assert "text_embedding" in df.columns
     series = df["text_embedding"]
     value = series[0]
-    assert isinstance(value, np.ndarray)
-    assert value.size == 768
+    assert len(value) == 768

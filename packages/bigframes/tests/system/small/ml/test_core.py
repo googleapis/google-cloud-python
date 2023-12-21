@@ -292,11 +292,12 @@ def test_model_predict_with_unnamed_index(
 def test_remote_model_predict(
     bqml_linear_remote_model: core.BqmlModel, new_penguins_df
 ):
-    predictions = bqml_linear_remote_model.predict(new_penguins_df).to_pandas()
     expected = pd.DataFrame(
         {"predicted_body_mass_g": [[3739.54], [3675.79], [3619.54]]},
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+        dtype=pd.ArrowDtype(pa.list_(pa.float64())),
     )
+    predictions = bqml_linear_remote_model.predict(new_penguins_df).to_pandas()
     pd.testing.assert_frame_equal(
         predictions[["predicted_body_mass_g"]].sort_index(),
         expected,

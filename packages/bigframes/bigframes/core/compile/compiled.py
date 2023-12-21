@@ -220,7 +220,10 @@ class BaseIbisIR(abc.ABC):
             raise ValueError(
                 "Column name {} not in set of values: {}".format(key, self.column_ids)
             )
-        return typing.cast(ibis_types.Value, self._column_names[key])
+        return typing.cast(
+            ibis_types.Value,
+            bigframes.dtypes.ibis_value_to_canonical_type(self._column_names[key]),
+        )
 
     def get_column_type(self, key: str) -> bigframes.dtypes.Dtype:
         ibis_type = typing.cast(
@@ -1177,7 +1180,14 @@ class OrderedIR(BaseIbisIR):
         # Make sure all dtypes are the "canonical" ones for BigFrames. This is
         # important for operations like UNION where the schema must match.
         table = self._table.select(
-            bigframes.dtypes.ibis_value_to_canonical_type(column) for column in columns
+            bigframes.dtypes.ibis_value_to_canonical_type(
+                column.resolve(self._table)
+                # TODO(https://github.com/ibis-project/ibis/issues/7613): use
+                # public API to refer to Deferred type.
+                if isinstance(column, ibis.common.deferred.Deferred)
+                else column
+            )
+            for column in columns
         )
         base_table = table
         if self._reduced_predicate is not None:

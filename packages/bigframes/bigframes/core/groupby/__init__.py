@@ -359,7 +359,8 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
 
     def _raise_on_non_numeric(self, op: str):
         if not all(
-            dtype in dtypes.NUMERIC_BIGFRAMES_TYPES for dtype in self._block.dtypes
+            dtype in dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE
+            for dtype in self._block.dtypes
         ):
             raise NotImplementedError(
                 f"'{op}' does not support non-numeric columns. "
@@ -371,7 +372,9 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
     def _aggregated_columns(self, numeric_only: bool = False) -> typing.Sequence[str]:
         valid_agg_cols: list[str] = []
         for col_id in self._selected_cols:
-            is_numeric = self._column_type(col_id) in dtypes.NUMERIC_BIGFRAMES_TYPES
+            is_numeric = (
+                self._column_type(col_id) in dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE
+            )
             if is_numeric or not numeric_only:
                 valid_agg_cols.append(col_id)
         return valid_agg_cols

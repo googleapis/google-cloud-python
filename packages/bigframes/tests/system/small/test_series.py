@@ -24,7 +24,11 @@ import pytest
 
 import bigframes.pandas
 import bigframes.series as series
-from tests.system.utils import assert_pandas_df_equal, assert_series_equal
+from tests.system.utils import (
+    assert_pandas_df_equal,
+    assert_series_equal,
+    skip_legacy_pandas,
+)
 
 
 def test_series_construct_copy(scalars_dfs):
@@ -81,14 +85,14 @@ def test_series_construct_from_list_escaped_strings():
     [
         ("bool_col", pd.BooleanDtype()),
         # TODO(swast): Use a more efficient type.
-        ("bytes_col", numpy.dtype("object")),
+        ("bytes_col", pd.ArrowDtype(pa.binary())),
         ("date_col", pd.ArrowDtype(pa.date32())),
         ("datetime_col", pd.ArrowDtype(pa.timestamp("us"))),
         ("float64_col", pd.Float64Dtype()),
         ("geography_col", gpd.array.GeometryDtype()),
         ("int64_col", pd.Int64Dtype()),
         # TODO(swast): Use a more efficient type.
-        ("numeric_col", numpy.dtype("object")),
+        ("numeric_col", pd.ArrowDtype(pa.decimal128(38, 9))),
         ("int64_too", pd.Int64Dtype()),
         ("string_col", pd.StringDtype(storage="pyarrow")),
         ("time_col", pd.ArrowDtype(pa.time64("us"))),
@@ -2519,8 +2523,12 @@ def test_mask_custom_value(scalars_dfs):
         ("int64_col", pd.Float64Dtype()),
         ("int64_col", "string[pyarrow]"),
         ("int64_col", "boolean"),
+        ("int64_col", pd.ArrowDtype(pa.decimal128(38, 9))),
+        ("int64_col", pd.ArrowDtype(pa.decimal256(76, 38))),
         ("bool_col", "Int64"),
         ("bool_col", "string[pyarrow]"),
+        ("string_col", "binary[pyarrow]"),
+        ("bytes_col", "string[pyarrow]"),
         # pandas actually doesn't let folks convert to/from naive timestamp and
         # raises a deprecation warning to use tz_localize/tz_convert instead,
         # but BigQuery always stores values as UTC and doesn't have to deal
@@ -2538,6 +2546,7 @@ def test_mask_custom_value(scalars_dfs):
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/conversion_functions
     ],
 )
+@skip_legacy_pandas
 def test_astype(scalars_df_index, scalars_pandas_df_index, column, to_type):
     bf_result = scalars_df_index[column].astype(to_type).to_pandas()
     pd_result = scalars_pandas_df_index[column].astype(to_type)

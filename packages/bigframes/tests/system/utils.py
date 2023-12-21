@@ -14,11 +14,23 @@
 
 import base64
 import decimal
+import functools
 
 import geopandas as gpd  # type: ignore
 import numpy as np
 import pandas as pd
 import pyarrow as pa  # type: ignore
+import pytest
+
+
+def skip_legacy_pandas(test):
+    @functools.wraps(test)
+    def wrapper(*args, **kwds):
+        if pd.__version__.startswith("1."):
+            pytest.skip("Skips pandas 1.x as not compatible with 2.x behavior.")
+        return test(*args, **kwds)
+
+    return wrapper
 
 
 def assert_pandas_df_equal(df0, df1, ignore_order: bool = False, **kwargs):
@@ -133,16 +145,28 @@ def convert_pandas_dtypes(df: pd.DataFrame, bytes_col: bool):
             df["geography_col"].replace({np.nan: None})
         )
 
-    # Convert bytes types column.
-    if bytes_col:
+    if bytes_col and not isinstance(df["bytes_col"].dtype, pd.ArrowDtype):
         df["bytes_col"] = df["bytes_col"].apply(
             lambda value: base64.b64decode(value) if not pd.isnull(value) else value
         )
+        arrow_table = pa.Table.from_pandas(
+            pd.DataFrame(df, columns=["bytes_col"]),
+            schema=pa.schema([("bytes_col", pa.binary())]),
+        )
+        df["bytes_col"] = arrow_table.to_pandas(types_mapper=pd.ArrowDtype)["bytes_col"]
 
-    # Convert numeric types column.
-    df["numeric_col"] = df["numeric_col"].apply(
-        lambda value: decimal.Decimal(str(value)) if value else None  # type: ignore
-    )
+    if not isinstance(df["numeric_col"].dtype, pd.ArrowDtype):
+        # Convert numeric types column.
+        df["numeric_col"] = df["numeric_col"].apply(
+            lambda value: decimal.Decimal(str(value)) if value else None  # type: ignore
+        )
+        arrow_table = pa.Table.from_pandas(
+            pd.DataFrame(df, columns=["numeric_col"]),
+            schema=pa.schema([("numeric_col", pa.decimal128(38, 9))]),
+        )
+        df["numeric_col"] = arrow_table.to_pandas(types_mapper=pd.ArrowDtype)[
+            "numeric_col"
+        ]
 
 
 def assert_pandas_df_equal_pca_components(actual, expected, **kwargs):

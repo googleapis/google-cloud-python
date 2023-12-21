@@ -31,11 +31,11 @@ import bigframes.dtypes
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
         pytest.param(
             ibis_dtypes.Decimal(precision=76, scale=38, nullable=True),
-            np.dtype("O"),
+            pd.ArrowDtype(pa.decimal256(76, 38)),
             id="bignumeric",
         ),
         pytest.param(ibis_dtypes.boolean, pd.BooleanDtype(), id="bool"),
-        pytest.param(ibis_dtypes.binary, np.dtype("O"), id="bytes"),
+        pytest.param(ibis_dtypes.binary, pd.ArrowDtype(pa.binary()), id="bytes"),
         pytest.param(ibis_dtypes.date, pd.ArrowDtype(pa.date32()), id="date"),
         pytest.param(
             ibis_dtypes.Timestamp(), pd.ArrowDtype(pa.timestamp("us")), id="datetime"
@@ -49,10 +49,9 @@ import bigframes.dtypes
         pytest.param(ibis_dtypes.int8, pd.Int64Dtype(), id="int8-as-int64"),
         pytest.param(ibis_dtypes.int64, pd.Int64Dtype(), id="int64"),
         # TODO(tswast): custom dtype (or at least string dtype) for JSON objects
-        pytest.param(ibis_dtypes.json, np.dtype("O"), id="json"),
         pytest.param(
             ibis_dtypes.Decimal(precision=38, scale=9, nullable=True),
-            np.dtype("O"),
+            pd.ArrowDtype(pa.decimal128(38, 9)),
             id="numeric",
         ),
         pytest.param(

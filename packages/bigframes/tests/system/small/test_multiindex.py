@@ -394,14 +394,17 @@ def test_multi_index_dataframe_groupby_level_aggregate(
 def test_multi_index_dataframe_groupby_level_analytic(
     scalars_df_index, scalars_pandas_df_index, level, as_index
 ):
+    # Drop "numeric_col" as pandas doesn't support numerics for grouped window function
     bf_result = (
-        scalars_df_index.set_index(["int64_too", "bool_col"])
+        scalars_df_index.drop("numeric_col", axis=1)
+        .set_index(["int64_too", "bool_col"])
         .groupby(level=level, as_index=as_index, dropna=False)
         .cumsum(numeric_only=True)
         .to_pandas()
     )
     pd_result = (
-        scalars_pandas_df_index.set_index(["int64_too", "bool_col"])
+        scalars_pandas_df_index.drop("numeric_col", axis=1)
+        .set_index(["int64_too", "bool_col"])
         .groupby(level=level, as_index=as_index, dropna=False)
         .cumsum(numeric_only=True)
     )

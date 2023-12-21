@@ -29,5 +29,6 @@ def test_remote_linear_vertex_model_predict(
         predictions[["predicted_body_mass_g"]].sort_index(),
         expected,
         check_exact=False,
+        check_dtype=False,
         rtol=0.1,
     )
