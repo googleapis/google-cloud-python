@@ -869,6 +869,97 @@ class DataFrame(NDFrame):
 
         Remove columns by directly specifying column names.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame(np.arange(12).reshape(3, 4),
+            ...                    columns=['A', 'B', 'C', 'D'])
+            >>> df
+               A  B   C   D
+            0  0  1   2   3
+            1  4  5   6   7
+            2  8  9  10  11
+            <BLANKLINE>
+            [3 rows x 4 columns]
+
+        Drop columns:
+
+            >>> df.drop(['B', 'C'], axis=1)
+               A   D
+            0  0   3
+            1  4   7
+            2  8  11
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+            >>> df.drop(columns=['B', 'C'])
+               A   D
+            0  0   3
+            1  4   7
+            2  8  11
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+        Drop a row by index:
+
+            >>> df.drop([0, 1])
+               A  B   C   D
+            2  8  9  10  11
+            <BLANKLINE>
+            [1 rows x 4 columns]
+
+        Drop columns and/or rows of MultiIndex DataFrame:
+
+            >>> import pandas as pd
+            >>> midx = pd.MultiIndex(levels=[['llama', 'cow', 'falcon'],
+            ...                              ['speed', 'weight', 'length']],
+            ...                      codes=[[0, 0, 0, 1, 1, 1, 2, 2, 2],
+            ...                             [0, 1, 2, 0, 1, 2, 0, 1, 2]])
+            >>> df = bpd.DataFrame(index=midx, columns=['big', 'small'],
+            ...                    data=[[45, 30], [200, 100], [1.5, 1], [30, 20],
+            ...                          [250, 150], [1.5, 0.8], [320, 250],
+            ...                          [1, 0.8], [0.3, 0.2]])
+            >>> df
+                             big  small
+            llama  speed    45.0   30.0
+                   weight  200.0  100.0
+                   length    1.5    1.0
+            cow    speed    30.0   20.0
+                   weight  250.0  150.0
+                   length    1.5    0.8
+            falcon speed   320.0  250.0
+                   weight    1.0    0.8
+                   length    0.3    0.2
+            <BLANKLINE>
+            [9 rows x 2 columns]
+
+        Drop a specific index and column combination from the MultiIndex
+        DataFrame, i.e., drop the index ``'cow'`` and column ``'small'``:
+
+            >>> df.drop(index='cow', columns='small')
+                             big
+            llama  speed    45.0
+                   weight  200.0
+                   length    1.5
+            falcon speed   320.0
+                   weight    1.0
+                   length    0.3
+            <BLANKLINE>
+            [6 rows x 1 columns]
+
+            >>> df.drop(index='length', level=1)
+                             big  small
+            llama  speed    45.0   30.0
+                   weight  200.0  100.0
+            cow    speed    30.0   20.0
+                   weight  250.0  150.0
+            falcon speed   320.0  250.0
+                   weight    1.0    0.8
+            <BLANKLINE>
+            [6 rows x 2 columns]
+
         Args:
             labels:
                 Index or column labels to drop.
@@ -4342,6 +4433,56 @@ class DataFrame(NDFrame):
     def fillna(self, value):
         """
         Fill NA/NaN values using the specified method.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame([[np.nan, 2, np.nan, 0],
+            ...                     [3, 4, np.nan, 1],
+            ...                     [np.nan, np.nan, np.nan, np.nan],
+            ...                     [np.nan, 3, np.nan, 4]],
+            ...                    columns=list("ABCD")).astype("Float64")
+            >>> df
+                A     B     C     D
+            0  <NA>   2.0  <NA>   0.0
+            1   3.0   4.0  <NA>   1.0
+            2  <NA>  <NA>  <NA>  <NA>
+            3  <NA>   3.0  <NA>   4.0
+            <BLANKLINE>
+            [4 rows x 4 columns]
+
+        Replace all NA elements with 0s.
+
+            >>> df.fillna(0)
+                 A    B    C    D
+            0  0.0  2.0  0.0  0.0
+            1  3.0  4.0  0.0  1.0
+            2  0.0  0.0  0.0  0.0
+            3  0.0  3.0  0.0  4.0
+            <BLANKLINE>
+            [4 rows x 4 columns]
+
+        You can use fill values from another DataFrame:
+
+            >>> df_fill = bpd.DataFrame(np.arange(12).reshape(3, 4),
+            ...                         columns=['A', 'B', 'C', 'D'])
+            >>> df_fill
+               A  B   C   D
+            0  0  1   2   3
+            1  4  5   6   7
+            2  8  9  10  11
+            <BLANKLINE>
+            [3 rows x 4 columns]
+            >>> df.fillna(df_fill)
+                A    B     C     D
+            0   0.0  2.0   2.0   0.0
+            1   3.0  4.0   6.0   1.0
+            2   8.0  9.0  10.0  11.0
+            3  <NA>  3.0  <NA>   4.0
+            <BLANKLINE>
+            [4 rows x 4 columns]
 
         Args:
             value (scalar, Series):
