@@ -94,6 +94,8 @@ def test_str_extract(scalars_dfs, pat):
         (".*", "blah", True, 0, True),
         ("h.l", "blah", False, 0, True),
         (re.compile("(?i).e.."), "blah", None, 0, True),
+        ("H", "h", True, 0, False),
+        (", ", "__", True, 0, False),
     ],
 )
 def test_str_replace(scalars_dfs, pat, repl, case, flags, regex):

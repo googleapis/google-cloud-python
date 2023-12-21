@@ -385,7 +385,7 @@ class ReplaceStringOp(UnaryOp):
             ibis_types.StringValue, ibis_types.literal(self._pat)
         )
         repl_str_value = typing.cast(
-            ibis_types.StringValue, ibis_types.literal(self._pat)
+            ibis_types.StringValue, ibis_types.literal(self._repl)
         )
 
         return typing.cast(ibis_types.StringValue, x).replace(

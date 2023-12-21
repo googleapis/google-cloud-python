@@ -2304,6 +2304,24 @@ class Series(NDFrame):  # type: ignore[misc]
         NAs stay NA unless handled otherwise by a particular method. Patterned
         after Python’s string methods, with some inspiration from R’s stringr package.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series(["A_Str_Series"])
+            >>> s
+            0    A_Str_Series
+            dtype: string
+
+            >>> s.str.lower()
+            0    a_str_series
+            dtype: string
+
+            >>> s.str.replace("_", "")
+            0    AStrSeries
+            dtype: string
+
         Returns:
             bigframes.operations.strings.StringMethods:
                 An accessor containing string methods.
