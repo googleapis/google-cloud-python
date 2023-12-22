@@ -168,6 +168,53 @@ class Series(NDFrame):  # type: ignore[misc]
         when the index is meaningless and needs to be reset to the default
         before another operation.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([1, 2, 3, 4], name='foo',
+            ...                index=['a', 'b', 'c', 'd'])
+            >>> s.index.name = "idx"
+            >>> s
+            idx
+            a    1
+            b    2
+            c    3
+            d    4
+            Name: foo, dtype: Int64
+
+        Generate a DataFrame with default index.
+
+            >>> s.reset_index()
+                idx  foo
+            0     a    1
+            1     b    2
+            2     c    3
+            3     d    4
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+        To specify the name of the new column use ``name`` param.
+
+            >>> s.reset_index(name="bar")
+                idx   bar
+            0     a    1
+            1     b    2
+            2     c    3
+            3     d    4
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+        To generate a new Series with the default index set param ``drop=True``.
+
+            >>> s.reset_index(drop=True)
+            0    1
+            1    2
+            2    3
+            3    4
+            Name: foo, dtype: Int64
+
         Args:
             drop (bool, default False):
                 Just reset the index, without inserting it as a column in
@@ -698,6 +745,69 @@ class Series(NDFrame):  # type: ignore[misc]
 
         Sort a Series in ascending or descending order by some
         criterion.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([np.nan, 1, 3, 10, 5])
+            >>> s
+            0    <NA>
+            1     1.0
+            2     3.0
+            3    10.0
+            4     5.0
+            dtype: Float64
+
+        Sort values ascending order (default behaviour):
+
+            >>> s.sort_values(ascending=True)
+            1     1.0
+            2     3.0
+            4     5.0
+            3    10.0
+            0    <NA>
+            dtype: Float64
+
+        Sort values descending order:
+
+            >>> s.sort_values(ascending=False)
+            3    10.0
+            4     5.0
+            2     3.0
+            1     1.0
+            0    <NA>
+            dtype: Float64
+
+        Sort values putting NAs first:
+
+            >>> s.sort_values(na_position='first')
+            0    <NA>
+            1     1.0
+            2     3.0
+            4     5.0
+            3    10.0
+            dtype: Float64
+
+        Sort a series of strings:
+
+            >>> s = bpd.Series(['z', 'b', 'd', 'a', 'c'])
+            >>> s
+            0    z
+            1    b
+            2    d
+            3    a
+            4    c
+            dtype: string
+
+            >>> s.sort_values()
+            3    a
+            1    b
+            4    c
+            2    d
+            0    z
+            dtype: string
 
         Args:
             axis (0 or 'index'):

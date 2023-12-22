@@ -1138,6 +1138,93 @@ class DataFrame(NDFrame):
 
         Reset the index of the DataFrame, and use the default one instead.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> import numpy as np
+            >>> df = bpd.DataFrame([('bird', 389.0),
+            ...                     ('bird', 24.0),
+            ...                     ('mammal', 80.5),
+            ...                     ('mammal', np.nan)],
+            ...                    index=['falcon', 'parrot', 'lion', 'monkey'],
+            ...                    columns=('class', 'max_speed'))
+            >>> df
+                     class  max_speed
+            falcon    bird      389.0
+            parrot    bird       24.0
+            lion    mammal       80.5
+            monkey  mammal       <NA>
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+        When we reset the index, the old index is added as a column, and a new sequential index is used:
+
+            >>> df.reset_index()
+                index   class  max_speed
+            0  falcon    bird      389.0
+            1  parrot    bird       24.0
+            2    lion  mammal       80.5
+            3  monkey  mammal       <NA>
+            <BLANKLINE>
+            [4 rows x 3 columns]
+
+        We can use the ``drop`` parameter to avoid the old index being added as a column:
+
+            >>> df.reset_index(drop=True)
+                class  max_speed
+            0    bird      389.0
+            1    bird       24.0
+            2  mammal       80.5
+            3  mammal       <NA>
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+        You can also use ``reset_index`` with ``MultiIndex``.
+
+            >>> import pandas as pd
+            >>> index = pd.MultiIndex.from_tuples([('bird', 'falcon'),
+            ...                                    ('bird', 'parrot'),
+            ...                                    ('mammal', 'lion'),
+            ...                                    ('mammal', 'monkey')],
+            ...                                   names=['class', 'name'])
+            >>> columns = ['speed', 'max']
+            >>> df = bpd.DataFrame([(389.0, 'fly'),
+            ...                     (24.0, 'fly'),
+            ...                     (80.5, 'run'),
+            ...                     (np.nan, 'jump')],
+            ...                    index=index,
+            ...                    columns=columns)
+            >>> df
+                           speed   max
+            class  name
+            bird   falcon  389.0   fly
+                   parrot   24.0   fly
+            mammal lion     80.5   run
+                   monkey   <NA>  jump
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+            >>> df.reset_index()
+                class    name  speed   max
+            0    bird  falcon  389.0   fly
+            1    bird  parrot   24.0   fly
+            2  mammal    lion   80.5   run
+            3  mammal  monkey   <NA>  jump
+            <BLANKLINE>
+            [4 rows x 4 columns]
+
+            >>> df.reset_index(drop=True)
+               speed   max
+            0  389.0   fly
+            1   24.0   fly
+            2   80.5   run
+            3   <NA>  jump
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+
         Args:
             drop (bool, default False):
                 Do not try to insert index into dataframe columns. This resets
@@ -1346,6 +1433,80 @@ class DataFrame(NDFrame):
         na_position="last",
     ) -> DataFrame:
         """Sort by the values along row axis.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({
+            ...     'col1': ['A', 'A', 'B', bpd.NA, 'D', 'C'],
+            ...     'col2': [2, 1, 9, 8, 7, 4],
+            ...     'col3': [0, 1, 9, 4, 2, 3],
+            ...     'col4': ['a', 'B', 'c', 'D', 'e', 'F']
+            ... })
+            >>> df
+               col1  col2  col3 col4
+            0     A     2     0    a
+            1     A     1     1    B
+            2     B     9     9    c
+            3  <NA>     8     4    D
+            4     D     7     2    e
+            5     C     4     3    F
+            <BLANKLINE>
+            [6 rows x 4 columns]
+
+        Sort by col1:
+
+            >>> df.sort_values(by=['col1'])
+               col1  col2  col3 col4
+            0     A     2     0    a
+            1     A     1     1    B
+            2     B     9     9    c
+            5     C     4     3    F
+            4     D     7     2    e
+            3  <NA>     8     4    D
+            <BLANKLINE>
+            [6 rows x 4 columns]
+
+        Sort by multiple columns:
+
+            >>> df.sort_values(by=['col1', 'col2'])
+               col1  col2  col3 col4
+            1     A     1     1    B
+            0     A     2     0    a
+            2     B     9     9    c
+            5     C     4     3    F
+            4     D     7     2    e
+            3  <NA>     8     4    D
+            <BLANKLINE>
+            [6 rows x 4 columns]
+
+        Sort Descending:
+
+            >>> df.sort_values(by='col1', ascending=False)
+               col1  col2  col3 col4
+            4     D     7     2    e
+            5     C     4     3    F
+            2     B     9     9    c
+            0     A     2     0    a
+            1     A     1     1    B
+            3  <NA>     8     4    D
+            <BLANKLINE>
+            [6 rows x 4 columns]
+
+        Putting NAs first:
+
+            >>> df.sort_values(by='col1', ascending=False, na_position='first')
+               col1  col2  col3 col4
+            3  <NA>     8     4    D
+            4     D     7     2    e
+            5     C     4     3    F
+            2     B     9     9    c
+            0     A     2     0    a
+            1     A     1     1    B
+            <BLANKLINE>
+            [6 rows x 4 columns]
 
         Args:
             by (str or Sequence[str]):
