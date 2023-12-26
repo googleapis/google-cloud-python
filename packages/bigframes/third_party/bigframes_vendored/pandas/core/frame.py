@@ -1289,8 +1289,56 @@ class DataFrame(NDFrame):
 
     def dropna(
         self,
+        *,
+        axis: int | str = 0,
+        how: str = "any",
+        ignore_index=False,
     ) -> DataFrame:
         """Remove missing values.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"name": ['Alfred', 'Batman', 'Catwoman'],
+            ...                     "toy": [np.nan, 'Batmobile', 'Bullwhip'],
+            ...                     "born": [bpd.NA, "1940-04-25", bpd.NA]})
+            >>> df
+                   name        toy        born
+            0    Alfred       <NA>        <NA>
+            1    Batman  Batmobile  1940-04-25
+            2  Catwoman   Bullwhip        <NA>
+            <BLANKLINE>
+            [3 rows x 3 columns]
+
+        Drop the rows where at least one element is missing:
+
+            >>> df.dropna()
+                 name        toy        born
+            1  Batman  Batmobile  1940-04-25
+            <BLANKLINE>
+            [1 rows x 3 columns]
+
+        Drop the columns where at least one element is missing.
+
+            >>> df.dropna(axis='columns')
+                   name
+            0    Alfred
+            1    Batman
+            2  Catwoman
+            <BLANKLINE>
+            [3 rows x 1 columns]
+
+        Drop the rows where all elements are missing:
+
+            >>> df.dropna(how='all')
+                   name        toy        born
+            0    Alfred       <NA>        <NA>
+            1    Batman  Batmobile  1940-04-25
+            2  Catwoman   Bullwhip        <NA>
+            <BLANKLINE>
+            [3 rows x 3 columns]
 
         Args:
             axis ({0 or 'index', 1 or 'columns'}, default 'columns'):
@@ -1317,6 +1365,39 @@ class DataFrame(NDFrame):
     def isin(self, values):
         """
         Whether each element in the DataFrame is contained in values.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'num_legs': [2, 4], 'num_wings': [2, 0]},
+            ...                    index=['falcon', 'dog'])
+            >>> df
+                    num_legs  num_wings
+            falcon         2          2
+            dog            4          0
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        When ``values`` is a list check whether every value in the DataFrame is
+        present in the list (which animals have 0 or 2 legs or wings).
+
+            >>> df.isin([0, 2])
+                    num_legs  num_wings
+            falcon      True       True
+            dog        False       True
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        When ``values`` is a dict, we can pass it to check for each column separately:
+
+            >>> df.isin({'num_wings': [0, 3]})
+                    num_legs  num_wings
+            falcon     False      False
+            dog        False       True
+            <BLANKLINE>
+            [2 rows x 2 columns]
 
         Args:
             values (iterable, or dict):

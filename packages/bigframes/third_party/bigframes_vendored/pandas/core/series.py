@@ -1460,6 +1460,42 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         Return a new Series with missing values removed.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Drop NA values from a Series:
+
+            >>> ser = bpd.Series([1., 2., np.nan])
+            >>> ser
+            0     1.0
+            1     2.0
+            2    <NA>
+            dtype: Float64
+
+            >>> ser.dropna()
+            0    1.0
+            1    2.0
+            dtype: Float64
+
+        Empty strings are not considered NA values. ``None`` is considered an NA value.
+
+            >>> ser = bpd.Series(['2', bpd.NA, '', None, 'I stay'], dtype='object')
+            >>> ser
+            0         2
+            1      <NA>
+            2
+            3      <NA>
+            4    I stay
+            dtype: string
+
+            >>> ser.dropna()
+            0         2
+            2
+            4    I stay
+            dtype: string
+
         Args:
             axis (0 or 'index'):
                 Unused. Parameter needed for compatibility with DataFrame.
@@ -2530,6 +2566,40 @@ class Series(NDFrame):  # type: ignore[misc]
             This function treats all NaN-like values(e.g., pd.NA, numpy.nan, None) as
             the same. That is, if any form of NaN is present in values, all forms
             of NaN in the series will be considered a match. (though pandas may not)
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series(['llama', 'cow', 'llama', 'beetle', 'llama',
+            ...                 'hippo'], name='animal')
+            >>> s
+            0     llama
+            1       cow
+            2     llama
+            3    beetle
+            4     llama
+            5     hippo
+            Name: animal, dtype: string
+
+            >>> s.isin(['cow', 'llama'])
+            0     True
+            1     True
+            2     True
+            3    False
+            4     True
+            5    False
+            Name: animal, dtype: boolean
+
+        Strings and integers are distinct and are therefore not comparable:
+
+            >>> bpd.Series([1]).isin(['1'])
+            0    False
+            dtype: boolean
+            >>> bpd.Series([1.1]).isin(['1.1'])
+            0    False
+            dtype: boolean
 
         Args:
             values (list-like):
