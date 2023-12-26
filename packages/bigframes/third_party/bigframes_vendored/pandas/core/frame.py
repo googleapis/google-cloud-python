@@ -4371,7 +4371,7 @@ class DataFrame(NDFrame):
             BigQuery DataFrames does not support stack operations that would
             combine columns of different dtypes.
 
-        **Example:**
+        **Examples:**
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
@@ -4410,7 +4410,7 @@ class DataFrame(NDFrame):
         If the index is not a MultiIndex, the output will be a Series
         (the analogue of stack when the columns are not a MultiIndex).
 
-        **Example:**
+        **Examples:**
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None

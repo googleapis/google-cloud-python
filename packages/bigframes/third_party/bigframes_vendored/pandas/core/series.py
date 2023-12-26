@@ -143,12 +143,50 @@ class Series(NDFrame):  # type: ignore[misc]
 
     @property
     def T(self) -> Series:
-        """Return the transpose, which is by definition self."""
+        """Return the transpose, which is by definition self.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series(['Ant', 'Bear', 'Cow'])
+            >>> s
+            0     Ant
+            1    Bear
+            2     Cow
+            dtype: string
+
+            >>> s.T
+            0     Ant
+            1    Bear
+            2     Cow
+            dtype: string
+
+        """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def transpose(self) -> Series:
         """
         Return the transpose, which is by definition self.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series(['Ant', 'Bear', 'Cow'])
+            >>> s
+            0     Ant
+            1    Bear
+            2     Cow
+            dtype: string
+
+            >>> s.transpose()
+            0     Ant
+            1    Bear
+            2     Cow
+            dtype: string
 
         Returns:
             Series: Series.
@@ -536,6 +574,36 @@ class Series(NDFrame):  # type: ignore[misc]
 
         Returns:
             int: number of unique elements in the object.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def unique(self) -> Series:
+        """
+        Return unique values of Series object.
+
+        Uniques are returned in order of appearance. Hash table-based unique,
+        therefore does NOT sort.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([2, 1, 3, 3], name='A')
+            >>> s
+            0    2
+            1    1
+            2    3
+            3    3
+            Name: A, dtype: Int64
+            >>> s.unique()
+            0    2
+            1    1
+            2    3
+            Name: A, dtype: Int64
+
+        Returns:
+            Series: The unique values returned as a Series.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1405,6 +1473,77 @@ class Series(NDFrame):  # type: ignore[misc]
         This differs from updating with ``.loc`` or ``.iloc``, which require
         you to specify a location to update with some value.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([1, 2, 3, 4, 5])
+            >>> s
+            0    1
+            1    2
+            2    3
+            3    4
+            4    5
+            dtype: Int64
+
+            >>> s.replace(1, 5)
+            0    5
+            1    2
+            2    3
+            3    4
+            4    5
+            dtype: Int64
+
+        You can replace a list of values:
+
+            >>> s.replace([1, 3, 5], -1)
+            0    -1
+            1     2
+            2    -1
+            3     4
+            4    -1
+            dtype: Int64
+
+        You can use a replacement mapping:
+
+            >>> s.replace({1: 5, 3: 10})
+            0     5
+            1     2
+            2    10
+            3     4
+            4     5
+            dtype: Int64
+
+        With a string Series you can use a simple string replacement or a regex
+        replacement:
+
+            >>> s = bpd.Series(["Hello", "Another Hello"])
+            >>> s.replace("Hello", "Hi")
+            0               Hi
+            1    Another Hello
+            dtype: string
+
+            >>> s.replace("Hello", "Hi", regex=True)
+            0            Hi
+            1    Another Hi
+            dtype: string
+
+            >>> s.replace("^Hello", "Hi", regex=True)
+            0               Hi
+            1    Another Hello
+            dtype: string
+
+            >>> s.replace("Hello$", "Hi", regex=True)
+            0            Hi
+            1    Another Hi
+            dtype: string
+
+            >>> s.replace("[Hh]e", "__", regex=True)
+            0            __llo
+            1    Anot__r __llo
+            dtype: string
+
         Args:
             to_replace (str, regex, list, int, float or None):
                 How to find the values that will be replaced.
@@ -1701,6 +1840,55 @@ class Series(NDFrame):  # type: ignore[misc]
 
         Equivalent to ``series + other``, but with support to substitute a fill_value for
         missing data in either one of the inputs.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> a = bpd.Series([1, 2, 3, bpd.NA])
+            >>> a
+            0     1.0
+            1     2.0
+            2     3.0
+            3    <NA>
+            dtype: Float64
+
+            >>> b = bpd.Series([10, 20, 30, 40])
+            >>> b
+            0     10
+            1     20
+            2     30
+            3     40
+            dtype: Int64
+
+            >>> a.add(b)
+            0    11.0
+            1    22.0
+            2    33.0
+            3    <NA>
+            dtype: Float64
+
+        You can also use the mathematical operator ``+``:
+
+            >>> a + b
+            0    11.0
+            1    22.0
+            2    33.0
+            3    <NA>
+            dtype: Float64
+
+        Adding two Series with explicit indexes:
+
+            >>> a = bpd.Series([1, 2, 3, 4], index=['a', 'b', 'c', 'd'])
+            >>> b = bpd.Series([10, 20, 30, 40], index=['a', 'b', 'd', 'e'])
+            >>> a.add(b)
+            a      11
+            b      22
+            c    <NA>
+            d      34
+            e    <NA>
+            dtype: Int64
 
         Args:
             other (Series, or scalar value):
