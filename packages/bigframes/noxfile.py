@@ -518,9 +518,13 @@ def prerelease(session: nox.sessions.Session, tests_path):
         "--prefer-binary",
         "--pre",
         "--upgrade",
-        # TODO(shobs): Remove tying to version 2.1.3 after
-        # https://github.com/pandas-dev/pandas/issues/56463 is resolved
-        "pandas!=2.1.4",
+        # TODO(shobs): Remove excluding version 2.1.4 after
+        # https://github.com/pandas-dev/pandas/issues/56463 is resolved.
+        #
+        # TODO(shobs): Remove excluding version 2.2.0rc0 after
+        # https://github.com/pandas-dev/pandas/issues/56646 and
+        # https://github.com/pandas-dev/pandas/issues/56651 are resolved.
+        "pandas!=2.1.4,!=2.2.0rc0",
     )
     already_installed.add("pandas")
 
