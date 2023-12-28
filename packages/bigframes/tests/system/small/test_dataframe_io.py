@@ -273,6 +273,50 @@ def test_to_gbq_if_exists(
     )
 
 
+def test_to_gbq_w_duplicate_column_names(
+    scalars_df_index, scalars_pandas_df_index, dataset_id
+):
+    """Test the `to_gbq` API when dealing with duplicate column names."""
+    destination_table = f"{dataset_id}.test_to_gbq_w_duplicate_column_names"
+
+    # Renaming 'int64_too' to 'int64_col', which will result in 'int64_too'
+    # becoming 'int64_col_1' after deduplication.
+    scalars_df_index = scalars_df_index.rename(columns={"int64_too": "int64_col"})
+    scalars_df_index.to_gbq(destination_table, if_exists="replace")
+
+    bf_result = bpd.read_gbq(destination_table, index_col="rowindex").to_pandas()
+
+    pd.testing.assert_series_equal(
+        scalars_pandas_df_index["int64_col"], bf_result["int64_col"]
+    )
+    pd.testing.assert_series_equal(
+        scalars_pandas_df_index["int64_too"],
+        bf_result["int64_col_1"],
+        check_names=False,
+    )
+
+
+def test_to_gbq_w_None_column_names(
+    scalars_df_index, scalars_pandas_df_index, dataset_id
+):
+    """Test the `to_gbq` API with None as a column name."""
+    destination_table = f"{dataset_id}.test_to_gbq_w_none_column_names"
+
+    scalars_df_index = scalars_df_index.rename(columns={"int64_too": None})
+    scalars_df_index.to_gbq(destination_table, if_exists="replace")
+
+    bf_result = bpd.read_gbq(destination_table, index_col="rowindex").to_pandas()
+
+    pd.testing.assert_series_equal(
+        scalars_pandas_df_index["int64_col"], bf_result["int64_col"]
+    )
+    pd.testing.assert_series_equal(
+        scalars_pandas_df_index["int64_too"],
+        bf_result["bigframes_unnamed_column"],
+        check_names=False,
+    )
+
+
 def test_to_gbq_w_invalid_destination_table(scalars_df_index):
     with pytest.raises(ValueError):
         scalars_df_index.to_gbq("table_id")

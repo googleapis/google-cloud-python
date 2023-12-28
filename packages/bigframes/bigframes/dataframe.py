@@ -2759,26 +2759,28 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _create_io_query(self, index: bool, ordering_id: Optional[str]) -> str:
         """Create query text representing this dataframe for I/O."""
         array_value = self._block.expr
+
+        new_col_labels, new_idx_labels = utils.get_standardized_ids(
+            self._block.column_labels, self.index.names
+        )
+
         columns = list(self._block.value_columns)
-        column_labels = list(self._block.column_labels)
+        column_labels = new_col_labels
         # This code drops unnamed indexes to keep consistent with the behavior of
         # most pandas write APIs. The exception is `pandas.to_csv`, which keeps
         # unnamed indexes as `Unnamed: 0`.
         # TODO(chelsealin): check if works for multiple indexes.
         if index and self.index.name is not None:
             columns.extend(self._block.index_columns)
-            column_labels.extend(self.index.names)
+            column_labels.extend(new_idx_labels)
         else:
             array_value = array_value.drop_columns(self._block.index_columns)
 
         # Make columns in SQL reflect _labels_ not _ids_. Note: This may use
         # the arbitrary unicode column labels feature in BigQuery, which is
         # currently (June 2023) in preview.
-        # TODO(swast): Handle duplicate and NULL labels.
         id_overrides = {
-            col_id: col_label
-            for col_id, col_label in zip(columns, column_labels)
-            if col_label and isinstance(col_label, str)
+            col_id: col_label for col_id, col_label in zip(columns, column_labels)
         }
 
         if ordering_id is not None:
