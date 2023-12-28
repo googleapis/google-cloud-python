@@ -2682,6 +2682,58 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             encoding,
         )
 
+    def to_html(
+        self,
+        buf=None,
+        columns: Sequence[str] | None = None,
+        col_space=None,
+        header: bool = True,
+        index: bool = True,
+        na_rep: str = "NaN",
+        formatters=None,
+        float_format=None,
+        sparsify: bool | None = None,
+        index_names: bool = True,
+        justify: str | None = None,
+        max_rows: int | None = None,
+        max_cols: int | None = None,
+        show_dimensions: bool = False,
+        decimal: str = ".",
+        bold_rows: bool = True,
+        classes: str | list | tuple | None = None,
+        escape: bool = True,
+        notebook: bool = False,
+        border: int | None = None,
+        table_id: str | None = None,
+        render_links: bool = False,
+        encoding: str | None = None,
+    ) -> str:
+        return self.to_pandas().to_html(
+            buf,
+            columns,  # type: ignore
+            col_space,
+            header,
+            index,
+            na_rep,
+            formatters,
+            float_format,
+            sparsify,
+            index_names,
+            justify,  # type: ignore
+            max_rows,
+            max_cols,
+            show_dimensions,
+            decimal,
+            bold_rows,
+            classes,
+            escape,
+            notebook,
+            border,
+            table_id,
+            render_links,
+            encoding,
+        )
+
     def to_markdown(
         self,
         buf=None,

@@ -3463,6 +3463,15 @@ def test_df_to_string(scalars_df_index, scalars_pandas_df_index):
     assert bf_result == pd_result
 
 
+def test_df_to_html(scalars_df_index, scalars_pandas_df_index):
+    unsupported = ["numeric_col"]  # formatted differently
+
+    bf_result = scalars_df_index.drop(columns=unsupported).to_html()
+    pd_result = scalars_pandas_df_index.drop(columns=unsupported).to_html()
+
+    assert bf_result == pd_result
+
+
 def test_df_to_markdown(scalars_df_index, scalars_pandas_df_index):
     # Nulls have bug from tabulate https://github.com/astanin/python-tabulate/issues/231
     bf_result = scalars_df_index.dropna().to_markdown()
