@@ -448,6 +448,67 @@ class NDFrame(indexing.IndexingMixin):
         and indices. Modifications to the data or indices of the copy will not
         be reflected in the original object.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Modification in the original Series will not affect the copy Series:
+
+            >>> s = bpd.Series([1, 2], index=["a", "b"])
+            >>> s
+            a    1
+            b    2
+            dtype: Int64
+
+            >>> s_copy = s.copy()
+            >>> s_copy
+            a    1
+            b    2
+            dtype: Int64
+
+            >>> s.loc['b'] = 22
+            >>> s
+            a     1
+            b    22
+            dtype: Int64
+            >>> s_copy
+            a    1
+            b    2
+            dtype: Int64
+
+        Modification in the original DataFrame will not affect the copy DataFrame:
+
+            >>> df = bpd.DataFrame({'a': [1, 3], 'b': [2, 4]})
+            >>> df
+               a  b
+            0  1  2
+            1  3  4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df_copy = df.copy()
+            >>> df_copy
+               a  b
+            0  1  2
+            1  3  4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df.loc[df["b"] == 2, "b"] = 22
+            >>> df
+               a     b
+            0  1  22.0
+            1  3   4.0
+            <BLANKLINE>
+            [2 rows x 2 columns]
+            >>> df_copy
+               a  b
+            0  1  2
+            1  3  4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
         Returns:
             Object type matches caller.
         """

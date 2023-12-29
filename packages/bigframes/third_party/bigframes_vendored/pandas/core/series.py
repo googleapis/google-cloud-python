@@ -433,6 +433,21 @@ class Series(NDFrame):  # type: ignore[misc]
         (for str, int, float) or a pandas scalar
         (for Timestamp/Timedelta/Interval/Period).
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([1, 2, 3])
+            >>> s
+            0    1
+            1    2
+            2    3
+            dtype: Int64
+
+            >>> s.to_list()
+            [1, 2, 3]
+
         Returns:
             list: list of the values
         """
@@ -559,6 +574,20 @@ class Series(NDFrame):  # type: ignore[misc]
     def count(self):
         """
         Return number of non-NA/null observations in the Series.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([0.0, 1.0, bpd.NA])
+            >>> s
+            0     0.0
+            1     1.0
+            2    <NA>
+            dtype: Float64
+            >>> s.count()
+            2
 
         Returns:
             int or Series (if level specified): Number of non-null values in the
@@ -2844,6 +2873,47 @@ class Series(NDFrame):  # type: ignore[misc]
             Bigframes does not yet support ``dict`` subclasses that define
             ``__missing__`` (i.e. provide a method for default values). These
             are treated the same as ``dict``.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series(['cat', 'dog', bpd.NA, 'rabbit'])
+            >>> s
+            0       cat
+            1       dog
+            2      <NA>
+            3    rabbit
+            dtype: string
+
+        `map` can accepts a `dict`. Values that are not found in the `dict` are
+        converted to `NA`:
+
+            >>> s.map({'cat': 'kitten', 'dog': 'puppy'})
+            0    kitten
+            1     puppy
+            2      <NA>
+            3      <NA>
+            dtype: string
+
+        It also accepts a remote function:
+
+            >>> @bpd.remote_function([str], str)
+            ... def my_mapper(val):
+            ...     vowels = ["a", "e", "i", "o", "u"]
+            ...     if val:
+            ...         return "".join([
+            ...             ch.upper() if ch in vowels else ch for ch in val
+            ...         ])
+            ...     return "N/A"
+
+            >>> s.map(my_mapper)
+            0       cAt
+            1       dOg
+            2       N/A
+            3    rAbbIt
+            dtype: string
 
         Args:
             arg (function, Mapping, Series):
