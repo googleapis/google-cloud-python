@@ -97,7 +97,7 @@ class SynthesizeLongAudioMetadata(proto.Message):
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the request was received.
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Time of the most recent processing update.
+            Deprecated. Do not use.
         progress_percentage (float):
             The progress of the most recent processing
             update in percentage, ie. 70.0%.
