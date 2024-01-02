@@ -346,7 +346,9 @@ class UnorderedIR(BaseIbisIR):
             table = table.filter(base_table[PREDICATE_COLUMN])
         table = table.drop(*columns_to_drop)
         if col_id_overrides:
-            table = table.relabel(col_id_overrides)
+            table = table.rename(
+                {value: key for key, value in col_id_overrides.items()}
+            )
         if fraction is not None:
             table = table.filter(ibis.random() < ibis.literal(fraction))
         return table
@@ -1194,7 +1196,9 @@ class OrderedIR(BaseIbisIR):
             table = table.filter(base_table[PREDICATE_COLUMN])
         table = table.drop(*columns_to_drop)
         if col_id_overrides:
-            table = table.relabel(col_id_overrides)
+            table = table.rename(
+                {value: key for key, value in col_id_overrides.items()}
+            )
         if fraction is not None:
             table = table.filter(ibis.random() < ibis.literal(fraction))
         return table
