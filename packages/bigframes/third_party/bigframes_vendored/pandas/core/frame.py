@@ -1146,6 +1146,30 @@ class DataFrame(NDFrame):
         Dict values must be unique (1-to-1). Labels not contained in a dict
         will be left as-is. Extra labels listed don't throw an error.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6]})
+            >>> df
+               A  B
+            0  1  4
+            1  2  5
+            2  3  6
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+        Rename columns using a mapping:
+
+            >>> df.rename(columns={"A": "col1", "B": "col2"})
+               col1  col2
+            0     1     4
+            1     2     5
+            2     3     6
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
         Args:
             columns (Mapping):
                 Dict-like from old column labels to new column labels.

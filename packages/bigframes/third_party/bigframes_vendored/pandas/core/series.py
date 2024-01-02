@@ -135,6 +135,35 @@ class Series(NDFrame):  # type: ignore[misc]
         to form a DataFrame. It is also used whenever displaying the Series
         using the interpreter.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        For a Series:
+
+            >>> s = bpd.Series([1, 2, 3], dtype="Int64", name='Numbers')
+            >>> s
+            0    1
+            1    2
+            2    3
+            Name: Numbers, dtype: Int64
+            >>> s.name
+            'Numbers'
+
+        If the Series is part of a DataFrame:
+
+            >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
+            >>> df
+               col1  col2
+            0     1     3
+            1     2     4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+            >>> s = df["col1"]
+            >>> s.name
+            'col1'
+
         Returns:
             hashable object: The name of the Series, also the column name
                 if part of a DataFrame.
@@ -559,6 +588,27 @@ class Series(NDFrame):  # type: ignore[misc]
     def agg(self, func):
         """
         Aggregate using one or more operations over the specified axis.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([1, 2, 3, 4])
+            >>> s
+            0    1
+            1    2
+            2    3
+            3    4
+            dtype: Int64
+
+            >>> s.agg('min')
+            1
+
+            >>> s.agg(['min', 'max'])
+            min    1.0
+            max    4.0
+            dtype: Float64
 
         Args:
             func (function):
@@ -2292,6 +2342,29 @@ class Series(NDFrame):  # type: ignore[misc]
 
         Normalized by N-1 by default.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'person_id': [0, 1, 2, 3],
+            ...                     'age': [21, 25, 62, 43],
+            ...                     'height': [1.61, 1.87, 1.49, 2.01]}
+            ...                   ).set_index('person_id')
+            >>> df
+                       age  height
+            person_id
+            0           21    1.61
+            1           25    1.87
+            2           62    1.49
+            3           43    2.01
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+            >>> df.std()
+            age       18.786076
+            height     0.237417
+            dtype: Float64
 
         Returns
         -------
@@ -2649,6 +2722,34 @@ class Series(NDFrame):  # type: ignore[misc]
 
         Alternatively, change ``Series.name`` with a scalar value.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([1, 2, 3])
+            >>> s
+            0    1
+            1    2
+            2    3
+            dtype: Int64
+
+        You can changes the Series name by specifying a string scalar:
+
+            >>> s.rename("my_name")
+            0    1
+            1    2
+            2    3
+            Name: my_name, dtype: Int64
+
+        You can change the labels by specifying a mapping:
+
+            >>> s.rename({1: 3, 2: 5})
+            0    1
+            3    2
+            5    3
+            dtype: Int64
+
         Args:
             index (scalar, hashable sequence, dict-like or function optional):
                 Functions or dict-like are transformations to apply to
@@ -2988,5 +3089,31 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             numpy.ndarray or ndarray-like: Values in the Series.
 
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def size(self) -> int:
+        """Return the number of elements in the underlying data.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        For Series:
+
+            >>> s = bpd.Series({'a': 1, 'b': 2, 'c': 3})
+            >>> s.size
+            3
+
+        For Index:
+
+            >>> idx = bpd.Index(bpd.Series([1, 2, 3]))
+            >>> idx.size
+            3
+
+        Returns:
+            int: Return the number of elements in the underlying data.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
