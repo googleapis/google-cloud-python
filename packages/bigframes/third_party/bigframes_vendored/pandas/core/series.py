@@ -722,6 +722,25 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         Round each value in a Series to the given number of decimals.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([0.1, 1.3, 2.7])
+            >>> s.round()
+            0    0.0
+            1    1.0
+            2    3.0
+            dtype: Float64
+
+            >>> s = bpd.Series([0.123, 1.345, 2.789])
+            >>> s.round(decimals=2)
+            0    0.12
+            1    1.34
+            2    2.79
+            dtype: Float64
+
         Args:
             decimals (int, default 0):
                 Number of decimal places to round to. If decimals is negative,

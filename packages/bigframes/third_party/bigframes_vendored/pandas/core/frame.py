@@ -1187,6 +1187,47 @@ class DataFrame(NDFrame):
         Set the DataFrame index (row labels) using one existing column. The
         index can replace the existing index.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'month': [1, 4, 7, 10],
+            ...                     'year': [2012, 2014, 2013, 2014],
+            ...                     'sale': [55, 40, 84, 31]})
+            >>> df
+               month  year  sale
+            0      1  2012    55
+            1      4  2014    40
+            2      7  2013    84
+            3     10  2014    31
+            <BLANKLINE>
+            [4 rows x 3 columns]
+
+        Set the 'month' column to become the index:
+
+            >>> df.set_index('month')
+                   year  sale
+            month
+            1      2012    55
+            4      2014    40
+            7      2013    84
+            10     2014    31
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+        Create a MultiIndex using columns 'year' and 'month':
+
+            >>> df.set_index(['year', 'month'])
+                        sale
+            year month
+            2012 1        55
+            2014 4        40
+            2013 7        84
+            2014 10       31
+            <BLANKLINE>
+            [4 rows x 1 columns]
+
         Args:
             keys:
                 A label. This parameter can be a single column key.
@@ -1620,6 +1661,39 @@ class DataFrame(NDFrame):
 
         Iterates over the DataFrame columns, returning a tuple with
         the column name and the content as a Series.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'species': ['bear', 'bear', 'marsupial'],
+            ...                     'population': [1864, 22000, 80000]},
+            ...                    index=['panda', 'polar', 'koala'])
+            >>> df
+                     species  population
+            panda       bear        1864
+            polar       bear       22000
+            koala  marsupial       80000
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+            >>> for label, content in df.items():
+            ...     print(f'--> label: {label}')
+            ...     print(f'--> content:\\n{content}')
+            ...
+            --> label: species
+            --> content:
+            panda         bear
+            polar         bear
+            koala    marsupial
+            Name: species, dtype: string
+            --> label: population
+            --> content:
+            panda     1864
+            polar    22000
+            koala    80000
+            Name: population, dtype: Int64
 
         Returns:
             Iterator: Iterator of label, Series for each column.
@@ -4587,7 +4661,7 @@ class DataFrame(NDFrame):
             ...                     'Location': ['Seattle', 'New York', 'Kona']},
             ...                    index=([10, 20, 30]))
             >>> df
-                Name  Age  Location
+                  Name  Age  Location
             10   Alice   25   Seattle
             20     Bob   30  New York
             30  Aritra   35      Kona
@@ -4603,7 +4677,7 @@ class DataFrame(NDFrame):
 
             >>> df1 = df.set_index(["Name", "Location"])
             >>> df1
-                            Age
+                             Age
             Name   Location
             Alice  Seattle    25
             Bob    New York   30
