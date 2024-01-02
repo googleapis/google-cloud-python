@@ -391,14 +391,13 @@ class CustomVoiceParams(proto.Message):
             Required. The name of the AutoML model that
             synthesizes the custom voice.
         reported_usage (google.cloud.texttospeech_v1.types.CustomVoiceParams.ReportedUsage):
-            Optional. The usage of the synthesized audio
-            to be reported.
+            Optional. Deprecated. The usage of the
+            synthesized audio to be reported.
     """
 
     class ReportedUsage(proto.Enum):
-        r"""The usage of the synthesized audio. You must report your
-        honest and correct usage of the service as it's regulated by
-        contract and will cause significant difference in billing.
+        r"""Deprecated. The usage of the synthesized audio. Usage does
+        not affect billing.
 
         Values:
             REPORTED_USAGE_UNSPECIFIED (0):
