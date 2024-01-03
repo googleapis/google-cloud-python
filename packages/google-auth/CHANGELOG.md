@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.26.0](https://github.com/googleapis/google-auth-library-python/compare/v2.25.2...v2.26.0) (2023-12-20)
+
+
+### Features
+
+* Add optional non blocking refresh for sync auth code ([a6dc2c3](https://github.com/googleapis/google-auth-library-python/commit/a6dc2c336a5e76a478691e3bedd0418aae08b911))
+* Add optional non blocking refresh for sync auth code ([#1368](https://github.com/googleapis/google-auth-library-python/issues/1368)) ([a6dc2c3](https://github.com/googleapis/google-auth-library-python/commit/a6dc2c336a5e76a478691e3bedd0418aae08b911))
+
+
+### Bug Fixes
+
+* External account user cred universe domain support ([#1437](https://github.com/googleapis/google-auth-library-python/issues/1437)) ([75068f9](https://github.com/googleapis/google-auth-library-python/commit/75068f93453e6ea0b5c7be5561e7ba342c695e95))
+* Guard delete statements. Add default fallback for _use_non_blocking_refresh. ([#1445](https://github.com/googleapis/google-auth-library-python/issues/1445)) ([776d634](https://github.com/googleapis/google-auth-library-python/commit/776d634ac6d989b224f8dbfb11d166cb3025a342))
+
 ## [2.25.2](https://github.com/googleapis/google-auth-library-python/compare/v2.25.1...v2.25.2) (2023-12-08)
 
 
