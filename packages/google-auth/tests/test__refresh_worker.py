@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pickle
 import random
 import threading
 import time
@@ -145,3 +146,11 @@ def test_refresh_dead_worker():
 
     assert cred.token == request
     assert cred.refresh_count == 1
+
+
+def test_pickle():
+    w = _refresh_worker.RefreshThreadManager()
+
+    pickled_manager = pickle.dumps(w)
+    manager = pickle.loads(pickled_manager)
+    assert isinstance(manager, _refresh_worker.RefreshThreadManager)
