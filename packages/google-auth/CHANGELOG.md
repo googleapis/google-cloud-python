@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.26.1](https://github.com/googleapis/google-auth-library-python/compare/v2.26.0...v2.26.1) (2024-01-03)
+
+
+### Bug Fixes
+
+* Ensure that refresh worker is pickle-able. ([#1447](https://github.com/googleapis/google-auth-library-python/issues/1447)) ([421c184](https://github.com/googleapis/google-auth-library-python/commit/421c184ff4654024afe3e64754318a6be0cc96fc))
+
 ## [2.26.0](https://github.com/googleapis/google-auth-library-python/compare/v2.25.2...v2.26.0) (2023-12-20)
 
 
