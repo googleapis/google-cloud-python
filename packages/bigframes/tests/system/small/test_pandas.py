@@ -185,6 +185,38 @@ def test_concat_dataframe_mismatched_columns(scalars_dfs, how):
     pd.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_concat_dataframe_upcasting(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_input1 = scalars_df[["int64_col", "float64_col", "int64_too"]].set_index(
+        "int64_col", drop=True
+    )
+    bf_input1.columns = ["a", "b"]
+    bf_input2 = scalars_df[["int64_too", "int64_col", "float64_col"]].set_index(
+        "float64_col", drop=True
+    )
+    bf_input2.columns = ["a", "b"]
+    bf_result = bpd.concat([bf_input1, bf_input2], join="outer")
+    bf_result = bf_result.to_pandas()
+
+    bf_input1 = (
+        scalars_pandas_df[["int64_col", "float64_col", "int64_too"]]
+        .set_index("int64_col", drop=True)
+        .set_axis(["a", "b"], axis=1)
+    )
+    bf_input2 = (
+        scalars_pandas_df[["int64_too", "int64_col", "float64_col"]]
+        .set_index("float64_col", drop=True)
+        .set_axis(["a", "b"], axis=1)
+    )
+    pd_result = pd.concat(
+        [bf_input1, bf_input2],
+        join="outer",
+    )
+
+    pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
 @pytest.mark.parametrize(
     ("how",),
     [

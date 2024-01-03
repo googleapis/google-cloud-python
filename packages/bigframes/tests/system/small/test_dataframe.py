@@ -3141,9 +3141,9 @@ def test_df___array__(scalars_df_index, scalars_pandas_df_index):
 
 
 def test_getattr_attribute_error_when_pandas_has(scalars_df_index):
-    # asof is implemented in pandas but not in bigframes
+    # swapaxes is implemented in pandas but not in bigframes
     with pytest.raises(AttributeError):
-        scalars_df_index.asof()
+        scalars_df_index.swapaxes()
 
 
 def test_getattr_attribute_error(scalars_df_index):

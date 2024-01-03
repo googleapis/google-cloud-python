@@ -40,6 +40,7 @@ Dtype = Union[
     pd.Int64Dtype,
     pd.StringDtype,
     pd.ArrowDtype,
+    gpd.array.GeometryDtype,
 ]
 
 # On BQ side, ARRAY, STRUCT, GEOGRAPHY, JSON are not orderable
@@ -139,7 +140,7 @@ IBIS_TO_ARROW: Dict[ibis_dtypes.DataType, pa.DataType] = {
 
 ARROW_TO_IBIS = {arrow: ibis for ibis, arrow in IBIS_TO_ARROW.items()}
 
-IBIS_TO_BIGFRAMES: Dict[ibis_dtypes.DataType, Union[Dtype, np.dtype[Any]]] = {
+IBIS_TO_BIGFRAMES: Dict[ibis_dtypes.DataType, Dtype] = {
     ibis: pandas for ibis, pandas in BIDIRECTIONAL_MAPPINGS
 }
 # Allow REQUIRED fields to map correctly.
@@ -179,7 +180,7 @@ DTYPE_BYTE_SIZES = {
 
 def ibis_dtype_to_bigframes_dtype(
     ibis_dtype: ibis_dtypes.DataType,
-) -> Union[Dtype, np.dtype[Any]]:
+) -> Dtype:
     """Converts an Ibis dtype to a BigQuery DataFrames dtype
 
     Args:
@@ -340,6 +341,11 @@ def literal_to_ibis_scalar(
         ValueError: if passed literal cannot be coerced to a
         BigQuery DataFrames compatible scalar
     """
+    # Special case: Can create nulls for non-bidirectional types
+    if (force_dtype == gpd.array.GeometryDtype()) and pd.isna(literal):
+        # Ibis has bug for casting nulltype to geospatial, so we perform intermediate cast first
+        geotype = ibis_dtypes.GeoSpatial(geotype="geography", srid=4326, nullable=True)
+        return ibis.literal(None, geotype)
     ibis_dtype = BIGFRAMES_TO_IBIS[force_dtype] if force_dtype else None
 
     if pd.api.types.is_list_like(literal):
@@ -538,6 +544,8 @@ def is_compatible(scalar: typing.Any, dtype: Dtype) -> typing.Optional[Dtype]:
 
 
 def lcd_type(dtype1: Dtype, dtype2: Dtype) -> typing.Optional[Dtype]:
+    if dtype1 == dtype2:
+        return dtype1
     # Implicit conversion currently only supported for numeric types
     hierarchy: list[Dtype] = [
         pd.BooleanDtype(),
@@ -550,3 +558,12 @@ def lcd_type(dtype1: Dtype, dtype2: Dtype) -> typing.Optional[Dtype]:
         return None
     lcd_index = max(hierarchy.index(dtype1), hierarchy.index(dtype2))
     return hierarchy[lcd_index]
+
+
+def lcd_type_or_throw(dtype1: Dtype, dtype2: Dtype) -> Dtype:
+    result = lcd_type(dtype1, dtype2)
+    if result is None:
+        raise NotImplementedError(
+            f"BigFrames cannot upcast {dtype1} and {dtype2} to common type. {constants.FEEDBACK_LINK}"
+        )
+    return result

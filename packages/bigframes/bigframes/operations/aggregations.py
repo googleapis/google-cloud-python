@@ -396,6 +396,11 @@ class FirstNonNullOp(WindowOp):
         )
 
 
+class LastOp(WindowOp):
+    def _as_ibis(self, column: ibis_types.Column, window=None) -> ibis_types.Value:
+        return _apply_window_if_present(column.last(), window)
+
+
 class LastNonNullOp(WindowOp):
     @property
     def skips_nulls(self):

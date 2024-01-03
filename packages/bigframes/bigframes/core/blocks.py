@@ -1506,8 +1506,10 @@ class Block:
         blocks: typing.List[Block] = [self, *other]
         if ignore_index:
             blocks = [block.reset_index() for block in blocks]
-
-        result_labels = _align_indices(blocks)
+            level_names = None
+        else:
+            level_names, level_types = _align_indices(blocks)
+            blocks = [_cast_index(block, level_types) for block in blocks]
 
         index_nlevels = blocks[0].index.nlevels
 
@@ -1522,7 +1524,7 @@ class Block:
             result_expr,
             index_columns=list(result_expr.column_ids)[:index_nlevels],
             column_labels=aligned_blocks[0].column_labels,
-            index_labels=result_labels,
+            index_labels=level_names,
         )
         if ignore_index:
             result_block = result_block.reset_index()
@@ -1783,16 +1785,40 @@ def block_from_local(data) -> Block:
     )
 
 
+def _cast_index(block: Block, dtypes: typing.Sequence[bigframes.dtypes.Dtype]):
+    original_block = block
+    result_ids = []
+    for idx_id, idx_dtype, target_dtype in zip(
+        block.index_columns, block.index_dtypes, dtypes
+    ):
+        if idx_dtype != target_dtype:
+            block, result_id = block.apply_unary_op(idx_id, ops.AsTypeOp(target_dtype))
+            result_ids.append(result_id)
+        else:
+            result_ids.append(idx_id)
+
+    expr = block.expr.select_columns((*result_ids, *original_block.value_columns))
+    return Block(
+        expr,
+        index_columns=result_ids,
+        column_labels=original_block.column_labels,
+        index_labels=original_block.index_labels,
+    )
+
+
 def _align_block_to_schema(
     block: Block, schema: dict[Label, bigframes.dtypes.Dtype]
 ) -> Block:
-    """For a given schema, remap block to schema by reordering columns and inserting nulls."""
+    """For a given schema, remap block to schema by reordering columns,  and inserting nulls."""
     col_ids: typing.Tuple[str, ...] = ()
     for label, dtype in schema.items():
-        # TODO: Support casting to lcd type - requires mixed type support
         matching_ids: typing.Sequence[str] = block.label_to_col_id.get(label, ())
         if len(matching_ids) > 0:
             col_id = matching_ids[-1]
+            col_dtype = block.expr.get_column_type(col_id)
+            if dtype != col_dtype:
+                # If _align_schema worked properly, this should always be an upcast
+                block, col_id = block.apply_unary_op(col_id, ops.AsTypeOp(dtype))
             col_ids = (*col_ids, col_id)
         else:
             block, null_column = block.create_constant(None, dtype=dtype)
@@ -1810,24 +1836,28 @@ def _align_schema(
     return functools.reduce(reduction, schemas)
 
 
-def _align_indices(blocks: typing.Sequence[Block]) -> typing.Sequence[Label]:
-    """Validates that the blocks have compatible indices and returns the resulting label names."""
+def _align_indices(
+    blocks: typing.Sequence[Block],
+) -> typing.Tuple[typing.Sequence[Label], typing.Sequence[bigframes.dtypes.Dtype]]:
+    """Validates that the blocks have compatible indices and returns the resulting label names and dtypes."""
     names = blocks[0].index.names
     types = blocks[0].index.dtypes
+
     for block in blocks[1:]:
         if len(names) != block.index.nlevels:
             raise NotImplementedError(
                 f"Cannot combine indices with different number of levels. Use 'ignore_index'=True. {constants.FEEDBACK_LINK}"
             )
-        if block.index.dtypes != types:
-            raise NotImplementedError(
-                f"Cannot combine different index dtypes. Use 'ignore_index'=True. {constants.FEEDBACK_LINK}"
-            )
         names = [
             lname if lname == rname else None
             for lname, rname in zip(names, block.index.names)
         ]
-    return names
+        types = [
+            bigframes.dtypes.lcd_type_or_throw(ltype, rtype)
+            for ltype, rtype in zip(types, block.index.dtypes)
+        ]
+    types = typing.cast(typing.Sequence[bigframes.dtypes.Dtype], types)
+    return names, types
 
 
 def _combine_schema_inner(
@@ -1835,13 +1865,15 @@ def _combine_schema_inner(
     right: typing.Dict[Label, bigframes.dtypes.Dtype],
 ) -> typing.Dict[Label, bigframes.dtypes.Dtype]:
     result = dict()
-    for label, type in left.items():
+    for label, left_type in left.items():
         if label in right:
-            if type != right[label]:
+            right_type = right[label]
+            output_type = bigframes.dtypes.lcd_type(left_type, right_type)
+            if output_type is None:
                 raise ValueError(
                     f"Cannot concat rows with label {label} due to mismatched types. {constants.FEEDBACK_LINK}"
                 )
-            result[label] = type
+            result[label] = output_type
     return result
 
 
@@ -1850,15 +1882,20 @@ def _combine_schema_outer(
     right: typing.Dict[Label, bigframes.dtypes.Dtype],
 ) -> typing.Dict[Label, bigframes.dtypes.Dtype]:
     result = dict()
-    for label, type in left.items():
-        if (label in right) and (type != right[label]):
-            raise ValueError(
-                f"Cannot concat rows with label {label} due to mismatched types. {constants.FEEDBACK_LINK}"
-            )
-        result[label] = type
-    for label, type in right.items():
+    for label, left_type in left.items():
+        if label not in right:
+            result[label] = left_type
+        else:
+            right_type = right[label]
+            output_type = bigframes.dtypes.lcd_type(left_type, right_type)
+            if output_type is None:
+                raise NotImplementedError(
+                    f"Cannot concat rows with label {label} due to mismatched types. {constants.FEEDBACK_LINK}"
+                )
+            result[label] = output_type
+    for label, right_type in right.items():
         if label not in left:
-            result[label] = type
+            result[label] = right_type
     return result
 
 
