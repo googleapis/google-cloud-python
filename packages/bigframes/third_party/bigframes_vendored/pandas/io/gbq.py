@@ -17,10 +17,11 @@ class GBQIOMixin:
         query_or_table: str,
         *,
         index_col: Iterable[str] | str = (),
-        col_order: Iterable[str] = (),
+        columns: Iterable[str] = (),
         max_results: Optional[int] = None,
         filters: FiltersType = (),
         use_cache: bool = True,
+        col_order: Iterable[str] = (),
     ):
         """Loads a DataFrame from BigQuery.
 
@@ -77,11 +78,11 @@ class GBQIOMixin:
 
         Reading data with `columns` and `filters` parameters:
 
-            >>> col_order = ['pitcherFirstName', 'pitcherLastName', 'year', 'pitchSpeed']
+            >>> columns = ['pitcherFirstName', 'pitcherLastName', 'year', 'pitchSpeed']
             >>> filters = [('year', '==', 2016), ('pitcherFirstName', 'in', ['John', 'Doe']), ('pitcherLastName', 'in', ['Gant'])]
             >>> df = bpd.read_gbq(
             ...             "bigquery-public-data.baseball.games_wide",
-            ...             col_order=col_order,
+            ...             columns=columns,
             ...             filters=filters,
             ...         )
             >>> df.head(1)
@@ -97,7 +98,7 @@ class GBQIOMixin:
                 `project.dataset.tablename` or `dataset.tablename`.
             index_col (Iterable[str] or str):
                 Name of result column(s) to use for index in results DataFrame.
-            col_order (Iterable[str]):
+            columns (Iterable[str]):
                 List of BigQuery column names in the desired order for results
                 DataFrame.
             max_results (Optional[int], default None):
@@ -113,6 +114,8 @@ class GBQIOMixin:
                 is to be conducted.
             use_cache (bool, default True):
                 Whether to cache the query inputs. Default to True.
+            col_order (Iterable[str]):
+                Alias for columns, retained for backwards compatibility.
 
         Returns:
             bigframes.dataframe.DataFrame: A DataFrame representing results of the query or table.

@@ -52,7 +52,7 @@ def test_read_gbq_tokyo(
 
 
 @pytest.mark.parametrize(
-    ("query_or_table", "col_order"),
+    ("query_or_table", "columns"),
     [
         pytest.param(
             "{scalars_table_id}", ["bool_col", "int64_col"], id="two_cols_in_table"
@@ -79,16 +79,16 @@ def test_read_gbq_tokyo(
         ),
     ],
 )
-def test_read_gbq_w_col_order(
+def test_read_gbq_w_columns(
     session: bigframes.Session,
     scalars_table_id: str,
     query_or_table: str,
-    col_order: List[str],
+    columns: List[str],
 ):
     df = session.read_gbq(
-        query_or_table.format(scalars_table_id=scalars_table_id), col_order=col_order
+        query_or_table.format(scalars_table_id=scalars_table_id), columns=columns
     )
-    assert df.columns.tolist() == col_order
+    assert df.columns.tolist() == columns
 
 
 @pytest.mark.parametrize(

@@ -486,20 +486,22 @@ def read_gbq(
     query_or_table: str,
     *,
     index_col: Iterable[str] | str = (),
-    col_order: Iterable[str] = (),
+    columns: Iterable[str] = (),
     max_results: Optional[int] = None,
     filters: vendored_pandas_gbq.FiltersType = (),
     use_cache: bool = True,
+    col_order: Iterable[str] = (),
 ) -> bigframes.dataframe.DataFrame:
     _set_default_session_location_if_possible(query_or_table)
     return global_session.with_default_session(
         bigframes.session.Session.read_gbq,
         query_or_table,
         index_col=index_col,
-        col_order=col_order,
+        columns=columns,
         max_results=max_results,
         filters=filters,
         use_cache=use_cache,
+        col_order=col_order,
     )
 
 
@@ -520,18 +522,20 @@ def read_gbq_query(
     query: str,
     *,
     index_col: Iterable[str] | str = (),
-    col_order: Iterable[str] = (),
+    columns: Iterable[str] = (),
     max_results: Optional[int] = None,
     use_cache: bool = True,
+    col_order: Iterable[str] = (),
 ) -> bigframes.dataframe.DataFrame:
     _set_default_session_location_if_possible(query)
     return global_session.with_default_session(
         bigframes.session.Session.read_gbq_query,
         query,
         index_col=index_col,
-        col_order=col_order,
+        columns=columns,
         max_results=max_results,
         use_cache=use_cache,
+        col_order=col_order,
     )
 
 
@@ -542,18 +546,20 @@ def read_gbq_table(
     query: str,
     *,
     index_col: Iterable[str] | str = (),
-    col_order: Iterable[str] = (),
+    columns: Iterable[str] = (),
     max_results: Optional[int] = None,
     use_cache: bool = True,
+    col_order: Iterable[str] = (),
 ) -> bigframes.dataframe.DataFrame:
     _set_default_session_location_if_possible(query)
     return global_session.with_default_session(
         bigframes.session.Session.read_gbq_table,
         query,
         index_col=index_col,
-        col_order=col_order,
+        columns=columns,
         max_results=max_results,
         use_cache=use_cache,
+        col_order=col_order,
     )
 
 
