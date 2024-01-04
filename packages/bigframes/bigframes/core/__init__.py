@@ -27,6 +27,7 @@ import bigframes.core.guid
 import bigframes.core.nodes as nodes
 from bigframes.core.ordering import OrderingColumnReference
 import bigframes.core.ordering as orderings
+import bigframes.core.utils
 from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
 import bigframes.operations as ops
@@ -69,10 +70,14 @@ class ArrayValue:
     @classmethod
     def from_pandas(cls, pd_df: pandas.DataFrame):
         iobytes = io.BytesIO()
-        # Discard row labels and use simple string ids for columns
-        column_ids = tuple(str(label) for label in pd_df.columns)
-        pd_df.reset_index(drop=True).set_axis(column_ids, axis=1).to_feather(iobytes)
-        node = nodes.ReadLocalNode(iobytes.getvalue(), column_ids=column_ids)
+        # Use alphanumeric identifiers, to avoid downstream problems with escaping.
+        as_ids = [
+            bigframes.core.utils.label_to_identifier(label, strict=True)
+            for label in pd_df.columns
+        ]
+        unique_ids = tuple(bigframes.core.utils.disambiguate_ids(as_ids))
+        pd_df.reset_index(drop=True).set_axis(unique_ids, axis=1).to_feather(iobytes)
+        node = nodes.ReadLocalNode(iobytes.getvalue())
         return cls(node)
 
     @property

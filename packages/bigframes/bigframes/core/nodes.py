@@ -122,7 +122,6 @@ class ConcatNode(BigFrameNode):
 @dataclass(frozen=True)
 class ReadLocalNode(BigFrameNode):
     feather_bytes: bytes
-    column_ids: typing.Tuple[str, ...]
 
     def __hash__(self):
         return self._node_hash

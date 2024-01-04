@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import re
 import typing
 from typing import Hashable, Iterable, List
 
@@ -84,26 +85,42 @@ def get_standardized_ids(
         Tuple of (standardized_column_ids, standardized_index_ids)
     """
     col_ids = [
-        UNNAMED_COLUMN_ID if col_label is None else str(col_label)
+        UNNAMED_COLUMN_ID if col_label is None else label_to_identifier(col_label)
         for col_label in col_labels
     ]
     idx_ids = [
-        UNNAMED_INDEX_ID if idx_label is None else str(idx_label)
+        UNNAMED_INDEX_ID if idx_label is None else label_to_identifier(idx_label)
         for idx_label in idx_labels
     ]
 
-    ids = idx_ids + col_ids
-    # Column values will be loaded as null if the column name has spaces.
-    # https://github.com/googleapis/python-bigquery/issues/1566
-    ids = [id.replace(" ", "_") for id in ids]
+    ids = disambiguate_ids(idx_ids + col_ids)
 
-    ids = typing.cast(
-        List[str],
-        vendored_pandas_io_common.dedup_names(ids, is_potential_multiindex=False),
-    )
     idx_ids, col_ids = ids[: len(idx_ids)], ids[len(idx_ids) :]
 
     return col_ids, idx_ids
+
+
+def label_to_identifier(label: typing.Hashable, strict: bool = False) -> str:
+    """
+    Convert pandas label to make legal bigquery identifier. May create collisions (should deduplicate after).
+    Strict mode might not be necessary, but ibis seems to escape non-alphanumeric characters inconsistently.
+    """
+    # Column values will be loaded as null if the column name has spaces.
+    # https://github.com/googleapis/python-bigquery/issues/1566
+    identifier = str(label).replace(" ", "_")
+    if strict:
+        identifier = re.sub(r"[^a-zA-Z0-9_]", "", identifier)
+        if not identifier:
+            identifier = "id"
+    return identifier
+
+
+def disambiguate_ids(ids: typing.Sequence[str]) -> typing.List[str]:
+    """Disambiguate list of ids by adding suffixes where needed. If inputs are legal sql ids, outputs should be as well."""
+    return typing.cast(
+        List[str],
+        vendored_pandas_io_common.dedup_names(ids, is_potential_multiindex=False),
+    )
 
 
 def merge_column_labels(
