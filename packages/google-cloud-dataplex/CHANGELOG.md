@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.10.0...google-cloud-dataplex-v1.11.0) (2024-01-04)
+
+
+### Features
+
+* [google-cloud-dataplex] added enum value EventType.GOVERNANCE_RULE_PROCESSING ([#12132](https://github.com/googleapis/google-cloud-python/issues/12132)) ([48d42fd](https://github.com/googleapis/google-cloud-python/commit/48d42fdffd8bc55346b7b560c9fdfe685b69930c))
+
+
+### Documentation
+
+* [google-cloud-dataplex] Fix the comment for `ignore_null` field to clarify its applicability on data quality rules ([#12141](https://github.com/googleapis/google-cloud-python/issues/12141)) ([ca71481](https://github.com/googleapis/google-cloud-python/commit/ca71481a3ddc9ec1bf4474c70e0512341a8adc9c))
+
 ## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.9.0...google-cloud-dataplex-v1.10.0) (2023-12-07)
 
 

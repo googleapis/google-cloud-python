@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.26.0...google-cloud-dialogflow-v2.27.0) (2024-01-04)
+
+
+### Features
+
+* Add enable_conversation_augmented_query field to HumanAgentAssistantConfig.SuggestionFeatureConfig message ([c6d9113](https://github.com/googleapis/google-cloud-python/commit/c6d911353f33cbd946337c9cea5f30d2a34bfa59))
+* Add enable_conversation_augmented_query field to HumanAgentAssistantConfig.SuggestionFeatureConfig message ([a481c80](https://github.com/googleapis/google-cloud-python/commit/a481c80e541b9a21495fa507fc7ba895c5780869))
+* Add INTENT enum in SearchKnowledgeAnswer.AnswerType message ([c6d9113](https://github.com/googleapis/google-cloud-python/commit/c6d911353f33cbd946337c9cea5f30d2a34bfa59))
+* Add INTENT enum in SearchKnowledgeAnswer.AnswerType message ([a481c80](https://github.com/googleapis/google-cloud-python/commit/a481c80e541b9a21495fa507fc7ba895c5780869))
+* Add rewritten_query in field in SearchKnowledgeResponse message ([c6d9113](https://github.com/googleapis/google-cloud-python/commit/c6d911353f33cbd946337c9cea5f30d2a34bfa59))
+* Add rewritten_query in field in SearchKnowledgeResponse message ([a481c80](https://github.com/googleapis/google-cloud-python/commit/a481c80e541b9a21495fa507fc7ba895c5780869))
+* Add sections field to HumanAgentAssistantConfig.SuggestionQueryConfig ([c6d9113](https://github.com/googleapis/google-cloud-python/commit/c6d911353f33cbd946337c9cea5f30d2a34bfa59))
+* Add sections field to HumanAgentAssistantConfig.SuggestionQueryConfig ([a481c80](https://github.com/googleapis/google-cloud-python/commit/a481c80e541b9a21495fa507fc7ba895c5780869))
+
+
+### Documentation
+
+* Improved comments on audio_config proto ([c6d9113](https://github.com/googleapis/google-cloud-python/commit/c6d911353f33cbd946337c9cea5f30d2a34bfa59))
+* Improved comments on audio_config proto ([a481c80](https://github.com/googleapis/google-cloud-python/commit/a481c80e541b9a21495fa507fc7ba895c5780869))
+
 ## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.25.0...google-cloud-dialogflow-v2.26.0) (2023-12-07)
 
 

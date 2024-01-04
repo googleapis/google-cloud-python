@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.36.0...google-cloud-container-v2.37.0) (2024-01-04)
+
+
+### Features
+
+* [google-cloud-container] Add autoscaled node pool upgrade strategy ([#12135](https://github.com/googleapis/google-cloud-python/issues/12135)) ([1729080](https://github.com/googleapis/google-cloud-python/commit/172908041f50a3c661cea23dca3932b037005e95))
+
 ## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.35.0...google-cloud-container-v2.36.0) (2023-12-07)
 
 
