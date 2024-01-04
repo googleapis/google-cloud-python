@@ -437,7 +437,12 @@ class DataQualityRule(proto.Message):
             a rule, unless ``ignore_null`` is ``true``. In that case,
             such ``null`` rows are trivially considered passing.
 
-            This field is only valid for row-level type rules.
+            This field is only valid for the following type of rules:
+
+            -  RangeExpectation
+            -  RegexExpectation
+            -  SetExpectation
+            -  UniquenessExpectation
         dimension (str):
             Required. The dimension a rule belongs to. Results are also
             aggregated at the dimension level. Supported dimensions are
