@@ -317,6 +317,55 @@ def test_to_gbq_w_None_column_names(
     )
 
 
+@pytest.mark.parametrize(
+    "clustering_columns",
+    [
+        pytest.param(["int64_col", "geography_col"]),
+        pytest.param(
+            ["float64_col"],
+            marks=pytest.mark.xfail(raises=google.api_core.exceptions.BadRequest),
+        ),
+        pytest.param(
+            ["int64_col", "int64_col"],
+            marks=pytest.mark.xfail(raises=ValueError),
+        ),
+    ],
+)
+def test_to_gbq_w_clustering(
+    scalars_df_default_index,
+    dataset_id,
+    bigquery_client,
+    clustering_columns,
+):
+    """Test the `to_gbq` API for creating clustered tables."""
+    destination_table = (
+        f"{dataset_id}.test_to_gbq_clustering_{'_'.join(clustering_columns)}"
+    )
+
+    scalars_df_default_index.to_gbq(
+        destination_table, clustering_columns=clustering_columns
+    )
+    table = bigquery_client.get_table(destination_table)
+
+    assert list(table.clustering_fields) == clustering_columns
+    assert table.expires is None
+
+
+def test_to_gbq_w_clustering_no_destination(
+    scalars_df_default_index,
+    bigquery_client,
+):
+    """Test the `to_gbq` API for creating clustered tables without destination."""
+    clustering_columns = ["int64_col", "geography_col"]
+    destination_table = scalars_df_default_index.to_gbq(
+        clustering_columns=clustering_columns
+    )
+    table = bigquery_client.get_table(destination_table)
+
+    assert list(table.clustering_fields) == clustering_columns
+    assert table.expires is not None
+
+
 def test_to_gbq_w_invalid_destination_table(scalars_df_index):
     with pytest.raises(ValueError):
         scalars_df_index.to_gbq("table_id")

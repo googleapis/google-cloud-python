@@ -150,6 +150,17 @@ def create_temp_table(
     return f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}"
 
 
+def set_table_expiration(
+    bqclient: bigquery.Client,
+    table_ref: bigquery.TableReference,
+    expiration: datetime.datetime,
+) -> None:
+    """Set an expiration time for an existing BigQuery table."""
+    table = bqclient.get_table(table_ref)
+    table.expires = expiration
+    bqclient.update_table(table, ["expires"])
+
+
 # BigQuery REST API returns types in Legacy SQL format
 # https://cloud.google.com/bigquery/docs/data-types but we use Standard SQL
 # names

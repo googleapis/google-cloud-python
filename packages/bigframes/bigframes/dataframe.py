@@ -2499,6 +2499,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if_exists: Optional[Literal["fail", "replace", "append"]] = None,
         index: bool = True,
         ordering_id: Optional[str] = None,
+        clustering_columns: Union[pandas.Index, Iterable[typing.Hashable]] = (),
     ) -> str:
         dispositions = {
             "fail": bigquery.WriteDisposition.WRITE_EMPTY,
@@ -2506,18 +2507,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             "append": bigquery.WriteDisposition.WRITE_APPEND,
         }
 
-        if destination_table is None:
-            # TODO(swast): If there have been no modifications to the DataFrame
-            # since the last time it was written (cached), then return that.
-            # For `read_gbq` nodes, return the underlying table clone.
-            destination_table = bigframes.session._io.bigquery.create_temp_table(
-                self._session.bqclient,
-                self._session._anonymous_dataset,
-                # TODO(swast): allow custom expiration times, probably via session configuration.
-                datetime.datetime.now(datetime.timezone.utc)
-                + constants.DEFAULT_EXPIRATION,
-            )
+        temp_table_ref = None
 
+        if destination_table is None:
             if if_exists is not None and if_exists != "replace":
                 raise ValueError(
                     f"Got invalid value {repr(if_exists)} for if_exists. "
@@ -2525,6 +2517,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                     "None or 'replace' are the only valid options in this case."
                 )
             if_exists = "replace"
+
+            temp_table_ref = bigframes.session._io.bigquery.random_table(
+                self._session._anonymous_dataset
+            )
+            destination_table = f"{temp_table_ref.project}.{temp_table_ref.dataset_id}.{temp_table_ref.table_id}"
 
         table_parts = destination_table.split(".")
         default_project = self._block.expr.session.bqclient.project
@@ -2553,15 +2550,29 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         except google.api_core.exceptions.NotFound:
             self._session.bqclient.create_dataset(destination_dataset, exists_ok=True)
 
+        clustering_fields = self._map_clustering_columns(
+            clustering_columns, index=index
+        )
+
         job_config = bigquery.QueryJobConfig(
             write_disposition=dispositions[if_exists],
             destination=bigquery.table.TableReference.from_string(
                 destination_table,
                 default_project=default_project,
             ),
+            clustering_fields=clustering_fields if clustering_fields else None,
         )
 
         self._run_io_query(index=index, ordering_id=ordering_id, job_config=job_config)
+
+        if temp_table_ref:
+            bigframes.session._io.bigquery.set_table_expiration(
+                self._session.bqclient,
+                temp_table_ref,
+                datetime.datetime.now(datetime.timezone.utc)
+                + constants.DEFAULT_EXPIRATION,
+            )
+
         return destination_table
 
     def to_numpy(
@@ -2755,6 +2766,52 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _apply_unary_op(self, operation: ops.UnaryOp) -> DataFrame:
         block = self._block.multi_apply_unary_op(self._block.value_columns, operation)
         return DataFrame(block)
+
+    def _map_clustering_columns(
+        self,
+        clustering_columns: Union[pandas.Index, Iterable[typing.Hashable]],
+        index: bool,
+    ) -> List[str]:
+        """Maps the provided clustering columns to the existing columns in the DataFrame."""
+
+        def map_columns_on_occurrence(columns):
+            mapped_columns = []
+            for col in clustering_columns:
+                if col in columns:
+                    count = columns.count(col)
+                    mapped_columns.extend([col] * count)
+            return mapped_columns
+
+        if not clustering_columns:
+            return []
+
+        if len(list(clustering_columns)) != len(set(clustering_columns)):
+            raise ValueError("Duplicates are not supported in clustering_columns")
+
+        all_possible_columns = (
+            (set(self.columns) | set(self.index.names)) if index else set(self.columns)
+        )
+        missing_columns = set(clustering_columns) - all_possible_columns
+        if missing_columns:
+            raise ValueError(
+                f"Clustering columns not found in DataFrame: {missing_columns}"
+            )
+
+        clustering_columns_for_df = map_columns_on_occurrence(
+            list(self._block.column_labels)
+        )
+        clustering_columns_for_index = (
+            map_columns_on_occurrence(list(self.index.names)) if index else []
+        )
+
+        (
+            clustering_columns_for_df,
+            clustering_columns_for_index,
+        ) = utils.get_standardized_ids(
+            clustering_columns_for_df, clustering_columns_for_index
+        )
+
+        return clustering_columns_for_index + clustering_columns_for_df
 
     def _create_io_query(self, index: bool, ordering_id: Optional[str]) -> str:
         """Create query text representing this dataframe for I/O."""
