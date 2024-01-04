@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.22.0...google-cloud-asset-v3.23.0) (2024-01-04)
+
+
+### Features
+
+* Added new resource references to fields in AnalyzeMoveRequest  ([599e175](https://github.com/googleapis/google-cloud-python/commit/599e1754f44f934060c935f0af4d88412edda582))
+
+
+### Documentation
+
+* Updated comments ([599e175](https://github.com/googleapis/google-cloud-python/commit/599e1754f44f934060c935f0af4d88412edda582))
+
 ## [3.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.21.0...google-cloud-asset-v3.22.0) (2023-12-12)
 
 

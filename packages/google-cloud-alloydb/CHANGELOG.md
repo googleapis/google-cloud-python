@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.5...google-cloud-alloydb-v0.3.6) (2024-01-04)
+
+
+### Features
+
+* added instance network config ([bea1a52](https://github.com/googleapis/google-cloud-python/commit/bea1a52adf0717b7656764ac0f0f6f5fa13d0338))
+* added ListDatabases API and Database object ([bea1a52](https://github.com/googleapis/google-cloud-python/commit/bea1a52adf0717b7656764ac0f0f6f5fa13d0338))
+* added PSC config, PSC interface config, PSC instance config ([bea1a52](https://github.com/googleapis/google-cloud-python/commit/bea1a52adf0717b7656764ac0f0f6f5fa13d0338))
+* added two boolean fields satisfies_pzi and satisfies_pzs ([bea1a52](https://github.com/googleapis/google-cloud-python/commit/bea1a52adf0717b7656764ac0f0f6f5fa13d0338))
+* changed field network in NetworkConfig from required to optional ([bea1a52](https://github.com/googleapis/google-cloud-python/commit/bea1a52adf0717b7656764ac0f0f6f5fa13d0338))
+
+
+### Documentation
+
+* clarified read pool config is for read pool type instances ([bea1a52](https://github.com/googleapis/google-cloud-python/commit/bea1a52adf0717b7656764ac0f0f6f5fa13d0338))
+
 ## [0.3.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.4...google-cloud-alloydb-v0.3.5) (2023-12-07)
 
 

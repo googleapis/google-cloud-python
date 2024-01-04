@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.22.2](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.1...google-analytics-admin-v0.22.2) (2024-01-04)
+
+
+### Features
+
+* **v1alpha:** Add `GetSubpropertyEventFilter`, `ListSubpropertyEventFilters` methods to the Admin API v1 alpha ([fd30dff](https://github.com/googleapis/google-cloud-python/commit/fd30dff92a6e1523699e0f7340029e3187c42944))
+* **v1alpha:** Add the `default_conversion_value` field to the `ConversionEvent` type ([fd30dff](https://github.com/googleapis/google-cloud-python/commit/fd30dff92a6e1523699e0f7340029e3187c42944))
+
+
+### Documentation
+
+* **v1alpha:** Update the documentation for `grouping_rule`, `system_defined` fields of the `ChannelGroup` type ([fd30dff](https://github.com/googleapis/google-cloud-python/commit/fd30dff92a6e1523699e0f7340029e3187c42944))
+* **v1alpha:** Update the documentation for the `RunAccessReport` method ([fd30dff](https://github.com/googleapis/google-cloud-python/commit/fd30dff92a6e1523699e0f7340029e3187c42944))
+
 ## [0.22.1](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.0...google-analytics-admin-v0.22.1) (2023-12-07)
 
 

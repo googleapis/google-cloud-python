@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.13.0...google-cloud-translate-v3.14.0) (2024-01-04)
+
+
+### Features
+
+* Add Adaptive MT API  ([e063fa9](https://github.com/googleapis/google-cloud-python/commit/e063fa9be2b01c694c14d4fdc52ca6ec98d685f3))
+
+
+### Documentation
+
+* Fixes a typo in docs ([e063fa9](https://github.com/googleapis/google-cloud-python/commit/e063fa9be2b01c694c14d4fdc52ca6ec98d685f3))
+
 ## [3.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.12.1...google-cloud-translate-v3.13.0) (2023-12-07)
 
 

@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.15.0...google-cloud-texttospeech-v2.15.1) (2024-01-04)
+
+
+### Bug Fixes
+
+* correct long audio synthesis HTTP binding ([a748565](https://github.com/googleapis/google-cloud-python/commit/a7485655fe09ecd85198c383fe818acd1ef677bc))
+
+
+### Documentation
+
+* Deprecate the custom voice usage field ([a748565](https://github.com/googleapis/google-cloud-python/commit/a7485655fe09ecd85198c383fe818acd1ef677bc))
+
 ## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.14.2...google-cloud-texttospeech-v2.15.0) (2023-12-07)
 
 

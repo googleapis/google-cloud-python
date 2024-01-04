@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.2...google-cloud-netapp-v0.3.3) (2024-01-04)
+
+
+### Features
+
+* Add singular and plural annotations ([b21ac63](https://github.com/googleapis/google-cloud-python/commit/b21ac63d41113dfd9880b4e4ab1fe10928c7b72b))
+* Enable Backup, Backup Vault, and Backup Policy ([b21ac63](https://github.com/googleapis/google-cloud-python/commit/b21ac63d41113dfd9880b4e4ab1fe10928c7b72b))
+* Set field_behavior to IDENTIFIER on the "name" fields ([b21ac63](https://github.com/googleapis/google-cloud-python/commit/b21ac63d41113dfd9880b4e4ab1fe10928c7b72b))
+
+
+### Documentation
+
+* Comments are updated for several fields/enums ([b21ac63](https://github.com/googleapis/google-cloud-python/commit/b21ac63d41113dfd9880b4e4ab1fe10928c7b72b))
+
 ## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.1...google-cloud-netapp-v0.3.2) (2023-12-07)
 
 

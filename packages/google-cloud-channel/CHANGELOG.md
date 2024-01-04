@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.17.0...google-cloud-channel-v1.17.1) (2024-01-04)
+
+
+### Documentation
+
+* Add deprecation comment for method `FetchReportResults` in service `CloudChannelReportsService` ([1e6bf49](https://github.com/googleapis/google-cloud-python/commit/1e6bf49abdd6cc27af391acab15b4ca089111849))
+* Add deprecation comment for method `ListReports` in service `CloudChannelReportsService` ([1e6bf49](https://github.com/googleapis/google-cloud-python/commit/1e6bf49abdd6cc27af391acab15b4ca089111849))
+* Add deprecation comment for method `RunReportJob` in service `CloudChannelReportsService` ([1e6bf49](https://github.com/googleapis/google-cloud-python/commit/1e6bf49abdd6cc27af391acab15b4ca089111849))
+* Add deprecation comment for service `CloudChannelReportsService` ([1e6bf49](https://github.com/googleapis/google-cloud-python/commit/1e6bf49abdd6cc27af391acab15b4ca089111849))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.16.0...google-cloud-channel-v1.17.0) (2023-12-07)
 
 

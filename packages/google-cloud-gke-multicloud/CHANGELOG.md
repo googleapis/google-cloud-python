@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.6.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.4...google-cloud-gke-multicloud-v0.6.5) (2024-01-04)
+
+
+### Features
+
+* added Binary Authorization support which is a deploy-time security control that ensures only trusted container images are deployed ([30f5d0e](https://github.com/googleapis/google-cloud-python/commit/30f5d0ef8ee52c3a30f1cdd166f69d76c0a3366a))
+* added force-deletion support for AWS Clusters & Node Pools ([30f5d0e](https://github.com/googleapis/google-cloud-python/commit/30f5d0ef8ee52c3a30f1cdd166f69d76c0a3366a))
+* added proxy support for Attached Clusters ([30f5d0e](https://github.com/googleapis/google-cloud-python/commit/30f5d0ef8ee52c3a30f1cdd166f69d76c0a3366a))
+* added support for a new admin-groups flag in the create and update APIs ([30f5d0e](https://github.com/googleapis/google-cloud-python/commit/30f5d0ef8ee52c3a30f1cdd166f69d76c0a3366a))
+* added support for EC2 Spot instance types for AWS Node Pools ([30f5d0e](https://github.com/googleapis/google-cloud-python/commit/30f5d0ef8ee52c3a30f1cdd166f69d76c0a3366a))
+* added support for per-node-pool subnet security group rules for AWS Node Pools ([30f5d0e](https://github.com/googleapis/google-cloud-python/commit/30f5d0ef8ee52c3a30f1cdd166f69d76c0a3366a))
+* added Surge Update and Rollback support for AWS Node Pools ([30f5d0e](https://github.com/googleapis/google-cloud-python/commit/30f5d0ef8ee52c3a30f1cdd166f69d76c0a3366a))
+* expanded Kubernetes version info ([30f5d0e](https://github.com/googleapis/google-cloud-python/commit/30f5d0ef8ee52c3a30f1cdd166f69d76c0a3366a))
+
+
+### Documentation
+
+* updated comments of existing fields ([30f5d0e](https://github.com/googleapis/google-cloud-python/commit/30f5d0ef8ee52c3a30f1cdd166f69d76c0a3366a))
+
 ## [0.6.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.3...google-cloud-gke-multicloud-v0.6.4) (2023-12-07)
 
 
