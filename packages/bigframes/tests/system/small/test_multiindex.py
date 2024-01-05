@@ -234,6 +234,7 @@ def test_series_multi_index_droplevel(scalars_df_index, scalars_pandas_df_index,
         (1, 0),
         ([0, 1], 0),
         ([True, None], 1),
+        ((0, True), None),
     ],
 )
 def test_multi_index_drop(scalars_df_index, scalars_pandas_df_index, labels, level):

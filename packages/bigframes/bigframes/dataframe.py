@@ -1062,12 +1062,31 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             level_id = self._resolve_levels(level or 0)[0]
 
             if utils.is_list_like(index):
-                block, inverse_condition_id = block.apply_unary_op(
-                    level_id, ops.IsInOp(index, match_nulls=True)
-                )
-                block, condition_id = block.apply_unary_op(
-                    inverse_condition_id, ops.invert_op
-                )
+                # Only tuple is treated as multi-index value combinations
+                if isinstance(index, tuple):
+                    if level is not None:
+                        raise ValueError("Multi-index tuple can't specify level.")
+                    condition_id = None
+                    for i, idx in enumerate(index):
+                        level_id = self._resolve_levels(i)[0]
+                        block, condition_id_cur = block.apply_unary_op(
+                            level_id, ops.partial_right(ops.ne_op, idx)
+                        )
+                        if condition_id:
+                            block, condition_id = block.apply_binary_op(
+                                condition_id, condition_id_cur, ops.or_op
+                            )
+                        else:
+                            condition_id = condition_id_cur
+
+                    condition_id = typing.cast(str, condition_id)
+                else:
+                    block, inverse_condition_id = block.apply_unary_op(
+                        level_id, ops.IsInOp(index, match_nulls=True)
+                    )
+                    block, condition_id = block.apply_unary_op(
+                        inverse_condition_id, ops.invert_op
+                    )
             elif isinstance(index, indexes.Index):
                 return self._drop_by_index(index)
             else:

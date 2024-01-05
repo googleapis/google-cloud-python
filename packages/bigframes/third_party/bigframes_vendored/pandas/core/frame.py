@@ -1107,7 +1107,7 @@ class DataFrame(NDFrame):
 
         Args:
             labels:
-                Index or column labels to drop.
+                Index or column labels to drop. A tuple will be used as a single label and not treated as a list-like.
             axis:
                 Whether to drop labels from the index (0 or 'index') or
                 columns (1 or 'columns').
