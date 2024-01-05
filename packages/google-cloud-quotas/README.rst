@@ -16,7 +16,7 @@ Python Client for
    :target: https://pypi.org/project/google-cloud-quotas/
 .. _: 
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-quotas/latest
-.. _Product Documentation:  
+.. _Product Documentation:  https://cloud.google.com/docs/quota/api-overview
 
 Quick Start
 -----------
