@@ -1781,7 +1781,6 @@ class TestBigQuery(unittest.TestCase):
         )
 
         result_rows = [cursor.fetchone(), cursor.fetchone(), cursor.fetchone()]
-
         field_name = operator.itemgetter(0)
         fetched_data = [sorted(row.items(), key=field_name) for row in result_rows]
         # Since DB API is not thread safe, only a single result stream should be
@@ -1789,11 +1788,6 @@ class TestBigQuery(unittest.TestCase):
         # in the sorted order.
 
         expected_data = [
-            [
-                ("by", "pg"),
-                ("id", 1),
-                ("timestamp", datetime.datetime(2006, 10, 9, 18, 21, 51, tzinfo=UTC)),
-            ],
             [
                 ("by", "phyllis"),
                 ("id", 2),
@@ -1803,6 +1797,11 @@ class TestBigQuery(unittest.TestCase):
                 ("by", "phyllis"),
                 ("id", 3),
                 ("timestamp", datetime.datetime(2006, 10, 9, 18, 40, 33, tzinfo=UTC)),
+            ],
+            [
+                ("by", "onebeerdave"),
+                ("id", 4),
+                ("timestamp", datetime.datetime(2006, 10, 9, 18, 47, 42, tzinfo=UTC)),
             ],
         ]
 
