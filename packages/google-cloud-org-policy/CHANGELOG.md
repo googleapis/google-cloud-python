@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-org-policy/compare/v1.9.0...v1.10.0) (2023-12-16)
+
+
+### Features
+
+* Add custom constraints CRUD APIs, proper etag support in Org Policy Update/Delete API ([#257](https://github.com/googleapis/python-org-policy/issues/257)) ([4419e5f](https://github.com/googleapis/python-org-policy/commit/4419e5fc292e9a89f8f468a7db038a9bf62ad35e))
+
 ## [1.9.0](https://github.com/googleapis/python-org-policy/compare/v1.8.3...v1.9.0) (2023-12-07)
 
 
