@@ -71,8 +71,8 @@ class Taxonomy(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this taxonomy
-            in URL format.
+            Identifier. Resource name of this taxonomy in
+            URL format.
             Note: Policy tag manager generates unique
             taxonomy IDs.
         display_name (str):
@@ -191,7 +191,7 @@ class PolicyTag(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this policy tag
+            Identifier. Resource name of this policy tag
             in the URL format.
             The policy tag manager generates unique taxonomy
             IDs and policy tag IDs.
