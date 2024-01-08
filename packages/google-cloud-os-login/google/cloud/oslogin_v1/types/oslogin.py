@@ -187,6 +187,11 @@ class ImportSshPublicKeyRequest(proto.Message):
         project_id (str):
             The project ID of the Google Cloud Platform
             project.
+        regions (MutableSequence[str]):
+            Optional. The regions to which to assert that
+            the key was written. If unspecified, defaults to
+            all regions. Regions are listed at
+            https://cloud.google.com/about/locations#region.
     """
 
     parent: str = proto.Field(
@@ -201,6 +206,10 @@ class ImportSshPublicKeyRequest(proto.Message):
     project_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    regions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
     )
 
 
