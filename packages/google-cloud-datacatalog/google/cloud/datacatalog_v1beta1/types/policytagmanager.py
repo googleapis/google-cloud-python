@@ -52,8 +52,7 @@ class Taxonomy(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this taxonomy, whose format
-            is:
+            Identifier. Resource name of this taxonomy, whose format is:
             "projects/{project_number}/locations/{location_id}/taxonomies/{id}".
         display_name (str):
             Required. User defined name of this taxonomy.
@@ -165,7 +164,7 @@ class PolicyTag(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this policy tag, whose format
+            Identifier. Resource name of this policy tag, whose format
             is:
             "projects/{project_number}/locations/{location_id}/taxonomies/{taxonomy_id}/policyTags/{id}".
         display_name (str):
