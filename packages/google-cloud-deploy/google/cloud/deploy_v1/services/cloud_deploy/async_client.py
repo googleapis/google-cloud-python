@@ -692,9 +692,8 @@ class CloudDeployAsyncClient:
                 overwritten in the ``DeliveryPipeline`` resource by the
                 update. The fields specified in the update_mask are
                 relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask. If the user
-                does not provide a mask then all fields will be
-                overwritten.
+                will be overwritten if it's in the mask. If the user
+                doesn't provide a mask then all fields are overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1443,8 +1442,8 @@ class CloudDeployAsyncClient:
                 overwritten in the Target resource by the update. The
                 fields specified in the update_mask are relative to the
                 resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                overwritten if it's in the mask. If the user doesn't
+                provide a mask then all fields are overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1831,8 +1830,8 @@ class CloudDeployAsyncClient:
 
                    A CustomTargetType defines a type of custom target
                    that can be referenced in a Target in order to
-                   facilitate deploying to a runtime that does not have
-                   a 1P integration with Cloud Deploy.
+                   facilitate deploying to other systems besides the
+                   supported runtimes.
 
         """
         # Create or coerce a protobuf request object.
@@ -1942,8 +1941,8 @@ class CloudDeployAsyncClient:
                 The request object. The request object for ``CreateCustomTargetType``.
             parent (:class:`str`):
                 Required. The parent collection in which the
-                ``CustomTargetType`` should be created in. Format should
-                be ``projects/{project_id}/locations/{location_name}``.
+                ``CustomTargetType`` should be created. Format should be
+                ``projects/{project_id}/locations/{location_name}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1974,8 +1973,8 @@ class CloudDeployAsyncClient:
 
                    A CustomTargetType defines a type of custom target
                    that can be referenced in a Target in order to
-                   facilitate deploying to a runtime that does not have
-                   a 1P integration with Cloud Deploy.
+                   facilitate deploying to other systems besides the
+                   supported runtimes.
 
         """
         # Create or coerce a protobuf request object.
@@ -2092,9 +2091,8 @@ class CloudDeployAsyncClient:
                 overwritten in the ``CustomTargetType`` resource by the
                 update. The fields specified in the update_mask are
                 relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask. If the user
-                does not provide a mask then all fields will be
-                overwritten.
+                will be overwritten if it's in the mask. If the user
+                doesn't provide a mask then all fields are overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2115,8 +2113,8 @@ class CloudDeployAsyncClient:
 
                    A CustomTargetType defines a type of custom target
                    that can be referenced in a Target in order to
-                   facilitate deploying to a runtime that does not have
-                   a 1P integration with Cloud Deploy.
+                   facilitate deploying to other systems besides the
+                   supported runtimes.
 
         """
         # Create or coerce a protobuf request object.
@@ -4351,9 +4349,8 @@ class CloudDeployAsyncClient:
                 overwritten in the ``Automation`` resource by the
                 update. The fields specified in the update_mask are
                 relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask. If the user
-                does not provide a mask then all fields will be
-                overwritten.
+                will be overwritten if it's in the mask. If the user
+                doesn't provide a mask then all fields are overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

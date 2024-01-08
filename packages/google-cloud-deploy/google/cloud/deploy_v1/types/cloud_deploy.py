@@ -752,6 +752,13 @@ class KubernetesConfig(proto.Message):
                 to propagate. The maximum configurable time is 3
                 hours, in seconds format. If unspecified, there
                 is no wait time.
+            stable_cutback_duration (google.protobuf.duration_pb2.Duration):
+                Optional. The amount of time to migrate
+                traffic back from the canary Service to the
+                original Service during the stable phase
+                deployment. If specified, must be between 15s
+                and 3600s. If unspecified, there is no cutback
+                time.
         """
 
         http_route: str = proto.Field(
@@ -769,6 +776,11 @@ class KubernetesConfig(proto.Message):
         route_update_wait_time: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=4,
+            message=duration_pb2.Duration,
+        )
+        stable_cutback_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=5,
             message=duration_pb2.Duration,
         )
 
@@ -832,16 +844,16 @@ class CloudRunConfig(proto.Message):
             CustomCanaryDeployments.
         canary_revision_tags (MutableSequence[str]):
             Optional. A list of tags that are added to
-            the canary revision while the canary deployment
-            is in progress.
+            the canary revision while the canary phase is in
+            progress.
         prior_revision_tags (MutableSequence[str]):
             Optional. A list of tags that are added to
-            the prior revision while the canary deployment
-            is in progress.
+            the prior revision while the canary phase is in
+            progress.
         stable_revision_tags (MutableSequence[str]):
             Optional. A list of tags that are added to
-            the final stable revision after the canary
-            deployment is completed.
+            the final stable revision when the stable phase
+            is applied.
     """
 
     automatic_traffic_control: bool = proto.Field(
@@ -1125,10 +1137,10 @@ class CreateDeliveryPipelineRequest(proto.Message):
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes since the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -1180,17 +1192,17 @@ class UpdateDeliveryPipelineRequest(proto.Message):
             overwritten in the ``DeliveryPipeline`` resource by the
             update. The fields specified in the update_mask are relative
             to the resource, not the full request. A field will be
-            overwritten if it is in the mask. If the user does not
-            provide a mask then all fields will be overwritten.
+            overwritten if it's in the mask. If the user doesn't provide
+            a mask then all fields are overwritten.
         delivery_pipeline (google.cloud.deploy_v1.types.DeliveryPipeline):
             Required. The ``DeliveryPipeline`` to update.
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes since the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -1249,10 +1261,10 @@ class DeleteDeliveryPipelineRequest(proto.Message):
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes after the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -1965,10 +1977,10 @@ class CreateTargetRequest(proto.Message):
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes since the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -2019,18 +2031,18 @@ class UpdateTargetRequest(proto.Message):
             Required. Field mask is used to specify the fields to be
             overwritten in the Target resource by the update. The fields
             specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask. If the user does not provide a mask then all
-            fields will be overwritten.
+            not the full request. A field will be overwritten if it's in
+            the mask. If the user doesn't provide a mask then all fields
+            are overwritten.
         target (google.cloud.deploy_v1.types.Target):
             Required. The ``Target`` to update.
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes since the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -2088,10 +2100,10 @@ class DeleteTargetRequest(proto.Message):
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes after the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -2145,8 +2157,8 @@ class CustomTargetType(proto.Message):
     r"""A ``CustomTargetType`` resource in the Cloud Deploy API.
 
     A ``CustomTargetType`` defines a type of custom target that can be
-    referenced in a ``Target`` in order to facilitate deploying to a
-    runtime that does not have a 1P integration with Cloud Deploy.
+    referenced in a ``Target`` in order to facilitate deploying to other
+    systems besides the supported runtimes.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -2343,7 +2355,7 @@ class SkaffoldModules(proto.Message):
         Attributes:
             source (str):
                 Required. Cloud Storage source paths to copy recursively.
-                For example, providing `gs://my-bucket/dir/configs/*` will
+                For example, providing "gs://my-bucket/dir/configs/*" will
                 result in Skaffold copying all files within the
                 "dir/configs" directory in the bucket "my-bucket".
             path (str):
@@ -2485,7 +2497,7 @@ class CreateCustomTargetTypeRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent collection in which the
-            ``CustomTargetType`` should be created in. Format should be
+            ``CustomTargetType`` should be created. Format should be
             ``projects/{project_id}/locations/{location_name}``.
         custom_target_type_id (str):
             Required. ID of the ``CustomTargetType``.
@@ -2494,10 +2506,10 @@ class CreateCustomTargetTypeRequest(proto.Message):
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes since the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -2549,17 +2561,17 @@ class UpdateCustomTargetTypeRequest(proto.Message):
             overwritten in the ``CustomTargetType`` resource by the
             update. The fields specified in the update_mask are relative
             to the resource, not the full request. A field will be
-            overwritten if it is in the mask. If the user does not
-            provide a mask then all fields will be overwritten.
+            overwritten if it's in the mask. If the user doesn't provide
+            a mask then all fields are overwritten.
         custom_target_type (google.cloud.deploy_v1.types.CustomTargetType):
             Required. The ``CustomTargetType`` to update.
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes since the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -2618,10 +2630,10 @@ class DeleteCustomTargetTypeRequest(proto.Message):
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes after the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -2672,11 +2684,7 @@ class DeleteCustomTargetTypeRequest(proto.Message):
 
 
 class TargetAttribute(proto.Message):
-    r"""Contains criteria for selecting Targets. Attributes provided
-    must match the target resource in order for policy restrictions
-    to apply. E.g. if id "prod" and labels "foo: bar" are given the
-    target resource must match both that id and have that label in
-    order to be selected.
+    r"""Contains criteria for selecting Targets.
 
     Attributes:
         id (str):
@@ -3266,8 +3274,8 @@ class RenderMetadata(proto.Message):
             Output only. Metadata associated with
             rendering for Cloud Run.
         custom (google.cloud.deploy_v1.types.CustomMetadata):
-            Output only. Custom metadata provided by user
-            defined render operation.
+            Output only. Custom metadata provided by
+            user-defined render operation.
     """
 
     cloud_run: "CloudRunRenderMetadata" = proto.Field(
@@ -3396,10 +3404,10 @@ class CreateReleaseRequest(proto.Message):
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes since the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -3747,7 +3755,7 @@ class Metadata(proto.Message):
             contains the information about the interactions
             between Automation service and this rollout.
         custom (google.cloud.deploy_v1.types.CustomMetadata):
-            Output only. Custom metadata provided by user defined
+            Output only. Custom metadata provided by user-defined
             ``Rollout`` operations.
     """
 
@@ -3780,8 +3788,8 @@ class DeployJobRunMetadata(proto.Message):
             Output only. Custom Target metadata associated with a
             ``DeployJobRun``.
         custom (google.cloud.deploy_v1.types.CustomMetadata):
-            Output only. Custom metadata provided by user
-            defined deploy operation.
+            Output only. Custom metadata provided by
+            user-defined deploy operation.
     """
 
     cloud_run: "CloudRunMetadata" = proto.Field(
@@ -3887,13 +3895,13 @@ class AutomationRolloutMetadata(proto.Message):
 
 
 class CustomMetadata(proto.Message):
-    r"""CustomMetadata contains information from a user defined
+    r"""CustomMetadata contains information from a user-defined
     operation.
 
     Attributes:
         values (MutableMapping[str, str]):
             Output only. Key-value pairs provided by the
-            user defined operation.
+            user-defined operation.
     """
 
     values: MutableMapping[str, str] = proto.MapField(
@@ -4347,10 +4355,10 @@ class CreateRolloutRequest(proto.Message):
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes since the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -5792,10 +5800,10 @@ class CreateAutomationRequest(proto.Message):
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes since the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -5847,17 +5855,17 @@ class UpdateAutomationRequest(proto.Message):
             overwritten in the ``Automation`` resource by the update.
             The fields specified in the update_mask are relative to the
             resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            if it's in the mask. If the user doesn't provide a mask then
+            all fields are overwritten.
         automation (google.cloud.deploy_v1.types.Automation):
             Required. The ``Automation`` to update.
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes since the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -5916,10 +5924,10 @@ class DeleteAutomationRequest(proto.Message):
         request_id (str):
             Optional. A request ID to identify requests.
             Specify a unique request ID so that if you must
-            retry your request, the server will know to
-            ignore the request if it has already been
-            completed. The server will guarantee that for at
-            least 60 minutes after the first request.
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If

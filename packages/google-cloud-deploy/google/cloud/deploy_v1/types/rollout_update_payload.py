@@ -34,22 +34,26 @@ class RolloutUpdateEvent(proto.Message):
     Platform Log event that describes the rollout update event.
 
     Attributes:
+        message (str):
+            Debug message for when a rollout update event
+            occurs.
         pipeline_uid (str):
             Unique identifier of the pipeline.
         release_uid (str):
             Unique identifier of the release.
+        release (str):
+            The name of the ``Release``.
         rollout (str):
-            The name of the rollout.
+            The name of the rollout. rollout_uid is not in this log
+            message because we write some of these log messages at
+            rollout creation time, before we've generated the uid.
         target_id (str):
             ID of the target.
-        rollout_update_type (google.cloud.deploy_v1.types.RolloutUpdateEvent.RolloutUpdateType):
-            The type of the rollout update.
-        message (str):
-            Debug message for when a rollout update event
-            occurs.
         type_ (google.cloud.deploy_v1.types.Type):
             Type of this notification, e.g. for a rollout
             update event.
+        rollout_update_type (google.cloud.deploy_v1.types.RolloutUpdateEvent.RolloutUpdateType):
+            The type of the rollout update.
     """
 
     class RolloutUpdateType(proto.Enum):
@@ -100,6 +104,10 @@ class RolloutUpdateEvent(proto.Message):
         ADVANCE_REQUIRED = 12
         ADVANCED = 13
 
+    message: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
     pipeline_uid: str = proto.Field(
         proto.STRING,
         number=1,
@@ -107,6 +115,10 @@ class RolloutUpdateEvent(proto.Message):
     release_uid: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    release: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
     rollout: str = proto.Field(
         proto.STRING,
@@ -116,19 +128,15 @@ class RolloutUpdateEvent(proto.Message):
         proto.STRING,
         number=4,
     )
-    rollout_update_type: RolloutUpdateType = proto.Field(
-        proto.ENUM,
-        number=5,
-        enum=RolloutUpdateType,
-    )
-    message: str = proto.Field(
-        proto.STRING,
-        number=6,
-    )
     type_: log_enums.Type = proto.Field(
         proto.ENUM,
         number=7,
         enum=log_enums.Type,
+    )
+    rollout_update_type: RolloutUpdateType = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=RolloutUpdateType,
     )
 
 

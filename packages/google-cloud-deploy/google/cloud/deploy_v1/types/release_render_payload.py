@@ -19,7 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.deploy_v1.types import cloud_deploy
+from google.cloud.deploy_v1.types import cloud_deploy, log_enums
 
 __protobuf__ = proto.module(
     package="google.cloud.deploy.v1",
@@ -38,8 +38,15 @@ class ReleaseRenderEvent(proto.Message):
             Debug message for when a render transition
             occurs. Provides further details as rendering
             progresses through render states.
+        pipeline_uid (str):
+            Unique identifier of the ``DeliveryPipeline``.
         release (str):
-            The name of the release.
+            The name of the release. release_uid is not in this log
+            message because we write some of these log messages at
+            release creation time, before we've generated the uid.
+        type_ (google.cloud.deploy_v1.types.Type):
+            Type of this notification, e.g. for a release
+            render state change event.
         release_render_state (google.cloud.deploy_v1.types.Release.RenderState):
             The state of the release render.
     """
@@ -48,9 +55,18 @@ class ReleaseRenderEvent(proto.Message):
         proto.STRING,
         number=1,
     )
+    pipeline_uid: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
     release: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    type_: log_enums.Type = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=log_enums.Type,
     )
     release_render_state: cloud_deploy.Release.RenderState = proto.Field(
         proto.ENUM,
