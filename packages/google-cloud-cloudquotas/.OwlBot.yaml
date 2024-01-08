@@ -14,5 +14,5 @@
 
 deep-copy-regex:
     - source: /google/api/cloudquotas/(v.*)/.*-py
-      dest: /owl-bot-staging/google-api-cloudquotas/$1
-api-name: google-api-cloudquotas
+      dest: /owl-bot-staging/google-cloud-cloudquotas/$1
+api-name: google-cloud-cloudquotas
