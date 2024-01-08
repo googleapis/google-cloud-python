@@ -83,6 +83,14 @@
          "mode" : "NULLABLE",
          "name" : "FavoriteNumber",
          "type" : "NUMERIC"
+      },
+      {
+         "mode" : "NULLABLE",
+         "name" : "TimeRange",
+         "type" : "RANGE",
+         "rangeElementType": {
+            "type": "DATETIME"
+          }
       }
    ]
 }

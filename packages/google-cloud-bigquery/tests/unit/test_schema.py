@@ -97,6 +97,36 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.fields[0], sub_field1)
         self.assertEqual(field.fields[1], sub_field2)
 
+    def test_constructor_range(self):
+        from google.cloud.bigquery.schema import FieldElementType
+
+        field = self._make_one(
+            "test",
+            "RANGE",
+            mode="REQUIRED",
+            description="Testing",
+            range_element_type=FieldElementType("DATETIME"),
+        )
+        self.assertEqual(field.name, "test")
+        self.assertEqual(field.field_type, "RANGE")
+        self.assertEqual(field.mode, "REQUIRED")
+        self.assertEqual(field.description, "Testing")
+        self.assertEqual(field.range_element_type.element_type, "DATETIME")
+
+    def test_constructor_range_str(self):
+        field = self._make_one(
+            "test",
+            "RANGE",
+            mode="REQUIRED",
+            description="Testing",
+            range_element_type="DATETIME",
+        )
+        self.assertEqual(field.name, "test")
+        self.assertEqual(field.field_type, "RANGE")
+        self.assertEqual(field.mode, "REQUIRED")
+        self.assertEqual(field.description, "Testing")
+        self.assertEqual(field.range_element_type.element_type, "DATETIME")
+
     def test_to_api_repr(self):
         from google.cloud.bigquery.schema import PolicyTagList
 
@@ -160,6 +190,7 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.fields[0].name, "bar")
         self.assertEqual(field.fields[0].field_type, "INTEGER")
         self.assertEqual(field.fields[0].mode, "NULLABLE")
+        self.assertEqual(field.range_element_type, None)
 
     def test_from_api_repr_policy(self):
         field = self._get_target_class().from_api_repr(
@@ -178,6 +209,23 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.fields[0].field_type, "INTEGER")
         self.assertEqual(field.fields[0].mode, "NULLABLE")
 
+    def test_from_api_repr_range(self):
+        field = self._get_target_class().from_api_repr(
+            {
+                "mode": "nullable",
+                "description": "test_range",
+                "name": "foo",
+                "type": "range",
+                "rangeElementType": {"type": "DATETIME"},
+            }
+        )
+        self.assertEqual(field.name, "foo")
+        self.assertEqual(field.field_type, "RANGE")
+        self.assertEqual(field.mode, "NULLABLE")
+        self.assertEqual(field.description, "test_range")
+        self.assertEqual(len(field.fields), 0)
+        self.assertEqual(field.range_element_type.element_type, "DATETIME")
+
     def test_from_api_repr_defaults(self):
         field = self._get_target_class().from_api_repr(
             {"name": "foo", "type": "record"}
@@ -192,8 +240,10 @@ class TestSchemaField(unittest.TestCase):
         # _properties.
         self.assertIsNone(field.description)
         self.assertIsNone(field.policy_tags)
+        self.assertIsNone(field.range_element_type)
         self.assertNotIn("description", field._properties)
         self.assertNotIn("policyTags", field._properties)
+        self.assertNotIn("rangeElementType", field._properties)
 
     def test_name_property(self):
         name = "lemon-ness"
@@ -564,6 +614,40 @@ class TestSchemaField(unittest.TestCase):
         evaled_field = eval(field_repr)
 
         assert field == evaled_field
+
+
+class TestFieldElementType(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.schema import FieldElementType
+
+        return FieldElementType
+
+    def _make_one(self, *args):
+        return self._get_target_class()(*args)
+
+    def test_constructor(self):
+        element_type = self._make_one("DATETIME")
+        self.assertEqual(element_type.element_type, "DATETIME")
+        self.assertEqual(element_type._properties["type"], "DATETIME")
+
+    def test_to_api_repr(self):
+        element_type = self._make_one("DATETIME")
+        self.assertEqual(element_type.to_api_repr(), {"type": "DATETIME"})
+
+    def test_from_api_repr(self):
+        api_repr = {"type": "DATETIME"}
+        expected_element_type = self._make_one("DATETIME")
+        self.assertEqual(
+            expected_element_type.element_type,
+            self._get_target_class().from_api_repr(api_repr).element_type,
+        )
+
+    def test_from_api_repr_empty(self):
+        self.assertEqual(None, self._get_target_class().from_api_repr({}))
+
+    def test_from_api_repr_none(self):
+        self.assertEqual(None, self._get_target_class().from_api_repr(None))
 
 
 # TODO: dedup with the same class in test_table.py.

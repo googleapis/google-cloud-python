@@ -96,6 +96,7 @@ from google.cloud.bigquery.routine import RoutineType
 from google.cloud.bigquery.routine import RemoteFunctionOptions
 from google.cloud.bigquery.schema import PolicyTagList
 from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery.schema import FieldElementType
 from google.cloud.bigquery.standard_sql import StandardSqlDataType
 from google.cloud.bigquery.standard_sql import StandardSqlField
 from google.cloud.bigquery.standard_sql import StandardSqlStructType
@@ -158,6 +159,7 @@ __all__ = [
     "RemoteFunctionOptions",
     # Shared helpers
     "SchemaField",
+    "FieldElementType",
     "PolicyTagList",
     "UDFResource",
     "ExternalConfig",
