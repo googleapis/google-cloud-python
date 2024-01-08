@@ -19,12 +19,13 @@ from typing import List
 _lock = threading.Lock()
 MAX_LABELS_COUNT = 64
 _api_methods: List = []
+_excluded_methods = ["__setattr__", "__getattr__"]
 
 
 def class_logger(decorated_cls):
     """Decorator that adds logging functionality to each method of the class."""
     for attr_name, attr_value in decorated_cls.__dict__.items():
-        if callable(attr_value):
+        if callable(attr_value) and (attr_name not in _excluded_methods):
             setattr(decorated_cls, attr_name, method_logger(attr_value, decorated_cls))
     return decorated_cls
 

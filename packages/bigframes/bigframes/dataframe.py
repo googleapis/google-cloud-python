@@ -251,6 +251,15 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> indexes.Index:
         return indexes.Index(self)
 
+    @index.setter
+    def index(self, value):
+        # TODO: Handle assigning MultiIndex
+        result = self._assign_single_item("_new_bf_index", value).set_index(
+            "_new_bf_index"
+        )
+        self._set_block(result._get_block())
+        self.index.name = value.name if hasattr(value, "name") else None
+
     @property
     def loc(self) -> indexers.LocDataFrameIndexer:
         return indexers.LocDataFrameIndexer(self)
@@ -544,6 +553,29 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             )
         else:
             raise AttributeError(key)
+
+    def __setattr__(self, key: str, value):
+        if key in ["_block", "_query_job"]:
+            object.__setattr__(self, key, value)
+            return
+        # Can this be removed???
+        try:
+            # boring attributes go through boring old path
+            object.__getattribute__(self, key)
+            return object.__setattr__(self, key, value)
+        except AttributeError:
+            pass
+
+        # if this fails, go on to more involved attribute setting
+        # (note that this matches __getattr__, above).
+        try:
+            if key in self.columns:
+                self[key] = value
+            else:
+                object.__setattr__(self, key, value)
+        # Can this be removed?
+        except (AttributeError, TypeError):
+            object.__setattr__(self, key, value)
 
     def __repr__(self) -> str:
         """Converts a DataFrame to a string. Calls to_pandas.
@@ -1265,6 +1297,15 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 [get_column_left[col_id] for col_id in original_index_column_ids],
                 index_labels=self._block.index_labels,
             )
+            src_col = get_column_right[new_column_block.value_columns[0]]
+            # Check to see if key exists, and modify in place
+            col_ids = self._block.cols_matching_label(k)
+            for col_id in col_ids:
+                result_block = result_block.copy_values(
+                    src_col, get_column_left[col_id]
+                )
+            if len(col_ids) > 0:
+                result_block = result_block.drop_columns([src_col])
         return DataFrame(result_block)
 
     def _assign_scalar(self, label: str, value: Union[int, float]) -> DataFrame:

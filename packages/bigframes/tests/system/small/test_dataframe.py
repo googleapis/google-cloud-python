@@ -3140,15 +3140,63 @@ def test_df___array__(scalars_df_index, scalars_pandas_df_index):
     )
 
 
-def test_getattr_attribute_error_when_pandas_has(scalars_df_index):
+def test_df_getattr_attribute_error_when_pandas_has(scalars_df_index):
     # swapaxes is implemented in pandas but not in bigframes
     with pytest.raises(AttributeError):
         scalars_df_index.swapaxes()
 
 
-def test_getattr_attribute_error(scalars_df_index):
+def test_df_getattr_attribute_error(scalars_df_index):
     with pytest.raises(AttributeError):
         scalars_df_index.not_a_method()
+
+
+def test_df_getattr_axes():
+    df = dataframe.DataFrame(
+        [[1, 1, 1], [1, 1, 1]], columns=["index", "columns", "my_column"]
+    )
+    assert isinstance(df.index, bigframes.core.indexes.Index)
+    assert isinstance(df.columns, pandas.Index)
+    assert isinstance(df.my_column, series.Series)
+
+
+def test_df_setattr_index():
+    pd_df = pandas.DataFrame(
+        [[1, 1, 1], [1, 1, 1]], columns=["index", "columns", "my_column"]
+    )
+    bf_df = dataframe.DataFrame(pd_df)
+    pd_df.index = [4, 5]
+    bf_df.index = [4, 5]
+
+    assert_pandas_df_equal(
+        pd_df, bf_df.to_pandas(), check_index_type=False, check_dtype=False
+    )
+
+
+def test_df_setattr_columns():
+    pd_df = pandas.DataFrame(
+        [[1, 1, 1], [1, 1, 1]], columns=["index", "columns", "my_column"]
+    )
+    bf_df = dataframe.DataFrame(pd_df)
+    pd_df.columns = [4, 5, 6]
+    bf_df.columns = [4, 5, 6]
+
+    assert_pandas_df_equal(
+        pd_df, bf_df.to_pandas(), check_index_type=False, check_dtype=False
+    )
+
+
+def test_df_setattr_modify_column():
+    pd_df = pandas.DataFrame(
+        [[1, 1, 1], [1, 1, 1]], columns=["index", "columns", "my_column"]
+    )
+    bf_df = dataframe.DataFrame(pd_df)
+    pd_df.my_column = [4, 5]
+    bf_df.my_column = [4, 5]
+
+    assert_pandas_df_equal(
+        pd_df, bf_df.to_pandas(), check_index_type=False, check_dtype=False
+    )
 
 
 def test_loc_list_string_index(scalars_df_index, scalars_pandas_df_index):

@@ -139,6 +139,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def T(self) -> Series:
         return self.transpose()
 
+    @property
+    def _info_axis(self) -> indexes.Index:
+        return self.index
+
     def transpose(self) -> Series:
         return self
 
