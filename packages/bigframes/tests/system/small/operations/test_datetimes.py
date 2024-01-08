@@ -16,18 +16,22 @@ import pandas as pd
 import pytest
 
 import bigframes.series
-from tests.system.utils import assert_series_equal
+from tests.system.utils import assert_series_equal, skip_legacy_pandas
 
 DATETIME_COL_NAMES = [("datetime_col",), ("timestamp_col",)]
+DATE_COLUMNS = [
+    ("datetime_col",),
+    ("timestamp_col",),
+    ("date_col",),
+]
 
 
 @pytest.mark.parametrize(
     ("col_name",),
-    DATETIME_COL_NAMES,
+    DATE_COLUMNS,
 )
-def test_day(scalars_dfs, col_name):
-    if pd.__version__.startswith("1."):
-        pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
+@skip_legacy_pandas
+def test_dt_day(scalars_dfs, col_name):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
     bf_result = bf_series.dt.day.to_pandas()
@@ -43,9 +47,8 @@ def test_day(scalars_dfs, col_name):
     ("col_name",),
     DATETIME_COL_NAMES,
 )
-def test_date(scalars_dfs, col_name):
-    if pd.__version__.startswith("1."):
-        pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
+@skip_legacy_pandas
+def test_dt_date(scalars_dfs, col_name):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
     bf_result = bf_series.dt.date.to_pandas()
@@ -59,11 +62,10 @@ def test_date(scalars_dfs, col_name):
 
 @pytest.mark.parametrize(
     ("col_name",),
-    DATETIME_COL_NAMES,
+    DATE_COLUMNS,
 )
-def test_dayofweek(scalars_dfs, col_name):
-    if pd.__version__.startswith("1."):
-        pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
+@skip_legacy_pandas
+def test_dt_dayofweek(scalars_dfs, col_name):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
     bf_result = bf_series.dt.dayofweek.to_pandas()
@@ -76,9 +78,8 @@ def test_dayofweek(scalars_dfs, col_name):
     ("col_name",),
     DATETIME_COL_NAMES,
 )
-def test_hour(scalars_dfs, col_name):
-    if pd.__version__.startswith("1."):
-        pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
+@skip_legacy_pandas
+def test_dt_hour(scalars_dfs, col_name):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
     bf_result = bf_series.dt.hour.to_pandas()
@@ -94,9 +95,8 @@ def test_hour(scalars_dfs, col_name):
     ("col_name",),
     DATETIME_COL_NAMES,
 )
-def test_minute(scalars_dfs, col_name):
-    if pd.__version__.startswith("1."):
-        pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
+@skip_legacy_pandas
+def test_dt_minute(scalars_dfs, col_name):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
     bf_result = bf_series.dt.minute.to_pandas()
@@ -110,11 +110,10 @@ def test_minute(scalars_dfs, col_name):
 
 @pytest.mark.parametrize(
     ("col_name",),
-    DATETIME_COL_NAMES,
+    DATE_COLUMNS,
 )
-def test_month(scalars_dfs, col_name):
-    if pd.__version__.startswith("1."):
-        pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
+@skip_legacy_pandas
+def test_dt_month(scalars_dfs, col_name):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
     bf_result = bf_series.dt.month.to_pandas()
@@ -128,11 +127,10 @@ def test_month(scalars_dfs, col_name):
 
 @pytest.mark.parametrize(
     ("col_name",),
-    DATETIME_COL_NAMES,
+    DATE_COLUMNS,
 )
-def test_quarter(scalars_dfs, col_name):
-    if pd.__version__.startswith("1."):
-        pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
+@skip_legacy_pandas
+def test_dt_quarter(scalars_dfs, col_name):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
     bf_result = bf_series.dt.quarter.to_pandas()
@@ -148,9 +146,8 @@ def test_quarter(scalars_dfs, col_name):
     ("col_name",),
     DATETIME_COL_NAMES,
 )
-def test_second(scalars_dfs, col_name):
-    if pd.__version__.startswith("1."):
-        pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
+@skip_legacy_pandas
+def test_dt_second(scalars_dfs, col_name):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
     bf_result = bf_series.dt.second.to_pandas()
@@ -166,9 +163,8 @@ def test_second(scalars_dfs, col_name):
     ("col_name",),
     DATETIME_COL_NAMES,
 )
-def test_time(scalars_dfs, col_name):
-    if pd.__version__.startswith("1."):
-        pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
+@skip_legacy_pandas
+def test_dt_time(scalars_dfs, col_name):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
     bf_result = bf_series.dt.time.to_pandas()
@@ -182,11 +178,10 @@ def test_time(scalars_dfs, col_name):
 
 @pytest.mark.parametrize(
     ("col_name",),
-    DATETIME_COL_NAMES,
+    DATE_COLUMNS,
 )
-def test_year(scalars_dfs, col_name):
-    if pd.__version__.startswith("1."):
-        pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
+@skip_legacy_pandas
+def test_dt_year(scalars_dfs, col_name):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
     bf_result = bf_series.dt.year.to_pandas()
@@ -196,3 +191,31 @@ def test_year(scalars_dfs, col_name):
         pd_result.astype(pd.Int64Dtype()),
         bf_result,
     )
+
+
+@pytest.mark.parametrize(
+    ("col_name",),
+    DATETIME_COL_NAMES,
+)
+@skip_legacy_pandas
+def test_dt_tz(scalars_dfs, col_name):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+    bf_result = bf_series.dt.tz
+    pd_result = scalars_pandas_df[col_name].dt.tz
+
+    assert bf_result == pd_result
+
+
+@pytest.mark.parametrize(
+    ("col_name",),
+    DATETIME_COL_NAMES,
+)
+@skip_legacy_pandas
+def test_dt_unit(scalars_dfs, col_name):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+    bf_result = bf_series.dt.unit
+    pd_result = scalars_pandas_df[col_name].dt.unit
+
+    assert bf_result == pd_result

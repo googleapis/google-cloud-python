@@ -94,3 +94,22 @@ class DatetimeProperties:
         """The year of the datetime."""
 
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def tz(self):
+        """Return the timezone.
+
+        Returns:
+            datetime.tzinfo, pytz.tzinfo.BaseTZInfo, dateutil.tz.tz.tzfile, or None
+        """
+
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def unit(self) -> str:
+        """Returns the unit of time precision.
+
+        Returns:
+            Unit as string (eg. "us").
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

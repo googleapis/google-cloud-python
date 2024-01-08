@@ -14,6 +14,9 @@
 
 from __future__ import annotations
 
+import datetime as dt
+from typing import Optional
+
 from bigframes.core import log_adapter
 import bigframes.operations as ops
 import bigframes.operations.base
@@ -27,6 +30,7 @@ class DatetimeMethods(
 ):
     __doc__ = vendordt.DatetimeProperties.__doc__
 
+    # Date accessors
     @property
     def day(self) -> series.Series:
         return self._apply_unary_op(ops.day_op)
@@ -40,16 +44,25 @@ class DatetimeMethods(
         return self._apply_unary_op(ops.date_op)
 
     @property
+    def quarter(self) -> series.Series:
+        return self._apply_unary_op(ops.quarter_op)
+
+    @property
+    def year(self) -> series.Series:
+        return self._apply_unary_op(ops.year_op)
+
+    @property
+    def month(self) -> series.Series:
+        return self._apply_unary_op(ops.month_op)
+
+    # Time accessors
+    @property
     def hour(self) -> series.Series:
         return self._apply_unary_op(ops.hour_op)
 
     @property
     def minute(self) -> series.Series:
         return self._apply_unary_op(ops.minute_op)
-
-    @property
-    def month(self) -> series.Series:
-        return self._apply_unary_op(ops.month_op)
 
     @property
     def second(self) -> series.Series:
@@ -60,9 +73,17 @@ class DatetimeMethods(
         return self._apply_unary_op(ops.time_op)
 
     @property
-    def quarter(self) -> series.Series:
-        return self._apply_unary_op(ops.quarter_op)
+    def tz(self) -> Optional[dt.timezone]:
+        # Assumption: pyarrow dtype
+        tz_string = self._dtype.pyarrow_dtype.tz
+        if tz_string == "UTC":
+            return dt.timezone.utc
+        elif tz_string is None:
+            return None
+        else:
+            raise ValueError(f"Unexpected timezone {tz_string}")
 
     @property
-    def year(self) -> series.Series:
-        return self._apply_unary_op(ops.year_op)
+    def unit(self) -> str:
+        # Assumption: pyarrow dtype
+        return self._dtype.pyarrow_dtype.unit
