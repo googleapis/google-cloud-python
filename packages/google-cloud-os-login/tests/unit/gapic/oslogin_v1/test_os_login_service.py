@@ -4039,7 +4039,12 @@ def test_import_ssh_public_key_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).import_ssh_public_key._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("project_id",))
+    assert not set(unset_fields) - set(
+        (
+            "project_id",
+            "regions",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4094,7 +4099,15 @@ def test_import_ssh_public_key_rest_unset_required_fields():
     )
 
     unset_fields = transport.import_ssh_public_key._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("projectId",)) & set(("parent",)))
+    assert set(unset_fields) == (
+        set(
+            (
+                "projectId",
+                "regions",
+            )
+        )
+        & set(("parent",))
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
