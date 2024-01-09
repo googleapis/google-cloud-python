@@ -2681,6 +2681,7 @@ def test_create_job_rest(request_type):
                         "collocation": "collocation_value",
                         "max_distance": 1264,
                     },
+                    "tags": ["tags_value1", "tags_value2"],
                 },
                 "labels": {},
                 "task_environments": {},
@@ -2688,6 +2689,7 @@ def test_create_job_rest(request_type):
                 "require_hosts_file": True,
                 "permissive_ssh": True,
                 "enable_oslogin": True,
+                "run_as_non_root": True,
             }
         ],
         "scheduling_policy": 1,

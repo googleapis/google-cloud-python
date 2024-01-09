@@ -366,12 +366,13 @@ class Runnable(proto.Message):
                 password matches ``projects/*/secrets/*/versions/*`` then
                 Batch will read the password from the Secret Manager;
             enable_image_streaming (bool):
-                Optional. Not yet implemented.
-                If set to true, container will run with Image
-                streaming. The container runtime will be changed
-                to containerd instead of docker. Currently, only
-                imageUri, commands, entrypoint and volumes are
-                supported and any other fields will be ignored.
+                Optional. If set to true, container will run with Image
+                streaming. The container runtime will be changed to
+                containerd instead of docker. Currently, only imageUri,
+                commands, entrypoint and volumes are supported and any other
+                fields will be ignored. Please refer
+                `here <https://github.com/GoogleCloudPlatform/batch-samples/tree/main/api-samples/image-streaming>`__
+                for the feature requirements and limitations.
         """
 
         image_uri: str = proto.Field(
