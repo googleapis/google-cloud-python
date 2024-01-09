@@ -28,6 +28,7 @@ from bigframes.ml import (
     forecasting,
     imported,
     linear_model,
+    llm,
     pipeline,
 )
 
@@ -47,6 +48,15 @@ _BQML_MODEL_TYPE_MAPPING = MappingProxyType(
     }
 )
 
+_BQML_ENDPOINT_TYPE_MAPPING = MappingProxyType(
+    {
+        llm._TEXT_GENERATOR_BISON_ENDPOINT: llm.PaLM2TextGenerator,
+        llm._TEXT_GENERATOR_BISON_32K_ENDPOINT: llm.PaLM2TextGenerator,
+        llm._EMBEDDING_GENERATOR_GECKO_ENDPOINT: llm.PaLM2TextEmbeddingGenerator,
+        llm._EMBEDDING_GENERATOR_GECKO_MULTILINGUAL_ENDPOINT: llm.PaLM2TextEmbeddingGenerator,
+    }
+)
+
 
 def from_bq(
     session: bigframes.Session, bq_model: bigquery.Model
@@ -62,6 +72,8 @@ def from_bq(
     ensemble.RandomForestClassifier,
     imported.TensorFlowModel,
     imported.ONNXModel,
+    llm.PaLM2TextGenerator,
+    llm.PaLM2TextEmbeddingGenerator,
     pipeline.Pipeline,
 ]:
     """Load a BQML model to BigQuery DataFrames ML.
@@ -82,6 +94,17 @@ def from_bq(
 def _model_from_bq(session: bigframes.Session, bq_model: bigquery.Model):
     if bq_model.model_type in _BQML_MODEL_TYPE_MAPPING:
         return _BQML_MODEL_TYPE_MAPPING[bq_model.model_type]._from_bq(  # type: ignore
+            session=session, model=bq_model
+        )
+    if (
+        bq_model.model_type == "MODEL_TYPE_UNSPECIFIED"
+        and "remoteModelInfo" in bq_model._properties
+        and "endpoint" in bq_model._properties["remoteModelInfo"]
+    ):
+        # Parse the remote model endpoint
+        bqml_endpoint = bq_model._properties["remoteModelInfo"]["endpoint"]
+        endpoint_model = bqml_endpoint.split("/")[-1]
+        return _BQML_ENDPOINT_TYPE_MAPPING[endpoint_model]._from_bq(  # type: ignore
             session=session, model=bq_model
         )
 
