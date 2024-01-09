@@ -14,29 +14,12 @@
 
 from __future__ import annotations
 
-import typing
-
-import ibis.expr.types as ibis_types
-
 from bigframes.core import log_adapter
 import bigframes.dataframe
 import bigframes.operations
 import bigframes.operations.base
 import bigframes.series
 import third_party.bigframes_vendored.pandas.core.arrays.arrow.accessors as vendoracessors
-
-
-class _StructField(bigframes.operations.UnaryOp):
-    def __init__(self, name_or_index: str | int):
-        self._name_or_index = name_or_index
-
-    def _as_ibis(self, x: ibis_types.Value):
-        struct_value = typing.cast(ibis_types.StructValue, x)
-        if isinstance(self._name_or_index, str):
-            name = self._name_or_index
-        else:
-            name = struct_value.names[self._name_or_index]
-        return struct_value[name].name(name)
 
 
 @log_adapter.class_logger
@@ -46,7 +29,7 @@ class StructAccessor(
     __doc__ = vendoracessors.StructAccessor.__doc__
 
     def field(self, name_or_index: str | int) -> bigframes.series.Series:
-        series = self._apply_unary_op(_StructField(name_or_index))
+        series = self._apply_unary_op(bigframes.operations.StructFieldOp(name_or_index))
         if isinstance(name_or_index, str):
             name = name_or_index
         else:

@@ -295,12 +295,12 @@ def _perform_get_dummies_block_operations(
         if column_label == "":
             new_column_label = value
         new_block, new_id = block.apply_unary_op(
-            column_id, ops.BinopPartialLeft(ops.eq_op, value)
+            column_id, ops.ApplyLeft(ops.eq_op, value)
         )
         intermediate_col_ids.append(new_id)
         block, _ = new_block.apply_unary_op(
             new_id,
-            ops.BinopPartialRight(ops.fillna_op, False),
+            ops.ApplyRight(ops.fillna_op, False),
             result_label=new_column_label,
         )
     if dummy_na:

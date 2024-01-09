@@ -186,7 +186,7 @@ class Index(vendored_pandas_index.Index):
     ) -> Index:
         if self.nlevels > 1:
             raise TypeError("Multiindex does not support 'astype'")
-        return self._apply_unary_op(ops.AsTypeOp(dtype))
+        return self._apply_unary_op(ops.AsTypeOp(to_type=dtype))
 
     def all(self) -> bool:
         if self.nlevels > 1:
@@ -278,7 +278,7 @@ class Index(vendored_pandas_index.Index):
         level_id = self._block.index_columns[0]
         if utils.is_list_like(labels):
             block, inverse_condition_id = block.apply_unary_op(
-                level_id, ops.IsInOp(labels, match_nulls=True)
+                level_id, ops.IsInOp(values=tuple(labels), match_nulls=True)
             )
             block, condition_id = block.apply_unary_op(
                 inverse_condition_id, ops.invert_op
@@ -308,9 +308,9 @@ class Index(vendored_pandas_index.Index):
                 f"isin(), you passed a [{type(values).__name__}]"
             )
 
-        return self._apply_unary_op(ops.IsInOp(values, match_nulls=True)).fillna(
-            value=False
-        )
+        return self._apply_unary_op(
+            ops.IsInOp(values=tuple(values), match_nulls=True)
+        ).fillna(value=False)
 
     def _apply_unary_op(
         self,

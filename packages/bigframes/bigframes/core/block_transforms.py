@@ -45,7 +45,7 @@ def equals(block1: blocks.Block, block2: blocks.Block) -> bool:
         lcolmapped = lmap[lcol]
         rcolmapped = rmap[rcol]
         joined_block, result_id = joined_block.apply_binary_op(
-            lcolmapped, rcolmapped, ops.eq_nulls_match_op
+            lcolmapped, rcolmapped, ops.eq_null_match_op
         )
         joined_block, result_id = joined_block.apply_unary_op(
             result_id, ops.partial_right(ops.fillna_op, False)

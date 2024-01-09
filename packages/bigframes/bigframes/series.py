@@ -189,7 +189,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                     # Will throw if value type isn't compatible with index type.
                     block, const_id = block.create_constant(v, dtype=idx_dtype)
                     block, cond_id = block.apply_unary_op(
-                        idx_id, ops.BinopPartialRight(ops.ne_op, k)
+                        idx_id, ops.ApplyRight(base_op=ops.ne_op, right_scalar=k)
                     )
                     block, new_idx_id = block.apply_ternary_op(
                         idx_id, cond_id, const_id, ops.where_op
@@ -267,7 +267,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         self,
         dtype: Union[bigframes.dtypes.DtypeString, bigframes.dtypes.Dtype],
     ) -> Series:
-        return self._apply_unary_op(bigframes.operations.AsTypeOp(dtype))
+        return self._apply_unary_op(bigframes.operations.AsTypeOp(to_type=dtype))
 
     def to_pandas(
         self,
@@ -337,7 +337,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         level_id = self._resolve_levels(level or 0)[0]
         if _is_list_like(index):
             block, inverse_condition_id = block.apply_unary_op(
-                level_id, ops.IsInOp(index, match_nulls=True)
+                level_id, ops.IsInOp(values=tuple(index), match_nulls=True)
             )
             block, condition_id = block.apply_unary_op(
                 inverse_condition_id, ops.invert_op
@@ -471,7 +471,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             )
         block, result_col = self._block.apply_unary_op(
             self._value_column,
-            ops.ReplaceRegexOp(to_replace, value),
+            ops.RegexReplaceStrOp(to_replace, value),
             result_label=self.name,
         )
         return Series(block.select_column(result_col))
@@ -487,7 +487,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             return self.astype(result_type)._simple_replace(to_replace_list, value)
 
         block, cond = self._block.apply_unary_op(
-            self._value_column, ops.IsInOp(to_replace_list)
+            self._value_column, ops.IsInOp(tuple(to_replace_list))
         )
         block, result_col = block.apply_binary_op(
             cond,
@@ -572,9 +572,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 f"isin(), you passed a [{type(values).__name__}]"
             )
 
-        return self._apply_unary_op(ops.IsInOp(values, match_nulls=True)).fillna(
-            value=False
-        )
+        return self._apply_unary_op(
+            ops.IsInOp(values=tuple(values), match_nulls=True)
+        ).fillna(value=False)
 
     def isna(self) -> "Series":
         return self._apply_unary_op(ops.isnull_op)
@@ -930,9 +930,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         if lower is None and upper is None:
             return self
         if lower is None:
-            return self._apply_binary_op(upper, ops.clip_upper, alignment="left")
+            return self._apply_binary_op(upper, ops.clipupper_op, alignment="left")
         if upper is None:
-            return self._apply_binary_op(lower, ops.clip_lower, alignment="left")
+            return self._apply_binary_op(lower, ops.cliplower_op, alignment="left")
         value_id, lower_id, upper_id, block = self._align3(lower, upper)
         block, result_id = block.apply_ternary_op(
             value_id, lower_id, upper_id, ops.clip_op
@@ -1239,7 +1239,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         # to be applied before passing data to remote function, protecting from bad
         # inputs causing errors.
         reprojected_series = Series(self._block._force_reproject())
-        return reprojected_series._apply_unary_op(ops.RemoteFunctionOp(func))
+        return reprojected_series._apply_unary_op(
+            ops.RemoteFunctionOp(func=func, apply_on_null=True)
+        )
 
     def add_prefix(self, prefix: str, axis: int | str | None = None) -> Series:
         return Series(self._get_block().add_prefix(prefix))
@@ -1268,16 +1270,16 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             block = self._block
             block, label_string_id = block.apply_unary_op(
                 self._block.index_columns[0],
-                ops.AsTypeOp(pandas.StringDtype(storage="pyarrow")),
+                ops.AsTypeOp(to_type=pandas.StringDtype(storage="pyarrow")),
             )
             if like is not None:
                 block, mask_id = block.apply_unary_op(
-                    label_string_id, ops.ContainsStringOp(pat=like)
+                    label_string_id, ops.StrContainsOp(pat=like)
                 )
             else:  # regex
                 assert regex is not None
                 block, mask_id = block.apply_unary_op(
-                    label_string_id, ops.ContainsRegexOp(pat=regex)
+                    label_string_id, ops.StrContainsRegexOp(pat=regex)
                 )
 
             block = block.filter(mask_id)
@@ -1287,7 +1289,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             # Behavior matches pandas 2.1+, older pandas versions would reindex
             block = self._block
             block, mask_id = block.apply_unary_op(
-                self._block.index_columns[0], ops.IsInOp(values=list(items))
+                self._block.index_columns[0], ops.IsInOp(values=tuple(items))
             )
             block = block.filter(mask_id)
             block = block.select_columns([self._value_column])

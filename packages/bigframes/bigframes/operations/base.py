@@ -71,7 +71,7 @@ class SeriesMethods:
                 )
             if dtype:
                 block = block.multi_apply_unary_op(
-                    block.value_columns, ops.AsTypeOp(dtype)
+                    block.value_columns, ops.AsTypeOp(to_type=dtype)
                 )
             self._block = block
 
@@ -162,7 +162,7 @@ class SeriesMethods:
                 block.select_column(result_id).assign_label(result_id, name)
             )
         else:
-            partial_op = ops.BinopPartialRight(op, other)
+            partial_op = ops.ApplyRight(base_op=op, right_scalar=other)
             return self._apply_unary_op(partial_op)
 
     def _apply_corr_aggregation(self, other: series.Series) -> float:

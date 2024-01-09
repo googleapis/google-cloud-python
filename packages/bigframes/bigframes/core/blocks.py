@@ -581,12 +581,12 @@ class Block:
         # Create an ordering col and convert to string
         block, ordering_col = block.promote_offsets()
         block, string_ordering_col = block.apply_unary_op(
-            ordering_col, ops.AsTypeOp("string[pyarrow]")
+            ordering_col, ops.AsTypeOp(to_type="string[pyarrow]")
         )
 
         # Apply hash method to sum col and order by it.
         block, string_sum_col = block.apply_binary_op(
-            string_ordering_col, random_state_col, ops.concat_op
+            string_ordering_col, random_state_col, ops.strconcat_op
         )
         block, hash_string_sum_col = block.apply_unary_op(string_sum_col, ops.hash_op)
         block = block.order_by([ordering.OrderingColumnReference(hash_string_sum_col)])
@@ -1232,8 +1232,8 @@ class Block:
         if axis_number == 0:
             expr = self._expr
             for index_col in self._index_columns:
-                expr = expr.project_unary_op(index_col, ops.AsTypeOp("string"))
-                prefix_op = ops.BinopPartialLeft(ops.add_op, prefix)
+                expr = expr.project_unary_op(index_col, ops.AsTypeOp(to_type="string"))
+                prefix_op = ops.ApplyLeft(base_op=ops.add_op, left_scalar=prefix)
                 expr = expr.project_unary_op(index_col, prefix_op)
             return Block(
                 expr,
@@ -1251,8 +1251,8 @@ class Block:
         if axis_number == 0:
             expr = self._expr
             for index_col in self._index_columns:
-                expr = expr.project_unary_op(index_col, ops.AsTypeOp("string"))
-                prefix_op = ops.BinopPartialRight(ops.add_op, suffix)
+                expr = expr.project_unary_op(index_col, ops.AsTypeOp(to_type="string"))
+                prefix_op = ops.ApplyRight(base_op=ops.add_op, right_scalar=suffix)
                 expr = expr.project_unary_op(index_col, prefix_op)
             return Block(
                 expr,

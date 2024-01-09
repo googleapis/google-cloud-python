@@ -43,7 +43,7 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
         start: Optional[int] = None,
         end: Optional[int] = None,
     ) -> series.Series:
-        return self._apply_unary_op(ops.FindOp(sub, start, end))
+        return self._apply_unary_op(ops.StrFindOp(substr=sub, start=start, end=end))
 
     def len(self) -> series.Series:
         return self._apply_unary_op(ops.len_op)
@@ -61,7 +61,7 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
         start: Optional[int] = None,
         stop: Optional[int] = None,
     ) -> series.Series:
-        return self._apply_unary_op(ops.SliceOp(start, stop))
+        return self._apply_unary_op(ops.StrSliceOp(start=start, end=stop))
 
     def strip(self) -> series.Series:
         return self._apply_unary_op(ops.strip_op)
@@ -114,7 +114,7 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
         return self._apply_unary_op(ops.lstrip_op)
 
     def repeat(self, repeats: int) -> series.Series:
-        return self._apply_unary_op(ops.RepeatOp(repeats))
+        return self._apply_unary_op(ops.StrRepeatOp(repeats=repeats))
 
     def capitalize(self) -> series.Series:
         return self._apply_unary_op(ops.capitalize_op)
@@ -122,38 +122,44 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
     def match(self, pat, case=True, flags=0) -> series.Series:
         # \A anchors start of entire string rather than start of any line in multiline mode
         adj_pat = rf"\A{pat}"
-        return self.contains(adj_pat, case=case, flags=flags)
+        return self.contains(pat=adj_pat, case=case, flags=flags)
 
     def fullmatch(self, pat, case=True, flags=0) -> series.Series:
         # \A anchors start of entire string rather than start of any line in multiline mode
         # \z likewise anchors to the end of the entire multiline string
         adj_pat = rf"\A{pat}\z"
-        return self.contains(adj_pat, case=case, flags=flags)
+        return self.contains(pat=adj_pat, case=case, flags=flags)
 
     def get(self, i: int) -> series.Series:
-        return self._apply_unary_op(ops.StrGetOp(i))
+        return self._apply_unary_op(ops.StrGetOp(i=i))
 
     def pad(self, width, side="left", fillchar=" ") -> series.Series:
-        return self._apply_unary_op(ops.StrPadOp(width, fillchar, side))
+        return self._apply_unary_op(
+            ops.StrPadOp(length=width, fillchar=fillchar, side=side)
+        )
 
     def ljust(self, width, fillchar=" ") -> series.Series:
-        return self._apply_unary_op(ops.StrPadOp(width, fillchar, "right"))
+        return self._apply_unary_op(
+            ops.StrPadOp(length=width, fillchar=fillchar, side="right")
+        )
 
     def rjust(self, width, fillchar=" ") -> series.Series:
-        return self._apply_unary_op(ops.StrPadOp(width, fillchar, "left"))
+        return self._apply_unary_op(
+            ops.StrPadOp(length=width, fillchar=fillchar, side="left")
+        )
 
     def contains(
         self, pat, case: bool = True, flags: int = 0, *, regex: bool = True
     ) -> series.Series:
         if not case:
-            return self.contains(pat, flags=flags | re.IGNORECASE, regex=True)
+            return self.contains(pat=pat, flags=flags | re.IGNORECASE, regex=True)
         if regex:
             re2flags = _parse_flags(flags)
             if re2flags:
                 pat = re2flags + pat
-            return self._apply_unary_op(ops.ContainsRegexOp(pat))
+            return self._apply_unary_op(ops.StrContainsRegexOp(pat=pat))
         else:
-            return self._apply_unary_op(ops.ContainsStringOp(pat))
+            return self._apply_unary_op(ops.StrContainsOp(pat=pat))
 
     def extract(self, pat: str, flags: int = 0) -> df.DataFrame:
         re2flags = _parse_flags(flags)
@@ -173,7 +179,9 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
             ]
             label = labels[0] if labels else str(i)
             block, id = block.apply_unary_op(
-                self._value_column, ops.ExtractOp(pat, i + 1), result_label=label
+                self._value_column,
+                ops.StrExtractOp(pat=pat, n=i + 1),
+                result_label=label,
             )
             results.append(id)
         block = block.select_columns(results)
@@ -196,13 +204,13 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
             re2flags = _parse_flags(flags)
             if re2flags:
                 patstr = re2flags + patstr
-            return self._apply_unary_op(ops.ReplaceRegexOp(patstr, repl))
+            return self._apply_unary_op(ops.RegexReplaceStrOp(pat=patstr, repl=repl))
         else:
             if is_compiled:
                 raise ValueError(
                     "Must set 'regex'=True if using compiled regex pattern."
                 )
-            return self._apply_unary_op(ops.ReplaceStringOp(patstr, repl))
+            return self._apply_unary_op(ops.ReplaceStrOp(pat=patstr, repl=repl))
 
     def startswith(
         self,
@@ -210,7 +218,7 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
     ) -> series.Series:
         if not isinstance(pat, tuple):
             pat = (pat,)
-        return self._apply_unary_op(ops.StartsWithOp(pat))
+        return self._apply_unary_op(ops.StartsWithOp(pat=pat))
 
     def endswith(
         self,
@@ -218,13 +226,15 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
     ) -> series.Series:
         if not isinstance(pat, tuple):
             pat = (pat,)
-        return self._apply_unary_op(ops.EndsWithOp(pat))
+        return self._apply_unary_op(ops.EndsWithOp(pat=pat))
 
     def zfill(self, width: int) -> series.Series:
-        return self._apply_unary_op(ops.ZfillOp(width))
+        return self._apply_unary_op(ops.ZfillOp(width=width))
 
     def center(self, width: int, fillchar: str = " ") -> series.Series:
-        return self._apply_unary_op(ops.StrPadOp(width, fillchar, "both"))
+        return self._apply_unary_op(
+            ops.StrPadOp(length=width, fillchar=fillchar, side="both")
+        )
 
     def cat(
         self,
@@ -232,7 +242,7 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
         *,
         join: Literal["outer", "left"] = "left",
     ) -> series.Series:
-        return self._apply_binary_op(others, ops.concat_op, alignment=join)
+        return self._apply_binary_op(others, ops.strconcat_op, alignment=join)
 
 
 def _parse_flags(flags: int) -> Optional[str]:

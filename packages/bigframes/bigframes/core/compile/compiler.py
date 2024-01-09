@@ -143,23 +143,9 @@ def compile_reversed(node: nodes.ReversedNode, ordered: bool = True):
 
 
 @_compile_node.register
-def compile_project_unary(node: nodes.ProjectUnaryOpNode, ordered: bool = True):
-    return compile_node(node.child, ordered).project_unary_op(
-        node.input_id, node.op, node.output_id
-    )
-
-
-@_compile_node.register
-def compile_project_binary(node: nodes.ProjectBinaryOpNode, ordered: bool = True):
-    return compile_node(node.child, ordered).project_binary_op(
-        node.left_input_id, node.right_input_id, node.op, node.output_id
-    )
-
-
-@_compile_node.register
-def compile_project_ternary(node: nodes.ProjectTernaryOpNode, ordered: bool = True):
-    return compile_node(node.child, ordered).project_ternary_op(
-        node.input_id1, node.input_id2, node.input_id3, node.op, node.output_id
+def compile_project(node: nodes.ProjectRowOpNode, ordered: bool = True):
+    return compile_node(node.child, ordered).project_row_op(
+        node.input_ids, node.op, node.output_id
     )
 
 

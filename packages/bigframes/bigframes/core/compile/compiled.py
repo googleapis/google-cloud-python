@@ -27,6 +27,7 @@ import ibis.expr.types as ibis_types
 import pandas
 
 import bigframes.constants as constants
+import bigframes.core.compile.scalar_op_compiler as op_compilers
 import bigframes.core.guid
 from bigframes.core.ordering import (
     encode_order_string,
@@ -43,7 +44,10 @@ import bigframes.operations.aggregations as agg_ops
 ORDER_ID_COLUMN = "bigframes_ordering_id"
 PREDICATE_COLUMN = "bigframes_predicate"
 
+
 T = typing.TypeVar("T", bound="BaseIbisIR")
+
+op_compiler = op_compilers.scalar_op_compiler
 
 
 class BaseIbisIR(abc.ABC):
@@ -147,48 +151,19 @@ class BaseIbisIR(abc.ABC):
         """
         ...
 
-    def project_unary_op(
+    def project_row_op(
         self: T,
-        input_column_id: str,
-        op: ops.UnaryOp,
+        input_column_ids: typing.Sequence[str],
+        op: ops.RowOp,
         output_column_id: typing.Optional[str] = None,
     ) -> T:
         """Creates a new expression based on this expression with unary operation applied to one column."""
         result_id = (
-            output_column_id or input_column_id
+            output_column_id or input_column_ids[0]
         )  # overwrite input if not output id provided
-        value = op._as_ibis(self._get_ibis_column(input_column_id)).name(result_id)
+        inputs = tuple(self._get_ibis_column(col) for col in input_column_ids)
+        value = op_compiler.compile_row_op(op, inputs).name(result_id)
         return self._set_or_replace_by_id(result_id, value)
-
-    def project_binary_op(
-        self: T,
-        left_column_id: str,
-        right_column_id: str,
-        op: ops.BinaryOp,
-        output_column_id: str,
-    ) -> T:
-        """Creates a new expression based on this expression with binary operation applied to two columns."""
-        value = op(
-            self._get_ibis_column(left_column_id),
-            self._get_ibis_column(right_column_id),
-        ).name(output_column_id)
-        return self._set_or_replace_by_id(output_column_id, value)
-
-    def project_ternary_op(
-        self: T,
-        col_id_1: str,
-        col_id_2: str,
-        col_id_3: str,
-        op: ops.TernaryOp,
-        output_column_id: str,
-    ) -> T:
-        """Creates a new expression based on this expression with ternary operation applied to three columns."""
-        value = op(
-            self._get_ibis_column(col_id_1),
-            self._get_ibis_column(col_id_2),
-            self._get_ibis_column(col_id_3),
-        ).name(output_column_id)
-        return self._set_or_replace_by_id(output_column_id, value)
 
     def assign(self: T, source_id: str, destination_id: str) -> T:
         return self._set_or_replace_by_id(
@@ -454,7 +429,9 @@ class UnorderedIR(BaseIbisIR):
                 None, force_dtype=col_dtype
             )
             ibis_values = [
-                ops.AsTypeOp(col_dtype)._as_ibis(unpivot_table[col])
+                op_compiler.compile_row_op(
+                    ops.AsTypeOp(col_dtype), (unpivot_table[col],)
+                )
                 if col is not None
                 else null_value
                 for col in source_cols
@@ -521,9 +498,7 @@ class UnorderedIR(BaseIbisIR):
             expr = OrderedIR(result, columns=columns, ordering=ordering)
             if dropna:
                 for column_id in by_column_ids:
-                    expr = expr._filter(
-                        ops.notnull_op._as_ibis(expr._get_ibis_column(column_id))
-                    )
+                    expr = expr._filter(expr._get_ibis_column(column_id).notnull())
             # Can maybe remove this as Ordering id is redundant as by_column is unique after aggregation
             return expr._project_offsets()
         else:
@@ -982,7 +957,9 @@ class OrderedIR(BaseIbisIR):
                 None, force_dtype=col_dtype
             )
             ibis_values = [
-                ops.AsTypeOp(col_dtype)._as_ibis(unpivot_table[col])
+                op_compiler.compile_row_op(
+                    ops.AsTypeOp(col_dtype), (unpivot_table[col],)
+                )
                 if col is not None
                 else null_value
                 for col in source_cols

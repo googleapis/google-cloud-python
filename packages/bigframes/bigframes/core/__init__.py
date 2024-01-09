@@ -157,8 +157,8 @@ class ArrayValue:
     ) -> ArrayValue:
         """Creates a new expression based on this expression with unary operation applied to one column."""
         return ArrayValue(
-            nodes.ProjectUnaryOpNode(
-                child=self.node, input_id=column_name, op=op, output_id=output_name
+            nodes.ProjectRowOpNode(
+                child=self.node, input_ids=(column_name,), op=op, output_id=output_name
             )
         )
 
@@ -171,10 +171,9 @@ class ArrayValue:
     ) -> ArrayValue:
         """Creates a new expression based on this expression with binary operation applied to two columns."""
         return ArrayValue(
-            nodes.ProjectBinaryOpNode(
+            nodes.ProjectRowOpNode(
                 child=self.node,
-                left_input_id=left_column_id,
-                right_input_id=right_column_id,
+                input_ids=(left_column_id, right_column_id),
                 op=op,
                 output_id=output_column_id,
             )
@@ -190,11 +189,9 @@ class ArrayValue:
     ) -> ArrayValue:
         """Creates a new expression based on this expression with ternary operation applied to three columns."""
         return ArrayValue(
-            nodes.ProjectTernaryOpNode(
+            nodes.ProjectRowOpNode(
                 child=self.node,
-                input_id1=col_id_1,
-                input_id2=col_id_2,
-                input_id3=col_id_3,
+                input_ids=(col_id_1, col_id_2, col_id_3),
                 op=op,
                 output_id=output_column_id,
             )
