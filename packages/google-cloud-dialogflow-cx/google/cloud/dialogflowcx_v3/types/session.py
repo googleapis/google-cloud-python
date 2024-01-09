@@ -1108,7 +1108,7 @@ class BoostSpecs(proto.Message):
             applied. The full names of the referenced data stores.
             Formats:
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
-            \`projects/{project}/locations/{location}/dataStores/{data_store}
+            ``projects/{project}/locations/{location}/dataStores/{data_store}``
         spec (MutableSequence[google.cloud.dialogflowcx_v3.types.BoostSpec]):
             Optional. A list of boosting specifications.
     """
@@ -1133,7 +1133,7 @@ class FilterSpecs(proto.Message):
             applied. The full names of the referenced data stores.
             Formats:
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
-            \`projects/{project}/locations/{location}/dataStores/{data_store}
+            ``projects/{project}/locations/{location}/dataStores/{data_store}``
         filter (str):
             Optional. The filter expression to be
             applied. Expression syntax is documented at
