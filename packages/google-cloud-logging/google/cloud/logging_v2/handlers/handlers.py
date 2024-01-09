@@ -24,13 +24,17 @@ from google.cloud.logging_v2.handlers._helpers import get_request_data
 
 DEFAULT_LOGGER_NAME = "python"
 
-"""Exclude internal logs from propagating through handlers"""
+"""Defaults for filtering out noisy loggers"""
 EXCLUDED_LOGGER_DEFAULTS = (
+    "google.api_core.bidi",
+    "werkzeug",
+)
+
+"""Exclude internal logs from propagating through handlers"""
+_INTERNAL_LOGGERS = (
     "google.cloud",
     "google.auth",
     "google_auth_httplib2",
-    "google.api_core.bidi",
-    "werkzeug",
 )
 
 """These environments require us to remove extra handlers on setup"""
@@ -291,7 +295,7 @@ def setup_logging(
         log_level (Optional[int]): Python logging log level. Defaults to
             :const:`logging.INFO`.
     """
-    all_excluded_loggers = set(excluded_loggers + EXCLUDED_LOGGER_DEFAULTS)
+    all_excluded_loggers = set(excluded_loggers + _INTERNAL_LOGGERS)
     logger = logging.getLogger()
 
     # remove built-in handlers on App Engine or Cloud Functions environments
