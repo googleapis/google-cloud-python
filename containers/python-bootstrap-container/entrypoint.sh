@@ -22,6 +22,16 @@ function save_to_temp_then_file() {
     mv -f $TEMP_FILE "${1}"
 }
 
+# replace_prefix STR FROM_PREFIX TO_PREFIX
+# Echoes STR with any leading prefix FROM_PREFIX replaced by TO_PREFIX.
+function replace_prefix () {
+  local STR="$1"
+  local PREFIX_FROM="$2"
+  local PREFIX_TO="$3"
+  local STEM=${STR#${PREFIX_FROM}}
+  [[ "${STR}" == "${STEM}" ]] && echo "${STR}" || echo "${PREFIX_TO}${STEM}"
+}
+
 
 MONO_REPO_NAME="google-cloud-python"
 WORKSPACE_DIR="/workspace"
@@ -38,6 +48,11 @@ API_VERSION="$(echo $API_ID | sed 's/.*\.//')"
 # API_ID has the form google.cloud.*.vX or `google.*.*.vX`
 # Replace `.`` with `-`
 FOLDER_NAME="$(echo $API_ID | sed -E 's/\./-/g')"
+
+# Since we map protobuf packages google.protobuf.* to Python packages
+# google.cloud.*, ensure that that the PyPI package name reflects the Python
+# package structure.
+FOLDER_NAME="$(replace_prefix "${FOLDER_NAME}" google-api- google-cloud- )"
 
 # if API_VERSION does not contain numbers, set API_VERSION to empty string
 if [[ ! $API_VERSION =~ [0-9] ]]; then
