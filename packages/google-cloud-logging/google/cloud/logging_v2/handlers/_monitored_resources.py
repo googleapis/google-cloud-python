@@ -61,6 +61,9 @@ _GCE_INSTANCE_ID = "instance/id"
 _GKE_CLUSTER_NAME = "instance/attributes/cluster-name"
 """Attribute in metadata server when in GKE environment."""
 
+_GKE_CLUSTER_LOCATION = "instance/attributes/cluster-location"
+"""Attribute in metadata server when in GKE environment."""
+
 _PROJECT_NAME = "project/project-id"
 """Attribute in metadata server when in GKE environment."""
 
@@ -94,7 +97,7 @@ def _create_kubernetes_resource():
     Returns:
         google.cloud.logging.Resource
     """
-    zone = retrieve_metadata_server(_ZONE_ID)
+    location = retrieve_metadata_server(_GKE_CLUSTER_LOCATION)
     cluster_name = retrieve_metadata_server(_GKE_CLUSTER_NAME)
     project = retrieve_metadata_server(_PROJECT_NAME)
 
@@ -102,7 +105,7 @@ def _create_kubernetes_resource():
         type="k8s_container",
         labels={
             "project_id": project if project else "",
-            "location": zone if zone else "",
+            "location": location if location else "",
             "cluster_name": cluster_name if cluster_name else "",
         },
     )
