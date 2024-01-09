@@ -219,7 +219,7 @@ def mypy_samples(session):
     session.install(
         "types-mock",
         "types-pytz",
-        "types-protobuf",
+        "types-protobuf!=4.24.0.20240106",  # This version causes an error: 'Module "google.oauth2" has no attribute "service_account"'
         "types-python-dateutil",
         "types-requests",
         "types-setuptools",
