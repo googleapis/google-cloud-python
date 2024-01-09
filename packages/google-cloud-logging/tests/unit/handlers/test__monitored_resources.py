@@ -56,6 +56,7 @@ class Test_Create_Resources(unittest.TestCase):
         if (
             endpoint == _monitored_resources._ZONE_ID
             or endpoint == _monitored_resources._REGION_ID
+            or endpoint == _monitored_resources._GKE_CLUSTER_LOCATION
         ):
             return self.LOCATION
         elif (
