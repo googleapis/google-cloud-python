@@ -22,6 +22,7 @@ from google.iam.v1 import policy_pb2
 from google.cloud import spanner_v1
 from google.cloud.spanner_v1.pool import FixedSizePool, PingingPool
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
+from google.cloud.spanner_v1 import DirectedReadOptions
 from google.type import expr_pb2
 from . import _helpers
 from . import _sample_data
@@ -31,6 +32,17 @@ DBAPI_OPERATION_TIMEOUT = 240  # seconds
 FKADC_CUSTOMERS_COLUMNS = ("CustomerId", "CustomerName")
 FKADC_SHOPPING_CARTS_COLUMNS = ("CartId", "CustomerId", "CustomerName")
 ALL_KEYSET = spanner_v1.KeySet(all_=True)
+DIRECTED_READ_OPTIONS = {
+    "include_replicas": {
+        "replica_selections": [
+            {
+                "location": "us-west1",
+                "type_": DirectedReadOptions.ReplicaSelection.Type.READ_ONLY,
+            },
+        ],
+        "auto_failover_disabled": True,
+    },
+}
 
 
 @pytest.fixture(scope="module")
@@ -740,3 +752,70 @@ def test_update_database_invalid(not_emulator, shared_database):
     # Empty `fields` is not supported.
     with pytest.raises(exceptions.InvalidArgument):
         shared_database.update([])
+
+
+def test_snapshot_read_w_directed_read_options(
+    shared_database, not_postgres, not_emulator
+):
+    _helpers.retry_has_all_dll(shared_database.reload)()
+    table = "users_history"
+    columns = ["id", "commit_ts", "name", "email", "deleted"]
+    user_id = 1234
+    name = "phred"
+    email = "phred@example.com"
+    row_data = [[user_id, spanner_v1.COMMIT_TIMESTAMP, name, email, False]]
+    sd = _sample_data
+
+    with shared_database.batch() as batch:
+        batch.delete(table, sd.ALL)
+        batch.insert(table, columns, row_data)
+
+    with shared_database.snapshot() as snapshot:
+        rows = list(
+            snapshot.read(
+                table, columns, sd.ALL, directed_read_options=DIRECTED_READ_OPTIONS
+            )
+        )
+
+    assert len(rows) == 1
+
+
+def test_execute_sql_w_directed_read_options(
+    shared_database, not_postgres, not_emulator
+):
+    _helpers.retry_has_all_dll(shared_database.reload)()
+    sd = _sample_data
+
+    with shared_database.batch() as batch:
+        batch.delete(sd.TABLE, sd.ALL)
+
+    def _unit_of_work(transaction, test):
+        transaction.insert_or_update(test.TABLE, test.COLUMNS, test.ROW_DATA)
+
+    shared_database.run_in_transaction(_unit_of_work, test=sd)
+
+    with shared_database.snapshot() as snapshot:
+        rows = list(
+            snapshot.execute_sql(sd.SQL, directed_read_options=DIRECTED_READ_OPTIONS)
+        )
+    sd._check_rows_data(rows)
+
+
+def test_readwrite_transaction_w_directed_read_options_w_error(
+    shared_database, not_emulator, not_postgres
+):
+    _helpers.retry_has_all_dll(shared_database.reload)()
+    sd = _sample_data
+
+    def _transaction_read(transaction):
+        list(
+            transaction.read(
+                sd.TABLE,
+                sd.COLUMNS,
+                sd.ALL,
+                directed_read_options=DIRECTED_READ_OPTIONS,
+            )
+        )
+
+    with pytest.raises(exceptions.InvalidArgument):
+        shared_database.run_in_transaction(_transaction_read)

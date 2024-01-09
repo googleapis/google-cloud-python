@@ -852,3 +852,10 @@ def test_drop_sequence(capsys, instance_id, bit_reverse_sequence_database):
         "Altered Customers table to drop DEFAULT from CustomerId column and dropped the Seq sequence on database"
         in out
     )
+
+
+@pytest.mark.dependency(depends=["insert_data"])
+def test_directed_read_options(capsys, instance_id, sample_database):
+    snippets.directed_read_options(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "SingerId: 1, AlbumId: 1, AlbumTitle: Total Junk" in out

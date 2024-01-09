@@ -120,6 +120,12 @@ class Client(ClientWithProject):
         disable leader aware routing. Disabling leader aware routing would
         route all requests in RW/PDML transactions to the closest region.
 
+    :type directed_read_options: :class:`~google.cloud.spanner_v1.DirectedReadOptions`
+        or :class:`dict`
+    :param directed_read_options: (Optional) Client options used to set the directed_read_options
+            for all ReadRequests and ExecuteSqlRequests that indicates which replicas
+            or regions should be used for non-transactional reads or queries.
+
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
     """
@@ -139,6 +145,7 @@ class Client(ClientWithProject):
         client_options=None,
         query_options=None,
         route_to_leader_enabled=True,
+        directed_read_options=None,
     ):
         self._emulator_host = _get_spanner_emulator_host()
 
@@ -179,6 +186,7 @@ class Client(ClientWithProject):
             warnings.warn(_EMULATOR_HOST_HTTP_SCHEME)
 
         self._route_to_leader_enabled = route_to_leader_enabled
+        self._directed_read_options = directed_read_options
 
     @property
     def credentials(self):
@@ -259,6 +267,17 @@ class Client(ClientWithProject):
         :returns: If read-write requests will be routed to leader.
         """
         return self._route_to_leader_enabled
+
+    @property
+    def directed_read_options(self):
+        """Getter for directed_read_options.
+
+        :rtype:
+            :class:`~google.cloud.spanner_v1.DirectedReadOptions`
+            or :class:`dict`
+        :returns: The directed_read_options for the client.
+        """
+        return self._directed_read_options
 
     def copy(self):
         """Make a copy of this client.
@@ -383,3 +402,14 @@ class Client(ClientWithProject):
             request=request, metadata=metadata
         )
         return page_iter
+
+    @directed_read_options.setter
+    def directed_read_options(self, directed_read_options):
+        """Sets directed_read_options for the client
+        :type directed_read_options: :class:`~google.cloud.spanner_v1.DirectedReadOptions`
+            or :class:`dict`
+        :param directed_read_options: Client options used to set the directed_read_options
+            for all ReadRequests and ExecuteSqlRequests that indicates which replicas
+            or regions should be used for non-transactional reads or queries.
+        """
+        self._directed_read_options = directed_read_options

@@ -173,6 +173,7 @@ class _SnapshotBase(_SessionWrapper):
         partition=None,
         request_options=None,
         data_boost_enabled=False,
+        directed_read_options=None,
         *,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
@@ -224,6 +225,12 @@ class _SnapshotBase(_SessionWrapper):
                 ``partition_token``, the API will return an
                 ``INVALID_ARGUMENT`` error.
 
+        :type directed_read_options: :class:`~google.cloud.spanner_v1.DirectedReadOptions`
+            or :class:`dict`
+        :param directed_read_options: (Optional) Request level option used to set the directed_read_options
+            for all ReadRequests and ExecuteSqlRequests that indicates which replicas
+            or regions should be used for non-transactional reads or queries.
+
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
 
@@ -253,6 +260,11 @@ class _SnapshotBase(_SessionWrapper):
         if self._read_only:
             # Transaction tags are not supported for read only transactions.
             request_options.transaction_tag = None
+            if (
+                directed_read_options is None
+                and database._directed_read_options is not None
+            ):
+                directed_read_options = database._directed_read_options
         elif self.transaction_tag is not None:
             request_options.transaction_tag = self.transaction_tag
 
@@ -266,6 +278,7 @@ class _SnapshotBase(_SessionWrapper):
             partition_token=partition,
             request_options=request_options,
             data_boost_enabled=data_boost_enabled,
+            directed_read_options=directed_read_options,
         )
         restart = functools.partial(
             api.streaming_read,
@@ -322,6 +335,7 @@ class _SnapshotBase(_SessionWrapper):
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
         data_boost_enabled=False,
+        directed_read_options=None,
     ):
         """Perform an ``ExecuteStreamingSql`` API request.
 
@@ -379,6 +393,12 @@ class _SnapshotBase(_SessionWrapper):
                 ``partition_token``, the API will return an
                 ``INVALID_ARGUMENT`` error.
 
+        :type directed_read_options: :class:`~google.cloud.spanner_v1.DirectedReadOptions`
+            or :class:`dict`
+        :param directed_read_options: (Optional) Request level option used to set the directed_read_options
+            for all ReadRequests and ExecuteSqlRequests that indicates which replicas
+            or regions should be used for non-transactional reads or queries.
+
         :raises ValueError:
             for reuse of single-use snapshots, or if a transaction ID is
             already pending for multiple-use snapshots.
@@ -419,6 +439,11 @@ class _SnapshotBase(_SessionWrapper):
         if self._read_only:
             # Transaction tags are not supported for read only transactions.
             request_options.transaction_tag = None
+            if (
+                directed_read_options is None
+                and database._directed_read_options is not None
+            ):
+                directed_read_options = database._directed_read_options
         elif self.transaction_tag is not None:
             request_options.transaction_tag = self.transaction_tag
 
@@ -433,6 +458,7 @@ class _SnapshotBase(_SessionWrapper):
             query_options=query_options,
             request_options=request_options,
             data_boost_enabled=data_boost_enabled,
+            directed_read_options=directed_read_options,
         )
         restart = functools.partial(
             api.execute_streaming_sql,

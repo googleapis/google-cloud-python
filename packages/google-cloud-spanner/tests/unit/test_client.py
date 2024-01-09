@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+from google.cloud.spanner_v1 import DirectedReadOptions
 
 
 def _make_credentials():
@@ -40,6 +41,17 @@ class TestClient(unittest.TestCase):
     LABELS = {"test": "true"}
     TIMEOUT_SECONDS = 80
     LEADER_OPTIONS = ["leader1", "leader2"]
+    DIRECTED_READ_OPTIONS = {
+        "include_replicas": {
+            "replica_selections": [
+                {
+                    "location": "us-west1",
+                    "type_": DirectedReadOptions.ReplicaSelection.Type.READ_ONLY,
+                },
+            ],
+            "auto_failover_disabled": True,
+        },
+    }
 
     def _get_target_class(self):
         from google.cloud import spanner
@@ -59,6 +71,7 @@ class TestClient(unittest.TestCase):
         query_options=None,
         expected_query_options=None,
         route_to_leader_enabled=True,
+        directed_read_options=None,
     ):
         import google.api_core.client_options
         from google.cloud.spanner_v1 import client as MUT
@@ -84,6 +97,7 @@ class TestClient(unittest.TestCase):
             project=self.PROJECT,
             credentials=creds,
             query_options=query_options,
+            directed_read_options=directed_read_options,
             **kwargs
         )
 
@@ -112,6 +126,8 @@ class TestClient(unittest.TestCase):
             self.assertEqual(client.route_to_leader_enabled, route_to_leader_enabled)
         else:
             self.assertFalse(client.route_to_leader_enabled)
+        if directed_read_options is not None:
+            self.assertEqual(client.directed_read_options, directed_read_options)
 
     @mock.patch("google.cloud.spanner_v1.client._get_spanner_emulator_host")
     @mock.patch("warnings.warn")
@@ -223,6 +239,15 @@ class TestClient(unittest.TestCase):
             creds,
             query_options=query_options,
             expected_query_options=expected_query_options,
+        )
+
+    def test_constructor_w_directed_read_options(self):
+        from google.cloud.spanner_v1 import client as MUT
+
+        expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
+        creds = _make_credentials()
+        self._constructor_test_helper(
+            expected_scopes, creds, directed_read_options=self.DIRECTED_READ_OPTIONS
         )
 
     def test_constructor_route_to_leader_disbled(self):

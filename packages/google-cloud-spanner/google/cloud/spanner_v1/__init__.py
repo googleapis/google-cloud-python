@@ -40,6 +40,7 @@ from .types.spanner import BeginTransactionRequest
 from .types.spanner import CommitRequest
 from .types.spanner import CreateSessionRequest
 from .types.spanner import DeleteSessionRequest
+from .types.spanner import DirectedReadOptions
 from .types.spanner import ExecuteBatchDmlRequest
 from .types.spanner import ExecuteBatchDmlResponse
 from .types.spanner import ExecuteSqlRequest
@@ -108,6 +109,7 @@ __all__ = (
     "CommitResponse",
     "CreateSessionRequest",
     "DeleteSessionRequest",
+    "DirectedReadOptions",
     "ExecuteBatchDmlRequest",
     "ExecuteBatchDmlResponse",
     "ExecuteSqlRequest",

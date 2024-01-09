@@ -31,6 +31,7 @@ import time
 from google.cloud import spanner
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 from google.cloud.spanner_v1 import param_types
+from google.cloud.spanner_v1 import DirectedReadOptions
 from google.type import expr_pb2
 from google.iam.v1 import policy_pb2
 from google.cloud.spanner_v1.data_types import JsonObject
@@ -2723,6 +2724,78 @@ def drop_sequence(instance_id, database_id):
 
 # [END spanner_drop_sequence]
 
+
+def directed_read_options(
+    instance_id,
+    database_id,
+):
+    """
+    Shows how to run an execute sql request with directed read options.
+    Only one of exclude_replicas or include_replicas can be set
+    Each accepts a list of replicaSelections which contains location and type
+    * `location` - The location must be one of the regions within the
+        multi-region configuration of your database.
+    * `type_` - The type of the replica
+    Some examples of using replica_selectors are:
+    * `location:us-east1` --> The "us-east1" replica(s) of any available type
+                              will be used to process the request.
+    * `type:READ_ONLY`    --> The "READ_ONLY" type replica(s) in nearest
+                              available location will be used to process the
+                              request.
+    * `location:us-east1 type:READ_ONLY` --> The "READ_ONLY" type replica(s)
+                              in location "us-east1" will be used to process
+                              the request.
+    include_replicas also contains an option for auto_failover_disabled which when set
+    Spanner will not route requests to a replica outside the
+    include_replicas list when all the specified replicas are unavailable
+    or unhealthy. The default value is `false`
+    """
+    # [START spanner_directed_read]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    directed_read_options_for_client = {
+        "exclude_replicas": {
+            "replica_selections": [
+                {
+                    "location": "us-east4",
+                },
+            ],
+        },
+    }
+
+    # directed_read_options can be set at client level and will be used in all
+    # read-only transaction requests
+    spanner_client = spanner.Client(
+        directed_read_options=directed_read_options_for_client
+    )
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    directed_read_options_for_request = {
+        "include_replicas": {
+            "replica_selections": [
+                {
+                    "type_": DirectedReadOptions.ReplicaSelection.Type.READ_ONLY,
+                },
+            ],
+            "auto_failover_disabled": True,
+        },
+    }
+
+    with database.snapshot() as snapshot:
+        # Read rows while passing directed_read_options directly to the query.
+        # These will override the options passed at Client level.
+        results = snapshot.execute_sql(
+            "SELECT SingerId, AlbumId, AlbumTitle FROM Albums",
+            directed_read_options=directed_read_options_for_request,
+        )
+
+        for row in results:
+            print("SingerId: {}, AlbumId: {}, AlbumTitle: {}".format(*row))
+    # [END spanner_directed_read]
+
+
 if __name__ == "__main__":  # noqa: C901
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
@@ -2862,6 +2935,7 @@ if __name__ == "__main__":  # noqa: C901
         "--database_role", default="new_parent"
     )
     enable_fine_grained_access_parser.add_argument("--title", default="condition title")
+    subparsers.add_parser("directed_read_options", help=directed_read_options.__doc__)
 
     args = parser.parse_args()
 
@@ -2993,3 +3067,5 @@ if __name__ == "__main__":  # noqa: C901
             args.database_role,
             args.title,
         )
+    elif args.command == "directed_read_options":
+        directed_read_options(args.instance_id, args.database_id)
