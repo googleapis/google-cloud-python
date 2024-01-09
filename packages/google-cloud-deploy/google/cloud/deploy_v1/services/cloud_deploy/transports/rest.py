@@ -3397,8 +3397,8 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
                 A ``CustomTargetType`` defines a type of custom target
                 that can be referenced in a ``Target`` in order to
-                facilitate deploying to a runtime that does not have a
-                1P integration with Cloud Deploy.
+                facilitate deploying to other systems besides the
+                supported runtimes.
 
             """
 

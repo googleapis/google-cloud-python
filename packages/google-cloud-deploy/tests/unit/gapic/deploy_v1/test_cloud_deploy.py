@@ -12775,6 +12775,7 @@ def test_create_delivery_pipeline_rest(request_type):
                                             "seconds": 751,
                                             "nanos": 543,
                                         },
+                                        "stable_cutback_duration": {},
                                     },
                                     "service_networking": {
                                         "service": "service_value",
@@ -13253,6 +13254,7 @@ def test_update_delivery_pipeline_rest(request_type):
                                             "seconds": 751,
                                             "nanos": 543,
                                         },
+                                        "stable_cutback_duration": {},
                                     },
                                     "service_networking": {
                                         "service": "service_value",
@@ -18379,6 +18381,7 @@ def test_create_release_rest(request_type):
                                                 "seconds": 751,
                                                 "nanos": 543,
                                             },
+                                            "stable_cutback_duration": {},
                                         },
                                         "service_networking": {
                                             "service": "service_value",

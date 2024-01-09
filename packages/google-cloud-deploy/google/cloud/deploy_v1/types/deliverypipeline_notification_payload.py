@@ -39,6 +39,8 @@ class DeliveryPipelineNotificationEvent(proto.Message):
         message (str):
             Debug message for when a notification fails
             to send.
+        pipeline_uid (str):
+            Unique identifier of the ``DeliveryPipeline``.
         delivery_pipeline (str):
             The name of the ``Delivery Pipeline``.
         type_ (google.cloud.deploy_v1.types.Type):
@@ -49,6 +51,10 @@ class DeliveryPipelineNotificationEvent(proto.Message):
     message: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    pipeline_uid: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
     delivery_pipeline: str = proto.Field(
         proto.STRING,

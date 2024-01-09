@@ -44,8 +44,12 @@ class JobRunNotificationEvent(proto.Message):
             Unique identifier of the ``DeliveryPipeline``.
         release_uid (str):
             Unique identifier of the ``Release``.
+        release (str):
+            The name of the ``Release``.
         rollout_uid (str):
             Unique identifier of the ``Rollout``.
+        rollout (str):
+            The name of the ``Rollout``.
         target_id (str):
             ID of the ``Target``.
         type_ (google.cloud.deploy_v1.types.Type):
@@ -69,9 +73,17 @@ class JobRunNotificationEvent(proto.Message):
         proto.STRING,
         number=4,
     )
+    release: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
     rollout_uid: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    rollout: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
     target_id: str = proto.Field(
         proto.STRING,

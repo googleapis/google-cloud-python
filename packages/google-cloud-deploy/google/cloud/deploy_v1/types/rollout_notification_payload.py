@@ -42,13 +42,17 @@ class RolloutNotificationEvent(proto.Message):
             Unique identifier of the ``DeliveryPipeline``.
         release_uid (str):
             Unique identifier of the ``Release``.
+        release (str):
+            The name of the ``Release``.
+        rollout_uid (str):
+            Unique identifier of the ``Rollout``.
         rollout (str):
             The name of the ``Rollout``.
+        target_id (str):
+            ID of the ``Target`` that the rollout is deployed to.
         type_ (google.cloud.deploy_v1.types.Type):
             Type of this notification, e.g. for a Pub/Sub
             failure.
-        target_id (str):
-            ID of the ``Target`` that the rollout is deployed to.
     """
 
     message: str = proto.Field(
@@ -63,18 +67,26 @@ class RolloutNotificationEvent(proto.Message):
         proto.STRING,
         number=3,
     )
+    release: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    rollout_uid: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
     rollout: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    target_id: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
     type_: log_enums.Type = proto.Field(
         proto.ENUM,
         number=5,
         enum=log_enums.Type,
-    )
-    target_id: str = proto.Field(
-        proto.STRING,
-        number=6,
     )
 
 

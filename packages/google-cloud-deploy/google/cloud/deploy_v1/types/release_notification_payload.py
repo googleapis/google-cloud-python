@@ -38,6 +38,10 @@ class ReleaseNotificationEvent(proto.Message):
         message (str):
             Debug message for when a notification fails
             to send.
+        pipeline_uid (str):
+            Unique identifier of the ``DeliveryPipeline``.
+        release_uid (str):
+            Unique identifier of the ``Release``.
         release (str):
             The name of the ``Release``.
         type_ (google.cloud.deploy_v1.types.Type):
@@ -48,6 +52,14 @@ class ReleaseNotificationEvent(proto.Message):
     message: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    pipeline_uid: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    release_uid: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
     release: str = proto.Field(
         proto.STRING,
