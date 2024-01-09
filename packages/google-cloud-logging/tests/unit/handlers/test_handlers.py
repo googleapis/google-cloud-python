@@ -18,6 +18,11 @@ from unittest.mock import patch
 import mock
 import json
 
+from google.cloud.logging_v2.handlers.handlers import (
+    _INTERNAL_LOGGERS,
+    EXCLUDED_LOGGER_DEFAULTS,
+)
+
 from google.cloud.logging_v2.handlers._monitored_resources import (
     _FUNCTION_ENV_VARS,
     _GAE_ENV_VARS,
@@ -867,7 +872,7 @@ class TestSetupLogging(unittest.TestCase):
     def _call_fut(self, handler, excludes=None):
         from google.cloud.logging.handlers import setup_logging
 
-        if excludes:
+        if excludes is not None:
             return setup_logging(handler, excluded_loggers=excludes)
         else:
             return setup_logging(handler)
@@ -892,6 +897,24 @@ class TestSetupLogging(unittest.TestCase):
         excluded_logger = logging.getLogger(EXCLUDED_LOGGER_NAME)
         self.assertNotIn(handler, excluded_logger.handlers)
         self.assertFalse(excluded_logger.propagate)
+
+    def test_setup_logging_internal_loggers_no_excludes(self):
+        handler = _Handler(logging.INFO)
+        self._call_fut(handler, excludes=())
+
+        # Test that excluded logger defaults can be included, but internal
+        # loggers can't be.
+        for logger_name in _INTERNAL_LOGGERS:
+            logger = logging.getLogger(logger_name)
+            self.assertNotIn(handler, logger.handlers)
+            self.assertFalse(logger.propagate)
+
+        logger = logging.getLogger("logging")
+        self.assertTrue(logger.propagate)
+
+        for logger_name in EXCLUDED_LOGGER_DEFAULTS:
+            logger = logging.getLogger(logger_name)
+            self.assertTrue(logger.propagate)
 
     @patch.dict("os.environ", {envar: "1" for envar in _FUNCTION_ENV_VARS})
     def test_remove_handlers_gcf(self):
@@ -939,9 +962,17 @@ class TestSetupLogging(unittest.TestCase):
     def setUp(self):
         self._handlers_cache = logging.getLogger().handlers[:]
 
+        # reset the logging manager every time so that we're not reusing loggers
+        # across different test cases.
+        self._logger_manager = logging.Logger.manager
+        logging.Logger.manager = logging.Manager(logging.Logger.root)
+
     def tearDown(self):
         # cleanup handlers
         logging.getLogger().handlers = self._handlers_cache[:]
+
+        # restore the old logging manager.
+        logging.Logger.manager = self._logger_manager
 
 
 class _Handler(object):

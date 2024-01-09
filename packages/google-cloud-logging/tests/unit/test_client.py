@@ -847,9 +847,6 @@ class TestClient(unittest.TestCase):
 
         expected_kwargs = {
             "excluded_loggers": (
-                "google.cloud",
-                "google.auth",
-                "google_auth_httplib2",
                 "google.api_core.bidi",
                 "werkzeug",
             ),
@@ -890,9 +887,6 @@ class TestClient(unittest.TestCase):
 
         expected_kwargs = {
             "excluded_loggers": (
-                "google.cloud",
-                "google.auth",
-                "google_auth_httplib2",
                 "google.api_core.bidi",
                 "werkzeug",
             ),
