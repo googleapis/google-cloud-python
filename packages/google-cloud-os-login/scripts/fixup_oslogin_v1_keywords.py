@@ -44,7 +44,7 @@ class osloginCallTransformer(cst.CSTTransformer):
         'delete_ssh_public_key': ('name', ),
         'get_login_profile': ('name', 'project_id', 'system_id', ),
         'get_ssh_public_key': ('name', ),
-        'import_ssh_public_key': ('parent', 'ssh_public_key', 'project_id', ),
+        'import_ssh_public_key': ('parent', 'ssh_public_key', 'project_id', 'regions', ),
         'update_ssh_public_key': ('name', 'ssh_public_key', 'update_mask', ),
     }
 
