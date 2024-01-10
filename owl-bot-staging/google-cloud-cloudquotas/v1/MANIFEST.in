@@ -1,2 +1,0 @@
-recursive-include google/cloud/quotas *.py
-recursive-include google/cloud/quotas_v1 *.py
