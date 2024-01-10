@@ -855,13 +855,21 @@ class Block:
             aggregations = [
                 (col_id, operation, col_id) for col_id in self.value_columns
             ]
+            index_col_ids = [
+                guid.generate_guid() for i in range(self.column_labels.nlevels)
+            ]
             result_expr = self.expr.aggregate(aggregations, dropna=dropna).unpivot(
                 row_labels=self.column_labels.to_list(),
-                index_col_ids=["index"],
+                index_col_ids=index_col_ids,
                 unpivot_columns=tuple([(value_col_id, tuple(self.value_columns))]),
                 dtype=dtype,
             )
-            return Block(result_expr, index_columns=["index"], column_labels=[None])
+            return Block(
+                result_expr,
+                index_columns=index_col_ids,
+                column_labels=[None],
+                index_labels=self.column_labels.names,
+            )
         else:  # axis_n == 1
             # using offsets as identity to group on.
             # TODO: Allow to promote identity/total_order columns instead for better perf

@@ -713,6 +713,26 @@ def test_column_multi_index_binary_op(scalars_df_index, scalars_pandas_df_index)
     pandas.testing.assert_series_equal(bf_result, pd_result)
 
 
+@skip_legacy_pandas
+def test_column_multi_index_any():
+    columns = pandas.MultiIndex.from_tuples(
+        [("col0", "col00"), ("col0", "col00"), ("col1", "col11")]
+    )
+    pd_df = pandas.DataFrame(
+        [[0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2]], columns=columns
+    )
+    bf_df = bpd.DataFrame(pd_df)
+
+    pd_result = pd_df.isna().any()
+    bf_result = bf_df.isna().any().to_pandas()
+
+    pandas.testing.assert_frame_equal(
+        bf_result.reset_index(drop=False),
+        pd_result.reset_index(drop=False),
+        check_dtype=False,
+    )
+
+
 def test_column_multi_index_agg(scalars_df_index, scalars_pandas_df_index):
     columns = ["int64_too", "int64_col", "float64_col"]
     multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "a"], ["a", "b", "b"]))
