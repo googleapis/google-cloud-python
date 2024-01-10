@@ -19,6 +19,7 @@
 
 """Integration between SQLAlchemy and BigQuery."""
 
+import datetime
 from decimal import Decimal
 import random
 import operator
@@ -27,7 +28,11 @@ import uuid
 from google import auth
 import google.api_core.exceptions
 from google.cloud.bigquery import dbapi
-from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.table import (
+    RangePartitioning,
+    TableReference,
+    TimePartitioning,
+)
 from google.api_core.exceptions import NotFound
 import packaging.version
 import sqlalchemy
@@ -35,7 +40,7 @@ import sqlalchemy.sql.expression
 import sqlalchemy.sql.functions
 import sqlalchemy.sql.sqltypes
 import sqlalchemy.sql.type_api
-from sqlalchemy.exc import NoSuchTableError
+from sqlalchemy.exc import NoSuchTableError, NoSuchColumnError
 from sqlalchemy import util
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql.compiler import (
@@ -631,6 +636,13 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
 
 
 class BigQueryDDLCompiler(DDLCompiler):
+    option_datatype_mapping = {
+        "friendly_name": str,
+        "expiration_timestamp": datetime.datetime,
+        "require_partition_filter": bool,
+        "default_rounding_mode": str,
+    }
+
     # BigQuery has no support for foreign keys.
     def visit_foreign_key_constraint(self, constraint):
         return None
@@ -654,26 +666,99 @@ class BigQueryDDLCompiler(DDLCompiler):
         return colspec
 
     def post_create_table(self, table):
+        """
+        Constructs additional SQL clauses for table creation in BigQuery.
+
+        This function processes the BigQuery dialect-specific options and generates SQL clauses for partitioning,
+        clustering, and other table options.
+
+        Args:
+            table (Table): The SQLAlchemy Table object for which the SQL is being generated.
+
+        Returns:
+            str: A string composed of SQL clauses for time partitioning, clustering, and other BigQuery specific
+                options, each separated by a newline. Returns an empty string if no such options are specified.
+
+        Raises:
+            TypeError: If the time_partitioning option is not a `TimePartitioning` object or if the clustering_fields option is not a list.
+            NoSuchColumnError: If any field specified in clustering_fields does not exist in the table.
+        """
+
         bq_opts = table.dialect_options["bigquery"]
-        opts = []
+
+        options = {}
+        clauses = []
+
+        if (
+            bq_opts.get("time_partitioning") is not None
+            and bq_opts.get("range_partitioning") is not None
+        ):
+            raise ValueError(
+                "biquery_time_partitioning and bigquery_range_partitioning"
+                " dialect options are mutually exclusive."
+            )
+
+        if (time_partitioning := bq_opts.get("time_partitioning")) is not None:
+            self._raise_for_type(
+                "time_partitioning",
+                time_partitioning,
+                TimePartitioning,
+            )
+
+            if time_partitioning.expiration_ms:
+                _24hours = 1000 * 60 * 60 * 24
+                options["partition_expiration_days"] = (
+                    time_partitioning.expiration_ms / _24hours
+                )
+
+            partition_by_clause = self._process_time_partitioning(
+                table,
+                time_partitioning,
+            )
+
+            clauses.append(partition_by_clause)
+
+        if (range_partitioning := bq_opts.get("range_partitioning")) is not None:
+            self._raise_for_type(
+                "range_partitioning",
+                range_partitioning,
+                RangePartitioning,
+            )
+
+            partition_by_clause = self._process_range_partitioning(
+                table,
+                range_partitioning,
+            )
+
+            clauses.append(partition_by_clause)
+
+        if (clustering_fields := bq_opts.get("clustering_fields")) is not None:
+            self._raise_for_type("clustering_fields", clustering_fields, list)
+
+            for field in clustering_fields:
+                if field not in table.c:
+                    raise NoSuchColumnError(field)
+
+            clauses.append(f"CLUSTER BY {', '.join(clustering_fields)}")
 
         if ("description" in bq_opts) or table.comment:
-            description = process_string_literal(
-                bq_opts.get("description", table.comment)
-            )
-            opts.append(f"description={description}")
+            description = bq_opts.get("description", table.comment)
+            self._validate_option_value_type("description", description)
+            options["description"] = description
 
-        if "friendly_name" in bq_opts:
-            opts.append(
-                "friendly_name={}".format(
-                    process_string_literal(bq_opts["friendly_name"])
-                )
-            )
+        for option in self.option_datatype_mapping:
+            if option in bq_opts:
+                options[option] = bq_opts.get(option)
 
-        if opts:
-            return "\nOPTIONS({})".format(", ".join(opts))
+        if options:
+            individual_option_statements = [
+                "{}={}".format(k, self._process_option_value(v))
+                for (k, v) in options.items()
+                if self._validate_option_value_type(k, v)
+            ]
+            clauses.append(f"OPTIONS({', '.join(individual_option_statements)})")
 
-        return ""
+        return " " + "\n".join(clauses)
 
     def visit_set_table_comment(self, create):
         table_name = self.preparer.format_table(create.element)
@@ -685,6 +770,152 @@ class BigQueryDDLCompiler(DDLCompiler):
     def visit_drop_table_comment(self, drop):
         table_name = self.preparer.format_table(drop.element)
         return f"ALTER TABLE {table_name} SET OPTIONS(description=null)"
+
+    def _validate_option_value_type(self, option: str, value):
+        """
+        Validates the type of the given option value against the expected data type.
+
+        Args:
+            option (str): The name of the option to be validated.
+            value: The value of the dialect option whose type is to be checked. The type of this parameter
+                is dynamic and is verified against the expected type in `self.option_datatype_mapping`.
+
+        Returns:
+            bool: True if the type of the value matches the expected type, or if the option is not found in
+                `self.option_datatype_mapping`.
+
+        Raises:
+            TypeError: If the type of the provided value does not match the expected type as defined in
+                `self.option_datatype_mapping`.
+        """
+        if option in self.option_datatype_mapping:
+            self._raise_for_type(
+                option,
+                value,
+                self.option_datatype_mapping[option],
+            )
+
+        return True
+
+    def _raise_for_type(self, option, value, expected_type):
+        if type(value) is not expected_type:
+            raise TypeError(
+                f"bigquery_{option} dialect option accepts only {expected_type},"
+                f" provided {repr(value)}"
+            )
+
+    def _process_time_partitioning(
+        self, table: Table, time_partitioning: TimePartitioning
+    ):
+        """
+        Generates a SQL 'PARTITION BY' clause for partitioning a table by a date or timestamp.
+
+        Args:
+        - table (Table): The SQLAlchemy table object representing the BigQuery table to be partitioned.
+        - time_partitioning (TimePartitioning): The time partitioning details,
+            including the field to be used for partitioning.
+
+        Returns:
+        - str: A SQL 'PARTITION BY' clause that uses either TIMESTAMP_TRUNC or DATE_TRUNC to
+        partition data on the specified field.
+
+        Example:
+        - Given a table with a TIMESTAMP type column 'event_timestamp' and setting
+        'time_partitioning.field' to 'event_timestamp', the function returns
+        "PARTITION BY TIMESTAMP_TRUNC(event_timestamp, DAY)".
+        """
+        field = "_PARTITIONDATE"
+        trunc_fn = "DATE_TRUNC"
+
+        if time_partitioning.field is not None:
+            field = time_partitioning.field
+            if isinstance(
+                table.columns[time_partitioning.field].type,
+                sqlalchemy.sql.sqltypes.TIMESTAMP,
+            ):
+                trunc_fn = "TIMESTAMP_TRUNC"
+
+        return f"PARTITION BY {trunc_fn}({field}, {time_partitioning.type_})"
+
+    def _process_range_partitioning(
+        self, table: Table, range_partitioning: RangePartitioning
+    ):
+        """
+        Generates a SQL 'PARTITION BY' clause for partitioning a table by a range of integers.
+
+        Args:
+        - table (Table): The SQLAlchemy table object representing the BigQuery table to be partitioned.
+        - range_partitioning (RangePartitioning): The RangePartitioning object containing the
+        partitioning field, range start, range end, and interval.
+
+        Returns:
+        - str: A SQL string for range partitioning using RANGE_BUCKET and GENERATE_ARRAY functions.
+
+        Raises:
+        - AttributeError: If the partitioning field is not defined.
+        - ValueError: If the partitioning field (i.e. column) data type is not an integer.
+        - TypeError: If the partitioning range start/end values are not integers.
+
+        Example:
+            "PARTITION BY RANGE_BUCKET(zipcode, GENERATE_ARRAY(0, 100000, 10))"
+        """
+        if range_partitioning.field is None:
+            raise AttributeError(
+                "bigquery_range_partitioning expects field to be defined"
+            )
+
+        if not isinstance(
+            table.columns[range_partitioning.field].type,
+            sqlalchemy.sql.sqltypes.INT,
+        ):
+            raise ValueError(
+                "bigquery_range_partitioning expects field (i.e. column) data type to be INTEGER"
+            )
+
+        range_ = range_partitioning.range_
+
+        if not isinstance(range_.start, int):
+            raise TypeError(
+                "bigquery_range_partitioning expects range_.start to be an int,"
+                f" provided {repr(range_.start)}"
+            )
+
+        if not isinstance(range_.end, int):
+            raise TypeError(
+                "bigquery_range_partitioning expects range_.end to be an int,"
+                f" provided {repr(range_.end)}"
+            )
+
+        default_interval = 1
+
+        return f"PARTITION BY RANGE_BUCKET({range_partitioning.field}, GENERATE_ARRAY({range_.start}, {range_.end}, {range_.interval or default_interval}))"
+
+    def _process_option_value(self, value):
+        """
+        Transforms the given option value into a literal representation suitable for SQL queries in BigQuery.
+
+        Args:
+            value: The value to be transformed.
+
+        Returns:
+            The processed value in a format suitable for inclusion in a SQL query.
+
+        Raises:
+            NotImplementedError: When there is no transformation registered for a data type.
+        """
+        option_casting = {
+            # Mapping from option type to its casting method
+            str: lambda x: process_string_literal(x),
+            int: lambda x: x,
+            float: lambda x: x,
+            bool: lambda x: "true" if x else "false",
+            datetime.datetime: lambda x: BQTimestamp.process_timestamp_literal(x),
+        }
+
+        if (option_cast := option_casting.get(type(value))) is not None:
+            return option_cast(value)
+
+        raise NotImplementedError(f"No transformation registered for {repr(value)}")
 
 
 def process_string_literal(value):
@@ -997,25 +1228,8 @@ class BigQueryDialect(DefaultDialect):
         return {"constrained_columns": []}
 
     def get_indexes(self, connection, table_name, schema=None, **kw):
-        table = self._get_table(connection, table_name, schema)
-        indexes = []
-        if table.time_partitioning:
-            indexes.append(
-                {
-                    "name": "partition",
-                    "column_names": [table.time_partitioning.field],
-                    "unique": False,
-                }
-            )
-        if table.clustering_fields:
-            indexes.append(
-                {
-                    "name": "clustering",
-                    "column_names": table.clustering_fields,
-                    "unique": False,
-                }
-            )
-        return indexes
+        # BigQuery has no support for indexes.
+        return []
 
     def get_schema_names(self, connection, **kw):
         if isinstance(connection, Engine):

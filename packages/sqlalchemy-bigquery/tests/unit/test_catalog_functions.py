@@ -126,18 +126,7 @@ def test_get_indexes(faux_conn):
     client.tables.foo.time_partitioning = TimePartitioning(field="tm")
     client.tables.foo.clustering_fields = ["user_email", "store_code"]
 
-    assert faux_conn.dialect.get_indexes(faux_conn, "foo") == [
-        dict(
-            name="partition",
-            column_names=["tm"],
-            unique=False,
-        ),
-        dict(
-            name="clustering",
-            column_names=["user_email", "store_code"],
-            unique=False,
-        ),
-    ]
+    assert faux_conn.dialect.get_indexes(faux_conn, "foo") == []
 
 
 def test_no_table_pk_constraint(faux_conn):

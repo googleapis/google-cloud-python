@@ -25,6 +25,8 @@ import packaging.version
 import pytest
 import sqlalchemy
 
+from sqlalchemy_bigquery.base import BigQueryDDLCompiler, BigQueryDialect
+
 from . import fauxdbi
 
 sqlalchemy_version = packaging.version.parse(sqlalchemy.__version__)
@@ -89,6 +91,11 @@ def last_query(faux_conn):
 @pytest.fixture()
 def metadata():
     return sqlalchemy.MetaData()
+
+
+@pytest.fixture()
+def ddl_compiler():
+    return BigQueryDDLCompiler(BigQueryDialect(), None)
 
 
 def setup_table(connection, name, *columns, initial_data=(), **kw):

@@ -292,13 +292,64 @@ To add metadata to a table:
 
 .. code-block:: python
 
-    table = Table('mytable', ..., bigquery_description='my table description', bigquery_friendly_name='my table friendly name')
+    table = Table('mytable', ...,
+        bigquery_description='my table description',
+        bigquery_friendly_name='my table friendly name',
+        bigquery_default_rounding_mode="ROUND_HALF_EVEN",
+        bigquery_expiration_timestamp=datetime.datetime.fromisoformat("2038-01-01T00:00:00+00:00"),
+    )
 
 To add metadata to a column:
 
 .. code-block:: python
 
     Column('mycolumn', doc='my column description')
+
+To create a clustered table:
+
+.. code-block:: python
+
+    table = Table('mytable', ..., bigquery_clustering_fields=["a", "b", "c"])
+
+To create a time-unit column-partitioned table:
+
+.. code-block:: python
+
+    from google.cloud import bigquery
+
+    table = Table('mytable', ...,
+        bigquery_time_partitioning=bigquery.TimePartitioning(
+            field="mytimestamp",
+            type_="MONTH",
+            expiration_ms=1000 * 60 * 60 * 24 * 30 * 6, # 6 months
+        ),
+        bigquery_require_partition_filter=True,
+    )
+
+To create an ingestion-time partitioned table:
+
+.. code-block:: python
+
+    from google.cloud import bigquery
+
+    table = Table('mytable', ...,
+        bigquery_time_partitioning=bigquery.TimePartitioning(),
+        bigquery_require_partition_filter=True,
+    )
+
+To create an integer-range partitioned table
+
+.. code-block:: python
+
+    from google.cloud import bigquery
+
+    table = Table('mytable', ...,
+        bigquery_range_partitioning=bigquery.RangePartitioning(
+            field="zipcode",
+            range_=bigquery.PartitionRange(start=0, end=100000, interval=10),
+        ),
+        bigquery_require_partition_filter=True,
+    )
 
 
 Threading and Multiprocessing

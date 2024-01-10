@@ -22,6 +22,8 @@
 import datetime
 import decimal
 
+from google.cloud.bigquery import TimePartitioning
+
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import Table, MetaData, Column
 from sqlalchemy.ext.declarative import declarative_base
@@ -539,6 +541,14 @@ def test_create_table(engine, bigquery_dataset):
         Column("binary_c", sqlalchemy.BINARY),
         bigquery_description="test table description",
         bigquery_friendly_name="test table name",
+        bigquery_expiration_timestamp=datetime.datetime(2183, 3, 26, 8, 30, 0),
+        bigquery_time_partitioning=TimePartitioning(
+            field="timestamp_c",
+            expiration_ms=1000 * 60 * 60 * 24 * 30,  # 30 days
+        ),
+        bigquery_require_partition_filter=True,
+        bigquery_default_rounding_mode="ROUND_HALF_EVEN",
+        bigquery_clustering_fields=["integer_c", "decimal_c"],
     )
     meta.create_all(engine)
     meta.drop_all(engine)
@@ -594,17 +604,7 @@ def test_view_names(inspector, inspector_using_test_dataset, bigquery_dataset):
 def test_get_indexes(inspector, inspector_using_test_dataset, bigquery_dataset):
     for _ in [f"{bigquery_dataset}.sample", f"{bigquery_dataset}.sample_one_row"]:
         indexes = inspector.get_indexes(f"{bigquery_dataset}.sample")
-        assert len(indexes) == 2
-        assert indexes[0] == {
-            "name": "partition",
-            "column_names": ["timestamp"],
-            "unique": False,
-        }
-        assert indexes[1] == {
-            "name": "clustering",
-            "column_names": ["integer", "string"],
-            "unique": False,
-        }
+        assert len(indexes) == 0
 
 
 def test_get_columns(inspector, inspector_using_test_dataset, bigquery_dataset):
