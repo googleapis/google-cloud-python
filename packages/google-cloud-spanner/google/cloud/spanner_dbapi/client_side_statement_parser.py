@@ -33,6 +33,8 @@ RE_SHOW_READ_TIMESTAMP = re.compile(
 RE_START_BATCH_DML = re.compile(r"^\s*(START)\s+(BATCH)\s+(DML)", re.IGNORECASE)
 RE_RUN_BATCH = re.compile(r"^\s*(RUN)\s+(BATCH)", re.IGNORECASE)
 RE_ABORT_BATCH = re.compile(r"^\s*(ABORT)\s+(BATCH)", re.IGNORECASE)
+RE_PARTITION_QUERY = re.compile(r"^\s*(PARTITION)\s+(.+)", re.IGNORECASE)
+RE_RUN_PARTITION = re.compile(r"^\s*(RUN)\s+(PARTITION)\s+(.+)", re.IGNORECASE)
 
 
 def parse_stmt(query):
@@ -48,6 +50,7 @@ def parse_stmt(query):
     :returns: ParsedStatement object.
     """
     client_side_statement_type = None
+    client_side_statement_params = []
     if RE_COMMIT.match(query):
         client_side_statement_type = ClientSideStatementType.COMMIT
     if RE_BEGIN.match(query):
@@ -64,8 +67,19 @@ def parse_stmt(query):
         client_side_statement_type = ClientSideStatementType.RUN_BATCH
     if RE_ABORT_BATCH.match(query):
         client_side_statement_type = ClientSideStatementType.ABORT_BATCH
+    if RE_PARTITION_QUERY.match(query):
+        match = re.search(RE_PARTITION_QUERY, query)
+        client_side_statement_params.append(match.group(2))
+        client_side_statement_type = ClientSideStatementType.PARTITION_QUERY
+    if RE_RUN_PARTITION.match(query):
+        match = re.search(RE_RUN_PARTITION, query)
+        client_side_statement_params.append(match.group(3))
+        client_side_statement_type = ClientSideStatementType.RUN_PARTITION
     if client_side_statement_type is not None:
         return ParsedStatement(
-            StatementType.CLIENT_SIDE, Statement(query), client_side_statement_type
+            StatementType.CLIENT_SIDE,
+            Statement(query),
+            client_side_statement_type,
+            client_side_statement_params,
         )
     return None

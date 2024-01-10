@@ -19,8 +19,15 @@ import warnings
 from google.api_core.exceptions import Aborted
 from google.api_core.gapic_v1.client_info import ClientInfo
 from google.cloud import spanner_v1 as spanner
+from google.cloud.spanner_dbapi import partition_helper
 from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode, BatchDmlExecutor
-from google.cloud.spanner_dbapi.parsed_statement import ParsedStatement, Statement
+from google.cloud.spanner_dbapi.parse_utils import _get_statement_type
+from google.cloud.spanner_dbapi.parsed_statement import (
+    ParsedStatement,
+    Statement,
+    StatementType,
+)
+from google.cloud.spanner_dbapi.partition_helper import PartitionId
 from google.cloud.spanner_v1 import RequestOptions
 from google.cloud.spanner_v1.session import _get_retry_delay
 from google.cloud.spanner_v1.snapshot import Snapshot
@@ -584,6 +591,54 @@ class Connection:
         if self._batch_mode is BatchMode.DML:
             self._batch_dml_executor = None
         self._batch_mode = BatchMode.NONE
+
+    @check_not_closed
+    def partition_query(
+        self,
+        parsed_statement: ParsedStatement,
+        query_options=None,
+    ):
+        statement = parsed_statement.statement
+        partitioned_query = parsed_statement.client_side_statement_params[0]
+        if _get_statement_type(Statement(partitioned_query)) is not StatementType.QUERY:
+            raise ProgrammingError(
+                "Only queries can be partitioned. Invalid statement: " + statement.sql
+            )
+        if self.read_only is not True and self._client_transaction_started is True:
+            raise ProgrammingError(
+                "Partitioned query not supported as the connection is not in "
+                "read only mode or ReadWrite transaction started"
+            )
+
+        batch_snapshot = self._database.batch_snapshot()
+        partition_ids = []
+        partitions = list(
+            batch_snapshot.generate_query_batches(
+                partitioned_query,
+                statement.params,
+                statement.param_types,
+                query_options=query_options,
+            )
+        )
+        for partition in partitions:
+            batch_transaction_id = batch_snapshot.get_batch_transaction_id()
+            partition_ids.append(
+                partition_helper.encode_to_string(batch_transaction_id, partition)
+            )
+        return partition_ids
+
+    @check_not_closed
+    def run_partition(self, batch_transaction_id):
+        partition_id: PartitionId = partition_helper.decode_from_string(
+            batch_transaction_id
+        )
+        batch_transaction_id = partition_id.batch_transaction_id
+        batch_snapshot = self._database.batch_snapshot(
+            read_timestamp=batch_transaction_id.read_timestamp,
+            session_id=batch_transaction_id.session_id,
+            transaction_id=batch_transaction_id.transaction_id,
+        )
+        return batch_snapshot.process(partition_id.partition_result)
 
     def __enter__(self):
         return self

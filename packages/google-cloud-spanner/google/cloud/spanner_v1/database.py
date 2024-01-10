@@ -16,6 +16,7 @@
 
 import copy
 import functools
+
 import grpc
 import logging
 import re
@@ -39,6 +40,7 @@ from google.cloud.spanner_admin_database_v1 import RestoreDatabaseEncryptionConf
 from google.cloud.spanner_admin_database_v1 import RestoreDatabaseRequest
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
+from google.cloud.spanner_dbapi.partition_helper import BatchTransactionId
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import TransactionSelector
 from google.cloud.spanner_v1 import TransactionOptions
@@ -747,7 +749,13 @@ class Database(object):
         """
         return MutationGroupsCheckout(self)
 
-    def batch_snapshot(self, read_timestamp=None, exact_staleness=None):
+    def batch_snapshot(
+        self,
+        read_timestamp=None,
+        exact_staleness=None,
+        session_id=None,
+        transaction_id=None,
+    ):
         """Return an object which wraps a batch read / query.
 
         :type read_timestamp: :class:`datetime.datetime`
@@ -757,11 +765,21 @@ class Database(object):
         :param exact_staleness: Execute all reads at a timestamp that is
                                 ``exact_staleness`` old.
 
+        :type session_id: str
+        :param session_id: id of the session used in transaction
+
+        :type transaction_id: str
+        :param transaction_id: id of the transaction
+
         :rtype: :class:`~google.cloud.spanner_v1.database.BatchSnapshot`
         :returns: new wrapper
         """
         return BatchSnapshot(
-            self, read_timestamp=read_timestamp, exact_staleness=exact_staleness
+            self,
+            read_timestamp=read_timestamp,
+            exact_staleness=exact_staleness,
+            session_id=session_id,
+            transaction_id=transaction_id,
         )
 
     def run_in_transaction(self, func, *args, **kw):
@@ -1139,10 +1157,19 @@ class BatchSnapshot(object):
                             ``exact_staleness`` old.
     """
 
-    def __init__(self, database, read_timestamp=None, exact_staleness=None):
+    def __init__(
+        self,
+        database,
+        read_timestamp=None,
+        exact_staleness=None,
+        session_id=None,
+        transaction_id=None,
+    ):
         self._database = database
+        self._session_id = session_id
         self._session = None
         self._snapshot = None
+        self._transaction_id = transaction_id
         self._read_timestamp = read_timestamp
         self._exact_staleness = exact_staleness
 
@@ -1190,7 +1217,10 @@ class BatchSnapshot(object):
         """
         if self._session is None:
             session = self._session = self._database.session()
-            session.create()
+            if self._session_id is None:
+                session.create()
+            else:
+                session._session_id = self._session_id
         return self._session
 
     def _get_snapshot(self):
@@ -1200,9 +1230,21 @@ class BatchSnapshot(object):
                 read_timestamp=self._read_timestamp,
                 exact_staleness=self._exact_staleness,
                 multi_use=True,
+                transaction_id=self._transaction_id,
             )
-            self._snapshot.begin()
+            if self._transaction_id is None:
+                self._snapshot.begin()
         return self._snapshot
+
+    def get_batch_transaction_id(self):
+        snapshot = self._snapshot
+        if snapshot is None:
+            raise ValueError("Read-only transaction not begun")
+        return BatchTransactionId(
+            snapshot._transaction_id,
+            snapshot._session.session_id,
+            snapshot._read_timestamp,
+        )
 
     def read(self, *args, **kw):
         """Convenience method:  perform read operation via snapshot.

@@ -50,6 +50,7 @@ def execute(cursor: "Cursor", parsed_statement: ParsedStatement):
     :param parsed_statement: parsed_statement based on the sql query
     """
     connection = cursor.connection
+    column_values = []
     if connection.is_closed:
         raise ProgrammingError(CONNECTION_CLOSED_ERROR)
     statement_type = parsed_statement.client_side_statement_type
@@ -63,24 +64,26 @@ def execute(cursor: "Cursor", parsed_statement: ParsedStatement):
         connection.rollback()
         return None
     if statement_type == ClientSideStatementType.SHOW_COMMIT_TIMESTAMP:
-        if connection._transaction is None:
-            committed_timestamp = None
-        else:
-            committed_timestamp = connection._transaction.committed
+        if (
+            connection._transaction is not None
+            and connection._transaction.committed is not None
+        ):
+            column_values.append(connection._transaction.committed)
         return _get_streamed_result_set(
             ClientSideStatementType.SHOW_COMMIT_TIMESTAMP.name,
             TypeCode.TIMESTAMP,
-            committed_timestamp,
+            column_values,
         )
     if statement_type == ClientSideStatementType.SHOW_READ_TIMESTAMP:
-        if connection._snapshot is None:
-            read_timestamp = None
-        else:
-            read_timestamp = connection._snapshot._transaction_read_timestamp
+        if (
+            connection._snapshot is not None
+            and connection._snapshot._transaction_read_timestamp is not None
+        ):
+            column_values.append(connection._snapshot._transaction_read_timestamp)
         return _get_streamed_result_set(
             ClientSideStatementType.SHOW_READ_TIMESTAMP.name,
             TypeCode.TIMESTAMP,
-            read_timestamp,
+            column_values,
         )
     if statement_type == ClientSideStatementType.START_BATCH_DML:
         connection.start_batch_dml(cursor)
@@ -89,14 +92,28 @@ def execute(cursor: "Cursor", parsed_statement: ParsedStatement):
         return connection.run_batch()
     if statement_type == ClientSideStatementType.ABORT_BATCH:
         return connection.abort_batch()
+    if statement_type == ClientSideStatementType.PARTITION_QUERY:
+        partition_ids = connection.partition_query(parsed_statement)
+        return _get_streamed_result_set(
+            "PARTITION",
+            TypeCode.STRING,
+            partition_ids,
+        )
+    if statement_type == ClientSideStatementType.RUN_PARTITION:
+        return connection.run_partition(
+            parsed_statement.client_side_statement_params[0]
+        )
 
 
-def _get_streamed_result_set(column_name, type_code, column_value):
+def _get_streamed_result_set(column_name, type_code, column_values):
     struct_type_pb = StructType(
         fields=[StructType.Field(name=column_name, type_=Type(code=type_code))]
     )
 
     result_set = PartialResultSet(metadata=ResultSetMetadata(row_type=struct_type_pb))
-    if column_value is not None:
-        result_set.values.extend([_make_value_pb(column_value)])
+    if len(column_values) > 0:
+        column_values_pb = []
+        for column_value in column_values:
+            column_values_pb.append(_make_value_pb(column_value))
+        result_set.values.extend(column_values_pb)
     return StreamedResultSet(iter([result_set]))

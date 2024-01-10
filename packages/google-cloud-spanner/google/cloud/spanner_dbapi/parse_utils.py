@@ -232,19 +232,23 @@ def classify_statement(query, args=None):
         get_param_types(args or None),
         ResultsChecksum(),
     )
+    statement_type = _get_statement_type(statement)
+    return ParsedStatement(statement_type, statement)
+
+
+def _get_statement_type(statement):
+    query = statement.sql
     if RE_DDL.match(query):
-        return ParsedStatement(StatementType.DDL, statement)
-
+        return StatementType.DDL
     if RE_IS_INSERT.match(query):
-        return ParsedStatement(StatementType.INSERT, statement)
-
+        return StatementType.INSERT
     if RE_NON_UPDATE.match(query) or RE_WITH.match(query):
         # As of 13-March-2020, Cloud Spanner only supports WITH for DQL
         # statements and doesn't yet support WITH for DML statements.
-        return ParsedStatement(StatementType.QUERY, statement)
+        return StatementType.QUERY
 
     statement.sql = ensure_where_clause(query)
-    return ParsedStatement(StatementType.UPDATE, statement)
+    return StatementType.UPDATE
 
 
 def sql_pyformat_args_to_spanner(sql, params):

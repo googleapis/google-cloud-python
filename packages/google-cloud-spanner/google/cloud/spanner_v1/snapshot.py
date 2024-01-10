@@ -738,6 +738,7 @@ class Snapshot(_SnapshotBase):
         max_staleness=None,
         exact_staleness=None,
         multi_use=False,
+        transaction_id=None,
     ):
         super(Snapshot, self).__init__(session)
         opts = [read_timestamp, min_read_timestamp, max_staleness, exact_staleness]
@@ -760,6 +761,7 @@ class Snapshot(_SnapshotBase):
         self._max_staleness = max_staleness
         self._exact_staleness = exact_staleness
         self._multi_use = multi_use
+        self._transaction_id = transaction_id
 
     def _make_txn_selector(self):
         """Helper for :meth:`read`."""

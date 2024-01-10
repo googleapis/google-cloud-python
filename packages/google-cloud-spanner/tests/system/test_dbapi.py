@@ -536,6 +536,74 @@ class TestDbApi:
         with pytest.raises(OperationalError):
             self._cursor.execute("run batch")
 
+    def test_partitioned_query(self):
+        """Test partition query works in read-only mode."""
+        self._cursor.execute("start batch dml")
+        for i in range(1, 11):
+            self._insert_row(i)
+        self._cursor.execute("run batch")
+        self._conn.commit()
+
+        self._conn.read_only = True
+        self._cursor.execute("PARTITION SELECT * FROM contacts")
+        partition_id_rows = self._cursor.fetchall()
+        assert len(partition_id_rows) > 0
+
+        rows = []
+        for partition_id_row in partition_id_rows:
+            self._cursor.execute("RUN PARTITION " + partition_id_row[0])
+            rows = rows + self._cursor.fetchall()
+        assert len(rows) == 10
+        self._conn.commit()
+
+    def test_partitioned_query_in_rw_transaction(self):
+        """Test partition query throws exception when connection is not in
+        read-only mode and neither in auto-commit mode."""
+
+        with pytest.raises(ProgrammingError):
+            self._cursor.execute("PARTITION SELECT * FROM contacts")
+
+    def test_partitioned_query_with_dml_query(self):
+        """Test partition query throws exception when sql query is a DML query."""
+
+        self._conn.read_only = True
+        with pytest.raises(ProgrammingError):
+            self._cursor.execute(
+                """
+                PARTITION INSERT INTO contacts (contact_id, first_name, last_name, email)
+                VALUES (1111, 'first-name', 'last-name', 'test.email@domen.ru')
+                """
+            )
+
+    def test_partitioned_query_in_autocommit_mode(self):
+        """Test partition query works when connection is not in read-only mode
+        but is in auto-commit mode."""
+        self._cursor.execute("start batch dml")
+        for i in range(1, 11):
+            self._insert_row(i)
+        self._cursor.execute("run batch")
+        self._conn.commit()
+
+        self._conn.autocommit = True
+        self._cursor.execute("PARTITION SELECT * FROM contacts")
+        partition_id_rows = self._cursor.fetchall()
+        assert len(partition_id_rows) > 0
+
+        rows = []
+        for partition_id_row in partition_id_rows:
+            self._cursor.execute("RUN PARTITION " + partition_id_row[0])
+            rows = rows + self._cursor.fetchall()
+        assert len(rows) == 10
+
+    def test_partitioned_query_with_client_transaction_started(self):
+        """Test partition query throws exception when connection is not in
+        read-only mode and transaction started using client side statement."""
+
+        self._conn.autocommit = True
+        self._cursor.execute("begin transaction")
+        with pytest.raises(ProgrammingError):
+            self._cursor.execute("PARTITION SELECT * FROM contacts")
+
     def _insert_row(self, i):
         self._cursor.execute(
             f"""

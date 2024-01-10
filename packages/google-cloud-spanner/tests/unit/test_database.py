@@ -2138,7 +2138,10 @@ class TestBatchSnapshot(_BaseTest):
         snapshot = session.snapshot.return_value = self._make_snapshot()
         self.assertIs(batch_txn._get_snapshot(), snapshot)
         session.snapshot.assert_called_once_with(
-            read_timestamp=None, exact_staleness=None, multi_use=True
+            read_timestamp=None,
+            exact_staleness=None,
+            multi_use=True,
+            transaction_id=None,
         )
         snapshot.begin.assert_called_once_with()
 
@@ -2150,7 +2153,10 @@ class TestBatchSnapshot(_BaseTest):
         snapshot = session.snapshot.return_value = self._make_snapshot()
         self.assertIs(batch_txn._get_snapshot(), snapshot)
         session.snapshot.assert_called_once_with(
-            read_timestamp=timestamp, exact_staleness=None, multi_use=True
+            read_timestamp=timestamp,
+            exact_staleness=None,
+            multi_use=True,
+            transaction_id=None,
         )
         snapshot.begin.assert_called_once_with()
 
@@ -2162,7 +2168,10 @@ class TestBatchSnapshot(_BaseTest):
         snapshot = session.snapshot.return_value = self._make_snapshot()
         self.assertIs(batch_txn._get_snapshot(), snapshot)
         session.snapshot.assert_called_once_with(
-            read_timestamp=None, exact_staleness=duration, multi_use=True
+            read_timestamp=None,
+            exact_staleness=duration,
+            multi_use=True,
+            transaction_id=None,
         )
         snapshot.begin.assert_called_once_with()
 
