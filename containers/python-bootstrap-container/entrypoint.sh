@@ -46,14 +46,8 @@ cd "$WORKSPACE_DIR/$MONO_REPO_NAME/containers/python-bootstrap-container"
 API_VERSION="$(echo $API_ID | sed 's/.*\.//')"
 
 # API_ID has the form google.cloud.*.vX or `google.*.*.vX`
-# Replace `.`` with `-`
-FOLDER_NAME="$(echo $API_ID | sed -E 's/\./-/g')"
-
-# Since we map protobuf packages google.protobuf.* to Python packages
-# google.cloud.* (see
-# https://github.com/googleapis/gapic-generator-python/issues/1899), ensure that
-# that the PyPI package name reflects the Python package structure.
-FOLDER_NAME="$(replace_prefix "${FOLDER_NAME}" google-api- google-cloud- )"
+# It forms the basis for FOLDER_NAME, which will be further modified in what follows.
+FOLDER_NAME="${API_ID}"
 
 # if API_VERSION does not contain numbers, set API_VERSION to empty string
 if [[ ! $API_VERSION =~ [0-9] ]]; then
@@ -62,8 +56,21 @@ else
     # Remove the trailing version from the FOLDER_NAME`
     # for `google.cloud.workflows.v1`
     # the folder should be `google-cloud-workflows`
-    FOLDER_NAME="$(echo $FOLDER_NAME | sed 's/-[^-]*$//')"
+    FOLDER_NAME="$(echo $FOLDER_NAME | sed 's@\.[^.]*$@@')"
 fi
+
+# The directory in googleapis/googleapis-gen to configure in .OwlBot.yaml.
+# Replace '.' with '/'
+API_PATH="$(echo ${FOLDER_NAME} | sed -E 's@\.@/@g')"
+
+# Replace `.`` with `-`
+FOLDER_NAME="$(echo ${FOLDER_NAME} | sed -E 's/\./-/g')"
+
+# Since we map protobuf packages google.protobuf.* to Python packages
+# google.cloud.* (see
+# https://github.com/googleapis/gapic-generator-python/issues/1899), ensure that
+# that the PyPI package name reflects the Python package structure.
+FOLDER_NAME="$(replace_prefix "${FOLDER_NAME}" google-api- google-cloud- )"
 
 # Create the folder
 mkdir -p "$WORKSPACE_DIR/$MONO_REPO_NAME/packages/$FOLDER_NAME"
@@ -83,8 +90,6 @@ else
     # Otherwise copy the templated .OwlBot.yaml
     cp ".OwlBot.yaml" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.OwlBot.yaml"
 fi
-
-API_PATH="$(echo $FOLDER_NAME | sed -E 's/\-/\//g')"
 
 # Update apiPath in .OwlBot.yaml 
 sed -i -e "s|apiPath|$API_PATH|" "${WORKSPACE_DIR}/${MONO_REPO_NAME}/packages/${FOLDER_NAME}/.OwlBot.yaml"
