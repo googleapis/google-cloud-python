@@ -50,8 +50,9 @@ API_VERSION="$(echo $API_ID | sed 's/.*\.//')"
 FOLDER_NAME="$(echo $API_ID | sed -E 's/\./-/g')"
 
 # Since we map protobuf packages google.protobuf.* to Python packages
-# google.cloud.*, ensure that that the PyPI package name reflects the Python
-# package structure.
+# google.cloud.* (see
+# https://github.com/googleapis/gapic-generator-python/issues/1899), ensure that
+# that the PyPI package name reflects the Python package structure.
 FOLDER_NAME="$(replace_prefix "${FOLDER_NAME}" google-api- google-cloud- )"
 
 # if API_VERSION does not contain numbers, set API_VERSION to empty string
