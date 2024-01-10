@@ -55,7 +55,7 @@ _ERROR_REASON_TO_EXCEPTION = {
 }
 
 
-def _error_result_to_exception(error_result):
+def _error_result_to_exception(error_result, errors=None):
     """Maps BigQuery error reasons to an exception.
 
     The reasons and their matching HTTP status codes are documented on
@@ -66,6 +66,7 @@ def _error_result_to_exception(error_result):
 
     Args:
         error_result (Mapping[str, str]): The error result from BigQuery.
+        errors (Union[Iterable[str], None]): The detailed error messages.
 
     Returns:
         google.cloud.exceptions.GoogleAPICallError: The mapped exception.
@@ -74,8 +75,24 @@ def _error_result_to_exception(error_result):
     status_code = _ERROR_REASON_TO_EXCEPTION.get(
         reason, http.client.INTERNAL_SERVER_ERROR
     )
+    # Manually create error message to preserve both error_result and errors.
+    # Can be removed once b/310544564 and b/318889899 are resolved.
+    concatenated_errors = ""
+    if errors:
+        concatenated_errors = "; "
+        for err in errors:
+            concatenated_errors += ", ".join(
+                [f"{key}: {value}" for key, value in err.items()]
+            )
+            concatenated_errors += "; "
+
+        # strips off the last unneeded semicolon and space
+        concatenated_errors = concatenated_errors[:-2]
+
+    error_message = error_result.get("message", "") + concatenated_errors
+
     return exceptions.from_http_status(
-        status_code, error_result.get("message", ""), errors=[error_result]
+        status_code, error_message, errors=[error_result]
     )
 
 
@@ -886,7 +903,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 return
 
             if self.error_result is not None:
-                exception = _error_result_to_exception(self.error_result)
+                exception = _error_result_to_exception(
+                    self.error_result, self.errors or ()
+                )
                 self.set_exception(exception)
             else:
                 self.set_result(self)

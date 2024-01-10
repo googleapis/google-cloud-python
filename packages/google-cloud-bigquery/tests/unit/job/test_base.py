@@ -47,6 +47,27 @@ class Test__error_result_to_exception(unittest.TestCase):
         exception = self._call_fut(error_result)
         self.assertEqual(exception.code, http.client.INTERNAL_SERVER_ERROR)
 
+    def test_contatenate_errors(self):
+        # Added test for  b/310544564 and b/318889899.
+        # Ensures that error messages from both error_result and errors are
+        # present in the exception raised.
+
+        error_result = {
+            "reason": "invalid1",
+            "message": "error message 1",
+        }
+        errors = [
+            {"reason": "invalid2", "message": "error message 2"},
+            {"reason": "invalid3", "message": "error message 3"},
+        ]
+
+        exception = self._call_fut(error_result, errors)
+        self.assertEqual(
+            exception.message,
+            "error message 1; reason: invalid2, message: error message 2; "
+            "reason: invalid3, message: error message 3",
+        )
+
 
 class Test_JobReference(unittest.TestCase):
     JOB_ID = "job-id"
