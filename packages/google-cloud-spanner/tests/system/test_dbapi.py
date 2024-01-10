@@ -420,6 +420,10 @@ class TestDbApi:
         assert self._cursor.description[0].name == "SHOW_READ_TIMESTAMP"
         assert isinstance(read_timestamp_query_result_1[0][0], DatetimeWithNanoseconds)
 
+        self._conn.read_only = False
+        self._insert_row(3)
+
+        self._conn.read_only = True
         self._cursor.execute("SELECT * FROM contacts")
         self._cursor.execute("SHOW VARIABLE READ_TIMESTAMP")
         read_timestamp_query_result_2 = self._cursor.fetchall()
