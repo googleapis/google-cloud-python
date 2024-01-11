@@ -143,10 +143,11 @@ def compile_reversed(node: nodes.ReversedNode, ordered: bool = True):
 
 
 @_compile_node.register
-def compile_project(node: nodes.ProjectRowOpNode, ordered: bool = True):
-    return compile_node(node.child, ordered).project_row_op(
-        node.input_ids, node.op, node.output_id
-    )
+def compile_projection(node: nodes.ProjectionNode, ordered: bool = True):
+    result = compile_node(node.child, ordered)
+    for expr, id in node.assignments:
+        result = result.project_expression(expr, id)
+    return result
 
 
 @_compile_node.register

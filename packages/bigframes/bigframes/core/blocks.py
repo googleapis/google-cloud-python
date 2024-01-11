@@ -669,7 +669,7 @@ class Block:
         """
         # TODO(tbergeron): handle labels safely so callers don't need to
         result_id = guid.generate_guid()
-        expr = self._expr.project_unary_op(column, op, result_id)
+        expr = self._expr.project(op.as_expr(column), result_id)
         block = Block(
             expr,
             index_columns=self.index_columns,
@@ -686,8 +686,8 @@ class Block:
         result_label: Label = None,
     ) -> typing.Tuple[Block, str]:
         result_id = guid.generate_guid()
-        expr = self._expr.project_binary_op(
-            left_column_id, right_column_id, op, result_id
+        expr = self._expr.project(
+            op.as_expr(left_column_id, right_column_id), result_id
         )
         block = Block(
             expr,
@@ -706,9 +706,7 @@ class Block:
         result_label: Label = None,
     ) -> typing.Tuple[Block, str]:
         result_id = guid.generate_guid()
-        expr = self._expr.project_ternary_op(
-            col_id_1, col_id_2, col_id_3, op, result_id
-        )
+        expr = self._expr.project(op.as_expr(col_id_1, col_id_2, col_id_3), result_id)
         block = Block(
             expr,
             index_columns=self.index_columns,
@@ -1240,9 +1238,14 @@ class Block:
         if axis_number == 0:
             expr = self._expr
             for index_col in self._index_columns:
-                expr = expr.project_unary_op(index_col, ops.AsTypeOp(to_type="string"))
+                expr = expr.project(
+                    expression=ops.AsTypeOp(to_type="string").as_expr(index_col),
+                    output_id=index_col,
+                )
                 prefix_op = ops.ApplyLeft(base_op=ops.add_op, left_scalar=prefix)
-                expr = expr.project_unary_op(index_col, prefix_op)
+                expr = expr.project(
+                    expression=prefix_op.as_expr(index_col), output_id=index_col
+                )
             return Block(
                 expr,
                 index_columns=self.index_columns,
@@ -1259,9 +1262,14 @@ class Block:
         if axis_number == 0:
             expr = self._expr
             for index_col in self._index_columns:
-                expr = expr.project_unary_op(index_col, ops.AsTypeOp(to_type="string"))
+                expr = expr.project(
+                    expression=ops.AsTypeOp(to_type="string").as_expr(index_col),
+                    output_id=index_col,
+                )
                 prefix_op = ops.ApplyRight(base_op=ops.add_op, right_scalar=suffix)
-                expr = expr.project_unary_op(index_col, prefix_op)
+                expr = expr.project(
+                    expression=prefix_op.as_expr(index_col), output_id=index_col
+                )
             return Block(
                 expr,
                 index_columns=self.index_columns,
@@ -1568,10 +1576,10 @@ class Block:
         coalesced_ids = []
         for left_id, right_id in zip(left_join_ids, right_join_ids):
             coalesced_id = guid.generate_guid()
-            joined_expr = joined_expr.project_binary_op(
-                get_column_left[left_id],
-                get_column_right[right_id],
-                ops.coalesce_op,
+            joined_expr = joined_expr.project(
+                ops.coalesce_op.as_expr(
+                    get_column_left[left_id], get_column_right[right_id]
+                ),
                 coalesced_id,
             )
             coalesced_ids.append(coalesced_id)

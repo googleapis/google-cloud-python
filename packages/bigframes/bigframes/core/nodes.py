@@ -17,15 +17,15 @@ from __future__ import annotations
 from dataclasses import dataclass, field, fields
 import functools
 import typing
-from typing import Optional, Tuple
+from typing import Tuple
 
 import pandas
 
+import bigframes.core.expression as expressions
 import bigframes.core.guid
 from bigframes.core.ordering import OrderingColumnReference
 import bigframes.core.window_spec as window
 import bigframes.dtypes
-import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 
 if typing.TYPE_CHECKING:
@@ -196,10 +196,8 @@ class SelectNode(UnaryNode):
 
 
 @dataclass(frozen=True)
-class ProjectRowOpNode(UnaryNode):
-    input_ids: typing.Tuple[str, ...]
-    op: ops.RowOp
-    output_id: Optional[str] = None
+class ProjectionNode(UnaryNode):
+    assignments: typing.Tuple[typing.Tuple[expressions.Expression, str], ...]
 
     def __hash__(self):
         return self._node_hash

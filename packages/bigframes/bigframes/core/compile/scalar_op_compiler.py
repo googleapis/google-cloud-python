@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 
 import bigframes.constants as constants
+import bigframes.core.expression as expressions
 import bigframes.dtypes
 import bigframes.dtypes as dtypes
 import bigframes.operations as ops
@@ -49,6 +50,45 @@ class ScalarOpCompiler:
             [typing.Sequence[ibis_types.Value], ops.RowOp], ibis_types.Value
         ],
     ] = {}
+
+    @functools.singledispatchmethod
+    def compile_expression(
+        self,
+        expression: expressions.Expression,
+        bindings: typing.Dict[str, ibis_types.Value],
+    ) -> ibis_types.Value:
+        raise NotImplementedError(f"Unrecognized expression: {expression}")
+
+    @compile_expression.register
+    def _(
+        self,
+        expression: expressions.ScalarConstantExpression,
+        bindings: typing.Dict[str, ibis_types.Value],
+    ) -> ibis_types.Value:
+        return ibis.literal(expression.value)
+
+    @compile_expression.register
+    def _(
+        self,
+        expression: expressions.UnboundVariableExpression,
+        bindings: typing.Dict[str, ibis_types.Value],
+    ) -> ibis_types.Value:
+        if expression.id not in bindings:
+            raise ValueError(f"Could not resolve unbound variable {expression.id}")
+        else:
+            return bindings[expression.id]
+
+    @compile_expression.register
+    def _(
+        self,
+        expression: expressions.OpExpression,
+        bindings: typing.Dict[str, ibis_types.Value],
+    ) -> ibis_types.Value:
+        inputs = [
+            self.compile_expression(sub_expr, bindings)
+            for sub_expr in expression.inputs
+        ]
+        return self.compile_row_op(expression.op, inputs)
 
     def compile_row_op(
         self, op: ops.RowOp, inputs: typing.Sequence[ibis_types.Value]

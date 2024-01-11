@@ -136,7 +136,9 @@ def test_arrayvalues_to_ibis_expr_with_project_unary_op():
         ),
         total_ordering_columns=["col1"],
     )
-    expr = value.project_unary_op("col1", ops.AsTypeOp("string"))._compile_ordered()
+    expr = value.project(
+        ops.AsTypeOp("string").as_expr("col1"), output_id="col1"
+    )._compile_ordered()
     assert value._compile_ordered().columns[0].type().is_int64()
     assert expr.columns[0].type().is_string()
 
@@ -152,9 +154,7 @@ def test_arrayvalues_to_ibis_expr_with_project_binary_op():
         ),
         total_ordering_columns=["col1"],
     )
-    expr = value.project_binary_op(
-        "col2", "col3", ops.add_op, "col4"
-    )._compile_ordered()
+    expr = value.project(ops.add_op.as_expr("col2", "col3"), "col4")._compile_ordered()
     assert expr.columns[3].type().is_float64()
     actual = expr._to_ibis_expr(ordering_mode="unordered")
     assert len(expr.columns) == 4
@@ -173,8 +173,8 @@ def test_arrayvalues_to_ibis_expr_with_project_ternary_op():
         ),
         total_ordering_columns=["col1"],
     )
-    expr = value.project_ternary_op(
-        "col2", "col3", "col4", ops.where_op, "col5"
+    expr = value.project(
+        ops.where_op.as_expr("col2", "col3", "col4"), "col5"
     )._compile_ordered()
     assert expr.columns[4].type().is_float64()
     actual = expr._to_ibis_expr(ordering_mode="unordered")

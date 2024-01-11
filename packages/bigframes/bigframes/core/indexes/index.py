@@ -604,8 +604,8 @@ def coalesce_columns(
             expr = expr.drop_columns([left_id])
         elif how == "outer":
             coalesced_id = bigframes.core.guid.generate_guid()
-            expr = expr.project_binary_op(
-                left_id, right_id, ops.coalesce_op, coalesced_id
+            expr = expr.project(
+                ops.coalesce_op.as_expr(left_id, right_id), coalesced_id
             )
             expr = expr.drop_columns([left_id, right_id])
             result_ids.append(coalesced_id)

@@ -28,6 +28,7 @@ import pandas
 
 import bigframes.constants as constants
 import bigframes.core.compile.scalar_op_compiler as op_compilers
+import bigframes.core.expression as expressions
 import bigframes.core.guid
 from bigframes.core.ordering import (
     encode_order_string,
@@ -151,18 +152,19 @@ class BaseIbisIR(abc.ABC):
         """
         ...
 
-    def project_row_op(
+    def project_expression(
         self: T,
-        input_column_ids: typing.Sequence[str],
-        op: ops.RowOp,
+        expression: expressions.Expression,
         output_column_id: typing.Optional[str] = None,
     ) -> T:
-        """Creates a new expression based on this expression with unary operation applied to one column."""
+        """Apply an expression to the ArrayValue and assign the output to a column."""
         result_id = (
-            output_column_id or input_column_ids[0]
+            output_column_id or expression.unbound_variables[0]
         )  # overwrite input if not output id provided
-        inputs = tuple(self._get_ibis_column(col) for col in input_column_ids)
-        value = op_compiler.compile_row_op(op, inputs).name(result_id)
+        bindings = {
+            col: self._get_ibis_column(col) for col in expression.unbound_variables
+        }
+        value = op_compiler.compile_expression(expression, bindings).name(result_id)
         return self._set_or_replace_by_id(result_id, value)
 
     def assign(self: T, source_id: str, destination_id: str) -> T:
