@@ -22,6 +22,7 @@ import proto  # type: ignore
 from google.cloud.datastore_v1.types import aggregation_result
 from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query as gd_query
+from google.cloud.datastore_v1.types import query_profile
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
@@ -185,6 +186,11 @@ class RunQueryRequest(proto.Message):
             non-aggregation query.
 
             This field is a member of `oneof`_ ``query_type``.
+        mode (google.cloud.datastore_v1.types.QueryMode):
+            Optional. The mode in which the query request is processed.
+            This field is optional, and when not provided, it defaults
+            to ``NORMAL`` mode where no additional statistics will be
+            returned with the query results.
     """
 
     project_id: str = proto.Field(
@@ -217,6 +223,11 @@ class RunQueryRequest(proto.Message):
         oneof="query_type",
         message=gd_query.GqlQuery,
     )
+    mode: query_profile.QueryMode = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=query_profile.QueryMode,
+    )
 
 
 class RunQueryResponse(proto.Message):
@@ -237,6 +248,12 @@ class RunQueryResponse(proto.Message):
             [ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction]
             was set in
             [RunQueryRequest.read_options][google.datastore.v1.RunQueryRequest.read_options].
+        stats (google.cloud.datastore_v1.types.ResultSetStats):
+            Query plan and execution statistics. Note that the returned
+            stats are subject to change as Firestore evolves.
+
+            This is only present when the request specifies a mode other
+            than ``NORMAL``.
     """
 
     batch: gd_query.QueryResultBatch = proto.Field(
@@ -252,6 +269,11 @@ class RunQueryResponse(proto.Message):
     transaction: bytes = proto.Field(
         proto.BYTES,
         number=5,
+    )
+    stats: query_profile.ResultSetStats = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=query_profile.ResultSetStats,
     )
 
 
@@ -292,6 +314,11 @@ class RunAggregationQueryRequest(proto.Message):
             aggregation query.
 
             This field is a member of `oneof`_ ``query_type``.
+        mode (google.cloud.datastore_v1.types.QueryMode):
+            Optional. The mode in which the query request is processed.
+            This field is optional, and when not provided, it defaults
+            to ``NORMAL`` mode where no additional statistics will be
+            returned with the query results.
     """
 
     project_id: str = proto.Field(
@@ -324,6 +351,11 @@ class RunAggregationQueryRequest(proto.Message):
         oneof="query_type",
         message=gd_query.GqlQuery,
     )
+    mode: query_profile.QueryMode = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=query_profile.QueryMode,
+    )
 
 
 class RunAggregationQueryResponse(proto.Message):
@@ -345,6 +377,12 @@ class RunAggregationQueryResponse(proto.Message):
             [ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction]
             was set in
             [RunAggregationQueryRequest.read_options][google.datastore.v1.RunAggregationQueryRequest.read_options].
+        stats (google.cloud.datastore_v1.types.ResultSetStats):
+            Query plan and execution statistics. Note that the returned
+            stats are subject to change as Firestore evolves.
+
+            This is only present when the request specifies a mode other
+            than ``NORMAL``.
     """
 
     batch: aggregation_result.AggregationResultBatch = proto.Field(
@@ -360,6 +398,11 @@ class RunAggregationQueryResponse(proto.Message):
     transaction: bytes = proto.Field(
         proto.BYTES,
         number=5,
+    )
+    stats: query_profile.ResultSetStats = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=query_profile.ResultSetStats,
     )
 
 
