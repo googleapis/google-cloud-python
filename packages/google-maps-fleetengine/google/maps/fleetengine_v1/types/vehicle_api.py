@@ -350,14 +350,10 @@ class SearchVehiclesRequest(proto.Message):
             greater than or equal to one. The driver is not
             considered in the capacity value.
         trip_types (MutableSequence[google.maps.fleetengine_v1.types.TripType]):
-            Required. Represents the type of proposed trip. Eligible
-            vehicles are those that can support at least one of the
-            specified trip type.
-
-            ``EXCLUSIVE`` and ``SHARED`` may not be included together.
-            ``SHARED`` is not supported when ``current_trips_present``
-            is ``CURRENT_TRIPS_PRESENT_UNSPECIFIED``.
-            ``UNKNOWN_TRIP_TYPE`` is not allowed.
+            Required. Represents the type of proposed trip. Must include
+            exactly one type. ``UNKNOWN_TRIP_TYPE`` is not allowed.
+            Restricts the search to only those vehicles that can support
+            that trip type.
         maximum_staleness (google.protobuf.duration_pb2.Duration):
             Restricts the search to only those vehicles
             that have sent location updates to Fleet Engine
@@ -438,26 +434,26 @@ class SearchVehiclesRequest(proto.Message):
             Required. Specifies the desired ordering
             criterion for results.
         include_back_to_back (bool):
-            Indicates if a vehicle with a single active trip is eligible
-            for another match. If ``false``, vehicles with assigned
-            trips are excluded from the search results. If ``true``,
-            search results include vehicles with ``TripStatus`` of
-            ``ENROUTE_TO_DROPOFF``.
-
-            This field is only considered if a single ``trip_type`` of
-            ``EXCLUSIVE`` is specified.
+            This indicates if vehicles with a single active trip are
+            eligible for this search. This field is only used when
+            ``current_trips_present`` is unspecified. When
+            ``current_trips_present`` is unspecified and this field is
+            ``false``, vehicles with assigned trips are excluded from
+            the search results. When ``current_trips_present`` is
+            unspecified and this field is ``true``, search results can
+            include vehicles with one active trip that has a status of
+            ``ENROUTE_TO_DROPOFF``. When ``current_trips_present`` is
+            specified, this field cannot be set to true.
 
             The default value is ``false``.
         trip_id (str):
             Indicates the trip associated with this
             ``SearchVehicleRequest``.
         current_trips_present (google.maps.fleetengine_v1.types.SearchVehiclesRequest.CurrentTripsPresent):
-            Restricts vehicles from appearing in the search results
-            based on their current trips.
-
-            When current_trips_present is ``NONE`` or ``ANY``,
-            ``trip_types`` can be either ``EXCLUSIVE`` or ``SHARED``,
-            but not both.
+            This indicates if vehicles with active trips are eligible
+            for this search. This must be set to something other than
+            ``CURRENT_TRIPS_PRESENT_UNSPECIFIED`` if ``trip_type``
+            includes ``SHARED``.
         filter (str):
             Optional. A filter query to apply when searching vehicles.
             See http://aip.dev/160 for examples of the filter syntax.
@@ -531,18 +527,16 @@ class SearchVehiclesRequest(proto.Message):
 
         Values:
             CURRENT_TRIPS_PRESENT_UNSPECIFIED (0):
-                Only vehicles without trips can appear in search results. A
-                validation exception is thrown if ``include_back_to_back``
-                is true. See the ``include_back_to_back`` flag for more
-                details.
+                The availability of vehicles with trips present is governed
+                by the ``include_back_to_back`` field.
             NONE (1):
-                Vehicles without trips can appear in search results. A
-                validation exception is thrown if ``include_back_to_back``
-                is true.
+                Vehicles without trips can appear in search results. When
+                this value is used, ``include_back_to_back`` cannot be
+                ``true``.
             ANY (2):
                 Vehicles with at most 5 current trips and 10 waypoints are
-                included in the search results. A validation exception is
-                thrown if ``include_back_to_back`` is true.
+                included in the search results. When this value is used,
+                ``include_back_to_back`` cannot be ``true``.
         """
         CURRENT_TRIPS_PRESENT_UNSPECIFIED = 0
         NONE = 1
