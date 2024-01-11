@@ -603,6 +603,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.encryption_configuration)
         self.assertIsNone(table.time_partitioning)
         self.assertIsNone(table.clustering_fields)
+        self.assertIsNone(table.table_constraints)
 
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -900,6 +901,21 @@ class TestTable(unittest.TestCase, _SchemaBase):
         assert clone.clone_time == datetime.datetime(
             2010, 9, 28, 10, 20, 30, 123000, tzinfo=UTC
         )
+
+    def test_table_constraints_property_getter(self):
+        from google.cloud.bigquery.table import PrimaryKey, TableConstraints
+
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        table._properties["tableConstraints"] = {
+            "primaryKey": {"columns": ["id"]},
+        }
+
+        table_constraints = table.table_constraints
+
+        assert isinstance(table_constraints, TableConstraints)
+        assert table_constraints.primary_key == PrimaryKey(columns=["id"])
 
     def test_description_setter_bad_value(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -5391,6 +5407,270 @@ class TestTimePartitioning(unittest.TestCase):
         time_partitioning = self._make_one()
         time_partitioning.expiration_ms = None
         assert time_partitioning._properties["expirationMs"] is None
+
+
+class TestPrimaryKey(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.table import PrimaryKey
+
+        return PrimaryKey
+
+    @classmethod
+    def _make_one(cls, *args, **kwargs):
+        return cls._get_target_class()(*args, **kwargs)
+
+    def test_constructor_explicit(self):
+        columns = ["id", "product_id"]
+        primary_key = self._make_one(columns)
+
+        self.assertEqual(primary_key.columns, columns)
+
+    def test__eq__columns_mismatch(self):
+        primary_key = self._make_one(columns=["id", "product_id"])
+        other_primary_key = self._make_one(columns=["id"])
+
+        self.assertNotEqual(primary_key, other_primary_key)
+
+    def test__eq__other_type(self):
+        primary_key = self._make_one(columns=["id", "product_id"])
+        with self.assertRaises(TypeError):
+            primary_key == "This is not a Primary Key"
+
+
+class TestColumnReference(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.table import ColumnReference
+
+        return ColumnReference
+
+    @classmethod
+    def _make_one(cls, *args, **kwargs):
+        return cls._get_target_class()(*args, **kwargs)
+
+    def test_constructor_explicit(self):
+        referencing_column = "product_id"
+        referenced_column = "id"
+        column_reference = self._make_one(referencing_column, referenced_column)
+
+        self.assertEqual(column_reference.referencing_column, referencing_column)
+        self.assertEqual(column_reference.referenced_column, referenced_column)
+
+    def test__eq__referencing_column_mismatch(self):
+        column_reference = self._make_one(
+            referencing_column="product_id",
+            referenced_column="id",
+        )
+        other_column_reference = self._make_one(
+            referencing_column="item_id",
+            referenced_column="id",
+        )
+
+        self.assertNotEqual(column_reference, other_column_reference)
+
+    def test__eq__referenced_column_mismatch(self):
+        column_reference = self._make_one(
+            referencing_column="product_id",
+            referenced_column="id",
+        )
+        other_column_reference = self._make_one(
+            referencing_column="product_id",
+            referenced_column="id_1",
+        )
+
+        self.assertNotEqual(column_reference, other_column_reference)
+
+    def test__eq__other_type(self):
+        column_reference = self._make_one(
+            referencing_column="product_id",
+            referenced_column="id",
+        )
+        with self.assertRaises(TypeError):
+            column_reference == "This is not a Column Reference"
+
+
+class TestForeignKey(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.table import ForeignKey
+
+        return ForeignKey
+
+    @classmethod
+    def _make_one(cls, *args, **kwargs):
+        return cls._get_target_class()(*args, **kwargs)
+
+    def test_constructor_explicit(self):
+        name = "my_fk"
+        referenced_table = TableReference.from_string("my-project.mydataset.mytable")
+        column_references = []
+        foreign_key = self._make_one(name, referenced_table, column_references)
+
+        self.assertEqual(foreign_key.name, name)
+        self.assertEqual(foreign_key.referenced_table, referenced_table)
+        self.assertEqual(foreign_key.column_references, column_references)
+
+    def test__eq__name_mismatch(self):
+        referenced_table = TableReference.from_string("my-project.mydataset.mytable")
+        column_references = []
+        foreign_key = self._make_one(
+            name="my_fk",
+            referenced_table=referenced_table,
+            column_references=column_references,
+        )
+        other_foreign_key = self._make_one(
+            name="my_other_fk",
+            referenced_table=referenced_table,
+            column_references=column_references,
+        )
+
+        self.assertNotEqual(foreign_key, other_foreign_key)
+
+    def test__eq__referenced_table_mismatch(self):
+        name = "my_fk"
+        column_references = []
+        foreign_key = self._make_one(
+            name=name,
+            referenced_table=TableReference.from_string("my-project.mydataset.mytable"),
+            column_references=column_references,
+        )
+        other_foreign_key = self._make_one(
+            name=name,
+            referenced_table=TableReference.from_string(
+                "my-project.mydataset.my-other-table"
+            ),
+            column_references=column_references,
+        )
+
+        self.assertNotEqual(foreign_key, other_foreign_key)
+
+    def test__eq__column_references_mismatch(self):
+        from google.cloud.bigquery.table import ColumnReference
+
+        name = "my_fk"
+        referenced_table = TableReference.from_string("my-project.mydataset.mytable")
+        foreign_key = self._make_one(
+            name=name,
+            referenced_table=referenced_table,
+            column_references=[],
+        )
+        other_foreign_key = self._make_one(
+            name=name,
+            referenced_table=referenced_table,
+            column_references=[
+                ColumnReference(
+                    referencing_column="product_id", referenced_column="id"
+                ),
+            ],
+        )
+
+        self.assertNotEqual(foreign_key, other_foreign_key)
+
+    def test__eq__other_type(self):
+        foreign_key = self._make_one(
+            name="my_fk",
+            referenced_table=TableReference.from_string("my-project.mydataset.mytable"),
+            column_references=[],
+        )
+        with self.assertRaises(TypeError):
+            foreign_key == "This is not a Foreign Key"
+
+
+class TestTableConstraint(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.table import TableConstraints
+
+        return TableConstraints
+
+    @classmethod
+    def _make_one(cls, *args, **kwargs):
+        return cls._get_target_class()(*args, **kwargs)
+
+    def test_constructor_defaults(self):
+        instance = self._make_one(primary_key=None, foreign_keys=None)
+        self.assertIsNone(instance.primary_key)
+        self.assertIsNone(instance.foreign_keys)
+
+    def test_from_api_repr_full_resource(self):
+        from google.cloud.bigquery.table import (
+            ColumnReference,
+            ForeignKey,
+            TableReference,
+        )
+
+        resource = {
+            "primaryKey": {
+                "columns": ["id", "product_id"],
+            },
+            "foreignKeys": [
+                {
+                    "name": "my_fk_name",
+                    "referencedTable": {
+                        "projectId": "my-project",
+                        "datasetId": "your-dataset",
+                        "tableId": "products",
+                    },
+                    "columnReferences": [
+                        {"referencingColumn": "product_id", "referencedColumn": "id"},
+                    ],
+                }
+            ],
+        }
+        instance = self._get_target_class().from_api_repr(resource)
+
+        self.assertIsNotNone(instance.primary_key)
+        self.assertEqual(instance.primary_key.columns, ["id", "product_id"])
+        self.assertEqual(
+            instance.foreign_keys,
+            [
+                ForeignKey(
+                    name="my_fk_name",
+                    referenced_table=TableReference.from_string(
+                        "my-project.your-dataset.products"
+                    ),
+                    column_references=[
+                        ColumnReference(
+                            referencing_column="product_id", referenced_column="id"
+                        ),
+                    ],
+                ),
+            ],
+        )
+
+    def test_from_api_repr_only_primary_key_resource(self):
+        resource = {
+            "primaryKey": {
+                "columns": ["id"],
+            },
+        }
+        instance = self._get_target_class().from_api_repr(resource)
+
+        self.assertIsNotNone(instance.primary_key)
+        self.assertEqual(instance.primary_key.columns, ["id"])
+        self.assertIsNone(instance.foreign_keys)
+
+    def test_from_api_repr_only_foreign_keys_resource(self):
+        resource = {
+            "foreignKeys": [
+                {
+                    "name": "my_fk_name",
+                    "referencedTable": {
+                        "projectId": "my-project",
+                        "datasetId": "your-dataset",
+                        "tableId": "products",
+                    },
+                    "columnReferences": [
+                        {"referencingColumn": "product_id", "referencedColumn": "id"},
+                    ],
+                }
+            ]
+        }
+        instance = self._get_target_class().from_api_repr(resource)
+
+        self.assertIsNone(instance.primary_key)
+        self.assertIsNotNone(instance.foreign_keys)
 
 
 @pytest.mark.skipif(
