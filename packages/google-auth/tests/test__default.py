@@ -157,6 +157,10 @@ EXTERNAL_ACCOUNT_AUTHORIZED_USER_FILE = os.path.join(
     DATA_DIR, "external_account_authorized_user.json"
 )
 
+EXTERNAL_ACCOUNT_AUTHORIZED_USER_NON_GDU_FILE = os.path.join(
+    DATA_DIR, "external_account_authorized_user_non_gdu.json"
+)
+
 MOCK_CREDENTIALS = mock.Mock(spec=credentials.CredentialsWithQuotaProject)
 MOCK_CREDENTIALS.with_quota_project.return_value = MOCK_CREDENTIALS
 
@@ -574,6 +578,15 @@ def test_load_credentials_from_file_external_account_authorized_user():
 
     assert isinstance(credentials, external_account_authorized_user.Credentials)
     assert project_id is None
+
+
+def test_load_credentials_from_file_external_account_authorized_user_non_gdu():
+    credentials, _ = _default.load_credentials_from_file(
+        EXTERNAL_ACCOUNT_AUTHORIZED_USER_NON_GDU_FILE, request=mock.sentinel.request
+    )
+
+    assert isinstance(credentials, external_account_authorized_user.Credentials)
+    assert credentials.universe_domain == "fake_universe_domain"
 
 
 def test_load_credentials_from_file_external_account_authorized_user_bad_format(tmpdir):

@@ -342,6 +342,7 @@ class Credentials(
             revoke_url=info.get("revoke_url"),
             quota_project_id=info.get("quota_project_id"),
             scopes=info.get("scopes"),
+            universe_domain=info.get("universe_domain", _DEFAULT_UNIVERSE_DOMAIN),
             **kwargs
         )
 
