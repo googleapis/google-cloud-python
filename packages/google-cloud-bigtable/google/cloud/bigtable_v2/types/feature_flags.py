@@ -59,6 +59,14 @@ class FeatureFlags(proto.Message):
             Notify the server that the client supports the
             last_scanned_row field in ReadRowsResponse for long-running
             scans.
+        routing_cookie (bool):
+            Notify the server that the client supports
+            using encoded routing cookie strings to retry
+            requests with.
+        retry_info (bool):
+            Notify the server that the client supports
+            using retry info back off durations to retry
+            requests with.
     """
 
     reverse_scans: bool = proto.Field(
@@ -76,6 +84,14 @@ class FeatureFlags(proto.Message):
     last_scanned_row_responses: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    routing_cookie: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    retry_info: bool = proto.Field(
+        proto.BOOL,
+        number=7,
     )
 
 

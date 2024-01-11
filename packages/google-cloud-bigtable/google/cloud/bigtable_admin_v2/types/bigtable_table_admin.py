@@ -597,6 +597,9 @@ class ModifyColumnFamiliesRequest(proto.Message):
             earlier modifications can be masked by later
             ones (in the case of repeated updates to the
             same family, for example).
+        ignore_warnings (bool):
+            Optional. If true, ignore safety checks when
+            modifying the column families.
     """
 
     class Modification(proto.Message):
@@ -661,6 +664,10 @@ class ModifyColumnFamiliesRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=Modification,
+    )
+    ignore_warnings: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

@@ -69,7 +69,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
         'list_instances': ('parent', 'page_token', ),
         'list_snapshots': ('parent', 'page_size', 'page_token', ),
         'list_tables': ('parent', 'view', 'page_size', 'page_token', ),
-        'modify_column_families': ('name', 'modifications', ),
+        'modify_column_families': ('name', 'modifications', 'ignore_warnings', ),
         'partial_update_cluster': ('cluster', 'update_mask', ),
         'partial_update_instance': ('instance', 'update_mask', ),
         'restore_table': ('parent', 'table_id', 'backup', ),
