@@ -3042,6 +3042,16 @@
                 }
             ],
             "release-type": "python"
+        },
+        "packages/google-cloud-cloudquotas": {
+            "extra-files": [
+                "google/cloud/cloudquotas_v1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.api.cloudquotas.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
         }
     }
 }
