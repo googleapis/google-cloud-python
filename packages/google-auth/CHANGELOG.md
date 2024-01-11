@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.26.2](https://github.com/googleapis/google-auth-library-python/compare/v2.26.1...v2.26.2) (2024-01-11)
+
+
+### Bug Fixes
+
+* Read universe_domain for external account authorized user ([#1450](https://github.com/googleapis/google-auth-library-python/issues/1450)) ([1cc7df3](https://github.com/googleapis/google-auth-library-python/commit/1cc7df3505ad2083d85f3cb2476eeee250e7faf0))
+
 ## [2.26.1](https://github.com/googleapis/google-auth-library-python/compare/v2.26.0...v2.26.1) (2024-01-03)
 
 
