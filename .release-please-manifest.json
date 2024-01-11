@@ -133,6 +133,7 @@
     "packages/google-cloud-service-directory": "1.10.0",
     "packages/google-cloud-service-management": "1.7.0",
     "packages/google-cloud-service-usage": "1.9.0",
+    "packages/google-cloud-servicehealth": "0.0.0",
     "packages/google-cloud-shell": "1.8.0",
     "packages/google-cloud-source-context": "1.5.0",
     "packages/google-cloud-speech": "2.23.0",
