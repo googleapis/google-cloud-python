@@ -41,6 +41,7 @@
     "packages/google-cloud-build": "3.22.0",
     "packages/google-cloud-certificate-manager": "1.5.0",
     "packages/google-cloud-channel": "1.17.1",
+    "packages/google-cloud-cloudquotas": "0.0.0",
     "packages/google-cloud-commerce-consumer-procurement": "0.1.1",
     "packages/google-cloud-common": "1.3.0",
     "packages/google-cloud-compute": "1.15.0",
