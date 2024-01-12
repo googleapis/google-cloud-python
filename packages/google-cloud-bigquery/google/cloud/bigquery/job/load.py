@@ -328,6 +328,19 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop("ignoreUnknownValues", value)
 
     @property
+    def json_extension(self):
+        """Optional[str]: The extension to use for writing JSON data to BigQuery. Only supports GeoJSON currently.
+
+        See: https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.json_extension
+
+        """
+        return self._get_sub_prop("jsonExtension")
+
+    @json_extension.setter
+    def json_extension(self, value):
+        self._set_sub_prop("jsonExtension", value)
+
+    @property
     def max_bad_records(self):
         """Optional[int]: Number of invalid rows to ignore.
 

@@ -413,6 +413,29 @@ class TestLoadJobConfig(_Base):
         config.ignore_unknown_values = True
         self.assertTrue(config._properties["load"]["ignoreUnknownValues"])
 
+    def test_json_extension_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.json_extension)
+
+    def test_json_extension_hit(self):
+        config = self._get_target_class()()
+        config._properties["load"]["jsonExtension"] = "GEOJSON"
+        self.assertEqual(config.json_extension, "GEOJSON")
+
+    def test_json_extension_setter(self):
+        config = self._get_target_class()()
+        self.assertFalse(config.json_extension)
+        config.json_extension = "GEOJSON"
+        self.assertTrue(config.json_extension)
+        self.assertEqual(config._properties["load"]["jsonExtension"], "GEOJSON")
+
+    def test_to_api_repr_includes_json_extension(self):
+        config = self._get_target_class()()
+        config._properties["load"]["jsonExtension"] = "GEOJSON"
+        api_repr = config.to_api_repr()
+        self.assertIn("jsonExtension", api_repr["load"])
+        self.assertEqual(api_repr["load"]["jsonExtension"], "GEOJSON")
+
     def test_max_bad_records_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.max_bad_records)
