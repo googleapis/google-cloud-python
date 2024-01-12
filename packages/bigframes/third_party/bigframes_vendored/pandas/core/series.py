@@ -809,6 +809,21 @@ class Series(NDFrame):  # type: ignore[misc]
         Uses the "Pearson" method of correlation.  Numbers are converted to float before
         calculation, so the result may be unstable.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s1 = bpd.Series([.2, .0, .6, .2])
+            >>> s2 = bpd.Series([.3, .6, .0, .1])
+            >>> s1.corr(s2)
+            -0.8510644963469901
+
+            >>> s1 = bpd.Series([1, 2, 3], index=[0, 1, 2])
+            >>> s2 = bpd.Series([1, 2, 3], index=[2, 1, 0])
+            >>> s1.corr(s2)
+            -1.0
+
         Args:
             other (Series):
                 The series with which this is to be correlated.

@@ -735,26 +735,6 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self._apply_binary_op(decimals, ops.round_op)
 
     def corr(self, other: Series, method="pearson", min_periods=None) -> float:
-        """
-        Compute the correlation with the other Series.  Non-number values are ignored in the
-        computation.
-
-        Uses the "Pearson" method of correlation.  Numbers are converted to float before
-        calculation, so the result may be unstable.
-
-        Args:
-            other (Series):
-                The series with which this is to be correlated.
-            method (string, default "pearson"):
-                Correlation method to use - currently only "pearson" is supported.
-            min_periods (int, default None):
-                The minimum number of observations needed to return a result.  Non-default values
-                are not yet supported, so a result will be returned for at least two observations.
-
-        Returns:
-            float;  Will return NaN if there are fewer than two numeric pairs, either series has a
-                variance or covariance of zero, or any input value is infinite.
-        """
         # TODO(kemppeterson): Validate early that both are numeric
         # TODO(kemppeterson): Handle partially-numeric columns
         if method != "pearson":
