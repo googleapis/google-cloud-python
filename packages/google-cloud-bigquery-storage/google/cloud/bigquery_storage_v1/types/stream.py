@@ -249,7 +249,32 @@ class ReadSession(proto.Message):
                 https://cloud.google.com/bigquery/docs/table-sampling)
 
                 This field is a member of `oneof`_ ``_sample_percentage``.
+            response_compression_codec (google.cloud.bigquery_storage_v1.types.ReadSession.TableReadOptions.ResponseCompressionCodec):
+                Optional. Set response_compression_codec when creating a
+                read session to enable application-level compression of
+                ReadRows responses.
+
+                This field is a member of `oneof`_ ``_response_compression_codec``.
         """
+
+        class ResponseCompressionCodec(proto.Enum):
+            r"""Specifies which compression codec to attempt on the entire
+            serialized response payload (either Arrow record batch or Avro
+            rows). This is not to be confused with the Apache Arrow native
+            compression codecs specified in ArrowSerializationOptions. For
+            performance reasons, when creating a read session requesting
+            Arrow responses, setting both native Arrow compression and
+            application-level response compression will not be allowed -
+            choose, at most, one kind of compression.
+
+            Values:
+                RESPONSE_COMPRESSION_CODEC_UNSPECIFIED (0):
+                    Default is no compression.
+                RESPONSE_COMPRESSION_CODEC_LZ4 (2):
+                    Use raw LZ4 compression.
+            """
+            RESPONSE_COMPRESSION_CODEC_UNSPECIFIED = 0
+            RESPONSE_COMPRESSION_CODEC_LZ4 = 2
 
         selected_fields: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
@@ -275,6 +300,12 @@ class ReadSession(proto.Message):
             proto.DOUBLE,
             number=5,
             optional=True,
+        )
+        response_compression_codec: "ReadSession.TableReadOptions.ResponseCompressionCodec" = proto.Field(
+            proto.ENUM,
+            number=6,
+            optional=True,
+            enum="ReadSession.TableReadOptions.ResponseCompressionCodec",
         )
 
     name: str = proto.Field(

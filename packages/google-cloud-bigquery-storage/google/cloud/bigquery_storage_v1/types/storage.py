@@ -233,6 +233,27 @@ class ReadRowsResponse(proto.Message):
             Output only. Arrow schema.
 
             This field is a member of `oneof`_ ``schema``.
+        uncompressed_byte_size (int):
+            Optional. If the row data in this ReadRowsResponse is
+            compressed, then uncompressed byte size is the original size
+            of the uncompressed row data. If it is set to a value
+            greater than 0, then decompress into a buffer of size
+            uncompressed_byte_size using the compression codec that was
+            requested during session creation time and which is
+            specified in TableReadOptions.response_compression_codec in
+            ReadSession. This value is not set if no
+            response_compression_codec was not requested and it is -1 if
+            the requested compression would not have reduced the size of
+            this ReadRowsResponse's row data. This attempts to match
+            Apache Arrow's behavior described here
+            https://github.com/apache/arrow/issues/15102 where the
+            uncompressed length may be set to -1 to indicate that the
+            data that follows is not compressed, which can be useful for
+            cases where compression does not yield appreciable savings.
+            When uncompressed_byte_size is not greater than 0, the
+            client should skip decompression.
+
+            This field is a member of `oneof`_ ``_uncompressed_byte_size``.
     """
 
     avro_rows: avro.AvroRows = proto.Field(
@@ -272,6 +293,11 @@ class ReadRowsResponse(proto.Message):
         number=8,
         oneof="schema",
         message=arrow.ArrowSchema,
+    )
+    uncompressed_byte_size: int = proto.Field(
+        proto.INT64,
+        number=9,
+        optional=True,
     )
 
 
