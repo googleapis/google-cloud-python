@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.1.3...google-maps-fleetengine-v0.1.4) (2024-01-12)
+
+
+### Documentation
+
+* [google-maps-fleetengine] better comments on SearchVehicle fields ([#12186](https://github.com/googleapis/google-cloud-python/issues/12186)) ([9ef70f7](https://github.com/googleapis/google-cloud-python/commit/9ef70f7cfd9eaeaad4479bae02a77993b9c52b21))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.1.2...google-maps-fleetengine-v0.1.3) (2023-12-13)
 
 

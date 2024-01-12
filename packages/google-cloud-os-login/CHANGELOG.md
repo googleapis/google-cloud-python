@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.12.0...google-cloud-os-login-v2.13.0) (2024-01-12)
+
+
+### Features
+
+* [google-cloud-os-login] add regions field to ([d30f83d](https://github.com/googleapis/google-cloud-python/commit/d30f83d887666b7cc2c26a2fdb65f5420ec56b64))
+* [google-cloud-os-login] added field `ImportSshPublicKeyRequest.regions` ([#12168](https://github.com/googleapis/google-cloud-python/issues/12168)) ([d30f83d](https://github.com/googleapis/google-cloud-python/commit/d30f83d887666b7cc2c26a2fdb65f5420ec56b64))
+
 ## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.11.0...google-cloud-os-login-v2.12.0) (2023-12-07)
 
 

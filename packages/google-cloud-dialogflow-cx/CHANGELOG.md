@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.30.0...google-cloud-dialogflow-cx-v1.30.1) (2024-01-12)
+
+
+### Documentation
+
+* [google-cloud-dialogflow-cx] Fix formatting due to unclosed backtick ([#12175](https://github.com/googleapis/google-cloud-python/issues/12175)) ([a43fa12](https://github.com/googleapis/google-cloud-python/commit/a43fa123a21739e83e10fd0328a56039690d800c))
+
 ## [1.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.29.0...google-cloud-dialogflow-cx-v1.30.0) (2023-12-07)
 
 
