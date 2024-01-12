@@ -47,6 +47,7 @@ import bigframes.core
 from bigframes.core import log_adapter
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
+import bigframes.core.expression as ex
 import bigframes.core.groupby as groupby
 import bigframes.core.guid
 import bigframes.core.indexers as indexers
@@ -656,25 +657,34 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         op,
         axis: str | int = "columns",
         how: str = "outer",
+        reverse: bool = False,
     ):
         if isinstance(other, (float, int)):
-            return self._apply_scalar_binop(other, op)
+            return self._apply_scalar_binop(other, op, reverse=reverse)
         elif isinstance(other, bigframes.series.Series):
-            return self._apply_series_binop(other, op, axis=axis, how=how)
+            return self._apply_series_binop(
+                other, op, axis=axis, how=how, reverse=reverse
+            )
         elif isinstance(other, DataFrame):
-            return self._apply_dataframe_binop(other, op, how=how)
+            return self._apply_dataframe_binop(other, op, how=how, reverse=reverse)
         raise NotImplementedError(
             f"binary operation is not implemented on the second operand of type {type(other).__name__}."
             f"{constants.FEEDBACK_LINK}"
         )
 
-    def _apply_scalar_binop(self, other: float | int, op: ops.BinaryOp) -> DataFrame:
+    def _apply_scalar_binop(
+        self, other: float | int, op: ops.BinaryOp, reverse: bool = False
+    ) -> DataFrame:
         block = self._block
-        partial_op = ops.ApplyRight(base_op=op, right_scalar=other)
         for column_id, label in zip(
             self._block.value_columns, self._block.column_labels
         ):
-            block, _ = block.apply_unary_op(column_id, partial_op, result_label=label)
+            expr = (
+                op.as_expr(ex.const(other), column_id)
+                if reverse
+                else op.as_expr(column_id, ex.const(other))
+            )
+            block, _ = block.project_expr(expr, label)
             block = block.drop_columns([column_id])
         return DataFrame(block)
 
@@ -684,6 +694,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         op: ops.BinaryOp,
         axis: str | int = "columns",
         how: str = "outer",
+        reverse: bool = False,
     ) -> DataFrame:
         if axis not in ("columns", "index", 0, 1):
             raise ValueError(f"Invalid input: axis {axis}.")
@@ -703,12 +714,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         for column_id, label in zip(
             self._block.value_columns, self._block.column_labels
         ):
-            block, _ = block.apply_binary_op(
-                get_column_left[column_id],
-                series_col,
-                op,
-                result_label=label,
+            self_col = get_column_left[column_id]
+            expr = (
+                op.as_expr(series_col, self_col)
+                if reverse
+                else op.as_expr(self_col, series_col)
             )
+            block, _ = block.project_expr(expr, label)
             block = block.drop_columns([get_column_left[column_id]])
 
         block = block.drop_columns([series_col])
@@ -716,7 +728,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return DataFrame(block)
 
     def _apply_dataframe_binop(
-        self, other: DataFrame, op: ops.BinaryOp, how: str = "outer"
+        self,
+        other: DataFrame,
+        op: ops.BinaryOp,
+        how: str = "outer",
+        reverse: bool = False,
     ) -> DataFrame:
         # Join rows
         joined_index, (get_column_left, get_column_right) = self._block.index.join(
@@ -738,31 +754,32 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         for left_index, right_index in column_indices:
             if left_index >= 0 and right_index >= 0:  # -1 indices indicate missing
-                left_col_id = self._block.value_columns[left_index]
-                right_col_id = other._block.value_columns[right_index]
-                block, result_col_id = block.apply_binary_op(
-                    get_column_left[left_col_id],
-                    get_column_right[right_col_id],
-                    op,
+                self_col_id = get_column_left[self._block.value_columns[left_index]]
+                other_col_id = get_column_right[other._block.value_columns[right_index]]
+                expr = (
+                    op.as_expr(other_col_id, self_col_id)
+                    if reverse
+                    else op.as_expr(self_col_id, other_col_id)
                 )
-                binop_result_ids.append(result_col_id)
             elif left_index >= 0:
-                left_col_id = self._block.value_columns[left_index]
-                block, result_col_id = block.apply_unary_op(
-                    get_column_left[left_col_id],
-                    ops.partial_right(op, None),
+                self_col_id = get_column_left[self._block.value_columns[left_index]]
+                expr = (
+                    op.as_expr(ex.const(None), self_col_id)
+                    if reverse
+                    else op.as_expr(self_col_id, ex.const(None))
                 )
-                binop_result_ids.append(result_col_id)
             elif right_index >= 0:
-                right_col_id = other._block.value_columns[right_index]
-                block, result_col_id = block.apply_unary_op(
-                    get_column_right[right_col_id],
-                    ops.partial_left(op, None),
+                other_col_id = get_column_right[other._block.value_columns[right_index]]
+                expr = (
+                    op.as_expr(other_col_id, ex.const(None))
+                    if reverse
+                    else op.as_expr(ex.const(None), other_col_id)
                 )
-                binop_result_ids.append(result_col_id)
             else:
                 # Should not be possible
                 raise ValueError("No right or left index.")
+            block, result_col_id = block.project_expr(expr)
+            binop_result_ids.append(result_col_id)
 
         block = block.select_columns(binop_result_ids).with_column_labels(columns)
         return DataFrame(block)
@@ -822,7 +839,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         other: float | int | bigframes.series.Series | DataFrame,
         axis: str | int = "columns",
     ) -> DataFrame:
-        return self._apply_binop(other, ops.reverse(ops.sub_op), axis=axis)
+        return self._apply_binop(other, ops.sub_op, axis=axis, reverse=True)
 
     __rsub__ = rsub
 
@@ -849,7 +866,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         other: float | int | bigframes.series.Series | DataFrame,
         axis: str | int = "columns",
     ) -> DataFrame:
-        return self._apply_binop(other, ops.reverse(ops.div_op), axis=axis)
+        return self._apply_binop(other, ops.div_op, axis=axis, reverse=True)
 
     __rtruediv__ = rdiv = rtruediv
 
@@ -867,7 +884,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         other: float | int | bigframes.series.Series | DataFrame,
         axis: str | int = "columns",
     ) -> DataFrame:
-        return self._apply_binop(other, ops.reverse(ops.floordiv_op), axis=axis)
+        return self._apply_binop(other, ops.floordiv_op, axis=axis, reverse=True)
 
     __rfloordiv__ = rfloordiv
 
@@ -875,7 +892,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return self._apply_binop(other, ops.mod_op, axis=axis)
 
     def rmod(self, other: int | bigframes.series.Series | DataFrame, axis: str | int = "columns") -> DataFrame:  # type: ignore
-        return self._apply_binop(other, ops.reverse(ops.mod_op), axis=axis)
+        return self._apply_binop(other, ops.mod_op, axis=axis, reverse=True)
 
     __mod__ = mod
 
@@ -889,7 +906,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def rpow(
         self, other: int | bigframes.series.Series, axis: str | int = "columns"
     ) -> DataFrame:
-        return self._apply_binop(other, ops.reverse(ops.pow_op), axis=axis)
+        return self._apply_binop(other, ops.pow_op, axis=axis, reverse=True)
 
     __pow__ = pow
 
@@ -1101,8 +1118,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                     condition_id = None
                     for i, idx in enumerate(index):
                         level_id = self._resolve_levels(i)[0]
-                        block, condition_id_cur = block.apply_unary_op(
-                            level_id, ops.partial_right(ops.ne_op, idx)
+                        block, condition_id_cur = block.project_expr(
+                            ops.ne_op.as_expr(level_id, ex.const(idx))
                         )
                         if condition_id:
                             block, condition_id = block.apply_binary_op(
@@ -1122,8 +1139,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             elif isinstance(index, indexes.Index):
                 return self._drop_by_index(index)
             else:
-                block, condition_id = block.apply_unary_op(
-                    level_id, ops.partial_right(ops.ne_op, index)
+                block, condition_id = block.project_expr(
+                    ops.ne_op.as_expr(level_id, ex.const(index))
                 )
             block = block.filter(condition_id, keep_null=True).select_columns(
                 self._block.value_columns
@@ -3031,7 +3048,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             if inputs[0] is self:
                 return self._apply_binop(inputs[1], binop)
             else:
-                return self._apply_binop(inputs[0], ops.reverse(binop))
+                return self._apply_binop(inputs[0], binop, reverse=True)
 
         return NotImplemented
 

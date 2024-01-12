@@ -28,7 +28,6 @@ import pandas as pd
 import bigframes.constants as constants
 import bigframes.core.expression as expressions
 import bigframes.dtypes
-import bigframes.dtypes as dtypes
 import bigframes.operations as ops
 
 _ZERO = typing.cast(ibis_types.NumericValue, ibis_types.literal(0))
@@ -65,6 +64,8 @@ class ScalarOpCompiler:
         expression: expressions.ScalarConstantExpression,
         bindings: typing.Dict[str, ibis_types.Value],
     ) -> ibis_types.Value:
+        if pd.isnull(expression.value):  # type: ignore
+            return ibis.null()
         return ibis.literal(expression.value)
 
     @compile_expression.register
@@ -1130,38 +1131,6 @@ def clip_op(
             .else_(original)
             .end()
         )
-
-
-# Composition Ops
-@scalar_op_compiler.register_unary_op(ops.ApplyRight, pass_op=True)
-def apply_right(input: ibis_types.Value, op: ops.ApplyRight):
-    right = dtypes.literal_to_ibis_scalar(op.right_scalar, validate=False)
-    return scalar_op_compiler.compile_row_op(op.base_op, (input, right))
-
-
-@scalar_op_compiler.register_unary_op(ops.ApplyLeft, pass_op=True)
-def apply_left(input: ibis_types.Value, op: ops.ApplyLeft):
-    left = dtypes.literal_to_ibis_scalar(op.left_scalar, validate=False)
-    return scalar_op_compiler.compile_row_op(op.base_op, (left, input))
-
-
-@scalar_op_compiler.register_binary_op(ops.ReverseArgsOp, pass_op=True)
-def apply_reversed(
-    input1: ibis_types.Value, input2: ibis_types.Value, op: ops.ReverseArgsOp
-):
-    return scalar_op_compiler.compile_row_op(op.base_op, (input2, input1))
-
-
-@scalar_op_compiler.register_binary_op(ops.ApplyArg1, pass_op=True)
-def apply_arg1(input1: ibis_types.Value, input2: ibis_types.Value, op: ops.ApplyArg1):
-    arg1 = dtypes.literal_to_ibis_scalar(op.scalar, validate=False)
-    return scalar_op_compiler.compile_row_op(op.base_op, (arg1, input1, input2))
-
-
-@scalar_op_compiler.register_binary_op(ops.ApplyArg3, pass_op=True)
-def apply_arg3(input1: ibis_types.Value, input2: ibis_types.Value, op: ops.ApplyArg3):
-    arg3 = dtypes.literal_to_ibis_scalar(op.scalar, validate=False)
-    return scalar_op_compiler.compile_row_op(op.base_op, (input1, input2, arg3))
 
 
 # Helpers

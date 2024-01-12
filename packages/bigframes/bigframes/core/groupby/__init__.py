@@ -28,7 +28,6 @@ import bigframes.core.utils as utils
 import bigframes.core.window as windows
 import bigframes.dataframe as df
 import bigframes.dtypes as dtypes
-import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.series as series
 import third_party.bigframes_vendored.pandas.core.groupby as vendored_pandas_groupby
@@ -540,10 +539,13 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         )
 
     def cumcount(self, *args, **kwargs) -> series.Series:
-        return self._apply_window_op(
-            agg_ops.rank_op,
-            discard_name=True,
-        )._apply_unary_op(ops.partial_right(ops.sub_op, 1))
+        return (
+            self._apply_window_op(
+                agg_ops.rank_op,
+                discard_name=True,
+            )
+            - 1
+        )
 
     def shift(self, periods=1) -> series.Series:
         """Shift index by desired number of periods."""

@@ -26,6 +26,7 @@ import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
+import bigframes.core.expression as ex
 import bigframes.core.joins as joining
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
@@ -186,7 +187,7 @@ class Index(vendored_pandas_index.Index):
     ) -> Index:
         if self.nlevels > 1:
             raise TypeError("Multiindex does not support 'astype'")
-        return self._apply_unary_op(ops.AsTypeOp(to_type=dtype))
+        return self._apply_unary_expr(ops.AsTypeOp(to_type=dtype).as_expr("arg"))
 
     def all(self) -> bool:
         if self.nlevels > 1:
@@ -261,7 +262,7 @@ class Index(vendored_pandas_index.Index):
     def fillna(self, value=None) -> Index:
         if self.nlevels > 1:
             raise TypeError("Multiindex does not support 'fillna'")
-        return self._apply_unary_op(ops.partial_right(ops.fillna_op, value))
+        return self._apply_unary_expr(ops.fillna_op.as_expr("arg", ex.const(value)))
 
     def rename(self, name: Union[str, Sequence[str]]) -> Index:
         names = [name] if isinstance(name, str) else list(name)
@@ -284,8 +285,8 @@ class Index(vendored_pandas_index.Index):
                 inverse_condition_id, ops.invert_op
             )
         else:
-            block, condition_id = block.apply_unary_op(
-                level_id, ops.partial_right(ops.ne_op, labels)
+            block, condition_id = block.project_expr(
+                ops.ne_op.as_expr(level_id, ex.const(labels))
             )
         block = block.filter(condition_id, keep_null=True)
         block = block.drop_columns([condition_id])
@@ -308,19 +309,23 @@ class Index(vendored_pandas_index.Index):
                 f"isin(), you passed a [{type(values).__name__}]"
             )
 
-        return self._apply_unary_op(
-            ops.IsInOp(values=tuple(values), match_nulls=True)
+        return self._apply_unary_expr(
+            ops.IsInOp(values=tuple(values), match_nulls=True).as_expr("arg")
         ).fillna(value=False)
 
-    def _apply_unary_op(
+    def _apply_unary_expr(
         self,
-        op: ops.UnaryOp,
+        op: ex.Expression,
     ) -> Index:
         """Applies a unary operator to the index."""
+        if len(op.unbound_variables) != 1:
+            raise ValueError("Expression must have exactly 1 unbound variable.")
+        unbound_variable = op.unbound_variables[0]
+
         block = self._block
         result_ids = []
         for col in self._block.index_columns:
-            block, result_id = block.apply_unary_op(col, op)
+            block, result_id = block.project_expr(op.rename({unbound_variable: col}))
             result_ids.append(result_id)
 
         block = block.set_index(result_ids, index_labels=self._block.index_labels)

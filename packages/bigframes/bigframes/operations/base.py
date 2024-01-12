@@ -20,6 +20,7 @@ import pandas as pd
 
 import bigframes.constants as constants
 import bigframes.core.blocks as blocks
+import bigframes.core.expression as ex
 import bigframes.core.scalar as scalars
 import bigframes.dtypes
 import bigframes.operations as ops
@@ -136,6 +137,7 @@ class SeriesMethods:
         other: typing.Any,
         op: ops.BinaryOp,
         alignment: typing.Literal["outer", "left"] = "outer",
+        reverse: bool = False,
     ) -> series.Series:
         """Applies a binary operator to the series and other."""
         if isinstance(other, pd.Series):
@@ -144,11 +146,7 @@ class SeriesMethods:
                 f"Pandas series not supported as operand. {constants.FEEDBACK_LINK}"
             )
         if isinstance(other, series.Series):
-            (left, right, block) = self._align(other, how=alignment)
-
-            block, result_id = block.apply_binary_op(
-                left, right, op, self._value_column
-            )
+            (self_col, other_col, block) = self._align(other, how=alignment)
 
             name = self._name
             if (
@@ -157,13 +155,20 @@ class SeriesMethods:
                 and alignment == "outer"
             ):
                 name = None
-
-            return series.Series(
-                block.select_column(result_id).assign_label(result_id, name)
+            expr = op.as_expr(
+                other_col if reverse else self_col, self_col if reverse else other_col
             )
+            block, result_id = block.project_expr(expr, name)
+            return series.Series(block.select_column(result_id))
+
         else:
-            partial_op = ops.ApplyRight(base_op=op, right_scalar=other)
-            return self._apply_unary_op(partial_op)
+            name = self._name
+            expr = op.as_expr(
+                ex.const(other) if reverse else self._value_column,
+                self._value_column if reverse else ex.const(other),
+            )
+            block, result_id = self._block.project_expr(expr, name)
+            return series.Series(block.select_column(result_id))
 
     def _apply_corr_aggregation(self, other: series.Series) -> float:
         (left, right, block) = self._align(other, how="outer")

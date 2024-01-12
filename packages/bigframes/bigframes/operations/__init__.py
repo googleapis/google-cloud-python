@@ -49,11 +49,13 @@ class UnaryOp:
     def arguments(self) -> int:
         return 1
 
-    def as_expr(self, input_id: str) -> bigframes.core.expression.Expression:
+    def as_expr(
+        self, input_id: typing.Union[str, bigframes.core.expression.Expression] = "arg"
+    ) -> bigframes.core.expression.Expression:
         import bigframes.core.expression
 
         return bigframes.core.expression.OpExpression(
-            self, (bigframes.core.expression.UnboundVariableExpression(input_id),)
+            self, (_convert_expr_input(input_id),)
         )
 
 
@@ -68,15 +70,17 @@ class BinaryOp:
         return 2
 
     def as_expr(
-        self, left_input: str, right_input: str
+        self,
+        left_input: typing.Union[str, bigframes.core.expression.Expression] = "arg1",
+        right_input: typing.Union[str, bigframes.core.expression.Expression] = "arg2",
     ) -> bigframes.core.expression.Expression:
         import bigframes.core.expression
 
         return bigframes.core.expression.OpExpression(
             self,
             (
-                bigframes.core.expression.UnboundVariableExpression(left_input),
-                bigframes.core.expression.UnboundVariableExpression(right_input),
+                _convert_expr_input(left_input),
+                _convert_expr_input(right_input),
             ),
         )
 
@@ -92,18 +96,33 @@ class TernaryOp:
         return 3
 
     def as_expr(
-        self, input1: str, input2: str, input3: str
+        self,
+        input1: typing.Union[str, bigframes.core.expression.Expression] = "arg1",
+        input2: typing.Union[str, bigframes.core.expression.Expression] = "arg2",
+        input3: typing.Union[str, bigframes.core.expression.Expression] = "arg3",
     ) -> bigframes.core.expression.Expression:
         import bigframes.core.expression
 
         return bigframes.core.expression.OpExpression(
             self,
             (
-                bigframes.core.expression.UnboundVariableExpression(input1),
-                bigframes.core.expression.UnboundVariableExpression(input2),
-                bigframes.core.expression.UnboundVariableExpression(input3),
+                _convert_expr_input(input1),
+                _convert_expr_input(input2),
+                _convert_expr_input(input3),
             ),
         )
+
+
+def _convert_expr_input(
+    input: typing.Union[str, bigframes.core.expression.Expression]
+) -> bigframes.core.expression.Expression:
+    """Allows creating free variables with just a string"""
+    import bigframes.core.expression
+
+    if isinstance(input, str):
+        return bigframes.core.expression.UnboundVariableExpression(input)
+    else:
+        return input
 
 
 # Operation Factories
@@ -307,63 +326,6 @@ class RemoteFunctionOp(UnaryOp):
 class MapOp(UnaryOp):
     name = "map_values"
     mappings: typing.Tuple[typing.Tuple[typing.Hashable, typing.Hashable], ...]
-
-
-# Operation Composition
-# Meta-ops that do partial application or parameter remapping
-# Subject to change, may convert to explicit tree
-@dataclasses.dataclass(frozen=True)
-class ApplyRight(UnaryOp):
-    name: typing.ClassVar[str] = "apply_right"
-    base_op: BinaryOp
-    right_scalar: typing.Any
-
-
-@dataclasses.dataclass(frozen=True)
-class ApplyLeft(UnaryOp):
-    name: typing.ClassVar[str] = "apply_left"
-    base_op: BinaryOp
-    left_scalar: typing.Any
-
-
-@dataclasses.dataclass(frozen=True)
-class ApplyArg1(BinaryOp):
-    name: typing.ClassVar[str] = "apply_arg1"
-    base_op: TernaryOp
-    scalar: typing.Any
-
-
-@dataclasses.dataclass(frozen=True)
-class ApplyArg3(BinaryOp):
-    name: typing.ClassVar[str] = "apply_arg3"
-    base_op: TernaryOp
-    scalar: typing.Any
-
-
-@dataclasses.dataclass(frozen=True)
-class ReverseArgsOp(BinaryOp):
-    name: typing.ClassVar[str] = "apply_reverse"
-    base_op: BinaryOp
-
-
-def partial_left(op: BinaryOp, scalar: typing.Any) -> UnaryOp:
-    return ApplyLeft(base_op=op, left_scalar=scalar)
-
-
-def partial_right(op: BinaryOp, scalar: typing.Any) -> UnaryOp:
-    return ApplyRight(base_op=op, right_scalar=scalar)
-
-
-def partial_arg1(op: TernaryOp, scalar: typing.Any) -> BinaryOp:
-    return ApplyArg1(base_op=op, scalar=scalar)
-
-
-def partial_arg3(op: TernaryOp, scalar: typing.Any) -> BinaryOp:
-    return ApplyArg3(base_op=op, scalar=scalar)
-
-
-def reverse(op: BinaryOp) -> BinaryOp:
-    return ReverseArgsOp(base_op=op)
 
 
 # Binary Ops

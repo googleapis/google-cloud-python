@@ -22,6 +22,14 @@ import typing
 import bigframes.operations
 
 
+def const(value: typing.Hashable) -> Expression:
+    return ScalarConstantExpression(value)
+
+
+def free_var(id: str) -> Expression:
+    return UnboundVariableExpression(id)
+
+
 @dataclasses.dataclass(frozen=True)
 class Expression(abc.ABC):
     """An expression represents a computation taking N scalar inputs and producing a single output scalar."""
@@ -29,6 +37,9 @@ class Expression(abc.ABC):
     @property
     def unbound_variables(self) -> typing.Tuple[str, ...]:
         return ()
+
+    def rename(self, name_mapping: dict[str, str]) -> Expression:
+        return self
 
 
 @dataclasses.dataclass(frozen=True)
@@ -49,6 +60,12 @@ class UnboundVariableExpression(Expression):
     def unbound_variables(self) -> typing.Tuple[str, ...]:
         return (self.id,)
 
+    def rename(self, name_mapping: dict[str, str]) -> Expression:
+        if self.id in name_mapping:
+            return UnboundVariableExpression(name_mapping[self.id])
+        else:
+            return self
+
 
 @dataclasses.dataclass(frozen=True)
 class OpExpression(Expression):
@@ -66,4 +83,9 @@ class OpExpression(Expression):
             itertools.chain.from_iterable(
                 map(lambda x: x.unbound_variables, self.inputs)
             )
+        )
+
+    def rename(self, name_mapping: dict[str, str]) -> Expression:
+        return OpExpression(
+            self.op, tuple(input.rename(name_mapping) for input in self.inputs)
         )

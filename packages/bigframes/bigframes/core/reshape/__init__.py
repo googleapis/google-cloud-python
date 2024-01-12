@@ -20,6 +20,7 @@ import pandas as pd
 
 import bigframes.constants as constants
 import bigframes.core as core
+import bigframes.core.expression as ex
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.dataframe
@@ -165,7 +166,7 @@ def qcut(
             ordering=(order.OrderingColumnReference(x._value_column),),
         ),
     )
-    block, result = block.apply_binary_op(
-        result, nullity_id, ops.partial_arg3(ops.where_op, None), result_label=label
+    block, result = block.project_expr(
+        ops.where_op.as_expr(result, nullity_id, ex.const(None)), label=label
     )
     return bigframes.series.Series(block.select_column(result))

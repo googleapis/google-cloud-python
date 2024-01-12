@@ -35,6 +35,7 @@ import pandas as pd
 import bigframes._config.sampling_options as sampling_options
 import bigframes.constants as constants
 import bigframes.core as core
+import bigframes.core.expression as ex
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
 import bigframes.core.joins.name_resolution as join_names
@@ -662,22 +663,31 @@ class Block:
             index_labels=tuple(value),
         )
 
+    def project_expr(
+        self, expr: ex.Expression, label: Label = None
+    ) -> typing.Tuple[Block, str]:
+        """
+        Apply a scalar expression to the block. Creates a new column to store the result.
+        """
+        # TODO(tbergeron): handle labels safely so callers don't need to
+        result_id = guid.generate_guid()
+        array_val = self._expr.project(expr, result_id)
+        block = Block(
+            array_val,
+            index_columns=self.index_columns,
+            column_labels=[*self.column_labels, label],
+            index_labels=self.index.names,
+        )
+        return (block, result_id)
+
     def apply_unary_op(
         self, column: str, op: ops.UnaryOp, result_label: Label = None
     ) -> typing.Tuple[Block, str]:
         """
         Apply a unary op to the block. Creates a new column to store the result.
         """
-        # TODO(tbergeron): handle labels safely so callers don't need to
-        result_id = guid.generate_guid()
-        expr = self._expr.project(op.as_expr(column), result_id)
-        block = Block(
-            expr,
-            index_columns=self.index_columns,
-            column_labels=[*self.column_labels, result_label],
-            index_labels=self.index.names,
-        )
-        return (block, result_id)
+        expr = op.as_expr(column)
+        return self.project_expr(expr, result_label)
 
     def apply_binary_op(
         self,
@@ -686,17 +696,8 @@ class Block:
         op: ops.BinaryOp,
         result_label: Label = None,
     ) -> typing.Tuple[Block, str]:
-        result_id = guid.generate_guid()
-        expr = self._expr.project(
-            op.as_expr(left_column_id, right_column_id), result_id
-        )
-        block = Block(
-            expr,
-            index_columns=self.index_columns,
-            column_labels=[*self.column_labels, result_label],
-            index_labels=self.index.names,
-        )
-        return (block, result_id)
+        expr = op.as_expr(left_column_id, right_column_id)
+        return self.project_expr(expr, result_label)
 
     def apply_ternary_op(
         self,
@@ -706,15 +707,8 @@ class Block:
         op: ops.TernaryOp,
         result_label: Label = None,
     ) -> typing.Tuple[Block, str]:
-        result_id = guid.generate_guid()
-        expr = self._expr.project(op.as_expr(col_id_1, col_id_2, col_id_3), result_id)
-        block = Block(
-            expr,
-            index_columns=self.index_columns,
-            column_labels=[*self.column_labels, result_label],
-            index_labels=self.index.names,
-        )
-        return (block, result_id)
+        expr = op.as_expr(col_id_1, col_id_2, col_id_3)
+        return self.project_expr(expr, result_label)
 
     def multi_apply_window_op(
         self,
@@ -1152,43 +1146,37 @@ class Block:
         conditions = []
         if start != 0:
             if start > 0:
-                op = ops.partial_right(ops.ge_op, start)
                 assert positive_offsets
-                block, start_cond = block.apply_unary_op(positive_offsets, op)
+                conditions.append(ops.ge_op.as_expr(positive_offsets, ex.const(start)))
             else:
-                op = ops.partial_right(ops.le_op, -start - 1)
                 assert negative_offsets
-                block, start_cond = block.apply_unary_op(negative_offsets, op)
-            conditions.append(start_cond)
+                conditions.append(
+                    ops.le_op.as_expr(negative_offsets, ex.const(-start - 1))
+                )
         if stop is not None:
             if stop >= 0:
-                op = ops.partial_right(ops.lt_op, stop)
                 assert positive_offsets
-                block, stop_cond = block.apply_unary_op(positive_offsets, op)
+                conditions.append(ops.lt_op.as_expr(positive_offsets, ex.const(stop)))
             else:
-                op = ops.partial_right(ops.gt_op, -stop - 1)
                 assert negative_offsets
-                block, stop_cond = block.apply_unary_op(negative_offsets, op)
-            conditions.append(stop_cond)
-
+                conditions.append(
+                    ops.gt_op.as_expr(negative_offsets, ex.const(-stop - 1))
+                )
         if step > 1:
-            op = ops.partial_right(ops.mod_op, step)
             if start >= 0:
-                op = ops.partial_right(ops.sub_op, start)
                 assert positive_offsets
-                block, start_diff = block.apply_unary_op(positive_offsets, op)
+                start_diff = ops.sub_op.as_expr(positive_offsets, ex.const(start))
             else:
-                op = ops.partial_right(ops.sub_op, -start + 1)
                 assert negative_offsets
-                block, start_diff = block.apply_unary_op(negative_offsets, op)
-            modulo_op = ops.partial_right(ops.mod_op, step)
-            block, mod = block.apply_unary_op(start_diff, modulo_op)
-            is_zero_op = ops.partial_right(ops.eq_op, 0)
-            block, step_cond = block.apply_unary_op(mod, is_zero_op)
+                start_diff = ops.sub_op.as_expr(negative_offsets, ex.const(-start + 1))
+            step_cond = ops.eq_op.as_expr(
+                ops.mod_op.as_expr(start_diff, ex.const(step)), ex.const(0)
+            )
             conditions.append(step_cond)
 
         for cond in conditions:
-            block = block.filter(cond)
+            block, cond_id = block.project_expr(cond)
+            block = block.filter(cond_id)
 
         return block.select_columns(self.value_columns)
 
@@ -1238,13 +1226,12 @@ class Block:
         if axis_number == 0:
             expr = self._expr
             for index_col in self._index_columns:
-                expr = expr.project(
-                    expression=ops.AsTypeOp(to_type="string").as_expr(index_col),
-                    output_id=index_col,
+                add_prefix = ops.add_op.as_expr(
+                    ex.const(prefix), ops.AsTypeOp(to_type="string").as_expr(index_col)
                 )
-                prefix_op = ops.ApplyLeft(base_op=ops.add_op, left_scalar=prefix)
                 expr = expr.project(
-                    expression=prefix_op.as_expr(index_col), output_id=index_col
+                    expression=add_prefix,
+                    output_id=index_col,
                 )
             return Block(
                 expr,
@@ -1262,13 +1249,12 @@ class Block:
         if axis_number == 0:
             expr = self._expr
             for index_col in self._index_columns:
-                expr = expr.project(
-                    expression=ops.AsTypeOp(to_type="string").as_expr(index_col),
-                    output_id=index_col,
+                add_suffix = ops.add_op.as_expr(
+                    ops.AsTypeOp(to_type="string").as_expr(index_col), ex.const(suffix)
                 )
-                prefix_op = ops.ApplyRight(base_op=ops.add_op, right_scalar=suffix)
                 expr = expr.project(
-                    expression=prefix_op.as_expr(index_col), output_id=index_col
+                    expression=add_suffix,
+                    output_id=index_col,
                 )
             return Block(
                 expr,
@@ -1468,28 +1454,23 @@ class Block:
     def _create_pivot_col(
         block: Block, columns: typing.Sequence[str], value_col: str, value
     ) -> typing.Tuple[Block, str]:
-        cond_id = ""
+        condition: typing.Optional[ex.Expression] = None
         nlevels = len(columns)
         for i in range(len(columns)):
             uvalue_level = value[i] if nlevels > 1 else value
             if pd.isna(uvalue_level):
-                block, eq_id = block.apply_unary_op(
-                    columns[i],
-                    ops.isnull_op,
-                )
+                equality = ops.isnull_op.as_expr(columns[i])
             else:
-                block, eq_id = block.apply_unary_op(
-                    columns[i], ops.partial_right(ops.eq_op, uvalue_level)
-                )
-            if cond_id:
-                block, cond_id = block.apply_binary_op(eq_id, cond_id, ops.and_op)
+                equality = ops.eq_op.as_expr(columns[i], ex.const(uvalue_level))
+            if condition is not None:
+                condition = ops.and_op.as_expr(equality, condition)
             else:
-                cond_id = eq_id
-        block, masked_id = block.apply_binary_op(
-            value_col, cond_id, ops.partial_arg3(ops.where_op, None)
-        )
+                condition = equality
 
-        return block, masked_id
+        assert condition is not None
+        return block.project_expr(
+            ops.where_op.as_expr(value_col, condition, ex.const(None))
+        )
 
     def _get_unique_values(
         self, columns: Sequence[str], max_unique_values: int

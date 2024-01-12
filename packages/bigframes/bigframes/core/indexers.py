@@ -22,6 +22,7 @@ import pandas as pd
 
 import bigframes.constants as constants
 import bigframes.core.blocks
+import bigframes.core.expression as ex
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
 import bigframes.core.scalar
@@ -63,17 +64,14 @@ class LocSeriesIndexer:
         index_column = block.index_columns[0]
 
         # if index == key return value else value_colum
-        block, insert_cond = block.apply_unary_op(
-            index_column, ops.partial_right(ops.eq_op, key)
+        block, result_id = block.project_expr(
+            ops.where_op.as_expr(
+                ex.const(value),
+                ops.eq_op.as_expr(index_column, ex.const(key)),
+                self._series._value_column,
+            )
         )
-        block, result_id = block.apply_binary_op(
-            insert_cond,
-            self._series._value_column,
-            ops.partial_arg1(ops.where_op, value),
-        )
-        block = block.copy_values(result_id, value_column).drop_columns(
-            [insert_cond, result_id]
-        )
+        block = block.copy_values(result_id, value_column).drop_columns([result_id])
 
         self._series._set_block(block)
 

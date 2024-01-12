@@ -48,6 +48,7 @@ from pandas._typing import (
 import bigframes._config as config
 import bigframes.constants as constants
 import bigframes.core.blocks
+import bigframes.core.expression as ex
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
 import bigframes.core.reshape
@@ -294,14 +295,13 @@ def _perform_get_dummies_block_operations(
         new_column_label = f"{column_label}{value}"
         if column_label == "":
             new_column_label = value
-        new_block, new_id = block.apply_unary_op(
-            column_id, ops.ApplyLeft(ops.eq_op, value)
+        new_block, new_id = block.project_expr(
+            ops.eq_op.as_expr(column_id, ex.const(value))
         )
         intermediate_col_ids.append(new_id)
-        block, _ = new_block.apply_unary_op(
-            new_id,
-            ops.ApplyRight(ops.fillna_op, False),
-            result_label=new_column_label,
+        block, _ = new_block.project_expr(
+            ops.fillna_op.as_expr(new_id, ex.const(False)),
+            label=new_column_label,
         )
     if dummy_na:
         # dummy column name for na depends on the dtype
