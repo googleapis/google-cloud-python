@@ -21,6 +21,7 @@ circular dependencies.
 
 from __future__ import annotations
 
+import dataclasses
 import functools
 import itertools
 import random
@@ -31,6 +32,7 @@ import warnings
 import google.cloud.bigquery as bigquery
 import pandas as pd
 
+import bigframes._config.sampling_options as sampling_options
 import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.guid as guid
@@ -78,6 +80,14 @@ class BlockHolder(typing.Protocol):
 
     def _get_block(self) -> Block:
         """Get the underlying block value of the object"""
+
+
+@dataclasses.dataclass()
+class MaterializationOptions:
+    downsampling: sampling_options.SamplingOptions = dataclasses.field(
+        default_factory=sampling_options.SamplingOptions
+    )
+    ordered: bool = True
 
 
 class Block:
@@ -395,8 +405,6 @@ class Block:
 
     def to_pandas(
         self,
-        value_keys: Optional[Iterable[str]] = None,
-        max_results: Optional[int] = None,
         max_download_size: Optional[int] = None,
         sampling_method: Optional[str] = None,
         random_state: Optional[int] = None,
@@ -404,14 +412,24 @@ class Block:
         ordered: bool = True,
     ) -> Tuple[pd.DataFrame, bigquery.QueryJob]:
         """Run query and download results as a pandas DataFrame."""
+        if (sampling_method is not None) and (sampling_method not in _SAMPLING_METHODS):
+            raise NotImplementedError(
+                f"The downsampling method {sampling_method} is not implemented, "
+                f"please choose from {','.join(_SAMPLING_METHODS)}."
+            )
 
-        df, _, query_job = self._compute_and_count(
-            value_keys=value_keys,
-            max_results=max_results,
-            max_download_size=max_download_size,
-            sampling_method=sampling_method,
-            random_state=random_state,
-            ordered=ordered,
+        sampling = bigframes.options.sampling.with_max_download_size(max_download_size)
+        if sampling_method is not None:
+            sampling = sampling.with_method(sampling_method).with_random_state(  # type: ignore
+                random_state
+            )
+        else:
+            sampling = sampling.with_disabled()
+
+        df, query_job = self._materialize_local(
+            materialize_options=MaterializationOptions(
+                downsampling=sampling, ordered=ordered
+            )
         )
         return df, query_job
 
@@ -439,57 +457,29 @@ class Block:
             # See: https://github.com/pandas-dev/pandas-stubs/issues/804
             df.index.names = self.index.names  # type: ignore
 
-    def _compute_and_count(
-        self,
-        value_keys: Optional[Iterable[str]] = None,
-        max_results: Optional[int] = None,
-        max_download_size: Optional[int] = None,
-        sampling_method: Optional[str] = None,
-        random_state: Optional[int] = None,
-        *,
-        ordered: bool = True,
-    ) -> Tuple[pd.DataFrame, int, bigquery.QueryJob]:
+    def _materialize_local(
+        self, materialize_options: MaterializationOptions = MaterializationOptions()
+    ) -> Tuple[pd.DataFrame, bigquery.QueryJob]:
         """Run query and download results as a pandas DataFrame. Return the total number of results as well."""
         # TODO(swast): Allow for dry run and timeout.
-        enable_downsampling = (
-            True
-            if sampling_method is not None
-            else bigframes.options.sampling.enable_downsampling
-        )
-
-        max_download_size = (
-            max_download_size or bigframes.options.sampling.max_download_size
-        )
-
-        random_state = random_state or bigframes.options.sampling.random_state
-
-        if sampling_method is None:
-            sampling_method = bigframes.options.sampling.sampling_method or _UNIFORM
-        sampling_method = sampling_method.lower()
-
-        if sampling_method not in _SAMPLING_METHODS:
-            raise NotImplementedError(
-                f"The downsampling method {sampling_method} is not implemented, "
-                f"please choose from {','.join(_SAMPLING_METHODS)}."
-            )
-
-        expr = self._apply_value_keys_to_expr(value_keys=value_keys)
-
         results_iterator, query_job = self.session._execute(
-            expr, max_results=max_results, sorted=ordered
+            self.expr, sorted=materialize_options.ordered
         )
-
         table_size = (
             self.session._get_table_size(query_job.destination) / _BYTES_TO_MEGABYTES
         )
+        sample_config = materialize_options.downsampling
+        max_download_size = sample_config.max_download_size
         fraction = (
             max_download_size / table_size
             if (max_download_size is not None) and (table_size != 0)
             else 2
         )
 
+        # TODO: Maybe materialize before downsampling
+        # Some downsampling methods
         if fraction < 1:
-            if not enable_downsampling:
+            if not sample_config.enable_downsampling:
                 raise RuntimeError(
                     f"The data size ({table_size:.2f} MB) exceeds the maximum download limit of "
                     f"{max_download_size} MB. You can:\n\t* Enable downsampling in global options:\n"
@@ -507,42 +497,53 @@ class Block:
                 "\nPlease refer to the documentation for configuring the downloading limit.",
                 UserWarning,
             )
-            if sampling_method == _HEAD:
-                total_rows = int(results_iterator.total_rows * fraction)
-                results_iterator.max_results = total_rows
-                df = self._to_dataframe(results_iterator)
-
-                if self.index_columns:
-                    df.set_index(list(self.index_columns), inplace=True)
-                    df.index.names = self.index.names  # type: ignore
-            elif (sampling_method == _UNIFORM) and (random_state is None):
-                filtered_expr = self.expr._uniform_sampling(fraction)
-                block = Block(
-                    filtered_expr,
-                    index_columns=self.index_columns,
-                    column_labels=self.column_labels,
-                    index_labels=self.index.names,
-                )
-                df, total_rows, _ = block._compute_and_count(max_download_size=None)
-            elif sampling_method == _UNIFORM:
-                block = self._split(
-                    fracs=(max_download_size / table_size,),
-                    random_state=random_state,
-                    preserve_order=True,
-                )[0]
-                df, total_rows, _ = block._compute_and_count(max_download_size=None)
-            else:
-                # This part should never be called, just in case.
-                raise NotImplementedError(
-                    f"The downsampling method {sampling_method} is not implemented, "
-                    f"please choose from {','.join(_SAMPLING_METHODS)}."
-                )
+            total_rows = results_iterator.total_rows
+            # Remove downsampling config from subsequent invocations, as otherwise could result in many
+            # iterations if downsampling undershoots
+            return self._downsample(
+                total_rows=total_rows,
+                sampling_method=sample_config.sampling_method,
+                fraction=fraction,
+                random_state=sample_config.random_state,
+            )._materialize_local(
+                MaterializationOptions(ordered=materialize_options.ordered)
+            )
         else:
             total_rows = results_iterator.total_rows
             df = self._to_dataframe(results_iterator)
             self._copy_index_to_pandas(df)
 
-        return df, total_rows, query_job
+        return df, query_job
+
+    def _downsample(
+        self, total_rows: int, sampling_method: str, fraction: float, random_state
+    ) -> Block:
+        # either selecting fraction or number of rows
+        if sampling_method == _HEAD:
+            filtered_block = self.slice(stop=int(total_rows * fraction))
+            return filtered_block
+        elif (sampling_method == _UNIFORM) and (random_state is None):
+            filtered_expr = self.expr._uniform_sampling(fraction)
+            block = Block(
+                filtered_expr,
+                index_columns=self.index_columns,
+                column_labels=self.column_labels,
+                index_labels=self.index.names,
+            )
+            return block
+        elif sampling_method == _UNIFORM:
+            block = self._split(
+                fracs=(fraction,),
+                random_state=random_state,
+                preserve_order=True,
+            )[0]
+            return block
+        else:
+            # This part should never be called, just in case.
+            raise NotImplementedError(
+                f"The downsampling method {sampling_method} is not implemented, "
+                f"please choose from {','.join(_SAMPLING_METHODS)}."
+            )
 
     def _split(
         self,
@@ -1209,10 +1210,9 @@ class Block:
         count = self.shape[0]
         if count > max_results:
             head_block = self.slice(0, max_results)
-            computed_df, query_job = head_block.to_pandas(max_results=max_results)
         else:
             head_block = self
-            computed_df, query_job = head_block.to_pandas()
+        computed_df, query_job = head_block.to_pandas()
         formatted_df = computed_df.set_axis(self.column_labels, axis=1)
         # we reset the axis and substitute the bf index name for the default
         formatted_df.index.name = self.index.name

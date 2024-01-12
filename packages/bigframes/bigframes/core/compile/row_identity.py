@@ -24,7 +24,7 @@ import ibis.expr.types as ibis_types
 
 import bigframes.constants as constants
 import bigframes.core.compile.compiled as compiled
-import bigframes.core.joins.name_resolution as naming
+import bigframes.core.joins as joining
 import bigframes.core.ordering as orderings
 
 SUPPORTED_ROW_IDENTITY_HOW = {"outer", "left", "inner"}
@@ -68,7 +68,7 @@ def join_by_row_identity_unordered(
     right_mask = right_relative_predicates if how in ["left", "outer"] else None
 
     # Public mapping must use JOIN_NAME_REMAPPER to stay in sync with consumers of join result
-    map_left_id, map_right_id = naming.JOIN_NAME_REMAPPER(
+    map_left_id, map_right_id = joining.JOIN_NAME_REMAPPER(
         left.column_ids, right.column_ids
     )
     joined_columns = [
@@ -125,10 +125,10 @@ def join_by_row_identity_ordered(
     right_mask = right_relative_predicates if how in ["left", "outer"] else None
 
     # Public mapping must use JOIN_NAME_REMAPPER to stay in sync with consumers of join result
-    lpublicmapping, rpublicmapping = naming.JOIN_NAME_REMAPPER(
+    lpublicmapping, rpublicmapping = joining.JOIN_NAME_REMAPPER(
         left.column_ids, right.column_ids
     )
-    lhiddenmapping, rhiddenmapping = naming.JoinNameRemapper(namespace="hidden")(
+    lhiddenmapping, rhiddenmapping = joining.JoinNameRemapper(namespace="hidden")(
         left._hidden_column_ids, right._hidden_column_ids
     )
     map_left_id = {**lpublicmapping, **lhiddenmapping}

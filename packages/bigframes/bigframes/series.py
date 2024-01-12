@@ -305,14 +305,13 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 is not exceeded; otherwise, a pandas Series with downsampled rows of the DataFrame.
         """
         df, query_job = self._block.to_pandas(
-            (self._value_column,),
             max_download_size=max_download_size,
             sampling_method=sampling_method,
             random_state=random_state,
             ordered=ordered,
         )
         self._set_internal_query_job(query_job)
-        series = df[self._value_column]
+        series = df.squeeze(axis=1)
         series.name = self._name
         return series
 

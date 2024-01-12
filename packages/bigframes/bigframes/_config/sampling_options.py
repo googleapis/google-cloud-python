@@ -14,6 +14,8 @@
 
 """Options for downsampling."""
 
+from __future__ import annotations
+
 import dataclasses
 from typing import Literal, Optional
 
@@ -25,6 +27,28 @@ class SamplingOptions:
     __doc__ = vendored_pandas_config.sampling_options_doc
 
     max_download_size: Optional[int] = 500
+    # Enable downsampling
     enable_downsampling: bool = False
     sampling_method: Literal["head", "uniform"] = "uniform"
     random_state: Optional[int] = None
+
+    def with_max_download_size(self, max_rows: Optional[int]) -> SamplingOptions:
+        return SamplingOptions(
+            max_rows, self.enable_downsampling, self.sampling_method, self.random_state
+        )
+
+    def with_method(self, method: Literal["head", "uniform"]) -> SamplingOptions:
+        return SamplingOptions(self.max_download_size, True, method, self.random_state)
+
+    def with_random_state(self, state: Optional[int]) -> SamplingOptions:
+        return SamplingOptions(
+            self.max_download_size,
+            self.enable_downsampling,
+            self.sampling_method,
+            state,
+        )
+
+    def with_disabled(self) -> SamplingOptions:
+        return SamplingOptions(
+            self.max_download_size, False, self.sampling_method, self.random_state
+        )

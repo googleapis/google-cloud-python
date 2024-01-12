@@ -1497,7 +1497,6 @@ class Session(
         self,
         array_value: core.ArrayValue,
         job_config: Optional[bigquery.job.QueryJobConfig] = None,
-        max_results: Optional[int] = None,
         *,
         sorted: bool = True,
         dry_run=False,
@@ -1507,7 +1506,6 @@ class Session(
         return self._start_query(
             sql=sql,
             job_config=job_config,
-            max_results=max_results,
         )
 
     def _to_sql(

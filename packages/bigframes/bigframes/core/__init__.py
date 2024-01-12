@@ -21,8 +21,7 @@ from typing import Iterable, Literal, Sequence
 import ibis.expr.types as ibis_types
 import pandas
 
-import bigframes.core.compile.compiled as compiled
-import bigframes.core.compile.compiler as compiler
+import bigframes.core.compile as compiling
 import bigframes.core.expression as expressions
 import bigframes.core.guid
 import bigframes.core.nodes as nodes
@@ -104,11 +103,11 @@ class ArrayValue:
     def get_column_type(self, key: str) -> bigframes.dtypes.Dtype:
         return self._compile_ordered().get_column_type(key)
 
-    def _compile_ordered(self) -> compiled.OrderedIR:
-        return compiler.compile_ordered(self.node)
+    def _compile_ordered(self) -> compiling.OrderedIR:
+        return compiling.compile_ordered(self.node)
 
-    def _compile_unordered(self) -> compiled.UnorderedIR:
-        return compiler.compile_unordered(self.node)
+    def _compile_unordered(self) -> compiling.UnorderedIR:
+        return compiling.compile_unordered(self.node)
 
     def row_count(self) -> ArrayValue:
         """Get number of rows in ArrayValue as a single-entry ArrayValue."""
