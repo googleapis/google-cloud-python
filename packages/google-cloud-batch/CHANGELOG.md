@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.17.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.6...google-cloud-batch-v0.17.7) (2024-01-12)
+
+
+### Features
+
+* Add `run_as_non_root field` and deprecate `enable_oslogin` for non-root execution ([ce7ddbf](https://github.com/googleapis/google-cloud-python/commit/ce7ddbfdb90ad6e1eb46a79ce3e12276fbfa00ba))
+* Add `tags` field in Job's AllocationPolicy field in v1alpha ([ce7ddbf](https://github.com/googleapis/google-cloud-python/commit/ce7ddbfdb90ad6e1eb46a79ce3e12276fbfa00ba))
+
+
+### Documentation
+
+* updated comments ([ce7ddbf](https://github.com/googleapis/google-cloud-python/commit/ce7ddbfdb90ad6e1eb46a79ce3e12276fbfa00ba))
+
 ## [0.17.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.5...google-cloud-batch-v0.17.6) (2023-12-07)
 
 

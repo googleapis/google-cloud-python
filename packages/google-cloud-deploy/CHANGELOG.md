@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.15.0...google-cloud-deploy-v1.16.0) (2024-01-12)
+
+
+### Features
+
+* Add stable cutback duration configuration to the k8s gateway service mesh deployment strategy ([e68b735](https://github.com/googleapis/google-cloud-python/commit/e68b73587d0944506f93425f9f09da1da4c220b3))
+* Updated logging protos with new fields ([e68b735](https://github.com/googleapis/google-cloud-python/commit/e68b73587d0944506f93425f9f09da1da4c220b3))
+
+
+### Documentation
+
+* Fixed a number of comments ([e68b735](https://github.com/googleapis/google-cloud-python/commit/e68b73587d0944506f93425f9f09da1da4c220b3))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.14.0...google-cloud-deploy-v1.15.0) (2023-12-07)
 
 

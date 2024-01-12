@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.17.1...google-cloud-datacatalog-v3.17.2) (2024-01-12)
+
+
+### Documentation
+
+* [google-cloud-datacatalog] Change field behavior of the property "name" to IDENTIFIER for `PolicyTag` and `Taxonomy` ([#12163](https://github.com/googleapis/google-cloud-python/issues/12163)) ([1022ee8](https://github.com/googleapis/google-cloud-python/commit/1022ee8c42040c9660a22f4d40250964b4c4b37a))
+
 ## [3.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.17.0...google-cloud-datacatalog-v3.17.1) (2024-01-08)
 
 
