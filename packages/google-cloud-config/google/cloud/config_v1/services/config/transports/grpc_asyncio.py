@@ -695,6 +695,140 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
             )
         return self._stubs["export_lock_info"]
 
+    @property
+    def create_preview(
+        self,
+    ) -> Callable[[config.CreatePreviewRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the create preview method over gRPC.
+
+        Creates a [Preview][google.cloud.config.v1.Preview].
+
+        Returns:
+            Callable[[~.CreatePreviewRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_preview" not in self._stubs:
+            self._stubs["create_preview"] = self.grpc_channel.unary_unary(
+                "/google.cloud.config.v1.Config/CreatePreview",
+                request_serializer=config.CreatePreviewRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_preview"]
+
+    @property
+    def get_preview(
+        self,
+    ) -> Callable[[config.GetPreviewRequest], Awaitable[config.Preview]]:
+        r"""Return a callable for the get preview method over gRPC.
+
+        Gets details about a [Preview][google.cloud.config.v1.Preview].
+
+        Returns:
+            Callable[[~.GetPreviewRequest],
+                    Awaitable[~.Preview]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_preview" not in self._stubs:
+            self._stubs["get_preview"] = self.grpc_channel.unary_unary(
+                "/google.cloud.config.v1.Config/GetPreview",
+                request_serializer=config.GetPreviewRequest.serialize,
+                response_deserializer=config.Preview.deserialize,
+            )
+        return self._stubs["get_preview"]
+
+    @property
+    def list_previews(
+        self,
+    ) -> Callable[[config.ListPreviewsRequest], Awaitable[config.ListPreviewsResponse]]:
+        r"""Return a callable for the list previews method over gRPC.
+
+        Lists [Preview][google.cloud.config.v1.Preview]s in a given
+        project and location.
+
+        Returns:
+            Callable[[~.ListPreviewsRequest],
+                    Awaitable[~.ListPreviewsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_previews" not in self._stubs:
+            self._stubs["list_previews"] = self.grpc_channel.unary_unary(
+                "/google.cloud.config.v1.Config/ListPreviews",
+                request_serializer=config.ListPreviewsRequest.serialize,
+                response_deserializer=config.ListPreviewsResponse.deserialize,
+            )
+        return self._stubs["list_previews"]
+
+    @property
+    def delete_preview(
+        self,
+    ) -> Callable[[config.DeletePreviewRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the delete preview method over gRPC.
+
+        Deletes a [Preview][google.cloud.config.v1.Preview].
+
+        Returns:
+            Callable[[~.DeletePreviewRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_preview" not in self._stubs:
+            self._stubs["delete_preview"] = self.grpc_channel.unary_unary(
+                "/google.cloud.config.v1.Config/DeletePreview",
+                request_serializer=config.DeletePreviewRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_preview"]
+
+    @property
+    def export_preview_result(
+        self,
+    ) -> Callable[
+        [config.ExportPreviewResultRequest],
+        Awaitable[config.ExportPreviewResultResponse],
+    ]:
+        r"""Return a callable for the export preview result method over gRPC.
+
+        Export [Preview][google.cloud.config.v1.Preview] results.
+
+        Returns:
+            Callable[[~.ExportPreviewResultRequest],
+                    Awaitable[~.ExportPreviewResultResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_preview_result" not in self._stubs:
+            self._stubs["export_preview_result"] = self.grpc_channel.unary_unary(
+                "/google.cloud.config.v1.Config/ExportPreviewResult",
+                request_serializer=config.ExportPreviewResultRequest.serialize,
+                response_deserializer=config.ExportPreviewResultResponse.deserialize,
+            )
+        return self._stubs["export_preview_result"]
+
     def close(self):
         return self.grpc_channel.close()
 

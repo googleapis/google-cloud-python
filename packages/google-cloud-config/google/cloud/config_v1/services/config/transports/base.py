@@ -207,6 +207,31 @@ class ConfigTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_preview: gapic_v1.method.wrap_method(
+                self.create_preview,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_preview: gapic_v1.method.wrap_method(
+                self.get_preview,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_previews: gapic_v1.method.wrap_method(
+                self.list_previews,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_preview: gapic_v1.method.wrap_method(
+                self.delete_preview,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_preview_result: gapic_v1.method.wrap_method(
+                self.export_preview_result,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -364,6 +389,53 @@ class ConfigTransport(abc.ABC):
     ) -> Callable[
         [config.ExportLockInfoRequest],
         Union[config.LockInfo, Awaitable[config.LockInfo]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_preview(
+        self,
+    ) -> Callable[
+        [config.CreatePreviewRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_preview(
+        self,
+    ) -> Callable[
+        [config.GetPreviewRequest], Union[config.Preview, Awaitable[config.Preview]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_previews(
+        self,
+    ) -> Callable[
+        [config.ListPreviewsRequest],
+        Union[config.ListPreviewsResponse, Awaitable[config.ListPreviewsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_preview(
+        self,
+    ) -> Callable[
+        [config.DeletePreviewRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_preview_result(
+        self,
+    ) -> Callable[
+        [config.ExportPreviewResultRequest],
+        Union[
+            config.ExportPreviewResultResponse,
+            Awaitable[config.ExportPreviewResultResponse],
+        ],
     ]:
         raise NotImplementedError()
 
