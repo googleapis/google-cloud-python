@@ -50,6 +50,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.config_v1.services.config import pagers
 from google.cloud.config_v1.types import config
@@ -72,6 +73,8 @@ class ConfigAsyncClient:
 
     deployment_path = staticmethod(ConfigClient.deployment_path)
     parse_deployment_path = staticmethod(ConfigClient.parse_deployment_path)
+    preview_path = staticmethod(ConfigClient.preview_path)
+    parse_preview_path = staticmethod(ConfigClient.parse_preview_path)
     resource_path = staticmethod(ConfigClient.resource_path)
     parse_resource_path = staticmethod(ConfigClient.parse_resource_path)
     revision_path = staticmethod(ConfigClient.revision_path)
@@ -1984,6 +1987,553 @@ class ConfigAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_preview(
+        self,
+        request: Optional[Union[config.CreatePreviewRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        preview: Optional[config.Preview] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a [Preview][google.cloud.config.v1.Preview].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            async def sample_create_preview():
+                # Create a client
+                client = config_v1.ConfigAsyncClient()
+
+                # Initialize request argument(s)
+                preview = config_v1.Preview()
+                preview.terraform_blueprint.gcs_source = "gcs_source_value"
+
+                request = config_v1.CreatePreviewRequest(
+                    parent="parent_value",
+                    preview=preview,
+                )
+
+                # Make the request
+                operation = client.create_preview(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.config_v1.types.CreatePreviewRequest, dict]]):
+                The request object. A request to create a preview.
+            parent (:class:`str`):
+                Required. The parent in whose context the Preview is
+                created. The parent value is in the format:
+                'projects/{project_id}/locations/{location}'.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            preview (:class:`google.cloud.config_v1.types.Preview`):
+                Required. [Preview][google.cloud.config.v1.Preview]
+                resource to be created.
+
+                This corresponds to the ``preview`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.config_v1.types.Preview` A preview represents a set of actions Infra Manager would perform
+                   to move the resources towards the desired state as
+                   specified in the configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, preview])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = config.CreatePreviewRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if preview is not None:
+            request.preview = preview
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_preview,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            config.Preview,
+            metadata_type=config.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_preview(
+        self,
+        request: Optional[Union[config.GetPreviewRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> config.Preview:
+        r"""Gets details about a [Preview][google.cloud.config.v1.Preview].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            async def sample_get_preview():
+                # Create a client
+                client = config_v1.ConfigAsyncClient()
+
+                # Initialize request argument(s)
+                request = config_v1.GetPreviewRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_preview(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.config_v1.types.GetPreviewRequest, dict]]):
+                The request object. A request to get details about a
+                preview.
+            name (:class:`str`):
+                Required. The name of the preview. Format:
+                'projects/{project_id}/locations/{location}/previews/{preview}'.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.config_v1.types.Preview:
+                A preview represents a set of actions
+                Infra Manager would perform to move the
+                resources towards the desired state as
+                specified in the configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = config.GetPreviewRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_preview,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_previews(
+        self,
+        request: Optional[Union[config.ListPreviewsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListPreviewsAsyncPager:
+        r"""Lists [Preview][google.cloud.config.v1.Preview]s in a given
+        project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            async def sample_list_previews():
+                # Create a client
+                client = config_v1.ConfigAsyncClient()
+
+                # Initialize request argument(s)
+                request = config_v1.ListPreviewsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_previews(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.config_v1.types.ListPreviewsRequest, dict]]):
+                The request object. A request to list all previews for a
+                given project and location.
+            parent (:class:`str`):
+                Required. The parent in whose context the Previews are
+                listed. The parent value is in the format:
+                'projects/{project_id}/locations/{location}'.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.config_v1.services.config.pagers.ListPreviewsAsyncPager:
+                A response to a ListPreviews call. Contains a list of
+                Previews.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = config.ListPreviewsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_previews,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListPreviewsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_preview(
+        self,
+        request: Optional[Union[config.DeletePreviewRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a [Preview][google.cloud.config.v1.Preview].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            async def sample_delete_preview():
+                # Create a client
+                client = config_v1.ConfigAsyncClient()
+
+                # Initialize request argument(s)
+                request = config_v1.DeletePreviewRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_preview(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.config_v1.types.DeletePreviewRequest, dict]]):
+                The request object. A request to delete a preview.
+            name (:class:`str`):
+                Required. The name of the Preview in the format:
+                'projects/{project_id}/locations/{location}/previews/{preview}'.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.config_v1.types.Preview` A preview represents a set of actions Infra Manager would perform
+                   to move the resources towards the desired state as
+                   specified in the configuration.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = config.DeletePreviewRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_preview,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            config.Preview,
+            metadata_type=config.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def export_preview_result(
+        self,
+        request: Optional[Union[config.ExportPreviewResultRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> config.ExportPreviewResultResponse:
+        r"""Export [Preview][google.cloud.config.v1.Preview] results.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import config_v1
+
+            async def sample_export_preview_result():
+                # Create a client
+                client = config_v1.ConfigAsyncClient()
+
+                # Initialize request argument(s)
+                request = config_v1.ExportPreviewResultRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.export_preview_result(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.config_v1.types.ExportPreviewResultRequest, dict]]):
+                The request object. A request to export preview results.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.config_v1.types.ExportPreviewResultResponse:
+                A response to ExportPreviewResult call. Contains preview
+                results.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = config.ExportPreviewResultRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.export_preview_result,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.

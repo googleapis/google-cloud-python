@@ -15,9 +15,19 @@
                 "create_deployment"
               ]
             },
+            "CreatePreview": {
+              "methods": [
+                "create_preview"
+              ]
+            },
             "DeleteDeployment": {
               "methods": [
                 "delete_deployment"
+              ]
+            },
+            "DeletePreview": {
+              "methods": [
+                "delete_preview"
               ]
             },
             "DeleteStatefile": {
@@ -35,6 +45,11 @@
                 "export_lock_info"
               ]
             },
+            "ExportPreviewResult": {
+              "methods": [
+                "export_preview_result"
+              ]
+            },
             "ExportRevisionStatefile": {
               "methods": [
                 "export_revision_statefile"
@@ -43,6 +58,11 @@
             "GetDeployment": {
               "methods": [
                 "get_deployment"
+              ]
+            },
+            "GetPreview": {
+              "methods": [
+                "get_preview"
               ]
             },
             "GetResource": {
@@ -63,6 +83,11 @@
             "ListDeployments": {
               "methods": [
                 "list_deployments"
+              ]
+            },
+            "ListPreviews": {
+              "methods": [
+                "list_previews"
               ]
             },
             "ListResources": {
@@ -100,9 +125,19 @@
                 "create_deployment"
               ]
             },
+            "CreatePreview": {
+              "methods": [
+                "create_preview"
+              ]
+            },
             "DeleteDeployment": {
               "methods": [
                 "delete_deployment"
+              ]
+            },
+            "DeletePreview": {
+              "methods": [
+                "delete_preview"
               ]
             },
             "DeleteStatefile": {
@@ -120,6 +155,11 @@
                 "export_lock_info"
               ]
             },
+            "ExportPreviewResult": {
+              "methods": [
+                "export_preview_result"
+              ]
+            },
             "ExportRevisionStatefile": {
               "methods": [
                 "export_revision_statefile"
@@ -128,6 +168,11 @@
             "GetDeployment": {
               "methods": [
                 "get_deployment"
+              ]
+            },
+            "GetPreview": {
+              "methods": [
+                "get_preview"
               ]
             },
             "GetResource": {
@@ -148,6 +193,11 @@
             "ListDeployments": {
               "methods": [
                 "list_deployments"
+              ]
+            },
+            "ListPreviews": {
+              "methods": [
+                "list_previews"
               ]
             },
             "ListResources": {
@@ -185,9 +235,19 @@
                 "create_deployment"
               ]
             },
+            "CreatePreview": {
+              "methods": [
+                "create_preview"
+              ]
+            },
             "DeleteDeployment": {
               "methods": [
                 "delete_deployment"
+              ]
+            },
+            "DeletePreview": {
+              "methods": [
+                "delete_preview"
               ]
             },
             "DeleteStatefile": {
@@ -205,6 +265,11 @@
                 "export_lock_info"
               ]
             },
+            "ExportPreviewResult": {
+              "methods": [
+                "export_preview_result"
+              ]
+            },
             "ExportRevisionStatefile": {
               "methods": [
                 "export_revision_statefile"
@@ -213,6 +278,11 @@
             "GetDeployment": {
               "methods": [
                 "get_deployment"
+              ]
+            },
+            "GetPreview": {
+              "methods": [
+                "get_preview"
               ]
             },
             "GetResource": {
@@ -233,6 +303,11 @@
             "ListDeployments": {
               "methods": [
                 "list_deployments"
+              ]
+            },
+            "ListPreviews": {
+              "methods": [
+                "list_previews"
               ]
             },
             "ListResources": {
